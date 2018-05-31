@@ -115,6 +115,9 @@ router.put('/', function (req, res) {
     if (req.body.music_type) {
         obj.music_type = req.body.music_type;
     }
+    if (req.body.share_url) {
+        reg_obj.social_media = req.body.share_url
+    }
     async.waterfall([
         function (callback) {
             if (req.files && req.files['image']) {

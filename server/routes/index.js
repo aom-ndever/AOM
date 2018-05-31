@@ -28,6 +28,7 @@ var music_helper = require('./../helpers/music_helper');
  * @apiHeader {String}  Content-Type application/json
  * 
  
+ * @apiParam {object} social_media Type of Social Media
  * @apiParam {Array} music_type Type of music
  * @apiParam {String} email Email address
  * @apiParam {String}  password Password
@@ -35,6 +36,7 @@ var music_helper = require('./../helpers/music_helper');
  * @apiParam {String} first_name First Name
  * @apiParam {String} zipcode Zipcode
  * @apiParam {String} gender Gender
+ * @apiParam {String} Image image
 
 
  * 
@@ -145,13 +147,12 @@ router.get('/artist_email_verify/:artist_id', async (req, res) => {
 
   var artist_resp = await artist_helper.get_artist_by_id(req.params.artist_id);
   if (artist_resp.status === 0) {
-    logger.error("Error occured while finding promoter by id - ", req.params.artist_id, artist_resp.error);
+    logger.error("Error occured while finding artist by id - ", req.params.artist_id, artist_resp.error);
     res.status(config.INTERNAL_SERVER_ERROR).json({ "status": 0, "message": "Error has occured while finding artist" });
   } else if (artist_resp.status === 2) {
     logger.trace("Artist not found in artist email verify API");
     res.status(config.BAD_REQUEST).json({ "status": 0, "message": "Invalid token entered" });
   } else {
-    // Promoter available
     if (artist_resp.artist.email_verified) {
       // Email already verified
       logger.trace("artist already verified");
@@ -204,10 +205,7 @@ router.post('/artist_login', async (req, res) => {
       errorMessage: "Email is required.",
       isEmail: { errorMessage: "Please enter valid email address" }
     },
-    'password': {
-      notEmpty: true,
-      errorMessage: "password is required."
-    },
+
 
   };
   req.checkBody(schema);
@@ -224,29 +222,38 @@ router.post('/artist_login', async (req, res) => {
     } else if (login_resp.status === 1) {
       logger.trace("Artist found. Executing next instruction");
       logger.trace("valid token. Generating token");
-      var refreshToken = jwt.sign({ id: login_resp.artist._id }, config.REFRESH_TOKEN_SECRET_KEY, {});
-      let update_resp = await artist_helper.update_artist_by_id(login_resp.artist._id, { "refresh_token": refreshToken, "last_login_date": Date.now() });
-      var LoginJson = { id: login_resp.artist._id, email: login_resp.email, role: "artist" };
-      var token = jwt.sign(LoginJson, config.ACCESS_TOKEN_SECRET_KEY, {
-        expiresIn: config.ACCESS_TOKEN_EXPIRE_TIME
-      });
+
+      if (bcrypt.compareSync(req.body.password, login_resp.artist.password)) {
+
+        if (login_resp.artist.email_verified) {
 
 
-      delete login_resp.artist.status;
-      delete login_resp.artist.password;
-      delete login_resp.artist.refresh_token;
-      delete login_resp.artist.last_login_date;
-      delete login_resp.artist.created_at;
+          var refreshToken = jwt.sign({ id: login_resp.artist._id }, config.REFRESH_TOKEN_SECRET_KEY, {});
+          let update_resp = await artist_helper.update_artist_by_id(login_resp.artist._id, { "refresh_token": refreshToken, "last_login_date": Date.now() });
+          var LoginJson = { id: login_resp.artist._id, email: login_resp.email, role: "artist" };
+          var token = jwt.sign(LoginJson, config.ACCESS_TOKEN_SECRET_KEY, {
+            expiresIn: config.ACCESS_TOKEN_EXPIRE_TIME
+          });
 
-      logger.info("Token generated");
-      res.status(config.OK_STATUS).json({ "status": 1, "message": "Logged in successful", "artist": login_resp.artist, "token": token, "refresh_token": refreshToken });
+
+          delete login_resp.artist.status;
+          delete login_resp.artist.password;
+          delete login_resp.artist.refresh_token;
+          delete login_resp.artist.last_login_date;
+          delete login_resp.artist.created_at;
+
+          logger.info("Token generated");
+          res.status(config.OK_STATUS).json({ "status": 1, "message": "Logged in successful", "artist": login_resp.artist, "token": token, "refresh_token": refreshToken });
+        }
+      }
+      else {
+        res.status(config.BAD_REQUEST).json({ "status": 0, "message": "Invalid email address or token" });
+      }
+
     } else {
-      res.status(config.BAD_REQUEST).json({ "status": 0, "message": "Invalid email address or token" });
+      logger.error("Validation Error = ", errors);
+      res.status(config.BAD_REQUEST).json({ message: errors });
     }
-
-  } else {
-    logger.error("Validation Error = ", errors);
-    res.status(config.BAD_REQUEST).json({ message: errors });
   }
 });
 
@@ -276,7 +283,7 @@ router.post('/artist_login', async (req, res) => {
  */
 router.post('/user_registration', async (req, res) => {
 
-  logger.trace("API - Promoter signup called");
+  logger.trace("API - artist signup called");
   logger.debug("req.body = ", req.body);
   var schema = {
     /*  "social_media": {
@@ -377,7 +384,7 @@ router.get('/user_email_verify/:user_id', async (req, res) => {
     logger.trace("User not found in artist email verify API");
     res.status(config.BAD_REQUEST).json({ "status": 0, "message": "Invalid token entered" });
   } else {
-    // Promoter available
+    // artist available
     if (user_resp.user.email_verified) {
       // Email already verified
       logger.trace("user already verified");
@@ -578,7 +585,7 @@ router.post('/artist_reset_password', async (req, res) => {
             logger.trace("artist has not updated");
             res.status(config.BAD_REQUEST).json({ "status": 0, "message": "Error occured while reseting password of artist" });
           } else {
-            // Password reset!
+
             logger.trace("Password has been changed for artist - ", decoded.artist_id);
             res.status(config.OK_STATUS).json({ "status": 1, "message": "Password has been changed" });
           }
@@ -689,9 +696,9 @@ router.post('/user_reset_password', async (req, res) => {
           res.status(config.BAD_REQUEST).json({ "status": 0, "message": "Invalid token sent" });
         }
       } else {
-        logger.trace("Valid token. Reseting password for promoter");
+        logger.trace("Valid token. Reseting password for artist");
         if (decoded.user_id) {
-          var update_resp = await promoter_helper.update_user_by_id(decoded.user_id, { "password": bcrypt.hashSync(req.body.password, saltRounds) });
+          var update_resp = await artist_helper.update_user_by_id(decoded.user_id, { "password": bcrypt.hashSync(req.body.password, saltRounds) });
           if (update_resp.status === 0) {
             logger.trace("Error occured while updating artist : ", update_resp.error);
             res.status(config.INTERNAL_SERVER_ERROR).json({ "status": 0, "message": "Error occured while verifying user_id's email" });
@@ -1000,7 +1007,7 @@ router.post('/reset_password', async (req, res) => {
           res.status(config.BAD_REQUEST).json({ "status": 0, "message": "Invalid token sent" });
         }
       } else {
-        logger.trace("Valid token. Reseting password for promoter");
+        logger.trace("Valid token. Reseting password for artist");
         if (decoded.admin_id) {
           var update_resp = await admin_helper.update_admin_by_id(decoded.admin_id, { "password": bcrypt.hashSync(req.body.password, saltRounds) });
           if (update_resp.status === 0) {
