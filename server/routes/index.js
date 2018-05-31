@@ -112,7 +112,7 @@ router.post('/artist_registration', async (req, res) => {
           "to": data.artist.email,
           "subject": "Music Social Voting - Email confirmation"
         }, {
-            "confirm_url": config.website_url + "/email_confirm/" + data.artist._id
+            "confirm_url": config.website_url + "/email_confirm/artist/" + data.artist._id
           });
         if (mail_resp.status === 0) {
           res.status(config.INTERNAL_SERVER_ERROR).json({ "status": 0, "message": "Error occured while sending confirmation email", "error": mail_resp.error });
@@ -244,6 +244,9 @@ router.post('/artist_login', async (req, res) => {
 
           logger.info("Token generated");
           res.status(config.OK_STATUS).json({ "status": 1, "message": "Logged in successful", "artist": login_resp.artist, "token": token, "refresh_token": refreshToken });
+        }
+        else {
+          res.status(config.BAD_REQUEST).json({ "status": 0, "message": "Email not verified" });
         }
       }
       else {
