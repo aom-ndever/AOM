@@ -350,7 +350,7 @@ router.post('/user_registration', async (req, res) => {
           "to": data.user.email,
           "subject": "Music Social Voting - Email confirmation"
         }, {
-            "confirm_url": config.website_url + "/email_confirm/" + data.user._id
+            "confirm_url": config.website_url + "/email_confirm/user/" + data.user._id
           });
         if (mail_resp.status === 0) {
           res.status(config.INTERNAL_SERVER_ERROR).json({ "status": 0, "message": "Error occured while sending confirmation email", "error": mail_resp.error });
@@ -523,7 +523,7 @@ router.post('/artist_forgot_password', async (req, res) => {
         "to": resp.artist.email,
         "subject": "Music Social Voting"
       }, {
-          "reset_link": config.website_url + "/forgot_password/" + reset_token
+          "reset_link": config.website_url + "/forgot_password/artist/" + reset_token
         });
 
       if (mail_resp.status === 0) {
@@ -642,7 +642,7 @@ router.post('/user_forgot_password', async (req, res) => {
         "to": resp.artist.email,
         "subject": "Music Social Voting"
       }, {
-          "reset_link": config.website_url + "/forgot_password/" + reset_token
+          "reset_link": config.website_url + "/forgot_password/user/" + reset_token
         });
 
       if (mail_resp.status === 0) {
@@ -650,7 +650,7 @@ router.post('/user_forgot_password', async (req, res) => {
       } else {
         res.status(config.OK_STATUS).json({ "status": 1, "message": "Reset link has been sent on your email address" });
       }
-    }
+    } he
   } else {
     res.status(config.BAD_REQUEST).json({ message: errors });
   }
