@@ -10,6 +10,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http'
 import { ImageCropperModule } from 'ngx-image-cropper';
 import { ToastrModule } from 'ngx-toastr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { AuthService } from '../shared/auth.service';
 
 @NgModule({
   imports: [

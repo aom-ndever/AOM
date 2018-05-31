@@ -1,6 +1,6 @@
 <header class="custom_header">
   <div class="container">
-    <div class="row">
+    <div class="row" *ngIf="!user">
       <div class="col-md-3 col-sm-3 col-xs-3">
         <div class="logo-wrap">
           <a href="javascript:;" routerLink="">
@@ -16,13 +16,13 @@
         </div>
         <nav class="navigation">
           <ul>
-            <li>
+            <li routerLinkActive="active">
               <a href="javascript:;" routerLink="/whats-new">What's new</a>
             </li>
-            <li>
+            <li routerLinkActive="active">
               <a href="javascript:;" routerLink="/artist">Artits</a>
             </li>
-            <li>
+            <li routerLinkActive="active">
               <a href="javascript:;" routerLink="/vote">Vote</a>
             </li>
             <li data-fancybox data-animation-duration="700" data-src="javascript:;login">
@@ -35,6 +35,37 @@
         </nav>
       </div>
     </div>
+    <div class="row" *ngIf="user">
+				<div class="col-md-2 col-sm-2 col-xs-2">
+					<div class="logo-wrap">
+						<a href="javascript:;" routerLink=""><img src="img/logo.png" alt=""></a>
+					</div>
+				</div>
+				<div class="col-md-10 col-sm-10 col-xs-10">
+					<div class="nav-header">
+						<div class="mobile-nav"><a href="javascript:;"><i class="fa fa-bars"></i></a></div>
+						<nav class="navigation">
+							<ul>
+								<li routerLinkActive="active"><a href="javascript:;" routerLink="/whats-new">What's new</a></li>
+								<li routerLinkActive="active"><a href="javascript:;" routerLink="/artist">Artits</a></li>
+								<li routerLinkActive="active"><a href="javascript:;" routerLink="/vote">Vote</a></li>
+								<li routerLinkActive="active"><a href="javascript:;">My Music</a></li>
+								<li routerLinkActive="active"><a href="javascript:;">My Profile</a></li>
+							</ul>
+						</nav>
+						<div class="logged-in-header">
+							<ul class="update-option">
+								<li class="message"><a href="javascript:;"><i class="fa fa-envelope-o" aria-hidden="true"></i> <span class="new-up"></span></a></li>
+								<li class="notification"><a href="javascript:;"><i class="fa fa-bell" aria-hidden="true"></i> <span class="new-up"></span></a></li>
+							</ul>
+							<div class="profile-picture">
+								<a href="#"><img src="{{user.artist.image}}" alt="Profile Picture"></a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
   </div>
 </header>
 <ng-template #content let-c="close" let-d="dismiss">
@@ -55,19 +86,32 @@
 			</div>
 			<div class="or">or with email</div>
 			<div class="email-form">
-				<form>
+				<form [formGroup]="login_form">
 					<div class="form-group">
-					    <label for="email">Email</label>
-					    <input type="email" class="form-control" id="email" placeholder="Email">
-				  	</div>
-				  	<div class="form-group pwd-grp">
-					    <label for="pwd">Password</label>
-					    <input type="password" class="form-control" id="pwd" placeholder="Password">
-					    <div class="pwd-icon"><i class="fa fa-eye" aria-hidden="true"></i></div>
-				  	</div>
-				  	<div class="login-btn"><a href="javascript:;">Log In</a></div>
-				  	<div class="forgot-link"><a href="javascript:;">Forgot Password</a></div>
-				  	<div class="register-link">Don't have an account yet? <a href="#">Register</a></div>
+            <label for="email">Email</label>
+            <input type="email" class="form-control" formControlName="email" name="email" id="email" [(ngModel)]="userdata.email" placeholder="Email">
+            <div *ngIf="!login_form.controls['email'].valid && login_form.controls['email'].dirty">
+              <span *ngIf="login_form.controls['email'].errors['required']" class="text-danger">Email is required.</span>
+            </div>
+          </div>
+          <div class="form-group pwd-grp">
+            <label for="pwd">Password</label>
+            <input type="password" class="form-control" formControlName="password" name="password" id="pwd" [(ngModel)]="userdata.password" placeholder="Password">
+            <div class="pwd-icon"><i class="fa fa-eye" aria-hidden="true"></i></div>
+            <div *ngIf="!login_form.controls['password'].valid && login_form.controls['password'].dirty">
+              <span *ngIf="login_form.controls['password'].errors['required']" class="text-danger">Password is required.</span>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="pwd">Type</label>
+            <select class="form-control" name="type" formControlName="type" [(ngModel)]="userdata.type">
+              <option value="artist">Artist</option>
+              <option value="listener">Listener</option>
+            </select>
+          </div>
+          <div class="login-btn"><button (click)="login()" [disabled]="!login_form.valid || show_spinner">Log In <i *ngIf="show_spinner" class="fa fa-spinner fa-spin"></i></button></div>
+          <div class="forgot-link"><a href="javascript:;">Forgot Password</a></div>
+          <div class="register-link">Don't have an account yet? <a href="javascript:;" routerLink="/register">Register</a></div>
 				</form>
 			</div>
 		</div>

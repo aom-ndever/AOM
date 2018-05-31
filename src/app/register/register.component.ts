@@ -280,6 +280,7 @@ export class RegisterComponent implements OnInit {
       music_type : this.listener_data['music_type']
     };
     console.log('listener', data);
+    this.show_spinner = true;
     this.RegisterService.listenerRegistration(data).subscribe(response => {
       console.log('response', response);
       this.step_flag = true;
@@ -289,6 +290,7 @@ export class RegisterComponent implements OnInit {
         'music_type' : []
       };
       this.toastr.success('Registration done successfully and confirmation email sent to your account please verify to to do login.', 'Success!');
+      this.show_spinner = false;
     });
   }
 

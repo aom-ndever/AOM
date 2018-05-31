@@ -6,6 +6,7 @@ import { DashboardLayoutComponent } from './dashboard-layout/layout/dashboard-la
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import { LayoutModule } from './dashboard-layout/layout.module';
 import { RegisterModule } from './register/register.module';
+import { AuthService } from './shared/auth.service';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,7 @@ import { RegisterModule } from './register/register.module';
       // }
     ], { useHash: false })
   ],
-  providers: [],
+  providers: [AuthService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
