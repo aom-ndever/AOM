@@ -1,16 +1,16 @@
 import { Component, OnInit, Directive, forwardRef, Attribute } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl, AbstractControl, NG_VALIDATORS, Validator } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
-import { RegisterService } from './register.service';
+import { EamilVarificationService } from './email_varification.service';
 import { environment } from '../../environments/environment';
 declare const gapi: any;
 
 @Component({
   selector: 'app-register',
-  templateUrl: './register.component.html',
+  templateUrl: './email_varification.component.html',
   styleUrls: []
 })
-export class RegisterComponent implements OnInit {
+export class EmailVarificationComponent implements OnInit {
   public artist_cnt : any = 0;
   public listner_cnt : any = 0;
   public step_flag : boolean = true;
@@ -53,7 +53,7 @@ export class RegisterComponent implements OnInit {
   listener_step3 : FormGroup;
   listener_step4 : FormGroup;
 
-  constructor(private fb: FormBuilder, private RegisterService : RegisterService, private toastr: ToastrService) {
+  constructor(private fb: FormBuilder, private RegisterService : EamilVarificationService, private toastr: ToastrService) {
     this.artist_cnt = 0;
     this.listner_cnt = 0;
     this.day = [];

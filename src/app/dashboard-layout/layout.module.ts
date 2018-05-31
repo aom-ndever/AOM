@@ -10,12 +10,25 @@ import { ArtistComponent } from './artist/artist.component';
 import { VoteComponent } from './vote/vote.component';
 import { DashboardLayoutModule } from './layout/dashboard-layout.module';
 import { CarouselModule } from '../shared/carousel/carousel.module';
+import { HttpModule } from '@angular/http';
+import { HttpClientModule } from '@angular/common/http'
+import { HeaderService } from './header/header.service';
+import { FormsModule, ReactiveFormsModule  } from '@angular/forms';
+import { ToastrModule } from 'ngx-toastr';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { AuthService } from '../shared/auth.service';
 
 @NgModule({
   imports: [
     CommonModule,
     DashboardLayoutModule,
     CarouselModule,
+    HttpModule,
+    HttpClientModule,
+    FormsModule,
+    ReactiveFormsModule,
+    BrowserAnimationsModule,
+    ToastrModule.forRoot(),
     RouterModule.forChild([
       {
         path: '',
@@ -29,6 +42,7 @@ import { CarouselModule } from '../shared/carousel/carousel.module';
       }
     ])
   ],
-  declarations: [DashboardComponent, WhatsNewComponent, ArtistComponent, VoteComponent]
+  declarations: [DashboardComponent, WhatsNewComponent, ArtistComponent, VoteComponent],
+  providers : [HeaderService, AuthService]
 })
 export class LayoutModule { }
