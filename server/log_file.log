@@ -246,3 +246,5 @@
     param: 'gender',
     msg: 'Gender is required',
     value: undefined } ]
+[2018-05-31T09:49:10.215] [TRACE] development - Artist has been inserted
+[2018-05-31T09:49:10.216] [TRACE] development - sending mail

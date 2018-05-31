@@ -85,9 +85,11 @@ router.post('/artist_registration', async (req, res) => {
       "last_name": req.body.last_name,
       "zipcode": req.body.zipcode,
       "music_type": req.body.music_type,
-      "image": req.body.image
+      "image": req.body.image,
     };
-
+    if (req.body.share_url) {
+      reg_obj.social_media = req.body.share_url
+    }
     let artist = await artist_helper.get_artist_by_email(req.body.email)
     if (artist.status === 2) {
 

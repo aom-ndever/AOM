@@ -7,7 +7,9 @@ var SALT_WORK_FACTOR = 10;
 var Schema = mongoose.Schema;
 
 var ArtistModelSchema = new Schema({
-    social_media: { type: String, enum: ["facebook", "instagram", "twitter", "youtube"] },
+    social_media: {
+        type: Object, default: null
+    },
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true, unique: true },
     first_name: { type: String, required: true, unique: true },
