@@ -47,3 +47,4 @@ testem.log
 Thumbs.db
 
 /db
+/server/log_file.log

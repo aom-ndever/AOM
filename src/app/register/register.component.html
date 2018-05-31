@@ -248,7 +248,7 @@
                 </div>
                 <div class="button_group">
                   <a href="javascript:;" class="back-btn" (click)="back_btn('artist')"><img src="img/prev-arrow.png" alt="Previou Arrow"> Back</a>
-                  <button (click)="artist_submit()" class="next-btn">Finish</button>
+                  <button (click)="artist_submit()" [disabled]="show_spinner" class="next-btn">Finish <i class="fa fa-spinner fa-spin"></i></button>
                 </div>
               </div>
             </div>

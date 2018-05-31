@@ -15,6 +15,7 @@ export class RegisterComponent implements OnInit {
   public listner_cnt : any = 0;
   public step_flag : boolean = true;
   public auth2: any;
+  public show_spinner : boolean =  false;
   public music_types : any = [];
   public artist_data : any = {
     'music_type' : [],
@@ -244,12 +245,15 @@ export class RegisterComponent implements OnInit {
       zipcode : this.artist_data['zipcode'],
       gender : this.artist_data['gender'],
       music_type : this.artist_data['music_type'],
-      image : this.croppedImage
+      image : this.croppedImage,
+      share_url : this.artist_data['share_url']
     };
     console.log('artist', data);
+    this.show_spinner = true;
     this.RegisterService.artistRegistration(data).subscribe(response => {
       console.log('response', response);
       this.step_flag = true;
+      this.location = '';
       this.artist_cnt = 0;
       this.artist_data = {
         'music_type' : [],
@@ -261,7 +265,8 @@ export class RegisterComponent implements OnInit {
           'sound_cloud' : ''
         }
       };
-      this.toastr.success('Success!', 'Registration done successfully and confirmation email sent to your account please verify to to do login.');
+      this.toastr.success('Registration done successfully and confirmation email sent to your account please verify to to do login.', 'Success!');
+      this.show_spinner = false;
     });
   }
   // Handle submit event of listener form
@@ -279,10 +284,11 @@ export class RegisterComponent implements OnInit {
       console.log('response', response);
       this.step_flag = true;
       this.listner_cnt = 0;
+      this.location = '';
       this.listener_data = {
         'music_type' : []
       };
-      this.toastr.success('Success!', 'Registration done successfully and confirmation email sent to your account please verify to to do login.');
+      this.toastr.success('Registration done successfully and confirmation email sent to your account please verify to to do login.', 'Success!');
     });
   }
 
