@@ -47,9 +47,9 @@ artist_helper.insert_notification = async (object) => {
  *          status  2 - If artist not found, with appropriate error message
  * 
  */
-artist_helper.get_artist_by_email = async (email_or_username) => {
+artist_helper.get_artist_by_email = async (email) => {
     try {
-        var artist = await Artist.findOne({ "$or": [{ "email": email_or_username }, { "email": email_or_username }] }).lean();
+        var artist = await Artist.findOne({ "email": email }).lean();
         if (artist) {
             return { "status": 1, "message": "artist details found", "artist": artist };
         } else {
