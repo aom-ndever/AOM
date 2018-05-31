@@ -250,7 +250,7 @@ router.post('/artist_login', async (req, res) => {
         }
       }
       else {
-        res.status(config.BAD_REQUEST).json({ "status": 0, "message": "Invalid email address or token" });
+        res.status(config.BAD_REQUEST).json({ "status": 0, "message": "Invalid email address or password" });
       }
 
     } else {
