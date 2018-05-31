@@ -23,10 +23,10 @@ import { AuthService } from '../shared/auth.service';
     BrowserAnimationsModule,
     ToastrModule.forRoot(),
     RouterModule.forChild([
-      { path: 'email_confirm', component: EmailVarificationComponent }
+      { path: 'email_confirm/:type/:id', component: EmailVarificationComponent }
     ])
   ],
   declarations: [EmailVarificationComponent],
   providers : [EamilVarificationService]
 })
-export class RegisterModule { }
+export class EamilVarificationModule { }

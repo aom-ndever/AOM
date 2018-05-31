@@ -6,6 +6,7 @@ import { DashboardLayoutComponent } from './dashboard-layout/layout/dashboard-la
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import { LayoutModule } from './dashboard-layout/layout.module';
 import { RegisterModule } from './register/register.module';
+import { EamilVarificationModule } from './email_varification/email_varification.module';
 import { AuthService } from './shared/auth.service';
 
 @NgModule({
@@ -16,6 +17,7 @@ import { AuthService } from './shared/auth.service';
     BrowserModule,
     LayoutModule,
     RegisterModule,
+    EamilVarificationModule,
     NgbModule.forRoot(),
     RouterModule.forRoot([
 

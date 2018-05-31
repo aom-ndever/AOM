@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import {NgbModal, ModalDismissReasons, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
 import { FormGroup, FormBuilder, Validators, FormControl, AbstractControl, NG_VALIDATORS, Validator } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -9,12 +9,15 @@ import { HeaderService } from './header.service';
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css']
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent implements OnInit, OnDestroy  {
   user : any = ''; 
   login_form : FormGroup;
+  forget_form : FormGroup;
   show_spinner : boolean = false;
   userdata : any = {};
+  forget_pwd_data : any = {};
   private modalRef: NgbModalRef;
+  private modalForgetRef: NgbModalRef;
   constructor(private modalService: NgbModal,
      private fb: FormBuilder, 
      private HeaderService : HeaderService, 
@@ -25,21 +28,33 @@ export class HeaderComponent implements OnInit {
     this.login_form = this.fb.group({
       email : ['', [Validators.required]],
       password : ['', [Validators.required]],
-      type : []
+      type : ['', [Validators.required]]
+    });
+    this.forget_form = this.fb.group({
+      email : ['', [Validators.required, Validators.email]],
+      type : ['', [Validators.required]]
     });
    }
 
   ngOnInit() {
   }
 
+  ngOnDestroy() { 
+    console.log('header destroy');
+    this.modalRef.close();
+    this.modalForgetRef.close();
+   }
   openVerticallyCentered(content) {
     this.show_spinner = false;
     this.userdata = {};
     this.modalRef = this.modalService.open(content, { centered: true });
   }
 
-  login() {
-    
+  openForgetPasswordModal(content) {
+    this.modalRef.close();
+    this.modalForgetRef = this.modalService.open(content, { centered: true });
+  }
+  login() { 
     console.log('login', this.userdata);
     this.show_spinner = true;
     if(this.userdata['type'] == 'artist') {
@@ -53,6 +68,7 @@ export class HeaderComponent implements OnInit {
       }, error => {
         console.log(error);
         this.show_spinner = false;
+        this.toastr.error(error['error'].message, 'Error!');
       }, () => {
         this.show_spinner = false;
       });
@@ -67,7 +83,34 @@ export class HeaderComponent implements OnInit {
       }, error => {
         console.log(error);
         this.show_spinner = false;
+        this.toastr.error(error['error'].message, 'Error!');
       }, () => {
+        this.show_spinner = false;
+      });
+    }
+  }
+
+  forgetPassword() {
+    this.show_spinner = true;
+    if(this.forget_pwd_data && this.forget_pwd_data.type == 'artist') {
+      this.HeaderService.artistForgetPassword({email : this.forget_pwd_data.email}).subscribe(response => {
+        this.toastr.success(response['message'], 'Success!');
+      }, error => {
+        this.toastr.error(error['error'].message, 'Error!');
+        this.show_spinner = false;
+      }, () => {
+        this.forget_pwd_data = {};
+        this.show_spinner = false;
+      });
+    } else {
+      this.HeaderService.userForgetPassword({email : this.forget_pwd_data.email}).subscribe(response => {
+        console.log('user ', response);
+        this.toastr.success(response['message'], 'Success!');
+      }, error => {
+        this.toastr.error(error['error'].message, 'Error!');
+        this.show_spinner = false;
+      }, () => {
+        this.forget_pwd_data = {};
         this.show_spinner = false;
       });
     }

@@ -267,6 +267,10 @@ export class RegisterComponent implements OnInit {
       };
       this.toastr.success('Registration done successfully and confirmation email sent to your account please verify to to do login.', 'Success!');
       this.show_spinner = false;
+    }, error => {
+      this.toastr.error(error['error'].message, 'Error!');
+    }, () => {
+      this.show_spinner = false;
     });
   }
   // Handle submit event of listener form
@@ -290,6 +294,10 @@ export class RegisterComponent implements OnInit {
         'music_type' : []
       };
       this.toastr.success('Registration done successfully and confirmation email sent to your account please verify to to do login.', 'Success!');
+      this.show_spinner = false;
+    }, error => {
+      this.toastr.error(error['error'].message, 'Error!');
+    }, () => {
       this.show_spinner = false;
     });
   }
