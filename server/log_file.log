@@ -246,3 +246,5 @@
     param: 'gender',
     msg: 'Gender is required',
     value: undefined } ]
+[2018-05-31T09:17:52.286] [TRACE] development - Music got successfully =  { status: 1, message: 'music details found', music: [] }
+[2018-05-31T09:18:38.384] [TRACE] development - Music got successfully =  { status: 1, message: 'music details found', music: [] }
