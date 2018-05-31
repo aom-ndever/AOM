@@ -9,6 +9,7 @@ import { Http, HttpModule } from '@angular/http';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http'
 import { ImageCropperModule } from 'ngx-image-cropper';
 import { ToastrModule } from 'ngx-toastr';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   imports: [
@@ -18,6 +19,7 @@ import { ToastrModule } from 'ngx-toastr';
     HttpClientModule, 
     ReactiveFormsModule,
     ImageCropperModule,
+    BrowserAnimationsModule,
     ToastrModule.forRoot(),
     RouterModule.forChild([
       { path: 'register', component: RegisterComponent }
