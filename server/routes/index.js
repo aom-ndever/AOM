@@ -10,7 +10,7 @@ var bcrypt = require('bcrypt');
 var jwt = require('jsonwebtoken');
 var async = require('async');
 var mail_helper = require('./../helpers/mail_helper');
-
+const saltRounds = 10;
 var artist_helper = require('./../helpers/artist_helper');
 var user_helper = require('./../helpers/user_helper');
 var track_helper = require('./../helpers/track_helper');
