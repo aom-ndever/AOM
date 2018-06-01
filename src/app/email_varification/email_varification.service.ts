@@ -11,21 +11,13 @@ export class EamilVarificationService {
 
   private headers = new Headers({ 'Content-Type': 'application/json' });
 
-  getLocationFromZipCode (code : any) {
-    return this.http.get('https://maps.googleapis.com/maps/api/geocode/json?address='+code+'&key='+environment.GMAP_KEY);
-  }
-  // Artist Registration service
-  artistRegistration(data : any) {
-    return this.http.post(`${this.api_host}/artist_registration`, data);
+  // Artist email varification
+  artistEmailVarification(id : any) {
+    return this.http.get(`${this.api_host}/artist_email_verify/${id}`);
   }
 
-  // Listener Registration service
-  listenerRegistration(data : any) {
-    return this.http.post(`${this.api_host}/user_registration`, data);
-  }
-
-  // get All music type
-  getAllMusicType() {
-    return this.http.get(`${this.api_host}/music_type`);
+  // User email varification
+  userEmailVarification(id : any) {
+    return this.http.get(`${this.api_host}/user_email_verify/${id}`);
   }
 }
