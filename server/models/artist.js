@@ -18,13 +18,15 @@ var ArtistModelSchema = new Schema({
     gender: { type: String, enum: ["male", "female"] },
     zipcode: Number,
     image: String,
-    status: { type: String, default: "Active" },
+    status: { type: String, default: "active" },
     no_of_tracks: { type: Number, default: 0 },
     no_of_votes: { type: Number, default: 0 },
     no_of_followers: { type: Number, default: 0 },
     no_of_likes: { type: Number, default: 0 },
     no_of_comments: { type: Number, default: 0 },
     email_verified: Boolean,
+    dob: Date,
+    description: String,
     refresh_token: { type: String },
     created_at: { type: Date, default: Date.now }
 }, { versionKey: false });

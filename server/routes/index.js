@@ -10,7 +10,7 @@ var bcrypt = require('bcrypt');
 var jwt = require('jsonwebtoken');
 var async = require('async');
 var mail_helper = require('./../helpers/mail_helper');
-
+const saltRounds = 10;
 var artist_helper = require('./../helpers/artist_helper');
 var user_helper = require('./../helpers/user_helper');
 var track_helper = require('./../helpers/track_helper');
@@ -289,10 +289,7 @@ router.post('/user_registration', async (req, res) => {
   logger.trace("API - artist signup called");
   logger.debug("req.body = ", req.body);
   var schema = {
-    /*  "social_media": {
-        notEmpty: true,
-        errorMessage: "social media is required"
-      },*/
+
     "music_type": {
       notEmpty: true,
       errorMessage: "Music Type is required"
@@ -317,7 +314,10 @@ router.post('/user_registration', async (req, res) => {
       notEmpty: true,
       errorMessage: "zipcode is required"
     },
-
+    "dob": {
+      notEmpty: true,
+      errorMessage: "DOB is required"
+    },
 
   };
   req.checkBody(schema);
@@ -330,7 +330,8 @@ router.post('/user_registration', async (req, res) => {
       "first_name": req.body.first_name,
       "last_name": req.body.last_name,
       "zipcode": req.body.zipcode,
-      "music_type": req.body.music_type
+      "music_type": req.body.music_type,
+      "dob": req.body.dob
     };
     if (req.body.share_url) {
       obj.social_media = req.body.share_url
@@ -393,7 +394,7 @@ router.get('/user_email_verify/:user_id', async (req, res) => {
     if (user_resp.user.email_verified) {
       // Email already verified
       logger.trace("user already verified");
-      res.status(config.BAD_REQUEST).json({ "status": 0, "message": "Email already verified" });
+      res.status(config.BAD_REQUEST).json({ "status": 0, "message": "F" });
     } else {
       // Verify email
       logger.trace("Valid request for email verification - ", user_resp.user._id);
