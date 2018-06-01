@@ -127,6 +127,10 @@ router.put('/', function (req, res) {
     if (req.body.description) {
         reg_obj.description = req.body.description
     }
+    if (req.body.cover_image) {
+        reg_obj.cover_image = req.body.cover_image
+    }
+
     var user_resp = artist_helper.update_artist_by_id(req.userInfo.id, obj);
     if (user_resp.status === 0) {
         res.status(config.INTERNAL_SERVER_ERROR).json({ "error": user_resp.error });
@@ -135,6 +139,36 @@ router.put('/', function (req, res) {
     }
 
 });
+
+
+// delete image of artist
+router.delete('/image/:artist_id', async (req, res) => {
+    artist_id = req.params.artist_id;
+    var del_resp = await artist_helper.delete_artist_image(artist_id);
+    if (del_resp.status === 0) {
+        res.status(config.INTERNAL_SERVER_ERROR).json({ "status": 0, "message": "Error occured while deleting artist image", "error": del_resp.error });
+    } else if (del_resp.status === 2) {
+        res.status(config.BAD_REQUEST).json({ "status": 0, "message": "Can't delete artist image" });
+    } else {
+        res.status(config.OK_STATUS).json({ "status": 1, "message": "artist image has been deleted" });
+    }
+});
+
+
+// delete cover image of artist
+router.delete('/cover_image/:artist_id', async (req, res) => {
+    artist_id = req.params.artist_id;
+    var del_resp = await artist_helper.delete_artist_cover_image(artist_id);
+    if (del_resp.status === 0) {
+        res.status(config.INTERNAL_SERVER_ERROR).json({ "status": 0, "message": "Error occured while deleting artist cover image", "error": del_resp.error });
+    } else if (del_resp.status === 2) {
+        res.status(config.BAD_REQUEST).json({ "status": 0, "message": "Can't delete artist cover image" });
+    } else {
+        res.status(config.OK_STATUS).json({ "status": 1, "message": "artist cover image has been deleted" });
+    }
+});
+
+
 
 
 /**

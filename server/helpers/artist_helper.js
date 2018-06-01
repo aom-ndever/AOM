@@ -266,5 +266,30 @@ artist_helper.update_artist_status = async (artist_id, status) => {
     }
 };
 
+artist_helper.delete_artist_image = async (artist_id) => {
 
+    try {
+        var artist = await Artist.update({ "_id": (artist_id) }, { $unset: { "image": null } })
+        if (artist) {
+            return { "status": 1, "message": "artist details found", "artist": artist };
+        } else {
+            return { "status": 2, "message": "artist not found" };
+        }
+    } catch (err) {
+        return { "status": 0, "message": "Error occured while finding artist", "error": err }
+    }
+};
+artist_helper.delete_artist_cover_image = async (artist_id) => {
+
+    try {
+        var artist = await Artist.update({ "_id": (artist_id) }, { $unset: { "cover_image": null } })
+        if (artist) {
+            return { "status": 1, "message": "artist details found", "artist": artist };
+        } else {
+            return { "status": 2, "message": "artist not found" };
+        }
+    } catch (err) {
+        return { "status": 0, "message": "Error occured while finding artist", "error": err }
+    }
+};
 module.exports = artist_helper;
