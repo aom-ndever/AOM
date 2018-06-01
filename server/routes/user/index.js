@@ -68,7 +68,7 @@ router.put("/", async (req, res) => {
     }
 });
 
-router.get("/user_list", async (req, res) => {
+router.get("/", async (req, res) => {
     user_id = req.userInfo.id;
     var resp_data = await user_helper.get_user_by_id(user_id);
     if (resp_data.status == 0) {
