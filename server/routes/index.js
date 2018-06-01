@@ -325,7 +325,6 @@ router.post('/user_registration', async (req, res) => {
   if (!errors) {
 
     var obj = {
-      "social_media": req.body.social_media,
       "email": req.body.email,
       "password": req.body.password,
       "first_name": req.body.first_name,
@@ -333,6 +332,9 @@ router.post('/user_registration', async (req, res) => {
       "zipcode": req.body.zipcode,
       "music_type": req.body.music_type
     };
+    if (req.body.share_url) {
+      obj.social_media = req.body.share_url
+    }
     user = await user_helper.get_user_by_email(req.body.email)
     if (user.status === 2) {
 
