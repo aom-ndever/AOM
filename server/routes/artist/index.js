@@ -94,11 +94,14 @@ router.put('/', function (req, res) {
     var obj = {
 
     };
-    if (req.body.social_media) {
-        obj.social_media = req.body.social_media;
+    if (req.body.share_url) {
+        obj.social_media = req.body.share_url
     }
     if (req.body.email) {
         obj.email = req.body.email;
+    }
+    if (req.body.image) {
+        obj.image = req.body.image;
     }
     if (req.body.password) {
         obj.password = req.body.password;
@@ -118,54 +121,14 @@ router.put('/', function (req, res) {
     if (req.body.share_url) {
         reg_obj.social_media = req.body.share_url
     }
-    async.waterfall([
-        function (callback) {
-            if (req.files && req.files['image']) {
-                logger.trace("Uploading avatar image");
-                var file = req.files['image'];
-                var dir = "./uploads/artist";
-                var mimetype = ['image/png', 'image/jpeg', 'image/jpg'];
 
-                if (mimetype.indexOf(file.mimetype) !== -1) {
-                    if (!fs.existsSync(dir)) {
-                        fs.mkdirSync(dir);
-                    }
-                    //var extention = path.extname(file.name);
-                    var extension = '.jpg';
-                    var filename = "artist_" + new Date().getTime() + (Math.floor(Math.random() * 90000) + 10000) + extension;
-                    file.mv(dir + '/' + filename, async (err) => {
-                        if (err) {
-                            logger.trace("There was an issue in uploading avatar image");
-                            callback({ "status": config.MEDIA_ERROR_STATUS, "resp": { "status": 0, "message": "There was an issue in uploading avatar image" } });
-                        } else {
-                            logger.trace("Avatar image has uploaded for artist");
+    var user_resp = artist_helper.update_artist_by_id(req.userInfo.id, obj);
+    if (user_resp.status === 0) {
+        res.status(config.INTERNAL_SERVER_ERROR).json({ "error": user_resp.error });
+    } else {
+        res.status(config.OK_STATUS).json({ "message": "Profile has been updated successfully" });
+    }
 
-                            callback(null, filename);
-                        }
-                    });
-                } else {
-                    callback({ "status": config.MEDIA_ERROR_STATUS, "resp": { "status": 0, "message": "Invalid image format" } });
-                }
-            } else {
-                callback(null, null);
-            }
-        }
-
-    ], async (err, filename) => {
-        if (err) {
-            res.status(err.status).json(err.resp);
-        } else {
-            if (filename) {
-                obj.image = await filename;
-            }
-        }
-        var user_resp = await artist_helper.update_artist_by_id(req.userInfo.id, obj);
-        if (user_resp.status === 0) {
-            res.status(config.INTERNAL_SERVER_ERROR).json({ "error": user_resp.error });
-        } else {
-            res.status(config.OK_STATUS).json({ "message": "Profile has been updated successfully" });
-        }
-    });
 });
 
 
