@@ -30,9 +30,9 @@
 											<div class="col-md-3 col-sm-12 col-xs-12">
 												<div class="edit-profile-picture">
 													<div class="upload-cover"> 
-														<img src="img/profile-img.png" alt="Edit cover Image">
+														<img src="{{default_profile_img}}" alt="Edit cover Image">
 														<span class="up_text">Update Photo</span> 
-														<input type="file" name="my_doc_upload" id="cover_upload" multiple="false"> 
+														<input type="file" name="upload" id="cover_upload"  (change)="updateProfileImage($event)"> 
 														<a data-fancybox data-animation-duration="700" data-src="#delete"  href="javascript:;" class="delete"><i class="fa fa-trash"></i></a>
 													</div>
 												</div>
