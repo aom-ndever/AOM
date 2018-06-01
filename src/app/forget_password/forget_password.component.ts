@@ -16,6 +16,7 @@ export class ForgetPasswordComponent implements OnInit {
   passwordFormGroup : FormGroup;
   show_spinner : boolean = false;
   forget_password : any = '';
+  conf : any = '';
   param : any = {}
   constructor(private fb: FormBuilder,
      private ForgetPasswordService : ForgetPasswordService, 
@@ -50,7 +51,9 @@ export class ForgetPasswordComponent implements OnInit {
       };
       this.show_spinner = true;
       this.ForgetPasswordService.artistChangePassword(data).subscribe(response => {
-        console.log(response);
+        this.forget_password = '';
+        this.conf = '';
+        this.toastr.success(response['message'], 'Success!');
       }, error => {
         this.toastr.error(error['error'].message, 'Error!');
         this.show_spinner = false;
@@ -65,6 +68,9 @@ export class ForgetPasswordComponent implements OnInit {
       this.show_spinner = true;
       this.ForgetPasswordService.artistChangePassword(data).subscribe(response => {
         console.log(response);
+        this.forget_password = '';
+        this.conf = '';
+        this.toastr.success(response['message'], 'Success!');
       }, error => {
         this.toastr.error(error['error'].message, 'Error!');
         this.show_spinner = false;
