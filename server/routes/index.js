@@ -874,7 +874,7 @@ router.post('/login', async (req, res) => {
   var schema = {
     'email': {
       notEmpty: true,
-      errorMessage: "Email is required.",
+      errorMessage: "Email is require.",
       isEmail: { errorMessage: "Please enter valid email address" }
     },
     'password': {
