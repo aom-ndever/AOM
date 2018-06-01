@@ -25,6 +25,11 @@ export class HeaderComponent implements OnInit, OnDestroy  {
      private router: Router
     ) {
     this.user = JSON.parse(localStorage.getItem('user'));
+    if(this.user && this.user.artist) {
+      this.user.artist['image'] = typeof this.user.artist['image'] != 'undefined' ? this.user.artist['image'] : '';
+    } else if(this.user && this.user.user) {
+      this.user.user['image'] = typeof this.user.user['image'] != 'undefined' ? this.user.user['image'] : '';
+    }
     this.login_form = this.fb.group({
       email : ['', [Validators.required]],
       password : ['', [Validators.required]],
@@ -68,6 +73,11 @@ export class HeaderComponent implements OnInit, OnDestroy  {
         this.toastr.success('Login Done', 'Success!');
         this.modalRef.close();
         this.user = JSON.parse(localStorage.getItem('user'));
+        if(this.user.artist) {
+          this.user.artist['image'] = typeof this.user.artist['image'] != 'undefined' ? this.user.artist['image'] : '';
+        } else {
+          this.user.user['image'] = typeof this.user.user['image'] != 'undefined' ? this.user.user['image'] : '';
+        }
         this.router.navigate(['']);
       }, error => {
         console.log(error);
@@ -83,6 +93,11 @@ export class HeaderComponent implements OnInit, OnDestroy  {
         localStorage.setItem('user', JSON.stringify(response));
         this.modalRef.close();
         this.user = JSON.parse(localStorage.getItem('user'));
+        if(this.user.artist) {
+          this.user.artist['image'] = typeof this.user.artist['image'] != 'undefined' ? this.user.artist['image'] : '';
+        } else {
+          this.user.user['image'] = typeof this.user.user['image'] != 'undefined' ? this.user.user['image'] : '';
+        }
         this.router.navigate(['']);
       }, error => {
         console.log(error);

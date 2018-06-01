@@ -59,7 +59,10 @@
 								<li class="notification"><a href="javascript:;"><i class="fa fa-bell" aria-hidden="true"></i> <span class="new-up"></span></a></li>
 							</ul>
 							<div class="profile-picture">
-								<a href="#"><img src="{{user.artist.image}}" alt="Profile Picture"></a>
+								<a href="javascirpt:;">
+                  <img src="{{user.artist.image != '' ? user.artist.image : 'img/upload1.png'}}" *ngIf="user.artist" alt="Profile Picture">
+                  <img src="{{user.user.image != '' ? user.user.image : 'img/upload1.png'}}" *ngIf="user.user" alt="Profile Picture">
+                </a>
 							</div>
 						</div>
 					</div>

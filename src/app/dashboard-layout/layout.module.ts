@@ -14,6 +14,7 @@ import { CarouselModule } from '../shared/carousel/carousel.module';
 import { HttpModule } from '@angular/http';
 import { HttpClientModule } from '@angular/common/http'
 import { HeaderService } from './header/header.service';
+import { MyProfileService } from './my_profile/myProfile.service';
 import { FormsModule, ReactiveFormsModule  } from '@angular/forms';
 import { ToastrModule } from 'ngx-toastr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -45,6 +46,6 @@ import { AuthService } from '../shared/auth.service';
     ])
   ],
   declarations: [DashboardComponent, WhatsNewComponent, ArtistComponent, VoteComponent, MyProfileComponent],
-  providers : [HeaderService, AuthService]
+  providers : [HeaderService, AuthService, MyProfileService]
 })
 export class LayoutModule { }
