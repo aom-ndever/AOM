@@ -63,7 +63,7 @@ router.put("/", async (req, res) => {
         logger.error("Error occured while updating = ", resp_data);
         res.status(config.INTERNAL_SERVER_ERROR).json(resp_data);
     } else {
-        logger.trace("Updated successfully = ", resp_data);
+        logger.trace("Updated successfully= ", resp_data);
         res.status(config.OK_STATUS).json(resp_data);
     }
 });
