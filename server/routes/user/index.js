@@ -37,8 +37,8 @@ router.put("/", async (req, res) => {
     var obj = {
 
     };
-    if (req.body.social_media && req.body.social_media != null) {
-        obj.social_media = req.body.social_media;
+    if (req.body.share_url && req.body.share_url != null) {
+        obj.social_media = req.body.share_url;
     }
     if (req.body.email && req.body.email != null) {
         obj.email = req.body.email;
@@ -68,6 +68,8 @@ router.put("/", async (req, res) => {
     }
 });
 
+
+
 router.get("/", async (req, res) => {
     user_id = req.userInfo.id;
     var resp_data = await user_helper.get_user_by_id(user_id);
@@ -79,6 +81,4 @@ router.get("/", async (req, res) => {
         res.status(config.OK_STATUS).json(resp_data);
     }
 });
-
-
 module.exports = router;
