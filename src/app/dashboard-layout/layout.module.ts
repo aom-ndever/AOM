@@ -8,6 +8,7 @@ import { DashboardLayoutComponent } from './layout/dashboard-layout.component';
 import { WhatsNewComponent } from './whatsnew/whatsnew.component';
 import { ArtistComponent } from './artist/artist.component';
 import { VoteComponent } from './vote/vote.component';
+import { MyProfileComponent } from './my_profile/myProfile.component';
 import { DashboardLayoutModule } from './layout/dashboard-layout.module';
 import { CarouselModule } from '../shared/carousel/carousel.module';
 import { HttpModule } from '@angular/http';
@@ -37,12 +38,13 @@ import { AuthService } from '../shared/auth.service';
           {path: '', component: DashboardComponent},
           {path: 'whats-new', component: WhatsNewComponent},
           {path: 'artist', component: ArtistComponent},
-          {path: 'vote', component: VoteComponent}
+          {path: 'vote', component: VoteComponent},
+          {path: 'my-profile', component: MyProfileComponent, canActivate: [AuthService]}
         ]
       }
     ])
   ],
-  declarations: [DashboardComponent, WhatsNewComponent, ArtistComponent, VoteComponent],
+  declarations: [DashboardComponent, WhatsNewComponent, ArtistComponent, VoteComponent, MyProfileComponent],
   providers : [HeaderService, AuthService]
 })
 export class LayoutModule { }

@@ -41,8 +41,12 @@ export class HeaderComponent implements OnInit, OnDestroy  {
 
   ngOnDestroy() { 
     console.log('header destroy');
-    this.modalRef.close();
-    this.modalForgetRef.close();
+    if(this.modalRef) {
+      this.modalRef.close();
+    } 
+    if(this.modalForgetRef) {
+      this.modalForgetRef.close();
+    }
    }
   openVerticallyCentered(content) {
     this.show_spinner = false;

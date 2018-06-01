@@ -281,7 +281,8 @@ export class RegisterComponent implements OnInit {
       first_name : this.listener_data['fname'],
       last_name : this.listener_data['lname'],
       zipcode : this.listener_data['zipcode'],
-      music_type : this.listener_data['music_type']
+      music_type : this.listener_data['music_type'],
+      dob : new Date(this.listener_data['year'], this.listener_data['month'], this.listener_data['day'])
     };
     console.log('listener', data);
     this.show_spinner = true;
