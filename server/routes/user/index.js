@@ -37,8 +37,8 @@ router.put("/", async (req, res) => {
     var obj = {
 
     };
-    if (req.body.social_media && req.body.social_media != null) {
-        obj.social_media = req.body.social_media;
+    if (req.body.share_url && req.body.share_url != null) {
+        obj.social_media = req.body.share_url;
     }
     if (req.body.email && req.body.email != null) {
         obj.email = req.body.email;
@@ -63,10 +63,12 @@ router.put("/", async (req, res) => {
         logger.error("Error occured while updating = ", resp_data);
         res.status(config.INTERNAL_SERVER_ERROR).json(resp_data);
     } else {
-        logger.trace("Updated successfully = ", resp_data);
+        logger.trace("Updated successfully  = ", resp_data);
         res.status(config.OK_STATUS).json(resp_data);
     }
 });
+
+
 
 router.get("/", async (req, res) => {
     user_id = req.userInfo.id;
@@ -79,6 +81,4 @@ router.get("/", async (req, res) => {
         res.status(config.OK_STATUS).json(resp_data);
     }
 });
-
-
 module.exports = router;
