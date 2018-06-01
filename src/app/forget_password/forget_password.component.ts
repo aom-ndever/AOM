@@ -13,7 +13,7 @@ declare const gapi: any;
 })
 export class ForgetPasswordComponent implements OnInit {
  
-  forget_form : FormGroup;
+  passwordFormGroup : FormGroup;
   show_spinner : boolean = false;
   forget_password : any = '';
   param : any = {}
@@ -23,9 +23,9 @@ export class ForgetPasswordComponent implements OnInit {
      private route: ActivatedRoute,
      private router: Router
     ) {
-    this.forget_form = this.fb.group({
-      password : ['', [Validators.maxLength(6)]],
-      conf : ['', [Validators.maxLength(6)]]
+    this.passwordFormGroup = this.fb.group({
+      password : ['', [Validators.required, Validators.maxLength(6)]],
+      conf : ['', [Validators.required, Validators.maxLength(6)]]
     }, {
       validator : this.passwordMatchValidator
     });
