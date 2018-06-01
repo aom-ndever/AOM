@@ -106,6 +106,12 @@ router.put('/', function (req, res) {
     if (req.body.password) {
         obj.password = req.body.password;
     }
+    if (req.body.gender) {
+        obj.gender = req.body.gender;
+    }
+    if (req.body.dob) {
+        obj.dob = req.body.dob;
+    }
     if (req.body.first_name) {
         obj.first_name = req.body.first_name;
     }
@@ -118,10 +124,9 @@ router.put('/', function (req, res) {
     if (req.body.music_type) {
         obj.music_type = req.body.music_type;
     }
-    if (req.body.share_url) {
-        reg_obj.social_media = req.body.share_url
+    if (req.body.description) {
+        reg_obj.description = req.body.description
     }
-
     var user_resp = artist_helper.update_artist_by_id(req.userInfo.id, obj);
     if (user_resp.status === 0) {
         res.status(config.INTERNAL_SERVER_ERROR).json({ "error": user_resp.error });
