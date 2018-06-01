@@ -456,32 +456,40 @@ router.post('/user_login', async (req, res) => {
     } else if (login_resp.status === 1) {
       logger.trace("Artist found. Executing next instruction");
       logger.trace("valid token. Generating token");
-      var refreshToken = jwt.sign({ id: login_resp.user._id }, config.REFRESH_TOKEN_SECRET_KEY, {});
-      let update_resp = await user_helper.update_user_by_id(login_resp.user._id, { "refresh_token": refreshToken, "last_login_date": Date.now() });
-      var LoginJson = { id: login_resp.user._id, email: login_resp.email, role: "user" };
-      var token = jwt.sign(LoginJson, config.ACCESS_TOKEN_SECRET_KEY, {
-        expiresIn: config.ACCESS_TOKEN_EXPIRE_TIME
-      });
+      if (bcrypt.compareSync(req.body.password, login_resp.artist.password)) {
+
+        if (login_resp.artist.email_verified) {
+          var refreshToken = jwt.sign({ id: login_resp.user._id }, config.REFRESH_TOKEN_SECRET_KEY, {});
+          let update_resp = await user_helper.update_user_by_id(login_resp.user._id, { "refresh_token": refreshToken, "last_login_date": Date.now() });
+          var LoginJson = { id: login_resp.user._id, email: login_resp.email, role: "user" };
+          var token = jwt.sign(LoginJson, config.ACCESS_TOKEN_SECRET_KEY, {
+            expiresIn: config.ACCESS_TOKEN_EXPIRE_TIME
+          });
 
 
-      delete login_resp.user.status;
-      delete login_resp.user.password;
-      delete login_resp.user.refresh_token;
-      delete login_resp.user.last_login_date;
-      delete login_resp.user.created_at;
+          delete login_resp.user.status;
+          delete login_resp.user.password;
+          delete login_resp.user.refresh_token;
+          delete login_resp.user.last_login_date;
+          delete login_resp.user.created_at;
 
-      logger.info("Token generated");
-      res.status(config.OK_STATUS).json({ "status": 1, "message": "Logged in successful", "user": login_resp.user, "token": token, "refresh_token": refreshToken });
+          logger.info("Token generated");
+          res.status(config.OK_STATUS).json({ "status": 1, "message": "Logged in successful", "user": login_resp.user, "token": token, "refresh_token": refreshToken });
+        }
+        else {
+          res.status(config.BAD_REQUEST).json({ "status": 0, "message": "Email not verified" });
+        }
+      }
+      else {
+        res.status(config.BAD_REQUEST).json({ "status": 0, "message": "Invalid email address or password" });
+      }
+
     } else {
-      res.status(config.BAD_REQUEST).json({ "status": 0, "message": "Invalid email address or token" });
+      logger.error("Validation Error = ", errors);
+      res.status(config.BAD_REQUEST).json({ message: errors });
     }
-
-  } else {
-    logger.error("Validation Error = ", errors);
-    res.status(config.BAD_REQUEST).json({ message: errors });
   }
 });
-
 
 /**
  * @api {post} /artist_forgot_password Artist forgot password
@@ -1111,5 +1119,6 @@ router.get("/music_type", async (req, res) => {
     res.status(config.OK_STATUS).json(resp_data);
   }
 });
+
 
 module.exports = router;
