@@ -455,13 +455,13 @@ router.post('/user_login', async (req, res) => {
       logger.trace("Login checked resp = ", login_resp);
       logger.error("Error in finding by email in login API. Err = ", login_resp.err);
 
-      res.status(config.INTERNAL_SERVER_ERROR).json({ "status": 0, "message": "Something went wrong while finding artist", "error": login_resp.error });
+      res.status(config.INTERNAL_SERVER_ERROR).json({ "status": 0, "message": "Something went wrong while finding user", "error": login_resp.error });
     } else if (login_resp.status === 1) {
       logger.trace("Artist found. Executing next instruction");
       logger.trace("valid token. Generating token");
-      if (bcrypt.compareSync(req.body.password, login_resp.artist.password)) {
+      if (bcrypt.compareSync(req.body.password, login_resp.user.password)) {
 
-        if (login_resp.artist.email_verified) {
+        if (login_resp.user.email_verified) {
           var refreshToken = jwt.sign({ id: login_resp.user._id }, config.REFRESH_TOKEN_SECRET_KEY, {});
           let update_resp = await user_helper.update_user_by_id(login_resp.user._id, { "refresh_token": refreshToken, "last_login_date": Date.now() });
           var LoginJson = { id: login_resp.user._id, email: login_resp.email, role: "user" };
@@ -661,7 +661,7 @@ router.post('/user_forgot_password', async (req, res) => {
       } else {
         res.status(config.OK_STATUS).json({ "status": 1, "message": "Reset link has been sent on your email address" });
       }
-    } he
+    }
   } else {
     res.status(config.BAD_REQUEST).json({ message: errors });
   }
