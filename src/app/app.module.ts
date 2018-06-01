@@ -7,6 +7,7 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import { LayoutModule } from './dashboard-layout/layout.module';
 import { RegisterModule } from './register/register.module';
 import { EamilVarificationModule } from './email_varification/email_varification.module';
+import { ForgetPasswordModule } from './forget_password/forget_password.module';
 import { AuthService } from './shared/auth.service';
 
 @NgModule({
@@ -18,6 +19,7 @@ import { AuthService } from './shared/auth.service';
     LayoutModule,
     RegisterModule,
     EamilVarificationModule,
+    ForgetPasswordModule,
     NgbModule.forRoot(),
     RouterModule.forRoot([
 
