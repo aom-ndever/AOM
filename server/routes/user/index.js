@@ -66,6 +66,7 @@ router.put("/", async (req, res) => {
     }
 });
 
+
 router.put('/update_image', function (req, res) {
     user_id = req.userInfo.id;
     var obj = {
@@ -76,7 +77,7 @@ router.put('/update_image', function (req, res) {
             if (req.files && req.files['image']) {
                 logger.trace("Uploading avatar image");
                 var file = req.files['image'];
-                var dir = "./uploads/artist";
+                var dir = "./uploads/user";
                 var mimetype = ['image/png', 'image/jpeg', 'image/jpg'];
 
                 if (mimetype.indexOf(file.mimetype) !== -1) {
@@ -85,7 +86,7 @@ router.put('/update_image', function (req, res) {
                     }
                     //var extention = path.extname(file.name);
                     var extension = '.jpg';
-                    var filename = "artist_" + new Date().getTime() + (Math.floor(Math.random() * 90000) + 10000) + extension;
+                    var filename = "user_" + new Date().getTime() + (Math.floor(Math.random() * 90000) + 10000) + extension;
                     file.mv(dir + '/' + filename, async (err) => {
                         if (err) {
                             logger.trace("There was an issue in uploading avatar image");
@@ -116,10 +117,12 @@ router.put('/update_image', function (req, res) {
         if (resp_data.status === 0) {
             res.status(config.INTERNAL_SERVER_ERROR).json({ "error": resp_data.error });
         } else {
-            res.status(config.OK_STATUS).json({ "message": "Profile has been updated successfully" });
+            res.status(config.OK_STATUS).json({ "message": "Profile has been updated successfully", "image": filename });
         }
     });
 });
+
+
 router.get("/", async (req, res) => {
     user_id = req.userInfo.id;
     var resp_data = await user_helper.get_user_by_id(user_id);
