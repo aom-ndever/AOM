@@ -26,7 +26,7 @@ export class MyProfileService {
 
   // update artist profile
   updateUserProfile(data : any) {
-    return this.http.put(`${this.api_host}/user`, data);
+    return this.http.put(`${this.api_host}/user`, data, {headers : this.headers});
   }
 
   // Get Artist by id
@@ -36,7 +36,7 @@ export class MyProfileService {
 
   // Get User by id
   getUserById() {
-    return this.http.get(`${this.api_host}/artist/artist_by_id`, {headers : this.headers});
+    return this.http.get(`${this.api_host}/user`, {headers : this.headers});
   }
 
 }

@@ -15,6 +15,7 @@ export class MyProfileComponent implements OnInit {
     year : ''
   };
   public default_profile_img : any = 'img/profile-img.png';
+  public default_cover_img : any = 'img/edit-cover.jpg';
   public day : any = [];
   public month : any = [];
   public year : any = [];
@@ -90,6 +91,11 @@ export class MyProfileComponent implements OnInit {
       this.MyProfileService.updateUserProfile(this.userdata).subscribe(response => {
         console.log(response);
         this.toastr.success(response['message'], 'Success!');
+        this.MyProfileService.getUserById().subscribe(res => {
+          let data = JSON.parse(localStorage.getItem('user'));
+          data['user'] = res['user'];
+          localStorage.setItem('user', JSON.stringify(data));
+        });
       }, error => {
         this.toastr.error(error['error'].message, 'Error!');
         this.show_spinner = false;
@@ -117,4 +123,24 @@ export class MyProfileComponent implements OnInit {
         reader.readAsDataURL(event.target.files[0]);
       }
     }
+  
+  updateCoverImage(event : any) {
+    const fileList: FileList = event.target.files;
+    console.log(fileList);
+    const formData: FormData = new FormData();
+    formData.append('uploadCoverFile', fileList[0], fileList[0]['name']);
+
+    if (fileList.length > 0) {
+      const fileExtention = fileList[0].name.split('.');
+      const file: File = fileList[0];
+        const reader = new FileReader();
+        reader.onload = (e: any) => {
+          const data = {};
+            let imageBuffer = e.target.result;
+            this.default_cover_img = imageBuffer;
+        };
+        reader.readAsDataURL(event.target.files[0]);
+      }
+    }
+  }
 }
