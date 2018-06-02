@@ -24,8 +24,23 @@ export class MyProfileService {
     return this.http.put(`${this.api_host}/artist`, data, {headers : this.headers});
   }
 
-  // update artist profile
+  // Update user profile pic
+  updateArtistProfileImage(data : any) {
+    return this.http.put(`${this.api_host}/artist/update_image`, data, {headers : this.headers});
+  }
+
+  // Update user profile pic
+  updateCoverImage(data : any) {
+    return this.http.put(`${this.api_host}/artist/update_cover_image`, data, {headers : this.headers});
+  }
+
+  // update user profile
   updateUserProfile(data : any) {
+    return this.http.put(`${this.api_host}/user`, data, {headers : this.headers});
+  }
+
+  // update user profile image
+  updateUserProfileImage(data : any) {
     return this.http.put(`${this.api_host}/user`, data, {headers : this.headers});
   }
 
