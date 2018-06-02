@@ -44,7 +44,7 @@ export class MyProfileService {
 
   // update user profile image
   updateUserProfileImage(data : any) {
-    return this.http.put(`${this.api_host}/user`, data, {headers : this.headers});
+    return this.http.put(`${this.api_host}/user/update_image`, data, {headers : this.headers});
   }
 
   // Get Artist by id
