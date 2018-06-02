@@ -108,7 +108,7 @@ export class MyProfileComponent implements OnInit {
   updateProfileImage(event: any) {
     const fileList: FileList = event.target.files;
     console.log(fileList);
-    const formData: FormData = new FormData();
+    let formData: FormData = new FormData();
     formData.append('image', fileList[0], fileList[0]['name']);
     if(this.userdata.type == 'artist') {
       this.MyProfileService.updateArtistProfileImage(formData).subscribe(response => {
@@ -139,7 +139,13 @@ export class MyProfileComponent implements OnInit {
     console.log(fileList);
     const formData: FormData = new FormData();
     formData.append('cover_image', fileList[0], fileList[0]['name']);
+    this.MyProfileService.updateCoverImage(formData).subscribe(response => {
+      console.log('uploaded image', response);
+    }, error => {
+      this.toastr.error(error['error'].message, 'Error!');
+    }, () => {
 
+    });
     if (fileList.length > 0) {
       const fileExtention = fileList[0].name.split('.');
       const file: File = fileList[0];
