@@ -1,1275 +1,1535 @@
-<section class="edit-profile-wrap">
-		<div class="container">
-			<div class="row">
-				<div class="col-md-2 col-sm-3 col-xs-3">
-					<div class="profile-tabs">	
-						<ul class="nav nav-tabs" id="myTab">
-							<li class="nav-item"><a class="nav-link {{tab_cnt == 1 ? 'active' : '' }}" (click)="tabChange(1)" data-toggle="tab" href="javascript:;">Profile</a></li>
-							<li class="nav-item"><a class="nav-link {{tab_cnt == 2 ? 'active' : '' }}" data-toggle="tab" (click)="tabChange(2)" href="javascript:;">Settings</a></li>
-							<li class="nav-item"><a class="nav-link {{tab_cnt == 3 ? 'active' : '' }}" data-toggle="tab" (click)="tabChange(3)" href="javascript:;">Payments</a></li>
-							<li class="nav-item"><a class="nav-link {{tab_cnt == 4 ? 'active' : '' }}" data-toggle="tab" (click)="tabChange(4)" href="javascript:;">Media</a></li>
-							<li class="nav-item"><a class="nav-link {{tab_cnt == 5 ? 'active' : '' }}" data-toggle="tab" (click)="tabChange(5)" href="javascript:;">Analytics</a></li>
-						</ul>
-					</div>
+<section class="edit-profile-wrap" *ngIf="userdata.type == 'artist'">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-2 col-sm-3 col-xs-3">
+				<div class="profile-tabs">	
+					<ul class="nav nav-tabs" id="myTab">
+						<li class="nav-item"><a class="nav-link {{tab_cnt == 1 ? 'active' : '' }}" (click)="tabChange(1)" data-toggle="tab" href="javascript:;">Profile</a></li>
+						<li class="nav-item"><a class="nav-link {{tab_cnt == 2 ? 'active' : '' }}" data-toggle="tab" (click)="tabChange(2)" href="javascript:;">Settings</a></li>
+						<li class="nav-item"><a class="nav-link {{tab_cnt == 3 ? 'active' : '' }}" data-toggle="tab" (click)="tabChange(3)" href="javascript:;">Payments</a></li>
+						<li class="nav-item"><a class="nav-link {{tab_cnt == 4 ? 'active' : '' }}" data-toggle="tab" (click)="tabChange(4)" href="javascript:;">Media</a></li>
+						<li class="nav-item"><a class="nav-link {{tab_cnt == 5 ? 'active' : '' }}" data-toggle="tab" (click)="tabChange(5)" href="javascript:;">Analytics</a></li>
+					</ul>
 				</div>
-				<div class="col-md-10 col-sm-9 col-xs-9">
-					<div class="rofile-tab-content">
-						<div class="tab-content">
-							<div class="tab-pane fade {{tab_cnt == 1 ? 'show active' : '' }} " id="profile">
-								<div class="edit-cover">
-                  <form >
-									<div class="upload-cover"> 
-										<img src="img/edit-cover.jpg" alt="Edit cover Image">
-										<span class="up_text">Update Photo</span> 
-										<input type="file" name="my_doc_upload" id="cover_upload1" multiple="false"> 
-										<a data-fancybox data-animation-duration="700" data-src="#delete"  href="javascript:;" class="delete"><i class="fa fa-trash"></i></a>
-									</div>
-									<div class="edit-details">
-										<div class="edit-head">Your Details</div>
-										<div class="row">
-											<div class="col-md-3 col-sm-12 col-xs-12">
-												<div class="edit-profile-picture">
-													<div class="upload-cover"> 
-														<img src="{{default_profile_img}}" alt="Edit cover Image">
-														<span class="up_text">Update Photo</span> 
-														<input type="file" name="upload" id="cover_upload"  (change)="updateProfileImage($event)"> 
-														<a data-fancybox data-animation-duration="700" data-src="#delete"  href="javascript:;" class="delete"><i class="fa fa-trash"></i></a>
-													</div>
-												</div>
-											</div>
-											<div class="col-md-9 col-sm-12 col-xs-12">
-												<div class="form-details">
-													
-														<div class="form-group">
-														    <label for="fname">First Name</label>
-														    <input type="text" class="form-control" id="fname5" name="fname" [(ngModel)]="userdata.first_name" placeholder="First Name">
-													  	</div>
-
-													  	<div class="form-group pwd-grp">
-														    <label for="lanem">Last Name</label>
-														    <input type="text" class="form-control" id="lname2" name="lname" [(ngModel)]="userdata.last_name" placeholder="Last Name">
-													  	</div>
-
-												  	  	<div class="form-group gender-grp">
-                                  <label for="geder">Gender</label>
-												  			<select class="form-control" id="gender" name="gender" [(ngModel)]="userdata.gender">
-												  			    <option value="male">Male</option>
-												  			    <option value="female">Female</option>
-												  			</select>
-												  	  	</div>
-														<div class="form-group">
-		  											  	  	<div class="date-of-birth">
-		  											  	  		<label for="date">Birthday</label>
-		  											  		  	<div class="form-group">
-		  											  				<select class="form-control" id="day" name="day" [(ngModel)]="userdata.day">
-		  											  				    <option value="">Day</option>
-		  											  				    <option *ngFor="let d of day" value="{{d}}">{{d}}</option>
-		  											  				</select>
-		  											  			</div>
-		  											  			<div class="form-group">
-		  											  				<select class="form-control" id="month" name="month" [(ngModel)]="userdata.month">
-		  											  				    <option value="">Month</option>
-		  											  				    <option *ngFor="let m of month" value="{{m}}">{{m}}</option>
-		  											  				</select>
-		  											  			</div>
-		  											  			<div class="form-group">
-		  											  				<select class="form-control" id="year" name="year" [(ngModel)]="userdata.year">
-		  											  				    <option value="">Year</option>
-		  											  				    <option *ngFor="let y of year" value="{{y}}">{{y}}</option>
-		  											  				</select>
-		  											  			</div>
-		  											  	  	</div>
-		  											 	</div>
-
-	  	  											  	<div class="form-group music-grp">
-	  	  											  		<label for="musictype">Music Type</label>
-	  	  													<select class="form-control" id="musictype" multiple name="music_type" [(ngModel)]="userdata.music_type">
-                                    <option *ngFor="let type of music_types" value="{{type._id}}">{{type.name}}</option>
-	  	  													</select>
-	  	  											  	</div>
-
-	  	  											  	<div class="form-group home-grp">
-	  	  											  		<label for="hometown">Zipcode</label>
-                                    <input class="form-control" placeholder="zipcode"  name="zipcode" [(ngModel)]="userdata.zipcode"/>
-	  	  											  	</div>
-													
-												</div>
-											</div>
-										</div>
-									</div>
-									<div class="additional-details">
-										<div class="edit-head">Additional Details</div>
-										<div class="about-you">
-											<label for="fname">Describe Yourself</label>
-											<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quae corporis et explicabo? A sunt quaerat, ex maiores. Ea ab non, porro atque natus exercitationem iusto cum sit tempore modi. Quae odit tempore consequatur voluptatibus sed, quidem eius ut, alias atque consectetur provident sunt voluptate. Ad temporibus eos soluta pariatur nam.</p>
-										</div>
-									</div>
-									<div class="social-details">
-										<div class="edit-head">Social Media</div>
-										<div class="social-acc">
-											<div class="social-block">
-												<div class="form-group">
-												    <label for="facebook">Facebook</label>
-												    <input type="text" class="form-control" id="fb" placeholder="Add Account" name="fb" [(ngModel)]="userdata.social_media.facebook">
-												    <img src="img/fb.png" alt="Facebook">
-											  	</div>
-											</div>
-											<div class="social-block">
-												<div class="form-group">
-												    <label for="inst">Instagram</label>
-												    <input type="text" class="form-control" id="fname" placeholder="Add Account" name="insta" [(ngModel)]="userdata.social_media.instagram">
-												    <img src="img/inst.png" alt="Facebook">
-											  	</div>
-											</div>
-											<div class="social-block">
-												<div class="form-group">
-												    <label for="facebook">Twitter</label>
-												    <input type="text" class="form-control" id="fb1" placeholder="Add Account" name="twit" [(ngModel)]="userdata.social_media.twitter">
-												    <img src="img/twitter.png" alt="Facebook">
-											  	</div>
-											</div>
-											<div class="social-block">
-												<div class="form-group">
-												    <label for="inst">Youtube</label>
-												    <input type="text" class="form-control" id="fname1" placeholder="Add Account" name="youtube" [(ngModel)]="userdata.social_media.youtube">
-												    <img src="img/youtube.png" alt="Facebook">
-											  	</div>
-											</div>
-											<div class="social-block">
-												<div class="form-group">
-												    <label for="inst">Soundcloud</label>
-												    <input type="text" class="form-control" id="fname2" placeholder="Add Account" name="sound" [(ngModel)]="userdata.social_media.sound_cloud">
-												    <img src="img/soundcloud.png" alt="Facebook">
-											  	</div>
-											</div>
-										  	
-										</div>
-									</div>
-									<div class="button_group">
-										<a href="#" class="cancel-btn">Cancel</a>
-										<button type="submit" (click)="update()" [disabled]="show_spinner" class="save-btn btn btn-primary">Save <i *ngIf="show_spinner" class="fa fa-spinner fa-spin"></i></button>
-                  </div>
-                  </form>
+			</div>
+			<div class="col-md-10 col-sm-9 col-xs-9">
+				<div class="rofile-tab-content">
+					<div class="tab-content">
+						<div class="tab-pane fade {{tab_cnt == 1 ? 'show active' : '' }} " id="profile">
+							<div class="edit-cover">
+				<form >
+								<div class="upload-cover"> 
+									<img src="{{default_cover_img}}" alt="Edit cover Image">
+									<span class="up_text">Update Photo</span> 
+									<input type="file" name="my_doc_upload" id="cover_upload1" multiple="false" (change)="updateCoverImage($event)"> 
+									<a data-fancybox data-animation-duration="700" data-src="#delete"  href="javascript:;" class="delete"><i class="fa fa-trash"></i></a>
 								</div>
-							</div>
+								<div class="edit-details">
+									<div class="edit-head">Your Details</div>
+									<div class="row">
+										<div class="col-md-3 col-sm-12 col-xs-12">
+											<div class="edit-profile-picture">
+												<div class="upload-cover"> 
+													<img src="{{default_profile_img}}" alt="Edit cover Image">
+													<span class="up_text">Update Photo</span> 
+													<input type="file" name="upload" id="cover_upload"  (change)="updateProfileImage($event)"> 
+													<a data-fancybox data-animation-duration="700" data-src="#delete"  href="javascript:;" class="delete"><i class="fa fa-trash"></i></a>
+												</div>
+											</div>
+										</div>
+										<div class="col-md-9 col-sm-12 col-xs-12">
+											<div class="form-details">
+												
+													<div class="form-group">
+														<label for="fname">First Name</label>
+														<input type="text" class="form-control" id="fname5" name="fname" [(ngModel)]="userdata.first_name" placeholder="First Name">
+													</div>
 
-							<div class="tab-pane fade {{tab_cnt == 2 ? 'show active' : '' }}" id="settings">
-								<div class="update-email">
-									<div class="email-form">
-										<div class="edit-head">Update Your Email</div>
-										<form>
-											<div class="form-group">
-											    <label for="yemail">Your</label>
-											    <input type="email" class="form-control" id="yemail" placeholder="Your Email">
-										  	</div>
-										  	<div class="form-group">
-											    <label for="nemail">New Email</label>
-											    <input type="email" class="form-control" id="nemail" placeholder="New Name">
-										  	</div>
-									  		<div class="form-group">
-									  		    <label for="remail">Repeat New Email</label>
-									  		    <input type="email" class="form-control" id="remail" placeholder="Repeat Email">
-								  	  		</div>
-								  	  		<div class="button_group">
-												<a href="#" class="cancel-btn">Cancel</a>
-												<a href="#" class="update-btn">update</a>
+													<div class="form-group pwd-grp">
+														<label for="lanem">Last Name</label>
+														<input type="text" class="form-control" id="lname2" name="lname" [(ngModel)]="userdata.last_name" placeholder="Last Name">
+													</div>
+
+													<div class="form-group gender-grp">
+								<label for="geder">Gender</label>
+														<select class="form-control" id="gender" name="gender" [(ngModel)]="userdata.gender">
+															<option value="male">Male</option>
+															<option value="female">Female</option>
+														</select>
+													</div>
+													<div class="form-group">
+														<div class="date-of-birth">
+															<label for="date">Birthday</label>
+															<div class="form-group">
+																<select class="form-control" id="day" name="day" [(ngModel)]="userdata.day">
+																	<option value="">Day</option>
+																	<option *ngFor="let d of day" value="{{d}}">{{d}}</option>
+																</select>
+															</div>
+															<div class="form-group">
+																<select class="form-control" id="month" name="month" [(ngModel)]="userdata.month">
+																	<option value="">Month</option>
+																	<option *ngFor="let m of month" value="{{m}}">{{m}}</option>
+																</select>
+															</div>
+															<div class="form-group">
+																<select class="form-control" id="year" name="year" [(ngModel)]="userdata.year">
+																	<option value="">Year</option>
+																	<option *ngFor="let y of year" value="{{y}}">{{y}}</option>
+																</select>
+															</div>
+														</div>
+													</div>
+
+													<div class="form-group music-grp">
+														<label for="musictype">Music Type</label>
+														<select class="form-control" id="musictype" multiple name="music_type" [(ngModel)]="userdata.music_type">
+								<option *ngFor="let type of music_types" value="{{type._id}}">{{type.name}}</option>
+														</select>
+													</div>
+
+													<div class="form-group home-grp">
+														<label for="hometown">Zipcode</label>
+								<input class="form-control" placeholder="zipcode"  name="zipcode" [(ngModel)]="userdata.zipcode"/>
+													</div>
+												
 											</div>
-								  	  	</form>
-									</div>
-									<div class="password-form">
-										<div class="edit-head">Update Password</div>
-										<form>
-											<div class="form-group">
-											    <label for="ypwd">Your Password</label>
-											    <input type="password" class="form-control" id="ypwd" placeholder="Your Email">
-											    <div class="pwd-icon">
-											    	<i class="fa fa-eye" aria-hidden="true"></i>
-											    	<!-- <i class="fa fa-eye-slash" aria-hidden="true"></i> -->
-											    </div>
-										  	</div>
-										  	<div class="form-group">
-											    <label for="npwd">New Password</label>
-											    <input type="password" class="form-control" id="npwd" placeholder="New Name">
-											    <div class="pwd-icon">
-											    	<i class="fa fa-eye" aria-hidden="true"></i>
-											    	<!-- <i class="fa fa-eye-slash" aria-hidden="true"></i> -->
-											    </div>
-										  	</div>
-									  		<div class="form-group">
-									  		    <label for="rpwd">Repeat New Password</label>
-									  		    <input type="password" class="form-control" id="rpwd" placeholder="Repeat Email">
-									  		    <div class="pwd-icon">
-									  		    	<i class="fa fa-eye " aria-hidden="true"></i>
-									  		    	<!-- <i class="fa fa-eye-slash" aria-hidden="true"></i> -->
-									  		    </div>
-								  	  		</div>
-								  	  		<div class="button_group">
-												<a href="#" class="cancel-btn">Cancel</a>
-												<a href="#" class="update-btn">update</a>
-											</div>
-								  	  	</form>
-									</div>
-									<div class="notification">
-										<div class="edit-head">Notifications</div>
-										<div class="notify-by-email">
-											<div class="edit-head">Notifications by Email</div>
-											<ul>
-												<li class="followers">
-													<p>New Followers</p>
-													<div class="f-toggle">
-														<label class="switch">
-														  <input type="checkbox" checked>
-														  <span class="slider round"></span>
-														</label>
-													</div>
-												</li>
-												<li class="comments">
-													<p>Comments</p>
-													<div class="f-toggle">
-														<label class="switch">
-														  <input type="checkbox">
-														  <span class="slider round"></span>
-														</label>
-													</div>
-												</li>
-												<li class="message">
-													<p>Message</p>
-													<div class="f-toggle">
-														<label class="switch">
-														  <input type="checkbox" checked>
-														  <span class="slider round"></span>
-														</label>
-													</div>
-												</li>
-											</ul>
-										</div>
-										<div class="notify-by-sms">
-											<div class="edit-head">Notifications by SMS</div>
-											<ul>
-												<li class="followers">
-													<p>New Followers</p>
-													<div class="f-toggle">
-														<label class="switch">
-														  <input type="checkbox" checked>
-														  <span class="slider round"></span>
-														</label>
-													</div>
-												</li>
-												<li class="comments">
-													<p>Comments</p>
-													<div class="f-toggle">
-														<label class="switch">
-														  <input type="checkbox">
-														  <span class="slider round"></span>
-														</label>
-													</div>
-												</li>
-												<li class="message">
-													<p>Message</p>
-													<div class="f-toggle">
-														<label class="switch">
-														  <input type="checkbox" checked>
-														  <span class="slider round"></span>
-														</label>
-													</div>
-												</li>
-											</ul>
-										</div>
-										<div class="on-side-alert">
-											<div class="edit-head">On Side Alerts</div>
-											<ul>
-												<li class="followers">
-													<p>New Followers</p>
-													<div class="f-toggle">
-														<label class="switch">
-														  <input type="checkbox" checked>
-														  <span class="slider round"></span>
-														</label>
-													</div>
-												</li>
-												<li class="comments">
-													<p>Comments</p>
-													<div class="f-toggle">
-														<label class="switch">
-														  <input type="checkbox">
-														  <span class="slider round"></span>
-														</label>
-													</div>
-												</li>
-												<li class="message">
-													<p>Message</p>
-													<div class="f-toggle">
-														<label class="switch">
-														  <input type="checkbox" checked>
-														  <span class="slider round"></span>
-														</label>
-													</div>
-												</li>
-											</ul>
 										</div>
 									</div>
 								</div>
-							</div>
-
-							<div class="tab-pane fade {{tab_cnt == 3 ? 'show active' : '' }}" id="payment">
-								
-								<ul class="nav nav-tabs">
-								   <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#paymentmethod">Payment Method</a></li>
-								   <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#proceeds">Your Proceeds</a></li>
-								 </ul>
-								 <div class="tab-content">
-								    <div id="paymentmethod" class="tab-pane fade show active">
-								    	<div class="pay-method">
-											<div class="edit-head">Your Payment Method</div>
-											<div class="select-payemnt-table">
-												<table>
-													<tr>
-														<td>
-															<div class="radio">
-															  	<label>
-															  		<input type="radio" value="" name="musicgenre" checked>
-															  		<div class="radio_check"></div>
-															  	</label>
-															</div>
-														</td>
-														<td>
-															<img src="img/visa.png" alt="Visa Card">
-														</td>
-														<td>
-															<p class="pay-name">Visa</p>
-														</td>
-														<td>
-															<p class="card-num">XXXXXXXXXXX0000</p>
-														</td>
-														<td>
-															<p class="pay-name">01/2020</p>
-														</td>
-														<td>
-															<div class="pay-delete">
-																<i class="fa fa-trash" aria-hidden="true"></i>
-																<span>Delete</span>
-															</div>
-														</td>
-													</tr>
-
-													<tr>
-														<td>
-															<div class="radio">
-															  	<label>
-															  		<input type="radio" value="" name="musicgenre">
-															  		<div class="radio_check"></div>
-															  	</label>
-															</div>
-														</td>
-														<td>
-															<img src="img/paypal.png" alt="Visa Card">
-														</td>
-														<td>
-															<p class="pay-name">Paypal</p>
-														</td>
-														<td>
-															<p class="card-num">shavnmiller@gmail.com</p>
-														</td>
-														<td>
-														</td>
-														<td>
-															<div class="pay-delete">
-																<i class="fa fa-trash" aria-hidden="true"></i>
-																<span>Delete</span>
-															</div>
-														</td>
-													</tr>
-												</table>
-												<a data-fancybox data-animation-duration="700" data-src="#addpayment"  href="javascript:;"  class="add-payment">
-													<img src="img/icons8-plus_mathNormal.png" alt="">
-													Add Payment Method
-												</a>
+								<div class="additional-details">
+									<div class="edit-head">Additional Details</div>
+									<div class="about-you">
+										<label for="fname">Describe Yourself</label>
+										<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quae corporis et explicabo? A sunt quaerat, ex maiores. Ea ab non, porro atque natus exercitationem iusto cum sit tempore modi. Quae odit tempore consequatur voluptatibus sed, quidem eius ut, alias atque consectetur provident sunt voluptate. Ad temporibus eos soluta pariatur nam.</p>
+									</div>
+								</div>
+								<div class="social-details">
+									<div class="edit-head">Social Media</div>
+									<div class="social-acc">
+										<div class="social-block">
+											<div class="form-group">
+												<label for="facebook">Facebook</label>
+												<input type="text" class="form-control" id="fb" placeholder="Add Account" name="fb" [(ngModel)]="userdata.social_media.facebook">
+												<img src="img/fb.png" alt="Facebook">
 											</div>
 										</div>
-										<div class="billing-method">
-											<div class="edit-head">Billing Method</div>
-											<form>
-												<div class="form-group">
-												    <label for="fname">First Name</label>
-												    <input type="text" class="form-control" id="fname4" placeholder="First Name">
-											  	</div>
-											  	<div class="form-group">
-												    <label for="lname">Last Name</label>
-												    <input type="text" class="form-control" id="lname1" placeholder="Last Name">
-											  	</div>
-											  	<div class="form-group">
-												    <label for="area">Area Code</label>
-												    <input type="text" class="form-control" id="area" placeholder="Area Code">
-											  	</div>
-										  	  	<div class="form-group street">
-										  		    <label for="street">Street</label>
-										  		    <input type="text" class="form-control" id="street" placeholder="Street Name">
-										  	  	</div>
-										  	  	<div class="form-group appartment-suit">
-										  		    <label for="appt">Apartment, Suite, Building</label>
-										  		    <input type="text" class="form-control" id="appt" placeholder="Apartment, Suite, Building">
-										  	  	</div>
-										  	  	<div class="form-group">
-										  		    <label for="city">City</label>
-										  		    <input type="text" class="form-control" id="city" placeholder="City">
-										  	  	</div>
-										  	  	<div class="form-group">
-										  		    <label for="state">State</label>
-										  		    <input type="text" class="form-control" id="state" placeholder="State">
-										  	  	</div>
-										  	  	<div class="form-group">
-										  		    <label for="zip">Zip</label>
-										  		    <input type="text" class="form-control" id="zip" placeholder="State">
-										  	  	</div>
-										  	  	<div class="button_group">
-													<a href="#" class="cancel-btn">Cancel</a>
-													<a href="#" class="update-btn">update</a>
-												</div>
-											</form>
+										<div class="social-block">
+											<div class="form-group">
+												<label for="inst">Instagram</label>
+												<input type="text" class="form-control" id="fname" placeholder="Add Account" name="insta" [(ngModel)]="userdata.social_media.instagram">
+												<img src="img/inst.png" alt="Facebook">
+											</div>
 										</div>
+										<div class="social-block">
+											<div class="form-group">
+												<label for="facebook">Twitter</label>
+												<input type="text" class="form-control" id="fb1" placeholder="Add Account" name="twit" [(ngModel)]="userdata.social_media.twitter">
+												<img src="img/twitter.png" alt="Facebook">
+											</div>
+										</div>
+										<div class="social-block">
+											<div class="form-group">
+												<label for="inst">Youtube</label>
+												<input type="text" class="form-control" id="fname1" placeholder="Add Account" name="youtube" [(ngModel)]="userdata.social_media.youtube">
+												<img src="img/youtube.png" alt="Facebook">
+											</div>
+										</div>
+										<div class="social-block">
+											<div class="form-group">
+												<label for="inst">Soundcloud</label>
+												<input type="text" class="form-control" id="fname2" placeholder="Add Account" name="sound" [(ngModel)]="userdata.social_media.sound_cloud">
+												<img src="img/soundcloud.png" alt="Facebook">
+											</div>
+										</div>
+										
 									</div>
-									<div id="proceeds" class="tab-pane fade">
-										<div class="pay-meth">
-											<div class="edit-head">Payout  Method</div>
+								</div>
+								<div class="button_group">
+									<a href="#" class="cancel-btn">Cancel</a>
+									<button type="submit" (click)="update()" [disabled]="show_spinner" class="save-btn btn btn-primary">Save <i *ngIf="show_spinner" class="fa fa-spinner fa-spin"></i></button>
+				</div>
+				</form>
+							</div>
+						</div>
+
+						<div class="tab-pane fade {{tab_cnt == 2 ? 'show active' : '' }}" id="settings">
+							<div class="update-email">
+								<div class="email-form">
+									<div class="edit-head">Update Your Email</div>
+									<form>
+										<div class="form-group">
+											<label for="yemail">Your</label>
+											<input type="email" class="form-control" id="yemail" placeholder="Your Email">
+										</div>
+										<div class="form-group">
+											<label for="nemail">New Email</label>
+											<input type="email" class="form-control" id="nemail" placeholder="New Name">
+										</div>
+										<div class="form-group">
+											<label for="remail">Repeat New Email</label>
+											<input type="email" class="form-control" id="remail" placeholder="Repeat Email">
+										</div>
+										<div class="button_group">
+											<a href="#" class="cancel-btn">Cancel</a>
+											<a href="#" class="update-btn">update</a>
+										</div>
+									</form>
+								</div>
+								<div class="password-form">
+									<div class="edit-head">Update Password</div>
+									<form>
+										<div class="form-group">
+											<label for="ypwd">Your Password</label>
+											<input type="password" class="form-control" id="ypwd" placeholder="Your Email">
+											<div class="pwd-icon">
+												<i class="fa fa-eye" aria-hidden="true"></i>
+												<!-- <i class="fa fa-eye-slash" aria-hidden="true"></i> -->
+											</div>
+										</div>
+										<div class="form-group">
+											<label for="npwd">New Password</label>
+											<input type="password" class="form-control" id="npwd" placeholder="New Name">
+											<div class="pwd-icon">
+												<i class="fa fa-eye" aria-hidden="true"></i>
+												<!-- <i class="fa fa-eye-slash" aria-hidden="true"></i> -->
+											</div>
+										</div>
+										<div class="form-group">
+											<label for="rpwd">Repeat New Password</label>
+											<input type="password" class="form-control" id="rpwd" placeholder="Repeat Email">
+											<div class="pwd-icon">
+												<i class="fa fa-eye " aria-hidden="true"></i>
+												<!-- <i class="fa fa-eye-slash" aria-hidden="true"></i> -->
+											</div>
+										</div>
+										<div class="button_group">
+											<a href="#" class="cancel-btn">Cancel</a>
+											<a href="#" class="update-btn">update</a>
+										</div>
+									</form>
+								</div>
+								<div class="notification">
+									<div class="edit-head">Notifications</div>
+									<div class="notify-by-email">
+										<div class="edit-head">Notifications by Email</div>
+										<ul>
+											<li class="followers">
+												<p>New Followers</p>
+												<div class="f-toggle">
+													<label class="switch">
+														<input type="checkbox" checked>
+														<span class="slider round"></span>
+													</label>
+												</div>
+											</li>
+											<li class="comments">
+												<p>Comments</p>
+												<div class="f-toggle">
+													<label class="switch">
+														<input type="checkbox">
+														<span class="slider round"></span>
+													</label>
+												</div>
+											</li>
+											<li class="message">
+												<p>Message</p>
+												<div class="f-toggle">
+													<label class="switch">
+														<input type="checkbox" checked>
+														<span class="slider round"></span>
+													</label>
+												</div>
+											</li>
+										</ul>
+									</div>
+									<div class="notify-by-sms">
+										<div class="edit-head">Notifications by SMS</div>
+										<ul>
+											<li class="followers">
+												<p>New Followers</p>
+												<div class="f-toggle">
+													<label class="switch">
+														<input type="checkbox" checked>
+														<span class="slider round"></span>
+													</label>
+												</div>
+											</li>
+											<li class="comments">
+												<p>Comments</p>
+												<div class="f-toggle">
+													<label class="switch">
+														<input type="checkbox">
+														<span class="slider round"></span>
+													</label>
+												</div>
+											</li>
+											<li class="message">
+												<p>Message</p>
+												<div class="f-toggle">
+													<label class="switch">
+														<input type="checkbox" checked>
+														<span class="slider round"></span>
+													</label>
+												</div>
+											</li>
+										</ul>
+									</div>
+									<div class="on-side-alert">
+										<div class="edit-head">On Side Alerts</div>
+										<ul>
+											<li class="followers">
+												<p>New Followers</p>
+												<div class="f-toggle">
+													<label class="switch">
+														<input type="checkbox" checked>
+														<span class="slider round"></span>
+													</label>
+												</div>
+											</li>
+											<li class="comments">
+												<p>Comments</p>
+												<div class="f-toggle">
+													<label class="switch">
+														<input type="checkbox">
+														<span class="slider round"></span>
+													</label>
+												</div>
+											</li>
+											<li class="message">
+												<p>Message</p>
+												<div class="f-toggle">
+													<label class="switch">
+														<input type="checkbox" checked>
+														<span class="slider round"></span>
+													</label>
+												</div>
+											</li>
+										</ul>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="tab-pane fade {{tab_cnt == 3 ? 'show active' : '' }}" id="payment">
+							
+							<ul class="nav nav-tabs">
+								<li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#paymentmethod">Payment Method</a></li>
+								<li class="nav-item"><a class="nav-link" data-toggle="tab" href="#proceeds">Your Proceeds</a></li>
+								</ul>
+								<div class="tab-content">
+								<div id="paymentmethod" class="tab-pane fade show active">
+									<div class="pay-method">
+										<div class="edit-head">Your Payment Method</div>
+										<div class="select-payemnt-table">
 											<table>
 												<tr>
-													<td><img src="img/visa.png" alt="Visa Card"></td>
-													<td><p class="pay-name">Visa</p></td>
-													<td><p class="card-num">XXXXXXXXXXX0000</p></td>
 													<td>
-														<div class="button_group">
-															<a href="#" class="update-btn">update</a>
+														<div class="radio">
+															<label>
+																<input type="radio" value="" name="musicgenre" checked>
+																<div class="radio_check"></div>
+															</label>
+														</div>
+													</td>
+													<td>
+														<img src="img/visa.png" alt="Visa Card">
+													</td>
+													<td>
+														<p class="pay-name">Visa</p>
+													</td>
+													<td>
+														<p class="card-num">XXXXXXXXXXX0000</p>
+													</td>
+													<td>
+														<p class="pay-name">01/2020</p>
+													</td>
+													<td>
+														<div class="pay-delete">
+															<i class="fa fa-trash" aria-hidden="true"></i>
+															<span>Delete</span>
+														</div>
+													</td>
+												</tr>
+
+												<tr>
+													<td>
+														<div class="radio">
+															<label>
+																<input type="radio" value="" name="musicgenre">
+																<div class="radio_check"></div>
+															</label>
+														</div>
+													</td>
+													<td>
+														<img src="img/paypal.png" alt="Visa Card">
+													</td>
+													<td>
+														<p class="pay-name">Paypal</p>
+													</td>
+													<td>
+														<p class="card-num">shavnmiller@gmail.com</p>
+													</td>
+													<td>
+													</td>
+													<td>
+														<div class="pay-delete">
+															<i class="fa fa-trash" aria-hidden="true"></i>
+															<span>Delete</span>
 														</div>
 													</td>
 												</tr>
 											</table>
+											<a data-fancybox data-animation-duration="700" data-src="#addpayment"  href="javascript:;"  class="add-payment">
+												<img src="img/icons8-plus_mathNormal.png" alt="">
+												Add Payment Method
+											</a>
 										</div>
-										<div class="trans-history">
-											<div class="edit-head">Transaction History</div>
-											<div class="transaction-table mCustomScrollbar " data-mcs-theme="dark-3">
-												<table>
-													<thead>
-														<tr>
-															<td>N°</td>
-															<td>Track</td>
-															<td>Date</td>
-															<td>Time</td>
-															<td>Price</td>
-															<td>Status</td>
-														</tr>
-													</thead>
-													<tbody>
-														<tr>
-															<td>1.</td>
-															<td>Say Thanks</td>
-															<td>May 10,2018</td>
-															<td>10:34:12</td>
-															<td>$1.99</td>
-															<td>Finised</td>
-														</tr>
-														<tr>
-															<td>2.</td>
-															<td>Blue State of Mind</td>
-															<td>May 10,2018</td>
-															<td>10:34:12</td>
-															<td>$1.99</td>
-															<td>Finised</td>
-														</tr>
-														<tr>
-															<td>3.</td>
-															<td>Blue State of Mind</td>
-															<td>May 10,2018</td>
-															<td>10:34:12</td>
-															<td>$1.99</td>
-															<td>Finised</td>
-														</tr>
-														<tr>
-															<td>4.</td>
-															<td>Blue State of Mind</td>
-															<td>May 10,2018</td>
-															<td>10:34:12</td>
-															<td>$1.99</td>
-															<td>Finised</td>
-														</tr>
-														<tr>
-															<td>5.</td>
-															<td>Say Thanks</td>
-															<td>May 10,2018</td>
-															<td>10:34:12</td>
-															<td>$1.99</td>
-															<td>Finised</td>
-														</tr>
-														<tr>
-															<td>6.</td>
-															<td>Say Thanks</td>
-															<td>May 10,2018</td>
-															<td>10:34:12</td>
-															<td>$1.99</td>
-															<td>Finised</td>
-														</tr>
-														<tr>
-															<td>7.</td>
-															<td>Blue State of Mind</td>
-															<td>May 10,2018</td>
-															<td>10:34:12</td>
-															<td>$1.99</td>
-															<td>Finised</td>
-														</tr>
-														<tr>
-															<td>8.</td>
-															<td>Blue State of Mind</td>
-															<td>May 10,2018</td>
-															<td>10:34:12</td>
-															<td>$1.99</td>
-															<td>Finised</td>
-														</tr>
-														<tr>
-															<td>9.</td>
-															<td>Blue State of Mind</td>
-															<td>May 10,2018</td>
-															<td>10:34:12</td>
-															<td>$1.99</td>
-															<td>Finised</td>
-														</tr>
-														<tr>
-															<td>10.</td>
-															<td>Say Thanks</td>
-															<td>May 10,2018</td>
-															<td>10:34:12</td>
-															<td>$1.99</td>
-															<td>Finised</td>
-														</tr>
-													</tbody>
-												</table>
+									</div>
+									<div class="billing-method">
+										<div class="edit-head">Billing Method</div>
+										<form>
+											<div class="form-group">
+												<label for="fname">First Name</label>
+												<input type="text" class="form-control" id="fname4" placeholder="First Name">
 											</div>
-											<div class="proceeds">
-												<div class="edit-head">$5,200.87 Proceeds</div>
-												<img src="img/proceeds.jpg" alt="Proceeds Graph">
+											<div class="form-group">
+												<label for="lname">Last Name</label>
+												<input type="text" class="form-control" id="lname1" placeholder="Last Name">
 											</div>
-										</div>
+											<div class="form-group">
+												<label for="area">Area Code</label>
+												<input type="text" class="form-control" id="area" placeholder="Area Code">
+											</div>
+											<div class="form-group street">
+												<label for="street">Street</label>
+												<input type="text" class="form-control" id="street" placeholder="Street Name">
+											</div>
+											<div class="form-group appartment-suit">
+												<label for="appt">Apartment, Suite, Building</label>
+												<input type="text" class="form-control" id="appt" placeholder="Apartment, Suite, Building">
+											</div>
+											<div class="form-group">
+												<label for="city">City</label>
+												<input type="text" class="form-control" id="city" placeholder="City">
+											</div>
+											<div class="form-group">
+												<label for="state">State</label>
+												<input type="text" class="form-control" id="state" placeholder="State">
+											</div>
+											<div class="form-group">
+												<label for="zip">Zip</label>
+												<input type="text" class="form-control" id="zip" placeholder="State">
+											</div>
+											<div class="button_group">
+												<a href="#" class="cancel-btn">Cancel</a>
+												<a href="#" class="update-btn">update</a>
+											</div>
+										</form>
 									</div>
 								</div>
-							</div>
-
-							<div class="tab-pane fade {{tab_cnt == 4 ? 'show active' : '' }}" id="media">
-							    <div class="media-wrapper">
-							    	<div class="col-md-12"><div class="edit-head">Your Media</div></div>
-							    	<div class="col-md-12"><a data-fancybox data-animation-duration="700" data-src="#addmedia"  href="javascript:;" class="add-payment"><img src="img/icons8-plus_mathNormal.png" alt="">Add Media</a></div>
-							    	<div class="row">
-								      	<div class="col-md-4 col-sm-6 col-xs-12">
-								      		<a class="img-wrap" href="img/media-1.png" data-fancybox="images" data-width="1500" data-height="1000">
-								      			<img src="img/media-1.png" alt="Media">
-								      		</a>
-								      		<a data-fancybox data-animation-duration="700" data-src="#delete"  href="javascript:;" class="delete"><i class="fa fa-trash"></i></a>
-								      	</div>
-								      	<div class="col-md-4 col-sm-6 col-xs-12">
-								      		<a class="img-wrap" href="img/media-2.png" data-fancybox="images" data-width="1500" data-height="1000">
-								      			<img src="img/media-2.png" alt="Media">
-								      		</a>
-								      		<a data-fancybox data-animation-duration="700" data-src="#delete"  href="javascript:;" class="delete"><i class="fa fa-trash"></i></a>
-								      	</div>
-								      	<div class="col-md-4 col-sm-6 col-xs-12">
-								      		<a href="img/media-3.png" data-fancybox="images" data-width="1500" data-height="1000" class="img-wrap">
-								      			<img src="img/media-3.png" alt="Media">
-								      		</a>
-								      		<a data-fancybox data-animation-duration="700" data-src="#delete"  href="javascript:;" class="delete"><i class="fa fa-trash"></i></a>
-								      	</div>
-								      	<div class="col-md-4 col-sm-6 col-xs-12">
-								      		<a href="img/media-4.png" data-fancybox="images" data-width="1500" data-height="1000" class="img-wrap">
-								      			<img src="img/media-4.png" alt="Media">
-								      		</a>
-								      		<a data-fancybox data-animation-duration="700" data-src="#delete"  href="javascript:;" class="delete"><i class="fa fa-trash"></i></a>
-								      	</div>
-								      	<div class="col-md-4 col-sm-6 col-xs-12">
-								      		<a href="img/media-5.png" data-fancybox="images" data-width="1500" data-height="1000" class="img-wrap">
-								      			<img src="img/media-5.png" alt="Media">
-								      			<a href="#" class="play-btn"><i class="fa fa-play-circle" aria-hidden="true"></i></a>
-								      		</a>
-								      		<a data-fancybox data-animation-duration="700" data-src="#delete"  href="javascript:;" class="delete"><i class="fa fa-trash"></i></a>
-								      	</div>
-								      	<div class="col-md-4 col-sm-6 col-xs-12">
-								      		<a href="img/media-6.png" data-fancybox="images" data-width="1500" data-height="1000" class="img-wrap">
-								      			<img src="img/media-6.png" alt="Media">
-								      			<a href="#" class="play-btn"><i class="fa fa-play-circle" aria-hidden="true"></i></a>
-								      		</a>
-								      		<a data-fancybox data-animation-duration="700" data-src="#delete"  href="javascript:;" class="delete"><i class="fa fa-trash"></i></a>
-								      	</div>
-								      	<div class="col-md-4 col-sm-6 col-xs-12">
-								      		<a href="img/media-3.png" data-fancybox="images" data-width="1500" data-height="1000" class="img-wrap">
-								      			<img src="img/media-3.png" alt="Media">
-								      		</a>
-								      		<a data-fancybox data-animation-duration="700" data-src="#delete"  href="javascript:;" class="delete"><i class="fa fa-trash"></i></a>
-								      	</div>
-								      	<div class="col-md-4 col-sm-6 col-xs-12">
-								      		<a href="img/media-4.png" data-fancybox="images" data-width="1500" data-height="1000" class="img-wrap">
-								      			<img src="img/media-4.png" alt="Media">
-								      		</a>
-								      		<a data-fancybox data-animation-duration="700" data-src="#delete"  href="javascript:;" class="delete"><i class="fa fa-trash"></i></a>
-								      	</div>
-								    </div>
-							    </div>
-							</div>
-
-							<div class="tab-pane fade {{tab_cnt == 5 ? 'show active' : '' }}" id="analytics">
-								<div class="ana-header">
-								  	<div class="form-group days-grp">
-										<select class="form-control" id="days-select">
-										    <option>7 Days</option>
-										    <option>1 Month</option>
-										</select>
-										
-								  	</div>
-								  	<ul class="ana-tabs nav nav-tabs">
-									   <li class="nav-item" ><a class="active" data-toggle="tab" href="#overview">Overview</a></li>
-									   <li class="nav-item"><a data-toggle="tab" href="#followers">Followers</a></li>
-									   <li class="nav-item"><a data-toggle="tab" href="#trackscontent">Tracks/Contents</a></li>
-									   <li class="nav-item"><a data-toggle="tab" href="#download">Downloads</a></li>
-									</ul>
-									<div class="time-frame">
-										<h3>Last 7 Days: April 23,2018 - May 1, 2018</h3>
+								<div id="proceeds" class="tab-pane fade">
+									<div class="pay-meth">
+										<div class="edit-head">Payout  Method</div>
+										<table>
+											<tr>
+												<td><img src="img/visa.png" alt="Visa Card"></td>
+												<td><p class="pay-name">Visa</p></td>
+												<td><p class="card-num">XXXXXXXXXXX0000</p></td>
+												<td>
+													<div class="button_group">
+														<a href="#" class="update-btn">update</a>
+													</div>
+												</td>
+											</tr>
+										</table>
 									</div>
-								</div>
-								<div class="tab-content ana-content">
-									<div class="tab-pane fade active show" id="overview">
-										<div class="new-follow">
-											<div class="edit-head">New Followers</div>
-											<div class="progress-bar-chart">
-												<span class="inner-text"><p>45</p><span>New Followers</span></span>
-												<ul class="chart-skills">
-
-												  <li class="follow-women">
-												    <!-- <span>Women</span> -->
-												  </li>
-												  <li class="follow-men">
-												    <!-- <span>Men</span> -->
-												  </li>
-												  <li class="follow-other">
-												    <!-- <span>other</span> -->
-												  </li>
-												</ul>
-											</div>
-											<div class="graph-states">
-												<ul>
-													<li class="state-women">
-														<p>52%</p>
-														<span>Women</span>
-													</li>
-													<li class="state-men">
-														<p>46%</p>
-														<span>Men</span>
-													</li>
-													<li class="state-other">
-														<p>2%</p>
-														<span>Other</span>
-													</li>
-												</ul>
-											</div>
-										</div>
-										<div class="artist-vote">
-											<div class="edit-head">12,300 Votes</div>
-											<div class="vote-graph">
-												<img src="img/vote-map.jpg" alt="Vote Map">
-											</div>
-										</div>
-										<div class="artist-downloads">
-											<div class="edit-head">1360 Downloads</div>
-											<div class="download-graph">
-												<ul>
-													<li>
-														<span>Blue Stated Of Mind</span>
-														<div class="d-num"><p>1300</p> <span>Downloads</span></div>
-													</li>
-													<li>
-														<span>Why Today</span>
-														<div class="d-num"><p>600 </p><span>Downloads</span></div>
-													</li>
-													<li>
-														<span>Friday</span>
-														<div class="d-num"><p>300 </p><span>Downloads</span></div>
-													</li>
-													<li>
-														<span>My Love</span>
-														<div class="d-num"><p>340 </p><span>Downloads</span></div>
-													</li>
-													<li>
-														<span>Say Thanks</span>
-														<div class="d-num"><p>120 </p><span>Downloads</span></div>
-													</li>
-
-												</ul>
-											</div>
-										</div>
-										<div class="location-downloads">
-											<div class="edit-head">Top Locations</div>
-											<div class="loc-icon-group">
-												<img src="img/top-location-icon.png" alt="top-location-icon.png">
-												<img src="img/infographic-not-active.png" alt="infographic-not-active.png">
-											</div>
-											<div class="loc-graph">
-												<img src="img/location-map.jpg" alt="Location Graph">
-											</div>
-										</div>
-									</div>
-									<div class="tab-pane fade" id="followers">
-										<div class="new-follow">
-											<div class="edit-head">New Followers</div>
-											<div class="progress-bar-chart">
-												<span class="inner-text"><p>45</p><span>New Followers</span></span>
-												<ul class="chart-skills">
-
-												  <li class="follow-women">
-												    <!-- <span>Women</span> -->
-												  </li>
-												  <li class="follow-men">
-												    <!-- <span>Men</span> -->
-												  </li>
-												  <li class="follow-other">
-												    <!-- <span>other</span> -->
-												  </li>
-												</ul>
-											</div>
-											<div class="graph-states">
-												<ul>
-													<li class="state-women">
-														<p>52%</p>
-														<span>Women</span>
-													</li>
-													<li class="state-men">
-														<p>46%</p>
-														<span>Men</span>
-													</li>
-													<li class="state-other">
-														<p>2%</p>
-														<span>Other</span>
-													</li>
-												</ul>
-											</div>
-										</div>
-										<div class="artist-vote">
-											<div class="edit-head">12,300 Votes</div>
-											<div class="vote-graph">
-												<img src="img/vote-map.jpg" alt="Vote Map">
-											</div>
-										</div>
-										<div class="breakdown-age">
-											<div class="edit-head">Age Breakdown</div>
-											<img src="img/age-breakdown.jpg" alt="Age Break Down">
-										</div>
-										<div class="location-downloads">
-											<div class="edit-head">Top Locations</div>
-											<div class="loc-icon-group">
-												<img src="img/top-location-icon.png" alt="top-location-icon.png">
-												<img src="img/infographic-not-active.png" alt="infographic-not-active.png">
-											</div>
-											<div class="loc-graph">
-												<img src="img/location-map.jpg" alt="Location Graph">
-											</div>
-										</div>
-									</div>
-
-									<div class="tab-pane fade" id="trackscontent">
-										<div class="track-table mCustomScrollbar " data-mcs-theme="dark-3">
+									<div class="trans-history">
+										<div class="edit-head">Transaction History</div>
+										<div class="transaction-table mCustomScrollbar " data-mcs-theme="dark-3">
 											<table>
+												<thead>
+													<tr>
+														<td>N°</td>
+														<td>Track</td>
+														<td>Date</td>
+														<td>Time</td>
+														<td>Price</td>
+														<td>Status</td>
+													</tr>
+												</thead>
 												<tbody>
 													<tr>
-														<td class="serial-num">1.</td>
-														<td class="track-pic"><a href="#"><img src="img/track-img.png" alt="Track Image"></a></td>
-														<td class="track-det" colspan="2">
-															<p class="track-name">Blue State of Mind</p>
-															<p class="track-singer">Shavan Miller</p>
-															<p class="track-year">2017</p>
-														</td>
-														<td class="track-download">1200 <span>Downloads</span></td>
-														<td class="track-share">560 <span>Shares</span></td>
-														<td class="track-likes">3400 <span>Likes</span></td>
-														<td class="track-comment">1200 <span>Comments</span></td>
-														<td class="td track-vote">
-															<img src="img/start.png" alt="start">
-															<span>10800 <br> <span>Votes</span></span>
-														</td>
-													</tr>
-
-													<tr>
-														<td class="serial-num">2.</td>
-														<td class="track-pic"><a href="#"><img src="img/track-img.png" alt="Track Image"></a></td>
-														<td class="track-det" colspan="2">
-															<p class="track-name">Say Thanks</p>
-															<p class="track-singer">Shavan Miller</p>
-															<p class="track-year">2017</p>
-														</td>
-														<td class="track-download">459 <span>Downloads</span></td>
-														<td class="track-share">130 <span>Shares</span></td>
-														<td class="track-likes">3400 <span>Likes</span></td>
-														<td class="track-comment">1200 <span>Comments</span></td>
-														<td class="td track-vote">
-															<img src="img/start.png" alt="start">
-															<span>10800 <br> <span>Votes</span></span>
-														</td>
+														<td>1.</td>
+														<td>Say Thanks</td>
+														<td>May 10,2018</td>
+														<td>10:34:12</td>
+														<td>$1.99</td>
+														<td>Finised</td>
 													</tr>
 													<tr>
-														<td class="serial-num">3.</td>
-														<td class="track-pic"><a href="#"><img src="img/track-img.png" alt="Track Image"></a></td>
-														<td class="track-det" colspan="2">
-															<p class="track-name">Why Today?</p>
-															<p class="track-singer">Shavan Miller</p>
-															<p class="track-year">2017</p>
-														</td>
-														<td class="track-download">800 <span>Downloads</span></td>
-														<td class="track-share">440 <span>Shares</span></td>
-														<td class="track-likes">3400 <span>Likes</span></td>
-														<td class="track-comment">1200 <span>Comments</span></td>
-														<td class="td track-vote">
-															<img src="img/start.png" alt="start">
-															<span>10800 <br> <span>Votes</span></span>
-														</td>
-													</tr>
-
-													<tr>
-														<td class="serial-num">4.</td>
-														<td class="track-pic"><a href="#"><img src="img/track-img.png" alt="Track Image"></a></td>
-														<td class="track-det" colspan="2">
-															<p class="track-name">Friday</p>
-															<p class="track-singer">Shavan Miller</p>
-															<p class="track-year">2017</p>
-														</td>
-														<td class="track-download">340 <span>Downloads</span></td>
-														<td class="track-share">201 <span>Shares</span></td>
-														<td class="track-likes">3400 <span>Likes</span></td>
-														<td class="track-comment">1200 <span>Comments</span></td>
-														<td class="td track-vote">
-															<img src="img/start.png" alt="start">
-															<span>10800 <br> <span>Votes</span></span>
-														</td>
+														<td>2.</td>
+														<td>Blue State of Mind</td>
+														<td>May 10,2018</td>
+														<td>10:34:12</td>
+														<td>$1.99</td>
+														<td>Finised</td>
 													</tr>
 													<tr>
-														<td class="serial-num">5.</td>
-														<td class="track-pic"><a href="#"><img src="img/track-img.png" alt="Track Image"></a></td>
-														<td class="track-det" colspan="2">
-															<p class="track-name">My Love</p>
-															<p class="track-singer">Shavan Miller</p>
-															<p class="track-year">2017</p>
-														</td>
-														<td class="track-download">139 <span>Downloads</span></td>
-														<td class="track-share">190 <span>Shares</span></td>
-														<td class="track-likes">3400 <span>Likes</span></td>
-														<td class="track-comment">1200 <span>Comments</span></td>
-														<td class="td track-vote">
-															<img src="img/start.png" alt="start">
-															<span>10800 <br> <span>Votes</span></span>
-														</td>
+														<td>3.</td>
+														<td>Blue State of Mind</td>
+														<td>May 10,2018</td>
+														<td>10:34:12</td>
+														<td>$1.99</td>
+														<td>Finised</td>
 													</tr>
 													<tr>
-														<td class="serial-num">1.</td>
-														<td class="track-pic"><a href="#"><img src="img/track-img.png" alt="Track Image"></a></td>
-														<td class="track-det" colspan="2">
-															<p class="track-name">Blue State of Mind</p>
-															<p class="track-singer">Shavan Miller</p>
-															<p class="track-year">2017</p>
-														</td>
-														<td class="track-download">1200 <span>Downloads</span></td>
-														<td class="track-share">560 <span>Shares</span></td>
-														<td class="track-likes">3400 <span>Likes</span></td>
-														<td class="track-comment">1200 <span>Comments</span></td>
-														<td class="td track-vote">
-															<img src="img/start.png" alt="start">
-															<span>10800 <br> <span>Votes</span></span>
-														</td>
-													</tr>
-
-													<tr>
-														<td class="serial-num">2.</td>
-														<td class="track-pic"><a href="#"><img src="img/track-img.png" alt="Track Image"></a></td>
-														<td class="track-det" colspan="2">
-															<p class="track-name">Say Thanks</p>
-															<p class="track-singer">Shavan Miller</p>
-															<p class="track-year">2017</p>
-														</td>
-														<td class="track-download">459 <span>Downloads</span></td>
-														<td class="track-share">130 <span>Shares</span></td>
-														<td class="track-likes">3400 <span>Likes</span></td>
-														<td class="track-comment">1200 <span>Comments</span></td>
-														<td class="td track-vote">
-															<img src="img/start.png" alt="start">
-															<span>10800 <br> <span>Votes</span></span>
-														</td>
+														<td>4.</td>
+														<td>Blue State of Mind</td>
+														<td>May 10,2018</td>
+														<td>10:34:12</td>
+														<td>$1.99</td>
+														<td>Finised</td>
 													</tr>
 													<tr>
-														<td class="serial-num">3.</td>
-														<td class="track-pic"><a href="#"><img src="img/track-img.png" alt="Track Image"></a></td>
-														<td class="track-det" colspan="2">
-															<p class="track-name">Why Today?</p>
-															<p class="track-singer">Shavan Miller</p>
-															<p class="track-year">2017</p>
-														</td>
-														<td class="track-download">800 <span>Downloads</span></td>
-														<td class="track-share">440 <span>Shares</span></td>
-														<td class="track-likes">3400 <span>Likes</span></td>
-														<td class="track-comment">1200 <span>Comments</span></td>
-														<td class="td track-vote">
-															<img src="img/start.png" alt="start">
-															<span>10800 <br> <span>Votes</span></span>
-														</td>
-													</tr>
-
-													<tr>
-														<td class="serial-num">4.</td>
-														<td class="track-pic"><a href="#"><img src="img/track-img.png" alt="Track Image"></a></td>
-														<td class="track-det" colspan="2">
-															<p class="track-name">Friday</p>
-															<p class="track-singer">Shavan Miller</p>
-															<p class="track-year">2017</p>
-														</td>
-														<td class="track-download">340 <span>Downloads</span></td>
-														<td class="track-share">201 <span>Shares</span></td>
-														<td class="track-likes">3400 <span>Likes</span></td>
-														<td class="track-comment">1200 <span>Comments</span></td>
-														<td class="td track-vote">
-															<img src="img/start.png" alt="start">
-															<span>10800 <br> <span>Votes</span></span>
-														</td>
+														<td>5.</td>
+														<td>Say Thanks</td>
+														<td>May 10,2018</td>
+														<td>10:34:12</td>
+														<td>$1.99</td>
+														<td>Finised</td>
 													</tr>
 													<tr>
-														<td class="serial-num">5.</td>
-														<td class="track-pic"><a href="#"><img src="img/track-img.png" alt="Track Image"></a></td>
-														<td class="track-det" colspan="2">
-															<p class="track-name">My Love</p>
-															<p class="track-singer">Shavan Miller</p>
-															<p class="track-year">2017</p>
-														</td>
-														<td class="track-download">139 <span>Downloads</span></td>
-														<td class="track-share">190 <span>Shares</span></td>
-														<td class="track-likes">3400 <span>Likes</span></td>
-														<td class="track-comment">1200 <span>Comments</span></td>
-														<td class="td track-vote">
-															<img src="img/start.png" alt="start">
-															<span>10800 <br> <span>Votes</span></span>
-														</td>
+														<td>6.</td>
+														<td>Say Thanks</td>
+														<td>May 10,2018</td>
+														<td>10:34:12</td>
+														<td>$1.99</td>
+														<td>Finised</td>
+													</tr>
+													<tr>
+														<td>7.</td>
+														<td>Blue State of Mind</td>
+														<td>May 10,2018</td>
+														<td>10:34:12</td>
+														<td>$1.99</td>
+														<td>Finised</td>
+													</tr>
+													<tr>
+														<td>8.</td>
+														<td>Blue State of Mind</td>
+														<td>May 10,2018</td>
+														<td>10:34:12</td>
+														<td>$1.99</td>
+														<td>Finised</td>
+													</tr>
+													<tr>
+														<td>9.</td>
+														<td>Blue State of Mind</td>
+														<td>May 10,2018</td>
+														<td>10:34:12</td>
+														<td>$1.99</td>
+														<td>Finised</td>
+													</tr>
+													<tr>
+														<td>10.</td>
+														<td>Say Thanks</td>
+														<td>May 10,2018</td>
+														<td>10:34:12</td>
+														<td>$1.99</td>
+														<td>Finised</td>
 													</tr>
 												</tbody>
 											</table>
 										</div>
-										<div class="new-follow">
-											<div class="edit-head">New Followers</div>
-											<div class="progress-bar-chart">
-												<span class="inner-text"><p>45</p><span>New Followers</span></span>
-												<ul class="chart-skills">
-
-												  <li class="follow-women">
-												    <!-- <span>Women</span> -->
-												  </li>
-												  <li class="follow-men">
-												    <!-- <span>Men</span> -->
-												  </li>
-												  <li class="follow-other">
-												    <!-- <span>other</span> -->
-												  </li>
-												</ul>
-											</div>
-											<div class="graph-states">
-												<ul>
-													<li class="state-women">
-														<p>52%</p>
-														<span>Women</span>
-													</li>
-													<li class="state-men">
-														<p>46%</p>
-														<span>Men</span>
-													</li>
-													<li class="state-other">
-														<p>2%</p>
-														<span>Other</span>
-													</li>
-												</ul>
-											</div>
-										</div>
-										<div class="artist-vote">
-											<div class="edit-head">12,300 Votes</div>
-											<div class="vote-graph">
-												<img src="img/vote-map.jpg" alt="Vote Map">
-											</div>
-										</div>
-										<div class="artist-downloads">
-											<div class="edit-head">Rank</div>
-											<div class="transaction-table mCustomScrollbar " data-mcs-theme="dark-3"">
-												<table>
-													<thead>
-														<tr>
-															<td>Contest</td>
-															<td>Rank</td>
-															<td>Number of votes</td>
-														</tr>
-													</thead>
-													<tbody>
-														<tr>
-															<td>Regionals</td>
-															<td>3</td>
-															<td class="td track-vote">
-																<img src="img/start.png" alt="start">
-																<span>1300 <span>Votes</span></span>
-															</td>
-														</tr>
-														<tr>
-															<td>Round 3</td>
-															<td>5</td>
-															<td class="td track-vote">
-																<img src="img/start.png" alt="start">
-																<span>680 <span>Votes</span></span>
-															</td>
-														</tr>
-														<tr>
-															<td>Round 1</td>
-															<td>12</td>
-															<td class="td track-vote">
-																<img src="img/start.png" alt="start">
-																<span>450 <span>Votes</span></span>
-															</td>
-														</tr>
-														<tr>
-															<td>Regionals</td>
-															<td>3</td>
-															<td class="td track-vote">
-																<img src="img/start.png" alt="start">
-																<span>1300 <span>Votes</span></span>
-															</td>
-														</tr>
-														<tr>
-															<td>Round 3</td>
-															<td>5</td>
-															<td class="td track-vote">
-																<img src="img/start.png" alt="start">
-																<span>680 <span>Votes</span></span>
-															</td>
-														</tr>
-														<tr>
-															<td>Round 1</td>
-															<td>12</td>
-															<td class="td track-vote">
-																<img src="img/start.png" alt="start">
-																<span>450 <span>Votes</span></span>
-															</td>
-														</tr>
-														<tr>
-															<td>Regionals</td>
-															<td>3</td>
-															<td class="td track-vote">
-																<img src="img/start.png" alt="start">
-																<span>1300 <span>Votes</span></span>
-															</td>
-														</tr>
-														<tr>
-															<td>Round 3</td>
-															<td>5</td>
-															<td class="td track-vote">
-																<img src="img/start.png" alt="start">
-																<span>680 <span>Votes</span></span>
-															</td>
-														</tr>
-														<tr>
-															<td>Round 1</td>
-															<td>12</td>
-															<td class="td track-vote">
-																<img src="img/start.png" alt="start">
-																<span>450 <span>Votes</span></span>
-															</td>
-														</tr>
-														
-													</tbody>
-												</table>
-											</div>
-										</div>
-										<div class="location-downloads">
-											<div class="edit-head">Top Locations</div>
-											<div class="loc-icon-group">
-												<img src="img/top-location-icon.png" alt="top-location-icon.png">
-												<img src="img/infographic-not-active.png" alt="infographic-not-active.png">
-											</div>
-											<div class="loc-graph">
-												<img src="img/location-map.jpg" alt="Location Graph">
-											</div>
-										</div>
-									</div>
-
-									<div class="tab-pane fade" id="download">
-										<div class="track-table mCustomScrollbar " data-mcs-theme="dark-3">
-											<table>
-												<tbody>
-													<tr>
-														<td class="serial-num">1.</td>
-														<td class="track-pic"><a href="#"><img src="img/track-img.png" alt="Track Image"></a></td>
-														<td class="track-det" colspan="2">
-															<p class="track-name">Blue State of Mind</p>
-															<p class="track-singer">Shavan Miller</p>
-															<p class="track-year">2017</p>
-														</td>
-														<td class="track-date">March 12,2017</td>
-														<td class="track-download">1200 <span>Downloads</span></td>
-														
-														<td class="track-share">560 <span>Shares</span></td>
-													</tr>
-													<tr>
-														<td class="serial-num">2.</td>
-														<td class="track-pic"><a href="#"><img src="img/track-img.png" alt="Track Image"></a></td>
-														<td class="track-det" colspan="2">
-															<p class="track-name">Blue State of Mind</p>
-															<p class="track-singer">Shavan Miller</p>
-															<p class="track-year">2017</p>
-														</td>
-														<td class="track-date">March 12,2017</td>
-														<td class="track-download">1200 <span>Downloads</span></td>
-														
-														<td class="track-share">560 <span>Shares</span></td>
-													</tr>
-													<tr>
-														<td class="serial-num">3.</td>
-														<td class="track-pic"><a href="#"><img src="img/track-img.png" alt="Track Image"></a></td>
-														<td class="track-det" colspan="2">
-															<p class="track-name">Blue State of Mind</p>
-															<p class="track-singer">Shavan Miller</p>
-															<p class="track-year">2017</p>
-														</td>
-														<td class="track-date">March 12,2017</td>
-														<td class="track-download">1200 <span>Downloads</span></td>
-														
-														<td class="track-share">560 <span>Shares</span></td>
-													</tr>
-													<tr>
-														<td class="serial-num">4.</td>
-														<td class="track-pic"><a href="#"><img src="img/track-img.png" alt="Track Image"></a></td>
-														<td class="track-det" colspan="2">
-															<p class="track-name">Blue State of Mind</p>
-															<p class="track-singer">Shavan Miller</p>
-															<p class="track-year">2017</p>
-														</td>
-														<td class="track-date">March 12,2017</td>
-														<td class="track-download">1200 <span>Downloads</span></td>
-														
-														<td class="track-share">560 <span>Shares</span></td>
-													</tr>
-													<tr>
-														<td class="serial-num">5.</td>
-														<td class="track-pic"><a href="#"><img src="img/track-img.png" alt="Track Image"></a></td>
-														<td class="track-det" colspan="2">
-															<p class="track-name">Blue State of Mind</p>
-															<p class="track-singer">Shavan Miller</p>
-															<p class="track-year">2017</p>
-														</td>
-														<td class="track-date">March 12,2017</td>
-														<td class="track-download">1200 <span>Downloads</span></td>
-														
-														<td class="track-share">560 <span>Shares</span></td>
-													</tr>
-													<tr>
-														<td class="serial-num">6.</td>
-														<td class="track-pic"><a href="#"><img src="img/track-img.png" alt="Track Image"></a></td>
-														<td class="track-det" colspan="2">
-															<p class="track-name">Blue State of Mind</p>
-															<p class="track-singer">Shavan Miller</p>
-															<p class="track-year">2017</p>
-														</td>
-														<td class="track-date">March 12,2017</td>
-														<td class="track-download">1200 <span>Downloads</span></td>
-														
-														<td class="track-share">560 <span>Shares</span></td>
-													</tr>
-													<tr>
-														<td class="serial-num">7.</td>
-														<td class="track-pic"><a href="#"><img src="img/track-img.png" alt="Track Image"></a></td>
-														<td class="track-det" colspan="2">
-															<p class="track-name">Blue State of Mind</p>
-															<p class="track-singer">Shavan Miller</p>
-															<p class="track-year">2017</p>
-														</td>
-														<td class="track-date">March 12,2017</td>
-														<td class="track-download">1200 <span>Downloads</span></td>
-														
-														<td class="track-share">560 <span>Shares</span></td>
-													</tr>
-													<tr>
-														<td class="serial-num">8.</td>
-														<td class="track-pic"><a href="#"><img src="img/track-img.png" alt="Track Image"></a></td>
-														<td class="track-det" colspan="2">
-															<p class="track-name">Blue State of Mind</p>
-															<p class="track-singer">Shavan Miller</p>
-															<p class="track-year">2017</p>
-														</td>
-														<td class="track-date">March 12,2017</td>
-														<td class="track-download">1200 <span>Downloads</span></td>
-														
-														<td class="track-share">560 <span>Shares</span></td>
-													</tr>
-													<tr>
-														<td class="serial-num">9.</td>
-														<td class="track-pic"><a href="#"><img src="img/track-img.png" alt="Track Image"></a></td>
-														<td class="track-det" colspan="2">
-															<p class="track-name">Blue State of Mind</p>
-															<p class="track-singer">Shavan Miller</p>
-															<p class="track-year">2017</p>
-														</td>
-														<td class="track-date">March 12,2017</td>
-														<td class="track-download">1200 <span>Downloads</span></td>
-														
-														<td class="track-share">560 <span>Shares</span></td>
-													</tr>
-													<tr>
-														<td class="serial-num">10.</td>
-														<td class="track-pic"><a href="#"><img src="img/track-img.png" alt="Track Image"></a></td>
-														<td class="track-det" colspan="2">
-															<p class="track-name">Blue State of Mind</p>
-															<p class="track-singer">Shavan Miller</p>
-															<p class="track-year">2017</p>
-														</td>
-														<td class="track-date">March 12,2017</td>
-														<td class="track-download">1200 <span>Downloads</span></td>
-														
-														<td class="track-share">560 <span>Shares</span></td>
-													</tr>
-													<tr>
-														<td class="serial-num">11.</td>
-														<td class="track-pic"><a href="#"><img src="img/track-img.png" alt="Track Image"></a></td>
-														<td class="track-det" colspan="2">
-															<p class="track-name">Blue State of Mind</p>
-															<p class="track-singer">Shavan Miller</p>
-															<p class="track-year">2017</p>
-														</td>
-														<td class="track-date">March 12,2017</td>
-														<td class="track-download">1200 <span>Downloads</span></td>
-														
-														<td class="track-share">560 <span>Shares</span></td>
-													</tr>
-													<tr>
-														<td class="serial-num">12.</td>
-														<td class="track-pic"><a href="#"><img src="img/track-img.png" alt="Track Image"></a></td>
-														<td class="track-det" colspan="2">
-															<p class="track-name">Blue State of Mind</p>
-															<p class="track-singer">Shavan Miller</p>
-															<p class="track-year">2017</p>
-														</td>
-														<td class="track-date">March 12,2017</td>
-														<td class="track-download">1200 <span>Downloads</span></td>
-														
-														<td class="track-share">560 <span>Shares</span></td>
-													</tr>
-
-												</tbody>
-											</table>
-										</div>
-										<div class="artist-downloads">
-											<div class="edit-head">1300 Downloads</div>
-											<div class="vote-graph">
-												<img src="img/d-download.jpg" alt="Downloads Map">
-											</div>
-										</div>
-										<div class="artist-proceeds">
-											<div class="edit-head">$2600 Proceeds</div>
-											<div class="vote-graph">
-												<img src="img/d-download.jpg" alt="Downloads Map">
-											</div>
+										<div class="proceeds">
+											<div class="edit-head">$5,200.87 Proceeds</div>
+											<img src="img/proceeds.jpg" alt="Proceeds Graph">
 										</div>
 									</div>
 								</div>
 							</div>
+						</div>
+
+						<div class="tab-pane fade {{tab_cnt == 4 ? 'show active' : '' }}" id="media">
+							<div class="media-wrapper">
+								<div class="col-md-12"><div class="edit-head">Your Media</div></div>
+								<div class="col-md-12"><a data-fancybox data-animation-duration="700" data-src="#addmedia"  href="javascript:;" class="add-payment"><img src="img/icons8-plus_mathNormal.png" alt="">Add Media</a></div>
+								<div class="row">
+									<div class="col-md-4 col-sm-6 col-xs-12">
+										<a class="img-wrap" href="img/media-1.png" data-fancybox="images" data-width="1500" data-height="1000">
+											<img src="img/media-1.png" alt="Media">
+										</a>
+										<a data-fancybox data-animation-duration="700" data-src="#delete"  href="javascript:;" class="delete"><i class="fa fa-trash"></i></a>
+									</div>
+									<div class="col-md-4 col-sm-6 col-xs-12">
+										<a class="img-wrap" href="img/media-2.png" data-fancybox="images" data-width="1500" data-height="1000">
+											<img src="img/media-2.png" alt="Media">
+										</a>
+										<a data-fancybox data-animation-duration="700" data-src="#delete"  href="javascript:;" class="delete"><i class="fa fa-trash"></i></a>
+									</div>
+									<div class="col-md-4 col-sm-6 col-xs-12">
+										<a href="img/media-3.png" data-fancybox="images" data-width="1500" data-height="1000" class="img-wrap">
+											<img src="img/media-3.png" alt="Media">
+										</a>
+										<a data-fancybox data-animation-duration="700" data-src="#delete"  href="javascript:;" class="delete"><i class="fa fa-trash"></i></a>
+									</div>
+									<div class="col-md-4 col-sm-6 col-xs-12">
+										<a href="img/media-4.png" data-fancybox="images" data-width="1500" data-height="1000" class="img-wrap">
+											<img src="img/media-4.png" alt="Media">
+										</a>
+										<a data-fancybox data-animation-duration="700" data-src="#delete"  href="javascript:;" class="delete"><i class="fa fa-trash"></i></a>
+									</div>
+									<div class="col-md-4 col-sm-6 col-xs-12">
+										<a href="img/media-5.png" data-fancybox="images" data-width="1500" data-height="1000" class="img-wrap">
+											<img src="img/media-5.png" alt="Media">
+											<a href="#" class="play-btn"><i class="fa fa-play-circle" aria-hidden="true"></i></a>
+										</a>
+										<a data-fancybox data-animation-duration="700" data-src="#delete"  href="javascript:;" class="delete"><i class="fa fa-trash"></i></a>
+									</div>
+									<div class="col-md-4 col-sm-6 col-xs-12">
+										<a href="img/media-6.png" data-fancybox="images" data-width="1500" data-height="1000" class="img-wrap">
+											<img src="img/media-6.png" alt="Media">
+											<a href="#" class="play-btn"><i class="fa fa-play-circle" aria-hidden="true"></i></a>
+										</a>
+										<a data-fancybox data-animation-duration="700" data-src="#delete"  href="javascript:;" class="delete"><i class="fa fa-trash"></i></a>
+									</div>
+									<div class="col-md-4 col-sm-6 col-xs-12">
+										<a href="img/media-3.png" data-fancybox="images" data-width="1500" data-height="1000" class="img-wrap">
+											<img src="img/media-3.png" alt="Media">
+										</a>
+										<a data-fancybox data-animation-duration="700" data-src="#delete"  href="javascript:;" class="delete"><i class="fa fa-trash"></i></a>
+									</div>
+									<div class="col-md-4 col-sm-6 col-xs-12">
+										<a href="img/media-4.png" data-fancybox="images" data-width="1500" data-height="1000" class="img-wrap">
+											<img src="img/media-4.png" alt="Media">
+										</a>
+										<a data-fancybox data-animation-duration="700" data-src="#delete"  href="javascript:;" class="delete"><i class="fa fa-trash"></i></a>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="tab-pane fade {{tab_cnt == 5 ? 'show active' : '' }}" id="analytics">
+							<div class="ana-header">
+								<div class="form-group days-grp">
+									<select class="form-control" id="days-select">
+										<option>7 Days</option>
+										<option>1 Month</option>
+									</select>
+									
+								</div>
+								<ul class="ana-tabs nav nav-tabs">
+									<li class="nav-item" ><a class="active" data-toggle="tab" href="#overview">Overview</a></li>
+									<li class="nav-item"><a data-toggle="tab" href="#followers">Followers</a></li>
+									<li class="nav-item"><a data-toggle="tab" href="#trackscontent">Tracks/Contents</a></li>
+									<li class="nav-item"><a data-toggle="tab" href="#download">Downloads</a></li>
+								</ul>
+								<div class="time-frame">
+									<h3>Last 7 Days: April 23,2018 - May 1, 2018</h3>
+								</div>
+							</div>
+							<div class="tab-content ana-content">
+								<div class="tab-pane fade active show" id="overview">
+									<div class="new-follow">
+										<div class="edit-head">New Followers</div>
+										<div class="progress-bar-chart">
+											<span class="inner-text"><p>45</p><span>New Followers</span></span>
+											<ul class="chart-skills">
+
+												<li class="follow-women">
+												<!-- <span>Women</span> -->
+												</li>
+												<li class="follow-men">
+												<!-- <span>Men</span> -->
+												</li>
+												<li class="follow-other">
+												<!-- <span>other</span> -->
+												</li>
+											</ul>
+										</div>
+										<div class="graph-states">
+											<ul>
+												<li class="state-women">
+													<p>52%</p>
+													<span>Women</span>
+												</li>
+												<li class="state-men">
+													<p>46%</p>
+													<span>Men</span>
+												</li>
+												<li class="state-other">
+													<p>2%</p>
+													<span>Other</span>
+												</li>
+											</ul>
+										</div>
+									</div>
+									<div class="artist-vote">
+										<div class="edit-head">12,300 Votes</div>
+										<div class="vote-graph">
+											<img src="img/vote-map.jpg" alt="Vote Map">
+										</div>
+									</div>
+									<div class="artist-downloads">
+										<div class="edit-head">1360 Downloads</div>
+										<div class="download-graph">
+											<ul>
+												<li>
+													<span>Blue Stated Of Mind</span>
+													<div class="d-num"><p>1300</p> <span>Downloads</span></div>
+												</li>
+												<li>
+													<span>Why Today</span>
+													<div class="d-num"><p>600 </p><span>Downloads</span></div>
+												</li>
+												<li>
+													<span>Friday</span>
+													<div class="d-num"><p>300 </p><span>Downloads</span></div>
+												</li>
+												<li>
+													<span>My Love</span>
+													<div class="d-num"><p>340 </p><span>Downloads</span></div>
+												</li>
+												<li>
+													<span>Say Thanks</span>
+													<div class="d-num"><p>120 </p><span>Downloads</span></div>
+												</li>
+
+											</ul>
+										</div>
+									</div>
+									<div class="location-downloads">
+										<div class="edit-head">Top Locations</div>
+										<div class="loc-icon-group">
+											<img src="img/top-location-icon.png" alt="top-location-icon.png">
+											<img src="img/infographic-not-active.png" alt="infographic-not-active.png">
+										</div>
+										<div class="loc-graph">
+											<img src="img/location-map.jpg" alt="Location Graph">
+										</div>
+									</div>
+								</div>
+								<div class="tab-pane fade" id="followers">
+									<div class="new-follow">
+										<div class="edit-head">New Followers</div>
+										<div class="progress-bar-chart">
+											<span class="inner-text"><p>45</p><span>New Followers</span></span>
+											<ul class="chart-skills">
+
+												<li class="follow-women">
+												<!-- <span>Women</span> -->
+												</li>
+												<li class="follow-men">
+												<!-- <span>Men</span> -->
+												</li>
+												<li class="follow-other">
+												<!-- <span>other</span> -->
+												</li>
+											</ul>
+										</div>
+										<div class="graph-states">
+											<ul>
+												<li class="state-women">
+													<p>52%</p>
+													<span>Women</span>
+												</li>
+												<li class="state-men">
+													<p>46%</p>
+													<span>Men</span>
+												</li>
+												<li class="state-other">
+													<p>2%</p>
+													<span>Other</span>
+												</li>
+											</ul>
+										</div>
+									</div>
+									<div class="artist-vote">
+										<div class="edit-head">12,300 Votes</div>
+										<div class="vote-graph">
+											<img src="img/vote-map.jpg" alt="Vote Map">
+										</div>
+									</div>
+									<div class="breakdown-age">
+										<div class="edit-head">Age Breakdown</div>
+										<img src="img/age-breakdown.jpg" alt="Age Break Down">
+									</div>
+									<div class="location-downloads">
+										<div class="edit-head">Top Locations</div>
+										<div class="loc-icon-group">
+											<img src="img/top-location-icon.png" alt="top-location-icon.png">
+											<img src="img/infographic-not-active.png" alt="infographic-not-active.png">
+										</div>
+										<div class="loc-graph">
+											<img src="img/location-map.jpg" alt="Location Graph">
+										</div>
+									</div>
+								</div>
+
+								<div class="tab-pane fade" id="trackscontent">
+									<div class="track-table mCustomScrollbar " data-mcs-theme="dark-3">
+										<table>
+											<tbody>
+												<tr>
+													<td class="serial-num">1.</td>
+													<td class="track-pic"><a href="#"><img src="img/track-img.png" alt="Track Image"></a></td>
+													<td class="track-det" colspan="2">
+														<p class="track-name">Blue State of Mind</p>
+														<p class="track-singer">Shavan Miller</p>
+														<p class="track-year">2017</p>
+													</td>
+													<td class="track-download">1200 <span>Downloads</span></td>
+													<td class="track-share">560 <span>Shares</span></td>
+													<td class="track-likes">3400 <span>Likes</span></td>
+													<td class="track-comment">1200 <span>Comments</span></td>
+													<td class="td track-vote">
+														<img src="img/start.png" alt="start">
+														<span>10800 <br> <span>Votes</span></span>
+													</td>
+												</tr>
+
+												<tr>
+													<td class="serial-num">2.</td>
+													<td class="track-pic"><a href="#"><img src="img/track-img.png" alt="Track Image"></a></td>
+													<td class="track-det" colspan="2">
+														<p class="track-name">Say Thanks</p>
+														<p class="track-singer">Shavan Miller</p>
+														<p class="track-year">2017</p>
+													</td>
+													<td class="track-download">459 <span>Downloads</span></td>
+													<td class="track-share">130 <span>Shares</span></td>
+													<td class="track-likes">3400 <span>Likes</span></td>
+													<td class="track-comment">1200 <span>Comments</span></td>
+													<td class="td track-vote">
+														<img src="img/start.png" alt="start">
+														<span>10800 <br> <span>Votes</span></span>
+													</td>
+												</tr>
+												<tr>
+													<td class="serial-num">3.</td>
+													<td class="track-pic"><a href="#"><img src="img/track-img.png" alt="Track Image"></a></td>
+													<td class="track-det" colspan="2">
+														<p class="track-name">Why Today?</p>
+														<p class="track-singer">Shavan Miller</p>
+														<p class="track-year">2017</p>
+													</td>
+													<td class="track-download">800 <span>Downloads</span></td>
+													<td class="track-share">440 <span>Shares</span></td>
+													<td class="track-likes">3400 <span>Likes</span></td>
+													<td class="track-comment">1200 <span>Comments</span></td>
+													<td class="td track-vote">
+														<img src="img/start.png" alt="start">
+														<span>10800 <br> <span>Votes</span></span>
+													</td>
+												</tr>
+
+												<tr>
+													<td class="serial-num">4.</td>
+													<td class="track-pic"><a href="#"><img src="img/track-img.png" alt="Track Image"></a></td>
+													<td class="track-det" colspan="2">
+														<p class="track-name">Friday</p>
+														<p class="track-singer">Shavan Miller</p>
+														<p class="track-year">2017</p>
+													</td>
+													<td class="track-download">340 <span>Downloads</span></td>
+													<td class="track-share">201 <span>Shares</span></td>
+													<td class="track-likes">3400 <span>Likes</span></td>
+													<td class="track-comment">1200 <span>Comments</span></td>
+													<td class="td track-vote">
+														<img src="img/start.png" alt="start">
+														<span>10800 <br> <span>Votes</span></span>
+													</td>
+												</tr>
+												<tr>
+													<td class="serial-num">5.</td>
+													<td class="track-pic"><a href="#"><img src="img/track-img.png" alt="Track Image"></a></td>
+													<td class="track-det" colspan="2">
+														<p class="track-name">My Love</p>
+														<p class="track-singer">Shavan Miller</p>
+														<p class="track-year">2017</p>
+													</td>
+													<td class="track-download">139 <span>Downloads</span></td>
+													<td class="track-share">190 <span>Shares</span></td>
+													<td class="track-likes">3400 <span>Likes</span></td>
+													<td class="track-comment">1200 <span>Comments</span></td>
+													<td class="td track-vote">
+														<img src="img/start.png" alt="start">
+														<span>10800 <br> <span>Votes</span></span>
+													</td>
+												</tr>
+												<tr>
+													<td class="serial-num">1.</td>
+													<td class="track-pic"><a href="#"><img src="img/track-img.png" alt="Track Image"></a></td>
+													<td class="track-det" colspan="2">
+														<p class="track-name">Blue State of Mind</p>
+														<p class="track-singer">Shavan Miller</p>
+														<p class="track-year">2017</p>
+													</td>
+													<td class="track-download">1200 <span>Downloads</span></td>
+													<td class="track-share">560 <span>Shares</span></td>
+													<td class="track-likes">3400 <span>Likes</span></td>
+													<td class="track-comment">1200 <span>Comments</span></td>
+													<td class="td track-vote">
+														<img src="img/start.png" alt="start">
+														<span>10800 <br> <span>Votes</span></span>
+													</td>
+												</tr>
+
+												<tr>
+													<td class="serial-num">2.</td>
+													<td class="track-pic"><a href="#"><img src="img/track-img.png" alt="Track Image"></a></td>
+													<td class="track-det" colspan="2">
+														<p class="track-name">Say Thanks</p>
+														<p class="track-singer">Shavan Miller</p>
+														<p class="track-year">2017</p>
+													</td>
+													<td class="track-download">459 <span>Downloads</span></td>
+													<td class="track-share">130 <span>Shares</span></td>
+													<td class="track-likes">3400 <span>Likes</span></td>
+													<td class="track-comment">1200 <span>Comments</span></td>
+													<td class="td track-vote">
+														<img src="img/start.png" alt="start">
+														<span>10800 <br> <span>Votes</span></span>
+													</td>
+												</tr>
+												<tr>
+													<td class="serial-num">3.</td>
+													<td class="track-pic"><a href="#"><img src="img/track-img.png" alt="Track Image"></a></td>
+													<td class="track-det" colspan="2">
+														<p class="track-name">Why Today?</p>
+														<p class="track-singer">Shavan Miller</p>
+														<p class="track-year">2017</p>
+													</td>
+													<td class="track-download">800 <span>Downloads</span></td>
+													<td class="track-share">440 <span>Shares</span></td>
+													<td class="track-likes">3400 <span>Likes</span></td>
+													<td class="track-comment">1200 <span>Comments</span></td>
+													<td class="td track-vote">
+														<img src="img/start.png" alt="start">
+														<span>10800 <br> <span>Votes</span></span>
+													</td>
+												</tr>
+
+												<tr>
+													<td class="serial-num">4.</td>
+													<td class="track-pic"><a href="#"><img src="img/track-img.png" alt="Track Image"></a></td>
+													<td class="track-det" colspan="2">
+														<p class="track-name">Friday</p>
+														<p class="track-singer">Shavan Miller</p>
+														<p class="track-year">2017</p>
+													</td>
+													<td class="track-download">340 <span>Downloads</span></td>
+													<td class="track-share">201 <span>Shares</span></td>
+													<td class="track-likes">3400 <span>Likes</span></td>
+													<td class="track-comment">1200 <span>Comments</span></td>
+													<td class="td track-vote">
+														<img src="img/start.png" alt="start">
+														<span>10800 <br> <span>Votes</span></span>
+													</td>
+												</tr>
+												<tr>
+													<td class="serial-num">5.</td>
+													<td class="track-pic"><a href="#"><img src="img/track-img.png" alt="Track Image"></a></td>
+													<td class="track-det" colspan="2">
+														<p class="track-name">My Love</p>
+														<p class="track-singer">Shavan Miller</p>
+														<p class="track-year">2017</p>
+													</td>
+													<td class="track-download">139 <span>Downloads</span></td>
+													<td class="track-share">190 <span>Shares</span></td>
+													<td class="track-likes">3400 <span>Likes</span></td>
+													<td class="track-comment">1200 <span>Comments</span></td>
+													<td class="td track-vote">
+														<img src="img/start.png" alt="start">
+														<span>10800 <br> <span>Votes</span></span>
+													</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+									<div class="new-follow">
+										<div class="edit-head">New Followers</div>
+										<div class="progress-bar-chart">
+											<span class="inner-text"><p>45</p><span>New Followers</span></span>
+											<ul class="chart-skills">
+
+												<li class="follow-women">
+												<!-- <span>Women</span> -->
+												</li>
+												<li class="follow-men">
+												<!-- <span>Men</span> -->
+												</li>
+												<li class="follow-other">
+												<!-- <span>other</span> -->
+												</li>
+											</ul>
+										</div>
+										<div class="graph-states">
+											<ul>
+												<li class="state-women">
+													<p>52%</p>
+													<span>Women</span>
+												</li>
+												<li class="state-men">
+													<p>46%</p>
+													<span>Men</span>
+												</li>
+												<li class="state-other">
+													<p>2%</p>
+													<span>Other</span>
+												</li>
+											</ul>
+										</div>
+									</div>
+									<div class="artist-vote">
+										<div class="edit-head">12,300 Votes</div>
+										<div class="vote-graph">
+											<img src="img/vote-map.jpg" alt="Vote Map">
+										</div>
+									</div>
+									<div class="artist-downloads">
+										<div class="edit-head">Rank</div>
+										<div class="transaction-table mCustomScrollbar " data-mcs-theme="dark-3"">
+											<table>
+												<thead>
+													<tr>
+														<td>Contest</td>
+														<td>Rank</td>
+														<td>Number of votes</td>
+													</tr>
+												</thead>
+												<tbody>
+													<tr>
+														<td>Regionals</td>
+														<td>3</td>
+														<td class="td track-vote">
+															<img src="img/start.png" alt="start">
+															<span>1300 <span>Votes</span></span>
+														</td>
+													</tr>
+													<tr>
+														<td>Round 3</td>
+														<td>5</td>
+														<td class="td track-vote">
+															<img src="img/start.png" alt="start">
+															<span>680 <span>Votes</span></span>
+														</td>
+													</tr>
+													<tr>
+														<td>Round 1</td>
+														<td>12</td>
+														<td class="td track-vote">
+															<img src="img/start.png" alt="start">
+															<span>450 <span>Votes</span></span>
+														</td>
+													</tr>
+													<tr>
+														<td>Regionals</td>
+														<td>3</td>
+														<td class="td track-vote">
+															<img src="img/start.png" alt="start">
+															<span>1300 <span>Votes</span></span>
+														</td>
+													</tr>
+													<tr>
+														<td>Round 3</td>
+														<td>5</td>
+														<td class="td track-vote">
+															<img src="img/start.png" alt="start">
+															<span>680 <span>Votes</span></span>
+														</td>
+													</tr>
+													<tr>
+														<td>Round 1</td>
+														<td>12</td>
+														<td class="td track-vote">
+															<img src="img/start.png" alt="start">
+															<span>450 <span>Votes</span></span>
+														</td>
+													</tr>
+													<tr>
+														<td>Regionals</td>
+														<td>3</td>
+														<td class="td track-vote">
+															<img src="img/start.png" alt="start">
+															<span>1300 <span>Votes</span></span>
+														</td>
+													</tr>
+													<tr>
+														<td>Round 3</td>
+														<td>5</td>
+														<td class="td track-vote">
+															<img src="img/start.png" alt="start">
+															<span>680 <span>Votes</span></span>
+														</td>
+													</tr>
+													<tr>
+														<td>Round 1</td>
+														<td>12</td>
+														<td class="td track-vote">
+															<img src="img/start.png" alt="start">
+															<span>450 <span>Votes</span></span>
+														</td>
+													</tr>
+													
+												</tbody>
+											</table>
+										</div>
+									</div>
+									<div class="location-downloads">
+										<div class="edit-head">Top Locations</div>
+										<div class="loc-icon-group">
+											<img src="img/top-location-icon.png" alt="top-location-icon.png">
+											<img src="img/infographic-not-active.png" alt="infographic-not-active.png">
+										</div>
+										<div class="loc-graph">
+											<img src="img/location-map.jpg" alt="Location Graph">
+										</div>
+									</div>
+								</div>
+
+								<div class="tab-pane fade" id="download">
+									<div class="track-table mCustomScrollbar " data-mcs-theme="dark-3">
+										<table>
+											<tbody>
+												<tr>
+													<td class="serial-num">1.</td>
+													<td class="track-pic"><a href="#"><img src="img/track-img.png" alt="Track Image"></a></td>
+													<td class="track-det" colspan="2">
+														<p class="track-name">Blue State of Mind</p>
+														<p class="track-singer">Shavan Miller</p>
+														<p class="track-year">2017</p>
+													</td>
+													<td class="track-date">March 12,2017</td>
+													<td class="track-download">1200 <span>Downloads</span></td>
+													
+													<td class="track-share">560 <span>Shares</span></td>
+												</tr>
+												<tr>
+													<td class="serial-num">2.</td>
+													<td class="track-pic"><a href="#"><img src="img/track-img.png" alt="Track Image"></a></td>
+													<td class="track-det" colspan="2">
+														<p class="track-name">Blue State of Mind</p>
+														<p class="track-singer">Shavan Miller</p>
+														<p class="track-year">2017</p>
+													</td>
+													<td class="track-date">March 12,2017</td>
+													<td class="track-download">1200 <span>Downloads</span></td>
+													
+													<td class="track-share">560 <span>Shares</span></td>
+												</tr>
+												<tr>
+													<td class="serial-num">3.</td>
+													<td class="track-pic"><a href="#"><img src="img/track-img.png" alt="Track Image"></a></td>
+													<td class="track-det" colspan="2">
+														<p class="track-name">Blue State of Mind</p>
+														<p class="track-singer">Shavan Miller</p>
+														<p class="track-year">2017</p>
+													</td>
+													<td class="track-date">March 12,2017</td>
+													<td class="track-download">1200 <span>Downloads</span></td>
+													
+													<td class="track-share">560 <span>Shares</span></td>
+												</tr>
+												<tr>
+													<td class="serial-num">4.</td>
+													<td class="track-pic"><a href="#"><img src="img/track-img.png" alt="Track Image"></a></td>
+													<td class="track-det" colspan="2">
+														<p class="track-name">Blue State of Mind</p>
+														<p class="track-singer">Shavan Miller</p>
+														<p class="track-year">2017</p>
+													</td>
+													<td class="track-date">March 12,2017</td>
+													<td class="track-download">1200 <span>Downloads</span></td>
+													
+													<td class="track-share">560 <span>Shares</span></td>
+												</tr>
+												<tr>
+													<td class="serial-num">5.</td>
+													<td class="track-pic"><a href="#"><img src="img/track-img.png" alt="Track Image"></a></td>
+													<td class="track-det" colspan="2">
+														<p class="track-name">Blue State of Mind</p>
+														<p class="track-singer">Shavan Miller</p>
+														<p class="track-year">2017</p>
+													</td>
+													<td class="track-date">March 12,2017</td>
+													<td class="track-download">1200 <span>Downloads</span></td>
+													
+													<td class="track-share">560 <span>Shares</span></td>
+												</tr>
+												<tr>
+													<td class="serial-num">6.</td>
+													<td class="track-pic"><a href="#"><img src="img/track-img.png" alt="Track Image"></a></td>
+													<td class="track-det" colspan="2">
+														<p class="track-name">Blue State of Mind</p>
+														<p class="track-singer">Shavan Miller</p>
+														<p class="track-year">2017</p>
+													</td>
+													<td class="track-date">March 12,2017</td>
+													<td class="track-download">1200 <span>Downloads</span></td>
+													
+													<td class="track-share">560 <span>Shares</span></td>
+												</tr>
+												<tr>
+													<td class="serial-num">7.</td>
+													<td class="track-pic"><a href="#"><img src="img/track-img.png" alt="Track Image"></a></td>
+													<td class="track-det" colspan="2">
+														<p class="track-name">Blue State of Mind</p>
+														<p class="track-singer">Shavan Miller</p>
+														<p class="track-year">2017</p>
+													</td>
+													<td class="track-date">March 12,2017</td>
+													<td class="track-download">1200 <span>Downloads</span></td>
+													
+													<td class="track-share">560 <span>Shares</span></td>
+												</tr>
+												<tr>
+													<td class="serial-num">8.</td>
+													<td class="track-pic"><a href="#"><img src="img/track-img.png" alt="Track Image"></a></td>
+													<td class="track-det" colspan="2">
+														<p class="track-name">Blue State of Mind</p>
+														<p class="track-singer">Shavan Miller</p>
+														<p class="track-year">2017</p>
+													</td>
+													<td class="track-date">March 12,2017</td>
+													<td class="track-download">1200 <span>Downloads</span></td>
+													
+													<td class="track-share">560 <span>Shares</span></td>
+												</tr>
+												<tr>
+													<td class="serial-num">9.</td>
+													<td class="track-pic"><a href="#"><img src="img/track-img.png" alt="Track Image"></a></td>
+													<td class="track-det" colspan="2">
+														<p class="track-name">Blue State of Mind</p>
+														<p class="track-singer">Shavan Miller</p>
+														<p class="track-year">2017</p>
+													</td>
+													<td class="track-date">March 12,2017</td>
+													<td class="track-download">1200 <span>Downloads</span></td>
+													
+													<td class="track-share">560 <span>Shares</span></td>
+												</tr>
+												<tr>
+													<td class="serial-num">10.</td>
+													<td class="track-pic"><a href="#"><img src="img/track-img.png" alt="Track Image"></a></td>
+													<td class="track-det" colspan="2">
+														<p class="track-name">Blue State of Mind</p>
+														<p class="track-singer">Shavan Miller</p>
+														<p class="track-year">2017</p>
+													</td>
+													<td class="track-date">March 12,2017</td>
+													<td class="track-download">1200 <span>Downloads</span></td>
+													
+													<td class="track-share">560 <span>Shares</span></td>
+												</tr>
+												<tr>
+													<td class="serial-num">11.</td>
+													<td class="track-pic"><a href="#"><img src="img/track-img.png" alt="Track Image"></a></td>
+													<td class="track-det" colspan="2">
+														<p class="track-name">Blue State of Mind</p>
+														<p class="track-singer">Shavan Miller</p>
+														<p class="track-year">2017</p>
+													</td>
+													<td class="track-date">March 12,2017</td>
+													<td class="track-download">1200 <span>Downloads</span></td>
+													
+													<td class="track-share">560 <span>Shares</span></td>
+												</tr>
+												<tr>
+													<td class="serial-num">12.</td>
+													<td class="track-pic"><a href="#"><img src="img/track-img.png" alt="Track Image"></a></td>
+													<td class="track-det" colspan="2">
+														<p class="track-name">Blue State of Mind</p>
+														<p class="track-singer">Shavan Miller</p>
+														<p class="track-year">2017</p>
+													</td>
+													<td class="track-date">March 12,2017</td>
+													<td class="track-download">1200 <span>Downloads</span></td>
+													
+													<td class="track-share">560 <span>Shares</span></td>
+												</tr>
+
+											</tbody>
+										</table>
+									</div>
+									<div class="artist-downloads">
+										<div class="edit-head">1300 Downloads</div>
+										<div class="vote-graph">
+											<img src="img/d-download.jpg" alt="Downloads Map">
+										</div>
+									</div>
+									<div class="artist-proceeds">
+										<div class="edit-head">$2600 Proceeds</div>
+										<div class="vote-graph">
+											<img src="img/d-download.jpg" alt="Downloads Map">
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+<section class="edit-profile-wrap" *ngIf="userdata.type == 'user'">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-2 col-sm-3 col-xs-3">
+				<div class="profile-tabs">	
+					<ul class="nav nav-tabs" id="myTab">
+						<li class="nav-item"><a class="nav-link {{tab_cnt == 1 ? 'active' : '' }}" (click)="tabChange(1)" data-toggle="tab" href="javascript:;">Profile</a></li>
+						<li class="nav-item"><a class="nav-link {{tab_cnt == 2 ? 'active' : '' }}" data-toggle="tab" (click)="tabChange(2)" href="javascript:;">Settings</a></li>
+					</ul>
+				</div>
+			</div>
+			<div class="col-md-10 col-sm-9 col-xs-9">
+				<div class="rofile-tab-content">
+					<div class="tab-content">
+						<div class="tab-pane fade {{tab_cnt == 1 ? 'show active' : '' }} " id="profile">
+							<div class="edit-cover">
+								<form >
+								<div class="edit-details">
+									<div class="edit-head">Your Details</div>
+									<div class="row">
+										<div class="col-md-3 col-sm-12 col-xs-12">
+											<div class="edit-profile-picture">
+												<div class="upload-cover"> 
+													<img src="{{default_profile_img}}" alt="Edit cover Image">
+													<span class="up_text">Update Photo</span> 
+													<input type="file" name="upload" id="cover_upload"  (change)="updateProfileImage($event)"> 
+													<a data-fancybox data-animation-duration="700" data-src="#delete"  href="javascript:;" class="delete"><i class="fa fa-trash"></i></a>
+												</div>
+											</div>
+										</div>
+										<div class="col-md-9 col-sm-12 col-xs-12">
+											<div class="form-details">
+												
+													<div class="form-group">
+														<label for="fname">First Name</label>
+														<input type="text" class="form-control" id="fname5" name="fname" [(ngModel)]="userdata.first_name" placeholder="First Name">
+													</div>
+
+													<div class="form-group pwd-grp">
+														<label for="lanem">Last Name</label>
+														<input type="text" class="form-control" id="lname2" name="lname" [(ngModel)]="userdata.last_name" placeholder="Last Name">
+													</div>
+
+													<div class="form-group gender-grp">
+								<label for="geder">Gender</label>
+														<select class="form-control" id="gender" name="gender" [(ngModel)]="userdata.gender">
+															<option value="male">Male</option>
+															<option value="female">Female</option>
+														</select>
+													</div>
+													<div class="form-group">
+														<div class="date-of-birth">
+															<label for="date">Birthday</label>
+															<div class="form-group">
+																<select class="form-control" id="day" name="day" [(ngModel)]="userdata.day">
+																	<option value="">Day</option>
+																	<option *ngFor="let d of day" value="{{d}}">{{d}}</option>
+																</select>
+															</div>
+															<div class="form-group">
+																<select class="form-control" id="month" name="month" [(ngModel)]="userdata.month">
+																	<option value="">Month</option>
+																	<option *ngFor="let m of month" value="{{m}}">{{m}}</option>
+																</select>
+															</div>
+															<div class="form-group">
+																<select class="form-control" id="year" name="year" [(ngModel)]="userdata.year">
+																	<option value="">Year</option>
+																	<option *ngFor="let y of year" value="{{y}}">{{y}}</option>
+																</select>
+															</div>
+														</div>
+													</div>
+
+													<div class="form-group music-grp">
+														<label for="musictype">Music Type</label>
+														<select class="form-control" id="musictype" multiple name="music_type" [(ngModel)]="userdata.music_type">
+								<option *ngFor="let type of music_types" value="{{type._id}}">{{type.name}}</option>
+														</select>
+													</div>
+
+													<div class="form-group home-grp">
+														<label for="hometown">Zipcode</label>
+								<input class="form-control" placeholder="zipcode"  name="zipcode" [(ngModel)]="userdata.zipcode"/>
+													</div>
+												
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="button_group">
+									<a href="#" class="cancel-btn">Cancel</a>
+									<button type="submit" (click)="update()" [disabled]="show_spinner" class="save-btn btn btn-primary">Save <i *ngIf="show_spinner" class="fa fa-spinner fa-spin"></i></button>
+				</div>
+				</form>
+							</div>
+						</div>
+						<div class="tab-pane fade {{tab_cnt == 2 ? 'show active' : '' }}" id="settings">
+							<div class="update-email">
+								<div class="email-form">
+									<div class="edit-head">Update Your Email</div>
+									<form>
+										<div class="form-group">
+											<label for="yemail">Your</label>
+											<input type="email" class="form-control" id="yemail" placeholder="Your Email">
+										</div>
+										<div class="form-group">
+											<label for="nemail">New Email</label>
+											<input type="email" class="form-control" id="nemail" placeholder="New Name">
+										</div>
+										<div class="form-group">
+											<label for="remail">Repeat New Email</label>
+											<input type="email" class="form-control" id="remail" placeholder="Repeat Email">
+										</div>
+										<div class="button_group">
+											<a href="#" class="cancel-btn">Cancel</a>
+											<a href="#" class="update-btn">update</a>
+										</div>
+									</form>
+								</div>
+								<div class="password-form">
+									<div class="edit-head">Update Password</div>
+									<form>
+										<div class="form-group">
+											<label for="ypwd">Your Password</label>
+											<input type="password" class="form-control" id="ypwd" placeholder="Your Email">
+											<div class="pwd-icon">
+												<i class="fa fa-eye" aria-hidden="true"></i>
+												<!-- <i class="fa fa-eye-slash" aria-hidden="true"></i> -->
+											</div>
+										</div>
+										<div class="form-group">
+											<label for="npwd">New Password</label>
+											<input type="password" class="form-control" id="npwd" placeholder="New Name">
+											<div class="pwd-icon">
+												<i class="fa fa-eye" aria-hidden="true"></i>
+												<!-- <i class="fa fa-eye-slash" aria-hidden="true"></i> -->
+											</div>
+										</div>
+										<div class="form-group">
+											<label for="rpwd">Repeat New Password</label>
+											<input type="password" class="form-control" id="rpwd" placeholder="Repeat Email">
+											<div class="pwd-icon">
+												<i class="fa fa-eye " aria-hidden="true"></i>
+												<!-- <i class="fa fa-eye-slash" aria-hidden="true"></i> -->
+											</div>
+										</div>
+										<div class="button_group">
+											<a href="#" class="cancel-btn">Cancel</a>
+											<a href="#" class="update-btn">update</a>
+										</div>
+									</form>
+								</div>
+								<div class="notification">
+									<div class="edit-head">Notifications</div>
+									<div class="notify-by-email">
+										<div class="edit-head">Notifications by Email</div>
+										<ul>
+											<li class="followers">
+												<p>New Followers</p>
+												<div class="f-toggle">
+													<label class="switch">
+														<input type="checkbox" checked>
+														<span class="slider round"></span>
+													</label>
+												</div>
+											</li>
+											<li class="comments">
+												<p>Comments</p>
+												<div class="f-toggle">
+													<label class="switch">
+														<input type="checkbox">
+														<span class="slider round"></span>
+													</label>
+												</div>
+											</li>
+											<li class="message">
+												<p>Message</p>
+												<div class="f-toggle">
+													<label class="switch">
+														<input type="checkbox" checked>
+														<span class="slider round"></span>
+													</label>
+												</div>
+											</li>
+										</ul>
+									</div>
+									<div class="notify-by-sms">
+										<div class="edit-head">Notifications by SMS</div>
+										<ul>
+											<li class="followers">
+												<p>New Followers</p>
+												<div class="f-toggle">
+													<label class="switch">
+														<input type="checkbox" checked>
+														<span class="slider round"></span>
+													</label>
+												</div>
+											</li>
+											<li class="comments">
+												<p>Comments</p>
+												<div class="f-toggle">
+													<label class="switch">
+														<input type="checkbox">
+														<span class="slider round"></span>
+													</label>
+												</div>
+											</li>
+											<li class="message">
+												<p>Message</p>
+												<div class="f-toggle">
+													<label class="switch">
+														<input type="checkbox" checked>
+														<span class="slider round"></span>
+													</label>
+												</div>
+											</li>
+										</ul>
+									</div>
+									<div class="on-side-alert">
+										<div class="edit-head">On Side Alerts</div>
+										<ul>
+											<li class="followers">
+												<p>New Followers</p>
+												<div class="f-toggle">
+													<label class="switch">
+														<input type="checkbox" checked>
+														<span class="slider round"></span>
+													</label>
+												</div>
+											</li>
+											<li class="comments">
+												<p>Comments</p>
+												<div class="f-toggle">
+													<label class="switch">
+														<input type="checkbox">
+														<span class="slider round"></span>
+													</label>
+												</div>
+											</li>
+											<li class="message">
+												<p>Message</p>
+												<div class="f-toggle">
+													<label class="switch">
+														<input type="checkbox" checked>
+														<span class="slider round"></span>
+													</label>
+												</div>
+											</li>
+										</ul>
+									</div>
+								</div>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-	</section>
+	</div>
+</section>
