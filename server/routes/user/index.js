@@ -52,6 +52,8 @@ router.put("/", async (req, res) => {
         obj.last_name = req.body.last_name;
     }
     if (req.body.zipcode && req.body.zipcode != null) {
+        obj.zipcode = req.body.zipcode;
+
     }
     if (req.body.music_type && req.body.music_type != null) {
         obj.music_type = req.body.music_type;
