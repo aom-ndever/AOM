@@ -186,7 +186,7 @@ router.put('/update_image', function (req, res) {
         if (user_resp.status === 0) {
             res.status(config.INTERNAL_SERVER_ERROR).json({ "error": user_resp.error });
         } else {
-            res.status(config.OK_STATUS).json({ "message": "Profile has been updated successfully" });
+            res.status(config.OK_STATUS).json({ "message": "Profile has been updated successfully", "image": filename });
         }
     });
 });
@@ -241,7 +241,7 @@ router.put('/update_cover_image', function (req, res) {
         if (user_resp.status === 0) {
             res.status(config.INTERNAL_SERVER_ERROR).json({ "error": user_resp.error });
         } else {
-            res.status(config.OK_STATUS).json({ "message": "Profile has been updated successfully" });
+            res.status(config.OK_STATUS).json({ "message": "Profile has been updated successfully", "cover_image": filename });
         }
     });
 });
