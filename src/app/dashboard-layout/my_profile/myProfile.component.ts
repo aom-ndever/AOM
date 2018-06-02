@@ -14,6 +14,7 @@ export class MyProfileComponent implements OnInit {
     month : '',
     year : ''
   };
+  public default_profile_img : any = 'img/profile-img.png';
   public day : any = [];
   public month : any = [];
   public year : any = [];
@@ -67,6 +68,7 @@ export class MyProfileComponent implements OnInit {
   update() {
     if(this.userdata.type == 'artist') {
       this.userdata['dob'] = new Date(this.userdata['year'], this.userdata['month'] ,this.userdata['day']);
+      this.userdata['share_url'] = this.userdata['social_media'];
       this.MyProfileService.updateArtistProfile(this.userdata).subscribe(response => {
         console.log(response);
         this.toastr.success(response['message'], 'Success!');
@@ -96,4 +98,23 @@ export class MyProfileComponent implements OnInit {
       });
     }
   }
+
+  updateProfileImage(event: any) {
+    const fileList: FileList = event.target.files;
+    console.log(fileList);
+    const formData: FormData = new FormData();
+    formData.append('uploadFile', fileList[0], fileList[0]['name']);
+
+    if (fileList.length > 0) {
+      const fileExtention = fileList[0].name.split('.');
+      const file: File = fileList[0];
+        const reader = new FileReader();
+        reader.onload = (e: any) => {
+          const data = {};
+            let imageBuffer = e.target.result;
+            this.default_profile_img = imageBuffer;
+        };
+        reader.readAsDataURL(event.target.files[0]);
+      }
+    }
 }
