@@ -35,7 +35,6 @@ var fs = require('fs');
 router.put("/", async (req, res) => {
     user_id = req.userInfo.id;
     var obj = {
-
     };
     if (req.body.share_url && req.body.share_url != null) {
         obj.social_media = req.body.share_url;
@@ -53,7 +52,6 @@ router.put("/", async (req, res) => {
         obj.last_name = req.body.last_name;
     }
     if (req.body.zipcode && req.body.zipcode != null) {
-        obj.zipcode = req.body.zipcode;
     }
     if (req.body.music_type && req.body.music_type != null) {
         obj.music_type = req.body.music_type;
@@ -69,7 +67,6 @@ router.put("/", async (req, res) => {
 });
 
 
-
 router.get("/", async (req, res) => {
     user_id = req.userInfo.id;
     var resp_data = await user_helper.get_user_by_id(user_id);
@@ -81,4 +78,6 @@ router.get("/", async (req, res) => {
         res.status(config.OK_STATUS).json(resp_data);
     }
 });
+
+
 module.exports = router;
