@@ -7,12 +7,15 @@ import { dashCaseToCamelCase } from '@angular/compiler/src/util';
 @Injectable()
 export class MyProfileService {
   private api_host : any = environment.API_URL;
-  private user = JSON.parse(localStorage.getItem('user'));
+  private user : any = '';
+  private headers : any = '';
+
   constructor(private http: HttpClient) { 
-    
+    this.user = JSON.parse(localStorage.getItem('user'));
+    this.headers = new HttpHeaders({ 'Content-Type': 'application/json', 'x-access-token' : this.user.token, 'content-type':"application/x-www-form-urlencoded" });  
   }
 
-  private headers = new HttpHeaders({ 'Content-Type': 'application/json', 'x-access-token' : this.user.token });
+  
 
   // get All music type
   getAllMusicType() {
