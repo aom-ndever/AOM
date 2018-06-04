@@ -96,4 +96,8 @@ export class MyProfileService {
   getAllMedia() {
     return this.http.get(`${this.api_host}/artist/media`, {headers : this.headers});
   }
+  // Remove Media
+  removeMediaById(id : any) {
+    return this.http.delete(`${this.api_host}/artist/media/${id}`, {headers : this.headers});
+  }
 }
