@@ -4,6 +4,7 @@ import { FormGroup, FormBuilder, Validators, FormControl, AbstractControl, NG_VA
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { HeaderService } from './header.service'; 
+import { environment } from '../../../environments/environment';
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
@@ -26,9 +27,9 @@ export class HeaderComponent implements OnInit, OnDestroy  {
     ) {
     this.user = JSON.parse(localStorage.getItem('user'));
     if(this.user && this.user.artist) {
-      this.user.artist['image'] = typeof this.user.artist['image'] != 'undefined' ? this.user.artist['image'] : '';
+      this.user.artist['image'] = typeof this.user.artist['image'] != 'undefined' ? environment.API_URL+environment.ARTIST_IMG+this.user.artist['image'] : '';
     } else if(this.user && this.user.user) {
-      this.user.user['image'] = typeof this.user.user['image'] != 'undefined' ? this.user.user['image'] : '';
+      this.user.user['image'] = typeof this.user.user['image'] != 'undefined' ? environment.API_URL+environment.USER_IMG+this.user.user['image'] : '';
     }
     this.login_form = this.fb.group({
       email : ['', [Validators.required]],
@@ -73,10 +74,10 @@ export class HeaderComponent implements OnInit, OnDestroy  {
         this.toastr.success('Login Done', 'Success!');
         this.modalRef.close();
         this.user = JSON.parse(localStorage.getItem('user'));
-        if(this.user.artist) {
-          this.user.artist['image'] = typeof this.user.artist['image'] != 'undefined' ? this.user.artist['image'] : '';
-        } else {
-          this.user.user['image'] = typeof this.user.user['image'] != 'undefined' ? this.user.user['image'] : '';
+        if(this.user && this.user.artist) {
+          this.user.artist['image'] = typeof this.user.artist['image'] != 'undefined' ? environment.API_URL+environment.ARTIST_IMG+this.user.artist['image'] : '';
+        } else if(this.user && this.user.user) {
+          this.user.user['image'] = typeof this.user.user['image'] != 'undefined' ? environment.API_URL+environment.USER_IMG+this.user.user['image'] : '';
         }
         this.router.navigate(['']);
       }, error => {
@@ -93,10 +94,10 @@ export class HeaderComponent implements OnInit, OnDestroy  {
         localStorage.setItem('user', JSON.stringify(response));
         this.modalRef.close();
         this.user = JSON.parse(localStorage.getItem('user'));
-        if(this.user.artist) {
-          this.user.artist['image'] = typeof this.user.artist['image'] != 'undefined' ? this.user.artist['image'] : '';
-        } else {
-          this.user.user['image'] = typeof this.user.user['image'] != 'undefined' ? this.user.user['image'] : '';
+        if(this.user && this.user.artist) {
+          this.user.artist['image'] = typeof this.user.artist['image'] != 'undefined' ? environment.API_URL+environment.ARTIST_IMG+this.user.artist['image'] : '';
+        } else if(this.user && this.user.user) {
+          this.user.user['image'] = typeof this.user.user['image'] != 'undefined' ? environment.API_URL+environment.USER_IMG+this.user.user['image'] : '';
         }
         this.router.navigate(['']);
       }, error => {

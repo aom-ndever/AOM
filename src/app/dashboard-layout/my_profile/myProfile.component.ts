@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MyProfileService } from './myProfile.service';
 import { ToastrService } from 'ngx-toastr';
+import { environment } from '../../../environments/environment';
 @Component({
   selector: 'app-myProfile',
   templateUrl: './myProfile.component.html',
@@ -43,6 +44,12 @@ export class MyProfileComponent implements OnInit {
         this.userdata['month'] = dt.getMonth() + 1;
         this.userdata['year'] = dt.getFullYear();
       }
+      if(this.userdata.image) {
+        this.default_profile_img = environment.API_URL+environment.ARTIST_IMG+this.userdata.image;
+      }
+      if(this.userdata.cover_image) {
+        this.default_profile_img = environment.API_URL+environment.ARTIST_IMG+this.userdata.cover_image;
+      }
     } else {
       this.userdata = {...data['user']};
       this.userdata['type'] = 'user';
@@ -51,6 +58,9 @@ export class MyProfileComponent implements OnInit {
         this.userdata['day'] = dt.getDate();
         this.userdata['month'] = dt.getMonth() + 1;
         this.userdata['year'] = dt.getFullYear();
+      }
+      if(this.userdata.image) {
+        this.default_profile_img = environment.API_URL+environment.USER_IMG+this.userdata.image;
       }
     }
     this.MyProfileService.getAllMusicType().subscribe(response => {
@@ -113,13 +123,21 @@ export class MyProfileComponent implements OnInit {
     if(this.userdata.type == 'artist') {
       this.MyProfileService.updateArtistProfileImage(formData).subscribe(response => {
         console.log('uploaded image', response);
+        this.default_profile_img = environment.API_URL+environment.ARTIST_IMG+response['image'];
       }, error => {
         this.toastr.error(error['error'].message, 'Error!');
       }, () => {
 
       });
     } else {
+      this.MyProfileService.updateUserProfileImage(formData).subscribe(response => {
+        console.log('uploaded image', response);
+        this.default_profile_img = environment.API_URL+environment.USER_IMG+response['image'];
+      }, error => {
+        this.toastr.error(error['error'].message, 'Error!');
+      }, () => {
 
+      });
     }
     if (fileList.length > 0) {
       const fileExtention = fileList[0].name.split('.');
@@ -141,6 +159,9 @@ export class MyProfileComponent implements OnInit {
     formData.append('cover_image', fileList[0], fileList[0]['name']);
     this.MyProfileService.updateCoverImage(formData).subscribe(response => {
       console.log('uploaded image', response);
+      if(this.userdata.cover_image) {
+        this.default_profile_img = environment.API_URL+environment.ARTIST_IMG+this.userdata.response['cover_image'];
+      }
     }, error => {
       this.toastr.error(error['error'].message, 'Error!');
     }, () => {
