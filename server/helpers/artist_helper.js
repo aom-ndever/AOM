@@ -225,8 +225,6 @@ artist_helper.get_all_track_of_artist = async () => {
 
 artist_helper.get_all_active_and_suspend_artist = async (filter) => {
     try {
-        console.log('filter', filter);
-
 
         var artist = await Artist
             .find(filter, {

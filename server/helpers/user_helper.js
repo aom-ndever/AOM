@@ -151,10 +151,7 @@ user_helper.delete_user_by_admin = async (user_id) => {
 user_helper.update_user_status = async (user_id, status) => {
 
     try {
-        console.log("1");
         var user = await User.findOneAndUpdate({ "_id": new ObjectId(user_id) }, { "status": status });
-
-        console.log("2", user);
         if (user) {
             return { "status": 1, "message": "user status updated", };
         } else {
@@ -217,8 +214,6 @@ user_helper.update_user_for_comments = async (id, no_comment) => {
 
 user_helper.get_all_active_and_suspend_user = async (filter) => {
     try {
-        console.log('filter', filter);
-
 
         var user = await User
             .find(filter, {
@@ -254,6 +249,31 @@ user_helper.delete_user_image = async (user_id) => {
         }
     } catch (err) {
         return { "status": 0, "message": "Error occured while finding user", "error": err }
+    }
+};
+
+user_helper.update_user_email = async (artist_id, email) => {
+    try {
+        let user = await User.findOneAndUpdate({ _id: user_id }, { "email": email });
+        if (!user) {
+            return { "status": 2, "message": "email has not updated" };
+        } else {
+            return { "status": 1, "message": "email has been updated", "user": user };
+        }
+    } catch (err) {
+        return { "status": 0, "message": "Error occured while updating user'email", "error": err }
+    }
+};
+user_helper.update_user_password = async (user_id, password) => {
+    try {
+        let user = await User.findOneAndUpdate({ _id: user_id }, password);
+        if (!user) {
+            return { "status": 2, "message": "password has not updated" };
+        } else {
+            return { "status": 1, "message": "password has been updated", "user": user };
+        }
+    } catch (err) {
+        return { "status": 0, "message": "Error occured while updating user's password", "error": err }
     }
 };
 module.exports = user_helper;

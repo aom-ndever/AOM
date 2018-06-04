@@ -61,21 +61,15 @@ router.post('/follow', async (req, res) => {
       var resp_data = await track_helper.update_artist_for_followers(obj.artist_id, no_follow);
 
       var response = await user_helper.get_user_by_id(obj.user_id);
-      console.log('response', response);
 
       no_follow = response.user.no_of_followers + 1
       var resp_data = await user_helper.update_user_for_followers(obj.user_id, no_follow);
-
-
-      console.log("sending mail");
 
       let mail_resp = await mail_helper.send("listener_followed", {
         "to": resp.artist.email,
         "subject": "Music Social Voting - Email confirmation"
       })
-      // }, {
-      //     "confirm_url": config.website_url + "/email_confirm/" + data.artist._id
-      //   });
+
 
       logger.trace("followed successfully = ", resp_data);
       res.status(config.OK_STATUS).json(resp_data);

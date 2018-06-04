@@ -5,6 +5,7 @@ var logger = config.logger;
 var bcrypt = require('bcrypt');
 var jwt = require('jsonwebtoken');
 var async = require('async');
+const saltRounds = 10;
 
 var user_helper = require('../../helpers/user_helper');
 var participate_helper = require('../../helpers/participate_helper');
@@ -94,7 +95,7 @@ router.put('/update_image', function (req, res) {
                             logger.trace("There was an issue in uploading avatar image");
                             callback({ "status": config.MEDIA_ERROR_STATUS, "resp": { "status": 0, "message": "There was an issue in uploading avatar image" } });
                         } else {
-                            logger.trace("Avatar image has uploaded for artist");
+                            logger.trace("Avatar image has uploaded for user");
 
                             callback(null, filename);
                         }
@@ -147,6 +148,50 @@ router.delete('/image/:user_id', async (req, res) => {
         res.status(config.BAD_REQUEST).json({ "status": 0, "message": "Can't delete user image" });
     } else {
         res.status(config.OK_STATUS).json({ "status": 1, "message": "user image has been deleted" });
+    }
+});
+
+
+
+router.put('/change/email', async (req, res) => {
+    user_id = req.userInfo.id;
+
+    var resp = await user_helper.get_user_by_id(user_id);
+    if (resp.status === 1) {
+        if (resp.user.email == req.body.email) {
+            if (req.body.new_email) {
+                var resp = await user_helper.update_user_email(user_id, req.body.new_email);
+                res.status(config.OK_STATUS).json({ "status": 1, "resp": "Email changed" });
+            }
+            else {
+                res.status(config.OK_STATUS).json({ "status": 1, "resp": "Please Enter New Email" });
+            }
+        }
+        else {
+            res.status(config.OK_STATUS).json({ "status": 1, "resp": "You cannot change the email" });
+        }
+    } else {
+        logger.error("Error occured while fetching = ", resp);
+        res.status(config.INTERNAL_SERVER_ERROR).json(resp);
+    }
+});
+router.put('/change/password', async (req, res) => {
+    user_id = req.userInfo.id;
+
+    var resp = await user_helper.get_user_by_id(user_id);
+    if (resp.status === 1) {
+        if (req.body.new_password) {
+            var resp = await user_helper.update_user_password(user_id, { "password": bcrypt.hashSync(req.body.new_password, saltRounds) });
+            res.status(config.OK_STATUS).json({ "status": 1, "resp": "Password changed" });
+        }
+        else {
+            res.status(config.OK_STATUS).json({ "status": 1, "resp": "Please Enter New Password" });
+        }
+    }
+
+    else {
+        logger.error("Error occured while fetching = ", resp);
+        res.status(config.INTERNAL_SERVER_ERROR).json(resp);
     }
 });
 module.exports = router;

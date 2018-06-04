@@ -40,7 +40,6 @@ track_helper.get_all_track_of_artist = async (artist_id) => {
 
 
 track_helper.get_all_audio = async (filter, page_no, page_size) => {
-    console.log(filter);
     try {
 
         var music = await Track
@@ -275,7 +274,7 @@ track_helper.get_artist_by_day_like = async (day) => {
     }
 };
 
-track_helper.get_artist_by_day_comment= async (day) => {
+track_helper.get_artist_by_day_comment = async (day) => {
     var to = moment();
     var from = moment(to).subtract(day, "days");
 
