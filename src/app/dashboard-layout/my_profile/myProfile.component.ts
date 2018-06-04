@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import {NgbModal, ModalDismissReasons, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
+import { HttpEventType,  HttpResponse} from '@angular/common/http';
 import { MyProfileService } from './myProfile.service';
 import { ToastrService } from 'ngx-toastr';
 import { environment } from '../../../environments/environment';
@@ -29,7 +30,8 @@ export class MyProfileComponent implements OnInit {
   media_modal_ref : NgbModalRef;
   constructor(private MyProfileService : MyProfileService, 
     private toastr: ToastrService,
-    private router: Router
+    private router: Router,
+    private modalService: NgbModal
   ) {
     let data = JSON.parse(localStorage.getItem('user'));
     this.day = [];
@@ -380,5 +382,24 @@ export class MyProfileComponent implements OnInit {
     }
   }
 
+  openAddMediaModal(content) {
+    this.media_modal_ref = this.modalService.open(content, { centered: true });
+  }
+
+  uploadImage(event : any) {
+    const fileList: FileList = event.target.files;
+    console.log(fileList);
+    let formData: FormData = new FormData();
+    formData.append('image', fileList[0]);
+    this.MyProfileService.uploadMedia(formData).subscribe(event => {
+      if (event.type === HttpEventType.UploadProgress) {
+        // This is an upload progress event. Compute and show the % done:
+        const percentDone = Math.round(100 * event.loaded / event.total);
+        console.log(`File is ${percentDone}% uploaded.`);
+      } else if (event instanceof HttpResponse) {
+        console.log('File is completely uploaded!');
+      }
+    });
+  }
 }
 
