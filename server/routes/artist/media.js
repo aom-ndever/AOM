@@ -42,7 +42,7 @@ router.post("/", async (req, res) => {
             if (req.files && req.files['image']) {
                 logger.trace("Uploading avatar image");
                 var file = req.files['image'];
-                var dir = "./uploads/track";
+                var dir = "./uploads/media";
                 var mimetype = ['image/png', 'image/jpeg', 'image/jpg'];
 
                 if (mimetype.indexOf(file.mimetype) !== -1) {
