@@ -31,7 +31,7 @@ comment_helper.get_all_artist_comment_by_user_id = async (user_id) => {
     }
 };
 
-comment_helper.get_all_comment_by_comment_id = async (comment_id ) => {
+comment_helper.get_all_comment_by_comment_id = async (comment_id) => {
     try {
         var comment = await Comment
             .find({ "_id": new ObjectId(comment_id) })
@@ -53,15 +53,15 @@ comment_helper.delete_comment = async (user_id, bookmark_id) => {
             return { status: 1, message: "Record has been Deleted" };
         }
     } catch (err) {
-        return { status: 0,message: "Error occured while deleting comment",error: err };
+        return { status: 0, message: "Error occured while deleting comment", error: err };
     }
 };
 
-comment_helper.update_votes = async (comment_id,no_votes) => {
+comment_helper.update_votes = async (comment_id, no_votes) => {
 
     try {
-        var vote = await Comment.findOneAndUpdate({"_id": new ObjectId(comment_id) },{"no_of_votes":no_votes})
-        if (vote ) {
+        var vote = await Comment.findOneAndUpdate({ "_id": new ObjectId(comment_id) }, { "no_of_votes": no_votes })
+        if (vote) {
             return { "status": 1, "message": "voting updated", };
         } else {
             return { "status": 2, "message": "vote not found" };
@@ -73,14 +73,13 @@ comment_helper.update_votes = async (comment_id,no_votes) => {
 
 
 comment_helper.get_all_comment_by_track = async (artist_id) => {
-    console.log("1");
     try {
         var aggregate = [{
             "$match": {
                 "artist_id": new ObjectId(artist_id)
             }
         },
-           
+
         ];
         var comment = await Comment.aggregate(aggregate);
         if (comment && comment.length > 0) {

@@ -172,7 +172,6 @@ router.post('/vote_track', async (req, res) => {
  * @apiError (Error 4xx) {String} message Validation or error message.
  */
 router.post('/like_track', async (req, res) => {
-  console.log('1');
 
   user_id = req.userInfo.id;
   var schema = {

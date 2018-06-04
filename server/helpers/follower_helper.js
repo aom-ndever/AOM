@@ -22,9 +22,6 @@ follower_helper.get_artist_followers_by_gender = async (artist_id, day) => {
     var to = moment();
     var from = moment(to).subtract(day, "days");
 
-    console.log("to:", to)
-    console.log("from:", from)
-
     var aggregate = [
         {
             "$match":

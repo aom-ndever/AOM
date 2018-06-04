@@ -398,7 +398,6 @@ router.get('/user_email_verify/:user_id', async (req, res) => {
     } else {
       // Verify email
       logger.trace("Valid request for email verification - ", user_resp.user._id);
-      console.log("1");
       var update_resp = await user_helper.update_user_by_id(user_resp.user._id, { "email_verified": true, "status": true });
       if (update_resp.status === 0) {
         logger.trace("Error occured while updating artist : ", update_resp.error);

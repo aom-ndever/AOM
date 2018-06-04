@@ -353,7 +353,6 @@ router.put('/settings/password', async (req, res) => {
     var resp = await artist_helper.get_artist_by_id(artist_id);
     if (resp.status === 1) {
         if (req.body.new_password) {
-            console.log("1");
             var resp = await artist_helper.update_artist_password(artist_id, { "password": bcrypt.hashSync(req.body.new_password, saltRounds) });
             res.status(config.OK_STATUS).json({ "status": 1, "resp": "Password changed" });
         }
