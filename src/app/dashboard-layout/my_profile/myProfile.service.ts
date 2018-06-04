@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 // import { Http, Headers, RequestOptions, Response } from '@angular/http';
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams, HttpRequest } from '@angular/common/http';
 import 'rxjs/add/operator/toPromise';
 import { environment } from '../../../environments/environment';
 import { dashCaseToCamelCase } from '@angular/compiler/src/util';
@@ -14,8 +14,6 @@ export class MyProfileService {
     this.user = JSON.parse(localStorage.getItem('user'));
     this.headers = new HttpHeaders({ 'x-access-token' : this.user.token });  
   }
-
-  
 
   // get All music type
   getAllMusicType() {
@@ -84,5 +82,18 @@ export class MyProfileService {
   // Change user password
   changeUserPassword(data : any) {
     return this.http.put(`${this.api_host}/user/change/password`, data, {headers : this.headers});
+  }
+  // Upload Artist media
+  uploadMedia(data : any) {
+    const url = this.api_host+'/artist/media';
+    const req = new HttpRequest('POST', url, data, {
+      reportProgress: true,
+      headers : this.headers
+    });
+    return this.http.request(req);
+  }
+  // Get All media
+  getAllMedia() {
+    return this.http.get(`${this.api_host}/artist/media`, {headers : this.headers});
   }
 }
