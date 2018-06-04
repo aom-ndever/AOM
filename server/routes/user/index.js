@@ -180,15 +180,20 @@ router.put('/change/password', async (req, res) => {
 
     var resp = await user_helper.get_user_by_id(user_id);
     if (resp.status === 1) {
-        if (req.body.new_password) {
-            var resp = await user_helper.update_user_password(user_id, { "password": bcrypt.hashSync(req.body.new_password, saltRounds) });
-            res.status(config.OK_STATUS).json({ "status": 1, "resp": "Password changed" });
+        if (bcrypt.compareSync(req.body.password, resp.user.password)) {
+            if (req.body.new_password) {
+                var resp = await user_helper.update_user_password(user_id, { "password": bcrypt.hashSync(req.body.new_password, saltRounds) });
+                res.status(config.OK_STATUS).json({ "status": 1, "resp": "Password changed" });
+            }
+            else {
+                res.status(config.OK_STATUS).json({ "status": 1, "resp": "Please Enter New Password" });
+            }
         }
         else {
-            res.status(config.OK_STATUS).json({ "status": 1, "resp": "Please Enter New Password" });
+            res.status(config.OK_STATUS).json({ "status": 1, "resp": "Password is wrong" });
         }
-    }
 
+    }
     else {
         logger.error("Error occured while fetching = ", resp);
         res.status(config.INTERNAL_SERVER_ERROR).json(resp);
