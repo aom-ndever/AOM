@@ -140,11 +140,11 @@ router.put('/update_image', function (req, res) {
     user_id = req.userInfo.id;
     var obj = {
     };
-
+    console.log(req.files);
     async.waterfall([
         function (callback) {
             if (req.files && req.files['image']) {
-                logger.trace("Uploading avatar image");
+                console.log('file found');
                 var file = req.files['image'];
                 var dir = "./uploads/artist";
                 var mimetype = ['image/png', 'image/jpeg', 'image/jpg'];

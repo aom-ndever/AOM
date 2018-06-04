@@ -12,7 +12,7 @@ export class MyProfileService {
 
   constructor(private http: HttpClient) { 
     this.user = JSON.parse(localStorage.getItem('user'));
-    this.headers = new HttpHeaders({ 'Content-Type': 'application/json', 'x-access-token' : this.user.token, 'content-type':"application/x-www-form-urlencoded" });  
+    this.headers = new HttpHeaders({ 'x-access-token' : this.user.token });  
   }
 
   
@@ -55,6 +55,19 @@ export class MyProfileService {
   // Get User by id
   getUserById() {
     return this.http.get(`${this.api_host}/user`, {headers : this.headers});
+  }
+
+  // Remove Artist Image
+  deleteArtistImage(id : any) {
+    return this.http.delete(`${this.api_host}/artist/image/${id}`, {headers : this.headers});
+  }
+  // Remove Artist Cover Image
+  deleteArtistCoverImage(id : any) {
+    return this.http.delete(`${this.api_host}/artist/cover_image/${id}`, {headers : this.headers});
+  }
+  // Remove User Image
+  deleteUserImage(id : any) {
+    return this.http.delete(`${this.api_host}/user/image/${id}`, {headers : this.headers});
   }
 
 }
