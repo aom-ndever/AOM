@@ -171,16 +171,16 @@
                                             <input type="email" name="repeat" [(ngModel)]="change_email.repeat" class="form-control" id="remail" placeholder="Repeat Email" required>
                                         </div>
                                         <div class="button_group">
-                                            <button type="submit" class="update-btn">update</button>
+                                            <button type="submit" [disabled]="show_spinner" class="update-btn">update <i *ngIf="show_spinner" class="fa fa-spinner fa-spin"></i></button>
                                         </div>
                                     </form>
                                 </div>
                                 <div class="password-form">
                                     <div class="edit-head">Update Password</div>
-                                    <form>
+                                    <form (ngSubmit)="changePassword()">
                                         <div class="form-group">
                                             <label for="ypwd">Your Password</label>
-                                            <input type="password" class="form-control" id="ypwd" placeholder="Your Email">
+                                            <input type="password" class="form-control" id="ypwd" name="old" [(ngModel)]="change_pwd.old" placeholder="Your Email">
                                             <div class="pwd-icon">
                                                 <i class="fa fa-eye" aria-hidden="true"></i>
                                                 <!-- <i class="fa fa-eye-slash" aria-hidden="true"></i> -->
@@ -188,7 +188,7 @@
                                         </div>
                                         <div class="form-group">
                                             <label for="npwd">New Password</label>
-                                            <input type="password" class="form-control" id="npwd" placeholder="New Name">
+                                            <input type="password" class="form-control" name="old" [(ngModel)]="change_pwd.new" id="npwd" placeholder="New Name">
                                             <div class="pwd-icon">
                                                 <i class="fa fa-eye" aria-hidden="true"></i>
                                                 <!-- <i class="fa fa-eye-slash" aria-hidden="true"></i> -->
@@ -196,15 +196,14 @@
                                         </div>
                                         <div class="form-group">
                                             <label for="rpwd">Repeat New Password</label>
-                                            <input type="password" class="form-control" id="rpwd" placeholder="Repeat Email">
+                                            <input type="password" class="form-control" id="rpwd" name="old" [(ngModel)]="change_pwd.repeat" placeholder="Repeat Email">
                                             <div class="pwd-icon">
                                                 <i class="fa fa-eye " aria-hidden="true"></i>
                                                 <!-- <i class="fa fa-eye-slash" aria-hidden="true"></i> -->
                                             </div>
                                         </div>
                                         <div class="button_group">
-                                            <a href="#" class="cancel-btn">Cancel</a>
-                                            <a href="#" class="update-btn">update</a>
+                                            <button type="submit" class="update-btn">update</button>
                                         </div>
                                     </form>
                                 </div>
@@ -1427,164 +1426,202 @@
                             </div>
                         </div>
                         <div class="tab-pane fade {{tab_cnt == 2 ? 'show active' : '' }}" id="settings">
-                            <div class="update-email">
-                                <div class="email-form">
-                                    <div class="edit-head">Update Your Email</div>
-                                    <form>
-                                        <div class="form-group">
-                                            <label for="yemail">Your</label>
-                                            <input type="email" class="form-control" id="yemail" placeholder="Your Email">
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="nemail">New Email</label>
-                                            <input type="email" class="form-control" id="nemail" placeholder="New Name">
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="remail">Repeat New Email</label>
-                                            <input type="email" class="form-control" id="remail" placeholder="Repeat Email">
-                                        </div>
-                                        <div class="button_group">
-                                            <button type="submit" class="btn btn-primary update-btn">update</button>
-                                        </div>
-                                    </form>
-                                </div>
-                                <div class="password-form">
-                                    <div class="edit-head">Update Password</div>
-                                    <form>
-                                        <div class="form-group">
-                                            <label for="ypwd">Your Password</label>
-                                            <input type="password" class="form-control" id="ypwd" placeholder="Your Email">
-                                            <div class="pwd-icon">
-                                                <i class="fa fa-eye" aria-hidden="true"></i>
-                                                <!-- <i class="fa fa-eye-slash" aria-hidden="true"></i> -->
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="npwd">New Password</label>
-                                            <input type="password" class="form-control" id="npwd" placeholder="New Name">
-                                            <div class="pwd-icon">
-                                                <i class="fa fa-eye" aria-hidden="true"></i>
-                                                <!-- <i class="fa fa-eye-slash" aria-hidden="true"></i> -->
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="rpwd">Repeat New Password</label>
-                                            <input type="password" class="form-control" id="rpwd" placeholder="Repeat Email">
-                                            <div class="pwd-icon">
-                                                <i class="fa fa-eye " aria-hidden="true"></i>
-                                                <!-- <i class="fa fa-eye-slash" aria-hidden="true"></i> -->
-                                            </div>
-                                        </div>
-                                        <div class="button_group">
-                                            <a href="#" class="cancel-btn">Cancel</a>
-                                            <a href="#" class="update-btn">update</a>
-                                        </div>
-                                    </form>
-                                </div>
-                                <div class="notification">
-                                    <div class="edit-head">Notifications</div>
-                                    <div class="notify-by-email">
-                                        <div class="edit-head">Notifications by Email</div>
-                                        <ul>
-                                            <li class="followers">
-                                                <p>New Followers</p>
-                                                <div class="f-toggle">
-                                                    <label class="switch">
-                                                        <input type="checkbox" checked>
-                                                        <span class="slider round"></span>
-                                                    </label>
-                                                </div>
-                                            </li>
-                                            <li class="comments">
-                                                <p>Comments</p>
-                                                <div class="f-toggle">
-                                                    <label class="switch">
-                                                        <input type="checkbox">
-                                                        <span class="slider round"></span>
-                                                    </label>
-                                                </div>
-                                            </li>
-                                            <li class="message">
-                                                <p>Message</p>
-                                                <div class="f-toggle">
-                                                    <label class="switch">
-                                                        <input type="checkbox" checked>
-                                                        <span class="slider round"></span>
-                                                    </label>
-                                                </div>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                    <div class="notify-by-sms">
-                                        <div class="edit-head">Notifications by SMS</div>
-                                        <ul>
-                                            <li class="followers">
-                                                <p>New Followers</p>
-                                                <div class="f-toggle">
-                                                    <label class="switch">
-                                                        <input type="checkbox" checked>
-                                                        <span class="slider round"></span>
-                                                    </label>
-                                                </div>
-                                            </li>
-                                            <li class="comments">
-                                                <p>Comments</p>
-                                                <div class="f-toggle">
-                                                    <label class="switch">
-                                                        <input type="checkbox">
-                                                        <span class="slider round"></span>
-                                                    </label>
-                                                </div>
-                                            </li>
-                                            <li class="message">
-                                                <p>Message</p>
-                                                <div class="f-toggle">
-                                                    <label class="switch">
-                                                        <input type="checkbox" checked>
-                                                        <span class="slider round"></span>
-                                                    </label>
-                                                </div>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                    <div class="on-side-alert">
-                                        <div class="edit-head">On Side Alerts</div>
-                                        <ul>
-                                            <li class="followers">
-                                                <p>New Followers</p>
-                                                <div class="f-toggle">
-                                                    <label class="switch">
-                                                        <input type="checkbox" checked>
-                                                        <span class="slider round"></span>
-                                                    </label>
-                                                </div>
-                                            </li>
-                                            <li class="comments">
-                                                <p>Comments</p>
-                                                <div class="f-toggle">
-                                                    <label class="switch">
-                                                        <input type="checkbox">
-                                                        <span class="slider round"></span>
-                                                    </label>
-                                                </div>
-                                            </li>
-                                            <li class="message">
-                                                <p>Message</p>
-                                                <div class="f-toggle">
-                                                    <label class="switch">
-                                                        <input type="checkbox" checked>
-                                                        <span class="slider round"></span>
-                                                    </label>
-                                                </div>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+								<div class="update-email">
+									<div class="email-form">
+										<div class="edit-head">Update Your Email</div>
+										<form (ngSubmit)="changeEmail()">
+											<div class="form-group">
+												<label for="yemail">Your</label>
+												<input type="email" name="old" [(ngModel)]="change_email.old" class="form-control" id="yemail" placeholder="Your Email" required>
+											</div>
+											<div class="form-group">
+												<label for="nemail">New Email</label>
+												<input type="email" name="new" [(ngModel)]="change_email.new" class="form-control" id="nemail" placeholder="New Name" required>
+											</div>
+											<div class="form-group">
+												<label for="remail">Repeat New Email</label>
+												<input type="email" name="repeat" [(ngModel)]="change_email.repeat" class="form-control" id="remail" placeholder="Repeat Email" required>
+											</div>
+											<div class="button_group">
+												<button type="submit" [disabled]="show_spinner" class="update-btn">update <i *ngIf="show_spinner" class="fa fa-spinner fa-spin"></i></button>
+											</div>
+										</form>
+									</div>
+									<div class="password-form">
+										<div class="edit-head">Update Password</div>
+										<form (ngSubmit)="changePassword()">
+											<div class="form-group">
+												<label for="ypwd">Your Password</label>
+												<input type="password" class="form-control" id="ypwd" name="old" [(ngModel)]="change_pwd.old" placeholder="Your Email">
+												<div class="pwd-icon">
+													<i class="fa fa-eye" aria-hidden="true"></i>
+													<!-- <i class="fa fa-eye-slash" aria-hidden="true"></i> -->
+												</div>
+											</div>
+											<div class="form-group">
+												<label for="npwd">New Password</label>
+												<input type="password" class="form-control" name="old" [(ngModel)]="change_pwd.new" id="npwd" placeholder="New Name">
+												<div class="pwd-icon">
+													<i class="fa fa-eye" aria-hidden="true"></i>
+													<!-- <i class="fa fa-eye-slash" aria-hidden="true"></i> -->
+												</div>
+											</div>
+											<div class="form-group">
+												<label for="rpwd">Repeat New Password</label>
+												<input type="password" class="form-control" id="rpwd" name="old" [(ngModel)]="change_pwd.repeat" placeholder="Repeat Email">
+												<div class="pwd-icon">
+													<i class="fa fa-eye " aria-hidden="true"></i>
+													<!-- <i class="fa fa-eye-slash" aria-hidden="true"></i> -->
+												</div>
+											</div>
+											<div class="button_group">
+												<button type="submit" class="update-btn">update</button>
+											</div>
+										</form>
+									</div>
+									<div class="notification">
+										<div class="edit-head">Notifications</div>
+										<div class="notify-by-email">
+											<div class="edit-head">Notifications by Email</div>
+											<ul>
+												<li class="followers">
+													<p>New Followers</p>
+													<div class="f-toggle">
+														<label class="switch">
+															<input type="checkbox" checked>
+															<span class="slider round"></span>
+														</label>
+													</div>
+												</li>
+												<li class="comments">
+													<p>Comments</p>
+													<div class="f-toggle">
+														<label class="switch">
+															<input type="checkbox">
+															<span class="slider round"></span>
+														</label>
+													</div>
+												</li>
+												<li class="message">
+													<p>Message</p>
+													<div class="f-toggle">
+														<label class="switch">
+															<input type="checkbox" checked>
+															<span class="slider round"></span>
+														</label>
+													</div>
+												</li>
+											</ul>
+										</div>
+										<div class="notify-by-sms">
+											<div class="edit-head">Notifications by SMS</div>
+											<ul>
+												<li class="followers">
+													<p>New Followers</p>
+													<div class="f-toggle">
+														<label class="switch">
+															<input type="checkbox" checked>
+															<span class="slider round"></span>
+														</label>
+													</div>
+												</li>
+												<li class="comments">
+													<p>Comments</p>
+													<div class="f-toggle">
+														<label class="switch">
+															<input type="checkbox">
+															<span class="slider round"></span>
+														</label>
+													</div>
+												</li>
+												<li class="message">
+													<p>Message</p>
+													<div class="f-toggle">
+														<label class="switch">
+															<input type="checkbox" checked>
+															<span class="slider round"></span>
+														</label>
+													</div>
+												</li>
+											</ul>
+										</div>
+										<div class="on-side-alert">
+											<div class="edit-head">On Side Alerts</div>
+											<ul>
+												<li class="followers">
+													<p>New Followers</p>
+													<div class="f-toggle">
+														<label class="switch">
+															<input type="checkbox" checked>
+															<span class="slider round"></span>
+														</label>
+													</div>
+												</li>
+												<li class="comments">
+													<p>Comments</p>
+													<div class="f-toggle">
+														<label class="switch">
+															<input type="checkbox">
+															<span class="slider round"></span>
+														</label>
+													</div>
+												</li>
+												<li class="message">
+													<p>Message</p>
+													<div class="f-toggle">
+														<label class="switch">
+															<input type="checkbox" checked>
+															<span class="slider round"></span>
+														</label>
+													</div>
+												</li>
+											</ul>
+										</div>
+									</div>
+								</div>
+						</div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </section>
+<ng-template #content let-c="close" let-d="dismiss">
+	<div class="modal-header" style="border:none;">
+		<button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+		<span aria-hidden="true">&times;</span>
+		</button>
+	</div>
+	<div class="modal-body">
+		<div class="media-modal">
+			<h3>Add Media</h3>
+			<p>Upload Photo</p>
+			<div class="media-upload-btn"> 
+				<span class="upl-img"><i class="fa fa-cloud-upload" aria-hidden="true"></i></span> 
+				<span class="up_text">Upload Photo</span> 
+				<input type="file" name="my_doc_upload" id="my_doc_upload" multiple="false"> 
+				<p class="instrution">320x320px .png, .jpg 5MB or less</p>
+			</div>
+			<div class="media_progress_bar">
+				<div class="det">
+					<div class="upl-file-name">IMG20185.JPG</div>
+					<div class="upl-time-rem">5 sec remaining</div>
+					<div class="close-btn"><img src="img/closeNormal.png" alt="Close-btn"></div>
+				</div>
+				<div class="progress">
+					<div class="progress-bar" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="width:70%">
+						<span class="sr-only">70% Complete</span>
+					</div>
+					</div>
+			</div>
+			<p class="or">Or Add Video Link</p>
+			<div class="form-group">
+				<label for="vlink">Video Link</label>
+				<input type="text" class="form-control" id="vlink" placeholder="Video Link">
+			</div>
+		</div>
+		<div class="button_group">
+			<a href="#" class="add-btn">Add Media</a>
+		</div>
+	</div>
+</ng-template>
