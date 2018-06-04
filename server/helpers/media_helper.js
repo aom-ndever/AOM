@@ -52,10 +52,10 @@ media_helper.get_all_media_of_artist = async (artist_id) => {
 }
 
 
-media_helper.delete_media_by_id = async (media_id) => {
+media_helper.delete_media_by_id = async (artist_id, media_id) => {
 
     try {
-        var media = await Media.update({ "_id": (media_id) })
+        var media = await Media.remove({ "artist_id": new ObjectId(artist_id), "_id": (media_id) })
         if (media) {
             return { "status": 1, "message": "media details found", "media": media };
         } else {
