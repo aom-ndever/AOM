@@ -137,5 +137,16 @@ router.get("/", async (req, res) => {
     }
 });
 
-
+// delete image of user
+router.delete('/image/:user_id', async (req, res) => {
+    user_id = req.params.user_id;
+    var del_resp = await user_helper.delete_user_image(user_id);
+    if (del_resp.status === 0) {
+        res.status(config.INTERNAL_SERVER_ERROR).json({ "status": 0, "message": "Error occured while deleting user image", "error": del_resp.error });
+    } else if (del_resp.status === 2) {
+        res.status(config.BAD_REQUEST).json({ "status": 0, "message": "Can't delete user image" });
+    } else {
+        res.status(config.OK_STATUS).json({ "status": 1, "message": "user image has been deleted" });
+    }
+});
 module.exports = router;

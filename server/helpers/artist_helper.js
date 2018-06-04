@@ -4,6 +4,7 @@ var Artist = require("./../models/artist");
 var User = require("./../models/user");
 var Track = require("./../models/track");
 var Notification = require("./../models/notification");
+const saltRounds = 10;
 var artist_helper = {};
 var mongoose = require('mongoose');
 var ObjectId = mongoose.Types.ObjectId;
@@ -290,6 +291,32 @@ artist_helper.delete_artist_cover_image = async (artist_id) => {
         }
     } catch (err) {
         return { "status": 0, "message": "Error occured while finding artist", "error": err }
+    }
+};
+
+
+artist_helper.update_artist_email = async (artist_id, email) => {
+    try {
+        let artist = await Artist.findOneAndUpdate({ _id: artist_id }, { "email": email });
+        if (!artist) {
+            return { "status": 2, "message": "email has not updated" };
+        } else {
+            return { "status": 1, "message": "email has been updated", "artist": artist };
+        }
+    } catch (err) {
+        return { "status": 0, "message": "Error occured while updating artist", "error": err }
+    }
+};
+artist_helper.update_artist_password = async (artist_id, password) => {
+    try {
+        let artist = await Artist.findOneAndUpdate({ _id: artist_id }, password);
+        if (!artist) {
+            return { "status": 2, "message": "password has not updated" };
+        } else {
+            return { "status": 1, "message": "password has been updated", "artist": artist };
+        }
+    } catch (err) {
+        return { "status": 0, "message": "Error occured while updating artist", "error": err }
     }
 };
 module.exports = artist_helper;
