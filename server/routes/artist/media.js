@@ -115,13 +115,14 @@ router.get("/", async (req, res) => {
 
 router.delete('/:media_id', async (req, res) => {
     media_id = req.params.media_id;
-    var del_resp = await media_helper.delete_media_image(media_id);
+    artist_id = req.userInfo.id
+    var del_resp = await media_helper.delete_media_by_id(artist_id, media_id);
     if (del_resp.status === 0) {
-        res.status(config.INTERNAL_SERVER_ERROR).json({ "status": 0, "message": "Error occured while deleting media image", "error": del_resp.error });
+        res.status(config.INTERNAL_SERVER_ERROR).json({ "status": 0, "message": "Error occured while deleting media ", "error": del_resp.error });
     } else if (del_resp.status === 2) {
-        res.status(config.BAD_REQUEST).json({ "status": 0, "message": "Can't delete media image" });
+        res.status(config.BAD_REQUEST).json({ "status": 0, "message": "Can't delete media " });
     } else {
-        res.status(config.OK_STATUS).json({ "status": 1, "message": "media image has been deleted" });
+        res.status(config.OK_STATUS).json({ "status": 1, "message": "media  has been deleted" });
     }
 });
 module.exports = router;
