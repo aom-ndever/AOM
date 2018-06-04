@@ -61,7 +61,8 @@ router.post("/", async (req, res) => {
 
                             callback(null, filename);
                         }
-                    });
+                    }
+                    );
                 } else {
                     callback({ "status": config.MEDIA_ERROR_STATUS, "resp": { "status": 0, "message": "Invalid image format" } });
                 }
@@ -125,4 +126,6 @@ router.delete('/:media_id', async (req, res) => {
         res.status(config.OK_STATUS).json({ "status": 1, "message": "media  has been deleted" });
     }
 });
+
+
 module.exports = router;

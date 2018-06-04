@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var config = require('../config');
 var fs = require('fs');
+var path = require('path');
 var mongoose = require('mongoose');
 var ObjectId = mongoose.Types.ObjectId;
 
@@ -79,15 +80,13 @@ router.post('/artist_registration', async (req, res) => {
   var errors = req.validationErrors();
   if (!errors) {
     var reg_obj = {
-
       "email": req.body.email,
       "gender": req.body.gender,
       "password": req.body.password,
       "first_name": req.body.first_name,
       "last_name": req.body.last_name,
       "zipcode": req.body.zipcode,
-      "music_type": req.body.music_type,
-      "image": req.body.image,
+      "music_type": JSON.parse(req.body.music_type)
     };
     if (req.body.share_url) {
       reg_obj.social_media = req.body.share_url
@@ -97,6 +96,48 @@ router.post('/artist_registration', async (req, res) => {
 
 
       var obj = {}
+      //image upload
+      var filename;
+      if (req.files && req.files["image"]) {
+        var file = req.files["image"];
+        var dir = "./uploads/artist";
+        var mimetype = ["image/png", "image/jpeg", "image/jpg"];
+
+        if (mimetype.indexOf(file.mimetype) != -1) {
+          if (!fs.existsSync(dir)) {
+            fs.mkdirSync(dir);
+          }
+          extention = path.extname(file.name);
+          filename = "artist_" + new Date().getTime() + extention;
+          file.mv(dir + "/" + filename, function (err) {
+            if (err) {
+              logger.error("There was an issue in uploading image");
+              res.send({
+                status: config.MEDIA_ERROR_STATUS,
+                err: "There was an issue in uploading image"
+              });
+            } else {
+              logger.trace("image has been uploaded. Image name = ", filename);
+              //return res.send(200, "null");
+            }
+          });
+        } else {
+          logger.error("Image format is invalid");
+          res.send({
+            status: config.VALIDATION_FAILURE_STATUS,
+            err: "Image format is invalid"
+          });
+        }
+      } else {
+        logger.info("Image not available to upload. Executing next instruction");
+        //res.send(config.MEDIA_ERROR_STATUS, "No image submitted");
+      }
+      if (filename) {
+        reg_obj.image = filename;
+      }
+
+      //End image upload
+
       var data = await artist_helper.insert_artist(reg_obj);
       var datas = await artist_helper.insert_notification(obj);
 
@@ -472,6 +513,7 @@ router.post('/user_login', async (req, res) => {
           delete login_resp.user.status;
           delete login_resp.user.password;
           delete login_resp.user.refresh_token;
+
           delete login_resp.user.last_login_date;
           delete login_resp.user.created_at;
 
