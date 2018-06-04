@@ -69,5 +69,12 @@ export class MyProfileService {
   deleteUserImage(id : any) {
     return this.http.delete(`${this.api_host}/user/image/${id}`, {headers : this.headers});
   }
-
+  // Change artist password
+  changeArtistEmail(data : any) {
+    this.http.put(`${this.api_host}/artist/settings/email`, data);
+  }
+  // Change user password
+  changeArtistPassword(data : any) {
+    this.http.put(`${this.api_host}/artist/settings/password`, data);
+  }
 }

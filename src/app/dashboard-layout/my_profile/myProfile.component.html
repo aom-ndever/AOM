@@ -157,22 +157,21 @@
                             <div class="update-email">
                                 <div class="email-form">
                                     <div class="edit-head">Update Your Email</div>
-                                    <form>
+                                    <form (ngSubmit)="changeEmail()">
                                         <div class="form-group">
                                             <label for="yemail">Your</label>
-                                            <input type="email" class="form-control" id="yemail" placeholder="Your Email">
+                                            <input type="email" name="old" [(ngModel)]="change_email.old" class="form-control" id="yemail" placeholder="Your Email" required>
                                         </div>
                                         <div class="form-group">
                                             <label for="nemail">New Email</label>
-                                            <input type="email" class="form-control" id="nemail" placeholder="New Name">
+                                            <input type="email" name="new" [(ngModel)]="change_email.new" class="form-control" id="nemail" placeholder="New Name" required>
                                         </div>
                                         <div class="form-group">
                                             <label for="remail">Repeat New Email</label>
-                                            <input type="email" class="form-control" id="remail" placeholder="Repeat Email">
+                                            <input type="email" name="repeat" [(ngModel)]="change_email.repeat" class="form-control" id="remail" placeholder="Repeat Email" required>
                                         </div>
                                         <div class="button_group">
-                                            <a href="#" class="cancel-btn">Cancel</a>
-                                            <a href="#" class="update-btn">update</a>
+                                            <button type="submit" class="update-btn">update</button>
                                         </div>
                                     </form>
                                 </div>
@@ -1445,8 +1444,7 @@
                                             <input type="email" class="form-control" id="remail" placeholder="Repeat Email">
                                         </div>
                                         <div class="button_group">
-                                            <a href="#" class="cancel-btn">Cancel</a>
-                                            <a href="#" class="update-btn">update</a>
+                                            <button type="submit" class="btn btn-primary update-btn">update</button>
                                         </div>
                                     </form>
                                 </div>

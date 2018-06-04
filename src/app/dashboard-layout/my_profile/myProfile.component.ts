@@ -23,6 +23,7 @@ export class MyProfileComponent implements OnInit {
   public month : any = [];
   public year : any = [];
   music_types : any = [];
+  change_email = {};
   constructor(private MyProfileService : MyProfileService, 
     private toastr: ToastrService,
     private router: Router
@@ -297,5 +298,19 @@ export class MyProfileComponent implements OnInit {
       });
   }
   
+  changeEmail() {
+    if(this.change_email['old'] && this.userdata.email == this.change_email['old']) {
+      if(this.change_email['new'] && this.change_email['repeat'] && this.change_email['new'] && this.change_email['repeat']) {
+
+      } else if(!this.change_email['new']) {
+        this.toastr.error('Please enter valid new email', 'Error!');  
+      } else if(!this.change_email['repeat']) {
+        this.toastr.error('Please enter valid repeat email', 'Error!');  
+      }
+    } else {
+      this.toastr.error('Please enter valid currnet email', 'Error!');
+    }
+  }
+
 }
 
