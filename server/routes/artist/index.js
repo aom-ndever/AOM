@@ -5,7 +5,7 @@ var logger = config.logger;
 var bcrypt = require('bcrypt');
 var jwt = require('jsonwebtoken');
 var async = require('async');
-
+const saltRounds = 10;
 var media_helper = require('../../helpers/media_helper');
 var track_helper = require('../../helpers/track_helper');
 var artist_helper = require('../../helpers/artist_helper');
@@ -140,7 +140,6 @@ router.put('/update_image', function (req, res) {
     user_id = req.userInfo.id;
     var obj = {
     };
-
     async.waterfall([
         function (callback) {
             if (req.files && req.files['image']) {
@@ -326,7 +325,48 @@ router.get('/track_likes', async (req, res) => {
 });
 
 
+router.put('/settings/email', async (req, res) => {
+    artist_id = req.userInfo.id;
 
+    var resp = await artist_helper.get_artist_by_id(artist_id);
+    if (resp.status === 1) {
+        if (resp.artist.email == req.body.email) {
+            if (req.body.new_email) {
+                var resp = await artist_helper.update_artist_email(artist_id, req.body.new_email);
+                res.status(config.OK_STATUS).json({ "status": 1, "resp": "Email changed" });
+            }
+            else {
+                res.status(config.OK_STATUS).json({ "status": 1, "resp": "Please Enter New Email" });
+            }
+        }
+        else {
+            res.status(config.OK_STATUS).json({ "status": 1, "resp": "You cannot change the email" });
+        }
+    } else {
+        logger.error("Error occured while fetching = ", resp);
+        res.status(config.INTERNAL_SERVER_ERROR).json(resp);
+    }
+});
+router.put('/settings/password', async (req, res) => {
+    artist_id = req.userInfo.id;
+
+    var resp = await artist_helper.get_artist_by_id(artist_id);
+    if (resp.status === 1) {
+        if (req.body.new_password) {
+            console.log("1");
+            var resp = await artist_helper.update_artist_password(artist_id, { "password": bcrypt.hashSync(req.body.new_password, saltRounds) });
+            res.status(config.OK_STATUS).json({ "status": 1, "resp": "Password changed" });
+        }
+        else {
+            res.status(config.OK_STATUS).json({ "status": 1, "resp": "Please Enter New Password" });
+        }
+    }
+
+    else {
+        logger.error("Error occured while fetching = ", resp);
+        res.status(config.INTERNAL_SERVER_ERROR).json(resp);
+    }
+});
 /**
  * @api {get} /artist/track_comment Artist track likes comments - Get 
  * @apiName Artist track comments detail- Get

@@ -37,7 +37,7 @@ user_helper.insert_user = async (object) => {
  */
 user_helper.get_user_by_email = async (email) => {
     try {
-        var user = await User.findOne({ "$or" : [{"email": email} , {"email":email}] }).lean();
+        var user = await User.findOne({ "$or": [{ "email": email }, { "email": email }] }).lean();
         if (user) {
             return { "status": 1, "message": "user details found", "user": user };
         } else {
@@ -114,14 +114,14 @@ user_helper.get_login_by_email = async (email) => {
 };
 
 
-user_helper.get_users_by_filter = async (filter,page_no, page_size) => {
+user_helper.get_users_by_filter = async (filter, page_no, page_size) => {
     try {
-           var user  = await User           
+        var user = await User
             .find(filter)
             .skip((page_size * page_no) - page_size)
             .limit(page_size)
-            .lean();  
-   
+            .lean();
+
         if (user && user.length > 0) {
             return { "status": 1, "message": "user details found", "user": user };
         } else {
@@ -136,9 +136,9 @@ user_helper.get_users_by_filter = async (filter,page_no, page_size) => {
 user_helper.delete_user_by_admin = async (user_id) => {
 
     try {
-        var user = await User.findOneAndRemove({ "_id": (user_id)})
-        if (user ) {
-            return { "status": 1, "message": "user details found", "user":  user };
+        var user = await User.findOneAndRemove({ "_id": (user_id) })
+        if (user) {
+            return { "status": 1, "message": "user details found", "user": user };
         } else {
             return { "status": 2, "message": "user not found" };
         }
@@ -148,13 +148,13 @@ user_helper.delete_user_by_admin = async (user_id) => {
 };
 
 
-user_helper.update_user_status = async (user_id,status) => {
+user_helper.update_user_status = async (user_id, status) => {
 
     try {
         console.log("1");
-        var user = await User.findOneAndUpdate({ "_id": new ObjectId(user_id) },{ "status": status });
-        
-        console.log("2",user);
+        var user = await User.findOneAndUpdate({ "_id": new ObjectId(user_id) }, { "status": status });
+
+        console.log("2", user);
         if (user) {
             return { "status": 1, "message": "user status updated", };
         } else {
@@ -217,8 +217,8 @@ user_helper.update_user_for_comments = async (id, no_comment) => {
 
 user_helper.get_all_active_and_suspend_user = async (filter) => {
     try {
-        console.log('filter',filter);
-        
+        console.log('filter', filter);
+
 
         var user = await User
             .find(filter, {
@@ -226,14 +226,28 @@ user_helper.get_all_active_and_suspend_user = async (filter) => {
                 "last_name": 1,
                 "gender": 1,
                 "music_type": 1,
-                "status" :1,
-                "no_of_votes" : 1,
-                "no_of_likes" : 1,
-                "no_of_followers" : 1,
-                "no_of_comments" : 1,
+                "status": 1,
+                "no_of_votes": 1,
+                "no_of_likes": 1,
+                "no_of_followers": 1,
+                "no_of_comments": 1,
             })
 
         if (user && user.length > 0) {
+            return { "status": 1, "message": "user details found", "user": user };
+        } else {
+            return { "status": 2, "message": "user not found" };
+        }
+    } catch (err) {
+        return { "status": 0, "message": "Error occured while finding user", "error": err }
+    }
+};
+
+user_helper.delete_user_image = async (user_id) => {
+
+    try {
+        var user = await User.update({ "_id": (user_id) }, { $unset: { "image": null } })
+        if (user) {
             return { "status": 1, "message": "user details found", "user": user };
         } else {
             return { "status": 2, "message": "user not found" };
