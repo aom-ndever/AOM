@@ -33,4 +33,36 @@ media_helper.get_all_media_of_artist = async (artist_id) => {
     }
 }
 
+media_helper.get_all_media_of_artist = async (artist_id) => {
+    try {
+        var aggregate = [{
+            "$match": {
+                "artist_id": new ObjectId(artist_id)
+            }
+        }];
+        var media = await Media.aggregate(aggregate);
+        if (media && media.length > 0) {
+            return { "status": 1, "message": "media found", "media": media };
+        } else {
+            return { "status": 2, "message": "No media available" };
+        }
+    } catch (err) {
+        return { "status": 0, "message": "Error occured while finding media", "error": err }
+    }
+}
+
+
+media_helper.delete_media_by_id = async (media_id) => {
+
+    try {
+        var media = await Media.update({ "_id": (media_id) })
+        if (media) {
+            return { "status": 1, "message": "media details found", "media": media };
+        } else {
+            return { "status": 2, "message": "media not found" };
+        }
+    } catch (err) {
+        return { "status": 0, "message": "Error occured while finding media", "error": err }
+    }
+};
 module.exports = media_helper;
