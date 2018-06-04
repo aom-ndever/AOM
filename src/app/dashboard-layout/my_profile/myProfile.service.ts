@@ -71,10 +71,18 @@ export class MyProfileService {
   }
   // Change artist password
   changeArtistEmail(data : any) {
-    this.http.put(`${this.api_host}/artist/settings/email`, data);
+    return this.http.put(`${this.api_host}/artist/settings/email`, data, {headers : this.headers});
   }
   // Change user password
   changeArtistPassword(data : any) {
-    this.http.put(`${this.api_host}/artist/settings/password`, data);
+    return this.http.put(`${this.api_host}/artist/settings/password`, data, {headers : this.headers});
+  }
+  // Change user email
+  changeUserEmail(data : any) {
+    return this.http.put(`${this.api_host}/user/change/email`, data, {headers : this.headers});
+  }
+  // Change user password
+  changeUserPassword(data : any) {
+    return this.http.put(`${this.api_host}/user/change/password`, data, {headers : this.headers});
   }
 }

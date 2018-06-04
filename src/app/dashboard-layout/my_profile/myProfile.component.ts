@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import {NgbModal, ModalDismissReasons, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
 import { MyProfileService } from './myProfile.service';
 import { ToastrService } from 'ngx-toastr';
 import { environment } from '../../../environments/environment';
@@ -24,6 +25,8 @@ export class MyProfileComponent implements OnInit {
   public year : any = [];
   music_types : any = [];
   change_email = {};
+  change_pwd = {};
+  media_modal_ref : NgbModalRef;
   constructor(private MyProfileService : MyProfileService, 
     private toastr: ToastrService,
     private router: Router
@@ -300,15 +303,80 @@ export class MyProfileComponent implements OnInit {
   
   changeEmail() {
     if(this.change_email['old'] && this.userdata.email == this.change_email['old']) {
-      if(this.change_email['new'] && this.change_email['repeat'] && this.change_email['new'] && this.change_email['repeat']) {
-
+      if(this.change_email['new'] && this.change_email['repeat'] && this.change_email['new'] == this.change_email['repeat']) {
+        let data = {
+          email : this.userdata.email,
+          new_email : this.change_email['new']
+        };
+        this.show_spinner = true;
+        if(this.userdata.type == 'artist') {
+          this.MyProfileService.changeArtistEmail(data).subscribe(response => {
+            this.change_email = {};
+            this.updateLocalStorage();
+            this.toastr.success(response['resp'], 'Success!');
+          }, error => {
+            this.toastr.error(error['error'].message, 'Error!');
+            this.show_spinner = false;
+          }, () => {
+            this.show_spinner = false;
+          }); 
+        } else {
+          this.MyProfileService.changeUserEmail(data).subscribe(response => {
+            this.change_email = {};
+            this.updateLocalStorage();
+            this.toastr.success(response['resp'], 'Success!');
+          }, error => {
+            this.toastr.error(error['error'].message, 'Error!');
+            this.show_spinner = false;
+          }, () => {
+            this.show_spinner = false;
+          }); 
+        }
       } else if(!this.change_email['new']) {
         this.toastr.error('Please enter valid new email', 'Error!');  
       } else if(!this.change_email['repeat']) {
         this.toastr.error('Please enter valid repeat email', 'Error!');  
+      } else {
+        this.toastr.error('Please enter new and repeat email value same', 'Error!');  
       }
     } else {
       this.toastr.error('Please enter valid currnet email', 'Error!');
+    }
+  }
+
+  changePassword() {
+    if(this.change_pwd['old']) {
+      if(this.change_pwd['new'] && this.change_pwd['repeat'] && this.change_pwd['new'] == this.change_pwd['repeat']) {
+        let data = {
+          password : this.change_pwd['old'],
+          new_password : this.change_pwd['new']
+        };
+        if(this.userdata.type == 'artist') {
+          this.MyProfileService.changeArtistPassword(data).subscribe(response => {
+            this.change_pwd = {};
+            this.updateLocalStorage();
+            this.toastr.success(response['resp'], 'Success!');
+          }, error => {
+            this.toastr.error(error['error'].message,'Error!');
+          });
+        } else {
+          this.MyProfileService.changeUserPassword(data).subscribe(response => {
+            this.change_pwd = {};
+            this.updateLocalStorage();
+            this.toastr.success(response['resp'], 'Success!');
+          }, error => {
+            this.toastr.error(error['error'].message,'Error!');
+          });
+        }
+      } else if (!this.change_pwd['new']) {
+        this.toastr.error('Please enter new password');
+      } else if (!this.change_pwd['repeat']) {
+        this.toastr.error('Please enter repeat password');
+      } else {
+        this.toastr.error('New and repeat password must be same');
+      }
+    } else {
+      this.toastr.error('Please enter old password','Error!');
     }
   }
 
