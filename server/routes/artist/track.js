@@ -215,6 +215,8 @@ router.put("/:track_id", async (req, res) => {
         res.status(config.OK_STATUS).json(resp_data);
     }
 });
+
+
 router.delete('/:track_id', async (req, res) => {
     track_id = req.params.track_id;
     artist_id = req.userInfo.id
@@ -224,6 +226,10 @@ router.delete('/:track_id', async (req, res) => {
     } else if (del_resp.status === 2) {
         res.status(config.BAD_REQUEST).json({ "status": 0, "message": "Can't delete track " });
     } else {
+        var resp = await artist_helper.get_artist_by_id(artist_id);
+
+        no_track = resp.artist.no_of_tracks - 1
+        var resp_data = await track_helper.update_artist_for_track(artist_id, no_track);
         res.status(config.OK_STATUS).json({ "status": 1, "message": "track  has been deleted" });
     }
 });
