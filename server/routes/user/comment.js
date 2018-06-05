@@ -199,7 +199,6 @@ router.post('/vote_comment', async (req, res) => {
         res.status(config.OK_STATUS).json(resp_data);
       }
     }
-
   }
   else {
     logger.error("Validation Error = ", errors);

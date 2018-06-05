@@ -146,7 +146,7 @@ router.get('/', async (req, res) => {
 
     if (track.status === 1) {
         logger.trace("got details successfully");
-        res.status(config.OK_STATUS).json({ "status": 1, "track": track });
+        res.status(config.OK_STATUS).json({ "status": 1, "track": track.track });
     } else {
         logger.error("Error occured while fetching = ", track);
         res.status(config.INTERNAL_SERVER_ERROR).json(track);
