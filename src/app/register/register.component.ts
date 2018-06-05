@@ -90,7 +90,7 @@ export class RegisterComponent implements OnInit {
     this.artist_step3 = this.fb.group({
       fname : ['', [Validators.required]],
       lname : ['', [Validators.required]],
-      gender : []
+      gender : [] 
     });
     this.artist_step4 = this.fb.group({
       zipcode : ['', [Validators.required, Validators.pattern('^[0-9]+$')]]
@@ -261,7 +261,7 @@ export class RegisterComponent implements OnInit {
     formData.append('music_type',JSON.stringify(this.artist_data['music_type']));
     formData.append('image', new_file);
     formData.append('share_url', JSON.stringify(this.artist_data['share_url']));
-    console.log(formData);
+    
     this.show_spinner = true;
     this.RegisterService.artistRegistration(formData).subscribe(response => {
       console.log('response', response);

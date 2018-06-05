@@ -427,6 +427,7 @@ export class MyProfileComponent implements OnInit {
   }
 
   getMediaList() {
+    this._albums = [];
     this.MyProfileService.getAllMedia().subscribe(response => {
       this.media_list = response['media'];
       for(let i=0; i<this.media_list.length; i++) {
