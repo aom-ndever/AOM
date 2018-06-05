@@ -351,9 +351,6 @@ router.put('/settings/password', async (req, res) => {
     artist_id = req.userInfo.id;
 
     var resp = await artist_helper.get_artist_by_id(artist_id);
-    console.log(' bcrypt.hashSync(req.body.password, saltRounds)', { "password": bcrypt.hashSync(req.body.password, saltRounds) });
-    console.log('resp.artist.password', resp.artist.password);
-
     if (resp.status === 1) {
 
         if (bcrypt.compareSync(req.body.password, resp.artist.password)) {

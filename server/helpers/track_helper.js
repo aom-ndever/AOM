@@ -301,4 +301,31 @@ track_helper.get_artist_by_day_comment = async (day) => {
     }
 
 };
+
+
+track_helper.delete_track_by_id = async (artist_id, track_id) => {
+    try {
+        var track = await Track.remove({ "artist_id": new ObjectId(artist_id), "_id": (track_id) })
+        if (track) {
+            return { "status": 1, "message": "track details found", "track": track };
+        } else {
+            return { "status": 2, "message": "track not found" };
+        }
+    } catch (err) {
+        return { "status": 0, "message": "Error occured while finding track", "error": err }
+    }
+};
+
+track_helper.update_track_by_id = async (artist_id, track_id, track_object) => {
+    try {
+        let track = await Track.findOneAndUpdate({ "_id": track_id, "artist_id": artist_id }, track_object);
+        if (!track) {
+            return { "status": 2, "message": "Record has not updated" };
+        } else {
+            return { "status": 1, "message": "Record has been updated", "track": track };
+        }
+    } catch (err) {
+        return { "status": 0, "message": "Error occured while updating track", "error": err }
+    }
+};
 module.exports = track_helper;
