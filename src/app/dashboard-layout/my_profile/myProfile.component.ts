@@ -5,6 +5,8 @@ import { HttpEventType,  HttpResponse} from '@angular/common/http';
 import { MyProfileService } from './myProfile.service';
 import { ToastrService } from 'ngx-toastr';
 import { environment } from '../../../environments/environment';
+import { every } from 'rxjs/operator/every';
+import { Lightbox } from 'angular2-lightbox';
 declare var swal: any;
 @Component({
   selector: 'app-myProfile',
@@ -28,10 +30,17 @@ export class MyProfileComponent implements OnInit {
   change_email = {};
   change_pwd = {};
   media_modal_ref : NgbModalRef;
+  show_progress : boolean = false;
+  progress_cnt : Number = 0;
+  media_list : any = [];
+  private _albums: any = [];
+  artist_media_url : any = environment.API_URL+environment.ARTIST_MEDIA;
+  video_url : any = '';
   constructor(private MyProfileService : MyProfileService, 
     private toastr: ToastrService,
     private router: Router,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private lightbox: Lightbox
   ) {
     let data = JSON.parse(localStorage.getItem('user'));
     this.day = [];
@@ -80,6 +89,7 @@ export class MyProfileComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.getMediaList();
   }
 
   tabChange(cnt : Number) {
@@ -391,15 +401,84 @@ export class MyProfileComponent implements OnInit {
     console.log(fileList);
     let formData: FormData = new FormData();
     formData.append('image', fileList[0]);
+    let allow_types = ['image/png', 'image/jpeg', 'image/jpg'];
+    if(allow_types.indexOf(fileList[0].type) == -1) {
+      this.toastr.error('Please upload valid file.', 'Error!');
+      return false;
+    }
+    this.show_progress = true;
     this.MyProfileService.uploadMedia(formData).subscribe(event => {
       if (event.type === HttpEventType.UploadProgress) {
         // This is an upload progress event. Compute and show the % done:
         const percentDone = Math.round(100 * event.loaded / event.total);
+        this.progress_cnt = percentDone;
         console.log(`File is ${percentDone}% uploaded.`);
       } else if (event instanceof HttpResponse) {
-        console.log('File is completely uploaded!');
+        console.log('File is completely uploaded!', event['body']);
+        this.getMediaList();
+        this.toastr.success( event['body']['message'], 'Success!');
       }
+    }, error => {
+      this.toastr.error(error['error'].message, '');
+      this.show_progress = false;
+    }, () => {
+      this.show_progress = false;
     });
+  }
+
+  getMediaList() {
+    this.MyProfileService.getAllMedia().subscribe(response => {
+      this.media_list = response['media'];
+      for(let i=0; i<this.media_list.length; i++) {
+        if(this.media_list[i].image)
+          this._albums.push({src : this.artist_media_url+this.media_list[i].image});
+      }
+    }, error => {
+      this.toastr.error(error['error'].message, 'Error!');
+    });
+  }
+
+  addLink() {
+    let formData: FormData = new FormData();
+    formData.append('link', this.video_url);
+    if(this.video_url) {
+      this.MyProfileService.uploadMedia(formData).subscribe(event => {
+        if (event instanceof HttpResponse) {
+          this.video_url = '';
+          this.toastr.success( event['body']['message'], 'Success!');
+          this.getMediaList();
+        }
+      }, error => {
+        this.toastr.error(error['error'].message, 'Error!');
+      });
+    } else {
+      this.toastr.error('Please provide video url', 'Error!');
+    }
+  }
+
+  removeMedia(id : any) {
+    let thi = this;
+    swal({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+      }).then(function(flag) {
+        thi.MyProfileService.removeMediaById(id).subscribe(response =>{
+          thi.toastr.success(response['message'], 'Success!');
+          thi.getMediaList();
+        }, error => {
+          thi.toastr.error(error['error'].message, 'Error!');
+        });
+      });
+  }
+
+  open(index: number): void {
+    // open lightbox
+    this.lightbox.open(this._albums, index);
   }
 }
 

@@ -17,6 +17,7 @@ import { HeaderService } from './header/header.service';
 import { MyProfileService } from './my_profile/myProfile.service';
 import { FormsModule, ReactiveFormsModule  } from '@angular/forms';
 import { ToastrModule } from 'ngx-toastr';
+import { LightboxModule } from 'angular2-lightbox';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AuthService } from '../shared/auth.service';
 
@@ -31,6 +32,7 @@ import { AuthService } from '../shared/auth.service';
     ReactiveFormsModule,
     BrowserAnimationsModule,
     ToastrModule.forRoot(),
+    LightboxModule,
     RouterModule.forChild([
       {
         path: '',

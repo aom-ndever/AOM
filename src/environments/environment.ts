@@ -10,5 +10,6 @@ export const environment = {
   GOOGLE_CLIENT_SECRET : 'bohGfi5VZz7Yd4kGgWkUJimF',
   API_URL : 'http://localhost:3000',
   ARTIST_IMG : '/uploads/artist/',
-  USER_IMG : '/uploads/user/'
+  USER_IMG : '/uploads/user/',
+  ARTIST_MEDIA : '/uploads/media/'
 };
