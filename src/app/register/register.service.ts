@@ -9,7 +9,7 @@ export class RegisterService {
   private api_host : any = environment.API_URL;
   constructor(private http: HttpClient) { }
 
-  private headers = new Headers({ 'Content-Type': 'application/json' });
+  private headers = new Headers();
 
   getLocationFromZipCode (code : any) {
     return this.http.get('https://maps.googleapis.com/maps/api/geocode/json?address='+code+'&key='+environment.GMAP_KEY);

@@ -237,20 +237,33 @@ export class RegisterComponent implements OnInit {
   }
   // Handle submit event of artist form
   artist_submit() {
-    let data = {
-      email : this.artist_data['email'],
-      password : this.artist_data['password'],
-      first_name : this.artist_data['fname'],
-      last_name : this.artist_data['lname'],
-      zipcode : this.artist_data['zipcode'],
-      gender : this.artist_data['gender'],
-      music_type : this.artist_data['music_type'],
-      image : this.croppedImage,
-      share_url : this.artist_data['share_url']
-    };
-    console.log('artist', data);
+    // let data = {
+    //   email : this.artist_data['email'],
+    //   password : this.artist_data['password'],
+    //   first_name : this.artist_data['fname'],
+    //   last_name : this.artist_data['lname'],
+    //   zipcode : this.artist_data['zipcode'],
+    //   gender : this.artist_data['gender'],
+    //   music_type : this.artist_data['music_type'],
+    //   image : this.croppedImage,
+    //   share_url : this.artist_data['share_url']
+    // };
+    let file = this.imageChangedEvent.target.files[0];
+    let new_file = this.dataURLtoFile(this.croppedImage, file.name);
+
+    let formData: FormData = new FormData();
+    formData.append('email', this.artist_data['email']);
+    formData.append('password',this.artist_data['password']);
+    formData.append('first_name',this.artist_data['fname']);
+    formData.append('last_name',this.artist_data['lname']);
+    formData.append('zipcode',this.artist_data['zipcode']);
+    formData.append('gender',this.artist_data['gender']);
+    formData.append('music_type',JSON.stringify(this.artist_data['music_type']));
+    formData.append('image', new_file);
+    formData.append('share_url', JSON.stringify(this.artist_data['share_url']));
+    console.log(formData);
     this.show_spinner = true;
-    this.RegisterService.artistRegistration(data).subscribe(response => {
+    this.RegisterService.artistRegistration(formData).subscribe(response => {
       console.log('response', response);
       this.step_flag = true;
       this.location = '';
@@ -324,6 +337,14 @@ export class RegisterComponent implements OnInit {
       if(this.listner_cnt == 0)
         this.step_flag = true;
     }
-    
   }
+
+  private dataURLtoFile(dataurl, filename) {
+    var arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1],
+        bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
+    while(n--){
+        u8arr[n] = bstr.charCodeAt(n);
+    }
+    return new File([u8arr], filename, {type:mime});
+}
 }
