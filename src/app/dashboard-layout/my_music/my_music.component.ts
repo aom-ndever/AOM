@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {NgbModal, ModalDismissReasons, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
+import { environment } from '../../../environments/environment';
 import { ToastrService } from 'ngx-toastr';
 import { MyMusicService } from './my_music.service';
 
@@ -17,11 +18,15 @@ export class MyMusicComponent implements OnInit {
   trackdata : any = {};
   tracklist : any = [];
   show_spinner : boolean = false;
+  track_url : any = environment.API_URL+environment.ARTIST_TRACK;
+  userinfo : any = '';
   constructor(
     private modalService: NgbModal,
     private MyMusicService : MyMusicService,
     private toastr: ToastrService
-  ) {}
+  ) {
+    this.userinfo = JSON.parse(localStorage.getItem('user'));
+  }
 
   ngOnInit() {
       this.getAllTrack();
@@ -103,6 +108,7 @@ export class MyMusicComponent implements OnInit {
   getAllTrack() {
     this.MyMusicService.getAllTrack().subscribe(response => {
       console.log(response);
+      this.tracklist = response['track'];
     });
   }
 }
