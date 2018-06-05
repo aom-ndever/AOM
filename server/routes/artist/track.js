@@ -9,7 +9,7 @@ var track_helper = require('../../helpers/track_helper');
 var vote_track_helper = require('../../helpers/vote_track_helper');
 var artist_helper = require('../../helpers/artist_helper');
 var download_helper = require('../../helpers/download_helper');
-
+var path = require('path');
 var moment = require('moment');
 var mongoose = require('mongoose');
 var ObjectId = mongoose.Types.ObjectId;
@@ -43,13 +43,16 @@ router.post("/", async (req, res) => {
     if (req.body.description && req.body.description != null) {
         obj.description = req.body.description;
     }
+    if (req.body.price && req.body.price != null) {
+        obj.price = req.body.price;
+    }
 
     async.waterfall([
         function (callback) {
             if (req.files && req.files['audio']) {
                 logger.trace("Uploading avatar image");
                 var file = req.files['audio'];
-                var dir = "./uploads/track";
+                var dir = "./uploads/track/";
                 var mimetype = ['audio/aac', 'audio/mp3', 'audio/mpeg'];
 
                 if (mimetype.indexOf(file.mimetype) !== -1) {
@@ -73,7 +76,7 @@ router.post("/", async (req, res) => {
             if (req.files && req.files['image']) {
                 logger.trace("Uploading avatar image");
                 var file = req.files['image'];
-                var dir = "./uploads/artist";
+                var dir = "./uploads/track/";
                 var mimetype = ["image/png", "image/jpeg", "image/jpg"];
 
                 if (mimetype.indexOf(file.mimetype) !== -1) {
@@ -150,7 +153,80 @@ router.get('/', async (req, res) => {
     }
 });
 
+router.put("/:track_id", async (req, res) => {
+    artist_id = req.userInfo.id;
+    track_id = req.params.track_id;
+    var obj = {
+    };
+    if (req.body.name && req.body.name != null) {
+        obj.name = req.body.name;
+    }
+    if (req.body.price && req.body.price != null) {
+        obj.price = req.body.price;
+    }
+    if (req.body.description && req.body.description != null) {
+        obj.description = req.body.description;
+    }
+    var filename;
+    if (req.files && req.files["image"]) {
+        var file = req.files["image"];
+        var dir = "./uploads/track";
+        var mimetype = ["image/png", "image/jpeg", "image/jpg"];
 
+        if (mimetype.indexOf(file.mimetype) != -1) {
+            if (!fs.existsSync(dir)) {
+                fs.mkdirSync(dir);
+            }
+            extention = path.extname(file.name);
+            filename = "track_" + new Date().getTime() + extention;
+            file.mv(dir + "/" + filename, function (err) {
+                if (err) {
+                    logger.error("There was an issue in uploading image");
+                    res.send({
+                        status: config.MEDIA_ERROR_STATUS,
+                        err: "There was an issue in uploading image"
+                    });
+                } else {
+                    logger.trace("image has been uploaded. Image name = ", filename);
+
+                }
+            });
+        } else {
+            logger.error("Image format is invalid");
+            res.send({
+                status: config.VALIDATION_FAILURE_STATUS,
+                err: "Image format is invalid"
+            });
+        }
+    } else {
+        logger.info("Image not available to upload. Executing next instruction");
+        //res.send(config.MEDIA_ERROR_STATUS, "No image submitted");
+    }
+    if (filename) {
+        obj.image = filename;
+    }
+
+    var resp_data = await track_helper.update_track_by_id(artist_id, track_id, obj);
+    if (resp_data.status == 0) {
+        logger.error("Error occured while updating = ", resp_data);
+        res.status(config.INTERNAL_SERVER_ERROR).json(resp_data);
+    } else {
+        logger.trace("Updated successfully  = ", resp_data);
+        res.status(config.OK_STATUS).json(resp_data);
+    }
+});
+router.delete('/:track_id', async (req, res) => {
+    track_id = req.params.track_id;
+    artist_id = req.userInfo.id
+    var del_resp = await track_helper.delete_track_by_id(artist_id, track_id);
+    if (del_resp.status === 0) {
+        res.status(config.INTERNAL_SERVER_ERROR).json({ "status": 0, "message": "Error occured while deleting track ", "error": del_resp.error });
+    } else if (del_resp.status === 2) {
+        res.status(config.BAD_REQUEST).json({ "status": 0, "message": "Can't delete track " });
+    } else {
+        res.status(config.OK_STATUS).json({ "status": 1, "message": "track  has been deleted" });
+    }
+});
 
 
 /**
@@ -197,4 +273,6 @@ router.post('/downloaded_track', async (req, res) => {
         res.status(config.INTERNAL_SERVER_ERROR).json(track);
     }
 });
+
+
 module.exports = router;
