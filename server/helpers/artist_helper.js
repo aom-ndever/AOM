@@ -134,7 +134,7 @@ artist_helper.get_all_artist = async (filter, page_no, page_size) => {
     try {
 
         var artist = await Artist
-            .find(filter)//"first_name":1,"last_name":1
+            .find(filter)
             .skip((page_size * page_no) - page_size)
             .limit(page_size)
             .lean();
@@ -153,8 +153,6 @@ artist_helper.get_artist_by_filter = async (filter) => {
     try {
         var artist = await Artist
             .find(filter)
-            //.skip((page_size * page_no) - page_size)
-            //  .limit(page_size)
             .lean();
 
         if (artist && artist.length > 0) {

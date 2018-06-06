@@ -1183,12 +1183,12 @@ router.post("/whatsnew", async (req, res) => {
   };
 
 
-  /*if (req.body.artist_id) {
-    filter.artist_id = new ObjectId(req.body.artist_id);
+  if (req.body.music_type) {
+    filter.music_type = new ObjectId(req.body.music_type);
   }
-  if (req.body.name) {
-    filter.name = req.body.name;
-  }*/
+  if (req.body.location) {
+    filter.location = req.body.location;
+  }
   if (req.body.search) {
     var r = new RegExp(req.body.search);
     var search = { "$regex": r, "$options": "i" };
@@ -1197,10 +1197,14 @@ router.post("/whatsnew", async (req, res) => {
   req.checkBody(schema);
   var errors = req.validationErrors();
   if (!errors) {
+    var artist_ids = [];
     var resp_artist = await artist_helper.get_artist_by_filter(filter);
 
+    resp_artist.artist.forEach(artist => {
+      artist_ids.push(new ObjectId(artist._id));
 
-    var resp_track = await track_helper.get_track_by_filter(resp_artist[0]._id);
+    });
+    var resp_track = await track_helper.get_track_by_filter(artist_ids);
     if (resp_track.status == 0 && resp_artist.status == 0) {
       logger.error("Error occured while fetching users = ", resp_track);
       res.status(config.INTERNAL_SERVER_ERROR).json(resp_track);

@@ -27,6 +27,7 @@ var ArtistModelSchema = new Schema({
     no_of_comments: { type: Number, default: 0 },
     email_verified: Boolean,
     dob: Date,
+    location: String,
     description: String,
     refresh_token: { type: String },
     created_at: { type: Date, default: Date.now }
