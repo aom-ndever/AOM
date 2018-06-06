@@ -1165,4 +1165,53 @@ router.get("/music_type", async (req, res) => {
 });
 
 
+//track and artist
+router.post("/whatsnew", async (req, res) => {
+  var filter = {};
+  var page_no = {};
+  var page_size = {};
+
+  var schema = {
+    /* "page_no": {
+       notEmpty: true,
+       errorMessage: "page_no is required"
+     },
+     "page_size": {
+       notEmpty: true,
+       errorMessage: "page_size is required"
+     }*/
+  };
+
+
+  /*if (req.body.artist_id) {
+    filter.artist_id = new ObjectId(req.body.artist_id);
+  }
+  if (req.body.name) {
+    filter.name = req.body.name;
+  }*/
+  if (req.body.search) {
+    var r = new RegExp(req.body.search);
+    var search = { "$regex": r, "$options": "i" };
+    filter.first_name = search;
+  }
+  req.checkBody(schema);
+  var errors = req.validationErrors();
+  if (!errors) {
+    var resp_artist = await artist_helper.get_artist_by_filter(filter);
+
+
+    var resp_track = await track_helper.get_track_by_filter(resp_artist[0]._id);
+    if (resp_track.status == 0 && resp_artist.status == 0) {
+      logger.error("Error occured while fetching users = ", resp_track);
+      res.status(config.INTERNAL_SERVER_ERROR).json(resp_track);
+    } else {
+      logger.trace("music got successfully = ");
+      res.status(config.OK_STATUS).json({ "status": 1, "track": resp_track.track, "artist": resp_artist.artist });
+    }
+  } else {
+    logger.error("Validation Error = ", errors);
+    res.status(config.BAD_REQUEST).json({ message: errors });
+  }
+
+});
 module.exports = router;

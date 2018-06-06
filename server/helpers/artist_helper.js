@@ -149,12 +149,12 @@ artist_helper.get_all_artist = async (filter, page_no, page_size) => {
     }
 };
 
-artist_helper.get_artist_by_filter = async (filter, page_no, page_size) => {
+artist_helper.get_artist_by_filter = async (filter) => {
     try {
         var artist = await Artist
             .find(filter)
-            .skip((page_size * page_no) - page_size)
-            .limit(page_size)
+            //.skip((page_size * page_no) - page_size)
+            //  .limit(page_size)
             .lean();
 
         if (artist && artist.length > 0) {

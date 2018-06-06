@@ -37,8 +37,6 @@ router.post('/', async (req, res) => {
       notEmpty: true,
       errorMessage: "Artist Id is required"
     },
-
-
   };
   req.checkBody(schema);
   var errors = req.validationErrors();
@@ -47,7 +45,6 @@ router.post('/', async (req, res) => {
     var obj = {
       user_id: req.userInfo.id,
       artist_id: req.body.artist_id
-
     };
     var resp_data = await bookmark_helper.insert_book_mark_artist(obj);
     if (resp_data.status == 0) {
