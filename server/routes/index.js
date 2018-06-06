@@ -1165,7 +1165,7 @@ router.get("/music_type", async (req, res) => {
 });
 
 
-//track and artist
+// whats new page track and artist
 router.post("/whatsnew", async (req, res) => {
   var filter = {};
   var page_no = {};
@@ -1217,5 +1217,46 @@ router.post("/whatsnew", async (req, res) => {
     res.status(config.BAD_REQUEST).json({ message: errors });
   }
 
+});
+
+
+// main page v2 track
+
+router.post("/mainpage", async (req, res) => {
+  var filter = {};
+  var page_no = {};
+  var page_size = {};
+
+  var schema = {
+
+  };
+
+
+  if (req.body.music_type) {
+    filter.music_type = new ObjectId(req.body.music_type);
+  }
+  if (req.body.search) {
+    var r = new RegExp(req.body.search);
+    var search = { "$regex": r, "$options": "i" };
+    filter.name = search;
+  }
+  req.checkBody(schema);
+  var errors = req.validationErrors();
+  if (!errors) {
+    var artist_ids = [];
+    var resp_artist = await track_helper.get_track_main(filter);
+
+    var resp_track = await track_helper.get_new_uploads(30);
+    if (resp_track.status == 0 && resp_artist.status == 0) {
+      logger.error("Error occured while fetching users = ", resp_track);
+      res.status(config.INTERNAL_SERVER_ERROR).json(resp_track);
+    } else {
+      logger.trace("music got successfully = ");
+      res.status(config.OK_STATUS).json({ "status": 1, "finalist": resp_artist.track, "new_uploads": resp_track.results });
+    }
+  } else {
+    logger.error("Validation Error = ", errors);
+    res.status(config.BAD_REQUEST).json({ message: errors });
+  }
 });
 module.exports = router;

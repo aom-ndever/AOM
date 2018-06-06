@@ -341,4 +341,40 @@ track_helper.delete_track_image = async (track_id) => {
         return { "status": 0, "message": "Error occured while finding track", "error": err }
     }
 };
+
+
+track_helper.get_new_uploads = async (day) => {
+    var to = moment().utcOffset(0);
+    var from = moment(to).subtract(day, "days").utcOffset(0);
+    var aggregate = [
+        {
+            "$match":
+                {
+                    "created_at": { "$gt": new Date(from), "$lt": new Date(to) },
+
+                },
+        },
+    ];
+    let result = await Track.aggregate(aggregate);
+    if (result) {
+        return { "status": 1, "message": "track  found", "results": result }
+    } else {
+        return { "status": 2, "message": "No  available track" }
+    }
+};
+
+track_helper.get_track_main = async (filter) => {
+    try {
+        var track = await Track
+            .find(filter)
+            .lean();
+        if (track) {
+            return { "status": 1, "message": "track details found", "track": track };
+        } else {
+            return { "status": 2, "message": "track not found" };
+        }
+    } catch (err) {
+        return { "status": 0, "message": "Error occured while finding track", "error": err }
+    }
+};
 module.exports = track_helper;

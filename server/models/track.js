@@ -14,6 +14,7 @@ var TrackModelSchema = new Schema({
     name: String,
     price: String,
     description: String,
+    music_type: { type: mongoose.Schema.Types.ObjectId, ref: 'music_type' },
     no_of_votes: { type: Number, default: 0 },
     no_of_likes: { type: Number, default: 0 },
     no_of_downloads: { type: Number, default: 0 },

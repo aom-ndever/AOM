@@ -234,11 +234,7 @@ router.delete('/:track_id', async (req, res) => {
 
 router.delete('/image/:track_id', async (req, res) => {
     track_id = req.params.track_id;
-
-
     var del_resp = await track_helper.delete_track_image(track_id);
-    console.log('del_resp', del_resp);
-
     if (del_resp.status === 0) {
         res.status(config.INTERNAL_SERVER_ERROR).json({ "status": 0, "message": "Error occured while deleting track image", "error": del_resp.error });
     } else if (del_resp.status === 2) {
@@ -247,6 +243,7 @@ router.delete('/image/:track_id', async (req, res) => {
         res.status(config.OK_STATUS).json({ "status": 1, "message": "track image has been deleted" });
     }
 });
+
 /**
  * @api {post} /artist/track/votes_by_day Get all artist vote by day
  * @apiName Get all artist vote by day
@@ -280,7 +277,6 @@ router.post('/votes_by_day', async (req, res) => {
  **/
 router.post('/downloaded_track', async (req, res) => {
     artist_id = req.userInfo.id;
-
     var track = await download_helper.get_all_track_by_id(artist_id);
     var resp_day = await download_helper.get_downloads_by_day(req.userInfo.id, req.body.day);
     if (track.status === 1 && resp_day.status === 1) {
