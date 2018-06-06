@@ -82,10 +82,10 @@
                         <a href="#"><img src="img/comment.png" alt="Comment"></a>
                         <span class="new-up"></span>
                       </div>
-                      <div class="track-price"><a href="#">$1.99</a></div>
+                      <div class="track-price"><a href="#">${{t.price}}</a></div>
                       <div class="share"><a href="#"><img src="img/share.png" alt="Track Share"></a></div>
-                      <div class="track-edit"><a data-fancybox data-animation-duration="700" data-src="#edittrack"  href="javascript:;"><img src="img/edit.png" alt="Track Edit"></a></div>
-                      <div class="track-del"><a data-fancybox data-animation-duration="700" data-src="#delete"  href="javascript:;"><img src="img/del.png" alt="Track Delete"></a></div>
+                      <div class="track-edit"><a data-fancybox data-animation-duration="700" data-src="#edittrack" (click)="openEditTrackModal(editTrack, t)"  href="javascript:;"><img src="img/edit.png" alt="Track Edit"></a></div>
+                      <div class="track-del"><a data-fancybox data-animation-duration="700" data-src="#delete" (click)="removeTrack(t._id)" href="javascript:;"><img src="img/del.png" alt="Track Delete"></a></div>
                     </td>
                   </tr>
                 </tbody>
@@ -470,14 +470,65 @@
 					<div class="additional-details">
 						<div class="about-you">
 							<label for="fname">Describe Yourself</label>
-							<p>Lorem ipsum dolor sit amet, consectetur adipisiciLorem ipsum dolor sit amet, consectetur adipisici</p>
+              <p>Lorem ipsum dolor sit amet, consectetur adipisiciLorem ipsum dolor sit amet, consectetur adipisici/p>
+              <!-- textarea name="description" placeholder="Describe Yourself" [(ngModel)]="trackdata.description"></textarea-->
 						</div>
 					</div>
 				</div>
-			</div>
+      </div>
+      <div class="form-group">
+        <label>Describe Yourself</label>
+        <textarea name="description" placeholder="Describe Yourself" [(ngModel)]="trackdata.description" class="form-control" ></textarea>
+      </div>
 			<div class="button_group">
 				<button class="add-btn" (click)="addTrack()" [disabled]="show_spinner">Add Track <i  *ngIf="show_spinner" class="fa fa-spinner fa-spin"></i></button>
 			</div>
 	  </div>
+  </div>
+</ng-template>
+<ng-template #editTrack let-c="close" let-d="dismiss">
+  <div class="modal-header" style="border:none;">
+		<button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+		<span aria-hidden="true">&times;</span>
+		</button>
+  </div>
+  <div class="modal-body">
+    <form>
+    <div class="edit-track-modal">
+        <h3>Edit Track</h3>
+        <div class="form-group tr-name">
+            <label for="tname">Track Name</label>
+            <input type="text" class="form-control" id="tname" name="name" [(ngModel)]="trackdata.name" placeholder="Track Name">
+          </div>
+          <div class="form-group tr-price">
+            <label for="tname">Price</label>
+            <input type="text" class="form-control" id="tname" name="price" placeholder="$ 1399" [(ngModel)]="trackdata.price">
+          </div>
+          <div style="clear: both; display: inline-block;">
+            <div class="edit-profile-picture">
+            <div class="upload-cover"> 
+              <img src="{{edit_image}}" alt="Edit cover Image">
+              <input type="file" name="my_doc_upload" id="my_doc_upload" (change)="changeTrackImage($event)" multiple="false">
+              <a data-fancybox="" data-animation-duration="700" data-src="#delete" href="javascript:;" class="delete"><i class="fa fa-trash"></i></a>
+            </div>
+          </div>
+          <div class="track-description">
+            <div class="additional-details">
+              <div class="about-you">
+                <label for="fname">Describe Yourself</label>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisiciLorem ipsum dolor sit amet, consectetur adipisici</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Describe Yourself</label>
+          <textarea name="description" [(ngModel)]="trackdata.description"></textarea>
+        </div>
+        <div class="button_group">
+          <button type="submit" (click)="updateTrack()" [disabled]="show_spinner" class="update-btn">Update <i *ngIf="show_spinner" class="fa fa-spinner fa-spin"></i></button>
+        </div>
+    </div>
+    </form>
   </div>
 </ng-template>

@@ -3,7 +3,7 @@ import {NgbModal, ModalDismissReasons, NgbModalRef} from '@ng-bootstrap/ng-boots
 import { environment } from '../../../environments/environment';
 import { ToastrService } from 'ngx-toastr';
 import { MyMusicService } from './my_music.service';
-
+declare var swal: any;
 @Component({
   selector: 'app-music',
   templateUrl: './my_music.component.html',
@@ -15,6 +15,7 @@ export class MyMusicComponent implements OnInit {
   modal_ref : NgbModalRef;
   audio_file : any = '';
   image_upload : any = '';
+  edit_image : any = 'img/profile-img.png';
   trackdata : any = {};
   tracklist : any = [];
   show_spinner : boolean = false;
@@ -75,7 +76,35 @@ export class MyMusicComponent implements OnInit {
       
   }
 
+  changeTrackImage(event : any) {
+    let file = event.target.files[0];
+    if(event.target.files.length > 0) {
+      const allow_types = ['image/png', 'image/jpg', 'image/jpeg'];
+      if(allow_types.indexOf(file.type) == -1) {
+        this.toastr.error('Invalid file format.','Error!');
+        return false;
+      }
+      this.trackdata.image = file;
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        const data = {};
+          let imageBuffer = e.target.result;
+          this.edit_image = imageBuffer;
+      };
+      reader.readAsDataURL(event.target.files[0]);
+    }
+  }
+
   openModal(content) {
+    this.modal_ref = this.modalService.open(content, { centered: true });
+  }
+
+  // open edit track model
+  openEditTrackModal(content : any, obj : any) {
+    this.trackdata = obj;
+    if(obj.image) {
+      this.edit_image = environment.API_URL+environment.ARTIST_TRACK+obj.image;
+    }
     this.modal_ref = this.modalService.open(content, { centered: true });
   }
   
@@ -86,12 +115,14 @@ export class MyMusicComponent implements OnInit {
       formdata.append('price', this.trackdata.price);
       formdata.append('audio', this.audio_file);
       formdata.append('image', this.image_upload);
+      formdata.append('description', this.trackdata.description);
       this.show_spinner = true;
       this.MyMusicService.addTrack(formdata).subscribe(response => {
         this.trackdata = {};
         this.audio_file = '';
         this.image_upload = '';
         this.toastr.success(response['message'],'Success!');
+        this.getAllTrack();
       }, error => {
         this.toastr.error(error['error'].message, 'Error!');
         this.show_spinner = false;
@@ -110,5 +141,50 @@ export class MyMusicComponent implements OnInit {
       console.log(response);
       this.tracklist = response['track'];
     });
+  }
+  // Remove track by id
+  removeTrack(id : any) {
+    const thi = this;
+    swal({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    }).then(function(flag) {
+      if(flag) {
+        thi.MyMusicService.deleteTrackById(id).subscribe(response => {
+          thi.getAllTrack();
+          thi.toastr.success(response['message'], 'Success!');
+        }, error => {
+          thi.toastr.error(error['error'].message, 'Error!');
+        },);
+      }
+    });
+  }
+
+  // update track
+  updateTrack() {
+    this.show_spinner = true;
+      if(this.trackdata && this.trackdata.name && this.trackdata.price && this.trackdata.image) {
+        let formdata = new FormData();
+        formdata.append('name', this.trackdata.name);
+        formdata.append('price', this.trackdata.price);
+        formdata.append('image', this.trackdata.image);
+        formdata.append('description', this.trackdata.description);
+        this.MyMusicService.updateTrack(formdata, this.trackdata._id).subscribe(response => {
+          this.getAllTrack();
+          this.toastr.success(response['message'], 'Success!');
+        }, error => {
+          this.toastr.error(error['error'].message, 'Error!');
+          this.show_spinner = false;
+        }, () => {
+          this.show_spinner = false;
+        });
+    } else {
+      this.toastr.error('Please provide necessary details', 'Error!');
+    }
   }
 }
