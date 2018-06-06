@@ -64,7 +64,7 @@ track_helper.get_track_by_filter = async (id) => {
         var track = await Track
             .find({ "artist_id": id })
             // .skip((page_size * page_no) - page_size)
-            // .limit(page_size)
+            .limit(page_size)
             .lean();
 
         if (track && track.length > 0) {
