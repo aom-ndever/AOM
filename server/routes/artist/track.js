@@ -46,6 +46,9 @@ router.post("/", async (req, res) => {
     if (req.body.price && req.body.price != null) {
         obj.price = req.body.price;
     }
+    if (req.body.music_type && req.body.music_type != null) {
+        obj.music_type = req.body.music_type;
+    }
 
     async.waterfall([
         function (callback) {
