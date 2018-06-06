@@ -214,7 +214,7 @@ router.put("/:track_id", async (req, res) => {
     }
 });
 
-
+//delete track
 router.delete('/:track_id', async (req, res) => {
     track_id = req.params.track_id;
     artist_id = req.userInfo.id
@@ -232,6 +232,8 @@ router.delete('/:track_id', async (req, res) => {
     }
 });
 
+
+//delete image of track
 router.delete('/image/:track_id', async (req, res) => {
     track_id = req.params.track_id;
     var del_resp = await track_helper.delete_track_image(track_id);
