@@ -59,12 +59,12 @@ track_helper.get_all_audio = async (filter, page_no, page_size) => {
 };
 
 
-track_helper.get_track_by_filter = async (filter, page_no, page_size) => {
+track_helper.get_track_by_filter = async (id) => {
     try {
         var track = await Track
-            .find(filter)
-            .skip((page_size * page_no) - page_size)
-            .limit(page_size)
+            .find({ "artist_id": id })
+            // .skip((page_size * page_no) - page_size)
+            // .limit(page_size)
             .lean();
 
         if (track && track.length > 0) {
@@ -326,6 +326,19 @@ track_helper.update_track_by_id = async (artist_id, track_id, track_object) => {
         }
     } catch (err) {
         return { "status": 0, "message": "Error occured while updating track", "error": err }
+    }
+};
+track_helper.delete_track_image = async (track_id) => {
+
+    try {
+        var track = await Track.update({ "_id": (track_id) }, { $unset: { "image": null } })
+        if (track) {
+            return { "status": 1, "message": "track details found", "track": track };
+        } else {
+            return { "status": 2, "message": "track not found" };
+        }
+    } catch (err) {
+        return { "status": 0, "message": "Error occured while finding track", "error": err }
     }
 };
 module.exports = track_helper;

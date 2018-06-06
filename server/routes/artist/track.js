@@ -116,7 +116,6 @@ router.post("/", async (req, res) => {
         if (resp.status === 0) {
             res.status(config.INTERNAL_SERVER_ERROR).json({ "error": resp.error });
         } else {
-
             var resp = await artist_helper.get_artist_by_id(artist_id);
 
             no_track = resp.artist.no_of_tracks + 1
@@ -124,7 +123,6 @@ router.post("/", async (req, res) => {
             res.status(config.OK_STATUS).json({ "message": "Inserted successfully" });
         }
     });
-
 });
 
 
@@ -234,7 +232,21 @@ router.delete('/:track_id', async (req, res) => {
     }
 });
 
+router.delete('/image/:track_id', async (req, res) => {
+    track_id = req.params.track_id;
 
+
+    var del_resp = await track_helper.delete_track_image(track_id);
+    console.log('del_resp', del_resp);
+
+    if (del_resp.status === 0) {
+        res.status(config.INTERNAL_SERVER_ERROR).json({ "status": 0, "message": "Error occured while deleting track image", "error": del_resp.error });
+    } else if (del_resp.status === 2) {
+        res.status(config.BAD_REQUEST).json({ "status": 0, "message": "Can't delete track image" });
+    } else {
+        res.status(config.OK_STATUS).json({ "status": 1, "message": "track image has been deleted" });
+    }
+});
 /**
  * @api {post} /artist/track/votes_by_day Get all artist vote by day
  * @apiName Get all artist vote by day
