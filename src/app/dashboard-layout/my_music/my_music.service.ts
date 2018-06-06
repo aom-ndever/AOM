@@ -24,4 +24,17 @@ export class MyMusicService {
   getAllTrack() {
     return this.http.get(`${this.api_host}/artist/track`, {headers : this.headers});
   }
+
+  // Remove track by id
+  deleteTrackById(id : any) {
+    return this.http.delete(`${this.api_host}/artist/track/${id}`, {headers : this.headers});
+  }
+  // Edit track detail
+  updateTrack(data : any, id : any) {
+    return this.http.put(`${this.api_host}/artist/track/${id}`, data, {headers : this.headers});
+  }
+  // Remove track image by id
+  deleteTrackImageById(id : any) {
+    return this.http.delete(`${this.api_host}/artist/track/image/${id}`, {headers : this.headers});
+  }
 }
