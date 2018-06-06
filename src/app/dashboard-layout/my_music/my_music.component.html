@@ -55,7 +55,14 @@
                   </tr>
                   <tr *ngFor="let t of tracklist; let i =  index;">
                     <td class="serial-num">{{i+1}}.</td>
-                    <td class="play-option"><a href="javascript:;"><img src="img/new-play.png" alt="Play"></a></td>
+                    <td class="play-option">
+                      <a href="javascript:;" (click)="playAudio(t.audio, i)" *ngIf="!audio_ins[i]">
+                        <img src="img/new-play.png" alt="Play" >
+                      </a>
+                      <a href="javascript:;" (click)="stopAudio(i)" *ngIf="audio_ins[i]">
+                        <img src="img/pause.png" alt="Play" >
+                      </a>
+                    </td>
                     <td class="track-pic"><a href="javascript:;">
                       <img src="{{track_url+t.image}}" *ngIf="t.image" width="50" height="50" alt="Track Image">
                       <img src="img/track-img.png" *ngIf="!t.image" alt="Track Image">
@@ -509,7 +516,7 @@
             <div class="upload-cover"> 
               <img src="{{edit_image}}" alt="Edit cover Image">
               <input type="file" name="my_doc_upload" id="my_doc_upload" (change)="changeTrackImage($event)" multiple="false">
-              <a data-fancybox="" data-animation-duration="700" data-src="#delete" href="javascript:;" class="delete"><i class="fa fa-trash"></i></a>
+              <a data-fancybox="" data-animation-duration="700" data-src="#delete" *ngIf="trackdata.image" href="javascript:;" (click)="removeTrackImage(trackdata._id)" class="delete"><i class="fa fa-trash"></i></a>
             </div>
           </div>
           <div class="track-description">

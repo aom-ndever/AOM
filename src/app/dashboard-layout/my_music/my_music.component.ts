@@ -19,6 +19,7 @@ export class MyMusicComponent implements OnInit {
   trackdata : any = {};
   tracklist : any = [];
   show_spinner : boolean = false;
+  audio_ins : any = [];
   track_url : any = environment.API_URL+environment.ARTIST_TRACK;
   userinfo : any = '';
   constructor(
@@ -104,6 +105,8 @@ export class MyMusicComponent implements OnInit {
     this.trackdata = obj;
     if(obj.image) {
       this.edit_image = environment.API_URL+environment.ARTIST_TRACK+obj.image;
+    } else {
+      this.edit_image = 'img/profile-img.png'
     }
     this.modal_ref = this.modalService.open(content, { centered: true });
   }
@@ -175,6 +178,9 @@ export class MyMusicComponent implements OnInit {
         formdata.append('image', this.trackdata.image);
         formdata.append('description', this.trackdata.description);
         this.MyMusicService.updateTrack(formdata, this.trackdata._id).subscribe(response => {
+          if(!response['track']['image']) {
+            this.edit_image = 'img/profile-img.png';
+          }
           this.getAllTrack();
           this.toastr.success(response['message'], 'Success!');
         }, error => {
@@ -186,5 +192,47 @@ export class MyMusicComponent implements OnInit {
     } else {
       this.toastr.error('Please provide necessary details', 'Error!');
     }
+  }
+  // Remove track image
+  removeTrackImage(id : any) {
+    const thi = this;
+    swal({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    }).then(function(flag) {
+      if(flag) {
+        thi.MyMusicService.deleteTrackImageById(id).subscribe(response => {
+          thi.getAllTrack();
+          thi.edit_image = 'img/profile-img.png';
+          delete this.trackdata['image'];
+          thi.toastr.success(response['message'], 'Success!');
+        }, error => {
+          thi.toastr.error(error['error'].message, 'Error!');
+        },);
+      }
+    });
+  }
+  // Play audio
+  playAudio(name : any, index : any){
+    let audio = new Audio();
+    audio.src = this.track_url+name;
+    audio.load();
+    audio.play();
+    if(!this.audio_ins.hasOwnProperty(index)) {
+      this.audio_ins[index] = audio;
+    }
+  }
+  // Stop audio
+  stopAudio(index) {
+    console.log(this.audio_ins[index]);
+    this.audio_ins[index].pause();
+    this.audio_ins[index].currentTime = 0;
+    // this.audio_ins[index].stop();
+    delete this.audio_ins[index];
   }
 }
