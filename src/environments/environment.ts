@@ -11,5 +11,6 @@ export const environment = {
   API_URL : 'http://localhost:3000',
   ARTIST_IMG : '/uploads/artist/',
   USER_IMG : '/uploads/user/',
-  ARTIST_MEDIA : '/uploads/media/'
+  ARTIST_MEDIA : '/uploads/media/',
+  ARTIST_TRACK : '/uploads/track/'
 };

@@ -1,0 +1,483 @@
+<section class="mymusic-wrap">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-2 col-sm-3 col-xs-12">
+        <div class="track-menu">
+          <ul class="nav nav-tabs" id="myTab">
+            <li class="nav-item">
+              <a class="nav-link {{tab_cnt == 1 ? 'active' : ''}}" (click)="tabChanged(1)" data-toggle="tab" href="javascript:;" >My Track</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link {{tab_cnt == 2 ? 'active' : ''}}" (click)="tabChanged(2)"  data-toggle="tab" href="javascript:;" >Stats</a>
+            </li>
+          </ul>
+          
+          <p><a data-fancybox data-animation-duration="700" data-src="#addtrack" (click)="openModal(content)"  href="javascript:;"><img src="img/icons8-plus_mathNormal.png" alt="Plus Icone"> Add Track</a></p>
+        </div>
+      </div>
+      <div class="col-md-10 col-sm-9 col-xs-12">
+        <div class="tab-content">
+          <div class="tab-pane fade {{tab_cnt == 1 ? 'show active' : ''}}" id="mytracks">
+            <div class="track-table">
+              <table>
+                <tbody>
+                  <tr>
+                    <td class="serial-num">1.</td>
+                    <td class="play-option"><a href="#"><img src="img/new-play.png" alt="Play"></a></td>
+                    <td class="track-pic"><a href="#"><img src="img/track-img.png" alt="Track Image"></a></td>
+                    <td class="track-det" colspan="2">
+                      <p class="track-name">Say Thanks</p>
+                      <p class="track-singer">Shavan Miller</p>
+                      <p class="track-year">2017</p>
+                    </td>
+                    <td class="td track-vote">
+                      <img src="img/start.png" alt="start">
+                      <span>1300 <br> <span>Votes</span></span>
+                    </td>
+
+                    <td class="contest-btn" style="display: none;">
+                      <a href="#">Submit for a Contest</a>
+                    </td>
+                    <td class="action" colspan="2">
+                      <div class="track-like">
+                        <a href="#"><img src="img/likehand.png" alt="Like Thumb"></a>
+                        <span class="new-up"></span>
+                      </div>
+                      <div class="track-comment">
+                        <a href="#"><img src="img/comment.png" alt="Comment"></a>
+                        <span class="new-up"></span>
+                      </div>
+                      <div class="track-price"><a href="#">$1.99</a></div>
+                      <div class="share"><a href="#"><img src="img/share.png" alt="Track Share"></a></div>
+                      <div class="track-edit"><a data-fancybox data-animation-duration="700" data-src="#edittrack"  href="javascript:;"><img src="img/edit.png" alt="Track Edit"></a></div>
+                      <div class="track-del"><a data-fancybox data-animation-duration="700" data-src="#delete"  href="javascript:;"><img src="img/del.png" alt="Track Delete"></a></div>
+                    </td>
+                  </tr>
+                  <tr *ngFor="let t of tracklist; let i =  index;">
+                    <td class="serial-num">{{i+1}}.</td>
+                    <td class="play-option"><a href="javascript:;"><img src="img/new-play.png" alt="Play"></a></td>
+                    <td class="track-pic"><a href="javascript:;">
+                      <img src="{{track_url+t.image}}" *ngIf="t.image" width="50" height="50" alt="Track Image">
+                      <img src="img/track-img.png" *ngIf="!t.image" alt="Track Image">
+                    </a></td>
+                    <td class="track-det" colspan="2">
+                      <p class="track-name">{{t.name}}</p>
+                      <p class="track-singer">{{userinfo.artist.first_name + ' '+ userinfo.artist.last_name}}</p>
+                      <p class="track-year">{{t.created_at | date : 'MMMM dd, yyyy'}}</p>
+                    </td>
+                    <td class="td track-vote" style="display: none;">
+                      <img src="img/start.png" alt="start">
+                      <span>1300 <br> <span>Votes</span></span>
+                    </td>
+
+                    <td class="contest-btn" >
+                      <a data-fancybox data-animation-duration="700" data-src="#submitcontest" href="javascript:;">Submit for a Contest</a>
+                    </td>
+                    <td class="action" colspan="2">
+                      <div class="track-like">
+                        <a href="#"><img src="img/likehand.png" alt="Like Thumb"></a>
+                        <span class="new-up"></span>
+                      </div>
+                      <div class="track-comment">
+                        <a href="#"><img src="img/comment.png" alt="Comment"></a>
+                        <span class="new-up"></span>
+                      </div>
+                      <div class="track-price"><a href="#">$1.99</a></div>
+                      <div class="share"><a href="#"><img src="img/share.png" alt="Track Share"></a></div>
+                      <div class="track-edit"><a data-fancybox data-animation-duration="700" data-src="#edittrack"  href="javascript:;"><img src="img/edit.png" alt="Track Edit"></a></div>
+                      <div class="track-del"><a data-fancybox data-animation-duration="700" data-src="#delete"  href="javascript:;"><img src="img/del.png" alt="Track Delete"></a></div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="tab-pane fade {{tab_cnt == 2 ? 'show active' : ''}}" id="stats">
+            <div class="track-table">
+              <table>
+                <tbody>
+                  <tr>
+                    <td class="serial-num">1.</td>
+                    <td class="play-option"><a href="#"><img src="img/new-play.png" alt="Play"></a></td>
+                    <td class="track-pic"><a href="#"><img src="img/track-img.png" alt="Track Image"></a></td>
+                    <td class="track-det" colspan="2">
+                      <p class="track-name">Say Thanks</p>
+                      <p class="track-singer">Shavan Miller</p>
+                      <p class="track-year">2017</p>
+                    </td>
+                    <td class="td track-vote">
+                      <img src="img/start.png" alt="start">
+                      <span>1300 <br> <span>Votes</span></span>
+                    </td>
+
+                    <td class="contest-btn" style="display: none;">
+                      <a href="#">Submit for a Contest</a>
+                    </td>
+                    <td class="action" colspan="2">
+                      <div class="track-like">
+                        <a href="#"><img src="img/likehand.png" alt="Like Thumb"></a>
+                        <span class="new-up"></span>
+                      </div>
+                      <div class="track-comment">
+                        <a href="#"><img src="img/comment.png" alt="Comment"></a>
+                        <span class="new-up"></span>
+                      </div>
+                      <div class="track-price"><a href="#">$1.99</a></div>
+                      <div class="share"><a href="#"><img src="img/share.png" alt="Track Share"></a></div>
+                      <div class="track-edit"><a data-fancybox data-animation-duration="700" data-src="#edittrack"  href="javascript:;"><img src="img/edit.png" alt="Track Edit"></a></div>
+                      <div class="track-del"><a data-fancybox data-animation-duration="700" data-src="#delete"  href="javascript:;"><img src="img/del.png" alt="Track Delete"></a></div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="serial-num">2.</td>
+                    <td class="play-option"><a href="#"><img src="img/new-play.png" alt="Play"></a></td>
+                    <td class="track-pic"><a href="#"><img src="img/track-img.png" alt="Track Image"></a></td>
+                    <td class="track-det" colspan="2">
+                      <p class="track-name">What About you</p>
+                      <p class="track-singer">Shavan Miller</p>
+                      <p class="track-year">March 12, 2017</p>
+                    </td>
+                    <td class="td track-vote" style="display: none;">
+                      <img src="img/start.png" alt="start">
+                      <span>1300 <br> <span>Votes</span></span>
+                    </td>
+
+                    <td class="contest-btn" >
+                      <a data-fancybox data-animation-duration="700" data-src="#submitcontest" href="javascript:;">Submit for a Contest</a>
+                    </td>
+                    <td class="action" colspan="2">
+                      <div class="track-like">
+                        <a href="#"><img src="img/likehand.png" alt="Like Thumb"></a>
+                        <span class="new-up"></span>
+                      </div>
+                      <div class="track-comment">
+                        <a href="#"><img src="img/comment.png" alt="Comment"></a>
+                        <span class="new-up"></span>
+                      </div>
+                      <div class="track-price"><a href="#">$1.99</a></div>
+                      <div class="share"><a href="#"><img src="img/share.png" alt="Track Share"></a></div>
+                      <div class="track-edit"><a data-fancybox data-animation-duration="700" data-src="#edittrack"  href="javascript:;"><img src="img/edit.png" alt="Track Edit"></a></div>
+                      <div class="track-del"><a data-fancybox data-animation-duration="700" data-src="#delete"  href="javascript:;"><img src="img/del.png" alt="Track Delete"></a></div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="serial-num">3.</td>
+                    <td class="play-option"><a href="#"><img src="img/pause.png" alt="Play"></a></td>
+                    <td class="track-pic"><a href="#"><img src="img/track-img.png" alt="Track Image"></a></td>
+                    <td class="track-det" colspan="2">
+                      <p class="track-name">Say Thanks</p>
+                      <p class="track-singer">Shavan Miller</p>
+                      <p class="track-year">March 12, 2017</p>
+                    </td>
+                    <td class="td track-vote">
+                      <img src="img/start.png" alt="start">
+                      <span>1300 <br> <span>Votes</span></span>
+                    </td>
+
+                    <td class="contest-btn" style="display: none;">
+                      <a href="#">Submit for a Contest</a>
+                    </td>
+                    <td class="action" colspan="2">
+                      <div class="track-like">
+                        <a href="#"><img src="img/likehand.png" alt="Like Thumb"></a>
+                        <span class="new-up"></span>
+                      </div>
+                      <div class="track-comment">
+                        <a href="#"><img src="img/comment.png" alt="Comment"></a>
+                        <span class="new-up"></span>
+                      </div>
+                      <div class="track-price"><a href="#">$1.99</a></div>
+                      <div class="share"><a href="#"><img src="img/share.png" alt="Track Share"></a></div>
+                      <div class="track-edit"><a data-fancybox data-animation-duration="700" data-src="#edittrack"  href="javascript:;"><img src="img/edit.png" alt="Track Edit"></a></div>
+                      <div class="track-del"><a data-fancybox data-animation-duration="700" data-src="#delete"  href="javascript:;"><img src="img/del.png" alt="Track Delete"></a></div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="serial-num">4.</td>
+                    <td class="play-option"><a href="#"><img src="img/new-play.png" alt="Play"></a></td>
+                    <td class="track-pic"><a href="#"><img src="img/track-img.png" alt="Track Image"></a></td>
+                    <td class="track-det" colspan="2">
+                      <p class="track-name">Blue State of Mind</p>
+                      <p class="track-singer">Shavan Miller</p>
+                      <p class="track-year">March 12, 2017</p>
+                    </td>
+                    <td class="td track-vote" style="display: none;">
+                      <img src="img/start.png" alt="start">
+                      <span>1300 <br> <span>Votes</span></span>
+                    </td>
+
+                    <td class="contest-btn" >
+                      <a data-fancybox data-animation-duration="700" data-src="#submitcontest" href="javascript:;">Submit for a Contest</a>
+                    </td>
+                    <td class="action" colspan="2">
+                      <div class="track-like">
+                        <a href="#"><img src="img/likehand.png" alt="Like Thumb"></a>
+                        <span class="new-up"></span>
+                      </div>
+                      <div class="track-comment">
+                        <a href="#"><img src="img/comment.png" alt="Comment"></a>
+                        <span class="new-up"></span>
+                      </div>
+                      <div class="track-price"><a href="#">$1.99</a></div>
+                      <div class="share"><a href="#"><img src="img/share.png" alt="Track Share"></a></div>
+                      <div class="track-edit"><a data-fancybox data-animation-duration="700" data-src="#edittrack"  href="javascript:;"><img src="img/edit.png" alt="Track Edit"></a></div>
+                      <div class="track-del"><a data-fancybox data-animation-duration="700" data-src="#delete"  href="javascript:;"><img src="img/del.png" alt="Track Delete"></a></div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="serial-num">5.</td>
+                    <td class="play-option"><a href="#"><img src="img/new-play.png" alt="Play"></a></td>
+                    <td class="track-pic"><a href="#"><img src="img/track-img.png" alt="Track Image"></a></td>
+                    <td class="track-det" colspan="2">
+                      <p class="track-name">Say Thanks</p>
+                      <p class="track-singer">Shavan Miller</p>
+                      <p class="track-year">March 12, 2017</p>
+                    </td>
+                    <td class="td track-vote" style="display: none;">
+                      <img src="img/start.png" alt="start">
+                      <span>1300 <br> <span>Votes</span></span>
+                    </td>
+
+                    <td class="contest-btn" >
+                      <a data-fancybox data-animation-duration="700" data-src="#submitcontest" href="javascript:;">Submit for a Contest</a>
+                    </td>
+                    <td class="action" colspan="2">
+                      <div class="track-like">
+                        <a href="#"><img src="img/likehand.png" alt="Like Thumb"></a>
+                        <span class="new-up"></span>
+                      </div>
+                      <div class="track-comment">
+                        <a href="#"><img src="img/comment.png" alt="Comment"></a>
+                        <span class="new-up"></span>
+                      </div>
+                      <div class="track-price"><a href="#">$1.99</a></div>
+                      <div class="share"><a href="#"><img src="img/share.png" alt="Track Share"></a></div>
+                      <div class="track-edit"><a data-fancybox data-animation-duration="700" data-src="#edittrack"  href="javascript:;"><img src="img/edit.png" alt="Track Edit"></a></div>
+                      <div class="track-del"><a data-fancybox data-animation-duration="700" data-src="#delete"  href="javascript:;"><img src="img/del.png" alt="Track Delete"></a></div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="serial-num">6.</td>
+                    <td class="play-option"><a href="#"><img src="img/new-play.png" alt="Play"></a></td>
+                    <td class="track-pic"><a href="#"><img src="img/track-img.png" alt="Track Image"></a></td>
+                    <td class="track-det" colspan="2">
+                      <p class="track-name">Small Things</p>
+                      <p class="track-singer">Shavan Miller</p>
+                      <p class="track-year">March 12, 2017</p>
+                    </td>
+                    <td class="td track-vote" style="display: none;">
+                      <img src="img/start.png" alt="start">
+                      <span>1300 <br> <span>Votes</span></span>
+                    </td>
+
+                    <td class="contest-btn" >
+                      <a data-fancybox data-animation-duration="700" data-src="#submitcontest" href="javascript:;">Submit for a Contest</a>
+                    </td>
+                    <td class="action" colspan="2">
+                      <div class="track-like">
+                        <a href="#"><img src="img/likehand.png" alt="Like Thumb"></a>
+                        <span class="new-up"></span>
+                      </div>
+                      <div class="track-comment">
+                        <a href="#"><img src="img/comment.png" alt="Comment"></a>
+                        <span class="new-up"></span>
+                      </div>
+                      <div class="track-price"><a href="#">$1.99</a></div>
+                      <div class="share"><a href="#"><img src="img/share.png" alt="Track Share"></a></div>
+                      <div class="track-edit"><a data-fancybox data-animation-duration="700" data-src="#edittrack"  href="javascript:;"><img src="img/edit.png" alt="Track Edit"></a></div>
+                      <div class="track-del"><a data-fancybox data-animation-duration="700" data-src="#delete"  href="javascript:;"><img src="img/del.png" alt="Track Delete"></a></div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="serial-num">7.</td>
+                    <td class="play-option"><a href="#"><img src="img/new-play.png" alt="Play"></a></td>
+                    <td class="track-pic"><a href="#"><img src="img/track-img.png" alt="Track Image"></a></td>
+                    <td class="track-det" colspan="2">
+                      <p class="track-name">My Dreams</p>
+                      <p class="track-singer">Shavan Miller</p>
+                      <p class="track-year">March 12, 2017</p>
+                    </td>
+                    <td class="td track-vote" style="display: none;">
+                      <img src="img/start.png" alt="start">
+                      <span>1300 <br> <span>Votes</span></span>
+                    </td>
+
+                    <td class="contest-btn" >
+                      <a data-fancybox data-animation-duration="700" data-src="#submitcontest" href="javascript:;">Submit for a Contest</a>
+                    </td>
+                    <td class="action" colspan="2">
+                      <div class="track-like">
+                        <a href="#"><img src="img/likehand.png" alt="Like Thumb"></a>
+                        <span class="new-up"></span>
+                      </div>
+                      <div class="track-comment">
+                        <a href="#"><img src="img/comment.png" alt="Comment"></a>
+                        <span class="new-up"></span>
+                      </div>
+                      <div class="track-price"><a href="#">$1.99</a></div>
+                      <div class="share"><a href="#"><img src="img/share.png" alt="Track Share"></a></div>
+                      <div class="track-edit"><a data-fancybox data-animation-duration="700" data-src="#edittrack"  href="javascript:;"><img src="img/edit.png" alt="Track Edit"></a></div>
+                      <div class="track-del"><a data-fancybox data-animation-duration="700" data-src="#delete"  href="javascript:;"><img src="img/del.png" alt="Track Delete"></a></div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="serial-num">8.</td>
+                    <td class="play-option"><a href="#"><img src="img/new-play.png" alt="Play"></a></td>
+                    <td class="track-pic"><a href="#"><img src="img/track-img.png" alt="Track Image"></a></td>
+                    <td class="track-det" colspan="2">
+                      <p class="track-name">Say Thanks</p>
+                      <p class="track-singer">Shavan Miller</p>
+                      <p class="track-year">March 12, 2017</p>
+                    </td>
+                    <td class="td track-vote" style="display: none;">
+                      <img src="img/start.png" alt="start">
+                      <span>1300 <br> <span>Votes</span></span>
+                    </td>
+
+                    <td class="contest-btn" >
+                      <a data-fancybox data-animation-duration="700" data-src="#submitcontest" href="javascript:;">Submit for a Contest</a>
+                    </td>
+                    <td class="action" colspan="2">
+                      <div class="track-like">
+                        <a href="#"><img src="img/likehand.png" alt="Like Thumb"></a>
+                        <span class="new-up"></span>
+                      </div>
+                      <div class="track-comment">
+                        <a href="#"><img src="img/comment.png" alt="Comment"></a>
+                        <span class="new-up"></span>
+                      </div>
+                      <div class="track-price"><a href="#">$1.99</a></div>
+                      <div class="share"><a href="#"><img src="img/share.png" alt="Track Share"></a></div>
+                      <div class="track-edit"><a data-fancybox data-animation-duration="700" data-src="#edittrack"  href="javascript:;"><img src="img/edit.png" alt="Track Edit"></a></div>
+                      <div class="track-del"><a data-fancybox data-animation-duration="700" data-src="#delete"  href="javascript:;"><img src="img/del.png" alt="Track Delete"></a></div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="serial-num">9.</td>
+                    <td class="play-option"><a href="#"><img src="img/new-play.png" alt="Play"></a></td>
+                    <td class="track-pic"><a href="#"><img src="img/track-img.png" alt="Track Image"></a></td>
+                    <td class="track-det" colspan="2">
+                      <p class="track-name">Will You</p>
+                      <p class="track-singer">Shavan Miller</p>
+                      <p class="track-year">2017</p>
+                    </td>
+                    <td class="td track-vote" style="display: none;">
+                      <img src="img/start.png" alt="start">
+                      <span>1300 <br> <span>Votes</span></span>
+                    </td>
+
+                    <td class="contest-btn" >
+                      <a data-fancybox data-animation-duration="700" data-src="#submitcontest" href="javascript:;">Submit for a Contest</a>
+                    </td>
+                    <td class="action" colspan="2">
+                      <div class="track-like">
+                        <a href="#"><img src="img/likehand.png" alt="Like Thumb"></a>
+                        <span class="new-up"></span>
+                      </div>
+                      <div class="track-comment">
+                        <a href="#"><img src="img/comment.png" alt="Comment"></a>
+                        <span class="new-up"></span>
+                      </div>
+                      <div class="track-price"><a href="#">$1.99</a></div>
+                      <div class="share"><a href="#"><img src="img/share.png" alt="Track Share"></a></div>
+                      <div class="track-edit"><a data-fancybox data-animation-duration="700" data-src="#edittrack"  href="javascript:;"><img src="img/edit.png" alt="Track Edit"></a></div>
+                      <div class="track-del"><a data-fancybox data-animation-duration="700" data-src="#delete"  href="javascript:;"><img src="img/del.png" alt="Track Delete"></a></div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="serial-num">10.</td>
+                    <td class="play-option"><a href="#"><img src="img/new-play.png" alt="Play"></a></td>
+                    <td class="track-pic"><a href="#"><img src="img/track-img.png" alt="Track Image"></a></td>
+                    <td class="track-det" colspan="2">
+                      <p class="track-name">Sound Waves</p>
+                      <p class="track-singer">Shavan Miller</p>
+                      <p class="track-year">March 12, 2017</p>
+                    </td>
+                    <td class="td track-vote" style="display: none;">
+                      <img src="img/start.png" alt="start">
+                      <span>1300 <br> <span>Votes</span></span>
+                    </td>
+
+                    <td class="contest-btn" >
+                      <a data-fancybox data-animation-duration="700" data-src="#submitcontest" href="javascript:;">Submit for a Contest</a>
+                    </td>
+                    <td class="action" colspan="2">
+                      <div class="track-like">
+                        <a href="#"><img src="img/likehand.png" alt="Like Thumb"></a>
+                        <span class="new-up"></span>
+                      </div>
+                      <div class="track-comment">
+                        <a href="#"><img src="img/comment.png" alt="Comment"></a>
+                        <span class="new-up"></span>
+                      </div>
+                      <div class="track-price"><a href="#">$1.99</a></div>
+                      <div class="share"><a href="#"><img src="img/share.png" alt="Track Share"></a></div>
+                      <div class="track-edit"><a data-fancybox data-animation-duration="700" data-src="#edittrack"  href="javascript:;"><img src="img/edit.png" alt="Track Edit"></a></div>
+                      <div class="track-del"><a data-fancybox data-animation-duration="700" data-src="#delete"  href="javascript:;"><img src="img/del.png" alt="Track Delete"></a></div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<ng-template #content let-c="close" let-d="dismiss">
+	<div class="modal-header" style="border:none;">
+		<button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+		<span aria-hidden="true">&times;</span>
+		</button>
+  </div>
+  <div class="modal-body">
+    <div class="add-track-modal">
+			<h3>Add New Track</h3>
+			<div class="media-upload-btn"> 
+				<span class="upl-img"><i class="fa fa-cloud-upload" aria-hidden="true"></i></span> 
+				<span class="up_text">Select Music</span> 
+				<input type="file" name="my_doc_upload" id="my_doc_upload" (change)="changeAudio($event)" multiple="false"> 
+				<p class="instrution">AIFF,WAV,FLAC,MP3 or less</p>
+			</div>
+			<div class="media_progress_bar">
+				<div class="det">
+					<div class="upl-file-name">My Summer.mp3</div>
+					<div class="upl-time-rem">5 sec remaining</div>
+					<div class="close-btn"><img src="img/closeNormal.png" alt="Close-btn"></div>
+				</div>
+				<div class="progress">
+				    <div class="progress-bar" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="width:70%">
+				      <span class="sr-only">70% Complete</span>
+				    </div>
+				  </div>
+			</div>
+			<div class="form-group tr-name">
+			    <label for="tname">Track Name</label>
+			    <input type="text" class="form-control" id="tname" name="name" [(ngModel)]="trackdata.name" placeholder="Track Name">
+		  	</div>
+		  	<div class="form-group tr-price">
+			    <label for="tname">Price</label>
+			    <input type="number" class="form-control" id="tname" name="price" [(ngModel)]="trackdata.price" placeholder="$ 1399">
+		  	</div>
+		  	<div style="clear: both; display: inline-block;">
+			  	<div class="media-upload-btn song-photo"> 
+  					<span class="upl-img"><i class="fa fa-cloud-upload" aria-hidden="true"></i></span> 
+  					<span class="up_text">Upload <br>Photo</span> 
+  					<input type="file" name="my_doc_upload" id="my_doc_upload" (change)="changeFile($event)" multiple="false"> 
+  				</div>
+				<div class="track-description">
+					<div class="additional-details">
+						<div class="about-you">
+							<label for="fname">Describe Yourself</label>
+							<p>Lorem ipsum dolor sit amet, consectetur adipisiciLorem ipsum dolor sit amet, consectetur adipisici</p>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="button_group">
+				<button class="add-btn" (click)="addTrack()" [disabled]="show_spinner">Add Track <i  *ngIf="show_spinner" class="fa fa-spinner fa-spin"></i></button>
+			</div>
+	  </div>
+  </div>
+</ng-template>

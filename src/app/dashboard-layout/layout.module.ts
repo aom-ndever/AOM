@@ -9,12 +9,14 @@ import { WhatsNewComponent } from './whatsnew/whatsnew.component';
 import { ArtistComponent } from './artist/artist.component';
 import { VoteComponent } from './vote/vote.component';
 import { MyProfileComponent } from './my_profile/myProfile.component';
+import { MyMusicComponent } from './my_music/my_music.component';
 import { DashboardLayoutModule } from './layout/dashboard-layout.module';
 import { CarouselModule } from '../shared/carousel/carousel.module';
 import { HttpModule } from '@angular/http';
 import { HttpClientModule } from '@angular/common/http'
 import { HeaderService } from './header/header.service';
 import { MyProfileService } from './my_profile/myProfile.service';
+import { MyMusicService } from './my_music/my_music.service';
 import { FormsModule, ReactiveFormsModule  } from '@angular/forms';
 import { ToastrModule } from 'ngx-toastr';
 import { LightboxModule } from 'angular2-lightbox';
@@ -42,12 +44,13 @@ import { AuthService } from '../shared/auth.service';
           {path: 'whats-new', component: WhatsNewComponent},
           {path: 'artist', component: ArtistComponent},
           {path: 'vote', component: VoteComponent},
+          {path: 'my-music', component: MyMusicComponent, canActivate: [AuthService]},
           {path: 'my-profile', component: MyProfileComponent, canActivate: [AuthService]}
         ]
       }
     ])
   ],
-  declarations: [DashboardComponent, WhatsNewComponent, ArtistComponent, VoteComponent, MyProfileComponent],
-  providers : [HeaderService, AuthService, MyProfileService]
+  declarations: [DashboardComponent, WhatsNewComponent, ArtistComponent, VoteComponent, MyProfileComponent, MyMusicComponent],
+  providers : [HeaderService, AuthService, MyProfileService, MyMusicService]
 })
 export class LayoutModule { }
