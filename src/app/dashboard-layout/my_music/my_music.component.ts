@@ -22,6 +22,7 @@ export class MyMusicComponent implements OnInit {
   audio_ins : any = [];
   track_url : any = environment.API_URL+environment.ARTIST_TRACK;
   userinfo : any = '';
+  music_type_list : any = [];
   constructor(
     private modalService: NgbModal,
     private MyMusicService : MyMusicService,
@@ -32,6 +33,7 @@ export class MyMusicComponent implements OnInit {
 
   ngOnInit() {
       this.getAllTrack();
+      this.getAllMusicType();
   }
 
   toggleFilter() {
@@ -112,13 +114,14 @@ export class MyMusicComponent implements OnInit {
   }
   
   addTrack() {
-    if(this.trackdata && this.trackdata.name && this.trackdata.price && this.audio_file && this.image_upload) {
+    if(this.trackdata && this.trackdata.name && this.trackdata.price && this.audio_file && this.image_upload && this.trackdata.music_type) {
       let formdata = new FormData();
       formdata.append('name', this.trackdata.name);
       formdata.append('price', this.trackdata.price);
       formdata.append('audio', this.audio_file);
       formdata.append('image', this.image_upload);
       formdata.append('description', this.trackdata.description);
+      formdata.append('music_type', this.trackdata.music_type);
       this.show_spinner = true;
       this.MyMusicService.addTrack(formdata).subscribe(response => {
         this.trackdata = {};
@@ -171,12 +174,13 @@ export class MyMusicComponent implements OnInit {
   // update track
   updateTrack() {
     this.show_spinner = true;
-      if(this.trackdata && this.trackdata.name && this.trackdata.price && this.trackdata.image) {
+      if(this.trackdata && this.trackdata.name && this.trackdata.price && this.trackdata.image && this.trackdata.music_type) {
         let formdata = new FormData();
         formdata.append('name', this.trackdata.name);
         formdata.append('price', this.trackdata.price);
         formdata.append('image', this.trackdata.image);
         formdata.append('description', this.trackdata.description);
+        formdata.append('music_type', this.trackdata.music_type);
         this.MyMusicService.updateTrack(formdata, this.trackdata._id).subscribe(response => {
           if(!response['track']['image']) {
             this.edit_image = 'img/profile-img.png';
@@ -234,5 +238,11 @@ export class MyMusicComponent implements OnInit {
     this.audio_ins[index].currentTime = 0;
     // this.audio_ins[index].stop();
     delete this.audio_ins[index];
+  }
+  // Get all music type
+  getAllMusicType() {
+    this.MyMusicService.getAllMusicType().subscribe(response => {
+      this.music_type_list = response['music'];
+    });
   }
 }
