@@ -18,6 +18,7 @@ var track_helper = require('./../helpers/track_helper');
 var admin_helper = require('./../helpers/admin_helper');
 var super_admin_helper = require('./../helpers/super_admin_helper');
 var music_helper = require('./../helpers/music_helper');
+var contest_helper = require('./../helpers/contest_helper');
 
 /**
  * @api {post} /artist_registration Artist Registration
@@ -1182,7 +1183,6 @@ router.post("/whatsnew", async (req, res) => {
      }*/
   };
 
-
   if (req.body.music_type) {
     filter.music_type = new ObjectId(req.body.music_type);
   }
@@ -1218,6 +1218,7 @@ router.post("/whatsnew", async (req, res) => {
   }
 
 });
+
 
 
 // main page v2 track
@@ -1259,4 +1260,49 @@ router.post("/mainpage", async (req, res) => {
     res.status(config.BAD_REQUEST).json({ message: errors });
   }
 });
+
+
+
+
+
+router.post("/artistv1", async (req, res) => {
+  var filter = {};
+  var page_no = {};
+  var page_size = {};
+
+  var schema = {
+
+  };
+
+
+  if (req.body.music_type) {
+    filter.music_type = new ObjectId(req.body.music_type);
+  }
+  if (req.body.search) {
+    var r = new RegExp(req.body.search);
+    var search = { "$regex": r, "$options": "i" };
+    filter.first_name = search;
+  }
+  req.checkBody(schema);
+  var errors = req.validationErrors();
+  if (!errors) {
+    var artist_ids = [];
+    var resp_artist = await artist_helper.get_new_uploads(30);
+
+
+    if (resp_artist.status == 0) {
+      logger.error("Error occured while fetching users = ", resp_track);
+      res.status(config.INTERNAL_SERVER_ERROR).json(resp_track);
+    } else {
+      logger.trace("music got successfully = ");
+      res.status(config.OK_STATUS).json({ "status": 1, "rising_stars": resp_track.results });
+    }
+  } else {
+    logger.error("Validation Error = ", errors);
+    res.status(config.BAD_REQUEST).json({ message: errors });
+  }
+});
+
+
+
 module.exports = router;
