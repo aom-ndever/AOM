@@ -41,4 +41,12 @@ export class MyMusicService {
   getAllMusicType() {
     return this.http.get(`${this.api_host}/music_type`);
   }
+  // Get All contest details
+  getAllContest() {
+    return this.http.get(`${this.api_host}/artist/contest`, {headers : this.headers});
+  }
+  // Add track to contest
+  addTrackToContest(data : any) {
+    return this.http.post(`${this.api_host}/artist/participate`, data, {headers : this.headers});
+  }
 }
