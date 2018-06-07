@@ -137,6 +137,14 @@ export class MyMusicComponent implements OnInit {
       });
     } else if(!this.audio_file) {
       this.toastr.error('Please select audio file', 'Error!');
+    } else if(!this.image_upload) {
+      this.toastr.error('Please select track image', 'Error!');
+    } else if(!this.trackdata.name) {
+      this.toastr.error('Please select track name', 'Error!');
+    } else if(!this.trackdata.price) {
+      this.toastr.error('Please select track price', 'Error!');
+    } else if(!this.trackdata.music_type) {
+      this.toastr.error('Please select music type', 'Error!');
     } else {
       this.toastr.error('Please provide necessary details', 'Error!');
     }
@@ -193,6 +201,14 @@ export class MyMusicComponent implements OnInit {
         }, () => {
           this.show_spinner = false;
         });
+    } else if(!this.trackdata.image) {
+      this.toastr.error('Please select track image', 'Error!');
+    } else if(!this.trackdata.name) {
+      this.toastr.error('Please select track name', 'Error!');
+    } else if(!this.trackdata.price) {
+      this.toastr.error('Please select track price', 'Error!');
+    } else if(!this.trackdata.music_type) {
+      this.toastr.error('Please select music type', 'Error!');
     } else {
       this.toastr.error('Please provide necessary details', 'Error!');
     }
