@@ -315,4 +315,25 @@ artist_helper.update_artist_password = async (artist_id, password) => {
         return { "status": 0, "message": "Error occured while updating artist", "error": err }
     }
 };
+
+
+artist_helper.get_new_uploads = async (day) => {
+    var to = moment().utcOffset(0);
+    var from = moment(to).subtract(day, "days").utcOffset(0);
+    var aggregate = [
+        {
+            "$match":
+                {
+                    "created_at": { "$gt": new Date(from), "$lt": new Date(to) },
+
+                },
+        },
+    ];
+    let result = await Artist.aggregate(aggregate);
+    if (result) {
+        return { "status": 1, "message": "artist  found", "results": result }
+    } else {
+        return { "status": 2, "message": "No  available artist" }
+    }
+};
 module.exports = artist_helper;
