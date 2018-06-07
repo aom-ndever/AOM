@@ -429,7 +429,8 @@ router.post("/participate", async (req, res) => {
 
         var obj = {
             artist_id: req.userInfo.id,
-            contest_id: req.body.contest_id
+            contest_id: req.body.contest_id,
+            track_id: req.body.track_id
         };
 
         var resp_data = await participate_helper.get_participant(obj.artist_id, obj.contest_id, obj.track_id);
