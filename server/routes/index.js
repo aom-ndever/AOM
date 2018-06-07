@@ -19,7 +19,7 @@ var admin_helper = require('./../helpers/admin_helper');
 var super_admin_helper = require('./../helpers/super_admin_helper');
 var music_helper = require('./../helpers/music_helper');
 var contest_helper = require('./../helpers/contest_helper');
-
+var moment = require('moment');
 /**
  * @api {post} /artist_registration Artist Registration
  * @apiName Artist Registration
@@ -1222,17 +1222,12 @@ router.post("/whatsnew", async (req, res) => {
 
 
 // main page v2 track
-
 router.post("/mainpage", async (req, res) => {
   var filter = {};
   var page_no = {};
   var page_size = {};
 
-  var schema = {
-
-  };
-
-
+  var schema = {};
   if (req.body.music_type) {
     filter.music_type = new ObjectId(req.body.music_type);
   }
@@ -1262,19 +1257,12 @@ router.post("/mainpage", async (req, res) => {
 });
 
 
-
-
-
 router.post("/artistv1", async (req, res) => {
   var filter = {};
   var page_no = {};
   var page_size = {};
 
-  var schema = {
-
-  };
-
-
+  var schema = {};
   if (req.body.music_type) {
     filter.music_type = new ObjectId(req.body.music_type);
   }
@@ -1289,20 +1277,19 @@ router.post("/artistv1", async (req, res) => {
     var artist_ids = [];
     var resp_artist = await artist_helper.get_new_uploads(30);
 
+    //var resp_track = await artist.get_chart_toppers(filter);
 
     if (resp_artist.status == 0) {
-      logger.error("Error occured while fetching users = ", resp_track);
-      res.status(config.INTERNAL_SERVER_ERROR).json(resp_track);
+      logger.error("Error occured while fetching users = ", resp_artist);
+      res.status(config.INTERNAL_SERVER_ERROR).json(resp_artist);
     } else {
-      logger.trace("music got successfully = ");
-      res.status(config.OK_STATUS).json({ "status": 1, "rising_stars": resp_track.results });
+      logger.trace("artist got successfully = ");
+      res.status(config.OK_STATUS).json({ "status": 1, "rising_stars": resp_artist.results });
     }
   } else {
     logger.error("Validation Error = ", errors);
     res.status(config.BAD_REQUEST).json({ message: errors });
   }
 });
-
-
 
 module.exports = router;

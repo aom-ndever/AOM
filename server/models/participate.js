@@ -7,9 +7,9 @@ var SALT_WORK_FACTOR = 10;
 var Schema = mongoose.Schema;
 
 var ParticipateModelSchema = new Schema({
-    artist_id :{ type: mongoose.Schema.Types.ObjectId, ref: 'artist' }, 
-    contest_id  :{ type: mongoose.Schema.Types.ObjectId, ref: 'contest' }, 
-    
+    artist_id: { type: mongoose.Schema.Types.ObjectId, ref: 'artist' },
+    contest_id: { type: mongoose.Schema.Types.ObjectId, ref: 'contest' },
+    track_id: { type: mongoose.Schema.Types.ObjectId, ref: 'track' },
     created_at: { type: Date, default: Date.now }
 }, { versionKey: false });
 

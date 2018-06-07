@@ -416,6 +416,10 @@ router.post("/participate", async (req, res) => {
             notEmpty: true,
             errorMessage: "Contest Id is required"
         },
+        "track_id": {
+            notEmpty: true,
+            errorMessage: "Track Id is required"
+        },
 
     };
 
@@ -428,7 +432,7 @@ router.post("/participate", async (req, res) => {
             contest_id: req.body.contest_id
         };
 
-        var resp_data = await participate_helper.get_participant(obj.artist_id, obj.contest_id);
+        var resp_data = await participate_helper.get_participant(obj.artist_id, obj.contest_id, obj.track_id);
         if (resp_data && resp_data.participate == 0) {
 
             var resp_data = await participate_helper.insert_participant(obj);
