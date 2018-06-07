@@ -8,7 +8,7 @@ const saltRounds = 10;
 var artist_helper = {};
 var mongoose = require('mongoose');
 var ObjectId = mongoose.Types.ObjectId;
-
+var moment = require('moment');
 /*
  * insert_artist is used to insert into artist collection
  * 
