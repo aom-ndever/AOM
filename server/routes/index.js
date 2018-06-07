@@ -1205,6 +1205,14 @@ router.post("/whatsnew", async (req, res) => {
 
     });
     var resp_track = await track_helper.get_track_by_filter(artist_ids);
+    var no_track = [];
+
+    resp_track.track.forEach(track => {
+      no_track = track.no_of_likes;
+      console.log('no_track', no_track);
+
+    });
+
     if (resp_track.status == 0 && resp_artist.status == 0) {
       logger.error("Error occured while fetching users = ", resp_track);
       res.status(config.INTERNAL_SERVER_ERROR).json(resp_track);
