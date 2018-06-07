@@ -23,6 +23,8 @@ export class MyMusicComponent implements OnInit {
   track_url : any = environment.API_URL+environment.ARTIST_TRACK;
   userinfo : any = '';
   music_type_list : any = [];
+  contest_list : any = [];
+  contest_id : any = '';
   constructor(
     private modalService: NgbModal,
     private MyMusicService : MyMusicService,
@@ -34,6 +36,7 @@ export class MyMusicComponent implements OnInit {
   ngOnInit() {
       this.getAllTrack();
       this.getAllMusicType();
+      this.getAllContest();
   }
 
   toggleFilter() {
@@ -110,6 +113,11 @@ export class MyMusicComponent implements OnInit {
     } else {
       this.edit_image = 'img/profile-img.png'
     }
+    this.modal_ref = this.modalService.open(content, { centered: true });
+  }
+
+  // Open contest modal
+  openContestModal(content : any) {
     this.modal_ref = this.modalService.open(content, { centered: true });
   }
   
@@ -260,5 +268,28 @@ export class MyMusicComponent implements OnInit {
     this.MyMusicService.getAllMusicType().subscribe(response => {
       this.music_type_list = response['music'];
     });
+  }
+  // Get all contest
+  getAllContest() {
+    this.MyMusicService.getAllContest().subscribe(response => {
+      this.contest_list = response['contest'];
+    });
+  }
+  // Add a track to contest
+  addTrackToContest() {
+    if(this.contest_id) {
+      let data = {};
+      this.show_spinner = true;
+      this.MyMusicService.addTrackToContest(data).subscribe(response => {
+        this.toastr.success(response['message'], 'Success!');
+      }, error => {
+        this.toastr.error(error['error'].message, 'Error!');
+        this.show_spinner = false;
+      }, () => {
+        this.show_spinner = false;
+      });
+    } else {
+      this.toastr.error('Please select at least one contest', 'Error!');
+    }
   }
 }

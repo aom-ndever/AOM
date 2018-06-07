@@ -46,7 +46,7 @@
                     </td>
 
                     <td class="contest-btn" >
-                      <a data-fancybox data-animation-duration="700" data-src="#submitcontest" href="javascript:;">Submit for a Contest</a>
+                      <a data-fancybox data-animation-duration="700" (click)="openContestModal(contest)" data-src="#submitcontest" href="javascript:;">Submit for a Contest</a>
                     </td>
                     <td class="action" colspan="2">
                       <div class="track-like">
@@ -238,4 +238,39 @@
     </div>
     </form>
   </div>
+</ng-template>
+<ng-template #contest let-c="close" let-d="dismiss">
+    <div class="modal-header" style="border:none;">
+      <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+        <div class="contest-wrap" >
+          <h3>Add New Track</h3>
+          <div class="contest-table mCustomScrollbar" data-mcs-theme="dark-3" style="max-height: 300px;overflow: auto;">
+            <table>
+              <tr *ngFor="let con of contest_list; let i = index;">
+                <td>
+                  <div class="radio">
+                      <label>
+                        <input type="radio" value="{{con._id}}" name="card" [(ngModel)]="contest_id" />
+                        <span class="radio_check"></span>
+                      </label>
+                  </div>
+                </td>
+                <td><img src="img/conest-img.jpg" alt="Contest Image"></td>
+                <td>
+                  <h3 class="c-name">{{con.name}}</h3>
+                  <div class="c-dates">{{con.start_date | date : 'MMMM dd, yyyy'}} - {{con.end_date | date : 'MMMM dd, yyyy'}}</div>
+                  <div class="c-part">{{con.no_of_participants}} Contest Participants</div>
+                </td>
+              </tr>
+            </table>
+          </div>
+          <div class="button_group">
+            <button type="submit" [disabled]="show_spinner" (click)="addTrackToContest()" class="add-btn">Submit <i *ngIf="show_spinner" class="fa fa-spinner fa-spin"></i></button>
+          </div>
+        </div>
+    </div>
 </ng-template>
