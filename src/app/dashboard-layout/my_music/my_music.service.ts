@@ -37,4 +37,8 @@ export class MyMusicService {
   deleteTrackImageById(id : any) {
     return this.http.delete(`${this.api_host}/artist/track/image/${id}`, {headers : this.headers});
   }
+  // get All music type
+  getAllMusicType() {
+    return this.http.get(`${this.api_host}/music_type`);
+  }
 }

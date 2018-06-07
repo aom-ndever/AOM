@@ -21,38 +21,6 @@
             <div class="track-table">
               <table>
                 <tbody>
-                  <tr>
-                    <td class="serial-num">1.</td>
-                    <td class="play-option"><a href="#"><img src="img/new-play.png" alt="Play"></a></td>
-                    <td class="track-pic"><a href="#"><img src="img/track-img.png" alt="Track Image"></a></td>
-                    <td class="track-det" colspan="2">
-                      <p class="track-name">Say Thanks</p>
-                      <p class="track-singer">Shavan Miller</p>
-                      <p class="track-year">2017</p>
-                    </td>
-                    <td class="td track-vote">
-                      <img src="img/start.png" alt="start">
-                      <span>1300 <br> <span>Votes</span></span>
-                    </td>
-
-                    <td class="contest-btn" style="display: none;">
-                      <a href="#">Submit for a Contest</a>
-                    </td>
-                    <td class="action" colspan="2">
-                      <div class="track-like">
-                        <a href="#"><img src="img/likehand.png" alt="Like Thumb"></a>
-                        <span class="new-up"></span>
-                      </div>
-                      <div class="track-comment">
-                        <a href="#"><img src="img/comment.png" alt="Comment"></a>
-                        <span class="new-up"></span>
-                      </div>
-                      <div class="track-price"><a href="#">$1.99</a></div>
-                      <div class="share"><a href="#"><img src="img/share.png" alt="Track Share"></a></div>
-                      <div class="track-edit"><a data-fancybox data-animation-duration="700" data-src="#edittrack"  href="javascript:;"><img src="img/edit.png" alt="Track Edit"></a></div>
-                      <div class="track-del"><a data-fancybox data-animation-duration="700" data-src="#delete"  href="javascript:;"><img src="img/del.png" alt="Track Delete"></a></div>
-                    </td>
-                  </tr>
                   <tr *ngFor="let t of tracklist; let i =  index;">
                     <td class="serial-num">{{i+1}}.</td>
                     <td class="play-option">
@@ -487,6 +455,13 @@
         <label>Describe Yourself</label>
         <textarea name="description" placeholder="Describe Yourself" [(ngModel)]="trackdata.description" class="form-control" ></textarea>
       </div>
+      <div class="form-group">
+        <label>Select Music Type</label>
+        <select class="form-control" name="music_type" [(ngModel)]="trackdata.music_type">
+          <option value="">Select music type</option>
+          <option *ngFor="let music of music_type_list" value="{{music._id}}">{{music.name}}</option>
+        </select>
+      </div>
 			<div class="button_group">
 				<button class="add-btn" (click)="addTrack()" [disabled]="show_spinner">Add Track <i  *ngIf="show_spinner" class="fa fa-spinner fa-spin"></i></button>
 			</div>
@@ -531,6 +506,13 @@
         <div class="form-group">
           <label>Describe Yourself</label>
           <textarea name="description" [(ngModel)]="trackdata.description"></textarea>
+        </div>
+        <div class="form-group">
+          <label>Select Music Type</label>
+          <select class="form-control" name="music_type" [(ngModel)]="trackdata.music_type">
+            <option value="">Select music type</option>
+            <option *ngFor="let music of music_type_list" value="{{music._id}}">{{music.name}}</option>
+          </select>
         </div>
         <div class="button_group">
           <button type="submit" (click)="updateTrack()" [disabled]="show_spinner" class="update-btn">Update <i *ngIf="show_spinner" class="fa fa-spinner fa-spin"></i></button>
