@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { WhatsNewService } from './whatsnew.service';
+import { environment } from '../../../environments/environment' ;
 
 @Component({
   selector: 'app-whatsnew',
@@ -9,7 +11,10 @@ export class WhatsNewComponent implements OnInit {
   
   images: any = [];
   show_filter : any = false;
-  constructor() {
+  whatsnewdata : any = [];
+  artist_img_url : any = environment.API_URL+environment.ARTIST_IMG;
+  track_img_url : any = environment.API_URL+environment.ARTIST_TRACK;
+  constructor(private WhatsNewService : WhatsNewService) {
     this.images =  [
       {
         "source": "img/whats-new-bg.png",
@@ -44,10 +49,18 @@ export class WhatsNewComponent implements OnInit {
    }
 
   ngOnInit() {
+    this.getAllData();
   }
 
   toggleFilter() {
     this.show_filter = !this.show_filter;
   }
   
+  // Get all whatsnew data
+  getAllData() {
+    let data = {};
+    this.WhatsNewService.getWhatsnewData(data).subscribe(response => {
+      this.whatsnewdata = response['whatsnew'];
+    });
+  }
 }

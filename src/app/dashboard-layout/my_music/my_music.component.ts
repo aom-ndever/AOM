@@ -117,7 +117,8 @@ export class MyMusicComponent implements OnInit {
   }
 
   // Open contest modal
-  openContestModal(content : any) {
+  openContestModal(content : any, obj : any) {
+    this.trackdata = obj;
     this.modal_ref = this.modalService.open(content, { centered: true });
   }
   
@@ -278,9 +279,14 @@ export class MyMusicComponent implements OnInit {
   // Add a track to contest
   addTrackToContest() {
     if(this.contest_id) {
-      let data = {};
+      let data = {
+        contest_id : this.contest_id,
+        track_id : this.trackdata._id
+      };
       this.show_spinner = true;
       this.MyMusicService.addTrackToContest(data).subscribe(response => {
+        this.contest_id = '';
+        this.modal_ref.close();
         this.toastr.success(response['message'], 'Success!');
       }, error => {
         this.toastr.error(error['error'].message, 'Error!');
