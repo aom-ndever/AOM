@@ -11,9 +11,9 @@ export class WhatsNewComponent implements OnInit {
   
   images: any = [];
   show_filter : any = false;
-  whatsnewdata : any = [];
+  whatsnewdata : any = {};
   artist_img_url : any = environment.API_URL+environment.ARTIST_IMG;
-  track_img_url : any = environment.API_URL+environment.ARTIST_TRACK;
+  track_url : any = environment.API_URL+environment.ARTIST_TRACK;
   constructor(private WhatsNewService : WhatsNewService) {
     this.images =  [
       {
@@ -60,7 +60,7 @@ export class WhatsNewComponent implements OnInit {
   getAllData() {
     let data = {};
     this.WhatsNewService.getWhatsnewData(data).subscribe(response => {
-      this.whatsnewdata = response['whatsnew'];
+      this.whatsnewdata = response;
     });
   }
 }
