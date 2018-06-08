@@ -14,6 +14,7 @@ export class WhatsNewComponent implements OnInit {
   whatsnewdata : any = {};
   artist_img_url : any = environment.API_URL+environment.ARTIST_IMG;
   track_url : any = environment.API_URL+environment.ARTIST_TRACK;
+  search_str : any = '';
   audio_ins : any = [];
   constructor(private WhatsNewService : WhatsNewService) {
     this.images =  [
@@ -81,5 +82,18 @@ export class WhatsNewComponent implements OnInit {
     this.audio_ins[index].currentTime = 0;
     // this.audio_ins[index].stop();
     delete this.audio_ins[index];
+  }
+  // Filter result
+  filter(e : any) {
+    if(e.keyCode == 13) {
+      if(this.search_str) {
+        let data = {
+          search : this.search_str
+        };
+        this.WhatsNewService.getWhatsnewData(data).subscribe(response => {
+          this.whatsnewdata = response;
+        });
+      }
+    }
   }
 }
