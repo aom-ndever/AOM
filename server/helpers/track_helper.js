@@ -69,7 +69,7 @@ track_helper.get_track_by_filter = async (id) => {
             .limit(10)
             .lean();
 
-        if (track && track.length > 0) {
+        if (track) {
             return { "status": 1, "message": "user details found", "track": track };
         } else {
             return { "status": 2, "message": "track not found" };

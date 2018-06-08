@@ -156,7 +156,7 @@ artist_helper.get_artist_by_filter = async (filter) => {
             .populate('music_type')
             .lean();
 
-        if (artist && artist.length > 0) {
+        if (artist) {
             return { "status": 1, "message": "artist details found", "artist": artist };
         } else {
             return { "status": 2, "message": "artist not found" };
