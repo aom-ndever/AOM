@@ -561,7 +561,7 @@
                                     <a data-fancybox data-animation-duration="700" data-src="#addmedia" (click)="openAddMediaModal(content)" href="javascript:;" class="add-payment"><img src="img/icons8-plus_mathNormal.png" alt="">Add Media</a>
                                 </div>
                                 <div class="row">
-                                    <div class="alert alert-info" *ngIf="media_list.length == 0">
+                                    <div class="alert alert-info col-sm-12" *ngIf="media_list.length == 0">
                                         No data available.
                                     </div>
                                     <div class="col-md-4 col-sm-6 col-xs-12" *ngFor="let obj of media_list; let i=index;" >
