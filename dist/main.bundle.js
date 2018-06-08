@@ -2080,14 +2080,12 @@ var WhatsNewComponent = /** @class */ (function () {
     WhatsNewComponent.prototype.filter = function (e) {
         var _this = this;
         if (e.keyCode == 13) {
-            if (this.search_str) {
-                var data = {
-                    search: this.search_str
-                };
-                this.WhatsNewService.getWhatsnewData(data).subscribe(function (response) {
-                    _this.whatsnewdata = response;
-                });
-            }
+            var data = {
+                search: this.search_str
+            };
+            this.WhatsNewService.getWhatsnewData(data).subscribe(function (response) {
+                _this.whatsnewdata = response;
+            });
         }
     };
     WhatsNewComponent = __decorate([

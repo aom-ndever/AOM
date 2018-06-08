@@ -89,14 +89,12 @@ export class WhatsNewComponent implements OnInit {
   // Filter result
   filter(e : any) {
     if(e.keyCode == 13) {
-      if(this.search_str) {
-        let data = {
-          search : this.search_str
-        };
-        this.WhatsNewService.getWhatsnewData(data).subscribe(response => {
-          this.whatsnewdata = response;
-        });
-      }
+      let data = {
+        search : this.search_str
+      };
+      this.WhatsNewService.getWhatsnewData(data).subscribe(response => {
+        this.whatsnewdata = response;
+      });
     }
   }
 }
