@@ -336,8 +336,8 @@ router.post("/home_comment", async (req, res) => {
     logger.error("Error occured while fetching artist = ", resp_data);
     res.status(config.INTERNAL_SERVER_ERROR).json(resp_data);
   } else {
-    logger.trace("artist got successfully = ", { "artist": resp_data, "likes": resp_comment });
-    res.status(config.OK_STATUS).json({ "artist": resp_data.artist, "likes": resp_comment.results });
+    logger.trace("artist got successfully = ", { "artist": resp_data, "comment": resp_comment });
+    res.status(config.OK_STATUS).json({ "artist": resp_data.artist, "comment": resp_comment.results });
 
   }
 });

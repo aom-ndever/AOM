@@ -153,6 +153,7 @@ artist_helper.get_artist_by_filter = async (filter) => {
     try {
         var artist = await Artist
             .find(filter)
+            .populate('music_type')
             .lean();
 
         if (artist && artist.length > 0) {
