@@ -1,6 +1,6 @@
 var jwt = require('jsonwebtoken');
 
-var Admin = require("./../models/admin_login");
+var Admin = require("./../models/admin");
 var admin_helper = {};
 
 
