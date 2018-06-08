@@ -282,6 +282,7 @@ export class RegisterComponent implements OnInit {
       this.show_spinner = false;
     }, error => {
       this.toastr.error(error['error'].message, 'Error!');
+      this.show_spinner = false;
     }, () => {
       this.show_spinner = false;
     });
@@ -311,11 +312,11 @@ export class RegisterComponent implements OnInit {
       this.show_spinner = false;
     }, error => {
       this.toastr.error(error['error'].message, 'Error!');
+      this.show_spinner = false;
     }, () => {
       this.show_spinner = false;
     });
   }
-
   public nxt_btn(step_lbl) {
     console.log(this.artist_step1);
     this.step_flag = false;
