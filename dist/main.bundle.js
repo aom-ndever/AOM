@@ -2003,7 +2003,10 @@ var WhatsNewComponent = /** @class */ (function () {
         this.WhatsNewService = WhatsNewService;
         this.images = [];
         this.show_filter = false;
-        this.whatsnewdata = {};
+        this.whatsnewdata = {
+            artist: [],
+            track: []
+        };
         this.artist_img_url = __WEBPACK_IMPORTED_MODULE_2__environments_environment__["a" /* environment */].API_URL + __WEBPACK_IMPORTED_MODULE_2__environments_environment__["a" /* environment */].ARTIST_IMG;
         this.track_url = __WEBPACK_IMPORTED_MODULE_2__environments_environment__["a" /* environment */].API_URL + __WEBPACK_IMPORTED_MODULE_2__environments_environment__["a" /* environment */].ARTIST_TRACK;
         this.search_str = '';

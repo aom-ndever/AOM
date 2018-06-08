@@ -11,7 +11,10 @@ export class WhatsNewComponent implements OnInit {
   
   images: any = [];
   show_filter : any = false;
-  whatsnewdata : any = {};
+  whatsnewdata : any = {
+    artist : [],
+    track : []
+  };
   artist_img_url : any = environment.API_URL+environment.ARTIST_IMG;
   track_url : any = environment.API_URL+environment.ARTIST_TRACK;
   search_str : any = '';
