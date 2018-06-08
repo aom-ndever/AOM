@@ -1,12 +1,12 @@
 var jwt = require('jsonwebtoken');
 
-var Super_Admin = require("./../models/super_admin");
+var Super_Admin = require("./../models/admin");
 var super_admin_helper = {};
 
 
-super_admin_helper.get_login_by_email = async (email,password) => {
+super_admin_helper.get_login_by_email = async (email, password) => {
     try {
-        var super_admin = await Super_Admin.findOne({ "email": email ,"password" :password }).lean();
+        var super_admin = await Super_Admin.findOne({ "email": email, "password": password }).lean();
         if (super_admin) {
             return { "status": 1, "message": "login successful", "super_admin": super_admin };
         } else {
@@ -20,7 +20,7 @@ super_admin_helper.get_login_by_email = async (email,password) => {
 
 super_admin_helper.get_admin_by_email = async (email) => {
     try {
-        var super_admin = await Super_Admin.findOne({"email": email}).lean();
+        var super_admin = await Super_Admin.findOne({ "email": email }).lean();
         if (super_admin) {
             return { "status": 1, "message": "admin details found", "super_admin": super_admin };
         } else {

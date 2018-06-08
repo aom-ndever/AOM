@@ -832,7 +832,7 @@ define({ "api": [
     "type": "post",
     "url": "/login",
     "title": "Admin Login",
-    "name": "Admin_Login",
+    "name": "admin",
     "group": "Root",
     "description": "<p>Login request for admin role</p>",
     "header": {
@@ -1679,9 +1679,9 @@ define({ "api": [
   },
   {
     "type": "post",
-    "url": "/super_admin_login",
+    "url": "/super_admin",
     "title": "Super Admin Login",
-    "name": "Super_Admin_Login",
+    "name": "Super_admin",
     "group": "Root",
     "description": "<p>Login request for admin role</p>",
     "header": {
