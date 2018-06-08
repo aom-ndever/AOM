@@ -28,7 +28,7 @@ track_helper.get_all_track_of_artist = async (artist_id) => {
             }
         }];
         var track = await Track.aggregate(aggregate);
-        if (track && track.length > 0) {
+        if (track) {
             return { "status": 1, "message": "media found", "track": track };
         } else {
             return { "status": 2, "message": "No media available" };

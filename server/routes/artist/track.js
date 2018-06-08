@@ -118,7 +118,6 @@ router.post("/", async (req, res) => {
             res.status(config.INTERNAL_SERVER_ERROR).json({ "error": resp.error });
         } else {
             var resp = await artist_helper.get_artist_by_id(artist_id);
-
             no_track = resp.artist.no_of_tracks + 1
             var resp_data = await track_helper.update_artist_for_track(artist_id, no_track);
             res.status(config.OK_STATUS).json({ "message": "Inserted successfully" });
