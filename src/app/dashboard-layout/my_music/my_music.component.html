@@ -46,7 +46,7 @@
                     </td>
 
                     <td class="contest-btn" >
-                      <a data-fancybox data-animation-duration="700" (click)="openContestModal(contest)" data-src="#submitcontest" href="javascript:;">Submit for a Contest</a>
+                      <a data-fancybox data-animation-duration="700" (click)="openContestModal(contest, t)" data-src="#submitcontest" href="javascript:;">Submit for a Contest</a>
                     </td>
                     <td class="action" colspan="2">
                       <div class="track-like">
@@ -248,16 +248,17 @@
     <div class="modal-body">
         <div class="contest-wrap" >
           <h3>Add New Track</h3>
-          <div class="contest-table mCustomScrollbar" data-mcs-theme="dark-3" style="max-height: 300px;overflow: auto;">
+          <div class="" data-mcs-theme="dark-3" style="max-height: 300px;overflow: auto;">
             <table>
               <tr *ngFor="let con of contest_list; let i = index;">
                 <td>
-                  <div class="radio">
+                    <input type="radio" value="{{con._id}}" name="card" [(ngModel)]="contest_id" />
+                  <!--div class="radio">
                       <label>
                         <input type="radio" value="{{con._id}}" name="card" [(ngModel)]="contest_id" />
                         <span class="radio_check"></span>
                       </label>
-                  </div>
+                  </div-->
                 </td>
                 <td><img src="img/conest-img.jpg" alt="Contest Image"></td>
                 <td>

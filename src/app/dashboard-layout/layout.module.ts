@@ -17,6 +17,7 @@ import { HttpClientModule } from '@angular/common/http'
 import { HeaderService } from './header/header.service';
 import { MyProfileService } from './my_profile/myProfile.service';
 import { MyMusicService } from './my_music/my_music.service';
+import { WhatsNewService } from './whatsnew/whatsnew.service';
 import { FormsModule, ReactiveFormsModule  } from '@angular/forms';
 import { ToastrModule } from 'ngx-toastr';
 import { LightboxModule } from 'angular2-lightbox';
@@ -51,6 +52,6 @@ import { AuthService } from '../shared/auth.service';
     ])
   ],
   declarations: [DashboardComponent, WhatsNewComponent, ArtistComponent, VoteComponent, MyProfileComponent, MyMusicComponent],
-  providers : [HeaderService, AuthService, MyProfileService, MyMusicService]
+  providers : [HeaderService, AuthService, MyProfileService, MyMusicService, WhatsNewService]
 })
 export class LayoutModule { }
