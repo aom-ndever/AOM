@@ -275,7 +275,9 @@ router.delete('/:user_id', async (req, res) => {
  * @apiSuccess (Success 200) {JSON} Artist details
  * @apiError (Error 4xx) {String} message Validation or error message.
  */
-router.post("/home", async (req, res) => {
+
+/*router.post("/home", async (req, res) => {
+
 
   var resp_data = await artist_helper.get_all_track_of_artist();
   var resp = await track_helper.get_artist_by_day_vote(req.body.day);
@@ -287,14 +289,58 @@ router.post("/home", async (req, res) => {
     res.status(config.INTERNAL_SERVER_ERROR).json(resp_data);
   } else {
     logger.trace("artist got successfully = ", { "artist": resp_data, "day_vote": resp, "like": resp_like });
-    res.status(config.OK_STATUS).json({ "artist": resp_data, "day_vote": resp.results, "like": resp_like.results, "comment": resp_comment.results });
+    res.status(config.OK_STATUS).json({ "artist": resp_data.artist, "day_vote": resp.results, "like": resp_like.results, "comment": resp_comment.results });
+
+  }
+});*/
+
+
+router.post("/home_vote", async (req, res) => {
+  var resp_data = await artist_helper.get_all_artist_by_vote();
+  var resp = await track_helper.get_artist_by_day_vote(req.body.day);
+  //var resp_like = await track_helper.get_artist_by_day_like(req.body.day);
+  //var resp_comment = await track_helper.get_artist_by_day_comment(req.body.day);
+
+  if (resp_data.status == 0 && resp.status == 0) {
+    logger.error("Error occured while fetching artist = ", resp_data);
+    res.status(config.INTERNAL_SERVER_ERROR).json(resp_data);
+  } else {
+    logger.trace("artist got successfully = ", { "artist": resp_data, "day_vote": resp });
+    res.status(config.OK_STATUS).json({ "artist": resp_data.artist, "day_vote": resp.results });
 
   }
 });
 
 
+router.post("/home_likes", async (req, res) => {
+  var resp_data = await artist_helper.get_all_artist_by_likes();
+  var resp_like = await track_helper.get_artist_by_day_like(req.body.day);
+  //var resp_comment = await track_helper.get_artist_by_day_comment(req.body.day);
+
+  if (resp_data.status == 0 && resp_like.status == 0) {
+    logger.error("Error occured while fetching artist = ", resp_data);
+    res.status(config.INTERNAL_SERVER_ERROR).json(resp_data);
+  } else {
+    logger.trace("artist got successfully = ", { "artist": resp_data, "likes": resp_like });
+    res.status(config.OK_STATUS).json({ "artist": resp_data.artist, "likes": resp_like.results });
+
+  }
+});
 
 
+router.post("/home_comment", async (req, res) => {
+  var resp_data = await artist_helper.get_all_artist_by_comment();
+  var resp_comment = await track_helper.get_artist_by_day_comment(req.body.day);
+
+  if (resp_data.status == 0 && resp_comment.status == 0) {
+    logger.error("Error occured while fetching artist = ", resp_data);
+    res.status(config.INTERNAL_SERVER_ERROR).json(resp_data);
+  } else {
+    logger.trace("artist got successfully = ", { "artist": resp_data, "likes": resp_comment });
+    res.status(config.OK_STATUS).json({ "artist": resp_data.artist, "likes": resp_comment.results });
+
+  }
+});
 
 /**
  * @api {post} /super_admin/get_artist  Get Artist Details with the day and other filter-Get

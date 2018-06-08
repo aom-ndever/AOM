@@ -196,7 +196,7 @@ artist_helper.update_artist_votes = async (artist_id, no_votes) => {
     }
 };
 
-artist_helper.get_all_track_of_artist = async () => {
+artist_helper.get_all_artist_by_vote = async () => {
     try {
         var artist = await Artist
             .find({}, {
@@ -210,6 +210,9 @@ artist_helper.get_all_track_of_artist = async () => {
                 "no_of_followers": 1,
                 "no_of_comments": 1,
             })
+            .sort({ "no_of_votes": - 1 })
+            .limit(10)
+            .lean();
 
         if (artist && artist.length > 0) {
             return { "status": 1, "message": "artist details found", "artist": artist };
@@ -221,6 +224,63 @@ artist_helper.get_all_track_of_artist = async () => {
     }
 };
 
+
+artist_helper.get_all_artist_by_likes = async () => {
+    try {
+        var artist = await Artist
+            .find({}, {
+                "first_name": 1,
+                "last_name": 1,
+                "gender": 1,
+                "music_type": 1,
+                "no_of_tracks": 1,
+                "no_of_votes": 1,
+                "no_of_likes": 1,
+                "no_of_followers": 1,
+                "no_of_comments": 1,
+            })
+            .sort({ "no_of_likes": - 1 })
+            .limit(10)
+            .lean();
+
+        if (artist && artist.length > 0) {
+            return { "status": 1, "message": "artist details found", "artist": artist };
+        } else {
+            return { "status": 2, "message": "artist not found" };
+        }
+    } catch (err) {
+        return { "status": 0, "message": "Error occured while finding music", "error": err }
+    }
+};
+
+
+artist_helper.get_all_artist_by_comment = async () => {
+    try {
+        var artist = await Artist
+            .find({}, {
+                "first_name": 1,
+                "last_name": 1,
+                "gender": 1,
+                "music_type": 1,
+                "no_of_tracks": 1,
+                "no_of_votes": 1,
+                "no_of_likes": 1,
+                "no_of_followers": 1,
+                "no_of_comments": 1,
+            })
+            .sort({ "no_of_comments": - 1 })
+            .limit(10)
+            .lean();
+
+        if (artist && artist.length > 0) {
+            return { "status": 1, "message": "artist details found", "artist": artist };
+        } else {
+            return { "status": 2, "message": "artist not found" };
+        }
+    } catch (err) {
+        return { "status": 0, "message": "Error occured while finding music", "error": err }
+    }
+};
 artist_helper.get_all_active_and_suspend_artist = async (filter) => {
     try {
 

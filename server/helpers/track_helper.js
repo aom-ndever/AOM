@@ -247,7 +247,6 @@ track_helper.get_artist_by_day_vote = async (day) => {
 
 };
 
-
 track_helper.get_artist_by_day_like = async (day) => {
     var to = moment();
     var from = moment(to).subtract(day, "days");
@@ -352,7 +351,6 @@ track_helper.get_new_uploads = async (day) => {
             "$match":
                 {
                     "created_at": { "$gt": new Date(from), "$lt": new Date(to) },
-
                 },
         },
     ];

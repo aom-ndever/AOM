@@ -132,10 +132,13 @@ router.post('/vote_track', async (req, res) => {
       } else
 
         var resp_data = await track_helper.get_all_track_by_track_id(obj.track_id);
+
       no_vote = resp_data.track.no_of_votes + 1;
+
       var resp_data = await track_helper.update_votes(obj.track_id, no_vote);
       var resp = await artist_helper.get_artist_by_id(obj.artist_id);
       no_vote = resp.artist.no_of_votes + 1
+
       var resp_data = await track_helper.update_artist_for_votes(obj.artist_id, no_vote);
       logger.trace("voting done successfully = ", data);
 
