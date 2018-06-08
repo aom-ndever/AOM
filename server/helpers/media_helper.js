@@ -41,7 +41,7 @@ media_helper.get_all_media_of_artist = async (artist_id) => {
             }
         }];
         var media = await Media.aggregate(aggregate);
-        if (media && media.length > 0) {
+        if (media) {
             return { "status": 1, "message": "media found", "media": media };
         } else {
             return { "status": 2, "message": "No media available" };
