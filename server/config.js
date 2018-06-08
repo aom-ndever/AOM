@@ -35,7 +35,6 @@ module.exports = {
   // Other configuration
   "website_url": process.env.WEBSITE_URL,
   "base_url": process.env.BASE + ':' + process.env.NODE_PORT,
-  "SMTP_MAIL": process.env.SMTP_MAIL,
-  "SMTP_PASSWORD": process.env.SMTP_PASSWORD
+
   // "base_url": "http://13.55.64.183:3200"
 };
