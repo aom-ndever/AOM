@@ -19,6 +19,9 @@
         <div class="tab-content">
           <div class="tab-pane fade {{tab_cnt == 1 ? 'show active' : ''}}" id="mytracks">
             <div class="track-table">
+              <div class="alert alert-info" *ngIf="tracklist.length == 0">
+                No data available.
+              </div>
               <table>
                 <tbody>
                   <tr *ngFor="let t of tracklist; let i =  index;">
@@ -69,6 +72,9 @@
           </div>
           <div class="tab-pane fade {{tab_cnt == 2 ? 'show active' : ''}}" id="stats">
             <div class="track-table">
+                <div class="alert alert-info" *ngIf="tracklist.length == 0">
+                  No data available.
+                </div>
               <table>
                 <tbody>
                   <tr *ngFor="let t of tracklist; let i =  index;">
