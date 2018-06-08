@@ -9,11 +9,11 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var dotenv = require('dotenv').config();
- 
+
 var fileUpload = require('express-fileupload');
 var expressValidator = require('express-validator');
 
- 
+
 
 // Create cluster environment
 var cluster = require('cluster');
@@ -71,21 +71,20 @@ app.use(function (req, res, next) {
 var index = require('./routes/index');
 var artist = require('./routes/artist');
 var user = require('./routes/user');
-var admin = require('./routes/admin');
-var super_admin = require('./routes/super_admin');
+
+
 
 // var admin = require('./routes/admin');
 
-app.use('/',index);
-app.use('/artist',artist);
-app.use('/user',user);
-app.use('/admin',admin);
-app.use('/super_admin',super_admin);
+app.use('/', index);
+app.use('/artist', artist);
+app.use('/user', user);
+
 // app.use('/admin', admin);
 
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   var err = new Error('Not Found');
   err.status = 404;
   next(err);
@@ -103,7 +102,7 @@ if (app.get('env') === 'development') {
 }
 
 // error handler
-app.use(function(err, req, res, next) {
+app.use(function (err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
