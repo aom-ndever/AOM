@@ -63,8 +63,9 @@ track_helper.get_track_by_filter = async (id) => {
     try {
         var track = await Track
             .find({ "artist_id": { $in: id } })
-            .sort({ "no_of_likes": - 1 })
             .populate('music_type')
+            .populate('artist_id')
+            .sort({ "no_of_likes": - 1 })
             .limit(10)
             .lean();
 
