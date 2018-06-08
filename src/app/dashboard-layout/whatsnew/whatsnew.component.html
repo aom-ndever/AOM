@@ -744,7 +744,7 @@
       </div>
       <div class="uploads-container ">
         <div class="row">
-          <div class="col-md-4 col-sm-4 col-xs-12 " *ngFor="let track of whatsnewdata['track']">
+          <div class="col-md-4 col-sm-4 col-xs-12 " *ngFor="let track of whatsnewdata['track']; let i = index">
             <div class="upload ">
               <div class="img-wrap ">
                 <img src="{{track.image ? track_url+track.image : 'img/upload1.png'}}" alt="New Uploads ">
@@ -752,12 +752,15 @@
               <div class="content-wrap ">
                 <div class="player ">
                   <div class="title "><a href="javascript:; ">{{track.name}}</a></div>
-                  <div class="finalist-name ">Garry Wood</div>
-                  <div class="action-btn "><a href="javascript:; "><img src="img/play.png " alt="Pause "></a></div>
+                  <div class="finalist-name ">{{track.artist_id['first_name']+' '+track.artist_id['last_name']}}</div>
+                  <div class="action-btn "><a href="javascript:; ">
+                    <img src="img/play.png " alt="Pause " *ngIf="!audio_ins[i]" (click)="playAudio(track.audio, i)">
+                    <img src="img/pause.png " alt="Pause " *ngIf="audio_ins[i]" (click)="stopAudio(i)">
+                  </a></div>
                 </div>
                 <div class="location ">
                   <p><i class="fa fa-map-marker " aria-hidden="true "></i><span>New York</span></p>
-                  <div class="cat {{track.music_type['name']}}">{{track.music_type['name']}}</div>
+                  <div class="cat {{track.music_type['alias']}}">{{track.music_type['name']}}</div>
                 </div>
               </div>
             </div>
