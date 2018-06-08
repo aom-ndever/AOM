@@ -13,7 +13,7 @@
                   <form>
                     <div class="mobile-search"><i class="fa fa-search" aria-hidden="true"></i></div>
                     <div class="search-input">
-                      <input type="text" placeholder="Search by Artist Name or Song Title">
+                      <input type="text" placeholder="Search by Artist Name or Song Title" name="search" [(ngModel)]="search_str" (keyup)="filter($event)">
                     </div>
                   </form>
                 </div>
