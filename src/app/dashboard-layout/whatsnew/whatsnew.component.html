@@ -436,8 +436,8 @@
                   <div class="title "><a href="javascript:; ">{{track.name}}</a></div>
                   <div class="finalist-name ">{{track.artist_id['first_name']+' '+track.artist_id['last_name']}}</div>
                   <div class="action-btn "><a href="javascript:; ">
-                    <img src="img/play.png " alt="Pause " *ngIf="!audio_ins[i]" (click)="playAudio(track.audio, i)">
-                    <img src="img/pause.png " alt="Pause " *ngIf="audio_ins[i]" (click)="stopAudio(i)">
+                    <img src="img/play.png " alt="Pause "  [style.display]="!audio_ins[i] ? 'block' : 'none'" (click)="playAudio(track.audio, i)">
+                    <img src="img/pause.png " alt="Pause "  [style.display]="audio_ins[i] ? 'block' : 'none'" (click)="stopAudio(i)">
                   </a></div>
                 </div>
                 <div class="location ">
