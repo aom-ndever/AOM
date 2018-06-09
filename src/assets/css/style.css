@@ -525,21 +525,21 @@ input[type="password"]:-moz-placeholder{ /* Firefox 18- */
     color: #1a1a1a;
     font-size: 12px;
 }
-.email-form form label,.social-acc label,.password-form form label{
+.email-form label, .social-acc label, .password-form label {
     color: rgba(26,26,26,0.5);
     font-size: 10px;
     font-weight: 400;
     padding: 0 12px;
     margin-bottom: 0;
 }
-.email-form form .pwd-grp{position: relative;}
+.email-form .pwd-grp{position: relative;}
 .pwd-icon {
     position: absolute;
     right: 0;
     top: 25px;
 }
 .pwd-icon i{color: rgba(26,26,26,0.5);}
-.email-form form .form-control,.social-acc .form-control,.password-form form .form-control{
+.email-form .form-control,.social-acc .form-control,.password-form .form-control{
     border: 0;
     box-shadow: none;
     border-bottom: 1px solid #DEDEDE;
@@ -548,7 +548,7 @@ input[type="password"]:-moz-placeholder{ /* Firefox 18- */
     font-weight: 400;
     border-radius: 0;
 }
-.email-form form .form-control:focus,.email-form form .form-control:active,
+.email-form .form-control:focus,.email-form .form-control:active,
 .social-acc .form-control:focus,.social-acc .form-control:active,
 .form-details .form-group .form-control:focus,.billing-method .form-group  .form-control:focus,.media-modal .form-group .form-control:focus,
 .edit-track-modal .form-group .form-control:focus,
@@ -697,6 +697,9 @@ input[type="password"]:-moz-placeholder{ /* Firefox 18- */
 	background-color: #DEDEDE !important;
 	width: 6px;
 }
+.checkbox {
+    position: relative;
+}
 .agree input[type="checkbox"] {
     width: 18px;
     height: 18px;
@@ -725,15 +728,16 @@ input[type="password"]:-moz-placeholder{ /* Firefox 18- */
     font-size: 0;
 }
 .agree label input[type="checkbox"]:checked + a + .chk_check:after {
-    content: "\f00c";
+    content: "\F00C";
     font-family: FontAwesome;
     font-style: normal;
     font-weight: normal;
     text-decoration: inherit;
     color: rgba(0,0,0,0.5);
     position: absolute;
-    top: 9px;
-    left: 67px;
+    top: 6px;
+    left: 68px;
+    font-size: 12px;
 }
 .agree label{
 	font-size: 14px;
@@ -774,7 +778,7 @@ input[type="password"]:-moz-placeholder{ /* Firefox 18- */
 }
 .next-btn {
     height: 36px;
-    line-height: 36px;
+    line-height: 30px;
     width: 100px;
     display: block;
     background: #9B26B0;
@@ -783,6 +787,7 @@ input[type="password"]:-moz-placeholder{ /* Firefox 18- */
     font-size: 18px;
     color: #fff;
     border-radius: 3px;
+    border: 0;
 }
 .next-btn:hover{color:#fff;}
 .progress_bar {
@@ -1003,6 +1008,7 @@ input[type="password"]:-moz-placeholder{ /* Firefox 18- */
     max-width: 50%;
     padding: 0 15px;
     position: relative;
+    height: 160px;
 }
 .upload-btn,.upload-btn-cstm_p{
     display: -webkit-box;
@@ -1347,7 +1353,7 @@ span.up_text {
 .filter-drop-down .button_group a.cancel-btn{
     font-size: 18px;
     color: rgba(0,0,0,0.5);
-    line-height: 24px;
+    line-height: 36px;
     font-weight: 400;
     font-family: 'Poppins', sans-serif;
 }
@@ -1760,10 +1766,10 @@ input#cover_upload {
     font-family: 'Poppins', sans-serif;
     margin-right: 25px;
 }
-.edit-cover .button_group a.save-btn {
+.edit-cover .button_group button.save-btn {
     font-size: 18px;
     color: #fff;
-    line-height: 36px;
+    line-height: 26px;
     width: 100px;
     height: 36px;
     text-align: center;
@@ -1772,6 +1778,7 @@ input#cover_upload {
     background: #9C27B0;
     border-radius: 2px;
     box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.3);
+    border: 0;
 }
 #delete{padding: 60px 30px; text-align: center;}
 .delete-modal h3 {
@@ -1793,7 +1800,7 @@ a.yes-btn,.update-btn {
     border-radius: 2px;
     background-color: #9c27b0;
     box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.3);
-    line-height: 36px;
+    line-height: 34px;
     font-family: Poppins;
     font-size: 14px;
     font-weight: 400;
@@ -1804,6 +1811,7 @@ a.yes-btn,.update-btn {
     color: #ffffff;
     margin-left: 15px;
     display: block;
+    border: 0;
 }
 a.no-btn,.cancel-btn {
     width: 120px;
@@ -3621,3 +3629,67 @@ div#submitcontest {
 }
 
 /*MEDIA START*/
+
+.upload-block .upl-div:first-child > div image-cropper {
+    padding: 0 !important;
+    /* display: initial; */
+    height: 160px;
+
+}
+.upload-block .upl-div:last-child img {
+    height: 157px !important;
+}
+.upload-block .upl-div:last-child .upload-btn-cstm_p img {
+    height: auto !important;
+}
+
+
+.modal-dialog {
+    max-width: 570px !important;
+    border-radius: 15px !important;
+}
+.modal-dialog .modal-content {
+    border: 0;
+    padding: 75px 75px 20px 75px;
+    border-radius: 15px !important;
+}
+.modal_login_wrapper .modal-header {
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+.modal_login_wrapper .modal-body {
+    padding: 0;
+}
+.login-btn button{
+width: 265px;
+height: 36px;
+line-height: 36px;
+background: #9B26B0;
+display: block;
+text-align: center;
+color: #fff;
+margin: 30px auto 15px auto;
+font-family: 'Poppins', sans-serif;
+font-size: 18px;
+border: 0;
+}
+.login-btn {
+    text-align: center;
+}
+input#cover_upload1 {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    opacity: 0;
+    width: 100%;
+    cursor: pointer;
+}
+.chk_check, .chk_check + span{
+    display: inline-block;
+    font-size: 13px;
+    padding: 0 !important;
+    line-height : 2;
+}

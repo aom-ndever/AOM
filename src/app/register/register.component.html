@@ -157,18 +157,19 @@
               </div>
 
 
-              <div class="steps step6 {{artist_cnt == 6 ? 'next_form' : ''}}" id="social-acc-step6">
+              <div class="steps step6 {{artist_cnt == 6 ? 'next_form' : ''}}" id="upload-step6">
                 <div class="heading"><h3>Upload Profile Photo</h3></div>
                 <div class="progress_bar fill14"></div>
                 <div class="upload-block">
                   <div class="upl-div" >
                     <div class="upload-btn" *ngIf="!cropperReady"> 
-                      <span class="upl-img"><i class="fa fa-cloud-upload" aria-hidden="true"></i></span> 
-                      <span class="up_text">Upload Photo</span> 
+                      <span class="upl-img" ><i class="fa fa-cloud-upload" aria-hidden="true"></i></span> 
+                      <span class="up_text" >Upload Photo</span> 
                       <input type="file" name="my_doc_upload" (change)="fileChangeEvent($event)" id="my_doc_upload" multiple="false"> 
-                      <p class="instrution">320x320px .png, .jpg 5MB or less</p>
+                      <p class="instrution" >320x320px .png, .jpg 5MB or less</p>
                     </div>
                     <div [style.display]="cropperReady ? null : 'none'">
+                      <input type="file" name="my_doc_upload" (change)="fileChangeEvent($event)" id="my_doc_upload" multiple="false"> 
                       <image-cropper
                           [imageChangedEvent]="imageChangedEvent"
                           [maintainAspectRatio]="true"
@@ -206,7 +207,7 @@
               </div>
 
 
-              <div class="steps step7 {{artist_cnt == 7 ? 'next_form' : ''}}" id="upload-step7">
+              <div class="steps step7 {{artist_cnt == 7 ? 'next_form' : ''}}" id="social-acc-step7">
                 <div class="progress_bar fill14"></div>
                 <div class="social-acc">
                   <div class="social-block">

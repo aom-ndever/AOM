@@ -93,7 +93,7 @@ export class RegisterComponent implements OnInit {
       gender : [] 
     });
     this.artist_step4 = this.fb.group({
-      zipcode : ['', [Validators.required, Validators.pattern('^[0-9]+$')]]
+      zipcode : ['', [Validators.required, Validators.pattern('^[A-Za-z0-9]+$')]]
     });
 
     this.listener_step1 = this.fb.group({
@@ -225,6 +225,10 @@ export class RegisterComponent implements OnInit {
 
   fileChangeEvent(event: any): void {
       this.imageChangedEvent = event;
+      console.log('object', event.target.files);
+      if(event.target.files.length <= 0) {
+        this.cropperReady = false;
+      }
   }
   imageCropped(image: string) {
       this.croppedImage = image;

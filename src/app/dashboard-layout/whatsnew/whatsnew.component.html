@@ -41,50 +41,10 @@
                               </label>
                           </div>
                         </li>
-                        <li>
+                        <li *ngFor="let m of music_type_list">
                           <div class="radio">
                               <label>
-                                <input type="radio" value="" name="musicgenre">Hip Hop
-                                <div class="radio_check"></div>
-                              </label>
-                          </div>
-                        </li>
-                        <li>
-                          <div class="radio">
-                              <label>
-                                <input type="radio" value="" name="musicgenre">Rock
-                                <div class="radio_check"></div>
-                              </label>
-                          </div>
-                        </li>
-                        <li>
-                          <div class="radio">
-                              <label>
-                                <input type="radio" value="" name="musicgenre">R&B
-                                <div class="radio_check"></div>
-                              </label>
-                          </div>
-                        </li>
-                        <li>
-                          <div class="radio">
-                              <label>
-                                <input type="radio" value="" name="musicgenre">Country
-                                <div class="radio_check"></div>
-                              </label>
-                          </div>
-                        </li>
-                        <li>
-                          <div class="radio">
-                              <label>
-                                <input type="radio" value="" name="musicgenre">Pop
-                                <div class="radio_check"></div>
-                              </label>
-                          </div>
-                        </li>
-                        <li>
-                          <div class="radio">
-                              <label>
-                                <input type="radio" value="" name="musicgenre">Electronic
+                                <input type="radio" value="{{m._id}}" name="musicgenre" [(ngModel)]="advance_filter.music_type">{{m.name}}
                                 <div class="radio_check"></div>
                               </label>
                           </div>
@@ -130,7 +90,7 @@
                   <div class="col-md-8 col-sm-12 col-xs-12">
                     <div class="sub-menu-filter">
                     <div class="filter-heading">Music Genre</div>
-                    
+                    <div class="row">
                       <div class="col-md-2 col-sm-4 col-xs-4">
                         <div class="filter-subhead">Northeast</div>
                         <ul>
@@ -395,12 +355,13 @@
                           </li>
                         </ul>
                       </div>
+                      </div>
                     </div>
                   </div>
                   <div class="col-md-12 col-sm-12 col-xs-12">
                     <div class="button_group">
-                      <a href="#" class="cancel-btn">Cancel</a>
-                      <a href="#" class="apply-btn">Apply</a>
+                      <a href="javascript:;" class="cancel-btn" (click)="toggleFilter()">Cancel</a>
+                      <a href="javascript:;" class="apply-btn" (click)="advanceFilter()">Apply</a>
                     </div>
                   </div>
                 </div>
@@ -428,6 +389,9 @@
       </div>
       <div class="highlights-wrap mCustomScrollbar " data-mcs-theme="dark-3" >
         <div class="row">
+          <div class="alert alert-info col-sm-12" *ngIf="whatsnewdata['artist'].length == 0">
+            No data available.
+          </div>
           <div class="col-md-3 col-sm-4 col-xs-6 " *ngFor="let artist of whatsnewdata['artist']; let i = index;">
             <div class="final-wrap ">
               <div class="img-wrap ">
@@ -451,7 +415,6 @@
     </div>
   </div>
 </section>
-
 <section class="newuploads-wrap">
   <div class="container ">
     <div class="row ">
@@ -460,6 +423,9 @@
       </div>
       <div class="uploads-container ">
         <div class="row">
+            <div class="alert alert-info col-sm-12" *ngIf="whatsnewdata['track'].length == 0">
+                No data available.
+            </div>
           <div class="col-md-4 col-sm-4 col-xs-12 " *ngFor="let track of whatsnewdata['track']; let i = index">
             <div class="upload ">
               <div class="img-wrap ">
@@ -470,8 +436,8 @@
                   <div class="title "><a href="javascript:; ">{{track.name}}</a></div>
                   <div class="finalist-name ">{{track.artist_id['first_name']+' '+track.artist_id['last_name']}}</div>
                   <div class="action-btn "><a href="javascript:; ">
-                    <img src="img/play.png " alt="Pause " *ngIf="!audio_ins[i]" (click)="playAudio(track.audio, i)">
-                    <img src="img/pause.png " alt="Pause " *ngIf="audio_ins[i]" (click)="stopAudio(i)">
+                    <img src="img/play.png " alt="Pause "  [style.display]="!audio_ins[i] ? 'block' : 'none'" (click)="playAudio(track.audio, i)">
+                    <img src="img/pause.png " alt="Pause "  [style.display]="audio_ins[i] ? 'block' : 'none'" (click)="stopAudio(i)">
                   </a></div>
                 </div>
                 <div class="location ">

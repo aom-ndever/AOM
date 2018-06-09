@@ -57,7 +57,7 @@ export class HeaderComponent implements OnInit, OnDestroy  {
   openVerticallyCentered(content) {
     this.show_spinner = false;
     this.userdata = {};
-    this.modalRef = this.modalService.open(content, { centered: true });
+    this.modalRef = this.modalService.open(content, { centered: true, windowClass : 'modal-wrapper' });
   }
 
   openForgetPasswordModal(content) {

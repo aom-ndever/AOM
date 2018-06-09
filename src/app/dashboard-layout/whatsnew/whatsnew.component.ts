@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { WhatsNewService } from './whatsnew.service';
+import { ToastrService } from 'ngx-toastr';
 import { environment } from '../../../environments/environment' ;
 
 @Component({
@@ -11,12 +12,17 @@ export class WhatsNewComponent implements OnInit {
   
   images: any = [];
   show_filter : any = false;
-  whatsnewdata : any = {};
+  whatsnewdata : any = {
+    artist : [],
+    track : []
+  };
   artist_img_url : any = environment.API_URL+environment.ARTIST_IMG;
   track_url : any = environment.API_URL+environment.ARTIST_TRACK;
   search_str : any = '';
+  advance_filter : any = {};
   audio_ins : any = [];
-  constructor(private WhatsNewService : WhatsNewService) {
+  music_type_list : any = [];
+  constructor(private WhatsNewService : WhatsNewService, private toastr: ToastrService) {
     this.images =  [
       {
         "source": "img/whats-new-bg.png",
@@ -52,6 +58,7 @@ export class WhatsNewComponent implements OnInit {
 
   ngOnInit() {
     this.getAllData();
+    this.getAllMusicType();
   }
 
   toggleFilter() {
@@ -86,14 +93,28 @@ export class WhatsNewComponent implements OnInit {
   // Filter result
   filter(e : any) {
     if(e.keyCode == 13) {
-      if(this.search_str) {
-        let data = {
-          search : this.search_str
-        };
-        this.WhatsNewService.getWhatsnewData(data).subscribe(response => {
-          this.whatsnewdata = response;
-        });
-      }
+      let data = {
+        search : this.search_str
+      };
+      this.WhatsNewService.getWhatsnewData(data).subscribe(response => {
+        this.whatsnewdata = response;
+      });
     }
+  }
+  // Advance filter
+  advanceFilter() {
+    this.WhatsNewService.getWhatsnewData(this.advance_filter).subscribe(response => {
+      this.whatsnewdata = response;
+      if(response['artist'].length <= 0)
+        this.toastr.success('No result found.', 'Success!');
+    }, error => {
+      this.toastr.error(error['error'].message,'Error!');
+    });
+  }
+  // Get all music type
+  getAllMusicType() {
+    this.WhatsNewService.getAllMusicType().subscribe(response => {
+      this.music_type_list = response['music'];
+    });
   }
 }
