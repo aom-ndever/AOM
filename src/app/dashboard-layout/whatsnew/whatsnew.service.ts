@@ -18,4 +18,8 @@ export class WhatsNewService {
   getWhatsnewData (data : any) {
     return this.http.post(`${this.api_host}/whatsnew`, data);
   }
+  // get All music type
+  getAllMusicType() {
+    return this.http.get(`${this.api_host}/music_type`);
+  }
 }

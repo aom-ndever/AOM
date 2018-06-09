@@ -41,50 +41,10 @@
                               </label>
                           </div>
                         </li>
-                        <li>
+                        <li *ngFor="let m of music_type_list">
                           <div class="radio">
                               <label>
-                                <input type="radio" value="" name="musicgenre">Hip Hop
-                                <div class="radio_check"></div>
-                              </label>
-                          </div>
-                        </li>
-                        <li>
-                          <div class="radio">
-                              <label>
-                                <input type="radio" value="" name="musicgenre">Rock
-                                <div class="radio_check"></div>
-                              </label>
-                          </div>
-                        </li>
-                        <li>
-                          <div class="radio">
-                              <label>
-                                <input type="radio" value="" name="musicgenre">R&B
-                                <div class="radio_check"></div>
-                              </label>
-                          </div>
-                        </li>
-                        <li>
-                          <div class="radio">
-                              <label>
-                                <input type="radio" value="" name="musicgenre">Country
-                                <div class="radio_check"></div>
-                              </label>
-                          </div>
-                        </li>
-                        <li>
-                          <div class="radio">
-                              <label>
-                                <input type="radio" value="" name="musicgenre">Pop
-                                <div class="radio_check"></div>
-                              </label>
-                          </div>
-                        </li>
-                        <li>
-                          <div class="radio">
-                              <label>
-                                <input type="radio" value="" name="musicgenre">Electronic
+                                <input type="radio" value="{{m._id}}" name="musicgenre" [(ngModel)]="advance_filter.music_type">{{m.name}}
                                 <div class="radio_check"></div>
                               </label>
                           </div>
@@ -130,7 +90,7 @@
                   <div class="col-md-8 col-sm-12 col-xs-12">
                     <div class="sub-menu-filter">
                     <div class="filter-heading">Music Genre</div>
-                    
+                    <div class="row">
                       <div class="col-md-2 col-sm-4 col-xs-4">
                         <div class="filter-subhead">Northeast</div>
                         <ul>
@@ -395,12 +355,13 @@
                           </li>
                         </ul>
                       </div>
+                      </div>
                     </div>
                   </div>
                   <div class="col-md-12 col-sm-12 col-xs-12">
                     <div class="button_group">
-                      <a href="#" class="cancel-btn">Cancel</a>
-                      <a href="#" class="apply-btn">Apply</a>
+                      <a href="javascript:;" class="cancel-btn" (click)="toggleFilter()">Cancel</a>
+                      <a href="javascript:;" class="apply-btn" (click)="advanceFilter()">Apply</a>
                     </div>
                   </div>
                 </div>
