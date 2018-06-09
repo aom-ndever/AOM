@@ -71,6 +71,7 @@ app.use(function (req, res, next) {
 var index = require('./routes/index');
 var artist = require('./routes/artist');
 var user = require('./routes/user');
+var admin = require('./routes/admin');
 
 
 
@@ -79,6 +80,7 @@ var user = require('./routes/user');
 app.use('/', index);
 app.use('/artist', artist);
 app.use('/user', user);
+app.use('/admin', admin);
 
 // app.use('/admin', admin);
 

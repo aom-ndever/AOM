@@ -17,6 +17,7 @@ var user_helper = require('./../helpers/user_helper');
 var track_helper = require('./../helpers/track_helper');
 var music_helper = require('./../helpers/music_helper');
 var contest_helper = require('./../helpers/contest_helper');
+var admin_helper = require('./../helpers/admin_helper');
 var moment = require('moment');
 /**
  * @api {post} /artist_registration Artist Registration
@@ -916,7 +917,7 @@ router.post("/musics", async (req, res) => {
  * @apiSuccess (Success 200) {String} refresh_token Unique token which needs to be passed to generate next access token.
  * @apiError (Error 4xx) {String} message Validation or error message.
  */
-router.post('/login', async (req, res) => {
+router.post('/admin_login', async (req, res) => {
   var schema = {
     'email': {
       notEmpty: true,
@@ -981,7 +982,7 @@ router.post('/login', async (req, res) => {
  * @apiSuccess (Success 200) {String} message Appropriate success message
  * @apiError (Error 4xx) {String} message Validation or error message.
  */
-router.post('/forgot_password', async (req, res) => {
+router.post('/admin_forgot_password', async (req, res) => {
   var schema = {
     'email': {
       notEmpty: true,
@@ -1037,7 +1038,7 @@ router.post('/forgot_password', async (req, res) => {
  * @apiSuccess (Success 200) {String} message Appropriate success message
  * @apiError (Error 4xx) {String} message Validation or error message.
  */
-router.post('/reset_password', async (req, res) => {
+router.post('/admin_reset_password', async (req, res) => {
 
   var schema = {
     'token': {
