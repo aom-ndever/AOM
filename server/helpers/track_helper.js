@@ -247,11 +247,9 @@ track_helper.get_artist_by_day_vote = async (day) => {
     }
 
 };
-
 track_helper.get_artist_by_day_like = async (day) => {
     var to = moment();
     var from = moment(to).subtract(day, "days");
-
     var aggregate = [
         {
             "$match":
@@ -266,7 +264,6 @@ track_helper.get_artist_by_day_like = async (day) => {
             }
         },
     ];
-
     let result = await Like.aggregate(aggregate);
     if (result && result.length > 0) {
         return { "status": 1, "message": "Artist  found", "results": result }
@@ -274,11 +271,9 @@ track_helper.get_artist_by_day_like = async (day) => {
         return { "status": 2, "message": "No  available Artist" }
     }
 };
-
 track_helper.get_artist_by_day_comment = async (day) => {
     var to = moment();
     var from = moment(to).subtract(day, "days");
-
     var aggregate = [
         {
             "$match":
@@ -293,14 +288,12 @@ track_helper.get_artist_by_day_comment = async (day) => {
             }
         },
     ];
-
     let result = await Comment.aggregate(aggregate);
-    if (result && result.length > 0) {
+    if (result) {
         return { "status": 1, "message": "Artist  found", "results": result }
     } else {
         return { "status": 2, "message": "No  available Artist" }
     }
-
 };
 
 
@@ -329,6 +322,8 @@ track_helper.update_track_by_id = async (artist_id, track_id, track_object) => {
         return { "status": 0, "message": "Error occured while updating track", "error": err }
     }
 };
+
+
 track_helper.delete_track_image = async (track_id) => {
 
     try {
@@ -363,6 +358,7 @@ track_helper.get_new_uploads = async (day) => {
     }
 };
 
+
 track_helper.get_track_main = async (filter) => {
     try {
         var track = await Track
@@ -377,4 +373,6 @@ track_helper.get_track_main = async (filter) => {
         return { "status": 0, "message": "Error occured while finding track", "error": err }
     }
 };
+
+
 module.exports = track_helper;
