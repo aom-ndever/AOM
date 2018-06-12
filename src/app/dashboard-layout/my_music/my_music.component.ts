@@ -113,7 +113,7 @@ export class MyMusicComponent implements OnInit {
     } else {
       this.edit_image = 'img/profile-img.png'
     }
-    this.modal_ref = this.modalService.open(content, { centered: true });
+    this.modal_ref = this.modalService.open(content, { centered: true, backdrop : 'static' });
   }
 
   // Open contest modal
