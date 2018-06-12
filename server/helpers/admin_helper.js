@@ -56,18 +56,7 @@ admin_helper.get_login_by_email = async (email, password) => {
 };
 
 
-admin_helper.get_admin_by_email = async (email) => {
-    try {
-        var admin = await Admin.findOne({ "email": email }).lean();
-        if (admin) {
-            return { "status": 1, "message": "admin details found", "admin": admin };
-        } else {
-            return { "status": 2, "message": "admin not found" };
-        }
-    } catch (err) {
-        return { "status": 0, "message": "Error occured while finding admin", "error": err }
-    }
-};
+
 
 
 admin_helper.update_admin_by_id = async (user_id, object) => {
@@ -83,5 +72,16 @@ admin_helper.update_admin_by_id = async (user_id, object) => {
     }
 };
 
-
+admin_helper.get_admin_by_email = async (email) => {
+    try {
+        var admin = await Admin.findOne({ "email": email }).lean();
+        if (admin) {
+            return { "status": 1, "message": "admin details found", "admin": admin };
+        } else {
+            return { "status": 2, "message": "admin not found" };
+        }
+    } catch (err) {
+        return { "status": 0, "message": "Error occured while finding admin", "error": err }
+    }
+};
 module.exports = admin_helper;
