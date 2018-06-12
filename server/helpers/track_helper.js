@@ -325,7 +325,6 @@ track_helper.update_track_by_id = async (artist_id, track_id, track_object) => {
 
 
 track_helper.delete_track_image = async (track_id) => {
-
     try {
         var track = await Track.update({ "_id": (track_id) }, { $unset: { "image": null } })
         if (track) {
