@@ -117,4 +117,18 @@ export class WhatsNewComponent implements OnInit {
       this.music_type_list = response['music'];
     });
   }
+  // Follow artist
+  followArtist(id : any) {
+    let data = JSON.parse(localStorage.getItem('user'));
+    if(data && data.user) {
+      let data = {
+        artist_id : id
+      };
+      this.WhatsNewService.followArtist(data).subscribe(response => {
+        this.toastr.success(response['message'], 'Success!');
+      });
+    } else {
+      this.toastr.info('Please login first to follow the artist.', 'Information!');
+    }
+  }
 }
