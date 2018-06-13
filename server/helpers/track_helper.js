@@ -136,10 +136,10 @@ track_helper.get_all_track_by_id = async (artist_id) => {
         },
         {
             "$project":
-                {
-                    "_id": 1,
-                    "no_of_likes": 1
-                }
+            {
+                "_id": 1,
+                "no_of_likes": 1
+            }
         }
         ];
         var track = await Track.aggregate(aggregate);
@@ -227,9 +227,9 @@ track_helper.get_artist_by_day_vote = async (day) => {
     var aggregate = [
         {
             "$match":
-                {
-                    "created_at": { "$gt": new Date(from), "$lt": new Date(to) },
-                },
+            {
+                "created_at": { "$gt": new Date(from), "$lt": new Date(to) },
+            },
         },
         {
             $group: {
@@ -253,9 +253,9 @@ track_helper.get_artist_by_day_like = async (day) => {
     var aggregate = [
         {
             "$match":
-                {
-                    "created_at": { "$gt": new Date(from), "$lt": new Date(to) },
-                },
+            {
+                "created_at": { "$gt": new Date(from), "$lt": new Date(to) },
+            },
         },
         {
             $group: {
@@ -277,9 +277,9 @@ track_helper.get_artist_by_day_comment = async (day) => {
     var aggregate = [
         {
             "$match":
-                {
-                    "created_at": { "$gt": new Date(from), "$lt": new Date(to) },
-                },
+            {
+                "created_at": { "$gt": new Date(from), "$lt": new Date(to) },
+            },
         },
         {
             $group: {
@@ -341,27 +341,31 @@ track_helper.delete_track_image = async (track_id) => {
 track_helper.get_new_uploads = async (day) => {
     var to = moment().utcOffset(0);
     var from = moment(to).subtract(day, "days").utcOffset(0);
-    var aggregate = [
-        {
-            "$match":
-                {
-                    "created_at": { "$gt": new Date(from), "$lt": new Date(to) },
-                },
-        },
-    ];
-    let result = await Track.aggregate(aggregate);
-    if (result) {
-        return { "status": 1, "message": "track  found", "results": result }
-    } else {
-        return { "status": 2, "message": "No  available track" }
+    try {
+        var track = await Track
+            .find({ "created_at": { "$gt": new Date(from), "$lt": new Date(to) } })
+            .populate('music_type')
+            .populate('artist')
+        if (track) {
+            return { "status": 1, "message": "track details found", "results": track };
+        } else {
+            return { "status": 2, "message": "track not found" };
+        }
+    } catch (err) {
+        return { "status": 0, "message": "Error occured while finding track", "error": err }
     }
+
 };
+
+
 
 
 track_helper.get_track_main = async (filter) => {
     try {
         var track = await Track
             .find(filter)
+            .populate('music_type')
+            .populate('artist_id')
             .lean();
         if (track) {
             return { "status": 1, "message": "track details found", "track": track };
@@ -372,6 +376,8 @@ track_helper.get_track_main = async (filter) => {
         return { "status": 0, "message": "Error occured while finding track", "error": err }
     }
 };
+
+
 
 
 module.exports = track_helper;

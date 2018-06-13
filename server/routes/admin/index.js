@@ -84,7 +84,7 @@ router.post("/add_admin", async (req, res) => {
           logger.trace("Admin has been inserted");
           // Send email confirmation mail to user
           logger.trace("sending mail");
-          let mail_resp = await mail_helper.send("email_confirmation", {
+          let mail_resp = await mail_helper.send("admin_mail", {
             "to": data.admin.email,
             "subject": "Music Social Voting - Email confirmation"
           }, {

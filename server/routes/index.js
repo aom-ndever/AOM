@@ -148,9 +148,6 @@ router.post('/artist_registration', async (req, res) => {
         logger.trace("Artist has been inserted");
 
         logger.trace("sending mail");
-
-        console.log("data ==> ", data);
-        console.log("config website url ==> ", config.website_url);
         let mail_resp = await mail_helper.send("email_confirmation", {
           "to": data.artist.email,
           "subject": "Music Social Voting - Email confirmation"
