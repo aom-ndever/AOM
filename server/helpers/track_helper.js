@@ -362,14 +362,25 @@ track_helper.get_track_main = async (filter) => {
     var aggregate = [
         {
             $lookup: {
-                from: "artist",
-                localField: "artist_id",
+                from: "music_type",
+                localField: "music_type",
                 foreignField: "_id",
-                as: "artist"
+                as: "music_type"
             }
         },
         {
-            $unwind: "$artist"
+            $unwind: "$music_type"
+        },
+        {
+            $lookup: {
+                from: "artist",
+                localField: "artist_id",
+                foreignField: "_id",
+                as: "artist_id"
+            }
+        },
+        {
+            $unwind: "$artist_id"
         },
 
     ];
