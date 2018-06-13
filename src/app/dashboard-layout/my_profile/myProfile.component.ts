@@ -89,7 +89,9 @@ export class MyProfileComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getMediaList();
+    if(this.userdata['type'] == 'artist') {
+      this.getMediaList();
+    }
   }
 
   tabChange(cnt : Number) {

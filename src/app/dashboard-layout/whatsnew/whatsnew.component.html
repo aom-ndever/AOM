@@ -396,7 +396,7 @@
             <div class="final-wrap ">
               <div class="img-wrap ">
                 <img src="{{artist.image ? artist_img_url+artist.image : 'img/highlight-player.png'}} " alt="Finalists ">
-                <a href="javascript:void(0) " class="fan "><i class="fa fa-heart " aria-hidden="true "></i></a>
+                <a href="javascript:void(0) " class="fan " (click)="followArtist(artist._id)"><i class="fa fa-heart-o" aria-hidden="true "></i></a>
               </div>
               <div class="content-wrap ">
                 <div class="player ">
