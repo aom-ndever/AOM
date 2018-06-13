@@ -169,7 +169,6 @@
                       <p class="instrution" >320x320px .png, .jpg 5MB or less</p>
                     </div>
                     <div [style.display]="cropperReady ? null : 'none'">
-                      <input type="file" name="my_doc_upload" (change)="fileChangeEvent($event)" id="my_doc_upload" multiple="false"> 
                       <image-cropper
                           [imageChangedEvent]="imageChangedEvent"
                           [maintainAspectRatio]="true"
@@ -181,6 +180,10 @@
                           (loadImageFailed)="loadImageFailed()"
                           [style.display]="cropperReady ? null : 'none'"
                       ></image-cropper>
+                      <div class="upload-btn-div">
+                        <label for="fileUpload">Upload a Different Photo</label>
+                        <input type="file" name="my_doc_upload" (change)="fileChangeEvent($event)" id="my_doc_upload" multiple="false"> 
+                      </div>  
                     </div>
                   </div>
                   <div class="upl-div">
