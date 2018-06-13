@@ -164,7 +164,11 @@ follower_helper.get_artist_followers_by_age = async (artist_id, day) => {
 
 follower_helper.get_all_followers = async (id) => {
     try {
-        var user = await Followers.find({ "user_id": id }).populate(user_id).lean();
+        var user = await Followers
+            .find({ "user_id": id })
+            .populate('user_id')
+            .populate('artist_id')
+            .lean();
         if (user) {
             return { "status": 1, "message": "user details found", "user": user };
         } else {

@@ -389,7 +389,7 @@ track_helper.get_track_main = async (filter) => {
         aggregate.push({
             "$match":
 
-                { $or: [{ "artist.first_name": filter }, { "artist.last_name": filter }, { "name": filter }] }
+                { $or: [{ "artist_id.first_name": filter }, { "artist_id.last_name": filter }, { "name": filter }] }
 
 
         });
