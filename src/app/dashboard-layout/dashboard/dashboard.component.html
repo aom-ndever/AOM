@@ -20,14 +20,10 @@
         <div class="mobile-filter-list"><i class="fa fa-filter" aria-hidden="true"></i></div>
         <div class="filter-list">
           <ul>
-            <li class="active"><a href="#">All Styles</a></li>
-            <li><a href="#">Hip Hop</a></li>
-            <li><a href="#">Rock</a></li>
-            <li><a href="#">R&B</a></li>
-            <li><a href="#">Country</a></li>
-            <li><a href="#">Electronic</a></li>
-            <li><a href="#">Latin</a></li>
-            <li><a href="#">Pop</a></li>
+            <li class="{{music_type_index == -1 ? 'active' : ''}}"><a href="javascript:;" (click)="getDataByMusicType({}, -1)">All Styles</a></li>
+            <li class="{{music_type_index == i ? 'active' : ''}}" *ngFor="let music of music_type_list; let i = index;">
+              <a href="javascript:;" (click)="getDataByMusicType({music_type:music._id}, i)">{{music.name}}</a>
+            </li>
           </ul>
         </div>
       </div> 
@@ -36,7 +32,7 @@
           <form>
             <div class="mobile-search"><i class="fa fa-search" aria-hidden="true"></i></div>
             <div class="search-input">
-              <input type="text" placeholder="Search by Artist Name or Song Title">
+              <input type="text" placeholder="Search by Artist Name or Song Title" name="filter" (keyup)="filter($event)"  [(ngModel)]="search_str"/>
             </div>
           </form>
         </div>

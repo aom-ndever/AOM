@@ -290,7 +290,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/dashboard-layout/dashboard/dashboard.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "\n<section class=\"banner-wrap\">\n  <div class=\"container\">\n    <div class=\"row\">\n      <div class=\"col-xs-12\">\n        <div class=\"banner-content\">\n          <h2>Lorem ipsum dolor sit amet</h2>\n          <p>ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodoco</p>\n          <div class=\"btn-grp\"><a href=\"javascript:;\" class=\"vote-now-btn\" >vote now</a></div>\n\n        </div>\n      </div>\n    </div>\n  </div>\n</section>\n<section class=\"filter-wrap\">\n  <div class=\"container\">\n    <div class=\"row\">\n      <div class=\"col-md-9 col-sm-9 col-xs-6\">\n        <div class=\"mobile-filter-list\"><i class=\"fa fa-filter\" aria-hidden=\"true\"></i></div>\n        <div class=\"filter-list\">\n          <ul>\n            <li class=\"active\"><a href=\"#\">All Styles</a></li>\n            <li><a href=\"#\">Hip Hop</a></li>\n            <li><a href=\"#\">Rock</a></li>\n            <li><a href=\"#\">R&B</a></li>\n            <li><a href=\"#\">Country</a></li>\n            <li><a href=\"#\">Electronic</a></li>\n            <li><a href=\"#\">Latin</a></li>\n            <li><a href=\"#\">Pop</a></li>\n          </ul>\n        </div>\n      </div> \n      <div class=\"col-md-3 col-sm-3 col-xs-6\">\n        <div class=\"search-wrap\">\n          <form>\n            <div class=\"mobile-search\"><i class=\"fa fa-search\" aria-hidden=\"true\"></i></div>\n            <div class=\"search-input\">\n              <input type=\"text\" placeholder=\"Search by Artist Name or Song Title\">\n            </div>\n          </form>\n        </div>\n      </div>\n    </div>\n  </div>\n</section>\n\n<section class=\"finalist-wrap\">\n  <div class=\"container\">\n    <div class=\"row\">\n      <div class=\"col-md-12\">\n        <div class=\"head-global\"><h2>Round Two Finalists</h2></div>\n      </div>\n      <div class=\"finalists-container\">\n        \n          <app-carousel-scroll [images]=\"images\" [showFavourit]='true' [carouselType]='\"normal\"'></app-carousel-scroll>\n         \n      </div>\n    </div>\n  </div>\n</section>\n\n\n<section class=\"newuploads-wrap\">\n  <div class=\"container\">\n    <div class=\"row\">\n      <div class=\"col-md-12\">\n        <div class=\"head-global\"><h2>New Uploads</h2></div>\n      </div>\n      <div class=\"uploads-container\">\n        <div class=\"row\">\n          <div class=\"col-md-4 col-sm-4 col-xs-12\" *ngFor=\"let nupload of data['new_uploads']; let i = index;\">\n            <div class=\"upload\">\n              <div class=\"img-wrap\">\n                <img src=\"{{track_url+nupload.image}}\" alt=\"New Uploads\">\n              </div>\n              <div class=\"content-wrap\">\n                <div class=\"player\">\n                  <div class=\"title\"><a href=\"javascript:;\">{{nupload.name}}</a></div>\n                  <div class=\"finalist-name\">{{nupload.artist_id['first_name']+' '+nupload.artist_id['last_name']}}</div>\n                  <div class=\"action-btn\"><a href=\"javascript:;\">\n                    <img src=\"img/play.png \" alt=\"Pause \"  [style.display]=\"!audio_ins[i] ? 'block' : 'none'\" (click)=\"playAudio(nupload.audio, i)\">\n                    <img src=\"img/pause.png \" alt=\"Pause \"  [style.display]=\"audio_ins[i] ? 'block' : 'none'\" (click)=\"stopAudio(i)\">\n                  </a></div>\n                </div>\n                <div class=\"location\">\n                  <p><i class=\"fa fa-map-marker\" aria-hidden=\"true\"></i><span>New York</span></p>\n                  <div class=\"cat {{nupload.music_type['alias']}}\">{{nupload.music_type['name']}}</div>\n                </div>\n              </div>\n            </div>\n          </div>\n        </div>\n      </div>\n    </div>\n  </div>\n</section>\n\n"
+module.exports = "\n<section class=\"banner-wrap\">\n  <div class=\"container\">\n    <div class=\"row\">\n      <div class=\"col-xs-12\">\n        <div class=\"banner-content\">\n          <h2>Lorem ipsum dolor sit amet</h2>\n          <p>ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodoco</p>\n          <div class=\"btn-grp\"><a href=\"javascript:;\" class=\"vote-now-btn\" >vote now</a></div>\n\n        </div>\n      </div>\n    </div>\n  </div>\n</section>\n<section class=\"filter-wrap\">\n  <div class=\"container\">\n    <div class=\"row\">\n      <div class=\"col-md-9 col-sm-9 col-xs-6\">\n        <div class=\"mobile-filter-list\"><i class=\"fa fa-filter\" aria-hidden=\"true\"></i></div>\n        <div class=\"filter-list\">\n          <ul>\n            <li class=\"{{music_type_index == -1 ? 'active' : ''}}\"><a href=\"javascript:;\" (click)=\"getDataByMusicType({}, -1)\">All Styles</a></li>\n            <li class=\"{{music_type_index == i ? 'active' : ''}}\" *ngFor=\"let music of music_type_list; let i = index;\">\n              <a href=\"javascript:;\" (click)=\"getDataByMusicType({music_type:music._id}, i)\">{{music.name}}</a>\n            </li>\n          </ul>\n        </div>\n      </div> \n      <div class=\"col-md-3 col-sm-3 col-xs-6\">\n        <div class=\"search-wrap\">\n          <form>\n            <div class=\"mobile-search\"><i class=\"fa fa-search\" aria-hidden=\"true\"></i></div>\n            <div class=\"search-input\">\n              <input type=\"text\" placeholder=\"Search by Artist Name or Song Title\" name=\"filter\" (keyup)=\"filter($event)\"  [(ngModel)]=\"search_str\"/>\n            </div>\n          </form>\n        </div>\n      </div>\n    </div>\n  </div>\n</section>\n\n<section class=\"finalist-wrap\">\n  <div class=\"container\">\n    <div class=\"row\">\n      <div class=\"col-md-12\">\n        <div class=\"head-global\"><h2>Round Two Finalists</h2></div>\n      </div>\n      <div class=\"finalists-container\">\n        \n          <app-carousel-scroll [images]=\"images\" [showFavourit]='true' [carouselType]='\"normal\"'></app-carousel-scroll>\n         \n      </div>\n    </div>\n  </div>\n</section>\n\n\n<section class=\"newuploads-wrap\">\n  <div class=\"container\">\n    <div class=\"row\">\n      <div class=\"col-md-12\">\n        <div class=\"head-global\"><h2>New Uploads</h2></div>\n      </div>\n      <div class=\"uploads-container\">\n        <div class=\"row\">\n          <div class=\"col-md-4 col-sm-4 col-xs-12\" *ngFor=\"let nupload of data['new_uploads']; let i = index;\">\n            <div class=\"upload\">\n              <div class=\"img-wrap\">\n                <img src=\"{{track_url+nupload.image}}\" alt=\"New Uploads\">\n              </div>\n              <div class=\"content-wrap\">\n                <div class=\"player\">\n                  <div class=\"title\"><a href=\"javascript:;\">{{nupload.name}}</a></div>\n                  <div class=\"finalist-name\">{{nupload.artist_id['first_name']+' '+nupload.artist_id['last_name']}}</div>\n                  <div class=\"action-btn\"><a href=\"javascript:;\">\n                    <img src=\"img/play.png \" alt=\"Pause \"  [style.display]=\"!audio_ins[i] ? 'block' : 'none'\" (click)=\"playAudio(nupload.audio, i)\">\n                    <img src=\"img/pause.png \" alt=\"Pause \"  [style.display]=\"audio_ins[i] ? 'block' : 'none'\" (click)=\"stopAudio(i)\">\n                  </a></div>\n                </div>\n                <div class=\"location\">\n                  <p><i class=\"fa fa-map-marker\" aria-hidden=\"true\"></i><span>New York</span></p>\n                  <div class=\"cat {{nupload.music_type['alias']}}\">{{nupload.music_type['name']}}</div>\n                </div>\n              </div>\n            </div>\n          </div>\n        </div>\n      </div>\n    </div>\n  </div>\n</section>\n\n"
 
 /***/ }),
 
@@ -328,7 +328,11 @@ var DashboardComponent = /** @class */ (function () {
         this.artist_img_url = __WEBPACK_IMPORTED_MODULE_3__environments_environment__["a" /* environment */].API_URL + __WEBPACK_IMPORTED_MODULE_3__environments_environment__["a" /* environment */].ARTIST_IMG;
         this.track_url = __WEBPACK_IMPORTED_MODULE_3__environments_environment__["a" /* environment */].API_URL + __WEBPACK_IMPORTED_MODULE_3__environments_environment__["a" /* environment */].ARTIST_TRACK;
         this.audio_ins = [];
+        this.music_type_index = -1;
+        this.music_type_list = [];
+        this.search_str = '';
         this.getAllData({});
+        this.getAllMusicType();
     }
     DashboardComponent.prototype.ngOnInit = function () {
     };
@@ -340,6 +344,10 @@ var DashboardComponent = /** @class */ (function () {
         else {
             this.images[index]['enable'] = true;
         }
+    };
+    DashboardComponent.prototype.getDataByMusicType = function (obj, index) {
+        this.music_type_index = index;
+        this.getAllData(obj);
     };
     // Get all whatsnew data
     DashboardComponent.prototype.getAllData = function (data) {
@@ -384,6 +392,23 @@ var DashboardComponent = /** @class */ (function () {
                 "enable": true
             });
         });
+    };
+    // Get All music type
+    DashboardComponent.prototype.getAllMusicType = function () {
+        var _this = this;
+        this.DashboardService.getAllMusicType().subscribe(function (response) {
+            _this.music_type_list = response['music'];
+        });
+    };
+    // Fiter
+    DashboardComponent.prototype.filter = function (e) {
+        if (e.keyCode == 13) {
+            var data = {
+                search: this.search_str,
+                music_type: this.music_type_index != -1 ? this.music_type_list[this.music_type_index]._id : ''
+            };
+            this.getAllData(data);
+        }
     };
     DashboardComponent = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
@@ -436,6 +461,10 @@ var DashboardService = /** @class */ (function () {
     // Get Artist and track
     DashboardService.prototype.getAllData = function (data) {
         return this.http.post(this.api_host + "/mainpage", data);
+    };
+    // get All music type
+    DashboardService.prototype.getAllMusicType = function () {
+        return this.http.get(this.api_host + "/music_type");
     };
     DashboardService = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Injectable"])(),
