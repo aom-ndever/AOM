@@ -341,11 +341,14 @@ track_helper.delete_track_image = async (track_id) => {
 track_helper.get_new_uploads = async (day) => {
     var to = moment().utcOffset(0);
     var from = moment(to).subtract(day, "days").utcOffset(0);
+    console.log('from', from);
+
     try {
         var track = await Track
             .find({ "created_at": { "$gt": new Date(from), "$lt": new Date(to) } })
             .populate('music_type')
-            .populate('artist')
+            .populate('artist_id')
+            .limit(10)
         if (track) {
             return { "status": 1, "message": "track details found", "results": track };
         } else {
@@ -354,10 +357,7 @@ track_helper.get_new_uploads = async (day) => {
     } catch (err) {
         return { "status": 0, "message": "Error occured while finding track", "error": err }
     }
-
 };
-
-
 
 
 track_helper.get_track_main = async (filter) => {
