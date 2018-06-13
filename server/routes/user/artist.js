@@ -81,7 +81,7 @@ router.post('/follow', async (req, res) => {
 });
 
 
-router.get('/', async (req, res) => {
+router.get('/followers', async (req, res) => {
   user_id = req.userInfo.id
   var user = await follower_helper.get_all_followers(user_id);
   if (user.status === 1) {
