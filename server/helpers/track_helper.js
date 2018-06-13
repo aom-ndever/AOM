@@ -396,7 +396,7 @@ track_helper.get_track_main = async (filter) => {
     }
 
     let result = await Track.aggregate(aggregate);
-    if (result && result.length > 0) {
+    if (result) {
         return { "status": 1, "message": "Artist  found", "results": result }
     } else {
         return { "status": 2, "message": "No  available Artist" }
