@@ -18,4 +18,8 @@ export class DashboardService {
   getAllData (data : any) {
     return this.http.post(`${this.api_host}/mainpage`, data);
   }
+  // get All music type
+  getAllMusicType() {
+    return this.http.get(`${this.api_host}/music_type`);
+  }
 }

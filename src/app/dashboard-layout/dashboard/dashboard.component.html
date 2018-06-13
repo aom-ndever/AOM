@@ -20,14 +20,10 @@
         <div class="mobile-filter-list"><i class="fa fa-filter" aria-hidden="true"></i></div>
         <div class="filter-list">
           <ul>
-            <li class="active"><a href="#">All Styles</a></li>
-            <li><a href="#">Hip Hop</a></li>
-            <li><a href="#">Rock</a></li>
-            <li><a href="#">R&B</a></li>
-            <li><a href="#">Country</a></li>
-            <li><a href="#">Electronic</a></li>
-            <li><a href="#">Latin</a></li>
-            <li><a href="#">Pop</a></li>
+            <li class="{{music_type_index == -1 ? 'active' : ''}}"><a href="javascript:;" (click)="getDataByMusicType({}, -1)">All Styles</a></li>
+            <li class="{{music_type_index == i ? 'active' : ''}}" *ngFor="let music of music_type_list; let i = index;">
+              <a href="javascript:;" (click)="getDataByMusicType({music_type:music._id}, i)">{{music.name}}</a>
+            </li>
           </ul>
         </div>
       </div> 
@@ -36,7 +32,7 @@
           <form>
             <div class="mobile-search"><i class="fa fa-search" aria-hidden="true"></i></div>
             <div class="search-input">
-              <input type="text" placeholder="Search by Artist Name or Song Title">
+              <input type="text" placeholder="Search by Artist Name or Song Title" name="filter" (keyup)="filter($event)"  [(ngModel)]="search_str"/>
             </div>
           </form>
         </div>
@@ -72,17 +68,20 @@
           <div class="col-md-4 col-sm-4 col-xs-12" *ngFor="let nupload of data['new_uploads']; let i = index;">
             <div class="upload">
               <div class="img-wrap">
-                <img src="img/upload1.png" alt="New Uploads">
+                <img src="{{track_url+nupload.image}}" alt="New Uploads">
               </div>
               <div class="content-wrap">
                 <div class="player">
                   <div class="title"><a href="javascript:;">{{nupload.name}}</a></div>
-                  <div class="finalist-name">Garry Wood</div>
-                  <div class="action-btn"><a href="javascript:;"><img src="img/play.png" alt="Pause"></a></div>
+                  <div class="finalist-name">{{nupload.artist_id['first_name']+' '+nupload.artist_id['last_name']}}</div>
+                  <div class="action-btn"><a href="javascript:;">
+                    <img src="img/play.png " alt="Pause "  [style.display]="!audio_ins[i] ? 'block' : 'none'" (click)="playAudio(nupload.audio, i)">
+                    <img src="img/pause.png " alt="Pause "  [style.display]="audio_ins[i] ? 'block' : 'none'" (click)="stopAudio(i)">
+                  </a></div>
                 </div>
                 <div class="location">
                   <p><i class="fa fa-map-marker" aria-hidden="true"></i><span>New York</span></p>
-                  <div class="cat hiphop">Hip Hop</div>
+                  <div class="cat {{nupload.music_type['alias']}}">{{nupload.music_type['name']}}</div>
                 </div>
               </div>
             </div>

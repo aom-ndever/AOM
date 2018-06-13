@@ -290,7 +290,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/dashboard-layout/dashboard/dashboard.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "\n<section class=\"banner-wrap\">\n  <div class=\"container\">\n    <div class=\"row\">\n      <div class=\"col-xs-12\">\n        <div class=\"banner-content\">\n          <h2>Lorem ipsum dolor sit amet</h2>\n          <p>ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodoco</p>\n          <div class=\"btn-grp\"><a href=\"javascript:;\" class=\"vote-now-btn\" >vote now</a></div>\n\n        </div>\n      </div>\n    </div>\n  </div>\n</section>\n<section class=\"filter-wrap\">\n  <div class=\"container\">\n    <div class=\"row\">\n      <div class=\"col-md-9 col-sm-9 col-xs-6\">\n        <div class=\"mobile-filter-list\"><i class=\"fa fa-filter\" aria-hidden=\"true\"></i></div>\n        <div class=\"filter-list\">\n          <ul>\n            <li class=\"active\"><a href=\"#\">All Styles</a></li>\n            <li><a href=\"#\">Hip Hop</a></li>\n            <li><a href=\"#\">Rock</a></li>\n            <li><a href=\"#\">R&B</a></li>\n            <li><a href=\"#\">Country</a></li>\n            <li><a href=\"#\">Electronic</a></li>\n            <li><a href=\"#\">Latin</a></li>\n            <li><a href=\"#\">Pop</a></li>\n          </ul>\n        </div>\n      </div> \n      <div class=\"col-md-3 col-sm-3 col-xs-6\">\n        <div class=\"search-wrap\">\n          <form>\n            <div class=\"mobile-search\"><i class=\"fa fa-search\" aria-hidden=\"true\"></i></div>\n            <div class=\"search-input\">\n              <input type=\"text\" placeholder=\"Search by Artist Name or Song Title\">\n            </div>\n          </form>\n        </div>\n      </div>\n    </div>\n  </div>\n</section>\n\n<section class=\"finalist-wrap\">\n  <div class=\"container\">\n    <div class=\"row\">\n      <div class=\"col-md-12\">\n        <div class=\"head-global\"><h2>Round Two Finalists</h2></div>\n      </div>\n      <div class=\"finalists-container\">\n        \n          <app-carousel-scroll [images]=\"images\" [showFavourit]='true' [carouselType]='\"normal\"'></app-carousel-scroll>\n         \n      </div>\n    </div>\n  </div>\n</section>\n\n\n<section class=\"newuploads-wrap\">\n  <div class=\"container\">\n    <div class=\"row\">\n      <div class=\"col-md-12\">\n        <div class=\"head-global\"><h2>New Uploads</h2></div>\n      </div>\n      <div class=\"uploads-container\">\n        <div class=\"row\">\n          <div class=\"col-md-4 col-sm-4 col-xs-12\" *ngFor=\"let nupload of data['new_uploads']; let i = index;\">\n            <div class=\"upload\">\n              <div class=\"img-wrap\">\n                <img src=\"img/upload1.png\" alt=\"New Uploads\">\n              </div>\n              <div class=\"content-wrap\">\n                <div class=\"player\">\n                  <div class=\"title\"><a href=\"javascript:;\">{{nupload.name}}</a></div>\n                  <div class=\"finalist-name\">Garry Wood</div>\n                  <div class=\"action-btn\"><a href=\"javascript:;\"><img src=\"img/play.png\" alt=\"Pause\"></a></div>\n                </div>\n                <div class=\"location\">\n                  <p><i class=\"fa fa-map-marker\" aria-hidden=\"true\"></i><span>New York</span></p>\n                  <div class=\"cat hiphop\">Hip Hop</div>\n                </div>\n              </div>\n            </div>\n          </div>\n        </div>\n      </div>\n    </div>\n  </div>\n</section>\n\n"
+module.exports = "\n<section class=\"banner-wrap\">\n  <div class=\"container\">\n    <div class=\"row\">\n      <div class=\"col-xs-12\">\n        <div class=\"banner-content\">\n          <h2>Lorem ipsum dolor sit amet</h2>\n          <p>ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodoco</p>\n          <div class=\"btn-grp\"><a href=\"javascript:;\" class=\"vote-now-btn\" >vote now</a></div>\n\n        </div>\n      </div>\n    </div>\n  </div>\n</section>\n<section class=\"filter-wrap\">\n  <div class=\"container\">\n    <div class=\"row\">\n      <div class=\"col-md-9 col-sm-9 col-xs-6\">\n        <div class=\"mobile-filter-list\"><i class=\"fa fa-filter\" aria-hidden=\"true\"></i></div>\n        <div class=\"filter-list\">\n          <ul>\n            <li class=\"{{music_type_index == -1 ? 'active' : ''}}\"><a href=\"javascript:;\" (click)=\"getDataByMusicType({}, -1)\">All Styles</a></li>\n            <li class=\"{{music_type_index == i ? 'active' : ''}}\" *ngFor=\"let music of music_type_list; let i = index;\">\n              <a href=\"javascript:;\" (click)=\"getDataByMusicType({music_type:music._id}, i)\">{{music.name}}</a>\n            </li>\n          </ul>\n        </div>\n      </div> \n      <div class=\"col-md-3 col-sm-3 col-xs-6\">\n        <div class=\"search-wrap\">\n          <form>\n            <div class=\"mobile-search\"><i class=\"fa fa-search\" aria-hidden=\"true\"></i></div>\n            <div class=\"search-input\">\n              <input type=\"text\" placeholder=\"Search by Artist Name or Song Title\" name=\"filter\" (keyup)=\"filter($event)\"  [(ngModel)]=\"search_str\"/>\n            </div>\n          </form>\n        </div>\n      </div>\n    </div>\n  </div>\n</section>\n\n<section class=\"finalist-wrap\">\n  <div class=\"container\">\n    <div class=\"row\">\n      <div class=\"col-md-12\">\n        <div class=\"head-global\"><h2>Round Two Finalists</h2></div>\n      </div>\n      <div class=\"finalists-container\">\n        \n          <app-carousel-scroll [images]=\"images\" [showFavourit]='true' [carouselType]='\"normal\"'></app-carousel-scroll>\n         \n      </div>\n    </div>\n  </div>\n</section>\n\n\n<section class=\"newuploads-wrap\">\n  <div class=\"container\">\n    <div class=\"row\">\n      <div class=\"col-md-12\">\n        <div class=\"head-global\"><h2>New Uploads</h2></div>\n      </div>\n      <div class=\"uploads-container\">\n        <div class=\"row\">\n          <div class=\"col-md-4 col-sm-4 col-xs-12\" *ngFor=\"let nupload of data['new_uploads']; let i = index;\">\n            <div class=\"upload\">\n              <div class=\"img-wrap\">\n                <img src=\"{{track_url+nupload.image}}\" alt=\"New Uploads\">\n              </div>\n              <div class=\"content-wrap\">\n                <div class=\"player\">\n                  <div class=\"title\"><a href=\"javascript:;\">{{nupload.name}}</a></div>\n                  <div class=\"finalist-name\">{{nupload.artist_id['first_name']+' '+nupload.artist_id['last_name']}}</div>\n                  <div class=\"action-btn\"><a href=\"javascript:;\">\n                    <img src=\"img/play.png \" alt=\"Pause \"  [style.display]=\"!audio_ins[i] ? 'block' : 'none'\" (click)=\"playAudio(nupload.audio, i)\">\n                    <img src=\"img/pause.png \" alt=\"Pause \"  [style.display]=\"audio_ins[i] ? 'block' : 'none'\" (click)=\"stopAudio(i)\">\n                  </a></div>\n                </div>\n                <div class=\"location\">\n                  <p><i class=\"fa fa-map-marker\" aria-hidden=\"true\"></i><span>New York</span></p>\n                  <div class=\"cat {{nupload.music_type['alias']}}\">{{nupload.music_type['name']}}</div>\n                </div>\n              </div>\n            </div>\n          </div>\n        </div>\n      </div>\n    </div>\n  </div>\n</section>\n\n"
 
 /***/ }),
 
@@ -328,7 +328,11 @@ var DashboardComponent = /** @class */ (function () {
         this.artist_img_url = __WEBPACK_IMPORTED_MODULE_3__environments_environment__["a" /* environment */].API_URL + __WEBPACK_IMPORTED_MODULE_3__environments_environment__["a" /* environment */].ARTIST_IMG;
         this.track_url = __WEBPACK_IMPORTED_MODULE_3__environments_environment__["a" /* environment */].API_URL + __WEBPACK_IMPORTED_MODULE_3__environments_environment__["a" /* environment */].ARTIST_TRACK;
         this.audio_ins = [];
+        this.music_type_index = -1;
+        this.music_type_list = [];
+        this.search_str = '';
         this.getAllData({});
+        this.getAllMusicType();
     }
     DashboardComponent.prototype.ngOnInit = function () {
     };
@@ -340,6 +344,10 @@ var DashboardComponent = /** @class */ (function () {
         else {
             this.images[index]['enable'] = true;
         }
+    };
+    DashboardComponent.prototype.getDataByMusicType = function (obj, index) {
+        this.music_type_index = index;
+        this.getAllData(obj);
     };
     // Get all whatsnew data
     DashboardComponent.prototype.getAllData = function (data) {
@@ -376,12 +384,31 @@ var DashboardComponent = /** @class */ (function () {
                 "source": ele.image ? _this.track_url + ele.image : 'img/finalist1.png',
                 "alt": "",
                 "title": ele.name,
-                "name": "Title 1",
+                "name": ele.artist_id['first_name'] + ' ' + ele.artist_id['last_name'],
                 "location": "Title 1",
-                "type": "Title 1",
+                "type": ele.music_type['name'],
+                "alias": ele.music_type['alias'],
+                "audio": ele.audio,
                 "enable": true
             });
         });
+    };
+    // Get All music type
+    DashboardComponent.prototype.getAllMusicType = function () {
+        var _this = this;
+        this.DashboardService.getAllMusicType().subscribe(function (response) {
+            _this.music_type_list = response['music'];
+        });
+    };
+    // Fiter
+    DashboardComponent.prototype.filter = function (e) {
+        if (e.keyCode == 13) {
+            var data = {
+                search: this.search_str,
+                music_type: this.music_type_index != -1 ? this.music_type_list[this.music_type_index]._id : ''
+            };
+            this.getAllData(data);
+        }
     };
     DashboardComponent = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
@@ -434,6 +461,10 @@ var DashboardService = /** @class */ (function () {
     // Get Artist and track
     DashboardService.prototype.getAllData = function (data) {
         return this.http.post(this.api_host + "/mainpage", data);
+    };
+    // get All music type
+    DashboardService.prototype.getAllMusicType = function () {
+        return this.http.get(this.api_host + "/music_type");
     };
     DashboardService = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Injectable"])(),
@@ -3258,7 +3289,7 @@ var AuthService = /** @class */ (function () {
 /***/ "../../../../../src/app/shared/carousel/carousel.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<ngx-carousel [inputs]=\"carouselOne\" *ngIf=\"carouselType == 'normal'\">\r\n  <ngx-tile NgxCarouselItem *ngFor=\"let image of images; let i = index\">\r\n    \r\n      <div class=\"final-wrap\">\r\n        <div class=\"img-wrap\">\r\n          <img src=\"{{image.source}}\" alt=\"Finalists\">\r\n          <a href=\"javascript:void(0)\" class=\"fan\">\r\n            <i class=\"fa fa-heart-o\" aria-hidden=\"true\"></i>\r\n          </a>\r\n        </div>\r\n        <div class=\"content-wrap\">\r\n          <div class=\"player\">\r\n            <div class=\"title\">\r\n              <a href=\"#\">{{ image.title }}</a>\r\n            </div>\r\n            <div class=\"finalist-name\">{{image.name}}</div>\r\n            <div class=\"action-btn\">\r\n              <a href=\"#\">\r\n                <img src=\"img/play.png\" alt=\"Pause\">\r\n              </a>\r\n            </div>\r\n          </div>\r\n          <div class=\"location\">\r\n            <p>\r\n              <i class=\"fa fa-map-marker\" aria-hidden=\"true\"></i>\r\n              <span>{{images.location}}</span>\r\n            </p>\r\n            <div class=\"cat ele\">{{images.type}}</div>\r\n          </div>\r\n        </div>\r\n    </div>\r\n  </ngx-tile>\r\n  <i class=\"material-icons leftRs\" NgxCarouselPrev></i>\r\n  <i class=\"material-icons rightRs\" NgxCarouselNext></i>\r\n</ngx-carousel>\r\n<ngx-carousel [inputs]=\"carouselOne\" *ngIf=\"carouselType == 'banner'\">\r\n  <ngx-tile NgxCarouselItem *ngFor=\"let image of images; let i = index\">\r\n      <div class=\"newslider slider1\">\r\n          <div class=\"banner-img\">\r\n            <img src=\"{{image.source}}\" alt=\"Banner image\">\r\n          </div>\r\n          <div class=\"content-block\">\r\n            <div class=\"what-bg-content\">\r\n              <h3>{{ image.title }}</h3>\r\n              <p>{{image.description}} </p>\r\n              <div class=\"vote-btn\"><a href=\"javascript:;\">Vote Now</a></div>\r\n            </div>\r\n          </div>\r\n        </div>\r\n  </ngx-tile>\r\n  <i class=\"material-icons leftRs\" NgxCarouselPrev></i>\r\n  <i class=\"material-icons rightRs\" NgxCarouselNext></i>\r\n</ngx-carousel>"
+module.exports = "<ngx-carousel [inputs]=\"carouselOne\" *ngIf=\"carouselType == 'normal'\">\r\n  <ngx-tile NgxCarouselItem *ngFor=\"let image of images; let i = index\">\r\n    \r\n      <div class=\"final-wrap\">\r\n        <div class=\"img-wrap\">\r\n          <img src=\"{{image.source}}\" alt=\"Finalists\">\r\n          <a href=\"javascript:void(0)\" class=\"fan\">\r\n            <i class=\"fa fa-heart-o\" aria-hidden=\"true\"></i>\r\n          </a>\r\n        </div>\r\n        <div class=\"content-wrap\">\r\n          <div class=\"player\">\r\n            <div class=\"title\">\r\n              <a href=\"#\">{{ image.title }}</a>\r\n            </div>\r\n            <div class=\"finalist-name\">{{image.name}}</div>\r\n            <div class=\"action-btn\">\r\n              <a href=\"javascript:;\">\r\n                <img src=\"img/play.png \" alt=\"Pause \"  [style.display]=\"!audio_ins[i] ? 'block' : 'none'\" (click)=\"playAudio(image.audio, i)\">\r\n                <img src=\"img/pause.png \" alt=\"Pause \"  [style.display]=\"audio_ins[i] ? 'block' : 'none'\" (click)=\"stopAudio(i)\">\r\n              </a>\r\n            </div>\r\n          </div>\r\n          <div class=\"location\">\r\n            <p>\r\n              <i class=\"fa fa-map-marker\" aria-hidden=\"true\"></i>\r\n              <span>{{image.location}}</span>\r\n            </p>\r\n            <div class=\"cat {{image.alias}}\">{{image.type}}</div>\r\n          </div>\r\n        </div>\r\n    </div>\r\n  </ngx-tile>\r\n  <i class=\"material-icons leftRs\" NgxCarouselPrev></i>\r\n  <i class=\"material-icons rightRs\" NgxCarouselNext></i>\r\n</ngx-carousel>\r\n<ngx-carousel [inputs]=\"carouselOne\" *ngIf=\"carouselType == 'banner'\">\r\n  <ngx-tile NgxCarouselItem *ngFor=\"let image of images; let i = index\">\r\n      <div class=\"newslider slider1\">\r\n          <div class=\"banner-img\">\r\n            <img src=\"{{image.source}}\" alt=\"Banner image\">\r\n          </div>\r\n          <div class=\"content-block\">\r\n            <div class=\"what-bg-content\">\r\n              <h3>{{ image.title }}</h3>\r\n              <p>{{image.description}} </p>\r\n              <div class=\"vote-btn\"><a href=\"javascript:;\">Vote Now</a></div>\r\n            </div>\r\n          </div>\r\n        </div>\r\n  </ngx-tile>\r\n  <i class=\"material-icons leftRs\" NgxCarouselPrev></i>\r\n  <i class=\"material-icons rightRs\" NgxCarouselNext></i>\r\n</ngx-carousel>"
 
 /***/ }),
 
@@ -3286,6 +3317,7 @@ module.exports = module.exports.toString();
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return CarouselComponent; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__environments_environment__ = __webpack_require__("../../../../../src/environments/environment.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -3296,8 +3328,11 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 
+
 var CarouselComponent = /** @class */ (function () {
     function CarouselComponent() {
+        this.track_url = __WEBPACK_IMPORTED_MODULE_1__environments_environment__["a" /* environment */].API_URL + __WEBPACK_IMPORTED_MODULE_1__environments_environment__["a" /* environment */].ARTIST_TRACK;
+        this.audio_ins = [];
     }
     CarouselComponent.prototype.onChange = function (index) {
         if (this.images[index]['enable']) {
@@ -3338,6 +3373,24 @@ var CarouselComponent = /** @class */ (function () {
                 },
             };
         }
+    };
+    // Play audio
+    CarouselComponent.prototype.playAudio = function (name, index) {
+        var audio = new Audio();
+        audio.src = this.track_url + name;
+        audio.load();
+        audio.play();
+        if (!this.audio_ins.hasOwnProperty(index)) {
+            this.audio_ins[index] = audio;
+        }
+    };
+    // Stop audio
+    CarouselComponent.prototype.stopAudio = function (index) {
+        console.log(this.audio_ins[index]);
+        this.audio_ins[index].pause();
+        this.audio_ins[index].currentTime = 0;
+        // this.audio_ins[index].stop();
+        delete this.audio_ins[index];
     };
     __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
