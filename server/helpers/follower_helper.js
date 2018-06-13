@@ -25,10 +25,10 @@ follower_helper.get_artist_followers_by_gender = async (artist_id, day) => {
     var aggregate = [
         {
             "$match":
-                {
-                    "created_at": { "$gt": new Date(from), "$lt": new Date(to) },
-                    "artist_id": new ObjectId(artist_id)
-                },
+            {
+                "created_at": { "$gt": new Date(from), "$lt": new Date(to) },
+                "artist_id": new ObjectId(artist_id)
+            },
         },
         {
             $lookup: {
@@ -84,10 +84,10 @@ follower_helper.get_artist_followers_by_day = async (artist_id, day) => {
     var aggregate = [
         {
             "$match":
-                {
-                    "created_at": { "$gt": new Date(from), "$lt": new Date(to) },
-                    "artist_id": new ObjectId(artist_id)
-                },
+            {
+                "created_at": { "$gt": new Date(from), "$lt": new Date(to) },
+                "artist_id": new ObjectId(artist_id)
+            },
         },
         {
             $group: {
@@ -114,10 +114,10 @@ follower_helper.get_artist_followers_by_age = async (artist_id, day) => {
     var aggregate = [
         {
             "$match":
-                {
-                    "created_at": { "$gt": new Date(from), "$lt": new Date(to) },
-                    "artist_id": new ObjectId(artist_id)
-                },
+            {
+                "created_at": { "$gt": new Date(from), "$lt": new Date(to) },
+                "artist_id": new ObjectId(artist_id)
+            },
         },
         {
             $lookup: {
@@ -133,22 +133,22 @@ follower_helper.get_artist_followers_by_age = async (artist_id, day) => {
         {
             "$group": {
                 _id:
-                    {
-                        year: { $year: "$user.dob" },
-                        month: { $month: "$user.dob" },
-                        day: { $dayOfMonth: "$user.dob" },
-                    },
+                {
+                    year: { $year: "$user.dob" },
+                    month: { $month: "$user.dob" },
+                    day: { $dayOfMonth: "$user.dob" },
+                },
                 count: { $sum: 1 }
             }
         },
         {
             "$project":
-                {
-                    _id: 0,
-                    age: { $subtract: [{ $year: new Date() }, "$_id.year"] },
-                    data: 1,
-                    count: 1
-                }
+            {
+                _id: 0,
+                age: { $subtract: [{ $year: new Date() }, "$_id.year"] },
+                data: 1,
+                count: 1
+            }
         },
     ];
 
@@ -160,4 +160,18 @@ follower_helper.get_artist_followers_by_age = async (artist_id, day) => {
     }
 };
 
+
+
+follower_helper.get_all_followers = async (id) => {
+    try {
+        var user = await Followers.find({ "user_id": id }).populate(user_id).lean();
+        if (user) {
+            return { "status": 1, "message": "user details found", "user": user };
+        } else {
+            return { "status": 2, "message": "user not found" };
+        }
+    } catch (err) {
+        return { "status": 0, "message": "Error occured while finding user", "error": err }
+    }
+};
 module.exports = follower_helper;

@@ -1238,13 +1238,15 @@ router.post("/mainpage", async (req, res) => {
   if (req.body.search) {
     var r = new RegExp(req.body.search);
     var search = { "$regex": r, "$options": "i" };
-    filter = [{ "artist.first_name": search }, { "artist.last_name": search }, { "name": search }]
+    filter = [{ "artist.first_name": search }, { "artist.last_name": search }, { "name": search }];
+    console.log('filter', typeof filter);
+
   }
   req.checkBody(schema);
   var errors = req.validationErrors();
   if (!errors) {
     var artist_ids = [];
-    var resp_artist = await track_helper.get_track_main(filter);
+    var resp_artist = await track_helper.get_track_main(search);
 
     var resp_track = await track_helper.get_new_uploads(30);
     if (resp_track.status == 0 && resp_artist.status == 0) {
