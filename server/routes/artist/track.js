@@ -141,7 +141,6 @@ router.get('/', async (req, res) => {
     artist_id = req.userInfo.id;
 
     var track = await track_helper.get_all_track_of_artist(artist_id);
-
     if (track.status === 1) {
         logger.trace("got details successfully");
         res.status(config.OK_STATUS).json({ "status": 1, "track": track.track });
@@ -275,7 +274,7 @@ router.post('/votes_by_day', async (req, res) => {
  * @apiParam {Number} day download on day
  * @apiSuccess (Success 200) {Array} artist Array of artist downloaded track document
  * @apiError (Error 4xx) {String} message Validation or error message.
- **/
+**/
 router.post('/downloaded_track', async (req, res) => {
     artist_id = req.userInfo.id;
     var track = await download_helper.get_all_track_by_id(artist_id);
