@@ -1199,8 +1199,6 @@ router.post("/whatsnew", async (req, res) => {
     var artist_ids = [];
     var resp_artist = await artist_helper.get_artist_by_filter(filter);
 
-
-
     if (resp_artist.status == 1) {
       resp_artist.artist.forEach(artist => {
         artist_ids.push(new ObjectId(artist._id));
@@ -1240,7 +1238,7 @@ router.post("/mainpage", async (req, res) => {
   if (req.body.search) {
     var r = new RegExp(req.body.search);
     var search = { "$regex": r, "$options": "i" };
-    filter.name = search;
+    filter = [{ "artist.first_name": search }, { "artist.last_name": search }, { "name": search }]
   }
   req.checkBody(schema);
   var errors = req.validationErrors();
@@ -1254,7 +1252,7 @@ router.post("/mainpage", async (req, res) => {
       res.status(config.INTERNAL_SERVER_ERROR).json(resp_track);
     } else {
       logger.trace("music got successfully = ");
-      res.status(config.OK_STATUS).json({ "status": 1, "finalist": resp_artist.track, "new_uploads": resp_track.results });
+      res.status(config.OK_STATUS).json({ "status": 1, "finalist": resp_artist.results, "new_uploads": resp_track.results });
     }
   } else {
     logger.error("Validation Error = ", errors);

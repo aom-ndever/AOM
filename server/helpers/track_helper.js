@@ -341,8 +341,6 @@ track_helper.delete_track_image = async (track_id) => {
 track_helper.get_new_uploads = async (day) => {
     var to = moment().utcOffset(0);
     var from = moment(to).subtract(day, "days").utcOffset(0);
-    console.log('from', from);
-
     try {
         var track = await Track
             .find({ "created_at": { "$gt": new Date(from), "$lt": new Date(to) } })
@@ -361,22 +359,39 @@ track_helper.get_new_uploads = async (day) => {
 
 
 track_helper.get_track_main = async (filter) => {
-    try {
-        var track = await Track
-            .find(filter)
-            .populate('music_type')
-            .populate('artist_id')
-            .lean();
-        if (track) {
-            return { "status": 1, "message": "track details found", "track": track };
-        } else {
-            return { "status": 2, "message": "track not found" };
-        }
-    } catch (err) {
-        return { "status": 0, "message": "Error occured while finding track", "error": err }
-    }
-};
+    var aggregate = [
+        {
+            $lookup: {
+                from: "artist",
+                localField: "artist_id",
+                foreignField: "_id",
+                as: "artist"
+            }
+        },
+        {
+            $unwind: "$artist"
+        },
 
+    ];
+
+    if (filter) {
+        aggregate.push({
+            "$match":
+
+                { $or: filter }
+
+
+        });
+    }
+
+    let result = await Track.aggregate(aggregate);
+    if (result && result.length > 0) {
+        return { "status": 1, "message": "Artist  found", "results": result }
+    } else {
+        return { "status": 2, "message": "No  available Artist" }
+    }
+
+};
 
 
 
