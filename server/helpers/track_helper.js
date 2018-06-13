@@ -365,11 +365,11 @@ track_helper.get_track_main = async (filter) => {
                 from: "music_type",
                 localField: "music_type",
                 foreignField: "_id",
-                as: "music"
+                as: "music_type"
             }
         },
         {
-            $unwind: "$music"
+            $unwind: "$music_type"
         },
         {
             $lookup: {
