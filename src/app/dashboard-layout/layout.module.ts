@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { SlimScroll } from 'angular-io-slimscroll';
 import { HeaderComponent } from './header/header.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { DashboardLayoutComponent } from './layout/dashboard-layout.component';
@@ -53,7 +54,7 @@ import { AuthService } from '../shared/auth.service';
       }
     ])
   ],
-  declarations: [DashboardComponent, WhatsNewComponent, ArtistComponent, VoteComponent, MyProfileComponent, MyMusicComponent],
+  declarations: [DashboardComponent, WhatsNewComponent, ArtistComponent, VoteComponent, MyProfileComponent, MyMusicComponent, SlimScroll],
   providers : [HeaderService, AuthService, MyProfileService, MyMusicService, WhatsNewService, ArtistService, DashboardService]
 })
 export class LayoutModule { }
