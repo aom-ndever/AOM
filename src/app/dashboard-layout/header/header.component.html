@@ -103,11 +103,9 @@
 </header>
 <ng-template #content let-c="close" let-d="dismiss" >
   <div class="modal_login_wrapper">
-  <div class="modal-header" style="border:none;">
-    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </div>
+  <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+    <span aria-hidden="true">&times;</span>
+  </button>
   <div class="modal-body">
     <div class="login-modal">
 			<div class="social-login">

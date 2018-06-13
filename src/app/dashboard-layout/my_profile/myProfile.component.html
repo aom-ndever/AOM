@@ -564,7 +564,7 @@
                                     <div class="alert alert-info col-sm-12" *ngIf="media_list.length == 0">
                                         No data available.
                                     </div>
-                                    <div class="col-md-4 col-sm-6 col-xs-12" *ngFor="let obj of media_list; let i=index;" >
+                                    <div class="col-md-4 col-sm-6 col-xs-12 uploaded-img" *ngFor="let obj of media_list; let i=index;" >
 										<div *ngIf="obj.image">
                                         <!-- <a class="img-wrap" href="{{artist_media_url+obj.image}}" *ngIf="obj.image" data-fancybox="images" data-width="1500" data-height="1000"> -->
                                             <img src="{{artist_media_url+obj.image}}" alt="Media" (click)="open(i)">
@@ -1551,11 +1551,9 @@
     </div>
 </section>
 <ng-template #content let-c="close" let-d="dismiss">
-	<div class="modal-header" style="border:none;">
-		<button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
-		<span aria-hidden="true">&times;</span>
-		</button>
-	</div>
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+        <span aria-hidden="true">&times;</span>
+    </button>
 	<div class="modal-body">
 		<div class="media-modal">
 			<h3>Add Media</h3>

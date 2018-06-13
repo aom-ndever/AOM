@@ -102,7 +102,7 @@ export class MyMusicComponent implements OnInit {
   }
 
   openModal(content) {
-    this.modal_ref = this.modalService.open(content, { centered: true });
+    this.modal_ref = this.modalService.open(content, { centered: true, windowClass:'add-track-popup' });
   }
 
   // open edit track model
@@ -113,13 +113,13 @@ export class MyMusicComponent implements OnInit {
     } else {
       this.edit_image = 'img/profile-img.png'
     }
-    this.modal_ref = this.modalService.open(content, { centered: true, backdrop : 'static' });
+    this.modal_ref = this.modalService.open(content, { centered: true, backdrop : 'static', windowClass:'add-track-popup' });
   }
 
   // Open contest modal
   openContestModal(content : any, obj : any) {
     this.trackdata = obj;
-    this.modal_ref = this.modalService.open(content, { centered: true });
+    this.modal_ref = this.modalService.open(content, { centered: true, windowClass:'new-add-track-popup'});
   }
   
   addTrack() {

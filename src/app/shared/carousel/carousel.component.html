@@ -1,6 +1,6 @@
 <ngx-carousel [inputs]="carouselOne" *ngIf="carouselType == 'normal'">
   <ngx-tile NgxCarouselItem *ngFor="let image of images; let i = index">
-    <div class="col-md-12">
+    
       <div class="final-wrap">
         <div class="img-wrap">
           <img src="{{image.source}}" alt="Finalists">
@@ -28,7 +28,6 @@
             <div class="cat ele">{{images.type}}</div>
           </div>
         </div>
-      </div>
     </div>
   </ngx-tile>
   <i class="material-icons leftRs" NgxCarouselPrev></i>
