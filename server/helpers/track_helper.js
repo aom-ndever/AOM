@@ -345,7 +345,7 @@ track_helper.get_new_uploads = async (day) => {
         var track = await Track
             .find({ "created_at": { "$gt": new Date(from), "$lt": new Date(to) } })
             .populate('music_type')
-            .populate('artist')
+            .populate('artist_id')
         if (track) {
             return { "status": 1, "message": "track details found", "results": track };
         } else {
