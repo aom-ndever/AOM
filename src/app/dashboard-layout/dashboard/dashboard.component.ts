@@ -70,9 +70,11 @@ export class DashboardComponent implements OnInit {
         "source": ele.image ? this.track_url+ele.image : 'img/finalist1.png',
         "alt": "",
         "title": ele.name,
-        "name": "Title 1",
+        "name": ele.artist_id['first_name']+' '+ele.artist_id['last_name'],
         "location": "Title 1",
-        "type": "Title 1",
+        "type": ele.music_type['name'],
+        "alias" : ele.music_type['alias'],
+        "audio" : ele.audio,
         "enable": true
       });
     });

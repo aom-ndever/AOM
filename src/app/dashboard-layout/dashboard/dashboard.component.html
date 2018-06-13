@@ -72,17 +72,20 @@
           <div class="col-md-4 col-sm-4 col-xs-12" *ngFor="let nupload of data['new_uploads']; let i = index;">
             <div class="upload">
               <div class="img-wrap">
-                <img src="img/upload1.png" alt="New Uploads">
+                <img src="{{track_url+nupload.image}}" alt="New Uploads">
               </div>
               <div class="content-wrap">
                 <div class="player">
                   <div class="title"><a href="javascript:;">{{nupload.name}}</a></div>
-                  <div class="finalist-name">Garry Wood</div>
-                  <div class="action-btn"><a href="javascript:;"><img src="img/play.png" alt="Pause"></a></div>
+                  <div class="finalist-name">{{nupload.artist_id['first_name']+' '+nupload.artist_id['last_name']}}</div>
+                  <div class="action-btn"><a href="javascript:;">
+                    <img src="img/play.png " alt="Pause "  [style.display]="!audio_ins[i] ? 'block' : 'none'" (click)="playAudio(nupload.audio, i)">
+                    <img src="img/pause.png " alt="Pause "  [style.display]="audio_ins[i] ? 'block' : 'none'" (click)="stopAudio(i)">
+                  </a></div>
                 </div>
                 <div class="location">
                   <p><i class="fa fa-map-marker" aria-hidden="true"></i><span>New York</span></p>
-                  <div class="cat hiphop">Hip Hop</div>
+                  <div class="cat {{nupload.music_type['alias']}}">{{nupload.music_type['name']}}</div>
                 </div>
               </div>
             </div>
