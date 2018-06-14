@@ -70,6 +70,15 @@ export class MyProfileComponent implements OnInit {
       if(this.userdata.cover_image) {
         this.default_cover_img = environment.API_URL+environment.ARTIST_IMG+this.userdata.cover_image;
       }
+      if(!this.userdata.social_media) {
+        this.userdata['social_media'] = {
+          'facebook' : '',
+          'instagram' : '',
+          'twitter' : '',
+          'youtube' : '',
+          'sound_cloud' : ''
+        };
+      }
     } else {
       this.userdata = {...data['user']};
       this.userdata['type'] = 'user';
@@ -212,6 +221,15 @@ export class MyProfileComponent implements OnInit {
           this.userdata['day'] = dt.getDate();
           this.userdata['month'] = dt.getMonth() + 1;
           this.userdata['year'] = dt.getFullYear();
+        }
+        if(!this.userdata.social_media) {
+          this.userdata['social_media'] = {
+            'facebook' : '',
+            'instagram' : '',
+            'twitter' : '',
+            'youtube' : '',
+            'sound_cloud' : ''
+          };
         }
         if(this.userdata.image) {
           this.default_profile_img = environment.API_URL+environment.ARTIST_IMG+this.userdata.image;
