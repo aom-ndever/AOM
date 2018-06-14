@@ -358,7 +358,9 @@ track_helper.get_new_uploads = async (day) => {
 };
 
 
-track_helper.get_track_main = async (filter) => {
+track_helper.get_track_main = async (filter, filters) => {
+    console.log('filters', filters);
+
     var aggregate = [
         {
             $lookup: {
@@ -382,7 +384,9 @@ track_helper.get_track_main = async (filter) => {
         {
             $unwind: "$artist_id"
         },
-
+        {
+            "$match": filters
+        }
     ];
 
     if (filter) {
@@ -390,10 +394,12 @@ track_helper.get_track_main = async (filter) => {
             "$match":
 
                 { $or: [{ "artist_id.first_name": filter }, { "artist_id.last_name": filter }, { "name": filter }] }
-
-
         });
     }
+
+
+    console.log('aggregate', JSON.stringify(aggregate));
+
 
     let result = await Track.aggregate(aggregate);
     if (result) {

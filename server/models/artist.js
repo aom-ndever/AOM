@@ -14,7 +14,7 @@ var ArtistModelSchema = new Schema({
     password: { type: String, required: true },
     first_name: { type: String, required: true },
     last_name: { type: String, required: true },
-    music_type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'music_type' }],
+    music_type: { type: mongoose.Schema.Types.ObjectId, ref: 'music_type' },
     gender: { type: String, enum: ["male", "female"] },
     zipcode: Number,
     image: String,

@@ -1228,25 +1228,23 @@ router.post("/whatsnew", async (req, res) => {
 // main page v2 track
 router.post("/mainpage", async (req, res) => {
   var filter = {};
+  var filters = {};
   var page_no = {};
   var page_size = {};
 
   var schema = {};
   if (req.body.music_type) {
-    filter.music_type = new ObjectId(req.body.music_type);
+    filters["music_type._id"] = new ObjectId(req.body.music_type);
   }
   if (req.body.search) {
     var r = new RegExp(req.body.search);
     var search = { "$regex": r, "$options": "i" };
-    filter = [{ "artist.first_name": search }, { "artist.last_name": search }, { "name": search }];
-    console.log('filter', typeof filter);
-
   }
   req.checkBody(schema);
   var errors = req.validationErrors();
   if (!errors) {
     var artist_ids = [];
-    var resp_artist = await track_helper.get_track_main(search);
+    var resp_artist = await track_helper.get_track_main(search, filters);
 
     var resp_track = await track_helper.get_new_uploads(30);
     if (resp_track.status == 0 && resp_artist.status == 0) {
