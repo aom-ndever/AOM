@@ -8,6 +8,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { DashboardLayoutComponent } from './layout/dashboard-layout.component';
 import { WhatsNewComponent } from './whatsnew/whatsnew.component';
 import { ArtistComponent } from './artist/artist.component';
+import { ArtistProfileComponent } from './artist_profile/artist_profile.component';
 import { VoteComponent } from './vote/vote.component';
 import { MyProfileComponent } from './my_profile/myProfile.component';
 import { MyMusicComponent } from './my_music/my_music.component';
@@ -20,6 +21,7 @@ import { MyProfileService } from './my_profile/myProfile.service';
 import { MyMusicService } from './my_music/my_music.service';
 import { WhatsNewService } from './whatsnew/whatsnew.service';
 import { ArtistService } from './artist/artist.service';
+import { ArtistProfileService } from './artist_profile/artist_profile.service';
 import { DashboardService } from './dashboard/dashboard.service';
 import { FormsModule, ReactiveFormsModule  } from '@angular/forms';
 import { ToastrModule } from 'ngx-toastr';
@@ -47,6 +49,7 @@ import { AuthService } from '../shared/auth.service';
           {path: '', component: DashboardComponent},
           {path: 'whats-new', component: WhatsNewComponent},
           {path: 'artist', component: ArtistComponent},
+          {path: 'artist_profile/:id', component: ArtistProfileComponent},
           {path: 'vote', component: VoteComponent},
           {path: 'my-music', component: MyMusicComponent, canActivate: [AuthService]},
           {path: 'my-profile', component: MyProfileComponent, canActivate: [AuthService]}
@@ -54,7 +57,7 @@ import { AuthService } from '../shared/auth.service';
       }
     ])
   ],
-  declarations: [DashboardComponent, WhatsNewComponent, ArtistComponent, VoteComponent, MyProfileComponent, MyMusicComponent, SlimScroll],
-  providers : [HeaderService, AuthService, MyProfileService, MyMusicService, WhatsNewService, ArtistService, DashboardService]
+  declarations: [DashboardComponent, WhatsNewComponent, ArtistComponent, VoteComponent, MyProfileComponent, MyMusicComponent, SlimScroll, ArtistProfileComponent],
+  providers : [HeaderService, AuthService, MyProfileService, MyMusicService, WhatsNewService, ArtistService, DashboardService, ArtistProfileService]
 })
 export class LayoutModule { }

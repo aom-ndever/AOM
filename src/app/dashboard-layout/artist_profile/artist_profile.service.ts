@@ -4,7 +4,7 @@ import 'rxjs/add/operator/toPromise';
 import { environment } from '../../../environments/environment';
 import { dashCaseToCamelCase } from '@angular/compiler/src/util';
 @Injectable()
-export class ArtistService {
+export class ArtistProfileService {
   private api_host : any = environment.API_URL;
   private user : any = '';
   private headers : any = '';
@@ -13,10 +13,10 @@ export class ArtistService {
     // this.user = JSON.parse(localStorage.getItem('user'));
     // this.headers = new HttpHeaders({ 'x-access-token' : this.user.token });  
   }
-  
+
   // Get Artist and track
   getArtistData (data : any) {
-    return this.http.post(`${this.api_host}/whatsnew`, data);
+    return this.http.post(`${this.api_host}/get_artist`, data);
   }
   // Follow the artist 
   followArtist(data : any) {
