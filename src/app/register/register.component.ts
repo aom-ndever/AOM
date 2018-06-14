@@ -18,7 +18,6 @@ export class RegisterComponent implements OnInit {
   public show_spinner : boolean =  false;
   public music_types : any = [];
   public artist_data : any = {
-    'music_type' : [],
     'share_url' : {
       'facebook' : '',
       'instagram' : '',
@@ -241,17 +240,6 @@ export class RegisterComponent implements OnInit {
   }
   // Handle submit event of artist form
   artist_submit() {
-    // let data = {
-    //   email : this.artist_data['email'],
-    //   password : this.artist_data['password'],
-    //   first_name : this.artist_data['fname'],
-    //   last_name : this.artist_data['lname'],
-    //   zipcode : this.artist_data['zipcode'],
-    //   gender : this.artist_data['gender'],
-    //   music_type : this.artist_data['music_type'],
-    //   image : this.croppedImage,
-    //   share_url : this.artist_data['share_url']
-    // };
     let file = this.imageChangedEvent.target.files[0];
     let new_file = this.dataURLtoFile(this.croppedImage, file.name);
 
@@ -262,7 +250,7 @@ export class RegisterComponent implements OnInit {
     formData.append('last_name',this.artist_data['lname']);
     formData.append('zipcode',this.artist_data['zipcode']);
     formData.append('gender',this.artist_data['gender']);
-    formData.append('music_type',JSON.stringify(this.artist_data['music_type']));
+    formData.append('music_type',this.artist_data['music_type']);
     formData.append('image', new_file);
     formData.append('share_url', JSON.stringify(this.artist_data['share_url']));
     
@@ -273,7 +261,6 @@ export class RegisterComponent implements OnInit {
       this.location = '';
       this.artist_cnt = 0;
       this.artist_data = {
-        'music_type' : [],
         'share_url' : {
           'facebook' : '',
           'instagram' : '',

@@ -144,14 +144,14 @@
                   <div class="type-music">
                     <ul>
                       <li *ngFor="let x of music_types">
-                        <input type="radio" name="music" (change)="onChange(x['_id'], $event.target.checked)">
+                        <input type="radio" name="music" [(ngModel)]="artist_data.music_type">
                         <div class="music-checked chk-{{x['alias']}}"  >{{x.name}}</div>
                       </li>
                     </ul>
                   </div>
                   <div class="button_group">
                     <a href="javascript:;" class="back-btn" (click)="back_btn('artist')"><img src="img/prev-arrow.png" alt="Previou Arrow"> Back</a>
-                    <button type="submit" (click)="nxt_btn('artist')" [disabled]="artist_data.music_type.length <= 0" class="next-btn">Next</button>
+                    <button type="submit" (click)="nxt_btn('artist')" [disabled]="!artist_data.music_type" class="next-btn">Next</button>
                   </div>
                 </form>
               </div>
