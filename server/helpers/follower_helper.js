@@ -48,7 +48,6 @@ follower_helper.get_artist_followers_by_gender = async (artist_id, day) => {
 
             }
         },
-
         {
             "$group": {
                 "_id": null,
@@ -178,4 +177,6 @@ follower_helper.get_all_followers = async (id) => {
         return { "status": 0, "message": "Error occured while finding user", "error": err }
     }
 };
+
+
 module.exports = follower_helper;
