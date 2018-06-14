@@ -70,6 +70,7 @@ export class WhatsNewComponent implements OnInit {
     let data = {};
     this.WhatsNewService.getWhatsnewData(data).subscribe(response => {
       this.whatsnewdata = response;
+      this.getAllFollower();
     });
   }
   // Play audio
@@ -98,6 +99,7 @@ export class WhatsNewComponent implements OnInit {
       };
       this.WhatsNewService.getWhatsnewData(data).subscribe(response => {
         this.whatsnewdata = response;
+        this.getAllFollower();
       });
     }
   }
@@ -105,6 +107,7 @@ export class WhatsNewComponent implements OnInit {
   advanceFilter() {
     this.WhatsNewService.getWhatsnewData(this.advance_filter).subscribe(response => {
       this.whatsnewdata = response;
+      this.getAllFollower();
       if(response['artist'].length <= 0)
         this.toastr.success('No result found.', 'Success!');
     }, error => {
@@ -118,17 +121,42 @@ export class WhatsNewComponent implements OnInit {
     });
   }
   // Follow artist
-  followArtist(id : any) {
+  followArtist(id : any, index : any) {
     let data = JSON.parse(localStorage.getItem('user'));
     if(data && data.user) {
       let data = {
         artist_id : id
       };
+      this.whatsnewdata['artist'][index]['is_followed'] = true;
       this.WhatsNewService.followArtist(data).subscribe(response => {
         this.toastr.success(response['message'], 'Success!');
+      }, error => {
+        this.whatsnewdata['artist'][index]['is_followed'] = false;
+        this.toastr.error(error['error'].message, 'Error!');
       });
     } else {
       this.toastr.info('Please login first to follow the artist.', 'Information!');
+    }
+  }
+  // get All follower
+  getAllFollower() {
+    let user = JSON.parse(localStorage.getItem('user'));
+    if(user) {
+      this.WhatsNewService.getFollower().subscribe(response => {
+        let flag = false;
+        this.whatsnewdata['artist'].forEach(obj => {
+          response['user'].forEach(data => {
+            if(obj._id == data['artist_id']._id) {
+              flag = true;
+            }
+          });
+          if(flag) {
+            obj['is_followed'] = true;
+          } else {
+            obj['is_followed'] = false;
+          }
+        });
+      });
     }
   }
 }

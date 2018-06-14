@@ -396,12 +396,12 @@
             <div class="final-wrap ">
               <div class="img-wrap ">
                 <img src="{{artist.image ? artist_img_url+artist.image : 'img/highlight-player.png'}} " alt="Finalists ">
-                <a href="javascript:void(0) " class="fan " (click)="followArtist(artist._id)"><i class="fa fa-heart-o" aria-hidden="true "></i></a>
+                <a href="javascript:void(0) " class="fan " (click)="followArtist(artist._id, i)"><i class="fa {{artist.is_followed ? 'fa-heart' : 'fa-heart-o'}}" aria-hidden="true "></i></a>
               </div>
               <div class="content-wrap ">
                 <div class="player ">
                   <div class="title "><a href="javascript:;">{{artist.first_name +' '+artist.last_name}}</a></div>
-                  <div class="cat {{artist.music_type[0].alias}}">{{artist.music_type[0].name}}</div>
+                  <div class="cat {{artist.music_type.alias}}">{{artist.music_type.name}}</div>
                 </div>
                 <div class="location ">
                   <p><i class="fa fa-map-marker " aria-hidden="true "></i><span>Brooklyn, New York</span></p>
