@@ -100,9 +100,6 @@ router.put('/', function (req, res) {
     if (req.body.email) {
         obj.email = req.body.email;
     }
-    if (req.body.password) {
-        obj.password = req.body.password;
-    }
     if (req.body.gender) {
         obj.gender = req.body.gender;
     }
