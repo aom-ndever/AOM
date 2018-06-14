@@ -1195,7 +1195,7 @@ var MyMusicComponent = /** @class */ (function () {
     };
     MyMusicComponent.prototype.addTrack = function () {
         var _this = this;
-        if (this.trackdata && this.trackdata.name && this.trackdata.price && this.audio_file && this.image_upload && this.trackdata.music_type) {
+        if (this.trackdata && this.trackdata.name && this.trackdata.price && this.audio_file && this.image_upload) {
             var formdata = new FormData();
             formdata.append('name', this.trackdata.name);
             formdata.append('price', this.trackdata.price);
@@ -1227,9 +1227,6 @@ var MyMusicComponent = /** @class */ (function () {
         }
         else if (!this.trackdata.price) {
             this.toastr.error('Please select track price', 'Error!');
-        }
-        else if (!this.trackdata.music_type) {
-            this.toastr.error('Please select music type', 'Error!');
         }
         else {
             this.toastr.error('Please provide necessary details', 'Error!');
@@ -1269,7 +1266,7 @@ var MyMusicComponent = /** @class */ (function () {
     MyMusicComponent.prototype.updateTrack = function () {
         var _this = this;
         this.show_spinner = true;
-        if (this.trackdata && this.trackdata.name && this.trackdata.price && this.trackdata.image && this.trackdata.music_type) {
+        if (this.trackdata && this.trackdata.name && this.trackdata.price && this.trackdata.image) {
             var formdata = new FormData();
             formdata.append('name', this.trackdata.name);
             formdata.append('price', this.trackdata.price);
@@ -1296,9 +1293,6 @@ var MyMusicComponent = /** @class */ (function () {
         }
         else if (!this.trackdata.price) {
             this.toastr.error('Please select track price', 'Error!');
-        }
-        else if (!this.trackdata.music_type) {
-            this.toastr.error('Please select music type', 'Error!');
         }
         else {
             this.toastr.error('Please provide necessary details', 'Error!');
