@@ -46,9 +46,7 @@ router.post("/", async (req, res) => {
     if (req.body.price && req.body.price != null) {
         obj.price = req.body.price;
     }
-    if (req.body.music_type && req.body.music_type != null) {
-        obj.music_type = req.body.music_type;
-    }
+
     async.waterfall([
         function (callback) {
             if (req.files && req.files['audio']) {
@@ -143,7 +141,7 @@ router.get('/', async (req, res) => {
     var track = await track_helper.get_all_track_of_artist(artist_id);
     if (track.status === 1) {
         logger.trace("got details successfully");
-        res.status(config.OK_STATUS).json({ "status": 1, "track": track.track });
+        res.status(config.OK_STATUS).json({ "status": 1, "track": track.music });
     } else {
         logger.error("Error occured while fetching = ", track);
         res.status(config.INTERNAL_SERVER_ERROR).json(track);

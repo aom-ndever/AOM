@@ -10,7 +10,6 @@ var TrackModelSchema = new Schema({
     artist_id: { type: mongoose.Schema.Types.ObjectId, ref: 'artist' },
     image: String,
     audio: String,
-    music_type: { type: mongoose.Schema.Types.ObjectId, ref: 'music_type' },
     name: String,
     price: String,
     description: String,

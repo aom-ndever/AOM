@@ -22,21 +22,21 @@ track_helper.insert_track = async (id, object) => {
 
 track_helper.get_all_track_of_artist = async (artist_id) => {
     try {
-        var aggregate = [{
-            "$match": {
-                "artist_id": new ObjectId(artist_id)
-            }
-        }];
-        var track = await Track.aggregate(aggregate);
-        if (track) {
-            return { "status": 1, "message": "media found", "track": track };
+
+        var music = await Track
+            .find({ "artist_id": new ObjectId(artist_id) })
+            .populate({ path: 'artist_id', populate: { path: 'music_type' } })
+            .lean();
+
+        if (music) {
+            return { "status": 1, "message": "music details found", "music": music };
         } else {
-            return { "status": 2, "message": "No media available" };
+            return { "status": 2, "message": "music not found" };
         }
     } catch (err) {
-        return { "status": 0, "message": "Error occured while finding media", "error": err }
+        return { "status": 0, "message": "Error occured while finding music", "error": err }
     }
-}
+};
 
 
 track_helper.get_all_audio = async (filter, page_no, page_size) => {
@@ -48,7 +48,7 @@ track_helper.get_all_audio = async (filter, page_no, page_size) => {
             .limit(page_size)
             .lean();
 
-        if (music && music.length > 0) {
+        if (music) {
             return { "status": 1, "message": "music details found", "music": music };
         } else {
             return { "status": 2, "message": "music not found" };
@@ -359,20 +359,8 @@ track_helper.get_new_uploads = async (day) => {
 
 
 track_helper.get_track_main = async (filter, filters) => {
-    console.log('filters', filters);
-
     var aggregate = [
-        {
-            $lookup: {
-                from: "music_type",
-                localField: "music_type",
-                foreignField: "_id",
-                as: "music_type"
-            }
-        },
-        {
-            $unwind: "$music_type"
-        },
+
         {
             $lookup: {
                 from: "artist",
@@ -383,6 +371,17 @@ track_helper.get_track_main = async (filter, filters) => {
         },
         {
             $unwind: "$artist_id"
+        },
+        {
+            $lookup: {
+                from: "music_type",
+                localField: "artist_id.music_type",
+                foreignField: "_id",
+                as: "music_type"
+            }
+        },
+        {
+            $unwind: "$music_type"
         },
         {
             "$match": filters
@@ -396,11 +395,6 @@ track_helper.get_track_main = async (filter, filters) => {
                 { $or: [{ "artist_id.first_name": filter }, { "artist_id.last_name": filter }, { "name": filter }] }
         });
     }
-
-
-    console.log('aggregate', JSON.stringify(aggregate));
-
-
     let result = await Track.aggregate(aggregate);
     if (result) {
         return { "status": 1, "message": "Artist  found", "results": result }
