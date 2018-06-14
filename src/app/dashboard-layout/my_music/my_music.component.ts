@@ -130,7 +130,6 @@ export class MyMusicComponent implements OnInit {
       formdata.append('audio', this.audio_file);
       formdata.append('image', this.image_upload);
       formdata.append('description', this.trackdata.description);
-      formdata.append('music_type', this.trackdata.music_type);
       this.show_spinner = true;
       this.MyMusicService.addTrack(formdata).subscribe(response => {
         this.trackdata = {};
@@ -197,7 +196,6 @@ export class MyMusicComponent implements OnInit {
         formdata.append('price', this.trackdata.price);
         formdata.append('image', this.trackdata.image);
         formdata.append('description', this.trackdata.description);
-        formdata.append('music_type', this.trackdata.music_type);
         this.MyMusicService.updateTrack(formdata, this.trackdata._id).subscribe(response => {
           if(!response['track']['image']) {
             this.edit_image = 'img/profile-img.png';
