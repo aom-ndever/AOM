@@ -33,7 +33,7 @@ export class ArtistProfileComponent implements OnInit {
         artist_id : params.id
       };
       this.ArtistProfileService.getArtistData(data).subscribe(response => {
-        this.artistdata = response;
+        this.artistdata = response['artist'];
       });
     } );
   }
