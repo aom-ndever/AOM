@@ -144,7 +144,7 @@
                   <div class="type-music">
                     <ul>
                       <li *ngFor="let x of music_types">
-                        <input type="checkbox" name="music" (change)="onChange(x['_id'], $event.target.checked)">
+                        <input type="radio" name="music" (change)="onChange(x['_id'], $event.target.checked)">
                         <div class="music-checked chk-{{x['alias']}}"  >{{x.name}}</div>
                       </li>
                     </ul>
