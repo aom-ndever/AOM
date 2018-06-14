@@ -102,7 +102,7 @@ export class MyMusicComponent implements OnInit {
   }
 
   openModal(content) {
-    this.modal_ref = this.modalService.open(content, { centered: true, windowClass:'add-track-popup' });
+    this.modal_ref = this.modalService.open(content, { centered: true, windowClass:'add-track-popup', backdrop : 'static' });
   }
 
   // open edit track model
@@ -119,11 +119,11 @@ export class MyMusicComponent implements OnInit {
   // Open contest modal
   openContestModal(content : any, obj : any) {
     this.trackdata = obj;
-    this.modal_ref = this.modalService.open(content, { centered: true, windowClass:'new-add-track-popup'});
+    this.modal_ref = this.modalService.open(content, { centered: true, windowClass:'new-add-track-popup', backdrop : 'static'});
   }
   
   addTrack() {
-    if(this.trackdata && this.trackdata.name && this.trackdata.price && this.audio_file && this.image_upload && this.trackdata.music_type) {
+    if(this.trackdata && this.trackdata.name && this.trackdata.price && this.audio_file && this.image_upload) {
       let formdata = new FormData();
       formdata.append('name', this.trackdata.name);
       formdata.append('price', this.trackdata.price);
@@ -151,8 +151,6 @@ export class MyMusicComponent implements OnInit {
       this.toastr.error('Please select track name', 'Error!');
     } else if(!this.trackdata.price) {
       this.toastr.error('Please select track price', 'Error!');
-    } else if(!this.trackdata.music_type) {
-      this.toastr.error('Please select music type', 'Error!');
     } else {
       this.toastr.error('Please provide necessary details', 'Error!');
     }
@@ -190,7 +188,7 @@ export class MyMusicComponent implements OnInit {
   // update track
   updateTrack() {
     this.show_spinner = true;
-      if(this.trackdata && this.trackdata.name && this.trackdata.price && this.trackdata.image && this.trackdata.music_type) {
+      if(this.trackdata && this.trackdata.name && this.trackdata.price && this.trackdata.image) {
         let formdata = new FormData();
         formdata.append('name', this.trackdata.name);
         formdata.append('price', this.trackdata.price);
@@ -214,8 +212,6 @@ export class MyMusicComponent implements OnInit {
       this.toastr.error('Please select track name', 'Error!');
     } else if(!this.trackdata.price) {
       this.toastr.error('Please select track price', 'Error!');
-    } else if(!this.trackdata.music_type) {
-      this.toastr.error('Please select music type', 'Error!');
     } else {
       this.toastr.error('Please provide necessary details', 'Error!');
     }

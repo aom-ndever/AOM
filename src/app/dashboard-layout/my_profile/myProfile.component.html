@@ -83,7 +83,7 @@
 
                                                     <div class="form-group music-grp">
                                                         <label for="musictype">Music Type</label>
-                                                        <select class="form-control" id="musictype" multiple name="music_type" [(ngModel)]="userdata.music_type">
+                                                        <select class="form-control" id="musictype" name="music_type" [(ngModel)]="userdata.music_type">
                                                             <option *ngFor="let type of music_types" value="{{type._id}}">{{type.name}}</option>
                                                         </select>
                                                     </div>
@@ -101,7 +101,7 @@
                                         <div class="edit-head">Additional Details</div>
                                         <div class="about-you">
                                             <label for="fname">Describe Yourself</label>
-                                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quae corporis et explicabo? A sunt quaerat, ex maiores. Ea ab non, porro atque natus exercitationem iusto cum sit tempore modi. Quae odit tempore consequatur voluptatibus sed, quidem eius ut, alias atque consectetur provident sunt voluptate. Ad temporibus eos soluta pariatur nam.</p>
+                                            <textarea class="form-control" name="description" [(ngModel)]="userdata.description" placeholder="Add about yourself..."></textarea>
                                         </div>
                                     </div>
                                     <div class="social-details">
