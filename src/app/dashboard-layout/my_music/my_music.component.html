@@ -166,14 +166,6 @@
             <textarea name="description" placeholder="Describe Yourself" [(ngModel)]="trackdata.description" class="form-control" ></textarea>
           </div>
       </div>
-    
-      <div class="form-group">
-        <label>Select Music Type</label>
-        <select class="form-control" name="music_type" [(ngModel)]="trackdata.music_type">
-          <option value="">Select music type</option>
-          <option *ngFor="let music of music_type_list" value="{{music._id}}">{{music.name}}</option>
-        </select>
-      </div>
 			<div class="button_group">
 				<button class="add-btn" (click)="addTrack()" [disabled]="show_spinner">Add Track <i  *ngIf="show_spinner" class="fa fa-spinner fa-spin"></i></button>
 			</div>
@@ -208,13 +200,6 @@
             <label>Describe Yourself</label>
             <textarea name="description" [(ngModel)]="trackdata.description" class="form-control"></textarea>
           </div>
-        </div>
-        <div class="form-group">
-          <label>Select Music Type</label>
-          <select class="form-control" name="music_type" [(ngModel)]="trackdata.music_type">
-            <option value="">Select music type</option>
-            <option *ngFor="let music of music_type_list" value="{{music._id}}">{{music.name}}</option>
-          </select>
         </div>
         <div class="button_group">
           <button type="submit" (click)="updateTrack()" [disabled]="show_spinner" class="update-btn">Update <i *ngIf="show_spinner" class="fa fa-spinner fa-spin"></i></button>
