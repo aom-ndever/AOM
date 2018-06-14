@@ -1175,7 +1175,7 @@ var MyMusicComponent = /** @class */ (function () {
         }
     };
     MyMusicComponent.prototype.openModal = function (content) {
-        this.modal_ref = this.modalService.open(content, { centered: true, windowClass: 'add-track-popup' });
+        this.modal_ref = this.modalService.open(content, { centered: true, windowClass: 'add-track-popup', backdrop: 'static' });
     };
     // open edit track model
     MyMusicComponent.prototype.openEditTrackModal = function (content, obj) {
@@ -1191,7 +1191,7 @@ var MyMusicComponent = /** @class */ (function () {
     // Open contest modal
     MyMusicComponent.prototype.openContestModal = function (content, obj) {
         this.trackdata = obj;
-        this.modal_ref = this.modalService.open(content, { centered: true, windowClass: 'new-add-track-popup' });
+        this.modal_ref = this.modalService.open(content, { centered: true, windowClass: 'new-add-track-popup', backdrop: 'static' });
     };
     MyMusicComponent.prototype.addTrack = function () {
         var _this = this;

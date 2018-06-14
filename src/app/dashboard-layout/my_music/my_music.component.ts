@@ -102,7 +102,7 @@ export class MyMusicComponent implements OnInit {
   }
 
   openModal(content) {
-    this.modal_ref = this.modalService.open(content, { centered: true, windowClass:'add-track-popup' });
+    this.modal_ref = this.modalService.open(content, { centered: true, windowClass:'add-track-popup', backdrop : 'static' });
   }
 
   // open edit track model
@@ -119,7 +119,7 @@ export class MyMusicComponent implements OnInit {
   // Open contest modal
   openContestModal(content : any, obj : any) {
     this.trackdata = obj;
-    this.modal_ref = this.modalService.open(content, { centered: true, windowClass:'new-add-track-popup'});
+    this.modal_ref = this.modalService.open(content, { centered: true, windowClass:'new-add-track-popup', backdrop : 'static'});
   }
   
   addTrack() {
