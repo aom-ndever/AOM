@@ -409,6 +409,9 @@ router.get('/track_comment', async (req, res) => {
  * @apiError (Error 4xx) {String} message Validation or error message.
  */
 router.post("/participate", async (req, res) => {
+    artist_id = req.userInfo.id;
+    console.log('artist_id', artist_id);
+
     var schema = {
 
         "contest_id": {
@@ -432,25 +435,39 @@ router.post("/participate", async (req, res) => {
             track_id: req.body.track_id
         };
 
-        var resp_data = await participate_helper.get_participant(obj.artist_id, obj.contest_id, obj.track_id);
-        if (resp_data && resp_data.participate == 0) {
+        var contest_data = await contest_helper.get_contest_by_id(obj.contest_id);
+        contest_music = contest_data.contest.music_type;
 
-            var resp_data = await participate_helper.insert_participant(obj);
-            if (resp_data.status == 0) {
-                logger.error("Error occured while inserting = ", resp_data);
-                res.status(config.INTERNAL_SERVER_ERROR).json(resp_data);
-            } else
-                var resp_data = await contest_helper.get_contest_by_id(obj.contest_id);
-            no_paritipant = resp_data.contest.no_of_participants + 1
-            var resp_data = await contest_helper.update_participant(obj.contest_id, no_paritipant);
-            logger.trace(" got successfully = ", resp_data);
-            res.status(config.OK_STATUS).json(resp_data);
+        var artist_data = await artist_helper.get_artist_by_id(artist_id);
+        artist_music = artist_data.artist.music_type;
+
+        if (contest_music.toString() === artist_music.toString()) {
+            var resp_data = await participate_helper.get_participant(obj.artist_id, obj.contest_id, obj.track_id);
+            if (resp_data && resp_data.participate == 0) {
+
+                var resp_data = await participate_helper.insert_participant(obj);
+                if (resp_data.status == 0) {
+                    logger.error("Error occured while inserting = ", resp_data);
+                    res.status(config.INTERNAL_SERVER_ERROR).json(resp_data);
+                } else
+                    var resp_data = await contest_helper.get_contest_by_id(obj.contest_id);
+                no_paritipant = resp_data.contest.no_of_participants + 1
+                var resp_data = await contest_helper.update_participant(obj.contest_id, no_paritipant);
+                logger.trace(" got successfully = ", resp_data);
+                res.status(config.OK_STATUS).json(resp_data);
+            }
+            else {
+                logger.trace("Already participated for this contest");
+                res.status(config.OK_STATUS).json({ "message": "Already participated for this contest" });
+            }
         }
         else {
-            logger.trace("Already participated for this contest");
-            res.status(config.OK_STATUS).json({ "message": "Already participated for this contest" });
+            logger.trace("You are of Different Genre");
+            res.status(config.OK_STATUS).json({ "message": "You are of Different Genre" });
         }
     }
+
+
     else {
         logger.error("Validation Error = ", errors);
         res.status(config.BAD_REQUEST).json({ message: errors });
