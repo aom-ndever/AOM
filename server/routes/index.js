@@ -18,6 +18,7 @@ var track_helper = require('./../helpers/track_helper');
 var music_helper = require('./../helpers/music_helper');
 var contest_helper = require('./../helpers/contest_helper');
 var admin_helper = require('./../helpers/admin_helper');
+var media_helper = require('./../helpers/media_helper');
 var moment = require('moment');
 /**
  * @api {post} /artist_registration Artist Registration
@@ -1297,4 +1298,28 @@ router.post("/artistv1", async (req, res) => {
   }
 });
 
+
+router.post('/get_media', async (req, res) => {
+  artist_id = req.body.artist_id
+  var media = await media_helper.get_all_media_of_artist(artist_id);
+  if (media.status === 1) {
+    logger.trace("got details successfully");
+    res.status(config.OK_STATUS).json({ "status": 1, "media": media.media });
+  } else {
+    logger.error("Error occured while fetching = ", media);
+    res.status(config.INTERNAL_SERVER_ERROR).json(media);
+  }
+});
+
+router.post('/get_track', async (req, res) => {
+  artist_id = req.body.artist_id
+  var track = await track_helper.get_all_track_of_artist(artist_id);
+  if (track.status === 1) {
+    logger.trace("got details successfully");
+    res.status(config.OK_STATUS).json({ "status": 1, "track": track.music });
+  } else {
+    logger.error("Error occured while fetching = ", track);
+    res.status(config.INTERNAL_SERVER_ERROR).json(track);
+  }
+});
 module.exports = router;

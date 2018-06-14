@@ -34,22 +34,22 @@ media_helper.get_all_media_of_artist = async (artist_id) => {
 }
 
 media_helper.get_all_media_of_artist = async (artist_id) => {
+
     try {
-        var aggregate = [{
-            "$match": {
-                "artist_id": new ObjectId(artist_id)
-            }
-        }];
-        var media = await Media.aggregate(aggregate);
+        var media = await Media
+            .find({ "artist_id": new ObjectId(artist_id) })
+            .populate('artist_id')
+            .lean();
+
         if (media) {
-            return { "status": 1, "message": "media found", "media": media };
+            return { "status": 1, "message": "media details found", "media": media };
         } else {
-            return { "status": 2, "message": "No media available" };
+            return { "status": 2, "message": "media not found" };
         }
     } catch (err) {
         return { "status": 0, "message": "Error occured while finding media", "error": err }
     }
-}
+};
 
 
 media_helper.delete_media_by_id = async (artist_id, media_id) => {

@@ -122,7 +122,7 @@ router.put('/', function (req, res) {
         obj.music_type = req.body.music_type;
     }
     if (req.body.description) {
-        reg_obj.description = req.body.description
+        obj.description = req.body.description
     }
 
 

@@ -199,4 +199,6 @@ router.put('/change/password', async (req, res) => {
         res.status(config.INTERNAL_SERVER_ERROR).json(resp);
     }
 });
+
+
 module.exports = router;
