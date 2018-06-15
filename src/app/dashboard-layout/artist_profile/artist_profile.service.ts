@@ -30,4 +30,12 @@ export class ArtistProfileService {
     this.headers = new HttpHeaders({ 'x-access-token' : this.user.token });  
     return this.http.get(`${this.api_host}/user/artist/followers`, {headers : this.headers});
   }
+  // Get all track of artist
+  getAllTrack(data : any) {
+    return this.http.post(`${this.api_host}/get_track`, data);
+  }
+  // Get all media of artist
+  getAllMedia(data : any) {
+    return this.http.post(`${this.api_host}/get_media`, data);
+  }
 }

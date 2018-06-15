@@ -142,10 +142,12 @@
                 <div class="progress_bar fill14"></div>
                 <form>
                   <div class="type-music">
-                    <ul>
-                      <li *ngFor="let x of music_types">
-                        <input type="radio" name="music" [(ngModel)]="artist_data.music_type">
-                        <div class="music-checked chk-{{x['alias']}}"  >{{x.name}}</div>
+                   
+                    <ul>                                   
+                      <li *ngFor="let x of music_types; let i=index;" >
+                          <input type="radio" id="{{i}}" name="radio-group" [(ngModel)]="artist_data.music_type">
+                          <label for="{{i}}">{{x.name}}</label>
+                        
                       </li>
                     </ul>
                   </div>
