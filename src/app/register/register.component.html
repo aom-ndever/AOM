@@ -145,15 +145,14 @@
                    
                     <ul>                                   
                       <li *ngFor="let x of music_types; let i=index;" >
-                          <input type="radio" id="{{i}}" name="radio-group" [(ngModel)]="artist_data.music_type">
+                          <input type="radio" id="{{i}}" name="radio-group" (click)="selectMusciGenre(x._id)">
                           <label for="{{i}}">{{x.name}}</label>
-                        
                       </li>
                     </ul>
                   </div>
                   <div class="button_group">
                     <a href="javascript:;" class="back-btn" (click)="back_btn('artist')"><img src="img/prev-arrow.png" alt="Previou Arrow"> Back</a>
-                    <button type="submit" (click)="nxt_btn('artist')" [disabled]="!artist_data.music_type" class="next-btn">Next</button>
+                    <button type="submit" (click)="nxt_btn('artist')" [disabled]="!artist_data.music_type ? true : false" class="next-btn">Next</button>
                   </div>
                 </form>
               </div>
