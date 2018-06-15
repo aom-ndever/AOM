@@ -194,7 +194,7 @@
                 <h2>
                   <a href="javascript:;">{{artistdata['first_name']+' '+artistdata['last_name']}}</a>
                 </h2>
-                <span class="{{artistdata['music_type']['alias']}} tag">{{artistdata['music_type']['name']}}</span>
+                <span class=" tag">{{artistdata['music_type'] | json}}</span>
               </div>
               <div class="profile-location">
                 <i class="fa fa-map-marker" aria-hidden="true"></i>
