@@ -15,6 +15,7 @@ var TrackModelSchema = new Schema({
     description: String,
     no_of_votes: { type: Number, default: 0 },
     no_of_likes: { type: Number, default: 0 },
+    no_of_comments: { type: Number, default: 0 },
     no_of_downloads: { type: Number, default: 0 },
     created_at: { type: Date, default: Date.now }
 }, { versionKey: false });

@@ -130,14 +130,44 @@ artist_helper.get_login_by_email = async (email) => {
  *          status 1 - If artist data found, with artist's documents
  *          status 2 - If artist not found, with appropriate message
  */
-artist_helper.get_all_artist = async (filter, page_no, page_size) => {
+artist_helper.get_all_artist = async (filter = {}) => {
     try {
 
-        var artist = await Artist
-            .find(filter)
-            .skip((page_size * page_no) - page_size)
-            .limit(page_size)
-            .lean();
+        var artist = await Artist.aggregate([
+            {
+                $lookup: {
+                    from: "music_type",
+                    localField: "music_type",
+                    foreignField: "_id",
+                    as: "music_type"
+                }
+            },
+            {
+                $unwind: "$music_type"
+            },
+            {
+                $match: filter
+            },
+
+            {
+                $group: {
+                    _id: "$_id",
+                    total: {
+                        $sum: { $sum: ["$no_of_likes", "$no_of_votes"] },
+                    },
+                    artist: {
+                        $first: "$$ROOT"
+                    }
+                }
+            },
+            {
+                $sort: {
+                    total: -1
+                }
+            }
+
+
+        ]);
 
         if (artist && artist.length > 0) {
             return { "status": 1, "message": "artist details found", "artist": artist };
@@ -384,6 +414,7 @@ artist_helper.get_new_uploads = async (day) => {
     try {
         var artist = await Artist
             .find({ "created_at": { "$gt": new Date(from), "$lt": new Date(to) } })
+            .populate('music_type')
             .sort({ "no_of_likes": - 1 })
             .limit(24)
         if (artist) {

@@ -1290,15 +1290,14 @@ router.post("/artistv1", async (req, res) => {
     var resp_artist = await artist_helper.get_new_uploads(30);
 
     //var resp_track = await artist_helper.get_artist_by_id(filter);
-    var resp_chart = await artist_helper.get_chart_toppers(filter);
-    console.log('resp_chart', resp_chart);
+    var resp_chart = await artist_helper.get_all_artist(filter);
 
-    if (resp_artist.status == 0) {
+    if (resp_artist.status == 0 && resp_chart.status == 0) {
       logger.error("Error occured while fetching users = ", resp_artist);
       res.status(config.INTERNAL_SERVER_ERROR).json(resp_artist);
     } else {
       logger.trace("artist got successfully = ");
-      res.status(config.OK_STATUS).json({ "status": 1, "rising_stars": resp_artist.results });
+      res.status(config.OK_STATUS).json({ "status": 1, "rising_stars": resp_artist.results, "chart_toppers": resp_chart.artist });
     }
   } else {
     logger.error("Validation Error = ", errors);
@@ -1322,6 +1321,17 @@ router.post('/get_media', async (req, res) => {
 router.post('/get_track', async (req, res) => {
   artist_id = req.body.artist_id
   var track = await track_helper.get_all_track_of_artist(artist_id);
+  if (track.status === 1) {
+    logger.trace("got details successfully");
+    res.status(config.OK_STATUS).json({ "status": 1, "track": track.music });
+  } else {
+    logger.error("Error occured while fetching = ", track);
+    res.status(config.INTERNAL_SERVER_ERROR).json(track);
+  }
+});
+router.post('/get_ranking', async (req, res) => {
+  artist_id = req.body.artist_id
+  var track = await track_helper.get_all_track_of_artist_by_ranking(artist_id);
   if (track.status === 1) {
     logger.trace("got details successfully");
     res.status(config.OK_STATUS).json({ "status": 1, "track": track.music });
