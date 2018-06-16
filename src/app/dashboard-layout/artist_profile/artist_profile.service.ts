@@ -46,4 +46,8 @@ export class ArtistProfileService {
   getAllComments(data : any) {
     return this.http.post(`${this.api_host}/comment`, data);
   }
+  // Get all ranking of artist
+  getAllRanking(data : any) {
+    return this.http.post(`${this.api_host}/get_ranking`, data);
+  }
 }

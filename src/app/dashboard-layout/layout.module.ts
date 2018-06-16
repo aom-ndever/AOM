@@ -27,7 +27,8 @@ import {
   ArtistTrackResolve,
   ArtistMediaResolve,
   ArtistCommentsResolve,
-  ArtistFollowerResolve
+  ArtistFollowerResolve,
+  ArtistRankingResolve
 } from './resolve/artist_resolve';
 import { DashboardService } from './dashboard/dashboard.service';
 import { FormsModule, ReactiveFormsModule  } from '@angular/forms';
@@ -56,7 +57,7 @@ import { AuthService } from '../shared/auth.service';
           {path: '', component: DashboardComponent},
           {path: 'whats-new', component: WhatsNewComponent},
           {path: 'artist', component: ArtistComponent},
-          {path: 'artist_profile/:id', component: ArtistProfileComponent, resolve: { artist: ArtistProfileResolve, track : ArtistTrackResolve, media : ArtistMediaResolve, follower : ArtistFollowerResolve, comments : ArtistCommentsResolve }},
+          {path: 'artist_profile/:id', component: ArtistProfileComponent, resolve: { artist: ArtistProfileResolve, track : ArtistTrackResolve, media : ArtistMediaResolve, follower : ArtistFollowerResolve, comments : ArtistCommentsResolve, ranking : ArtistRankingResolve }},
           {path: 'vote', component: VoteComponent},
           {path: 'my-music', component: MyMusicComponent, canActivate: [AuthService]},
           {path: 'my-profile', component: MyProfileComponent, canActivate: [AuthService]}
@@ -72,7 +73,8 @@ import { AuthService } from '../shared/auth.service';
      ArtistTrackResolve,
      ArtistMediaResolve,
      ArtistCommentsResolve,
-     ArtistFollowerResolve
+     ArtistFollowerResolve,
+     ArtistRankingResolve
     ]
 })
 export class LayoutModule { }
