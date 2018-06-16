@@ -395,7 +395,9 @@
           <div class="col-md-3 col-sm-4 col-xs-6 " *ngFor="let artist of whatsnewdata['artist']; let i = index;">
             <div class="final-wrap ">
               <div class="img-wrap ">
-                <img src="{{artist.image ? artist_img_url+artist.image : 'img/highlight-player.png'}} " alt="Finalists ">
+                <a href="javascript:;" routerLink="/artist_profile/{{artist._id}}">
+                  <img src="{{artist.image ? artist_img_url+artist.image : 'img/highlight-player.png'}} " alt="Finalists ">
+                </a>
                 <a href="javascript:void(0) " class="fan " (click)="followArtist(artist._id, i)"><i class="fa {{artist.is_followed ? 'fa-heart' : 'fa-heart-o'}}" aria-hidden="true "></i></a>
               </div>
               <div class="content-wrap ">
