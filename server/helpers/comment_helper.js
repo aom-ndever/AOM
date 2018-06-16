@@ -137,6 +137,7 @@ comment_helper.get_all_comment_by_artist_id = async (artist_id) => {
             .find({ "artist_id": new ObjectId(artist_id) })
             .populate('user_id')
             .populate('artist_id')
+            .populate('track_id')
             .lean()
         if (comment) {
             return { "status": 1, "message": "comment details found", "comment": comment };

@@ -1329,6 +1329,17 @@ router.post('/get_track', async (req, res) => {
     res.status(config.INTERNAL_SERVER_ERROR).json(track);
   }
 });
+router.post('/get_ranking', async (req, res) => {
+  artist_id = req.body.artist_id
+  var track = await track_helper.get_all_track_of_artist_by_ranking(artist_id);
+  if (track.status === 1) {
+    logger.trace("got details successfully");
+    res.status(config.OK_STATUS).json({ "status": 1, "track": track.music });
+  } else {
+    logger.error("Error occured while fetching = ", track);
+    res.status(config.INTERNAL_SERVER_ERROR).json(track);
+  }
+});
 
 
 router.post('/get_artist', async (req, res) => {
