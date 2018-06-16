@@ -73,11 +73,11 @@ router.post('/artist_registration', async (req, res) => {
     "zipcode": {
       notEmpty: true,
       errorMessage: "zipcode is required"
-    },
-    "gender": {
-      notEmpty: true,
-      errorMessage: "Gender is required"
     }
+    // "gender": {
+    //   notEmpty: true,
+    //   errorMessage: "Gender is required"
+    // }
 
   };
   req.checkBody(schema);
@@ -85,7 +85,7 @@ router.post('/artist_registration', async (req, res) => {
   if (!errors) {
     var reg_obj = {
       "email": req.body.email,
-      "gender": req.body.gender,
+      // "gender": req.body.gender,
       "password": req.body.password,
       "first_name": req.body.first_name,
       "last_name": req.body.last_name,

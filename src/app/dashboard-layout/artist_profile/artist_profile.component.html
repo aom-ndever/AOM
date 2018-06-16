@@ -3,7 +3,7 @@
     <div class="row">
       <div class="col-md-12">
         <div class="cover-img">
-          <img src="img/cover.png" alt="Cover Image">
+          <img src="{{artistdata['cover_image'] ? artist_img_url +artistdata['cover_image'] : 'img/cover.png'}}" alt="Cover Image">
         </div>
       </div>
       <div class="col-md-12">
@@ -16,29 +16,30 @@
                 </a>
               </div>
               <div class="follow-btn">
-                <a href="#">
-                  <i class="fa fa-heart" aria-hidden="true"></i> Follow</a>
+                <a href="javascript:;" (click)="followArtist(artistdata._id, i)">
+                  <i class="fa fa-heart" aria-hidden="true"></i> Follow
+                </a>
               </div>
               <div class="social">
                 <h3>Social</h3>
                 <ul>
                   <li>
-                    <a href="#">
+                    <a [href]="artistdata.social_media['facebook']">
                       <i class="fa fa-facebook-official" aria-hidden="true"></i>
                     </a>
                   </li>
                   <li>
-                    <a href="#">
+                    <a [href]="artistdata.social_media['instagram']">
                       <i class="fa fa-instagram" aria-hidden="true"></i>
                     </a>
                   </li>
                   <li>
-                    <a href="#">
+                    <a [href]="artistdata.social_media['youtube']">
                       <i class="fa fa-youtube-play" aria-hidden="true"></i>
                     </a>
                   </li>
                   <li>
-                    <a href="#">
+                    <a [href]="artistdata.social_media['sound_cloud']">
                       <i class="fa fa-soundcloud" aria-hidden="true"></i>
                     </a>
                   </li>
@@ -194,7 +195,7 @@
                 <h2>
                   <a href="javascript:;">{{artistdata['first_name']+' '+artistdata['last_name']}}</a>
                 </h2>
-                <span class="{{artistdata['music_type']['alias']}} tag">{{artistdata['music_type']['name']}}</span>
+                <span class="{{artistdata.music_type['alias']}} cat" >{{artistdata.music_type['name']}}</span>
               </div>
               <div class="profile-location">
                 <i class="fa fa-map-marker" aria-hidden="true"></i>
@@ -207,19 +208,19 @@
                 <!-- Nav tabs -->
                 <ul class="nav nav-tabs" role="tablist">
                   <li class="nav-item ">
-                    <a class="nav-link active" data-toggle="tab" href="#tracks">Tracks</a>
+                    <a class="nav-link {{active_tab_index == 1 ? 'active show' : ''}}" (click)="manageTabChange(1)" data-toggle="tab" href="javascript:;">Tracks</a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" data-toggle="tab" href="#media">Media</a>
+                    <a class="nav-link {{active_tab_index == 2 ? 'active show' : ''}}" (click)="manageTabChange(2)" data-toggle="tab" href="javascript:;">Media</a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" data-toggle="tab" href="#ranking">Ranking</a>
+                    <a class="nav-link {{active_tab_index == 3 ? 'active show' : ''}}" (click)="manageTabChange(3)" data-toggle="tab" href="javascript:;">Ranking</a>
                   </li>
                 </ul>
 
                 <!-- Tab panes -->
                 <div class="tab-content">
-                  <div id="tracks" class="tab-pane fade show active">
+                  <div id="tracks" class="tab-pane fade {{active_tab_index == 1 ? 'active show' : ''}}">
                     <div class="track-wrapper">
                       <div class="track-select-wrap">
                         <select class="form-control" id="gender">
@@ -230,27 +231,28 @@
                       <div class="track-table">
                         <table>
                           <tbody>
-                            <tr>
-                              <td class="serial-num">1.</td>
+                            <tr *ngFor="let artist of artisttrack;let i=index;">
+                              <td class="serial-num">{{i+1}}.</td>
                               <td class="play-option">
-                                <a href="#">
-                                  <img src="img/new-play.png" alt="Play">
+                                <a href="javascript:;">
+                                    <img src="img/play.png " alt="Pause "  [style.display]="!audio_ins[i] ? 'block' : 'none'" (click)="playAudio(artist.audio, i)">
+                                    <img src="img/pause.png " alt="Pause "  [style.display]="audio_ins[i] ? 'block' : 'none'" (click)="stopAudio(i)">
                                 </a>
                               </td>
                               <td class="track-pic">
-                                <a href="#">
-                                  <img src="img/track-img.png" alt="Track Image">
+                                <a href="javascript:;">
+                                  <img src="{{artist.image ? track_url+artist.image : 'img/track-img.png'}}" style="height:50px;width:50px;" alt="Track Image">
                                 </a>
                               </td>
                               <td class="track-det" colspan="2">
-                                <p class="track-name">Say Thanks</p>
-                                <p class="track-singer">Shavan Miller</p>
-                                <p class="track-year">2017</p>
+                                <p class="track-name">{{artist.name}}</p>
+                                <p class="track-singer">{{artist.artist_id.name}}</p>
+                                <p class="track-year">{{artist.created_at | date : 'yyyy'}}</p>
                               </td>
-                              <td class="track-date">March 12,2017</td>
+                              <td class="track-date">{{artist.created_at | date : 'MMMM dd,yyyy'}}</td>
                               <td class="td track-vote">
                                 <img src="img/start.png" alt="start">
-                                <span>1300
+                                <span>{{artist.no_of_votes}}
                                   <br>
                                   <span>Votes</span>
                                 </span>
@@ -258,7 +260,7 @@
                               <td class="action" colspan="2">
                                 <div class="cmt-like">
                                   <a href="#" class="liked">
-                                    <img src="img/like-color.jpg" alt="">1200</a>
+                                    <img src="img/like-color.jpg" alt="">{{artist.no_of_likes}}</a>
                                 </div>
                                 <div class="cmt">
                                   <a href="#">
@@ -266,412 +268,7 @@
                                 </div>
                                 <div class="download">
                                   <a href="#">
-                                    <img src="img/download.png" alt="">$1.99</a>
-                                </div>
-                                <div class="share">
-                                  <a href="#">
-                                    <img src="img/share.png" alt="">
-                                  </a>
-                                </div>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td class="serial-num">2.</td>
-                              <td class="play-option">
-                                <a href="#">
-                                  <img src="img/new-play.png" alt="Play">
-                                </a>
-                              </td>
-                              <td class="track-pic">
-                                <a href="#">
-                                  <img src="img/track-img.png" alt="Track Image">
-                                </a>
-                              </td>
-                              <td class="track-det" colspan="2">
-                                <p class="track-name">What About you</p>
-                                <p class="track-singer">Shavan Miller</p>
-                                <p class="track-year">2017</p>
-                              </td>
-                              <td class="track-date">March 12,2017</td>
-                              <td class="td track-vote">
-                                <img src="img/start.png" alt="start">
-                                <span>1300
-                                  <br>
-                                  <span>Votes</span>
-                                </span>
-                              </td>
-                              <td class="action" colspan="2">
-                                <div class="cmt-like">
-                                  <a href="#">
-                                    <img src="img/like-color.jpg" alt="">1200</a>
-                                </div>
-                                <div class="cmt">
-                                  <a href="#">
-                                    <img src="img/comment.png" alt="">1200</a>
-                                </div>
-                                <div class="download">
-                                  <a href="#">
-                                    <img src="img/download.png" alt="">$1.99</a>
-                                </div>
-                                <div class="share">
-                                  <a href="#">
-                                    <img src="img/share.png" alt="">
-                                  </a>
-                                </div>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td class="serial-num">3.</td>
-                              <td class="play-option">
-                                <a href="#">
-                                  <img src="img/pause.png" alt="Play">
-                                </a>
-                              </td>
-                              <td class="track-pic">
-                                <a href="#">
-                                  <img src="img/track-img.png" alt="Track Image">
-                                </a>
-                              </td>
-                              <td class="track-det" colspan="2">
-                                <p class="track-name">Blue State of Mind</p>
-                                <p class="track-singer">Shavan Miller</p>
-                                <p class="track-year">2017</p>
-                              </td>
-                              <td class="track-date">March 12,2017</td>
-                              <td class="td track-vote">
-                                <img src="img/start.png" alt="start">
-                                <span>1300
-                                  <br>
-                                  <span>Votes</span>
-                                </span>
-                              </td>
-                              <td class="action" colspan="2">
-                                <div class="cmt-like">
-                                  <a href="#">
-                                    <img src="img/like-color.jpg" alt="">1200</a>
-                                </div>
-                                <div class="cmt">
-                                  <a href="#">
-                                    <img src="img/comment.png" alt="">1200</a>
-                                </div>
-                                <div class="download">
-                                  <a href="#">
-                                    <img src="img/download.png" alt="">$1.99</a>
-                                </div>
-                                <div class="share">
-                                  <a href="#">
-                                    <img src="img/share.png" alt="">
-                                  </a>
-                                </div>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td class="serial-num">4.</td>
-                              <td class="play-option">
-                                <a href="#">
-                                  <img src="img/new-play.png" alt="Play">
-                                </a>
-                              </td>
-                              <td class="track-pic">
-                                <a href="#">
-                                  <img src="img/track-img.png" alt="Track Image">
-                                </a>
-                              </td>
-                              <td class="track-det" colspan="2">
-                                <p class="track-name">Say Thanks</p>
-                                <p class="track-singer">Shavan Miller</p>
-                                <p class="track-year">2017</p>
-                              </td>
-                              <td class="track-date">March 12,2017</td>
-                              <td class="td track-vote">
-                                <img src="img/start.png" alt="start">
-                                <span>1300
-                                  <br>
-                                  <span>Votes</span>
-                                </span>
-                              </td>
-                              <td class="action" colspan="2">
-                                <div class="cmt-like">
-                                  <a href="#">
-                                    <img src="img/like-color.jpg" alt="">1200</a>
-                                </div>
-                                <div class="cmt">
-                                  <a href="#">
-                                    <img src="img/comment.png" alt="">1200</a>
-                                </div>
-                                <div class="download">
-                                  <a href="#">
-                                    <img src="img/download.png" alt="">$1.99</a>
-                                </div>
-                                <div class="share">
-                                  <a href="#">
-                                    <img src="img/share.png" alt="">
-                                  </a>
-                                </div>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td class="serial-num">5.</td>
-                              <td class="play-option">
-                                <a href="#">
-                                  <img src="img/new-play.png" alt="Play">
-                                </a>
-                              </td>
-                              <td class="track-pic">
-                                <a href="#">
-                                  <img src="img/track-img.png" alt="Track Image">
-                                </a>
-                              </td>
-                              <td class="track-det" colspan="2">
-                                <p class="track-name">Small Things</p>
-                                <p class="track-singer">Shavan Miller</p>
-                                <p class="track-year">2017</p>
-                              </td>
-                              <td class="track-date">March 12,2017</td>
-                              <td class="td track-vote">
-                                <img src="img/start.png" alt="start">
-                                <span>1300
-                                  <br>
-                                  <span>Votes</span>
-                                </span>
-                              </td>
-                              <td class="action" colspan="2">
-                                <div class="cmt-like">
-                                  <a href="#">
-                                    <img src="img/like-color.jpg" alt="">1200</a>
-                                </div>
-                                <div class="cmt">
-                                  <a href="#">
-                                    <img src="img/comment.png" alt="">1200</a>
-                                </div>
-                                <div class="download">
-                                  <a href="#">
-                                    <img src="img/download.png" alt="">$1.99</a>
-                                </div>
-                                <div class="share">
-                                  <a href="#">
-                                    <img src="img/share.png" alt="">
-                                  </a>
-                                </div>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td class="serial-num">6.</td>
-                              <td class="play-option">
-                                <a href="#">
-                                  <img src="img/new-play.png" alt="Play">
-                                </a>
-                              </td>
-                              <td class="track-pic">
-                                <a href="#">
-                                  <img src="img/track-img.png" alt="Track Image">
-                                </a>
-                              </td>
-                              <td class="track-det" colspan="2">
-                                <p class="track-name">My Dreams</p>
-                                <p class="track-singer">Shavan Miller</p>
-                                <p class="track-year">2017</p>
-                              </td>
-                              <td class="track-date">March 12,2017</td>
-                              <td class="td track-vote">
-                                <img src="img/start.png" alt="start">
-                                <span>1300
-                                  <br>
-                                  <span>Votes</span>
-                                </span>
-                              </td>
-                              <td class="action" colspan="2">
-                                <div class="cmt-like">
-                                  <a href="#">
-                                    <img src="img/like-color.jpg" alt="">1200</a>
-                                </div>
-                                <div class="cmt">
-                                  <a href="#">
-                                    <img src="img/comment.png" alt="">1200</a>
-                                </div>
-                                <div class="download">
-                                  <a href="#">
-                                    <img src="img/download.png" alt="">$1.99</a>
-                                </div>
-                                <div class="share">
-                                  <a href="#">
-                                    <img src="img/share.png" alt="">
-                                  </a>
-                                </div>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td class="serial-num">7.</td>
-                              <td class="play-option">
-                                <a href="#">
-                                  <img src="img/new-play.png" alt="Play">
-                                </a>
-                              </td>
-                              <td class="track-pic">
-                                <a href="#">
-                                  <img src="img/track-img.png" alt="Track Image">
-                                </a>
-                              </td>
-                              <td class="track-det" colspan="2">
-                                <p class="track-name">Say Thanks</p>
-                                <p class="track-singer">Shavan Miller</p>
-                                <p class="track-year">2017</p>
-                              </td>
-                              <td class="track-date">March 12,2017</td>
-                              <td class="td track-vote">
-                                <img src="img/start.png" alt="start">
-                                <span>1300
-                                  <br>
-                                  <span>Votes</span>
-                                </span>
-                              </td>
-                              <td class="action" colspan="2">
-                                <div class="cmt-like">
-                                  <a href="#">
-                                    <img src="img/like-color.jpg" alt="">1200</a>
-                                </div>
-                                <div class="cmt">
-                                  <a href="#">
-                                    <img src="img/comment.png" alt="">1200</a>
-                                </div>
-                                <div class="download">
-                                  <a href="#">
-                                    <img src="img/download.png" alt="">$1.99</a>
-                                </div>
-                                <div class="share">
-                                  <a href="#">
-                                    <img src="img/share.png" alt="">
-                                  </a>
-                                </div>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td class="serial-num">8.</td>
-                              <td class="play-option">
-                                <a href="#">
-                                  <img src="img/new-play.png" alt="Play">
-                                </a>
-                              </td>
-                              <td class="track-pic">
-                                <a href="#">
-                                  <img src="img/track-img.png" alt="Track Image">
-                                </a>
-                              </td>
-                              <td class="track-det" colspan="2">
-                                <p class="track-name">Tomorrow</p>
-                                <p class="track-singer">Shavan Miller</p>
-                                <p class="track-year">2017</p>
-                              </td>
-                              <td class="track-date">March 12,2017</td>
-                              <td class="td track-vote">
-                                <img src="img/start.png" alt="start">
-                                <span>1300
-                                  <br>
-                                  <span>Votes</span>
-                                </span>
-                              </td>
-                              <td class="action" colspan="2">
-                                <div class="cmt-like">
-                                  <a href="#">
-                                    <img src="img/like-color.jpg" alt="">1200</a>
-                                </div>
-                                <div class="cmt">
-                                  <a href="#">
-                                    <img src="img/comment.png" alt="">1200</a>
-                                </div>
-                                <div class="download">
-                                  <a href="#">
-                                    <img src="img/download.png" alt="">$1.99</a>
-                                </div>
-                                <div class="share">
-                                  <a href="#">
-                                    <img src="img/share.png" alt="">
-                                  </a>
-                                </div>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td class="serial-num">9.</td>
-                              <td class="play-option">
-                                <a href="#">
-                                  <img src="img/new-play.png" alt="Play">
-                                </a>
-                              </td>
-                              <td class="track-pic">
-                                <a href="#">
-                                  <img src="img/track-img.png" alt="Track Image">
-                                </a>
-                              </td>
-                              <td class="track-det" colspan="2">
-                                <p class="track-name">Will You</p>
-                                <p class="track-singer">Shavan Miller</p>
-                                <p class="track-year">2017</p>
-                              </td>
-                              <td class="track-date">March 12,2017</td>
-                              <td class="td track-vote">
-                                <img src="img/start.png" alt="start">
-                                <span>1300
-                                  <br>
-                                  <span>Votes</span>
-                                </span>
-                              </td>
-                              <td class="action" colspan="2">
-                                <div class="cmt-like">
-                                  <a href="#">
-                                    <img src="img/like-color.jpg" alt="">1200</a>
-                                </div>
-                                <div class="cmt">
-                                  <a href="#">
-                                    <img src="img/comment.png" alt="">1200</a>
-                                </div>
-                                <div class="download">
-                                  <a href="#">
-                                    <img src="img/download.png" alt="">$1.99</a>
-                                </div>
-                                <div class="share">
-                                  <a href="#">
-                                    <img src="img/share.png" alt="">
-                                  </a>
-                                </div>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td class="serial-num">10.</td>
-                              <td class="play-option">
-                                <a href="#">
-                                  <img src="img/new-play.png" alt="Play">
-                                </a>
-                              </td>
-                              <td class="track-pic">
-                                <a href="#">
-                                  <img src="img/track-img.png" alt="Track Image">
-                                </a>
-                              </td>
-                              <td class="track-det" colspan="2">
-                                <p class="track-name">Sound Waves</p>
-                                <p class="track-singer">Shavan Miller</p>
-                                <p class="track-year">2017</p>
-                              </td>
-                              <td class="track-date">March 12,2017</td>
-                              <td class="td track-vote">
-                                <img src="img/start.png" alt="start">
-                                <span>1300
-                                  <br>
-                                  <span>Votes</span>
-                                </span>
-                              </td>
-                              <td class="action" colspan="2">
-                                <div class="cmt-like">
-                                  <a href="#">
-                                    <img src="img/like-color.jpg" alt="">1200</a>
-                                </div>
-                                <div class="cmt">
-                                  <a href="#">
-                                    <img src="img/comment.png" alt="">1200</a>
-                                </div>
-                                <div class="download">
-                                  <a href="#">
-                                    <img src="img/download.png" alt="">$1.99</a>
+                                    <img src="img/download.png" alt="">${{artist.price}}</a>
                                 </div>
                                 <div class="share">
                                   <a href="#">
@@ -685,49 +282,18 @@
                       </div>
                     </div>
                   </div>
-                  <div id="media" class="tab-pane fade show">
+                  <div id="media" class="tab-pane fade {{active_tab_index == 2 ? 'active show' : ''}}">
                     <div class="media-wrapper">
                       <div class="row">
-                        <div class="col-md-4 col-sm-6 col-xs-12">
-                          <a class="img-wrap" href="img/media-1.png" data-fancybox="images" data-width="1500" data-height="1000">
-                            <img src="img/media-1.png" alt="Media">
-                          </a>
-                        </div>
-                        <div class="col-md-4 col-sm-6 col-xs-12">
-                          <a class="img-wrap" href="img/media-2.png" data-fancybox="images" data-width="1500" data-height="1000">
-                            <img src="img/media-2.png" alt="Media">
-                          </a>
-                        </div>
-                        <div class="col-md-4 col-sm-6 col-xs-12">
-                          <a href="img/media-3.png" data-fancybox="images" data-width="1500" data-height="1000" class="img-wrap">
-                            <img src="img/media-3.png" alt="Media">
-                          </a>
-                        </div>
-                        <div class="col-md-4 col-sm-6 col-xs-12">
-                          <a href="img/media-4.png" data-fancybox="images" data-width="1500" data-height="1000" class="img-wrap">
-                            <img src="img/media-4.png" alt="Media">
-                          </a>
-                        </div>
-                        <div class="col-md-4 col-sm-6 col-xs-12">
-                          <a href="img/media-5.png" data-fancybox="images" data-width="1500" data-height="1000" class="img-wrap">
-                            <img src="img/media-5.png" alt="Media">
-                            <a href="#" class="play-btn">
-                              <i class="fa fa-play-circle" aria-hidden="true"></i>
-                            </a>
-                          </a>
-                        </div>
-                        <div class="col-md-4 col-sm-6 col-xs-12">
-                          <a href="img/media-6.png" data-fancybox="images" data-width="1500" data-height="1000" class="img-wrap">
-                            <img src="img/media-6.png" alt="Media">
-                            <a href="#" class="play-btn">
-                              <i class="fa fa-play-circle" aria-hidden="true"></i>
-                            </a>
+                        <div class="col-md-4 col-sm-6 col-xs-12" *ngFor="let media of artistmedia; let i = index;">
+                          <a class="img-wrap" href="javascript:;" data-fancybox="images" data-width="1500" data-height="1000" (click)="open(i)">
+                            <img src="{{media.image ? artist_media_url+media.image : 'img/media-1.png'}}" alt="Media">
                           </a>
                         </div>
                       </div>
                     </div>
                   </div>
-                  <div id="ranking" class="tab-pane fade">
+                  <div id="ranking" class="tab-pane fade {{active_tab_index == 3 ? 'active show' : ''}}">
                     <div class="track-wrapper">
                       <div class="track-select-wrap">
                         <select class="form-control" id="gender">

@@ -238,6 +238,10 @@ export class RegisterComponent implements OnInit {
   imageLoadFailed () {
     console.log('Load failed');
   }
+  // Select music genre
+  selectMusciGenre(id : any) {
+    this.artist_data['music_type'] = id;
+  }
   // Handle submit event of artist form
   artist_submit() {
     let file = this.imageChangedEvent.target.files[0];

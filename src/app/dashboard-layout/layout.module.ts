@@ -22,6 +22,11 @@ import { MyMusicService } from './my_music/my_music.service';
 import { WhatsNewService } from './whatsnew/whatsnew.service';
 import { ArtistService } from './artist/artist.service';
 import { ArtistProfileService } from './artist_profile/artist_profile.service';
+import { 
+  ArtistProfileResolve,
+  ArtistTrackResolve,
+  ArtistMediaResolve
+} from './resolve/artist_resolve';
 import { DashboardService } from './dashboard/dashboard.service';
 import { FormsModule, ReactiveFormsModule  } from '@angular/forms';
 import { ToastrModule } from 'ngx-toastr';
@@ -49,7 +54,7 @@ import { AuthService } from '../shared/auth.service';
           {path: '', component: DashboardComponent},
           {path: 'whats-new', component: WhatsNewComponent},
           {path: 'artist', component: ArtistComponent},
-          {path: 'artist_profile/:id', component: ArtistProfileComponent},
+          {path: 'artist_profile/:id', component: ArtistProfileComponent, resolve: { artist: ArtistProfileResolve, track : ArtistTrackResolve, media : ArtistMediaResolve }},
           {path: 'vote', component: VoteComponent},
           {path: 'my-music', component: MyMusicComponent, canActivate: [AuthService]},
           {path: 'my-profile', component: MyProfileComponent, canActivate: [AuthService]}
@@ -58,6 +63,12 @@ import { AuthService } from '../shared/auth.service';
     ])
   ],
   declarations: [DashboardComponent, WhatsNewComponent, ArtistComponent, VoteComponent, MyProfileComponent, MyMusicComponent, SlimScroll, ArtistProfileComponent],
-  providers : [HeaderService, AuthService, MyProfileService, MyMusicService, WhatsNewService, ArtistService, DashboardService, ArtistProfileService]
+  providers : [HeaderService, AuthService, MyProfileService, MyMusicService, WhatsNewService, ArtistService,
+     DashboardService,
+     ArtistProfileService,
+     ArtistProfileResolve,
+     ArtistTrackResolve,
+     ArtistMediaResolve
+    ]
 })
 export class LayoutModule { }
