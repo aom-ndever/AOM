@@ -1290,15 +1290,14 @@ router.post("/artistv1", async (req, res) => {
     var resp_artist = await artist_helper.get_new_uploads(30);
 
     //var resp_track = await artist_helper.get_artist_by_id(filter);
-    var resp_chart = await artist_helper.get_chart_toppers(filter);
-    console.log('resp_chart', resp_chart);
+    var resp_chart = await artist_helper.get_all_artist(filter);
 
-    if (resp_artist.status == 0) {
+    if (resp_artist.status == 0 && resp_chart.status == 0) {
       logger.error("Error occured while fetching users = ", resp_artist);
       res.status(config.INTERNAL_SERVER_ERROR).json(resp_artist);
     } else {
       logger.trace("artist got successfully = ");
-      res.status(config.OK_STATUS).json({ "status": 1, "rising_stars": resp_artist.results });
+      res.status(config.OK_STATUS).json({ "status": 1, "rising_stars": resp_artist.results, "chart_toppers": resp_chart.artist });
     }
   } else {
     logger.error("Validation Error = ", errors);
