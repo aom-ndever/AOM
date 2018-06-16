@@ -47,135 +47,26 @@
               </div>
               <div class="follower">
                 <h3>Followers</h3>
-                <span>530</span>
+                <span>{{artistfollower.length}}</span>
                 <ul>
-                  <li>
-                    <img src="img/fan1.png" alt="Fan">
+                  <li *ngFor="let follower of artistfollower;">
+                    <img src="{{follower.image ? user_img_url+follower.image : 'img/fan1.png'}}" alt="Fan">
                   </li>
-                  <li>
-                    <img src="img/fan2.png" alt="Fan">
-                  </li>
-                  <li>
-                    <img src="img/fan3.png" alt="Fan">
-                  </li>
-                  <li>
-                    <img src="img/fan4.png" alt="Fan">
-                  </li>
-                  <li>
-                    <img src="img/fan5.png" alt="Fan">
-                  </li>
-                  <li>
-                    <img src="img/fan2.png" alt="Fan">
-                  </li>
-                  <li>
-                    <img src="img/fan3.png" alt="Fan">
-                  </li>
-                  <li>
-                    <img src="img/fan4.png" alt="Fan">
-                  </li>
-                  <li>
-                    <img src="img/fan1.png" alt="Fan">
-                  </li>
-                  <li>
-                    <img src="img/fan3.png" alt="Fan">
-                  </li>
-                  <li>
-                    <img src="img/fan5.png" alt="Fan">
-                  </li>
-                  <li>
-                    <img src="img/fan1.png" alt="Fan">
-                  </li>
-                  <li>
-                    <img src="img/fan2.png" alt="Fan">
-                  </li>
-                  <li>
-                    <img src="img/fan3.png" alt="Fan">
-                  </li>
-                  <li>
-                    <img src="img/fan1.png" alt="Fan">
-                  </li>
-                  <li>
-                    <img src="img/fan5.png" alt="Fan">
-                  </li>
-                  <li>
-                    <img src="img/fan4.png" alt="Fan">
-                  </li>
-                  <li>
-                    <img src="img/fan2.png" alt="Fan">
-                  </li>
-                  <li>
-                    <img src="img/fan1.png" alt="Fan">
-                  </li>
-                  <li>
-                    <img src="img/fan4.png" alt="Fan">
-                  </li>
-                  <li>
-                    <img src="img/fan3.png" alt="Fan">
-                  </li>
-                  <li>
-                    <img src="img/fan4.png" alt="Fan">
-                  </li>
-                  <li>
-                    <img src="img/fan1.png" alt="Fan">
-                  </li>
-                  <li>
-                    <img src="img/fan5.png" alt="Fan">
-                  </li>
-                  <li>
-                    <img src="img/fan1.png" alt="Fan">
-                  </li>
-
                 </ul>
               </div>
 
               <div class="comments">
                 <h3>
-                  <a href="#comments">Comments</a>
+                  <a href="javascript:;">Comments</a>
                 </h3>
-                <span>1200</span>
-                <div class="comment-block">
-                  <div class="s-name">Blue State of Mind</div>
+                <span>{{artistcomments.length+', '+display_comment.length}}</span>
+                <div class="comment-block" *ngFor="let comment of display_comment;">
+                  <div class="s-name"></div>
                   <div class="s-img">
-                    <img src="img/fan1.png" alt="img">
+                    <img src="{{comment.user_id.image ? user_img_url+comment.user_id.image : 'img/fan1.png' }}" alt="img">
                   </div>
                   <div class="cm-date-name">
-                    <h6>Liz D.</h6>
-                    <p>2 day ago</p>
-                  </div>
-                  <div class="profile-description">
-                    <p>Lorem ipsum dolor sit amet, consectetur adiamet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
-                      ut labore et dolore</p>
-                    <span>
-                      <a href="#" class="more-link"></a>
-                    </span>
-                  </div>
-
-                </div>
-                <div class="comment-block">
-                  <div class="s-name">What About You</div>
-                  <div class="s-img">
-                    <img src="img/fan2.png" alt="img">
-                  </div>
-                  <div class="cm-date-name">
-                    <h6>John D.</h6>
-                    <p>2 day ago</p>
-                  </div>
-                  <div class="profile-description">
-                    <p>Lorem ipsum dolor sit amet, consectetur adiamet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
-                      ut labore et dolore</p>
-                    <span>
-                      <a href="#" class="more-link"></a>
-                    </span>
-                  </div>
-
-                </div>
-                <div class="comment-block">
-                  <div class="s-name">Tomorrow</div>
-                  <div class="s-img">
-                    <img src="img/fan2.png" alt="img">
-                  </div>
-                  <div class="cm-date-name">
-                    <h6>Natasha J.</h6>
+                    <h6>{{comment.user_id.first_name+ ' '+comment.user_id.last_name}}.</h6>
                     <p>2 day ago</p>
                   </div>
                   <div class="profile-description">

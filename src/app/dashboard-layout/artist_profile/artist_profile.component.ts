@@ -14,9 +14,13 @@ export class ArtistProfileComponent implements OnInit {
   artistdata : any = {};
   artisttrack : any = {};
   artistmedia : any = {};
+  artistfollower : any = {};
+  artistcomments : any = [];
+  display_comment : any = [];
   artist_img_url : any = environment.API_URL+environment.ARTIST_IMG;
   track_url : any = environment.API_URL+environment.ARTIST_TRACK;
   artist_media_url : any = environment.API_URL+environment.ARTIST_MEDIA;
+  user_img_url : any = environment.API_URL+environment.USER_IMG;
   audio_ins : any = [];
   active_tab_index : any = 1;
   media_list : any = [];
@@ -34,11 +38,20 @@ export class ArtistProfileComponent implements OnInit {
     this.artistdata = this.route.snapshot.data['artist'].artist;
     this.artisttrack = this.route.snapshot.data['track'].track;
     this.artistmedia = this.route.snapshot.data['media'].media;
+    this.artistfollower = this.route.snapshot.data['follower'].user;
+    this.artistcomments = this.route.snapshot.data['comments'].comment;
+    if(this.artistcomments.length > 3) {
+      this.display_comment = this.artistcomments.slice(0,3).map(i => {
+        return i;
+      });
+    } else {
+      this.display_comment = this.artistcomments;
+    }
     for(let i=0; i<this.artistmedia.length; i++) {
       if(this.artistmedia[i].image)
         this._albums.push({src : this.artist_media_url+this.artistmedia[i].image});
     }
-    console.log(this.artisttrack);
+    console.log(this.artistfollower);
   }
 
   manageTabChange(index : any) {
