@@ -229,6 +229,7 @@
                         </select>
                       </div>
                       <div class="track-table">
+                        <div class="alert alert-info" *ngIf="artisttrack.length <= 0">No data available.</div>
                         <table>
                           <tbody>
                             <tr *ngFor="let artist of artisttrack;let i=index;">
@@ -285,6 +286,7 @@
                   <div id="media" class="tab-pane fade {{active_tab_index == 2 ? 'active show' : ''}}">
                     <div class="media-wrapper">
                       <div class="row">
+                        <div class="alert alert-info col-sm-12" *ngIf="artistmedia.length <= 0">No data available.</div>
                         <div class="col-md-4 col-sm-6 col-xs-12" *ngFor="let media of artistmedia; let i = index;">
                           <a class="img-wrap" href="javascript:;" data-fancybox="images" data-width="1500" data-height="1000" (click)="open(i)">
                             <img src="{{media.image ? artist_media_url+media.image : 'img/media-1.png'}}" alt="Media">
