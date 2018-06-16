@@ -91,4 +91,20 @@ comment_helper.get_all_comment_by_track = async (artist_id) => {
         return { "status": 0, "message": "Error occured while finding media", "error": err }
     }
 }
+comment_helper.get_all_comment_by_artist_id = async (artist_id) => {
+    try {
+        var comment = await Comment
+            .find({ "artist_id": new ObjectId(artist_id) })
+            .populate('user_id')
+            .populate('artist_id')
+            .lean()
+        if (comment) {
+            return { "status": 1, "message": "comment details found", "comment": comment };
+        } else {
+            return { "status": 2, "message": "comment not found" };
+        }
+    } catch (err) {
+        return { "status": 0, "message": "Error occured while finding artist", "error": err }
+    }
+};
 module.exports = comment_helper;

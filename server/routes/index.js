@@ -19,6 +19,9 @@ var music_helper = require('./../helpers/music_helper');
 var contest_helper = require('./../helpers/contest_helper');
 var admin_helper = require('./../helpers/admin_helper');
 var media_helper = require('./../helpers/media_helper');
+var follower_helper = require('./../helpers/follower_helper');
+var comment_helper = require('./../helpers/comment_helper');
+
 var moment = require('moment');
 /**
  * @api {post} /artist_registration Artist Registration
@@ -1341,5 +1344,28 @@ router.post('/get_artist', async (req, res) => {
   }
 });
 
+router.post('/followers', async (req, res) => {
+  artist_id = req.body.artist_id
+  var user = await follower_helper.get_all_followers(artist_id);
+  if (user.status === 1) {
+    logger.trace("got details successfully");
+    res.status(config.OK_STATUS).json(user);
+  } else {
+    logger.error("Error occured while fetching = ", user);
+    res.status(config.INTERNAL_SERVER_ERROR).json(user);
+  }
+});
+
+router.post('/comment', async (req, res) => {
+  artist_id = req.body.artist_id
+  var user = await comment_helper.get_all_comment_by_artist_id(artist_id);
+  if (user.status === 1) {
+    logger.trace("got details successfully");
+    res.status(config.OK_STATUS).json(user);
+  } else {
+    logger.error("Error occured while fetching = ", user);
+    res.status(config.INTERNAL_SERVER_ERROR).json(user);
+  }
+});
 
 module.exports = router;
