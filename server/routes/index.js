@@ -5,6 +5,7 @@ var fs = require('fs');
 var path = require('path');
 var mongoose = require('mongoose');
 var ObjectId = mongoose.Types.ObjectId;
+var moment = require('moment');
 
 var logger = config.logger;
 var bcrypt = require('bcrypt');
@@ -22,7 +23,6 @@ var media_helper = require('./../helpers/media_helper');
 var follower_helper = require('./../helpers/follower_helper');
 var comment_helper = require('./../helpers/comment_helper');
 
-var moment = require('moment');
 /**
  * @api {post} /artist_registration Artist Registration
  * @apiName Artist Registration
@@ -1270,27 +1270,45 @@ router.post("/mainpage", async (req, res) => {
 
 
 router.post("/artistv1", async (req, res) => {
-  var filter = {};
+  var filter_for_risingstar = {};
+  var filter_for_charttoppers = {};
+
+
   var page_no = {};
   var page_size = {};
 
   var schema = {};
   if (req.body.music_type) {
-    filter.music_type = new ObjectId(req.body.music_type);
+    filter_for_risingstar.music_type = {
+      _id: new ObjectId(req.body.music_type)
+    }
+
+    filter_for_charttoppers.artist = {
+      music_type: - {
+        _id: new ObjectId(req.body.music_type)
+      }
+    }
   }
   if (req.body.search) {
     var r = new RegExp(req.body.search);
     var search = { "$regex": r, "$options": "i" };
-    filter.first_name = search;
+    filter_for_risingstar.first_name = search;
+    filter_for_charttoppers.first_name = search;
   }
+
+
   req.checkBody(schema);
   var errors = req.validationErrors();
   if (!errors) {
     var artist_ids = [];
-    var resp_artist = await artist_helper.get_new_uploads(30);
+    var to = moment().utcOffset(0);
+    var from = moment(to).subtract(30, "days").utcOffset(0);
+    filter_for_risingstar.created_at = { "$gt": new Date(from), "$lt": new Date(to) };
+
+    var resp_artist = await artist_helper.get_new_uploads(filter_for_risingstar);
 
     //var resp_track = await artist_helper.get_artist_by_id(filter);
-    var resp_chart = await artist_helper.get_all_artist(filter);
+    var resp_chart = await artist_helper.get_all_artist(filter_for_charttoppers);
 
     if (resp_artist.status == 0 && resp_chart.status == 0) {
       logger.error("Error occured while fetching users = ", resp_artist);

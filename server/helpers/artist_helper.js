@@ -132,7 +132,6 @@ artist_helper.get_login_by_email = async (email) => {
  */
 artist_helper.get_all_artist = async (filter = {}) => {
     try {
-
         var artist = await Artist.aggregate([
             {
                 $lookup: {
@@ -165,7 +164,6 @@ artist_helper.get_all_artist = async (filter = {}) => {
                     total: -1
                 }
             }
-
 
         ]);
 
@@ -408,12 +406,13 @@ artist_helper.update_artist_password = async (artist_id, password) => {
 };
 
 
-artist_helper.get_new_uploads = async (day) => {
-    var to = moment().utcOffset(0);
-    var from = moment(to).subtract(day, "days").utcOffset(0);
+artist_helper.get_new_uploads = async (filter = {}) => {
     try {
+
+        console.log('filter', filter);
+
         var artist = await Artist
-            .find({ "created_at": { "$gt": new Date(from), "$lt": new Date(to) } })
+            .find(filter)
             .populate('music_type')
             .sort({ "no_of_likes": - 1 })
             .limit(24)
