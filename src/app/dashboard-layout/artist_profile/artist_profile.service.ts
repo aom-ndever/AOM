@@ -38,4 +38,16 @@ export class ArtistProfileService {
   getAllMedia(data : any) {
     return this.http.post(`${this.api_host}/get_media`, data);
   }
+  // get all follower of artist
+  getAllFollower(data : any) {
+    return this.http.post(`${this.api_host}/followers`, data);
+  }
+  // Get all comments of artist
+  getAllComments(data : any) {
+    return this.http.post(`${this.api_host}/comment`, data);
+  }
+  // Get all ranking of artist
+  getAllRanking(data : any) {
+    return this.http.post(`${this.api_host}/get_ranking`, data);
+  }
 }
