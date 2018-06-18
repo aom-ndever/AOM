@@ -9,6 +9,7 @@ import { DashboardLayoutComponent } from './layout/dashboard-layout.component';
 import { WhatsNewComponent } from './whatsnew/whatsnew.component';
 import { ArtistComponent } from './artist/artist.component';
 import { ConmmentsComponent } from './artist_comments/comments.component';
+import { TrackConmmentsComponent } from './track_comments/track_comments.component';
 import { ArtistProfileComponent } from './artist_profile/artist_profile.component';
 import { VoteComponent } from './vote/vote.component';
 import { MyProfileComponent } from './my_profile/myProfile.component';
@@ -23,6 +24,7 @@ import { MyMusicService } from './my_music/my_music.service';
 import { WhatsNewService } from './whatsnew/whatsnew.service';
 import { ArtistService } from './artist/artist.service';
 import { CommentsService } from './artist_comments/comments.service';
+import { TrackCommentsService } from './track_comments/track_comments.service';
 import { ArtistProfileService } from './artist_profile/artist_profile.service';
 import { 
   ArtistProfileResolve,
@@ -60,6 +62,7 @@ import { AuthService } from '../shared/auth.service';
           {path: '', component: DashboardComponent},
           {path: 'whats-new', component: WhatsNewComponent},
           {path: 'artist', component: ArtistComponent},
+          {path: 'track/:id/comments', component: TrackConmmentsComponent},
           {path: 'artist_profile/:id/comments', component: ConmmentsComponent, resolve: { artist: ArtistProfileResolve, comments : ArtistCommentsResolve}},
           {path: 'artist_profile/:id', component: ArtistProfileComponent, resolve: { artist: ArtistProfileResolve, track : ArtistTrackResolve, media : ArtistMediaResolve, follower : ArtistFollowerResolve, comments : ArtistCommentsResolve, ranking : ArtistRankingResolve }},
           {path: 'vote', component: VoteComponent},
@@ -78,6 +81,7 @@ import { AuthService } from '../shared/auth.service';
                   MyMusicComponent, 
                   SlimScroll, 
                   ArtistProfileComponent,
+                  TrackConmmentsComponent,
                   TimeAgoPipe
                 ],
   providers : [HeaderService,
@@ -94,7 +98,8 @@ import { AuthService } from '../shared/auth.service';
      ArtistMediaResolve,
      ArtistCommentsResolve,
      ArtistFollowerResolve,
-     ArtistRankingResolve
+     ArtistRankingResolve,
+     TrackCommentsService
     ]
 })
 export class LayoutModule { }

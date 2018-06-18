@@ -4,7 +4,7 @@ import 'rxjs/add/operator/toPromise';
 import { environment } from '../../../environments/environment';
 import { dashCaseToCamelCase } from '@angular/compiler/src/util';
 @Injectable()
-export class ArtistService {
+export class TrackCommentsService {
   private api_host : any = environment.API_URL;
   private user : any = '';
   private headers : any = '';
@@ -29,13 +29,5 @@ export class ArtistService {
     this.user = JSON.parse(localStorage.getItem('user'));
     this.headers = new HttpHeaders({ 'x-access-token' : this.user.token });  
     return this.http.get(`${this.api_host}/user/artist/followers`, {headers : this.headers});
-  }
-  // Get All Atrist [Rising Star, chart topper, My Artist]
-  getAllArtistv1(data) {
-    return this.http.post(`${this.api_host}/artistv1`, data);
-  }
-  // get All music type
-  getAllMusicType() {
-    return this.http.get(`${this.api_host}/music_type`);
   }
 }

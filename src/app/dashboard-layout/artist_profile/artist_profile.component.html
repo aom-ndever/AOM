@@ -151,7 +151,7 @@
                                     <img src="img/like-color.jpg" alt="">{{artist.no_of_likes}}</a>
                                 </div>
                                 <div class="cmt">
-                                  <a href="javascript:;">
+                                  <a href="javascript:;" (click)="goToComment(artist._id)">
                                     <img src="img/comment.png" alt="">{{artist.no_of_comments}}</a>
                                 </div>
                                 <div class="download">
@@ -222,11 +222,11 @@
                               </td>
                               <td class="action" colspan="2">
                                 <div class="cmt-like">
-                                  <a href="javascript:;">
+                                  <a href="javascript:;" (click)="likeRankTrack(rank._id, i)">
                                     <img src="img/like-color.jpg" alt="">{{rank.no_of_likes}}</a>
                                 </div>
                                 <div class="cmt">
-                                  <a href="javascript:;">
+                                  <a href="javascript:;" (click)="goToComment(rank._id)">
                                     <img src="img/comment.png" alt="">{{rank.no_of_comments}}</a>
                                 </div>
                                 <div class="download">
