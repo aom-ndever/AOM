@@ -325,10 +325,132 @@ var ArtistService = /** @class */ (function () {
 
 /***/ }),
 
+/***/ "../../../../../src/app/dashboard-layout/artist_comments/comments.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"comment-wrap\">\n  <div class=\"container\">\n      <div class=\"row\">\n        <div class=\"col-md-2 col-sm-3 col-xs-6\">\n          <div class=\"profile-img\">\n            <a href=\"javascript:;\"><img src=\"{{artistdata.image ? artist_img_url+artistdata.image : 'img/profile-img.png'}}\" alt=\"Profile Images\"></a>\n          </div>\n        </div>\n        <div class=\"col-md-10 col-sm-8 col-xs-6\">\n          <div class=\"artist-name\"><h2><a href=\"javascript:;\">{{artistdata.first_name+' '+artistdata.last_name}}</a></h2>\n            <span class=\"{{artistdata.music_type['alias']}} tag\">{{artistdata.music_type['name']}}</span>\n          </div>\n          <div class=\"profile-location\"><i class=\"fa fa-map-marker\" aria-hidden=\"true\"></i> <span>New York</span></div>\n          <div class=\"profile-description\">\n            <p>{{artistdata.description}}</p>\n          </div>\n        </div>\n        <div class=\"col-md-12\">\n          <div class=\"profile-detail-wrap\">\n            <div class=\"row\">\n              <div class=\"col-md-12 col-sm-12 col-xs-12\">\n                <div class=\"comments\">\n                  <h3 class=\"num-cmt\">{{artistcomments.length}} Comments</h3>\n                  <div class=\"login-alert\">Please Login to leave your comment</div>\n                  <div class=\"comment-block col-md-12 col-sm-12 col-xs-12\" *ngFor=\"let comment of artistcomments;\">\n                    <div class=\"s-name\" *ngIf=\"comment.track_id\">{{comment.track_id.name}}</div>\n                    <div class=\"s-img\"><img src=\"{{comment.user_id.image ? user_img_url+comment.user_id.image : 'img/fan1.png' }}\" alt=\"img\"></div>\n                    <div class=\"cm-date-name\">\n                      <h6>{{comment.user_id.first_name+ ' '+comment.user_id.last_name}}.</h6>\n                      <p>{{comment.created_at | timeAgo}}</p>\n                      <div class=\"profile-descriptions\">\n                        <p>{{comment.comment}}</p>\n                      </div>\n                    </div>\n                  </div>\n                </div>\n              </div>\n          </div>\n        </div>\n      </div>\n    </div>\n  </div>\n</div>"
+
+/***/ }),
+
+/***/ "../../../../../src/app/dashboard-layout/artist_comments/comments.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ConmmentsComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__comments_service__ = __webpack_require__("../../../../../src/app/dashboard-layout/artist_comments/comments.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_ngx_toastr__ = __webpack_require__("../../../../ngx-toastr/fesm5/ngx-toastr.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__environments_environment__ = __webpack_require__("../../../../../src/environments/environment.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__angular_router__ = __webpack_require__("../../../router/esm5/router.js");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+
+var ConmmentsComponent = /** @class */ (function () {
+    function ConmmentsComponent(CommentsService, toastr, route) {
+        this.CommentsService = CommentsService;
+        this.toastr = toastr;
+        this.route = route;
+        this.artistdata = {};
+        this.artistcomments = [];
+        this.artist_img_url = __WEBPACK_IMPORTED_MODULE_3__environments_environment__["a" /* environment */].API_URL + __WEBPACK_IMPORTED_MODULE_3__environments_environment__["a" /* environment */].ARTIST_IMG;
+        this.track_url = __WEBPACK_IMPORTED_MODULE_3__environments_environment__["a" /* environment */].API_URL + __WEBPACK_IMPORTED_MODULE_3__environments_environment__["a" /* environment */].ARTIST_TRACK;
+        this.user_img_url = __WEBPACK_IMPORTED_MODULE_3__environments_environment__["a" /* environment */].API_URL + __WEBPACK_IMPORTED_MODULE_3__environments_environment__["a" /* environment */].USER_IMG;
+        this.artistdata = this.route.snapshot.data['artist'].artist;
+        this.artistcomments = this.route.snapshot.data['comments'].comment;
+    }
+    ConmmentsComponent.prototype.ngOnInit = function () {
+    };
+    ConmmentsComponent = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+            selector: 'app-artist-comments',
+            template: __webpack_require__("../../../../../src/app/dashboard-layout/artist_comments/comments.component.html"),
+            styleUrls: []
+        }),
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__comments_service__["a" /* CommentsService */],
+            __WEBPACK_IMPORTED_MODULE_2_ngx_toastr__["b" /* ToastrService */],
+            __WEBPACK_IMPORTED_MODULE_4__angular_router__["a" /* ActivatedRoute */]])
+    ], ConmmentsComponent);
+    return ConmmentsComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/dashboard-layout/artist_comments/comments.service.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return CommentsService; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common_http__ = __webpack_require__("../../../common/esm5/http.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_add_operator_toPromise__ = __webpack_require__("../../../../rxjs/_esm5/add/operator/toPromise.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_add_operator_toPromise___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_rxjs_add_operator_toPromise__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__environments_environment__ = __webpack_require__("../../../../../src/environments/environment.ts");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+var CommentsService = /** @class */ (function () {
+    function CommentsService(http) {
+        this.http = http;
+        this.api_host = __WEBPACK_IMPORTED_MODULE_3__environments_environment__["a" /* environment */].API_URL;
+        this.user = '';
+        this.headers = '';
+        // this.user = JSON.parse(localStorage.getItem('user'));
+        // this.headers = new HttpHeaders({ 'x-access-token' : this.user.token });  
+    }
+    // Get Artist and track
+    CommentsService.prototype.getArtistData = function (data) {
+        return this.http.post(this.api_host + "/whatsnew", data);
+    };
+    // Follow the artist 
+    CommentsService.prototype.followArtist = function (data) {
+        this.user = JSON.parse(localStorage.getItem('user'));
+        this.headers = new __WEBPACK_IMPORTED_MODULE_1__angular_common_http__["d" /* HttpHeaders */]({ 'x-access-token': this.user.token });
+        return this.http.post(this.api_host + "/user/artist/follow", data, { headers: this.headers });
+    };
+    // Get followers
+    CommentsService.prototype.getFollower = function () {
+        this.user = JSON.parse(localStorage.getItem('user'));
+        this.headers = new __WEBPACK_IMPORTED_MODULE_1__angular_common_http__["d" /* HttpHeaders */]({ 'x-access-token': this.user.token });
+        return this.http.get(this.api_host + "/user/artist/followers", { headers: this.headers });
+    };
+    CommentsService = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Injectable"])(),
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__angular_common_http__["a" /* HttpClient */]])
+    ], CommentsService);
+    return CommentsService;
+}());
+
+
+
+/***/ }),
+
 /***/ "../../../../../src/app/dashboard-layout/artist_profile/artist_profile.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"artist-profile-wrap\">\n  <div class=\"container\">\n    <div class=\"row\">\n      <div class=\"col-md-12\">\n        <div class=\"cover-img\">\n          <img src=\"{{artistdata['cover_image'] ? artist_img_url +artistdata['cover_image'] : 'img/cover.png'}}\" alt=\"Cover Image\">\n        </div>\n      </div>\n      <div class=\"col-md-12\">\n        <div class=\"profile-detail-wrap\">\n          <div class=\"row\">\n            <div class=\"col-md-3 col-sm-3 col-xs-4\">\n              <div class=\"profile-img\">\n                <a href=\"javascript:;\">\n                  <img src=\"{{artistdata['image'] ? artist_img_url +artistdata['image'] : 'img/profile-img.png'}}\" alt=\"Profile Images\">\n                </a>\n              </div>\n              <div class=\"follow-btn\">\n                <a href=\"javascript:;\" (click)=\"followArtist(artistdata._id, i)\">\n                  <i class=\"fa fa-heart\" aria-hidden=\"true\"></i> Follow\n                </a>\n              </div>\n              <div class=\"social\">\n                <h3>Social</h3>\n                <ul>\n                  <li>\n                    <a [href]=\"artistdata.social_media['facebook']\">\n                      <i class=\"fa fa-facebook-official\" aria-hidden=\"true\"></i>\n                    </a>\n                  </li>\n                  <li>\n                    <a [href]=\"artistdata.social_media['instagram']\">\n                      <i class=\"fa fa-instagram\" aria-hidden=\"true\"></i>\n                    </a>\n                  </li>\n                  <li>\n                    <a [href]=\"artistdata.social_media['youtube']\">\n                      <i class=\"fa fa-youtube-play\" aria-hidden=\"true\"></i>\n                    </a>\n                  </li>\n                  <li>\n                    <a [href]=\"artistdata.social_media['sound_cloud']\">\n                      <i class=\"fa fa-soundcloud\" aria-hidden=\"true\"></i>\n                    </a>\n                  </li>\n                </ul>\n              </div>\n              <div class=\"follower\">\n                <h3>Followers</h3>\n                <span>{{artistfollower.length}}</span>\n                <ul>\n                  <li *ngFor=\"let follower of artistfollower;\">\n                    <img src=\"{{follower.image ? user_img_url+follower.image : 'img/fan1.png'}}\" alt=\"Fan\">\n                  </li>\n                </ul>\n              </div>\n\n              <div class=\"comments\">\n                <h3>\n                  <a href=\"javascript:;\">Comments</a>\n                </h3>\n                <span>{{artistcomments.length+', '+display_comment.length}}</span>\n                <div class=\"comment-block\" *ngFor=\"let comment of display_comment;\">\n                  <div class=\"s-name\" *ngIf=\"comment.track_id\">{{comment.track_id.name}}</div>\n                  <div class=\"s-img\">\n                    <img src=\"{{comment.user_id.image ? user_img_url+comment.user_id.image : 'img/fan1.png' }}\" alt=\"img\">\n                  </div>\n                  <div class=\"cm-date-name\">\n                    <h6>{{comment.user_id.first_name+ ' '+comment.user_id.last_name}}.</h6>\n                    <p>2 day ago</p>\n                  </div>\n                  <div class=\"profile-description\">\n                    <p>{{comment.comment}}</p>\n                  </div>\n\n                </div>\n              </div>\n\n            </div>\n            <div class=\"col-md-9 col-sm-9 col-xs-8\">\n              <div class=\"artist-name\">\n                <h2>\n                  <a href=\"javascript:;\">{{artistdata['first_name']+' '+artistdata['last_name']}}</a>\n                </h2>\n                <span class=\"{{artistdata.music_type['alias']}} cat\" >{{artistdata.music_type['name']}}</span>\n              </div>\n              <div class=\"profile-location\">\n                <i class=\"fa fa-map-marker\" aria-hidden=\"true\"></i>\n                <span>New York</span>\n              </div>\n              <div class=\"profile-description\">\n                <p>{{artistdata.description}}</p>\n              </div>\n              <div class=\"profile-tabs-det\">\n                <!-- Nav tabs -->\n                <ul class=\"nav nav-tabs\" role=\"tablist\">\n                  <li class=\"nav-item \">\n                    <a class=\"nav-link {{active_tab_index == 1 ? 'active show' : ''}}\" (click)=\"manageTabChange(1)\" data-toggle=\"tab\" href=\"javascript:;\">Tracks</a>\n                  </li>\n                  <li class=\"nav-item\">\n                    <a class=\"nav-link {{active_tab_index == 2 ? 'active show' : ''}}\" (click)=\"manageTabChange(2)\" data-toggle=\"tab\" href=\"javascript:;\">Media</a>\n                  </li>\n                  <li class=\"nav-item\">\n                    <a class=\"nav-link {{active_tab_index == 3 ? 'active show' : ''}}\" (click)=\"manageTabChange(3)\" data-toggle=\"tab\" href=\"javascript:;\">Ranking</a>\n                  </li>\n                </ul>\n\n                <!-- Tab panes -->\n                <div class=\"tab-content\">\n                  <div id=\"tracks\" class=\"tab-pane fade {{active_tab_index == 1 ? 'active show' : ''}}\">\n                    <div class=\"track-wrapper\">\n                      <div class=\"track-select-wrap\">\n                        <select class=\"form-control\" id=\"gender\">\n                          <option>Newest First</option>\n                          <option>Newest First</option>\n                        </select>\n                      </div>\n                      <div class=\"track-table\">\n                        <div class=\"alert alert-info\" *ngIf=\"artisttrack.length <= 0\">No data available.</div>\n                        <table>\n                          <tbody>\n                            <tr *ngFor=\"let artist of artisttrack;let i=index;\">\n                              <td class=\"serial-num\">{{i+1}}.</td>\n                              <td class=\"play-option\">\n                                <a href=\"javascript:;\">\n                                    <img src=\"img/play.png \" alt=\"Pause \"  [style.display]=\"!audio_ins[i] ? 'block' : 'none'\" (click)=\"playAudio(artist.audio, i)\">\n                                    <img src=\"img/pause.png \" alt=\"Pause \"  [style.display]=\"audio_ins[i] ? 'block' : 'none'\" (click)=\"stopAudio(i)\">\n                                </a>\n                              </td>\n                              <td class=\"track-pic\">\n                                <a href=\"javascript:;\">\n                                  <img src=\"{{artist.image ? track_url+artist.image : 'img/track-img.png'}}\" style=\"height:50px;width:50px;\" alt=\"Track Image\">\n                                </a>\n                              </td>\n                              <td class=\"track-det\" colspan=\"2\">\n                                <p class=\"track-name\">{{artist.name}}</p>\n                                <p class=\"track-singer\">{{artist.artist_id.name}}</p>\n                                <p class=\"track-year\">{{artist.created_at | date : 'yyyy'}}</p>\n                              </td>\n                              <td class=\"track-date\">{{artist.created_at | date : 'MMMM dd,yyyy'}}</td>\n                              <td class=\"td track-vote\">\n                                <img src=\"img/start.png\" alt=\"start\">\n                                <span>{{artist.no_of_votes}}\n                                  <br>\n                                  <span>Votes</span>\n                                </span>\n                              </td>\n                              <td class=\"action\" colspan=\"2\">\n                                <div class=\"cmt-like\">\n                                  <a href=\"#\" class=\"liked\">\n                                    <img src=\"img/like-color.jpg\" alt=\"\">{{artist.no_of_likes}}</a>\n                                </div>\n                                <div class=\"cmt\">\n                                  <a href=\"#\">\n                                    <img src=\"img/comment.png\" alt=\"\">{{artist.no_of_comments}}</a>\n                                </div>\n                                <div class=\"download\">\n                                  <a href=\"#\">\n                                    <img src=\"img/download.png\" alt=\"\">${{artist.price}}</a>\n                                </div>\n                                <div class=\"share\">\n                                  <a href=\"#\">\n                                    <img src=\"img/share.png\" alt=\"\">\n                                  </a>\n                                </div>\n                              </td>\n                            </tr>\n                          </tbody>\n                        </table>\n                      </div>\n                    </div>\n                  </div>\n                  <div id=\"media\" class=\"tab-pane fade {{active_tab_index == 2 ? 'active show' : ''}}\">\n                    <div class=\"media-wrapper\">\n                      <div class=\"row\">\n                        <div class=\"alert alert-info col-sm-12\" *ngIf=\"artistmedia.length <= 0\">No data available.</div>\n                        <div class=\"col-md-4 col-sm-6 col-xs-12\" *ngFor=\"let media of artistmedia; let i = index;\">\n                          <a class=\"img-wrap\" href=\"javascript:;\" data-fancybox=\"images\" data-width=\"1500\" data-height=\"1000\" (click)=\"open(i)\">\n                            <img src=\"{{media.image ? artist_media_url+media.image : 'img/media-1.png'}}\" alt=\"Media\">\n                          </a>\n                        </div>\n                      </div>\n                    </div>\n                  </div>\n                  <div id=\"ranking\" class=\"tab-pane fade {{active_tab_index == 3 ? 'active show' : ''}}\">\n                    <div class=\"track-wrapper\">\n                      <div class=\"track-select-wrap\">\n                        <select class=\"form-control\" id=\"gender\">\n                          <option>Newest First</option>\n                          <option>Newest First</option>\n                        </select>\n                      </div>\n                      <div class=\"track-table\">\n                        <div class=\"alert alert-info\" *ngIf=\"rankingtrack.length <= 0\">No data available.</div>\n                        <table>\n                          <tbody>\n                            <tr *ngFor=\"let rank of rankingtrack;let i=index;\">\n                              <td class=\"serial-num\">{{i+1}}.</td>\n                              <td class=\"play-option\">\n                                <a href=\"javascript:;\">\n                                    <img src=\"img/play.png \" alt=\"Pause \"  [style.display]=\"!rank_audio_ins[i] ? 'block' : 'none'\" (click)=\"playAudio(rank.audio, i)\">\n                                    <img src=\"img/pause.png \" alt=\"Pause \"  [style.display]=\"rank_audio_ins[i] ? 'block' : 'none'\" (click)=\"stopAudio(i)\">\n                                </a>\n                              </td>\n                              <td class=\"track-pic\">\n                                <a href=\"javascript:;\">\n                                  <img src=\"{{rank.image ? track_url+rank.image : 'img/track-img.png'}}\" alt=\"Track Image\" style=\"height: 50px;width: 50px;;\">\n                                </a>\n                              </td>\n                              <td class=\"track-det\" colspan=\"2\">\n                                <p class=\"track-name\">{{rank.name}}</p>\n                                <p class=\"track-singer\">{{rank.artist_id.first_name+' '+rank.artist_id.last_name}}</p>\n                                <p class=\"track-year\">{{rank.created_at | date  : 'yyyy'}}</p>\n                              </td>\n                              <td class=\"track-date\">{{rank.created_at | date  : 'MMMM dd,yyyy'}}</td>\n                              <td class=\"td track-vote\">\n                                <img src=\"img/start.png\" alt=\"start\">\n                                <span>{{rank.no_of_votes}}\n                                  <br>\n                                  <span>Votes</span>\n                                </span>\n                              </td>\n                              <td class=\"action\" colspan=\"2\">\n                                <div class=\"cmt-like\">\n                                  <a href=\"javascript:;\">\n                                    <img src=\"img/like-color.jpg\" alt=\"\">{{rank.no_of_likes}}</a>\n                                </div>\n                                <div class=\"cmt\">\n                                  <a href=\"javascript:;\">\n                                    <img src=\"img/comment.png\" alt=\"\">{{rank.no_of_comments}}</a>\n                                </div>\n                                <div class=\"download\">\n                                  <a href=\"javascript:;\">\n                                    <img src=\"img/download.png\" alt=\"\">${{rank.price}}</a>\n                                </div>\n                                <div class=\"share\">\n                                  <a href=\"javascript:;\">\n                                    <img src=\"img/share.png\" alt=\"\">\n                                  </a>\n                                </div>\n                              </td>\n                            </tr>\n                          </tbody>\n                        </table>\n                      </div>\n                    </div>\n                  </div>\n                </div>\n              </div>\n            </div>\n          </div>\n        </div>\n      </div>\n    </div>\n  </div>\n  </div>"
+module.exports = "<div class=\"artist-profile-wrap\">\n  <div class=\"container\">\n    <div class=\"row\">\n      <div class=\"col-md-12\">\n        <div class=\"cover-img\">\n          <img src=\"{{artistdata['cover_image'] ? artist_img_url +artistdata['cover_image'] : 'img/cover.png'}}\" alt=\"Cover Image\">\n        </div>\n      </div>\n      <div class=\"col-md-12\">\n        <div class=\"profile-detail-wrap\">\n          <div class=\"row\">\n            <div class=\"col-md-3 col-sm-3 col-xs-4\">\n              <div class=\"profile-img\">\n                <a href=\"javascript:;\">\n                  <img src=\"{{artistdata['image'] ? artist_img_url +artistdata['image'] : 'img/profile-img.png'}}\" alt=\"Profile Images\">\n                </a>\n              </div>\n              <div class=\"follow-btn\">\n                <a href=\"javascript:;\" (click)=\"followArtist(artistdata._id, i)\">\n                  <i class=\"fa fa-heart\" aria-hidden=\"true\"></i> Follow\n                </a>\n              </div>\n              <div class=\"social\">\n                <h3>Social</h3>\n                <ul>\n                  <li>\n                    <a [href]=\"artistdata.social_media['facebook']\">\n                      <i class=\"fa fa-facebook-official\" aria-hidden=\"true\"></i>\n                    </a>\n                  </li>\n                  <li>\n                    <a [href]=\"artistdata.social_media['instagram']\">\n                      <i class=\"fa fa-instagram\" aria-hidden=\"true\"></i>\n                    </a>\n                  </li>\n                  <li>\n                    <a [href]=\"artistdata.social_media['youtube']\">\n                      <i class=\"fa fa-youtube-play\" aria-hidden=\"true\"></i>\n                    </a>\n                  </li>\n                  <li>\n                    <a [href]=\"artistdata.social_media['sound_cloud']\">\n                      <i class=\"fa fa-soundcloud\" aria-hidden=\"true\"></i>\n                    </a>\n                  </li>\n                </ul>\n              </div>\n              <div class=\"follower\">\n                <h3>Followers</h3>\n                <span>{{artistfollower.length}}</span>\n                <ul>\n                  <li *ngFor=\"let follower of artistfollower;\">\n                    <img src=\"{{follower.image ? user_img_url+follower.image : 'img/fan1.png'}}\" alt=\"Fan\">\n                  </li>\n                </ul>\n              </div>\n\n              <div class=\"comments\">\n                <h3>\n                  <a href=\"javascript:;\" routerLink=\"/artist_profile/{{artistdata._id}}/comments\">Comments</a>\n                </h3>\n                <span>{{artistcomments.length}}</span>\n                <div class=\"comment-block\" *ngFor=\"let comment of display_comment;\">\n                  <div class=\"s-name\" *ngIf=\"comment.track_id\">{{comment.track_id.name}}</div>\n                  <div class=\"s-img\">\n                    <img src=\"{{comment.user_id.image ? user_img_url+comment.user_id.image : 'img/fan1.png' }}\" alt=\"img\">\n                  </div>\n                  <div class=\"cm-date-name\">\n                    <h6>{{comment.user_id.first_name+ ' '+comment.user_id.last_name}}.</h6>\n                    <p>{{comment.created_at | timeAgo}}</p>\n                  </div>\n                  <div class=\"profile-description\">\n                    <p>{{comment.comment}}</p>\n                  </div>\n\n                </div>\n              </div>\n\n            </div>\n            <div class=\"col-md-9 col-sm-9 col-xs-8\">\n              <div class=\"artist-name\">\n                <h2>\n                  <a href=\"javascript:;\">{{artistdata['first_name']+' '+artistdata['last_name']}}</a>\n                </h2>\n                <span class=\"{{artistdata.music_type['alias']}} cat\" >{{artistdata.music_type['name']}}</span>\n              </div>\n              <div class=\"profile-location\">\n                <i class=\"fa fa-map-marker\" aria-hidden=\"true\"></i>\n                <span>New York</span>\n              </div>\n              <div class=\"profile-description\">\n                <p>{{artistdata.description}}</p>\n              </div>\n              <div class=\"profile-tabs-det\">\n                <!-- Nav tabs -->\n                <ul class=\"nav nav-tabs\" role=\"tablist\">\n                  <li class=\"nav-item \">\n                    <a class=\"nav-link {{active_tab_index == 1 ? 'active show' : ''}}\" (click)=\"manageTabChange(1)\" data-toggle=\"tab\" href=\"javascript:;\">Tracks</a>\n                  </li>\n                  <li class=\"nav-item\">\n                    <a class=\"nav-link {{active_tab_index == 2 ? 'active show' : ''}}\" (click)=\"manageTabChange(2)\" data-toggle=\"tab\" href=\"javascript:;\">Media</a>\n                  </li>\n                  <li class=\"nav-item\">\n                    <a class=\"nav-link {{active_tab_index == 3 ? 'active show' : ''}}\" (click)=\"manageTabChange(3)\" data-toggle=\"tab\" href=\"javascript:;\">Ranking</a>\n                  </li>\n                </ul>\n\n                <!-- Tab panes -->\n                <div class=\"tab-content\">\n                  <div id=\"tracks\" class=\"tab-pane fade {{active_tab_index == 1 ? 'active show' : ''}}\">\n                    <div class=\"track-wrapper\">\n                      <div class=\"track-select-wrap\">\n                        <select class=\"form-control\" id=\"gender\">\n                          <option>Newest First</option>\n                          <option>Newest First</option>\n                        </select>\n                      </div>\n                      <div class=\"track-table\">\n                        <div class=\"alert alert-info\" *ngIf=\"artisttrack.length <= 0\">No data available.</div>\n                        <table>\n                          <tbody>\n                            <tr *ngFor=\"let artist of artisttrack;let i=index;\">\n                              <td class=\"serial-num\">{{i+1}}.</td>\n                              <td class=\"play-option\">\n                                <a href=\"javascript:;\">\n                                    <img src=\"img/play.png \" alt=\"Pause \"  [style.display]=\"!audio_ins[i] ? 'block' : 'none'\" (click)=\"playAudio(artist.audio, i)\">\n                                    <img src=\"img/pause.png \" alt=\"Pause \"  [style.display]=\"audio_ins[i] ? 'block' : 'none'\" (click)=\"stopAudio(i)\">\n                                </a>\n                              </td>\n                              <td class=\"track-pic\">\n                                <a href=\"javascript:;\">\n                                  <img src=\"{{artist.image ? track_url+artist.image : 'img/track-img.png'}}\" style=\"height:50px;width:50px;\" alt=\"Track Image\">\n                                </a>\n                              </td>\n                              <td class=\"track-det\" colspan=\"2\">\n                                <p class=\"track-name\">{{artist.name}}</p>\n                                <p class=\"track-singer\">{{artist.artist_id.name}}</p>\n                                <p class=\"track-year\">{{artist.created_at | date : 'yyyy'}}</p>\n                              </td>\n                              <td class=\"track-date\">{{artist.created_at | date : 'MMMM dd,yyyy'}}</td>\n                              <td class=\"td track-vote\">\n                                <img src=\"img/start.png\" alt=\"start\">\n                                <span>{{artist.no_of_votes}}\n                                  <br>\n                                  <span>Votes</span>\n                                </span>\n                              </td>\n                              <td class=\"action\" colspan=\"2\">\n                                <div class=\"cmt-like\">\n                                  <a href=\"javascript:;\" class=\"liked\" (click)=\"likeTrack(artist._id, i)\">\n                                    <img src=\"img/like-color.jpg\" alt=\"\">{{artist.no_of_likes}}</a>\n                                </div>\n                                <div class=\"cmt\">\n                                  <a href=\"javascript:;\">\n                                    <img src=\"img/comment.png\" alt=\"\">{{artist.no_of_comments}}</a>\n                                </div>\n                                <div class=\"download\">\n                                  <a href=\"#\">\n                                    <img src=\"img/download.png\" alt=\"\">${{artist.price}}</a>\n                                </div>\n                                <div class=\"share\">\n                                  <a href=\"javascript:;\">\n                                    <img src=\"img/share.png\" alt=\"\">\n                                  </a>\n                                </div>\n                              </td>\n                            </tr>\n                          </tbody>\n                        </table>\n                      </div>\n                    </div>\n                  </div>\n                  <div id=\"media\" class=\"tab-pane fade {{active_tab_index == 2 ? 'active show' : ''}}\">\n                    <div class=\"media-wrapper\">\n                      <div class=\"row\">\n                        <div class=\"alert alert-info col-sm-12\" *ngIf=\"artistmedia.length <= 0\">No data available.</div>\n                        <div class=\"col-md-4 col-sm-6 col-xs-12\" *ngFor=\"let media of artistmedia; let i = index;\">\n                          <a class=\"img-wrap\" href=\"javascript:;\" data-fancybox=\"images\" data-width=\"1500\" data-height=\"1000\" (click)=\"open(i)\">\n                            <img src=\"{{media.image ? artist_media_url+media.image : 'img/media-1.png'}}\" alt=\"Media\">\n                          </a>\n                        </div>\n                      </div>\n                    </div>\n                  </div>\n                  <div id=\"ranking\" class=\"tab-pane fade {{active_tab_index == 3 ? 'active show' : ''}}\">\n                    <div class=\"track-wrapper\">\n                      <div class=\"track-select-wrap\">\n                        <select class=\"form-control\" id=\"gender\">\n                          <option>Newest First</option>\n                          <option>Newest First</option>\n                        </select>\n                      </div>\n                      <div class=\"track-table\">\n                        <div class=\"alert alert-info\" *ngIf=\"rankingtrack.length <= 0\">No data available.</div>\n                        <table>\n                          <tbody>\n                            <tr *ngFor=\"let rank of rankingtrack;let i=index;\">\n                              <td class=\"serial-num\">{{i+1}}.</td>\n                              <td class=\"play-option\">\n                                <a href=\"javascript:;\">\n                                    <img src=\"img/play.png \" alt=\"Pause \"  [style.display]=\"!rank_audio_ins[i] ? 'block' : 'none'\" (click)=\"playAudio(rank.audio, i)\">\n                                    <img src=\"img/pause.png \" alt=\"Pause \"  [style.display]=\"rank_audio_ins[i] ? 'block' : 'none'\" (click)=\"stopAudio(i)\">\n                                </a>\n                              </td>\n                              <td class=\"track-pic\">\n                                <a href=\"javascript:;\">\n                                  <img src=\"{{rank.image ? track_url+rank.image : 'img/track-img.png'}}\" alt=\"Track Image\" style=\"height: 50px;width: 50px;;\">\n                                </a>\n                              </td>\n                              <td class=\"track-det\" colspan=\"2\">\n                                <p class=\"track-name\">{{rank.name}}</p>\n                                <p class=\"track-singer\">{{rank.artist_id.first_name+' '+rank.artist_id.last_name}}</p>\n                                <p class=\"track-year\">{{rank.created_at | date  : 'yyyy'}}</p>\n                              </td>\n                              <td class=\"track-date\">{{rank.created_at | date  : 'MMMM dd,yyyy'}}</td>\n                              <td class=\"td track-vote\">\n                                <img src=\"img/start.png\" alt=\"start\">\n                                <span>{{rank.no_of_votes}}\n                                  <br>\n                                  <span>Votes</span>\n                                </span>\n                              </td>\n                              <td class=\"action\" colspan=\"2\">\n                                <div class=\"cmt-like\">\n                                  <a href=\"javascript:;\">\n                                    <img src=\"img/like-color.jpg\" alt=\"\">{{rank.no_of_likes}}</a>\n                                </div>\n                                <div class=\"cmt\">\n                                  <a href=\"javascript:;\">\n                                    <img src=\"img/comment.png\" alt=\"\">{{rank.no_of_comments}}</a>\n                                </div>\n                                <div class=\"download\">\n                                  <a href=\"javascript:;\">\n                                    <img src=\"img/download.png\" alt=\"\">${{rank.price}}</a>\n                                </div>\n                                <div class=\"share\">\n                                  <a href=\"javascript:;\">\n                                    <img src=\"img/share.png\" alt=\"\">\n                                  </a>\n                                </div>\n                              </td>\n                            </tr>\n                          </tbody>\n                        </table>\n                      </div>\n                    </div>\n                  </div>\n                </div>\n              </div>\n            </div>\n          </div>\n        </div>\n      </div>\n    </div>\n  </div>\n  </div>"
 
 /***/ }),
 
@@ -466,6 +588,31 @@ var ArtistProfileComponent = /** @class */ (function () {
         // open lightbox
         this.lightbox.open(this._albums, index);
     };
+    // Like the track
+    ArtistProfileComponent.prototype.likeTrack = function (track_id, index) {
+        var _this = this;
+        var user = JSON.parse(localStorage.getItem('user'));
+        if (user && user.user) {
+            this.artisttrack[index].no_of_likes += 1;
+            var data = {
+                "track_id": track_id,
+                "artist_id": this.artistdata._id,
+                "status": true
+            };
+            this.ArtistProfileService.trackLike(data).subscribe(function (response) {
+                if (response['message'] == 'Already liked') {
+                    _this.artisttrack[index].no_of_likes -= 1;
+                }
+                _this.toastr.success(response['message'], 'Success!');
+            }, function (error) {
+                _this.artisttrack[index].no_of_likes -= 1;
+                _this.toastr.error(error['error'].message, 'Error!');
+            });
+        }
+        else {
+            this.toastr.info('Please login to like the track.');
+        }
+    };
     ArtistProfileComponent = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
             selector: 'app-artist_profile',
@@ -551,6 +698,12 @@ var ArtistProfileService = /** @class */ (function () {
     // Get all ranking of artist
     ArtistProfileService.prototype.getAllRanking = function (data) {
         return this.http.post(this.api_host + "/get_ranking", data);
+    };
+    // Like the track
+    ArtistProfileService.prototype.trackLike = function (data) {
+        this.user = JSON.parse(localStorage.getItem('user'));
+        this.headers = new __WEBPACK_IMPORTED_MODULE_1__angular_common_http__["d" /* HttpHeaders */]({ 'x-access-token': this.user.token });
+        return this.http.post(this.api_host + "/user/track/like_track", data, { headers: this.headers });
     };
     ArtistProfileService = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Injectable"])(),
@@ -1099,34 +1252,40 @@ var HeaderService = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__layout_dashboard_layout_component__ = __webpack_require__("../../../../../src/app/dashboard-layout/layout/dashboard-layout.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__whatsnew_whatsnew_component__ = __webpack_require__("../../../../../src/app/dashboard-layout/whatsnew/whatsnew.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__artist_artist_component__ = __webpack_require__("../../../../../src/app/dashboard-layout/artist/artist.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__artist_profile_artist_profile_component__ = __webpack_require__("../../../../../src/app/dashboard-layout/artist_profile/artist_profile.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__vote_vote_component__ = __webpack_require__("../../../../../src/app/dashboard-layout/vote/vote.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__my_profile_myProfile_component__ = __webpack_require__("../../../../../src/app/dashboard-layout/my_profile/myProfile.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__my_music_my_music_component__ = __webpack_require__("../../../../../src/app/dashboard-layout/my_music/my_music.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__layout_dashboard_layout_module__ = __webpack_require__("../../../../../src/app/dashboard-layout/layout/dashboard-layout.module.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__shared_carousel_carousel_module__ = __webpack_require__("../../../../../src/app/shared/carousel/carousel.module.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__angular_http__ = __webpack_require__("../../../http/esm5/http.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__angular_common_http__ = __webpack_require__("../../../common/esm5/http.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__header_header_service__ = __webpack_require__("../../../../../src/app/dashboard-layout/header/header.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__my_profile_myProfile_service__ = __webpack_require__("../../../../../src/app/dashboard-layout/my_profile/myProfile.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__my_music_my_music_service__ = __webpack_require__("../../../../../src/app/dashboard-layout/my_music/my_music.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__whatsnew_whatsnew_service__ = __webpack_require__("../../../../../src/app/dashboard-layout/whatsnew/whatsnew.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__artist_artist_service__ = __webpack_require__("../../../../../src/app/dashboard-layout/artist/artist.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__artist_profile_artist_profile_service__ = __webpack_require__("../../../../../src/app/dashboard-layout/artist_profile/artist_profile.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__resolve_artist_resolve__ = __webpack_require__("../../../../../src/app/dashboard-layout/resolve/artist_resolve/index.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__dashboard_dashboard_service__ = __webpack_require__("../../../../../src/app/dashboard-layout/dashboard/dashboard.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_24__angular_forms__ = __webpack_require__("../../../forms/esm5/forms.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_25_ngx_toastr__ = __webpack_require__("../../../../ngx-toastr/fesm5/ngx-toastr.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_26_angular2_lightbox__ = __webpack_require__("../../../../angular2-lightbox/index.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_26_angular2_lightbox___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_26_angular2_lightbox__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_27__angular_platform_browser_animations__ = __webpack_require__("../../../platform-browser/esm5/animations.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_28__shared_auth_service__ = __webpack_require__("../../../../../src/app/shared/auth.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__artist_comments_comments_component__ = __webpack_require__("../../../../../src/app/dashboard-layout/artist_comments/comments.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__artist_profile_artist_profile_component__ = __webpack_require__("../../../../../src/app/dashboard-layout/artist_profile/artist_profile.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__vote_vote_component__ = __webpack_require__("../../../../../src/app/dashboard-layout/vote/vote.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__my_profile_myProfile_component__ = __webpack_require__("../../../../../src/app/dashboard-layout/my_profile/myProfile.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__my_music_my_music_component__ = __webpack_require__("../../../../../src/app/dashboard-layout/my_music/my_music.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__layout_dashboard_layout_module__ = __webpack_require__("../../../../../src/app/dashboard-layout/layout/dashboard-layout.module.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__shared_carousel_carousel_module__ = __webpack_require__("../../../../../src/app/shared/carousel/carousel.module.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__angular_http__ = __webpack_require__("../../../http/esm5/http.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__angular_common_http__ = __webpack_require__("../../../common/esm5/http.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__header_header_service__ = __webpack_require__("../../../../../src/app/dashboard-layout/header/header.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__my_profile_myProfile_service__ = __webpack_require__("../../../../../src/app/dashboard-layout/my_profile/myProfile.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__my_music_my_music_service__ = __webpack_require__("../../../../../src/app/dashboard-layout/my_music/my_music.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__whatsnew_whatsnew_service__ = __webpack_require__("../../../../../src/app/dashboard-layout/whatsnew/whatsnew.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__artist_artist_service__ = __webpack_require__("../../../../../src/app/dashboard-layout/artist/artist.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__artist_comments_comments_service__ = __webpack_require__("../../../../../src/app/dashboard-layout/artist_comments/comments.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__artist_profile_artist_profile_service__ = __webpack_require__("../../../../../src/app/dashboard-layout/artist_profile/artist_profile.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_24__resolve_artist_resolve__ = __webpack_require__("../../../../../src/app/dashboard-layout/resolve/artist_resolve/index.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_25__dashboard_dashboard_service__ = __webpack_require__("../../../../../src/app/dashboard-layout/dashboard/dashboard.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_26__angular_forms__ = __webpack_require__("../../../forms/esm5/forms.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_27_ngx_toastr__ = __webpack_require__("../../../../ngx-toastr/fesm5/ngx-toastr.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_28_angular2_lightbox__ = __webpack_require__("../../../../angular2-lightbox/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_28_angular2_lightbox___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_28_angular2_lightbox__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_29_time_ago_pipe__ = __webpack_require__("../../../../time-ago-pipe/esm5/time-ago-pipe.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_30__angular_platform_browser_animations__ = __webpack_require__("../../../platform-browser/esm5/animations.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_31__shared_auth_service__ = __webpack_require__("../../../../../src/app/shared/auth.service.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+
+
+
 
 
 
@@ -1163,15 +1322,15 @@ var LayoutModule = /** @class */ (function () {
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["NgModule"])({
             imports: [
                 __WEBPACK_IMPORTED_MODULE_1__angular_common__["b" /* CommonModule */],
-                __WEBPACK_IMPORTED_MODULE_12__layout_dashboard_layout_module__["a" /* DashboardLayoutModule */],
-                __WEBPACK_IMPORTED_MODULE_13__shared_carousel_carousel_module__["a" /* CarouselModule */],
-                __WEBPACK_IMPORTED_MODULE_14__angular_http__["a" /* HttpModule */],
-                __WEBPACK_IMPORTED_MODULE_15__angular_common_http__["b" /* HttpClientModule */],
-                __WEBPACK_IMPORTED_MODULE_24__angular_forms__["b" /* FormsModule */],
-                __WEBPACK_IMPORTED_MODULE_24__angular_forms__["e" /* ReactiveFormsModule */],
-                __WEBPACK_IMPORTED_MODULE_27__angular_platform_browser_animations__["a" /* BrowserAnimationsModule */],
-                __WEBPACK_IMPORTED_MODULE_25_ngx_toastr__["a" /* ToastrModule */].forRoot(),
-                __WEBPACK_IMPORTED_MODULE_26_angular2_lightbox__["LightboxModule"],
+                __WEBPACK_IMPORTED_MODULE_13__layout_dashboard_layout_module__["a" /* DashboardLayoutModule */],
+                __WEBPACK_IMPORTED_MODULE_14__shared_carousel_carousel_module__["a" /* CarouselModule */],
+                __WEBPACK_IMPORTED_MODULE_15__angular_http__["a" /* HttpModule */],
+                __WEBPACK_IMPORTED_MODULE_16__angular_common_http__["b" /* HttpClientModule */],
+                __WEBPACK_IMPORTED_MODULE_26__angular_forms__["b" /* FormsModule */],
+                __WEBPACK_IMPORTED_MODULE_26__angular_forms__["e" /* ReactiveFormsModule */],
+                __WEBPACK_IMPORTED_MODULE_30__angular_platform_browser_animations__["a" /* BrowserAnimationsModule */],
+                __WEBPACK_IMPORTED_MODULE_27_ngx_toastr__["a" /* ToastrModule */].forRoot(),
+                __WEBPACK_IMPORTED_MODULE_28_angular2_lightbox__["LightboxModule"],
                 __WEBPACK_IMPORTED_MODULE_2__angular_router__["c" /* RouterModule */].forChild([
                     {
                         path: '',
@@ -1180,24 +1339,41 @@ var LayoutModule = /** @class */ (function () {
                             { path: '', component: __WEBPACK_IMPORTED_MODULE_4__dashboard_dashboard_component__["a" /* DashboardComponent */] },
                             { path: 'whats-new', component: __WEBPACK_IMPORTED_MODULE_6__whatsnew_whatsnew_component__["a" /* WhatsNewComponent */] },
                             { path: 'artist', component: __WEBPACK_IMPORTED_MODULE_7__artist_artist_component__["a" /* ArtistComponent */] },
-                            { path: 'artist_profile/:id', component: __WEBPACK_IMPORTED_MODULE_8__artist_profile_artist_profile_component__["a" /* ArtistProfileComponent */], resolve: { artist: __WEBPACK_IMPORTED_MODULE_22__resolve_artist_resolve__["d" /* ArtistProfileResolve */], track: __WEBPACK_IMPORTED_MODULE_22__resolve_artist_resolve__["f" /* ArtistTrackResolve */], media: __WEBPACK_IMPORTED_MODULE_22__resolve_artist_resolve__["c" /* ArtistMediaResolve */], follower: __WEBPACK_IMPORTED_MODULE_22__resolve_artist_resolve__["b" /* ArtistFollowerResolve */], comments: __WEBPACK_IMPORTED_MODULE_22__resolve_artist_resolve__["a" /* ArtistCommentsResolve */], ranking: __WEBPACK_IMPORTED_MODULE_22__resolve_artist_resolve__["e" /* ArtistRankingResolve */] } },
-                            { path: 'vote', component: __WEBPACK_IMPORTED_MODULE_9__vote_vote_component__["a" /* VoteComponent */] },
-                            { path: 'my-music', component: __WEBPACK_IMPORTED_MODULE_11__my_music_my_music_component__["a" /* MyMusicComponent */], canActivate: [__WEBPACK_IMPORTED_MODULE_28__shared_auth_service__["a" /* AuthService */]] },
-                            { path: 'my-profile', component: __WEBPACK_IMPORTED_MODULE_10__my_profile_myProfile_component__["a" /* MyProfileComponent */], canActivate: [__WEBPACK_IMPORTED_MODULE_28__shared_auth_service__["a" /* AuthService */]] }
+                            { path: 'artist_profile/:id/comments', component: __WEBPACK_IMPORTED_MODULE_8__artist_comments_comments_component__["a" /* ConmmentsComponent */], resolve: { artist: __WEBPACK_IMPORTED_MODULE_24__resolve_artist_resolve__["d" /* ArtistProfileResolve */], comments: __WEBPACK_IMPORTED_MODULE_24__resolve_artist_resolve__["a" /* ArtistCommentsResolve */] } },
+                            { path: 'artist_profile/:id', component: __WEBPACK_IMPORTED_MODULE_9__artist_profile_artist_profile_component__["a" /* ArtistProfileComponent */], resolve: { artist: __WEBPACK_IMPORTED_MODULE_24__resolve_artist_resolve__["d" /* ArtistProfileResolve */], track: __WEBPACK_IMPORTED_MODULE_24__resolve_artist_resolve__["f" /* ArtistTrackResolve */], media: __WEBPACK_IMPORTED_MODULE_24__resolve_artist_resolve__["c" /* ArtistMediaResolve */], follower: __WEBPACK_IMPORTED_MODULE_24__resolve_artist_resolve__["b" /* ArtistFollowerResolve */], comments: __WEBPACK_IMPORTED_MODULE_24__resolve_artist_resolve__["a" /* ArtistCommentsResolve */], ranking: __WEBPACK_IMPORTED_MODULE_24__resolve_artist_resolve__["e" /* ArtistRankingResolve */] } },
+                            { path: 'vote', component: __WEBPACK_IMPORTED_MODULE_10__vote_vote_component__["a" /* VoteComponent */] },
+                            { path: 'my-music', component: __WEBPACK_IMPORTED_MODULE_12__my_music_my_music_component__["a" /* MyMusicComponent */], canActivate: [__WEBPACK_IMPORTED_MODULE_31__shared_auth_service__["a" /* AuthService */]] },
+                            { path: 'my-profile', component: __WEBPACK_IMPORTED_MODULE_11__my_profile_myProfile_component__["a" /* MyProfileComponent */], canActivate: [__WEBPACK_IMPORTED_MODULE_31__shared_auth_service__["a" /* AuthService */]] }
                         ]
                     }
                 ])
             ],
-            declarations: [__WEBPACK_IMPORTED_MODULE_4__dashboard_dashboard_component__["a" /* DashboardComponent */], __WEBPACK_IMPORTED_MODULE_6__whatsnew_whatsnew_component__["a" /* WhatsNewComponent */], __WEBPACK_IMPORTED_MODULE_7__artist_artist_component__["a" /* ArtistComponent */], __WEBPACK_IMPORTED_MODULE_9__vote_vote_component__["a" /* VoteComponent */], __WEBPACK_IMPORTED_MODULE_10__my_profile_myProfile_component__["a" /* MyProfileComponent */], __WEBPACK_IMPORTED_MODULE_11__my_music_my_music_component__["a" /* MyMusicComponent */], __WEBPACK_IMPORTED_MODULE_3_angular_io_slimscroll__["SlimScroll"], __WEBPACK_IMPORTED_MODULE_8__artist_profile_artist_profile_component__["a" /* ArtistProfileComponent */]],
-            providers: [__WEBPACK_IMPORTED_MODULE_16__header_header_service__["a" /* HeaderService */], __WEBPACK_IMPORTED_MODULE_28__shared_auth_service__["a" /* AuthService */], __WEBPACK_IMPORTED_MODULE_17__my_profile_myProfile_service__["a" /* MyProfileService */], __WEBPACK_IMPORTED_MODULE_18__my_music_my_music_service__["a" /* MyMusicService */], __WEBPACK_IMPORTED_MODULE_19__whatsnew_whatsnew_service__["a" /* WhatsNewService */], __WEBPACK_IMPORTED_MODULE_20__artist_artist_service__["a" /* ArtistService */],
-                __WEBPACK_IMPORTED_MODULE_23__dashboard_dashboard_service__["a" /* DashboardService */],
-                __WEBPACK_IMPORTED_MODULE_21__artist_profile_artist_profile_service__["a" /* ArtistProfileService */],
-                __WEBPACK_IMPORTED_MODULE_22__resolve_artist_resolve__["d" /* ArtistProfileResolve */],
-                __WEBPACK_IMPORTED_MODULE_22__resolve_artist_resolve__["f" /* ArtistTrackResolve */],
-                __WEBPACK_IMPORTED_MODULE_22__resolve_artist_resolve__["c" /* ArtistMediaResolve */],
-                __WEBPACK_IMPORTED_MODULE_22__resolve_artist_resolve__["a" /* ArtistCommentsResolve */],
-                __WEBPACK_IMPORTED_MODULE_22__resolve_artist_resolve__["b" /* ArtistFollowerResolve */],
-                __WEBPACK_IMPORTED_MODULE_22__resolve_artist_resolve__["e" /* ArtistRankingResolve */]
+            declarations: [__WEBPACK_IMPORTED_MODULE_4__dashboard_dashboard_component__["a" /* DashboardComponent */],
+                __WEBPACK_IMPORTED_MODULE_6__whatsnew_whatsnew_component__["a" /* WhatsNewComponent */],
+                __WEBPACK_IMPORTED_MODULE_7__artist_artist_component__["a" /* ArtistComponent */],
+                __WEBPACK_IMPORTED_MODULE_8__artist_comments_comments_component__["a" /* ConmmentsComponent */],
+                __WEBPACK_IMPORTED_MODULE_10__vote_vote_component__["a" /* VoteComponent */],
+                __WEBPACK_IMPORTED_MODULE_11__my_profile_myProfile_component__["a" /* MyProfileComponent */],
+                __WEBPACK_IMPORTED_MODULE_12__my_music_my_music_component__["a" /* MyMusicComponent */],
+                __WEBPACK_IMPORTED_MODULE_3_angular_io_slimscroll__["SlimScroll"],
+                __WEBPACK_IMPORTED_MODULE_9__artist_profile_artist_profile_component__["a" /* ArtistProfileComponent */],
+                __WEBPACK_IMPORTED_MODULE_29_time_ago_pipe__["a" /* TimeAgoPipe */]
+            ],
+            providers: [__WEBPACK_IMPORTED_MODULE_17__header_header_service__["a" /* HeaderService */],
+                __WEBPACK_IMPORTED_MODULE_31__shared_auth_service__["a" /* AuthService */],
+                __WEBPACK_IMPORTED_MODULE_18__my_profile_myProfile_service__["a" /* MyProfileService */],
+                __WEBPACK_IMPORTED_MODULE_19__my_music_my_music_service__["a" /* MyMusicService */],
+                __WEBPACK_IMPORTED_MODULE_20__whatsnew_whatsnew_service__["a" /* WhatsNewService */],
+                __WEBPACK_IMPORTED_MODULE_21__artist_artist_service__["a" /* ArtistService */],
+                __WEBPACK_IMPORTED_MODULE_22__artist_comments_comments_service__["a" /* CommentsService */],
+                __WEBPACK_IMPORTED_MODULE_25__dashboard_dashboard_service__["a" /* DashboardService */],
+                __WEBPACK_IMPORTED_MODULE_23__artist_profile_artist_profile_service__["a" /* ArtistProfileService */],
+                __WEBPACK_IMPORTED_MODULE_24__resolve_artist_resolve__["d" /* ArtistProfileResolve */],
+                __WEBPACK_IMPORTED_MODULE_24__resolve_artist_resolve__["f" /* ArtistTrackResolve */],
+                __WEBPACK_IMPORTED_MODULE_24__resolve_artist_resolve__["c" /* ArtistMediaResolve */],
+                __WEBPACK_IMPORTED_MODULE_24__resolve_artist_resolve__["a" /* ArtistCommentsResolve */],
+                __WEBPACK_IMPORTED_MODULE_24__resolve_artist_resolve__["b" /* ArtistFollowerResolve */],
+                __WEBPACK_IMPORTED_MODULE_24__resolve_artist_resolve__["e" /* ArtistRankingResolve */]
             ]
         })
     ], LayoutModule);

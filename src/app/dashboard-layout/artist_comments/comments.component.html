@@ -1,0 +1,43 @@
+<div class="comment-wrap">
+  <div class="container">
+      <div class="row">
+        <div class="col-md-2 col-sm-3 col-xs-6">
+          <div class="profile-img">
+            <a href="javascript:;"><img src="{{artistdata.image ? artist_img_url+artistdata.image : 'img/profile-img.png'}}" alt="Profile Images"></a>
+          </div>
+        </div>
+        <div class="col-md-10 col-sm-8 col-xs-6">
+          <div class="artist-name"><h2><a href="javascript:;">{{artistdata.first_name+' '+artistdata.last_name}}</a></h2>
+            <span class="{{artistdata.music_type['alias']}} tag">{{artistdata.music_type['name']}}</span>
+          </div>
+          <div class="profile-location"><i class="fa fa-map-marker" aria-hidden="true"></i> <span>New York</span></div>
+          <div class="profile-description">
+            <p>{{artistdata.description}}</p>
+          </div>
+        </div>
+        <div class="col-md-12">
+          <div class="profile-detail-wrap">
+            <div class="row">
+              <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="comments">
+                  <h3 class="num-cmt">{{artistcomments.length}} Comments</h3>
+                  <div class="login-alert">Please Login to leave your comment</div>
+                  <div class="comment-block col-md-12 col-sm-12 col-xs-12" *ngFor="let comment of artistcomments;">
+                    <div class="s-name" *ngIf="comment.track_id">{{comment.track_id.name}}</div>
+                    <div class="s-img"><img src="{{comment.user_id.image ? user_img_url+comment.user_id.image : 'img/fan1.png' }}" alt="img"></div>
+                    <div class="cm-date-name">
+                      <h6>{{comment.user_id.first_name+ ' '+comment.user_id.last_name}}.</h6>
+                      <p>{{comment.created_at | timeAgo}}</p>
+                      <div class="profile-descriptions">
+                        <p>{{comment.comment}}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

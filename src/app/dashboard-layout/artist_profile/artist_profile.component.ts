@@ -118,4 +118,28 @@ export class ArtistProfileComponent implements OnInit {
     // open lightbox
     this.lightbox.open(this._albums, index);
   }
+  // Like the track
+  likeTrack(track_id : any, index : any) {
+    let user = JSON.parse(localStorage.getItem('user'));
+    if(user && user.user) {
+      this.artisttrack[index].no_of_likes += 1;
+      let data = {
+        "track_id": track_id,
+        "artist_id" : this.artistdata._id,
+        "status" :true
+      };
+      this.ArtistProfileService.trackLike(data).subscribe(response => {
+        if(response['message'] == 'Already liked'){
+          this.artisttrack[index].no_of_likes -= 1;
+        }
+        this.toastr.success(response['message'], 'Success!');
+      }, error => {
+        this.artisttrack[index].no_of_likes -= 1;
+        this.toastr.error(error['error'].message, 'Error!');
+      } );
+    } else {
+      this.toastr.info('Please login to like the track.');
+    }
+    
+  }
 }

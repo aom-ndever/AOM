@@ -57,9 +57,9 @@
 
               <div class="comments">
                 <h3>
-                  <a href="javascript:;">Comments</a>
+                  <a href="javascript:;" routerLink="/artist_profile/{{artistdata._id}}/comments">Comments</a>
                 </h3>
-                <span>{{artistcomments.length+', '+display_comment.length}}</span>
+                <span>{{artistcomments.length}}</span>
                 <div class="comment-block" *ngFor="let comment of display_comment;">
                   <div class="s-name" *ngIf="comment.track_id">{{comment.track_id.name}}</div>
                   <div class="s-img">
@@ -67,7 +67,7 @@
                   </div>
                   <div class="cm-date-name">
                     <h6>{{comment.user_id.first_name+ ' '+comment.user_id.last_name}}.</h6>
-                    <p>2 day ago</p>
+                    <p>{{comment.created_at | timeAgo}}</p>
                   </div>
                   <div class="profile-description">
                     <p>{{comment.comment}}</p>
@@ -147,11 +147,11 @@
                               </td>
                               <td class="action" colspan="2">
                                 <div class="cmt-like">
-                                  <a href="#" class="liked">
+                                  <a href="javascript:;" class="liked" (click)="likeTrack(artist._id, i)">
                                     <img src="img/like-color.jpg" alt="">{{artist.no_of_likes}}</a>
                                 </div>
                                 <div class="cmt">
-                                  <a href="#">
+                                  <a href="javascript:;">
                                     <img src="img/comment.png" alt="">{{artist.no_of_comments}}</a>
                                 </div>
                                 <div class="download">
@@ -159,7 +159,7 @@
                                     <img src="img/download.png" alt="">${{artist.price}}</a>
                                 </div>
                                 <div class="share">
-                                  <a href="#">
+                                  <a href="javascript:;">
                                     <img src="img/share.png" alt="">
                                   </a>
                                 </div>
