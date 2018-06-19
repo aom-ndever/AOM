@@ -67,11 +67,15 @@ router.post('/', async (req, res) => {
       res.status(config.INTERNAL_SERVER_ERROR).json(resp_data);
     } else {
       var resp = await artist_helper.get_artist_by_id(obj.artist_id);
+      console.log('resp', resp);
+
       no_comment = resp.artist.no_of_comments + 1
       var resp_data = await track_helper.update_artist_for_comments(obj.artist_id, no_comment);
 
       var resp_datas = await comment_helper.get_all_track_by_track_id(obj.track_id);
-      no_vote = resp_datas.comment[0].no_of_comments + 1;
+      console.log('resp_datas', resp_datas);
+
+      no_vote = resp_datas.track.no_of_comments + 1;
       var resp_data = await comment_helper.update_comment(obj.track_id, no_vote);
 
 

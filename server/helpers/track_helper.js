@@ -129,6 +129,7 @@ track_helper.get_all_track_by_track_id = async (track_id) => {
 }
 
 
+
 track_helper.update_votes = async (track_id, no_votes) => {
 
     try {
@@ -423,5 +424,17 @@ track_helper.get_track_main = async (filter, filters) => {
 };
 
 
+track_helper.delete_track = async (track_id) => {
+    try {
+        var track = await Track.remove({ "_id": (track_id) })
+        if (track) {
+            return { "status": 1, "message": "track details found", "track": track };
+        } else {
+            return { "status": 2, "message": "track not found" };
+        }
+    } catch (err) {
+        return { "status": 0, "message": "Error occured while finding track", "error": err }
+    }
+};
 
 module.exports = track_helper;

@@ -72,6 +72,7 @@ artist_helper.get_artist_by_email = async (email) => {
  */
 artist_helper.get_artist_by_id = async (artist_id) => {
     try {
+
         var artist = await Artist.findOne({ "_id": { "$eq": artist_id } }).populate('music_type');
         if (artist) {
             return { "status": 1, "message": "Artist details found", "artist": artist };
@@ -225,6 +226,36 @@ artist_helper.update_artist_votes = async (artist_id, no_votes) => {
     }
 };
 
+artist_helper.update_artist_comment = async (artist_id, no_votes) => {
+
+    try {
+        var vote = await Artist.findOneAndUpdate({ "_id": new ObjectId(artist_id) }, { "no_of_comments": no_votes })
+
+        if (vote) {
+            return { "status": 1, "message": "comment updated", };
+        } else {
+            return { "status": 2, "message": "comment not found" };
+        }
+    } catch (err) {
+        return { "status": 0, "message": "Error occured while finding comment", "error": err }
+    }
+};
+
+
+artist_helper.update_track_comment = async (artist_id, no_votes) => {
+
+    try {
+        var vote = await Track.findOneAndUpdate({ "_id": new ObjectId(artist_id) }, { "no_of_comments": no_votes })
+
+        if (vote) {
+            return { "status": 1, "message": "comment updated", };
+        } else {
+            return { "status": 2, "message": "comment not found" };
+        }
+    } catch (err) {
+        return { "status": 0, "message": "Error occured while finding comment", "error": err }
+    }
+};
 artist_helper.get_all_artist_by_vote = async () => {
     try {
         var artist = await Artist

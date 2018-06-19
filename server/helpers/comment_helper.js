@@ -57,6 +57,20 @@ comment_helper.get_all_comment_by_comment_id = async (comment_id) => {
         return { "status": 0, "message": "Error occured while finding artist", "error": err }
     }
 };
+
+comment_helper.get_all_track = async (comment_id) => {
+    try {
+        var track = await Comment
+            .findOne({ "_id": new ObjectId(comment_id) })
+        if (track) {
+            return { "status": 1, "message": "Track details found", "track": track };
+        } else {
+            return { "status": 2, "message": "track not found" };
+        }
+    } catch (err) {
+        return { "status": 0, "message": "Error occured while finding track", "error": err }
+    }
+}
 comment_helper.delete_comment = async (user_id, bookmark_id) => {
     try {
         let comment = await Comment.findOneAndRemove({ user_id: new ObjectId(user_id), _id: new ObjectId(bookmark_id) });
@@ -99,10 +113,10 @@ comment_helper.get_all_track_by_track_id = async (track_id) => {
     console.log('track_id', track_id);
 
     try {
-        var comment = await Track
-            .find({ "_id": new ObjectId(track_id) })
-        if (comment) {
-            return { "status": 1, "message": "Track details found", "comment": comment };
+        var track = await Track
+            .findOne({ "_id": new ObjectId(track_id) })
+        if (track) {
+            return { "status": 1, "message": "Track details found", "track": track };
         } else {
             return { "status": 2, "message": "track not found" };
         }

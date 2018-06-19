@@ -13,6 +13,7 @@ var follower_helper = require('../../helpers/follower_helper');
 var comment_helper = require('../../helpers/comment_helper');
 var participate_helper = require('../../helpers/participate_helper');
 var contest_helper = require('../../helpers/contest_helper');
+var user_helper = require('../../helpers/user_helper');
 
 var mongoose = require('mongoose');
 var ObjectId = mongoose.Types.ObjectId;
@@ -20,12 +21,26 @@ var fs = require('fs');
 
 router.delete('/:comment_id', async (req, res) => {
     user_id = req.userInfo.id;
+
+    var response = await comment_helper.get_all_track(req.params.comment_id);
+    var track_id = response.track._id
+
+    var responses = await comment_helper.get_all_track_by_track_id(track_id);
     var del_resp = await comment_helper.delete_comment_by_artist(user_id, req.params.comment_id);
     if (del_resp.status === 0) {
         res.status(config.INTERNAL_SERVER_ERROR).json({ "status": 0, "message": "Error occured while deleting comment", "error": del_resp.error });
     } else if (del_resp.status === 2) {
         res.status(config.BAD_REQUEST).json({ "status": 0, "message": "Can't remove comment" });
     } else {
+
+        no_comment = response.track.no_of_comments - 1
+        var resp_data = await artist_helper.update_track_comment(user_id, no_comment);
+
+        var resp = await artist_helper.get_artist_by_id(user_id);
+        console.log('resp', resp);
+
+        no_comment = resp.artist.no_of_comments - 1
+        var resp_data = await artist_helper.update_artist_comment(user_id, no_comment);
         res.status(config.OK_STATUS).json({ "status": 1, "message": "comment has been removed" });
     }
 });
@@ -493,5 +508,25 @@ router.get('/contest', async (req, res) => {
     }
 });
 
+router.post("/suspend/artist/:user_id", async (req, res) => {
 
+    var resp = await user_helper.get_user_by_id(req.params.user_id);
+    if (resp.status == 0) {
+        logger.error("Error occured while fetching user = ", resp);
+        res.status(config.INTERNAL_SERVER_ERROR).json(resp);
+    } else {
+        if (resp.artist.status == "active") {
+            var stat = "suspended"
+            var artist_resp = await artist_helper.update_user_status(req.params.artist_id, stat);
+        }
+        else {
+            var stat = "active"
+            var artist_resp = await artist_helper.update_user_status(req.params.artist_id, stat);
+        }
+        logger.trace("Artist Suspended= ", { "artist": artist_resp });
+        res.status(config.OK_STATUS).json({ "artist": artist_resp });
+    }
+
+
+});
 module.exports = router;
