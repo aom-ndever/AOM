@@ -12,6 +12,14 @@ export class ArtistComponent implements OnInit {
   artistdata : any = {
     artist : []
   };
+  show_filter : any = false;
+  search_str : any = '';
+  adv_filter : any = {};
+  artistv1 : any = {
+    chart_toppers : [],
+    rising_stars : []
+  };
+  music_list : any = [];
   artist_img_url : any = environment.API_URL+environment.ARTIST_IMG;
   track_url : any = environment.API_URL+environment.ARTIST_TRACK;
   audio_ins : any = [];
@@ -22,14 +30,25 @@ export class ArtistComponent implements OnInit {
 
   ngOnInit() {
     this.getAllData();
+    this.getAllArtistV1Data({});
+    this.getAllMusicType();
   }
-
+  toggleFilter() {
+    this.show_filter = !this.show_filter;
+  }
   // Get all whatsnew data
   getAllData() {
     let data = {};
     this.ArtistService.getArtistData(data).subscribe(response => {
       this.artistdata = response;
       this.getAllFollower();
+    });
+  }
+  // Get all artistv1 data
+  getAllArtistV1Data(data) {
+    this.ArtistService.getAllArtistv1(data).subscribe(response => {
+      this.artistv1 = response;
+      //this.getAllFollower();
     });
   }
   // Play audio
@@ -89,4 +108,28 @@ export class ArtistComponent implements OnInit {
       });
     }
   }
+  // Get all music list
+  getAllMusicType() {
+    this.ArtistService.getAllMusicType().subscribe(response => {
+      this.music_list = response['music'];
+    });
+  }
+
+  // filter artistv1
+  filterArtistv1(e : any) {
+    if(e.keyCode == 13) {
+      let data = {
+        search : this.search_str
+      };
+      this.getAllArtistV1Data(data);
+    }
+  }
+  // advanceFilter
+  advanceFilter() {
+    let data = {
+      music_type : this.adv_filter.music_type
+    };
+    this.getAllArtistV1Data(data);
+  }
+  
 }

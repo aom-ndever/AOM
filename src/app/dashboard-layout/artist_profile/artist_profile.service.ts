@@ -50,4 +50,10 @@ export class ArtistProfileService {
   getAllRanking(data : any) {
     return this.http.post(`${this.api_host}/get_ranking`, data);
   }
+  // Like the track
+  trackLike(data : any) {
+    this.user = JSON.parse(localStorage.getItem('user'));
+    this.headers = new HttpHeaders({ 'x-access-token' : this.user.token });  
+    return this.http.post(`${this.api_host}/user/track/like_track`, data, {headers : this.headers});
+  }
 }

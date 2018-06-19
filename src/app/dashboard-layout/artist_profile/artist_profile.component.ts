@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ArtistProfileService } from './artist_profile.service';
 import { ToastrService } from 'ngx-toastr';
 import { environment } from '../../../environments/environment' ;
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import { Lightbox } from 'angular2-lightbox';
 
 @Component({
@@ -31,6 +31,7 @@ export class ArtistProfileComponent implements OnInit {
     private ArtistProfileService : ArtistProfileService,
     private toastr: ToastrService,
     private route: ActivatedRoute,
+    private router: Router,
     private lightbox: Lightbox
   ) {
     // this.getAllData();
@@ -117,5 +118,56 @@ export class ArtistProfileComponent implements OnInit {
   open(index: number): void {
     // open lightbox
     this.lightbox.open(this._albums, index);
+  }
+  // Like the track
+  likeTrack(track_id : any, index : any) {
+    let user = JSON.parse(localStorage.getItem('user'));
+    if(user && user.user) {
+      this.artisttrack[index].no_of_likes += 1;
+      let data = {
+        "track_id": track_id,
+        "artist_id" : this.artistdata._id,
+        "status" :true
+      };
+      this.ArtistProfileService.trackLike(data).subscribe(response => {
+        if(response['message'] == 'Already liked'){
+          this.artisttrack[index].no_of_likes -= 1;
+        }
+        this.toastr.success(response['message'], 'Success!');
+      }, error => {
+        this.artisttrack[index].no_of_likes -= 1;
+        this.toastr.error(error['error'].message, 'Error!');
+      } );
+    } else {
+      this.toastr.info('Please login to like the track.');
+    }
+    
+  }
+  // Like the track
+  likeRankTrack(track_id : any, index : any) {
+    let user = JSON.parse(localStorage.getItem('user'));
+    if(user && user.user) {
+      this.rankingtrack[index].no_of_likes += 1;
+      let data = {
+        "track_id": track_id,
+        "artist_id" : this.artistdata._id,
+        "status" :true
+      };
+      this.ArtistProfileService.trackLike(data).subscribe(response => {
+        if(response['message'] == 'Already liked'){
+          this.rankingtrack[index].no_of_likes -= 1;
+        }
+        this.toastr.success(response['message'], 'Success!');
+      }, error => {
+        this.rankingtrack[index].no_of_likes -= 1;
+        this.toastr.error(error['error'].message, 'Error!');
+      } );
+    } else {
+      this.toastr.info('Please login to like the track.');
+    } 
+  }
+  // Vist track comment page
+  goToComment(id : any) {
+    this.router.navigate(['/track/'+id+'/comments']);
   }
 }

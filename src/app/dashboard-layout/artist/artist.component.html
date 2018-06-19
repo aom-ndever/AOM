@@ -1,31 +1,494 @@
+<section class="artist-head artist-highlight">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="news-header">
+          <div class="row">
+            <div class="col-md-7 col-sm-6 col-xs-5">
+              <div class="head-global"><h2>Artists</h2></div>
+            </div>
+            <div class="col-md-5 col-sm-6 col-xs-7">
+              <div class="new-head">
+                <div class="search-wrap">
+                  <form>
+                    <div class="mobile-search"><i class="fa fa-search" aria-hidden="true"></i></div>
+                    <div class="search-input">
+                      <input type="text" placeholder="Search by Artist Name or Song Title" (keyup)="filterArtistv1($event)" name="search" [(ngModel)]="search_str" />
+                    </div>
+                  </form>
+                </div>
+                <div class="filter-head">
+                  <a href="javascript:;" (click)="toggleFilter()">
+                    <div class="filter-icon"><img src="img/filter.png" alt="Filter Icon"></div>
+                    <span>Filters <i class="fa fa-caret-right"></i></span>
+                  </a>
+                  
+                </div>
+              </div>
+            </div>
+            <div class="filter-drop-down" [style.display]="show_filter ? 'block' : 'none'">
+              <div class="container">
+                <div class="row">
+                  <div class="col-md-2 col-sm-6 col-xs-6">
+                    <div class="music-genre">
+                      <div class="filter-heading">Music Genre</div>
+                      <ul>
+                        <li>
+                          <div class="radio">
+                              <label>
+                                <input type="radio" value="" name="musicgenre" [(ngModel)]="adv_filter.music_type">All styles
+                                <div class="radio_check"></div>
+                              </label>
+                          </div>
+                        </li>
+                        <li *ngFor="let music of music_list;">
+                            <div class="radio">
+                                <label>
+                                  <input type="radio" value="{{music._id}}" name="musicgenre" [(ngModel)]="adv_filter.music_type">{{music.name}}
+                                  <div class="radio_check"></div>
+                                </label>
+                            </div>
+                        </li>
+                      </ul>
+                    </div>
+                    
+                  </div>
+                  <div class="col-md-2 col-sm-6 col-xs-6">
+                    <div class="artist-type">
+                      <div class="filter-heading">Artist Type</div>
+                      <ul>
+                        <li>
+                          <div class="checkbox">
+                              <label>
+                                <input type="checkbox" value="" checked>
+                                <div class="chk_check"></div>
+                                <span>Rising Stars</span>
+                              </label>
+                          </div>
+                        </li>
+                        <li>
+                          <div class="checkbox">
+                              <label>
+                                <input type="checkbox" value="" checked>
+                                <div class="chk_check"></div>
+                                <span>Chart Toppers</span>
+                              </label>
+                          </div>
+                        </li>
+                        <li>
+                          <div class="checkbox">
+                              <label>
+                                <input type="checkbox" value="" checked>
+                                <div class="chk_check"></div>
+                                <span>My Artsist</span>
+                              </label>
+                          </div>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                  <div class="col-md-8 col-sm-12 col-xs-12">
+                    <div class="sub-menu-filter">
+                    <div class="filter-heading">Music Genre</div>
+                      <div class="row">
+                        <div class="col-md-2 col-sm-4 col-xs-4">
+                          <div class="filter-subhead">Northeast</div>
+                          <ul>
+                            <li>
+                              <div class="checkbox">
+                                  <label>
+                                    <input type="checkbox" value="">
+                                    <div class="chk_check"></div>
+                                    <span>Marryland</span>
+                                  </label>
+                              </div>
+                            </li>
+                            <li>
+                              <div class="checkbox">
+                                  <label>
+                                    <input type="checkbox" value="">
+                                    <div class="chk_check"></div>
+                                    <span>New Jersey</span>
+                                  </label>
+                              </div>
+                            </li>
+                            <li>
+                              <div class="checkbox">
+                                  <label>
+                                    <input type="checkbox" value="">
+                                    <div class="chk_check"></div>
+                                    <span>Pennsylvania</span>
+                                  </label>
+                              </div>
+                            </li>
+                            <li>
+                              <div class="checkbox">
+                                  <label>
+                                    <input type="checkbox" value="" checked>
+                                    <div class="chk_check"></div>
+                                    <span>New York</span>
+                                  </label>
+                              </div>
+                            </li>
+                            <li>
+                              <div class="checkbox">
+                                  <label>
+                                    <input type="checkbox" value="">	
+                                    <div class="chk_check"></div>
+                                    <span>Delaware</span>
+                                  </label>
+                              </div>
+                            </li>
+                          </ul>
+                        </div>
+                        <div class="col-md-2 col-sm-4 col-xs-4">
+                          <div class="filter-subhead">southeast</div>
+                          <ul>
+                            <li>
+                              <div class="checkbox">
+                                  <label>
+                                    <input type="checkbox" value="">
+                                    <div class="chk_check"></div>
+                                    <span>Marryland</span>
+                                  </label>
+                              </div>
+                            </li>
+                            <li>
+                              <div class="checkbox">
+                                  <label>
+                                    <input type="checkbox" value="">
+                                    <div class="chk_check"></div>
+                                    <span>New Jersey</span>
+                                  </label>
+                              </div>
+                            </li>
+                            <li>
+                              <div class="checkbox">
+                                  <label>
+                                    <input type="checkbox" value="">
+                                    <div class="chk_check"></div>
+                                    <span>Pennsylvania</span>
+                                  </label>
+                              </div>
+                            </li>
+                            <li>
+                              <div class="checkbox">
+                                  <label>
+                                    <input type="checkbox" value="" checked>	
+                                    <div class="chk_check"></div>
+                                    <span>New York</span>
+                                  </label>
+                              </div>
+                            </li>
+                            <li>
+                              <div class="checkbox">
+                                  <label>
+                                    <input type="checkbox" value="">	
+                                    <div class="chk_check"></div>
+                                    <span>Delaware</span>
+                                  </label>
+                              </div>
+                            </li>
+                          </ul>
+                        </div>
+                        <div class="col-md-2 col-sm-4 col-xs-4">
+                          <div class="filter-subhead">Midwest</div>
+                          <ul>
+                            <li>
+                              <div class="checkbox">
+                                  <label>
+                                    <input type="checkbox" value="">
+                                    <div class="chk_check"></div>
+                                    <span>Marryland</span>
+                                  </label>
+                              </div>
+                            </li>
+                            <li>
+                              <div class="checkbox">
+                                  <label>
+                                    <input type="checkbox" value="">
+                                    <div class="chk_check"></div>
+                                    <span>New Jersey</span>
+                                  </label>
+                              </div>
+                            </li>
+                            <li>
+                              <div class="checkbox">
+                                  <label>
+                                    <input type="checkbox" value="">
+                                    <div class="chk_check"></div>
+                                    <span>Pennsylvania</span>
+                                  </label>
+                              </div>
+                            </li>
+                            <li>
+                              <div class="checkbox">
+                                  <label>
+                                    <input type="checkbox" value="" checked>	
+                                    <div class="chk_check"></div>
+                                    <span>New York</span>
+                                  </label>
+                              </div>
+                            </li>
+                            <li>
+                              <div class="checkbox">
+                                  <label>
+                                    <input type="checkbox" value="">	
+                                    <div class="chk_check"></div>
+                                    <span>Delaware</span>
+                                  </label>
+                              </div>
+                            </li>
+                          </ul>
+                        </div>
+                        <div class="col-md-2 col-sm-4 col-xs-4">
+                          <div class="filter-subhead">Southwest</div>
+                          <ul>
+                            <li>
+                              <div class="checkbox">
+                                  <label>
+                                    <input type="checkbox" value="">
+                                    <div class="chk_check"></div>
+                                    <span>Marryland</span>
+                                  </label>
+                              </div>
+                            </li>
+                            <li>
+                              <div class="checkbox">
+                                  <label>
+                                    <input type="checkbox" value="">
+                                    <div class="chk_check"></div>
+                                    <span>New Jersey</span>
+                                  </label>
+                              </div>
+                            </li>
+                            <li>
+                              <div class="checkbox">
+                                  <label>
+                                    <input type="checkbox" value="">
+                                    <div class="chk_check"></div>
+                                    <span>Pennsylvania</span>
+                                  </label>
+                              </div>
+                            </li>
+                            <li>
+                              <div class="checkbox">
+                                  <label>
+                                    <input type="checkbox" value="" checked>	
+                                    <div class="chk_check"></div>
+                                    <span>New York</span>
+                                  </label>
+                              </div>
+                            </li>
+                            <li>
+                              <div class="checkbox">
+                                  <label>
+                                    <input type="checkbox" value="">	
+                                    <div class="chk_check"></div>
+                                    <span>Delaware</span>
+                                  </label>
+                              </div>
+                            </li>
+                          </ul>
+                        </div>
+                        <div class="col-md-2 col-sm-4 col-xs-4">
+                          <div class="filter-subhead">West</div>
+                          <ul>
+                            <li>
+                              <div class="checkbox">
+                                  <label>
+                                    <input type="checkbox" value="">
+                                    <div class="chk_check"></div>
+                                    <span>Marryland</span>
+                                  </label>
+                              </div>
+                            </li>
+                            <li>
+                              <div class="checkbox">
+                                  <label>
+                                    <input type="checkbox" value="">
+                                    <div class="chk_check"></div>
+                                    <span>New Jersey</span>
+                                  </label>
+                              </div>
+                            </li>
+                            <li>
+                              <div class="checkbox">
+                                  <label>
+                                    <input type="checkbox" value="">
+                                    <div class="chk_check"></div>
+                                    <span>Pennsylvania</span>
+                                  </label>
+                              </div>
+                            </li>
+                            <li>
+                              <div class="checkbox">
+                                  <label>
+                                    <input type="checkbox" value="" checked>	
+                                    <div class="chk_check"></div>
+                                    <span>New York</span>
+                                  </label>
+                              </div>
+                            </li>
+                            <li>
+                              <div class="checkbox">
+                                  <label>
+                                    <input type="checkbox" value="">	
+                                    <div class="chk_check"></div>
+                                    <span>Delaware</span>
+                                  </label>
+                              </div>
+                            </li>
+                          </ul>
+                        </div>
+                        <div class="col-md-2 col-sm-4 col-xs-4">
+                          <div class="filter-subhead">other</div>
+                          <ul>
+                            <li>
+                              <div class="checkbox">
+                                  <label>
+                                    <input type="checkbox" value="">
+                                    <div class="chk_check"></div>
+                                    <span>Puerto Rico</span>
+                                  </label>
+                              </div>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="button_group">
+                      <a href="javascript:;" (click)="toggleFilter()" class="cancel-btn">Cancel</a>
+                      <a href="javascript:;" class="apply-btn" (click)="advanceFilter()">Apply</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 <section class="artist-highlight">
   <div class="container">
-    <div class="row">
-      <div class="col-md-12">
-        <div class="head-global"><h2>Artist Highlights</h2></div>
-      </div>
-      <div class="highlights-wrap mCustomScrollbar " data-mcs-theme="dark-3">
-        <div class="row">
-          <div class="alert alert-info" *ngIf="artistdata.artist.lenghth <= 0">No data available.</div>
-          <div class="col-md-3 col-sm-4 col-xs-6" *ngFor="let artist of artistdata.artist; let i = index;">
-              <div class="final-wrap ">
-                <div class="img-wrap ">
-                  <a href="javascript:;" routerLink="/artist_profile/{{artist._id}}">
-                  <img src="{{artist.image ? artist_img_url+artist.image : 'img/highlight-player.png'}} " alt="Finalists "></a>
-                  <a href="javascript:void(0) " class="fan " (click)="followArtist(artist._id, i)"><i class="fa {{artist['is_followed'] ? 'fa-heart' : 'fa-heart-o'}} " aria-hidden="true "></i></a>
-                </div>
-                <div class="content-wrap ">
-                  <div class="player ">
-                    <div class="title "><a href="javascript:;" routerLink="/artist_profile/{{artist._id}}">{{artist.first_name +' '+artist.last_name}}</a></div>
-                    <div class="cat {{artist.music_type.alias}}">{{artist.music_type.name}}</div>
+    <div class="rising-star">
+      <div class="row">
+        <div class="">
+          <div class="head-global"><h2>Rising Star</h2></div>
+        </div>
+        <div class="highlights-wrap mCustomScrollbar " data-mcs-theme="dark-3">
+          <div class="row">
+            <div class="alert alert-info col-sm-12" *ngIf="artistv1['rising_stars']['length'] <= 0">No data available.</div>
+            <div class="col-md-3 col-sm-4 col-xs-6" *ngFor="let artist_rising of artistv1.rising_stars; let i = index;">
+                <div class="final-wrap ">
+                  <div class="img-wrap ">
+                    <a href="javascript:;" routerLink="/artist_profile/{{artist_rising._id}}">
+                    <img src="{{artist_rising.image ? artist_img_url+artist_rising.image : 'img/highlight-player.png'}} " alt="Finalists "></a>
+                    <a href="javascript:void(0) " class="fan " (click)="followArtist(artist_rising._id, i)"><i class="fa {{artist_rising['is_followed'] ? 'fa-heart' : 'fa-heart-o'}} " aria-hidden="true "></i></a>
                   </div>
-                  <div class="location ">
-                    <p><i class="fa fa-map-marker " aria-hidden="true "></i><span>Brooklyn, New York</span></p>
+                  <div class="content-wrap ">
+                    <div class="player ">
+                      <div class="title "><a href="javascript:;" routerLink="/artist_profile/{{artist_rising._id}}">{{artist_rising.first_name +' '+artist_rising.last_name}}</a></div>
+                      <div class="cat {{artist_rising.music_type.alias}}">{{artist_rising.music_type.name}}</div>
+                    </div>
+                    <div class="location ">
+                      <p><i class="fa fa-map-marker " aria-hidden="true "></i><span>Brooklyn, New York</span></p>
+                      
+                    </div>
+                  </div>
+                </div>
+            </div>        
+  
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="chart-topper" style="padding:30px 0;">
+      <div class="row">
+        <div class="">
+          <div class="head-global"><h2>Chart Topper</h2></div>
+        </div>
+        <div class="highlights-wrap mCustomScrollbar " data-mcs-theme="dark-3">
+          <div class="row">
+              <div class="alert alert-info" *ngIf="artistv1['chart_toppers']['length'] <= 0">No data available.</div>
+              <div class="col-md-3 col-sm-4 col-xs-6" *ngFor="let artist_chart of artistv1.chart_toppers; let i = index;">
+                  <div class="final-wrap ">
+                    <div class="img-wrap ">
+                      <a href="javascript:;" routerLink="/artist_profile/{{artist_chart['artist']._id}}">
+                      <img src="{{artist_chart['artist'].image ? artist_img_url+artist_chart['artist'].image : 'img/highlight-player.png'}} " alt="Finalists "></a>
+                      <a href="javascript:void(0) " class="fan " (click)="followArtist(artist_chart['artist']._id, i)"><i class="fa {{artist_chart['artist']['is_followed'] ? 'fa-heart' : 'fa-heart-o'}}" aria-hidden="true "></i></a>
+                    </div>
+                    <div class="content-wrap ">
+                      <div class="player ">
+                        <div class="title "><a href="javascript:;" routerLink="/artist_profile/{{artist_chart['artist']._id}}">{{artist_chart['artist'].first_name +' '+artist_chart['artist'].last_name}}</a></div>
+                        <div class="cat {{artist_chart['artist']['music_type']['alias']}}">{{artist_chart['artist']['music_type']['name']}}</div>
+                      </div>
+                      <div class="location ">
+                        <p><i class="fa fa-map-marker " aria-hidden="true "></i><span>Brooklyn, New York</span></p>
+                        
+                      </div>
+                    </div>
+                  </div>
+              </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="my-artists">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="head-global"><h2>My Artists</h2></div>
+        </div>
+        <div class="highlights-wrap " >
+          <div class="row">
+            <div class="col-md-3 col-sm-4 col-xs-6">
+              <div class="final-wrap">
+                <div class="img-wrap">
+                  <img src="img/highlight-player.png" alt="Finalists">
+                  <a href="javascript:void(0)" class="fan"><i class="fa fa-heart" aria-hidden="true"></i></a>
+                </div>
+                <div class="content-wrap">
+                  <div class="player">
+                    <div class="title"><a href="#">DJ Bond</a></div>
+                    <div class="cat ele">Electronic</div>
+                  </div>
+                  <div class="location">
+                    <p><i class="fa fa-map-marker" aria-hidden="true"></i><span>Brooklyn, New York</span></p>
                     
                   </div>
                 </div>
               </div>
-          </div>        
+            </div>
+
+            <div class="col-md-3 col-sm-4 col-xs-6">
+              <div class="final-wrap">
+                <div class="img-wrap">
+                  <img src="img/highlight-player2.png" alt="Finalists">
+                  <a href="javascript:void(0)" class="fan"><i class="fa fa-heart" aria-hidden="true"></i></a>
+                </div>
+                <div class="content-wrap">
+                  <div class="player">
+                    <div class="title"><a href="#">DJ Bond</a></div>
+                    <div class="cat ele">Electronic</div>
+                  </div>
+                  <div class="location">
+                    <p><i class="fa fa-map-marker" aria-hidden="true"></i><span>Brooklyn, New York</span></p>
+                    
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          
+
+            
+          </div>
         </div>
       </div>
     </div>
