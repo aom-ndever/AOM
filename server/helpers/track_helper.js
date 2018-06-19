@@ -7,6 +7,8 @@ var track_helper = {};
 var mongoose = require('mongoose');
 var moment = require('moment');
 var ObjectId = mongoose.Types.ObjectId;
+var moment = require('moment');
+
 
 
 track_helper.insert_track = async (id, object) => {
@@ -20,11 +22,13 @@ track_helper.insert_track = async (id, object) => {
 };
 
 
-track_helper.get_all_track_of_artist = async (artist_id) => {
+track_helper.get_all_track_of_artist = async (artist_id, sort_by = {}) => {
+
     try {
         var music = await Track
             .find({ "artist_id": new ObjectId(artist_id) })
             .populate({ path: 'artist_id', populate: { path: 'music_type' } })
+            .sort(sort_by)
             .lean();
 
         if (music) {
