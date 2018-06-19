@@ -181,6 +181,7 @@ comment_helper.get_all_comment_by_track_id = async (track_id) => {
     try {
         var comment = await Comment
             .find({ "track_id": new ObjectId(track_id) })
+            .sort({ 'created_at': - 1 })
             .populate('user_id')
             .populate('artist_id')
             .populate('track_id')
