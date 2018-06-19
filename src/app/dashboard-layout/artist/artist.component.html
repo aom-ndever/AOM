@@ -415,7 +415,7 @@
         </div>
         <div class="highlights-wrap mCustomScrollbar " data-mcs-theme="dark-3">
           <div class="row">
-              <div class="alert alert-info" *ngIf="artistv1['chart_toppers']['length'] <= 0">No data available.</div>
+              <div class="alert alert-info col-sm-12" *ngIf="artistv1['chart_toppers']['length'] <= 0">No data available.</div>
               <div class="col-md-3 col-sm-4 col-xs-6" *ngFor="let artist_chart of artistv1.chart_toppers; let i = index;">
                   <div class="final-wrap ">
                     <div class="img-wrap ">
@@ -483,11 +483,7 @@
                   </div>
                 </div>
               </div>
-            </div>
-
-          
-
-            
+            </div>           
           </div>
         </div>
       </div>
