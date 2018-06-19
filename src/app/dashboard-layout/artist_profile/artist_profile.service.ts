@@ -60,4 +60,9 @@ export class ArtistProfileService {
   getAllTrackComment(data : any) {
     return this.http.post(`${this.api_host}/get_comment_by_track_id`, data);
   }
+  // Get track detail by track id
+  getTrackById(id : any) {
+    return this.http.get(`${this.api_host}/tracks/${id}`);
+  }
+  
 }
