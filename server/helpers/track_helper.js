@@ -41,12 +41,12 @@ track_helper.get_all_track_of_artist = async (artist_id, sort_by = {}) => {
     }
 };
 
-track_helper.get_all_track_of_artist_by_ranking = async (artist_id) => {
+track_helper.get_all_track_of_artist_by_ranking = async (artist_id, sort_by = {}) => {
     try {
         var music = await Track
             .find({ "artist_id": new ObjectId(artist_id) })
             .populate({ path: 'artist_id', populate: { path: 'music_type' } })
-            .sort({ 'no_of_votes': -1 })
+            .sort(sort_by)
             .lean();
 
         if (music) {
@@ -120,6 +120,7 @@ track_helper.get_all_track_by_track_id = async (track_id) => {
     try {
         var track = await Track
             .findOne({ "_id": new ObjectId(track_id) })
+            .populate('artist_id')
         if (track) {
             return { "status": 1, "message": "Track details found", "track": track };
         } else {

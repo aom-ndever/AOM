@@ -242,12 +242,13 @@ artist_helper.update_artist_comment = async (artist_id, no_votes) => {
 };
 
 
-artist_helper.update_track_comment = async (artist_id, no_votes) => {
+artist_helper.update_track_comment = async (id, no_comment) => {
+    console.log('id', id);
 
     try {
-        var vote = await Track.findOneAndUpdate({ "_id": new ObjectId(artist_id) }, { "no_of_comments": no_votes })
+        var track_data = await Track.findOneAndUpdate({ "_id": new ObjectId(id) }, { "no_of_comments": no_comment })
 
-        if (vote) {
+        if (track_data) {
             return { "status": 1, "message": "comment updated", };
         } else {
             return { "status": 2, "message": "comment not found" };

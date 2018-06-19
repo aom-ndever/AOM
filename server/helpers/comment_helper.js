@@ -58,7 +58,7 @@ comment_helper.get_all_comment_by_comment_id = async (comment_id) => {
     }
 };
 
-comment_helper.get_all_track = async (comment_id) => {
+comment_helper.get_all_comments = async (comment_id) => {
     try {
         var track = await Comment
             .findOne({ "_id": new ObjectId(comment_id) })
@@ -115,6 +115,9 @@ comment_helper.get_all_track_by_track_id = async (track_id) => {
     try {
         var track = await Track
             .findOne({ "_id": new ObjectId(track_id) })
+
+        console.log('track ---> ', track);
+
         if (track) {
             return { "status": 1, "message": "Track details found", "track": track };
         } else {

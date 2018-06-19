@@ -22,10 +22,17 @@ var fs = require('fs');
 router.delete('/:comment_id', async (req, res) => {
     user_id = req.userInfo.id;
 
-    var response = await comment_helper.get_all_track(req.params.comment_id);
-    var track_id = response.track._id
+    var comment_data = await comment_helper.get_all_comments(req.params.comment_id);
 
-    var responses = await comment_helper.get_all_track_by_track_id(track_id);
+
+    var track_id = comment_data.track.track_id
+
+    var track_data = await comment_helper.get_all_track_by_track_id(track_id);
+
+    decrement_comment = track_data.track.no_of_comments - 1;
+    var resp_data = await artist_helper.update_track_comment(track_id, decrement_comment);
+
+
     var del_resp = await comment_helper.delete_comment_by_artist(user_id, req.params.comment_id);
     if (del_resp.status === 0) {
         res.status(config.INTERNAL_SERVER_ERROR).json({ "status": 0, "message": "Error occured while deleting comment", "error": del_resp.error });
@@ -33,11 +40,7 @@ router.delete('/:comment_id', async (req, res) => {
         res.status(config.BAD_REQUEST).json({ "status": 0, "message": "Can't remove comment" });
     } else {
 
-        no_comment = response.track.no_of_comments - 1
-        var resp_data = await artist_helper.update_track_comment(user_id, no_comment);
-
         var resp = await artist_helper.get_artist_by_id(user_id);
-        console.log('resp', resp);
 
         no_comment = resp.artist.no_of_comments - 1
         var resp_data = await artist_helper.update_artist_comment(user_id, no_comment);
