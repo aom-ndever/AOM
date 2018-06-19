@@ -1271,7 +1271,8 @@ router.post("/mainpage", async (req, res) => {
 
 router.post("/artistv1", async (req, res) => {
   var filter_for_risingstar = {};
-  var filter_for_charttoppers = {};
+  var filter_for_charttoppers = {
+  };
 
 
   var page_no = {};
@@ -1283,11 +1284,18 @@ router.post("/artistv1", async (req, res) => {
       _id: new ObjectId(req.body.music_type)
     }
 
-    filter_for_charttoppers.artist = {
-      music_type: - {
-        _id: new ObjectId(req.body.music_type)
-      }
-    }
+    // filter_for_charttoppers = {
+    //   music_type: {
+    //     _id: new ObjectId(req.body.music_type)
+    //   }
+    // }
+
+    filter_for_charttoppers["music_type._id"] = new ObjectId(req.body.music_type)
+
+
+    console.log('filter_for_charttoppers', filter_for_charttoppers);
+
+
   }
   if (req.body.search) {
     var r = new RegExp(req.body.search);

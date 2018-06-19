@@ -131,6 +131,7 @@ artist_helper.get_login_by_email = async (email) => {
  *          status 2 - If artist not found, with appropriate message
  */
 artist_helper.get_all_artist = async (filter = {}) => {
+
     try {
         var artist = await Artist.aggregate([
             {
@@ -147,7 +148,6 @@ artist_helper.get_all_artist = async (filter = {}) => {
             {
                 $match: filter
             },
-
             {
                 $group: {
                     _id: "$_id",
@@ -167,7 +167,7 @@ artist_helper.get_all_artist = async (filter = {}) => {
 
         ]);
 
-        if (artist && artist.length > 0) {
+        if (artist) {
             return { "status": 1, "message": "artist details found", "artist": artist };
         } else {
             return { "status": 2, "message": "artist not found" };
@@ -407,9 +407,10 @@ artist_helper.update_artist_password = async (artist_id, password) => {
 
 
 artist_helper.get_new_uploads = async (filter = {}) => {
+    console.log('filter for new upalo', filter);
+
     try {
 
-        console.log('filter', filter);
 
         var artist = await Artist
             .find(filter)
