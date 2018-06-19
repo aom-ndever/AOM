@@ -1363,9 +1363,18 @@ router.post('/get_track', async (req, res) => {
     res.status(config.INTERNAL_SERVER_ERROR).json(track);
   }
 });
+
+
 router.post('/get_ranking', async (req, res) => {
+  var filter = {};
+
+  var sort_by = 1;
+  if (req.body.sort_by != 1) {
+    sort_by = -1;
+  }
+  var sort = { no_of_votes: -1, created_at: sort_by }
   artist_id = req.body.artist_id
-  var track = await track_helper.get_all_track_of_artist_by_ranking(artist_id);
+  var track = await track_helper.get_all_track_of_artist_by_ranking(artist_id, sort);
   if (track.status === 1) {
     logger.trace("got details successfully");
     res.status(config.OK_STATUS).json({ "status": 1, "track": track.music });
@@ -1426,9 +1435,11 @@ router.post('/get_comment_by_track_id', async (req, res) => {
 
 router.get('/tracks/:track_id', async (req, res) => {
   var track = await track_helper.get_all_track_by_track_id(req.params.track_id);
+  console.log('track', track);
+
   if (track.status === 1) {
     logger.trace("got details successfully");
-    res.status(config.OK_STATUS).json({ "status": 1, "track": track });
+    res.status(config.OK_STATUS).json({ "status": 1, "track": track.track });
   } else {
     logger.error("Error occured while fetching = ", track);
     res.status(config.INTERNAL_SERVER_ERROR).json(track);
