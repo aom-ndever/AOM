@@ -816,6 +816,10 @@ var ArtistProfileService = /** @class */ (function () {
     ArtistProfileService.prototype.getAllTrackComment = function (data) {
         return this.http.post(this.api_host + "/get_comment_by_track_id", data);
     };
+    // Get track detail by track id
+    ArtistProfileService.prototype.getTrackById = function (id) {
+        return this.http.get(this.api_host + "/tracks/" + id);
+    };
     ArtistProfileService = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Injectable"])(),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__angular_common_http__["a" /* HttpClient */]])
@@ -1456,7 +1460,7 @@ var LayoutModule = /** @class */ (function () {
                             { path: '', component: __WEBPACK_IMPORTED_MODULE_4__dashboard_dashboard_component__["a" /* DashboardComponent */] },
                             { path: 'whats-new', component: __WEBPACK_IMPORTED_MODULE_6__whatsnew_whatsnew_component__["a" /* WhatsNewComponent */] },
                             { path: 'artist', component: __WEBPACK_IMPORTED_MODULE_7__artist_artist_component__["a" /* ArtistComponent */] },
-                            { path: 'artist_profile/:artist_id/track/:id/comments', component: __WEBPACK_IMPORTED_MODULE_9__track_comments_track_comments_component__["a" /* TrackConmmentsComponent */], resolve: { comment: __WEBPACK_IMPORTED_MODULE_27__resolve_track_comment_resolve__["b" /* TrackCommentResolve */], artist: __WEBPACK_IMPORTED_MODULE_27__resolve_track_comment_resolve__["a" /* TrackArtistProfileResolve */] } },
+                            { path: 'artist_profile/:artist_id/track/:id/comments', component: __WEBPACK_IMPORTED_MODULE_9__track_comments_track_comments_component__["a" /* TrackConmmentsComponent */], resolve: { comment: __WEBPACK_IMPORTED_MODULE_27__resolve_track_comment_resolve__["b" /* TrackCommentResolve */], artist: __WEBPACK_IMPORTED_MODULE_27__resolve_track_comment_resolve__["a" /* TrackArtistProfileResolve */], track: __WEBPACK_IMPORTED_MODULE_27__resolve_track_comment_resolve__["c" /* TrackDetailResolve */] } },
                             { path: 'artist_profile/:id/comments', component: __WEBPACK_IMPORTED_MODULE_8__artist_comments_comments_component__["a" /* ConmmentsComponent */], resolve: { artist: __WEBPACK_IMPORTED_MODULE_26__resolve_artist_resolve__["d" /* ArtistProfileResolve */], comments: __WEBPACK_IMPORTED_MODULE_26__resolve_artist_resolve__["a" /* ArtistCommentsResolve */] } },
                             { path: 'artist_profile/:id', component: __WEBPACK_IMPORTED_MODULE_10__artist_profile_artist_profile_component__["a" /* ArtistProfileComponent */], resolve: { artist: __WEBPACK_IMPORTED_MODULE_26__resolve_artist_resolve__["d" /* ArtistProfileResolve */], track: __WEBPACK_IMPORTED_MODULE_26__resolve_artist_resolve__["f" /* ArtistTrackResolve */], media: __WEBPACK_IMPORTED_MODULE_26__resolve_artist_resolve__["c" /* ArtistMediaResolve */], follower: __WEBPACK_IMPORTED_MODULE_26__resolve_artist_resolve__["b" /* ArtistFollowerResolve */], comments: __WEBPACK_IMPORTED_MODULE_26__resolve_artist_resolve__["a" /* ArtistCommentsResolve */], ranking: __WEBPACK_IMPORTED_MODULE_26__resolve_artist_resolve__["e" /* ArtistRankingResolve */] } },
                             { path: 'vote', component: __WEBPACK_IMPORTED_MODULE_11__vote_vote_component__["a" /* VoteComponent */] },
@@ -1495,7 +1499,8 @@ var LayoutModule = /** @class */ (function () {
                 __WEBPACK_IMPORTED_MODULE_26__resolve_artist_resolve__["e" /* ArtistRankingResolve */],
                 __WEBPACK_IMPORTED_MODULE_24__track_comments_track_comments_service__["a" /* TrackCommentsService */],
                 __WEBPACK_IMPORTED_MODULE_27__resolve_track_comment_resolve__["b" /* TrackCommentResolve */],
-                __WEBPACK_IMPORTED_MODULE_27__resolve_track_comment_resolve__["a" /* TrackArtistProfileResolve */]
+                __WEBPACK_IMPORTED_MODULE_27__resolve_track_comment_resolve__["a" /* TrackArtistProfileResolve */],
+                __WEBPACK_IMPORTED_MODULE_27__resolve_track_comment_resolve__["c" /* TrackDetailResolve */]
             ]
         })
     ], LayoutModule);
@@ -2953,6 +2958,9 @@ var ArtistTrackResolve = /** @class */ (function () {
 /* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "b", function() { return __WEBPACK_IMPORTED_MODULE_0__track_comment_resolve__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__track_artist_profile_resolve__ = __webpack_require__("../../../../../src/app/dashboard-layout/resolve/track_comment_resolve/track_artist_profile.resolve.ts");
 /* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_1__track_artist_profile_resolve__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__track_detail_resolve__ = __webpack_require__("../../../../../src/app/dashboard-layout/resolve/track_comment_resolve/track_detail.resolve.ts");
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "c", function() { return __WEBPACK_IMPORTED_MODULE_2__track_detail_resolve__["a"]; });
+
 
 
 
@@ -3031,10 +3039,46 @@ var TrackCommentResolve = /** @class */ (function () {
 
 /***/ }),
 
+/***/ "../../../../../src/app/dashboard-layout/resolve/track_comment_resolve/track_detail.resolve.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return TrackDetailResolve; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__artist_profile_artist_profile_service__ = __webpack_require__("../../../../../src/app/dashboard-layout/artist_profile/artist_profile.service.ts");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+var TrackDetailResolve = /** @class */ (function () {
+    function TrackDetailResolve(ArtistProfileService) {
+        this.ArtistProfileService = ArtistProfileService;
+    }
+    TrackDetailResolve.prototype.resolve = function (route) {
+        return this.ArtistProfileService.getTrackById(route.paramMap.get('id'));
+    };
+    TrackDetailResolve = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Injectable"])(),
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__artist_profile_artist_profile_service__["a" /* ArtistProfileService */]])
+    ], TrackDetailResolve);
+    return TrackDetailResolve;
+}());
+
+
+
+/***/ }),
+
 /***/ "../../../../../src/app/dashboard-layout/track_comments/track_comments.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"track-comment-wrap\">\n  <div class=\"container\">\n    <div class=\"row\">\n        <div class=\"col-md-2 col-sm-3 col-xs-6\">\n            <div class=\"profile-img\">\n                <a href=\"javascript:;\"><img src=\"{{artistdata.image ? artist_img_url+artistdata.image : 'img/profile-img.png'}}\" alt=\"Profile Images\"></a>\n            </div>\n          </div>\n          <div class=\"col-md-10 col-sm-8 col-xs-6\">\n            <div class=\"abt-tr\">\n              <div class=\"play-btn\"><a href=\"#\"><img src=\"img/big-play.png\" alt=\"\"></a></div>\n              <div class=\"track-cname\"><a href=\"#\">Blue State of Mind</a></div>\n              <div class=\"artist-name\"><h2><a href=\"#\">Shavan Miller</a></h2></div>\n            </div>\n            <div class=\"action\">\n                <div class=\"cmt-like\"><a href=\"#\" class=\"liked\"><img src=\"img/likehand.png\" alt=\"\">1200</a></div>\n                <div class=\"download\"><a href=\"#\"><img src=\"img/download.png\" alt=\"\">$1.99</a></div>\n                <div class=\"share\"><a href=\"#\"><img src=\"img/share.png\" alt=\"\"></a></div>\n  \n              </div>\n            <div class=\"profile-location\"><i class=\"fa fa-map-marker\" aria-hidden=\"true\"></i> <span>New York</span>\n            <p class=\"hiphop tag\">Hip Hop</p></div>\n  \n            <div class=\"profile-description\">\n              <p>Lorem ipsum dolor sit amet,  adipisicing elit. Et reiciendis consequuntur nostrum molestias officiis, fuga quibusdam natus labore tempora vel accusamus doloribus eligendi quconsecteturod consectesicing elit. Et reiciendis consequuntur nostrum molestias officiis, fuga quibusdam natus labore tempora vel accusamus doloribus eligendi quconsecteturod consectetur omnis, numquam, voluptate fugit laboriosam.</p>\n              <span><a href=\"#\" class=\"more-link\"></a></span>\n            </div>\n          </div>\n  \n      <!--div class=\"col-md-2 col-sm-3 col-xs-6\">\n        <div class=\"profile-img\">\n          <a href=\"javascript:;\"><img src=\"{{artistdata.image ? artist_img_url+artistdata.image : 'img/profile-img.png'}}\" alt=\"Profile Images\"></a>\n        </div>\n      </div>\n      <div class=\"col-md-10 col-sm-8 col-xs-6\">\n        <div class=\"artist-name\"><h2><a href=\"javascript:;\">{{artistdata.first_name+' '+artistdata.last_name}}</a></h2><span class=\"{{artistdata['music_type']['alias']}} tag\">{{artistdata['music_type']['name']}}</span></div>\n        <div class=\"profile-location\"><i class=\"fa fa-map-marker\" aria-hidden=\"true\"></i> <span>New York</span></div>\n        <div class=\"profile-description\">\n          <p>{{artistdata.description}}</p>\n        </div-->\n      </div>\n      <div class=\"col-md-12\">\n        <div class=\"profile-detail-wrap\">\n          <div class=\"row\">\n            <div class=\"col-md-12 col-sm-12 col-xs-12\">\n              <div class=\"comments\">\n                <h3 class=\"num-cmt\">{{trackcomments.length}} Comments</h3>\n                <div class=\"add-comment\" *ngIf=\"user && user.user\">\n\t\t\t\t\t\t\t\t\t\t<div class=\"s-img\"><img src=\"img/fan1.png\" alt=\"img\"></div>\n\t\t\t\t\t\t\t\t  \t\t<div class=\"form-group\">\n\t\t\t\t\t\t\t\t  \t\t    <label for=\"cmmt\">Write a Comment</label>\n\t\t\t\t\t\t\t\t  \t\t    <input type=\"text\" class=\"form-control\" id=\"cmmt\" placeholder=\"Write a comment\">\n\t\t\t\t\t\t\t  \t  \t\t</div>\n\t\t\t\t\t\t\t  \t  \t\t<div class=\"button_group\">\n\t\t\t\t\t\t\t\t\t\t\t<a href=\"#\" class=\"update-btn\">Post</a>\n\t\t\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t\t</div>\n                <div class=\"login-alert\" *ngIf=\"!user\">Please Login to leave your comment</div>\n                <div class=\"comment-block col-md-12\" *ngFor=\"let comment of trackcomments; let i=index;\">\n                  <div class=\"s-name\">{{comment['track_id']['name']}}</div>\n                  <div class=\"s-img\"><img src=\"{{comment['user_id']['image'] ? user_img_url+comment['user_id']['image'] : 'img/fan1.png'}}\" alt=\"img\"></div>\n                  <div class=\"cm-date-name\">\n                    <h6>{{comment['user_id']['first_name']+' '+comment['user_id']['last_name']}}.</h6>\n                    <p>{{comment['created_at'] | timeAgo}}</p>\n                    <div class=\"profile-descriptions\">\n                      <p>{{comment['comment']}}</p>\n                    </div>\n                  </div>\n                  \n\n                </div>\n              </div>\n            </div>\n        </div>\n      </div>\n    </div>\n  </div>\n</div>\n"
+module.exports = "<div class=\"track-comment-wrap\">\n  <div class=\"container\">\n    <div class=\"row\">\n        <div class=\"col-md-2 col-sm-3 col-xs-6\">\n            <div class=\"profile-img\">\n                <a href=\"javascript:;\"><img src=\"{{artistdata.image ? artist_img_url+artistdata.image : 'img/profile-img.png'}}\" alt=\"Profile Images\"></a>\n            </div>\n          </div>\n          <div class=\"col-md-10 col-sm-8 col-xs-6\">\n            <div class=\"abt-tr\">\n              <div class=\"play-btn\">\n                <a href=\"javascript:;\">\n                  <img src=\"img/play.png\" alt=\"\" (click)=\"playAudio(track.audio, 1)\" [style.display]=\"!audio_ins[1] ? 'block' : 'none'\">\n                  <img src=\"img/pause.png\" alt=\"\" (click)=\"stopAudio(1)\" [style.display]=\"audio_ins[1] ? 'block' : 'none'\">\n                </a>\n              </div>\n              <div class=\"track-cname\"><a href=\"javascript:;\">{{track.name}}</a></div>\n              <div class=\"artist-name\"><h2><a href=\"javascript:;\">{{artistdata.first_name+' '+artistdata.last_name}}</a></h2></div>\n            </div>\n            <div class=\"action\">\n                <div class=\"cmt-like\"><a href=\"javascript:;\" class=\"liked\"><img src=\"img/likehand.png\" alt=\"\">{{track.no_of_likes}}</a></div>\n                <div class=\"download\"><a href=\"javascript:;\"><img src=\"img/download.png\" alt=\"\">${{track.price}}</a></div>\n                <div class=\"share\"><a href=\"javascript:;\"><img src=\"img/share.png\" alt=\"\"></a></div>\n  \n              </div>\n            <div class=\"profile-location\"><i class=\"fa fa-map-marker\" aria-hidden=\"true\"></i> <span>New York</span>\n            <p class=\"{{artistdata['music_type']['alias']}} tag\">{{artistdata['music_type']['name']}}</p></div>\n  \n            <div class=\"profile-description\">\n              <p>{{track.description}}</p>\n              \n            </div>\n          </div>\n      </div>\n      <div class=\"col-md-12\">\n        <div class=\"profile-detail-wrap\">\n          <div class=\"row\">\n            <div class=\"col-md-12 col-sm-12 col-xs-12\">\n              <div class=\"comments\">\n                <h3 class=\"num-cmt\">{{trackcomments.length}} Comments</h3>\n                <div class=\"add-comment\" *ngIf=\"user && user.user\">\n                    <form>\n                      <div class=\"s-img\"><img src=\"{{user['user'].image ? user_img_url+user['user'].image : 'img/fan1.png'}}\" alt=\"img\"></div>\n                        <div class=\"form-group\">\n                            <label for=\"cmmt\">Write a Comment</label>\n                            <input type=\"text\" class=\"form-control\" id=\"cmmt\" name=\"comment\" [(ngModel)]=\"comment_txt\" placeholder=\"Write a comment\">\n                          </div>\n                          <div class=\"button_group\">\n                        <button type=\"submit\" (click)=\"postComment()\" [disabled]=\"show_spinner\" class=\"update-btn\">Post <i class=\"fa fa-spinner fa-spin\" *ngIf=\"show_spinner\"></i></button>\n                      </div>\n                    </form>\n\t\t\t\t\t\t\t\t\t</div>\n                <div class=\"login-alert\" *ngIf=\"!user\">Please Login to leave your comment</div>\n                <div class=\"comment-block col-md-12\" *ngFor=\"let comment of trackcomments; let i=index;\">\n                  <div class=\"s-name\">{{comment['track_id']['name']}}</div>\n                  <div class=\"s-img\"><img src=\"{{comment['user_id']['image'] ? user_img_url+comment['user_id']['image'] : 'img/fan1.png'}}\" alt=\"img\"></div>\n                  <div class=\"cm-date-name\">\n                    <h6>{{comment['user_id']['first_name']+' '+comment['user_id']['last_name']}}.</h6>\n                    <p>{{comment['created_at'] | timeAgo}}</p>\n                    <div class=\"profile-descriptions\">\n                      <p>{{comment['comment']}}</p>\n                    </div>\n                  </div>\n                  \n\n                </div>\n              </div>\n            </div>\n        </div>\n      </div>\n    </div>\n  </div>\n</div>\n"
 
 /***/ }),
 
@@ -3068,15 +3112,74 @@ var TrackConmmentsComponent = /** @class */ (function () {
         this.toastr = toastr;
         this.route = route;
         this.artistdata = {};
+        this.track = {};
         this.trackcomments = [];
         this.artist_img_url = __WEBPACK_IMPORTED_MODULE_3__environments_environment__["a" /* environment */].API_URL + __WEBPACK_IMPORTED_MODULE_3__environments_environment__["a" /* environment */].ARTIST_IMG;
         this.track_url = __WEBPACK_IMPORTED_MODULE_3__environments_environment__["a" /* environment */].API_URL + __WEBPACK_IMPORTED_MODULE_3__environments_environment__["a" /* environment */].ARTIST_TRACK;
         this.user_img_url = __WEBPACK_IMPORTED_MODULE_3__environments_environment__["a" /* environment */].API_URL + __WEBPACK_IMPORTED_MODULE_3__environments_environment__["a" /* environment */].USER_IMG;
+        this.audio_ins = [];
+        this.comment_txt = '';
+        this.show_spinner = false;
         this.artistdata = this.route.snapshot.data['artist'].artist;
         this.trackcomments = this.route.snapshot.data['comment'].comment;
+        this.track = this.route.snapshot.data['track']['track'].track;
         this.user = JSON.parse(localStorage.getItem('user'));
+        console.log(this.track);
     }
     TrackConmmentsComponent.prototype.ngOnInit = function () {
+    };
+    // Play audio
+    TrackConmmentsComponent.prototype.playAudio = function (name, index) {
+        var audio = new Audio();
+        audio.src = this.track_url + name;
+        audio.load();
+        audio.play();
+        if (!this.audio_ins.hasOwnProperty(index)) {
+            this.audio_ins[index] = audio;
+        }
+    };
+    // Stop audio
+    TrackConmmentsComponent.prototype.stopAudio = function (index) {
+        console.log(this.audio_ins[index]);
+        this.audio_ins[index].pause();
+        this.audio_ins[index].currentTime = 0;
+        // this.audio_ins[index].stop();
+        delete this.audio_ins[index];
+    };
+    // Post comment
+    TrackConmmentsComponent.prototype.postComment = function () {
+        var _this = this;
+        if (this.comment_txt) {
+            this.show_spinner = true;
+            var data = {
+                "track_id": this.track._id,
+                "artist_id": this.artistdata._id,
+                "comment": this.comment_txt
+            };
+            this.TrackCommentsService.addCommentToTrack(data).subscribe(function (response) {
+                _this.comment_txt = '';
+                _this.getAllTrackComment();
+                _this.toastr.success(response['message'], 'Success!');
+            }, function (error) {
+                _this.show_spinner = false;
+                _this.toastr.error(error['error'].message, 'Error!');
+            }, function () {
+                _this.show_spinner = false;
+            });
+        }
+        else {
+            this.toastr.error('Comment shouldn\'t be empty.', 'Error!');
+        }
+    };
+    // Get all comment of track
+    TrackConmmentsComponent.prototype.getAllTrackComment = function () {
+        var _this = this;
+        var data = {
+            track_id: this.track._id
+        };
+        this.TrackCommentsService.getAllTrackComment(data).subscribe(function (response) {
+            _this.trackcomments = response['comment'];
+        });
     };
     TrackConmmentsComponent = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
@@ -3142,6 +3245,16 @@ var TrackCommentsService = /** @class */ (function () {
         this.user = JSON.parse(localStorage.getItem('user'));
         this.headers = new __WEBPACK_IMPORTED_MODULE_1__angular_common_http__["d" /* HttpHeaders */]({ 'x-access-token': this.user.token });
         return this.http.get(this.api_host + "/user/artist/followers", { headers: this.headers });
+    };
+    // Post a comment on track
+    TrackCommentsService.prototype.addCommentToTrack = function (data) {
+        this.user = JSON.parse(localStorage.getItem('user'));
+        this.headers = new __WEBPACK_IMPORTED_MODULE_1__angular_common_http__["d" /* HttpHeaders */]({ 'x-access-token': this.user.token });
+        return this.http.post(this.api_host + "/user/comment", data, { headers: this.headers });
+    };
+    // Track comment
+    TrackCommentsService.prototype.getAllTrackComment = function (data) {
+        return this.http.post(this.api_host + "/get_comment_by_track_id", data);
     };
     TrackCommentsService = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Injectable"])(),

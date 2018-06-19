@@ -8,36 +8,29 @@
           </div>
           <div class="col-md-10 col-sm-8 col-xs-6">
             <div class="abt-tr">
-              <div class="play-btn"><a href="#"><img src="img/big-play.png" alt=""></a></div>
-              <div class="track-cname"><a href="#">Blue State of Mind</a></div>
-              <div class="artist-name"><h2><a href="#">Shavan Miller</a></h2></div>
+              <div class="play-btn">
+                <a href="javascript:;">
+                  <img src="img/play.png" alt="" (click)="playAudio(track.audio, 1)" [style.display]="!audio_ins[1] ? 'block' : 'none'">
+                  <img src="img/pause.png" alt="" (click)="stopAudio(1)" [style.display]="audio_ins[1] ? 'block' : 'none'">
+                </a>
+              </div>
+              <div class="track-cname"><a href="javascript:;">{{track.name}}</a></div>
+              <div class="artist-name"><h2><a href="javascript:;">{{artistdata.first_name+' '+artistdata.last_name}}</a></h2></div>
             </div>
             <div class="action">
-                <div class="cmt-like"><a href="#" class="liked"><img src="img/likehand.png" alt="">1200</a></div>
-                <div class="download"><a href="#"><img src="img/download.png" alt="">$1.99</a></div>
-                <div class="share"><a href="#"><img src="img/share.png" alt=""></a></div>
+                <div class="cmt-like"><a href="javascript:;" class="liked"><img src="img/likehand.png" alt="">{{track.no_of_likes}}</a></div>
+                <div class="download"><a href="javascript:;"><img src="img/download.png" alt="">${{track.price}}</a></div>
+                <div class="share"><a href="javascript:;"><img src="img/share.png" alt=""></a></div>
   
               </div>
             <div class="profile-location"><i class="fa fa-map-marker" aria-hidden="true"></i> <span>New York</span>
-            <p class="hiphop tag">Hip Hop</p></div>
+            <p class="{{artistdata['music_type']['alias']}} tag">{{artistdata['music_type']['name']}}</p></div>
   
             <div class="profile-description">
-              <p>Lorem ipsum dolor sit amet,  adipisicing elit. Et reiciendis consequuntur nostrum molestias officiis, fuga quibusdam natus labore tempora vel accusamus doloribus eligendi quconsecteturod consectesicing elit. Et reiciendis consequuntur nostrum molestias officiis, fuga quibusdam natus labore tempora vel accusamus doloribus eligendi quconsecteturod consectetur omnis, numquam, voluptate fugit laboriosam.</p>
-              <span><a href="#" class="more-link"></a></span>
+              <p>{{track.description}}</p>
+              
             </div>
           </div>
-  
-      <!--div class="col-md-2 col-sm-3 col-xs-6">
-        <div class="profile-img">
-          <a href="javascript:;"><img src="{{artistdata.image ? artist_img_url+artistdata.image : 'img/profile-img.png'}}" alt="Profile Images"></a>
-        </div>
-      </div>
-      <div class="col-md-10 col-sm-8 col-xs-6">
-        <div class="artist-name"><h2><a href="javascript:;">{{artistdata.first_name+' '+artistdata.last_name}}</a></h2><span class="{{artistdata['music_type']['alias']}} tag">{{artistdata['music_type']['name']}}</span></div>
-        <div class="profile-location"><i class="fa fa-map-marker" aria-hidden="true"></i> <span>New York</span></div>
-        <div class="profile-description">
-          <p>{{artistdata.description}}</p>
-        </div-->
       </div>
       <div class="col-md-12">
         <div class="profile-detail-wrap">
@@ -46,14 +39,16 @@
               <div class="comments">
                 <h3 class="num-cmt">{{trackcomments.length}} Comments</h3>
                 <div class="add-comment" *ngIf="user && user.user">
-										<div class="s-img"><img src="img/fan1.png" alt="img"></div>
-								  		<div class="form-group">
-								  		    <label for="cmmt">Write a Comment</label>
-								  		    <input type="text" class="form-control" id="cmmt" placeholder="Write a comment">
-							  	  		</div>
-							  	  		<div class="button_group">
-											<a href="#" class="update-btn">Post</a>
-										</div>
+                    <form>
+                      <div class="s-img"><img src="{{user['user'].image ? user_img_url+user['user'].image : 'img/fan1.png'}}" alt="img"></div>
+                        <div class="form-group">
+                            <label for="cmmt">Write a Comment</label>
+                            <input type="text" class="form-control" id="cmmt" name="comment" [(ngModel)]="comment_txt" placeholder="Write a comment">
+                          </div>
+                          <div class="button_group">
+                        <button type="submit" (click)="postComment()" [disabled]="show_spinner" class="update-btn">Post <i class="fa fa-spinner fa-spin" *ngIf="show_spinner"></i></button>
+                      </div>
+                    </form>
 									</div>
                 <div class="login-alert" *ngIf="!user">Please Login to leave your comment</div>
                 <div class="comment-block col-md-12" *ngFor="let comment of trackcomments; let i=index;">

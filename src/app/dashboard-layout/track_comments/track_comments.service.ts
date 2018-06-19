@@ -30,4 +30,14 @@ export class TrackCommentsService {
     this.headers = new HttpHeaders({ 'x-access-token' : this.user.token });  
     return this.http.get(`${this.api_host}/user/artist/followers`, {headers : this.headers});
   }
+  // Post a comment on track
+  addCommentToTrack(data :  any) {
+    this.user = JSON.parse(localStorage.getItem('user'));
+    this.headers = new HttpHeaders({ 'x-access-token' : this.user.token });  
+    return this.http.post(`${this.api_host}/user/comment`, data, {headers : this.headers});
+  }
+   // Track comment
+   getAllTrackComment(data : any) {
+    return this.http.post(`${this.api_host}/get_comment_by_track_id`, data);
+  }
 }
