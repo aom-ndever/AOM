@@ -18,6 +18,8 @@ export class ArtistProfileComponent implements OnInit {
   artistfollower : any = {};
   artistcomments : any = [];
   display_comment : any = [];
+  sort_artist_track : any = '';
+  sort_ranking_tack : any = '';
   artist_img_url : any = environment.API_URL+environment.ARTIST_IMG;
   track_url : any = environment.API_URL+environment.ARTIST_TRACK;
   artist_media_url : any = environment.API_URL+environment.ARTIST_MEDIA;
@@ -167,7 +169,28 @@ export class ArtistProfileComponent implements OnInit {
     } 
   }
   // Vist track comment page
-  goToComment(id : any) {
-    this.router.navigate(['/track/'+id+'/comments']);
+  goToComment(artist_id : any, id : any) {
+    this.router.navigate(['artist_profile/'+artist_id+'/track/'+id+'/comments']);
+  }
+  // sortArtistTrack
+  sortArtistTrack(artist_id : any, sortBy : any) {
+    let data = {
+      "artist_id": artist_id,
+	    "sort_by" : sortBy
+    };
+    this.ArtistProfileService.getAllTrack(data).subscribe(response => {
+      this.artisttrack = response['track'];
+    });
+  }
+
+  // sortRankingTrack
+  sortRankingTrack(artist_id : any, sortBy : any) {
+    let data = {
+      "artist_id": artist_id,
+	    "sort_by" : sortBy
+    };
+    this.ArtistProfileService.getAllRanking(data).subscribe(response => {
+      this.rankingtrack = response['track'];
+    });
   }
 }

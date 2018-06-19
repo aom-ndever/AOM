@@ -110,9 +110,9 @@
                   <div id="tracks" class="tab-pane fade {{active_tab_index == 1 ? 'active show' : ''}}">
                     <div class="track-wrapper">
                       <div class="track-select-wrap">
-                        <select class="form-control" id="gender">
-                          <option>Newest First</option>
-                          <option>Newest First</option>
+                        <select class="form-control" name="artist_track" id="gender" (change)="sortArtistTrack(artistdata._id, $event.target.value)">
+                          <option value="0">Newest First</option>
+                          <option value="1">Newest Last</option>
                         </select>
                       </div>
                       <div class="track-table">
@@ -151,7 +151,7 @@
                                     <img src="img/like-color.jpg" alt="">{{artist.no_of_likes}}</a>
                                 </div>
                                 <div class="cmt">
-                                  <a href="javascript:;" (click)="goToComment(artist._id)">
+                                  <a href="javascript:;" (click)="goToComment(artistdata['_id'], artist._id)">
                                     <img src="img/comment.png" alt="">{{artist.no_of_comments}}</a>
                                 </div>
                                 <div class="download">
@@ -185,9 +185,9 @@
                   <div id="ranking" class="tab-pane fade {{active_tab_index == 3 ? 'active show' : ''}}">
                     <div class="track-wrapper">
                       <div class="track-select-wrap">
-                        <select class="form-control" id="gender">
-                          <option>Newest First</option>
-                          <option>Newest First</option>
+                        <select class="form-control" id="sort" (change)="sortRankingTrack(artistdata._id, $event.target.value)">
+                          <option value="0">Newest First</option>
+                          <option value="1">Newest Last</option>
                         </select>
                       </div>
                       <div class="track-table">

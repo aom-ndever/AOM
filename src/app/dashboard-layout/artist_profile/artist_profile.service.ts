@@ -56,4 +56,8 @@ export class ArtistProfileService {
     this.headers = new HttpHeaders({ 'x-access-token' : this.user.token });  
     return this.http.post(`${this.api_host}/user/track/like_track`, data, {headers : this.headers});
   }
+  // Track comment
+  getAllTrackComment(data : any) {
+    return this.http.post(`${this.api_host}/get_comment_by_track_id`, data);
+  }
 }
