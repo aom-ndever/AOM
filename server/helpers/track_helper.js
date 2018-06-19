@@ -115,6 +115,8 @@ track_helper.delete_track_by_admin = async (track_id) => {
 
 
 track_helper.get_all_track_by_track_id = async (track_id) => {
+    console.log('track_id', track_id);
+
     try {
         var track = await Track
             .findOne({ "_id": new ObjectId(track_id) })

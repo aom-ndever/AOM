@@ -1424,17 +1424,14 @@ router.post('/get_comment_by_track_id', async (req, res) => {
   }
 });
 
-
-router.delete('/:track_id', async (req, res) => {
-  track_id = req.params.track_id;
-  var del_resp = await track_helper.delete_track(track_id);
-  if (del_resp.status === 0) {
-    res.status(config.INTERNAL_SERVER_ERROR).json({ "status": 0, "message": "Error occured while deleting track ", "error": del_resp.error });
-  } else if (del_resp.status === 2) {
-    res.status(config.BAD_REQUEST).json({ "status": 0, "message": "Can't delete track " });
+router.get('/tracks/:track_id', async (req, res) => {
+  var track = await track_helper.get_all_track_by_track_id(req.params.track_id);
+  if (track.status === 1) {
+    logger.trace("got details successfully");
+    res.status(config.OK_STATUS).json({ "status": 1, "track": track });
   } else {
-
-    res.status(config.OK_STATUS).json({ "status": 1, "message": "track  has been deleted" });
+    logger.error("Error occured while fetching = ", track);
+    res.status(config.INTERNAL_SERVER_ERROR).json(track);
   }
 });
 module.exports = router;
