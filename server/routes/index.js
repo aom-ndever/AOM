@@ -1424,4 +1424,14 @@ router.post('/get_comment_by_track_id', async (req, res) => {
   }
 });
 
+router.get('/tracks/:track_id', async (req, res) => {
+  var track = await track_helper.get_all_track_by_track_id(req.params.track_id);
+  if (track.status === 1) {
+    logger.trace("got details successfully");
+    res.status(config.OK_STATUS).json({ "status": 1, "track": track });
+  } else {
+    logger.error("Error occured while fetching = ", track);
+    res.status(config.INTERNAL_SERVER_ERROR).json(track);
+  }
+});
 module.exports = router;
