@@ -69,6 +69,18 @@ comment_helper.delete_comment = async (user_id, bookmark_id) => {
         return { status: 0, message: "Error occured while deleting comment", error: err };
     }
 };
+comment_helper.delete_comment_by_artist = async (artist_id, comment_id) => {
+    try {
+        let comment = await Comment.findOneAndRemove({ artist_id: new ObjectId(artist_id), _id: new ObjectId(comment_id) });
+        if (!comment) {
+            return { status: 2, message: "Record has not Deleted" };
+        } else {
+            return { status: 1, message: "Record has been Deleted" };
+        }
+    } catch (err) {
+        return { status: 0, message: "Error occured while deleting comment", error: err };
+    }
+};
 
 comment_helper.update_votes = async (comment_id, no_votes) => {
 
@@ -135,6 +147,23 @@ comment_helper.get_all_comment_by_artist_id = async (artist_id) => {
     try {
         var comment = await Comment
             .find({ "artist_id": new ObjectId(artist_id) })
+            .populate('user_id')
+            .populate('artist_id')
+            .populate('track_id')
+            .lean()
+        if (comment) {
+            return { "status": 1, "message": "comment details found", "comment": comment };
+        } else {
+            return { "status": 2, "message": "comment not found" };
+        }
+    } catch (err) {
+        return { "status": 0, "message": "Error occured while finding artist", "error": err }
+    }
+};
+comment_helper.get_all_comment_by_track_id = async (track_id) => {
+    try {
+        var comment = await Comment
+            .find({ "track_id": new ObjectId(track_id) })
             .populate('user_id')
             .populate('artist_id')
             .populate('track_id')

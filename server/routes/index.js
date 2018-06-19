@@ -1346,7 +1346,15 @@ router.post('/get_media', async (req, res) => {
 
 router.post('/get_track', async (req, res) => {
   artist_id = req.body.artist_id
-  var track = await track_helper.get_all_track_of_artist(artist_id);
+  var filter = {};
+
+  var sort_by = 1;
+  if (req.body.sort_by != 1) {
+    sort_by = -1;
+  }
+
+  var sort = { created_at: sort_by }
+  var track = await track_helper.get_all_track_of_artist(artist_id, sort);
   if (track.status === 1) {
     logger.trace("got details successfully");
     res.status(config.OK_STATUS).json({ "status": 1, "track": track.music });
@@ -1395,6 +1403,18 @@ router.post('/followers', async (req, res) => {
 router.post('/comment', async (req, res) => {
   artist_id = req.body.artist_id
   var user = await comment_helper.get_all_comment_by_artist_id(artist_id);
+  if (user.status === 1) {
+    logger.trace("got details successfully");
+    res.status(config.OK_STATUS).json(user);
+  } else {
+    logger.error("Error occured while fetching = ", user);
+    res.status(config.INTERNAL_SERVER_ERROR).json(user);
+  }
+});
+
+router.post('/get_comment_by_track_id', async (req, res) => {
+  track_id = req.body.track_id
+  var user = await comment_helper.get_all_comment_by_track_id(track_id);
   if (user.status === 1) {
     logger.trace("got details successfully");
     res.status(config.OK_STATUS).json(user);

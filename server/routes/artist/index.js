@@ -18,7 +18,17 @@ var mongoose = require('mongoose');
 var ObjectId = mongoose.Types.ObjectId;
 var fs = require('fs');
 
-
+router.delete('/:comment_id', async (req, res) => {
+    user_id = req.userInfo.id;
+    var del_resp = await comment_helper.delete_comment_by_artist(user_id, req.params.comment_id);
+    if (del_resp.status === 0) {
+        res.status(config.INTERNAL_SERVER_ERROR).json({ "status": 0, "message": "Error occured while deleting comment", "error": del_resp.error });
+    } else if (del_resp.status === 2) {
+        res.status(config.BAD_REQUEST).json({ "status": 0, "message": "Can't remove comment" });
+    } else {
+        res.status(config.OK_STATUS).json({ "status": 1, "message": "comment has been removed" });
+    }
+});
 
 /**
  * @api {get} /user/get_music_and_track music and track detail - Get 
@@ -32,6 +42,7 @@ var fs = require('fs');
  */
 router.get('/get_music_and_track', async (req, res) => {
     artist_id = req.userInfo.id;
+
     var media = await media_helper.get_all_media_of_artist(artist_id);
     var track = await track_helper.get_all_track_of_artist(artist_id);
 
@@ -481,5 +492,6 @@ router.get('/contest', async (req, res) => {
         res.status(config.INTERNAL_SERVER_ERROR).json(contest);
     }
 });
+
 
 module.exports = router;
