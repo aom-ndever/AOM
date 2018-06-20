@@ -64,5 +64,10 @@ export class ArtistProfileService {
   getTrackById(id : any) {
     return this.http.get(`${this.api_host}/tracks/${id}`);
   }
-  
+  // download the track 
+  downloadTrack(id : any) {
+    this.user = JSON.parse(localStorage.getItem('user'));
+    this.headers = new HttpHeaders({ 'x-access-token' : this.user.token });
+    return this.http.get(`${this.api_host}/user/track/${id}/download`, {headers : this.headers});
+  }
 }

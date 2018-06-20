@@ -155,8 +155,8 @@
                                     <img src="img/comment.png" alt="">{{artist.no_of_comments}}</a>
                                 </div>
                                 <div class="download">
-                                  <a href="#">
-                                    <img src="img/download.png" alt="">${{artist.price}}</a>
+                                  <a href="javascript:;" >
+                                    <img src="img/download.png" *ngIf="artist.is_downloadable" (click)="downloadTrack(artist._id)" alt="">${{artist.price}}</a>
                                 </div>
                                 <div class="share">
                                   <a href="javascript:;">
@@ -230,8 +230,8 @@
                                     <img src="img/comment.png" alt="">{{rank.no_of_comments}}</a>
                                 </div>
                                 <div class="download">
-                                  <a href="javascript:;">
-                                    <img src="img/download.png" alt="">${{rank.price}}</a>
+                                  <a href="javascript:;" >
+                                    <img src="img/download.png" *ngIf="rank.is_downloadable" (click)="downloadTrack(rank._id)" alt="">${{rank.price}}</a>
                                 </div>
                                 <div class="share">
                                   <a href="javascript:;">

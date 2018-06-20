@@ -193,4 +193,20 @@ export class ArtistProfileComponent implements OnInit {
       this.rankingtrack = response['track'];
     });
   }
+  // Download track
+  downloadTrack(id : any) {
+    let user = JSON.parse(localStorage.getItem('user'));
+    if(user && user.user) {
+      this.ArtistProfileService.downloadTrack(id).subscribe(response => {
+        console.log(response);
+      }, error => {
+        this.toastr.error(error['error'].message, 'Error!');
+      });
+    } else if(user && user.artist) {
+      this.toastr.info('Only listenr can download this track.', 'Info!');
+    } 
+    else {
+      this.toastr.info('Please login to download this track.', 'Info!');
+    }
+  }
 }
