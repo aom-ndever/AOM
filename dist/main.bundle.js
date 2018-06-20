@@ -831,6 +831,172 @@ var ArtistProfileService = /** @class */ (function () {
 
 /***/ }),
 
+/***/ "../../../../../src/app/dashboard-layout/artist_track_comments/artist_track_comments.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"track-comment-wrap\">\n  <div class=\"container\">\n      <div class=\"col-md-12\">\n        <div class=\"profile-detail-wrap\">\n          <div class=\"row\">\n            <div class=\"col-md-12 col-sm-12 col-xs-12\">\n              <div class=\"comments\">\n                <h3 class=\"num-cmt\">{{trackcomments.length}} Comments</h3>\n                <div class=\"add-comment\" *ngIf=\"user && user.user\">\n                    <form>\n                      <div class=\"s-img\"><img src=\"{{user['user'].image ? user_img_url+user['user'].image : 'img/fan1.png'}}\" alt=\"img\"></div>\n                        <div class=\"form-group\">\n                            <label for=\"cmmt\">Write a Comment</label>\n                            <input type=\"text\" class=\"form-control\" id=\"cmmt\" name=\"comment\" [(ngModel)]=\"comment_txt\" placeholder=\"Write a comment\">\n                          </div>\n                          <div class=\"button_group\">\n                        <button type=\"submit\" (click)=\"postComment()\" [disabled]=\"show_spinner\" class=\"update-btn\">Post <i class=\"fa fa-spinner fa-spin\" *ngIf=\"show_spinner\"></i></button>\n                      </div>\n                    </form>\n\t\t\t\t\t\t\t\t\t</div>\n                <div class=\"login-alert\" *ngIf=\"!user\">Please Login to leave your comment</div>\n                <div class=\"comment-block col-md-12\" *ngFor=\"let comment of trackcomments; let i=index;\">\n                  <div class=\"s-name\">{{comment['track_id']['name']}}</div>\n                  <div class=\"pull-right\"><a href=\"javascript:;\"><i class=\"fa fa-trash\"></i></a></div>\n                  <div class=\"s-img\"><img src=\"{{comment['user_id']['image'] ? user_img_url+comment['user_id']['image'] : 'img/fan1.png'}}\" alt=\"img\"></div>\n                  <div class=\"cm-date-name\">\n                    <h6>{{comment['user_id']['first_name']+' '+comment['user_id']['last_name']}}.</h6>\n                    <p>{{comment['created_at'] | timeAgo}}</p>\n                    <div class=\"profile-descriptions\">\n                      <p>{{comment['comment']}}</p>\n                    </div>\n                  </div>\n                  \n\n                </div>\n              </div>\n            </div>\n        </div>\n      </div>\n    </div>\n  </div>\n</div>\n"
+
+/***/ }),
+
+/***/ "../../../../../src/app/dashboard-layout/artist_track_comments/artist_track_comments.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ArtistTrackConmmentsComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__artist_track_comments_service__ = __webpack_require__("../../../../../src/app/dashboard-layout/artist_track_comments/artist_track_comments.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_ngx_toastr__ = __webpack_require__("../../../../ngx-toastr/fesm5/ngx-toastr.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__environments_environment__ = __webpack_require__("../../../../../src/environments/environment.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__angular_router__ = __webpack_require__("../../../router/esm5/router.js");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+
+var ArtistTrackConmmentsComponent = /** @class */ (function () {
+    function ArtistTrackConmmentsComponent(ArtistTrackCommentsService, toastr, route) {
+        var _this = this;
+        this.ArtistTrackCommentsService = ArtistTrackCommentsService;
+        this.toastr = toastr;
+        this.route = route;
+        this.artistdata = {};
+        this.track = {};
+        this.trackcomments = [];
+        this.artist_img_url = __WEBPACK_IMPORTED_MODULE_3__environments_environment__["a" /* environment */].API_URL + __WEBPACK_IMPORTED_MODULE_3__environments_environment__["a" /* environment */].ARTIST_IMG;
+        this.track_url = __WEBPACK_IMPORTED_MODULE_3__environments_environment__["a" /* environment */].API_URL + __WEBPACK_IMPORTED_MODULE_3__environments_environment__["a" /* environment */].ARTIST_TRACK;
+        this.user_img_url = __WEBPACK_IMPORTED_MODULE_3__environments_environment__["a" /* environment */].API_URL + __WEBPACK_IMPORTED_MODULE_3__environments_environment__["a" /* environment */].USER_IMG;
+        this.audio_ins = [];
+        this.comment_txt = '';
+        this.show_spinner = false;
+        this.track_id = '';
+        this.route.params.subscribe(function (params) {
+            _this.track_id = params['id'];
+        });
+        this.user = JSON.parse(localStorage.getItem('user'));
+    }
+    ArtistTrackConmmentsComponent.prototype.ngOnInit = function () {
+        this.getAllTrackComment({ track_id: this.track_id });
+    };
+    // Play audio
+    ArtistTrackConmmentsComponent.prototype.playAudio = function (name, index) {
+        var audio = new Audio();
+        audio.src = this.track_url + name;
+        audio.load();
+        audio.play();
+        if (!this.audio_ins.hasOwnProperty(index)) {
+            this.audio_ins[index] = audio;
+        }
+    };
+    // Stop audio
+    ArtistTrackConmmentsComponent.prototype.stopAudio = function (index) {
+        console.log(this.audio_ins[index]);
+        this.audio_ins[index].pause();
+        this.audio_ins[index].currentTime = 0;
+        // this.audio_ins[index].stop();
+        delete this.audio_ins[index];
+    };
+    // Get all comment of track
+    ArtistTrackConmmentsComponent.prototype.getAllTrackComment = function (data) {
+        var _this = this;
+        this.ArtistTrackCommentsService.getAllTrackComment(data).subscribe(function (response) {
+            _this.trackcomments = response['comment'];
+        });
+    };
+    ArtistTrackConmmentsComponent = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+            selector: 'app-track-comments',
+            template: __webpack_require__("../../../../../src/app/dashboard-layout/artist_track_comments/artist_track_comments.component.html"),
+            styleUrls: []
+        }),
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__artist_track_comments_service__["a" /* ArtistTrackCommentsService */],
+            __WEBPACK_IMPORTED_MODULE_2_ngx_toastr__["b" /* ToastrService */],
+            __WEBPACK_IMPORTED_MODULE_4__angular_router__["a" /* ActivatedRoute */]])
+    ], ArtistTrackConmmentsComponent);
+    return ArtistTrackConmmentsComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/dashboard-layout/artist_track_comments/artist_track_comments.service.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ArtistTrackCommentsService; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common_http__ = __webpack_require__("../../../common/esm5/http.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_add_operator_toPromise__ = __webpack_require__("../../../../rxjs/_esm5/add/operator/toPromise.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_add_operator_toPromise___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_rxjs_add_operator_toPromise__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__environments_environment__ = __webpack_require__("../../../../../src/environments/environment.ts");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+var ArtistTrackCommentsService = /** @class */ (function () {
+    function ArtistTrackCommentsService(http) {
+        this.http = http;
+        this.api_host = __WEBPACK_IMPORTED_MODULE_3__environments_environment__["a" /* environment */].API_URL;
+        this.user = '';
+        this.headers = '';
+        // this.user = JSON.parse(localStorage.getItem('user'));
+        // this.headers = new HttpHeaders({ 'x-access-token' : this.user.token });  
+    }
+    // Get Artist and track
+    ArtistTrackCommentsService.prototype.getArtistData = function (data) {
+        return this.http.post(this.api_host + "/whatsnew", data);
+    };
+    // Follow the artist 
+    ArtistTrackCommentsService.prototype.followArtist = function (data) {
+        this.user = JSON.parse(localStorage.getItem('user'));
+        this.headers = new __WEBPACK_IMPORTED_MODULE_1__angular_common_http__["d" /* HttpHeaders */]({ 'x-access-token': this.user.token });
+        return this.http.post(this.api_host + "/user/artist/follow", data, { headers: this.headers });
+    };
+    // Get followers
+    ArtistTrackCommentsService.prototype.getFollower = function () {
+        this.user = JSON.parse(localStorage.getItem('user'));
+        this.headers = new __WEBPACK_IMPORTED_MODULE_1__angular_common_http__["d" /* HttpHeaders */]({ 'x-access-token': this.user.token });
+        return this.http.get(this.api_host + "/user/artist/followers", { headers: this.headers });
+    };
+    // Post a comment on track
+    ArtistTrackCommentsService.prototype.addCommentToTrack = function (data) {
+        this.user = JSON.parse(localStorage.getItem('user'));
+        this.headers = new __WEBPACK_IMPORTED_MODULE_1__angular_common_http__["d" /* HttpHeaders */]({ 'x-access-token': this.user.token });
+        return this.http.post(this.api_host + "/user/comment", data, { headers: this.headers });
+    };
+    // Track comment
+    ArtistTrackCommentsService.prototype.getAllTrackComment = function (data) {
+        return this.http.post(this.api_host + "/get_comment_by_track_id", data);
+    };
+    ArtistTrackCommentsService = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Injectable"])(),
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__angular_common_http__["a" /* HttpClient */]])
+    ], ArtistTrackCommentsService);
+    return ArtistTrackCommentsService;
+}());
+
+
+
+/***/ }),
+
 /***/ "../../../../../src/app/dashboard-layout/dashboard/dashboard.component.css":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -1369,38 +1535,42 @@ var HeaderService = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__artist_artist_component__ = __webpack_require__("../../../../../src/app/dashboard-layout/artist/artist.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__artist_comments_comments_component__ = __webpack_require__("../../../../../src/app/dashboard-layout/artist_comments/comments.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__track_comments_track_comments_component__ = __webpack_require__("../../../../../src/app/dashboard-layout/track_comments/track_comments.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__artist_profile_artist_profile_component__ = __webpack_require__("../../../../../src/app/dashboard-layout/artist_profile/artist_profile.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__vote_vote_component__ = __webpack_require__("../../../../../src/app/dashboard-layout/vote/vote.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__my_profile_myProfile_component__ = __webpack_require__("../../../../../src/app/dashboard-layout/my_profile/myProfile.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__my_music_my_music_component__ = __webpack_require__("../../../../../src/app/dashboard-layout/my_music/my_music.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__layout_dashboard_layout_module__ = __webpack_require__("../../../../../src/app/dashboard-layout/layout/dashboard-layout.module.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__shared_carousel_carousel_module__ = __webpack_require__("../../../../../src/app/shared/carousel/carousel.module.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__angular_http__ = __webpack_require__("../../../http/esm5/http.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__angular_common_http__ = __webpack_require__("../../../common/esm5/http.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__header_header_service__ = __webpack_require__("../../../../../src/app/dashboard-layout/header/header.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__my_profile_myProfile_service__ = __webpack_require__("../../../../../src/app/dashboard-layout/my_profile/myProfile.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__my_music_my_music_service__ = __webpack_require__("../../../../../src/app/dashboard-layout/my_music/my_music.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__whatsnew_whatsnew_service__ = __webpack_require__("../../../../../src/app/dashboard-layout/whatsnew/whatsnew.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__artist_artist_service__ = __webpack_require__("../../../../../src/app/dashboard-layout/artist/artist.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__artist_comments_comments_service__ = __webpack_require__("../../../../../src/app/dashboard-layout/artist_comments/comments.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_24__track_comments_track_comments_service__ = __webpack_require__("../../../../../src/app/dashboard-layout/track_comments/track_comments.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_25__artist_profile_artist_profile_service__ = __webpack_require__("../../../../../src/app/dashboard-layout/artist_profile/artist_profile.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_26__resolve_artist_resolve__ = __webpack_require__("../../../../../src/app/dashboard-layout/resolve/artist_resolve/index.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_27__resolve_track_comment_resolve__ = __webpack_require__("../../../../../src/app/dashboard-layout/resolve/track_comment_resolve/index.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_28__dashboard_dashboard_service__ = __webpack_require__("../../../../../src/app/dashboard-layout/dashboard/dashboard.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_29__angular_forms__ = __webpack_require__("../../../forms/esm5/forms.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_30_ngx_toastr__ = __webpack_require__("../../../../ngx-toastr/fesm5/ngx-toastr.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_31_angular2_lightbox__ = __webpack_require__("../../../../angular2-lightbox/index.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_31_angular2_lightbox___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_31_angular2_lightbox__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_32_time_ago_pipe__ = __webpack_require__("../../../../time-ago-pipe/esm5/time-ago-pipe.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_33__angular_platform_browser_animations__ = __webpack_require__("../../../platform-browser/esm5/animations.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_34__shared_auth_service__ = __webpack_require__("../../../../../src/app/shared/auth.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__artist_track_comments_artist_track_comments_component__ = __webpack_require__("../../../../../src/app/dashboard-layout/artist_track_comments/artist_track_comments.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__artist_profile_artist_profile_component__ = __webpack_require__("../../../../../src/app/dashboard-layout/artist_profile/artist_profile.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__vote_vote_component__ = __webpack_require__("../../../../../src/app/dashboard-layout/vote/vote.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__my_profile_myProfile_component__ = __webpack_require__("../../../../../src/app/dashboard-layout/my_profile/myProfile.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__my_music_my_music_component__ = __webpack_require__("../../../../../src/app/dashboard-layout/my_music/my_music.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__layout_dashboard_layout_module__ = __webpack_require__("../../../../../src/app/dashboard-layout/layout/dashboard-layout.module.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__shared_carousel_carousel_module__ = __webpack_require__("../../../../../src/app/shared/carousel/carousel.module.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__angular_http__ = __webpack_require__("../../../http/esm5/http.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__angular_common_http__ = __webpack_require__("../../../common/esm5/http.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__header_header_service__ = __webpack_require__("../../../../../src/app/dashboard-layout/header/header.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__my_profile_myProfile_service__ = __webpack_require__("../../../../../src/app/dashboard-layout/my_profile/myProfile.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__my_music_my_music_service__ = __webpack_require__("../../../../../src/app/dashboard-layout/my_music/my_music.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__whatsnew_whatsnew_service__ = __webpack_require__("../../../../../src/app/dashboard-layout/whatsnew/whatsnew.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__artist_artist_service__ = __webpack_require__("../../../../../src/app/dashboard-layout/artist/artist.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_24__artist_comments_comments_service__ = __webpack_require__("../../../../../src/app/dashboard-layout/artist_comments/comments.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_25__track_comments_track_comments_service__ = __webpack_require__("../../../../../src/app/dashboard-layout/track_comments/track_comments.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_26__artist_track_comments_artist_track_comments_service__ = __webpack_require__("../../../../../src/app/dashboard-layout/artist_track_comments/artist_track_comments.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_27__artist_profile_artist_profile_service__ = __webpack_require__("../../../../../src/app/dashboard-layout/artist_profile/artist_profile.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_28__resolve_artist_resolve__ = __webpack_require__("../../../../../src/app/dashboard-layout/resolve/artist_resolve/index.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_29__resolve_track_comment_resolve__ = __webpack_require__("../../../../../src/app/dashboard-layout/resolve/track_comment_resolve/index.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_30__dashboard_dashboard_service__ = __webpack_require__("../../../../../src/app/dashboard-layout/dashboard/dashboard.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_31__angular_forms__ = __webpack_require__("../../../forms/esm5/forms.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_32_ngx_toastr__ = __webpack_require__("../../../../ngx-toastr/fesm5/ngx-toastr.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_33_angular2_lightbox__ = __webpack_require__("../../../../angular2-lightbox/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_33_angular2_lightbox___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_33_angular2_lightbox__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_34_time_ago_pipe__ = __webpack_require__("../../../../time-ago-pipe/esm5/time-ago-pipe.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_35__angular_platform_browser_animations__ = __webpack_require__("../../../platform-browser/esm5/animations.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_36__shared_auth_service__ = __webpack_require__("../../../../../src/app/shared/auth.service.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+
+
 
 
 
@@ -1443,15 +1613,15 @@ var LayoutModule = /** @class */ (function () {
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["NgModule"])({
             imports: [
                 __WEBPACK_IMPORTED_MODULE_1__angular_common__["b" /* CommonModule */],
-                __WEBPACK_IMPORTED_MODULE_14__layout_dashboard_layout_module__["a" /* DashboardLayoutModule */],
-                __WEBPACK_IMPORTED_MODULE_15__shared_carousel_carousel_module__["a" /* CarouselModule */],
-                __WEBPACK_IMPORTED_MODULE_16__angular_http__["a" /* HttpModule */],
-                __WEBPACK_IMPORTED_MODULE_17__angular_common_http__["b" /* HttpClientModule */],
-                __WEBPACK_IMPORTED_MODULE_29__angular_forms__["b" /* FormsModule */],
-                __WEBPACK_IMPORTED_MODULE_29__angular_forms__["e" /* ReactiveFormsModule */],
-                __WEBPACK_IMPORTED_MODULE_33__angular_platform_browser_animations__["a" /* BrowserAnimationsModule */],
-                __WEBPACK_IMPORTED_MODULE_30_ngx_toastr__["a" /* ToastrModule */].forRoot(),
-                __WEBPACK_IMPORTED_MODULE_31_angular2_lightbox__["LightboxModule"],
+                __WEBPACK_IMPORTED_MODULE_15__layout_dashboard_layout_module__["a" /* DashboardLayoutModule */],
+                __WEBPACK_IMPORTED_MODULE_16__shared_carousel_carousel_module__["a" /* CarouselModule */],
+                __WEBPACK_IMPORTED_MODULE_17__angular_http__["a" /* HttpModule */],
+                __WEBPACK_IMPORTED_MODULE_18__angular_common_http__["b" /* HttpClientModule */],
+                __WEBPACK_IMPORTED_MODULE_31__angular_forms__["b" /* FormsModule */],
+                __WEBPACK_IMPORTED_MODULE_31__angular_forms__["e" /* ReactiveFormsModule */],
+                __WEBPACK_IMPORTED_MODULE_35__angular_platform_browser_animations__["a" /* BrowserAnimationsModule */],
+                __WEBPACK_IMPORTED_MODULE_32_ngx_toastr__["a" /* ToastrModule */].forRoot(),
+                __WEBPACK_IMPORTED_MODULE_33_angular2_lightbox__["LightboxModule"],
                 __WEBPACK_IMPORTED_MODULE_2__angular_router__["c" /* RouterModule */].forChild([
                     {
                         path: '',
@@ -1460,12 +1630,13 @@ var LayoutModule = /** @class */ (function () {
                             { path: '', component: __WEBPACK_IMPORTED_MODULE_4__dashboard_dashboard_component__["a" /* DashboardComponent */] },
                             { path: 'whats-new', component: __WEBPACK_IMPORTED_MODULE_6__whatsnew_whatsnew_component__["a" /* WhatsNewComponent */] },
                             { path: 'artist', component: __WEBPACK_IMPORTED_MODULE_7__artist_artist_component__["a" /* ArtistComponent */] },
-                            { path: 'artist_profile/:artist_id/track/:id/comments', component: __WEBPACK_IMPORTED_MODULE_9__track_comments_track_comments_component__["a" /* TrackConmmentsComponent */], resolve: { comment: __WEBPACK_IMPORTED_MODULE_27__resolve_track_comment_resolve__["b" /* TrackCommentResolve */], artist: __WEBPACK_IMPORTED_MODULE_27__resolve_track_comment_resolve__["a" /* TrackArtistProfileResolve */], track: __WEBPACK_IMPORTED_MODULE_27__resolve_track_comment_resolve__["c" /* TrackDetailResolve */] } },
-                            { path: 'artist_profile/:id/comments', component: __WEBPACK_IMPORTED_MODULE_8__artist_comments_comments_component__["a" /* ConmmentsComponent */], resolve: { artist: __WEBPACK_IMPORTED_MODULE_26__resolve_artist_resolve__["d" /* ArtistProfileResolve */], comments: __WEBPACK_IMPORTED_MODULE_26__resolve_artist_resolve__["a" /* ArtistCommentsResolve */] } },
-                            { path: 'artist_profile/:id', component: __WEBPACK_IMPORTED_MODULE_10__artist_profile_artist_profile_component__["a" /* ArtistProfileComponent */], resolve: { artist: __WEBPACK_IMPORTED_MODULE_26__resolve_artist_resolve__["d" /* ArtistProfileResolve */], track: __WEBPACK_IMPORTED_MODULE_26__resolve_artist_resolve__["f" /* ArtistTrackResolve */], media: __WEBPACK_IMPORTED_MODULE_26__resolve_artist_resolve__["c" /* ArtistMediaResolve */], follower: __WEBPACK_IMPORTED_MODULE_26__resolve_artist_resolve__["b" /* ArtistFollowerResolve */], comments: __WEBPACK_IMPORTED_MODULE_26__resolve_artist_resolve__["a" /* ArtistCommentsResolve */], ranking: __WEBPACK_IMPORTED_MODULE_26__resolve_artist_resolve__["e" /* ArtistRankingResolve */] } },
-                            { path: 'vote', component: __WEBPACK_IMPORTED_MODULE_11__vote_vote_component__["a" /* VoteComponent */] },
-                            { path: 'my-music', component: __WEBPACK_IMPORTED_MODULE_13__my_music_my_music_component__["a" /* MyMusicComponent */], canActivate: [__WEBPACK_IMPORTED_MODULE_34__shared_auth_service__["a" /* AuthService */]] },
-                            { path: 'my-profile', component: __WEBPACK_IMPORTED_MODULE_12__my_profile_myProfile_component__["a" /* MyProfileComponent */], canActivate: [__WEBPACK_IMPORTED_MODULE_34__shared_auth_service__["a" /* AuthService */]] }
+                            { path: 'artist_track_comment/:id', component: __WEBPACK_IMPORTED_MODULE_10__artist_track_comments_artist_track_comments_component__["a" /* ArtistTrackConmmentsComponent */], canActivate: [__WEBPACK_IMPORTED_MODULE_36__shared_auth_service__["a" /* AuthService */]] },
+                            { path: 'artist_profile/:artist_id/track/:id/comments', component: __WEBPACK_IMPORTED_MODULE_9__track_comments_track_comments_component__["a" /* TrackConmmentsComponent */], resolve: { comment: __WEBPACK_IMPORTED_MODULE_29__resolve_track_comment_resolve__["b" /* TrackCommentResolve */], artist: __WEBPACK_IMPORTED_MODULE_29__resolve_track_comment_resolve__["a" /* TrackArtistProfileResolve */], track: __WEBPACK_IMPORTED_MODULE_29__resolve_track_comment_resolve__["c" /* TrackDetailResolve */] } },
+                            { path: 'artist_profile/:id/comments', component: __WEBPACK_IMPORTED_MODULE_8__artist_comments_comments_component__["a" /* ConmmentsComponent */], resolve: { artist: __WEBPACK_IMPORTED_MODULE_28__resolve_artist_resolve__["d" /* ArtistProfileResolve */], comments: __WEBPACK_IMPORTED_MODULE_28__resolve_artist_resolve__["a" /* ArtistCommentsResolve */] } },
+                            { path: 'artist_profile/:id', component: __WEBPACK_IMPORTED_MODULE_11__artist_profile_artist_profile_component__["a" /* ArtistProfileComponent */], resolve: { artist: __WEBPACK_IMPORTED_MODULE_28__resolve_artist_resolve__["d" /* ArtistProfileResolve */], track: __WEBPACK_IMPORTED_MODULE_28__resolve_artist_resolve__["f" /* ArtistTrackResolve */], media: __WEBPACK_IMPORTED_MODULE_28__resolve_artist_resolve__["c" /* ArtistMediaResolve */], follower: __WEBPACK_IMPORTED_MODULE_28__resolve_artist_resolve__["b" /* ArtistFollowerResolve */], comments: __WEBPACK_IMPORTED_MODULE_28__resolve_artist_resolve__["a" /* ArtistCommentsResolve */], ranking: __WEBPACK_IMPORTED_MODULE_28__resolve_artist_resolve__["e" /* ArtistRankingResolve */] } },
+                            { path: 'vote', component: __WEBPACK_IMPORTED_MODULE_12__vote_vote_component__["a" /* VoteComponent */] },
+                            { path: 'my-music', component: __WEBPACK_IMPORTED_MODULE_14__my_music_my_music_component__["a" /* MyMusicComponent */], canActivate: [__WEBPACK_IMPORTED_MODULE_36__shared_auth_service__["a" /* AuthService */]] },
+                            { path: 'my-profile', component: __WEBPACK_IMPORTED_MODULE_13__my_profile_myProfile_component__["a" /* MyProfileComponent */], canActivate: [__WEBPACK_IMPORTED_MODULE_36__shared_auth_service__["a" /* AuthService */]] }
                         ]
                     }
                 ])
@@ -1474,33 +1645,35 @@ var LayoutModule = /** @class */ (function () {
                 __WEBPACK_IMPORTED_MODULE_6__whatsnew_whatsnew_component__["a" /* WhatsNewComponent */],
                 __WEBPACK_IMPORTED_MODULE_7__artist_artist_component__["a" /* ArtistComponent */],
                 __WEBPACK_IMPORTED_MODULE_8__artist_comments_comments_component__["a" /* ConmmentsComponent */],
-                __WEBPACK_IMPORTED_MODULE_11__vote_vote_component__["a" /* VoteComponent */],
-                __WEBPACK_IMPORTED_MODULE_12__my_profile_myProfile_component__["a" /* MyProfileComponent */],
-                __WEBPACK_IMPORTED_MODULE_13__my_music_my_music_component__["a" /* MyMusicComponent */],
+                __WEBPACK_IMPORTED_MODULE_12__vote_vote_component__["a" /* VoteComponent */],
+                __WEBPACK_IMPORTED_MODULE_13__my_profile_myProfile_component__["a" /* MyProfileComponent */],
+                __WEBPACK_IMPORTED_MODULE_14__my_music_my_music_component__["a" /* MyMusicComponent */],
                 __WEBPACK_IMPORTED_MODULE_3_angular_io_slimscroll__["SlimScroll"],
-                __WEBPACK_IMPORTED_MODULE_10__artist_profile_artist_profile_component__["a" /* ArtistProfileComponent */],
+                __WEBPACK_IMPORTED_MODULE_11__artist_profile_artist_profile_component__["a" /* ArtistProfileComponent */],
                 __WEBPACK_IMPORTED_MODULE_9__track_comments_track_comments_component__["a" /* TrackConmmentsComponent */],
-                __WEBPACK_IMPORTED_MODULE_32_time_ago_pipe__["a" /* TimeAgoPipe */]
+                __WEBPACK_IMPORTED_MODULE_10__artist_track_comments_artist_track_comments_component__["a" /* ArtistTrackConmmentsComponent */],
+                __WEBPACK_IMPORTED_MODULE_34_time_ago_pipe__["a" /* TimeAgoPipe */]
             ],
-            providers: [__WEBPACK_IMPORTED_MODULE_18__header_header_service__["a" /* HeaderService */],
-                __WEBPACK_IMPORTED_MODULE_34__shared_auth_service__["a" /* AuthService */],
-                __WEBPACK_IMPORTED_MODULE_19__my_profile_myProfile_service__["a" /* MyProfileService */],
-                __WEBPACK_IMPORTED_MODULE_20__my_music_my_music_service__["a" /* MyMusicService */],
-                __WEBPACK_IMPORTED_MODULE_21__whatsnew_whatsnew_service__["a" /* WhatsNewService */],
-                __WEBPACK_IMPORTED_MODULE_22__artist_artist_service__["a" /* ArtistService */],
-                __WEBPACK_IMPORTED_MODULE_23__artist_comments_comments_service__["a" /* CommentsService */],
-                __WEBPACK_IMPORTED_MODULE_28__dashboard_dashboard_service__["a" /* DashboardService */],
-                __WEBPACK_IMPORTED_MODULE_25__artist_profile_artist_profile_service__["a" /* ArtistProfileService */],
-                __WEBPACK_IMPORTED_MODULE_26__resolve_artist_resolve__["d" /* ArtistProfileResolve */],
-                __WEBPACK_IMPORTED_MODULE_26__resolve_artist_resolve__["f" /* ArtistTrackResolve */],
-                __WEBPACK_IMPORTED_MODULE_26__resolve_artist_resolve__["c" /* ArtistMediaResolve */],
-                __WEBPACK_IMPORTED_MODULE_26__resolve_artist_resolve__["a" /* ArtistCommentsResolve */],
-                __WEBPACK_IMPORTED_MODULE_26__resolve_artist_resolve__["b" /* ArtistFollowerResolve */],
-                __WEBPACK_IMPORTED_MODULE_26__resolve_artist_resolve__["e" /* ArtistRankingResolve */],
-                __WEBPACK_IMPORTED_MODULE_24__track_comments_track_comments_service__["a" /* TrackCommentsService */],
-                __WEBPACK_IMPORTED_MODULE_27__resolve_track_comment_resolve__["b" /* TrackCommentResolve */],
-                __WEBPACK_IMPORTED_MODULE_27__resolve_track_comment_resolve__["a" /* TrackArtistProfileResolve */],
-                __WEBPACK_IMPORTED_MODULE_27__resolve_track_comment_resolve__["c" /* TrackDetailResolve */]
+            providers: [__WEBPACK_IMPORTED_MODULE_19__header_header_service__["a" /* HeaderService */],
+                __WEBPACK_IMPORTED_MODULE_36__shared_auth_service__["a" /* AuthService */],
+                __WEBPACK_IMPORTED_MODULE_20__my_profile_myProfile_service__["a" /* MyProfileService */],
+                __WEBPACK_IMPORTED_MODULE_21__my_music_my_music_service__["a" /* MyMusicService */],
+                __WEBPACK_IMPORTED_MODULE_22__whatsnew_whatsnew_service__["a" /* WhatsNewService */],
+                __WEBPACK_IMPORTED_MODULE_23__artist_artist_service__["a" /* ArtistService */],
+                __WEBPACK_IMPORTED_MODULE_24__artist_comments_comments_service__["a" /* CommentsService */],
+                __WEBPACK_IMPORTED_MODULE_30__dashboard_dashboard_service__["a" /* DashboardService */],
+                __WEBPACK_IMPORTED_MODULE_26__artist_track_comments_artist_track_comments_service__["a" /* ArtistTrackCommentsService */],
+                __WEBPACK_IMPORTED_MODULE_27__artist_profile_artist_profile_service__["a" /* ArtistProfileService */],
+                __WEBPACK_IMPORTED_MODULE_28__resolve_artist_resolve__["d" /* ArtistProfileResolve */],
+                __WEBPACK_IMPORTED_MODULE_28__resolve_artist_resolve__["f" /* ArtistTrackResolve */],
+                __WEBPACK_IMPORTED_MODULE_28__resolve_artist_resolve__["c" /* ArtistMediaResolve */],
+                __WEBPACK_IMPORTED_MODULE_28__resolve_artist_resolve__["a" /* ArtistCommentsResolve */],
+                __WEBPACK_IMPORTED_MODULE_28__resolve_artist_resolve__["b" /* ArtistFollowerResolve */],
+                __WEBPACK_IMPORTED_MODULE_28__resolve_artist_resolve__["e" /* ArtistRankingResolve */],
+                __WEBPACK_IMPORTED_MODULE_25__track_comments_track_comments_service__["a" /* TrackCommentsService */],
+                __WEBPACK_IMPORTED_MODULE_29__resolve_track_comment_resolve__["b" /* TrackCommentResolve */],
+                __WEBPACK_IMPORTED_MODULE_29__resolve_track_comment_resolve__["a" /* TrackArtistProfileResolve */],
+                __WEBPACK_IMPORTED_MODULE_29__resolve_track_comment_resolve__["c" /* TrackDetailResolve */]
             ]
         })
     ], LayoutModule);
@@ -1622,7 +1795,7 @@ var DashboardLayoutModule = /** @class */ (function () {
 /***/ "../../../../../src/app/dashboard-layout/my_music/my_music.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<section class=\"mymusic-wrap\">\n  <div class=\"container\">\n    <div class=\"row\">\n      <div class=\"col-md-2 col-sm-3 col-xs-12\">\n        <div class=\"track-menu\">\n          <ul class=\"nav nav-tabs\" id=\"myTab\">\n            <li class=\"nav-item\">\n              <a class=\"nav-link {{tab_cnt == 1 ? 'active' : ''}}\" (click)=\"tabChanged(1)\" data-toggle=\"tab\" href=\"javascript:;\" >My Track</a>\n            </li>\n            <li class=\"nav-item\">\n              <a class=\"nav-link {{tab_cnt == 2 ? 'active' : ''}}\" (click)=\"tabChanged(2)\"  data-toggle=\"tab\" href=\"javascript:;\" >Stats</a>\n            </li>\n          </ul>\n          \n          <p><a data-fancybox data-animation-duration=\"700\" data-src=\"#addtrack\" (click)=\"openModal(content)\"  href=\"javascript:;\"><img src=\"img/icons8-plus_mathNormal.png\" alt=\"Plus Icone\"> Add Track</a></p>\n        </div>\n      </div>\n      <div class=\"col-md-10 col-sm-9 col-xs-12\">\n        <div class=\"tab-content\">\n          <div class=\"tab-pane fade {{tab_cnt == 1 ? 'show active' : ''}}\" id=\"mytracks\">\n            <div class=\"track-table\">\n              <div class=\"alert alert-info\" *ngIf=\"tracklist.length == 0\">\n                No data available.\n              </div>\n              <table>\n                <tbody>\n                  <tr *ngFor=\"let t of tracklist; let i =  index;\">\n                    <td class=\"serial-num\">{{i+1}}.</td>\n                    <td class=\"play-option\">\n                      <a href=\"javascript:;\" (click)=\"playAudio(t.audio, i)\" *ngIf=\"!audio_ins[i]\">\n                        <img src=\"img/new-play.png\" alt=\"Play\" >\n                      </a>\n                      <a href=\"javascript:;\" (click)=\"stopAudio(i)\" *ngIf=\"audio_ins[i]\">\n                        <img src=\"img/pause.png\" alt=\"Play\" >\n                      </a>\n                    </td>\n                    <td class=\"track-pic\"><a href=\"javascript:;\">\n                      <img src=\"{{track_url+t.image}}\" *ngIf=\"t.image\" width=\"50\" height=\"50\" alt=\"Track Image\">\n                      <img src=\"img/track-img.png\" *ngIf=\"!t.image\" alt=\"Track Image\">\n                    </a></td>\n                    <td class=\"track-det\" colspan=\"2\">\n                      <p class=\"track-name\">{{t.name}}</p>\n                      <p class=\"track-singer\">{{userinfo.artist.first_name + ' '+ userinfo.artist.last_name}}</p>\n                      <p class=\"track-year\">{{t.created_at | date : 'MMMM dd, yyyy'}}</p>\n                    </td>\n                    <td class=\"td track-vote\" style=\"display: none;\">\n                      <img src=\"img/start.png\" alt=\"start\">\n                      <span>1300 <br> <span>Votes</span></span>\n                    </td>\n\n                    <td class=\"contest-btn\" >\n                      <a data-fancybox data-animation-duration=\"700\" (click)=\"openContestModal(contest, t)\" data-src=\"#submitcontest\" href=\"javascript:;\">Submit for a Contest</a>\n                    </td>\n                    <td class=\"action\" colspan=\"2\">\n                      <div class=\"track-like\">\n                        <a href=\"javascript:;\"><img src=\"img/likehand.png\" alt=\"Like Thumb\"></a>\n                        <span class=\"new-up\"></span>\n                      </div>\n                      <div class=\"track-comment\">\n                        <a href=\"javascript:;\"><img src=\"img/comment.png\" alt=\"Comment\"></a>\n                        <span class=\"new-up\"></span>\n                      </div>\n                      <div class=\"track-price\"><a href=\"#\">${{t.price}}</a></div>\n                      <div class=\"share\"><a href=\"javascript:;\"><img src=\"img/share.png\" alt=\"Track Share\"></a></div>\n                      <div class=\"track-edit\"><a data-fancybox data-animation-duration=\"700\" data-src=\"#edittrack\" (click)=\"openEditTrackModal(editTrack, t)\"  href=\"javascript:;\"><img src=\"img/edit.png\" alt=\"Track Edit\"></a></div>\n                      <div class=\"track-del\"><a data-fancybox data-animation-duration=\"700\" data-src=\"#delete\" (click)=\"removeTrack(t._id)\" href=\"javascript:;\"><img src=\"img/del.png\" alt=\"Track Delete\"></a></div>\n                    </td>\n                  </tr>\n                </tbody>\n              </table>\n            </div>\n          </div>\n          <div class=\"tab-pane fade {{tab_cnt == 2 ? 'show active' : ''}}\" id=\"stats\">\n            <div class=\"track-table\">\n                <div class=\"alert alert-info\" *ngIf=\"tracklist.length == 0\">\n                  No data available.\n                </div>\n              <table>\n                <tbody>\n                  <tr *ngFor=\"let t of tracklist; let i =  index;\">\n                    <td class=\"serial-num\">{{i+1}}.</td>\n                    <td class=\"play-option\">\n                        <a href=\"javascript:;\" >\n                          <img src=\"img/play.png \" alt=\"Pause \"  [style.display]=\"!audio_ins[i] ? 'block' : 'none'\" (click)=\"playAudio(t.audio, i)\">\n                          <img src=\"img/pause.png \" alt=\"Pause \"  [style.display]=\"audio_ins[i] ? 'block' : 'none'\" (click)=\"stopAudio(i)\">\n                        </a>\n                    </td>\n                    <td class=\"track-pic\"><a href=\"javascript:;\">\n                        <img src=\"{{track_url+t.image}}\" *ngIf=\"t.image\" width=\"50\" height=\"50\" alt=\"Track Image\">\n                        <img src=\"img/track-img.png\" *ngIf=\"!t.image\" alt=\"Track Image\">\n                    </a></td>\n                    <td class=\"track-det\" colspan=\"2\">\n                      <p class=\"track-name\">{{t.name}}</p>\n                      <p class=\"track-singer\">{{userinfo.artist.first_name + ' '+ userinfo.artist.last_name}}</p>\n                      <p class=\"track-year\">{{t.created_at | date : 'MMMM dd, yyyy'}}</p>\n                    </td>\n                    <td class=\"td track-vote\">\n                      <img src=\"img/start.png\" alt=\"start\">\n                      <span>{{t.no_of_votes}} <br> <span>Votes</span></span>\n                    </td>\n                    <td class=\"action\" colspan=\"2\">\n                      <div class=\"track-like\">\n                        <a href=\"javascript:;\"><img src=\"img/likehand.png\" alt=\"Like Thumb\"></a>\n                        <span class=\"new-up\"></span>\n                      </div>\n                      <div class=\"track-comment\">\n                        <a href=\"javascript:;\"><img src=\"img/comment.png\" alt=\"Comment\"></a>\n                        <span class=\"new-up\"></span>\n                      </div>\n                      <div class=\"track-price\"><a href=\"javascript:;\">${{t.price}}</a></div>\n                      <div class=\"share\"><a href=\"javascript:;\"><img src=\"img/share.png\" alt=\"Track Share\"></a></div>\n                      <div class=\"track-edit\"><a data-fancybox data-animation-duration=\"700\" data-src=\"#edittrack\"  href=\"javascript:;\"><img src=\"img/edit.png\" alt=\"Track Edit\"></a></div>\n                      <div class=\"track-del\"><a data-fancybox data-animation-duration=\"700\" data-src=\"#delete\"  href=\"javascript:;\"><img src=\"img/del.png\" alt=\"Track Delete\"></a></div>\n                    </td>\n                  </tr>\n                </tbody>\n              </table>\n            </div>\n          </div>\n        </div>\n      </div>\n    </div>\n  </div>\n</section>\n<ng-template #content let-c=\"close\" let-d=\"dismiss\" >\n\t\t<button type=\"button\" class=\"close\" aria-label=\"Close\" (click)=\"d('Cross click')\">\n\t\t<span aria-hidden=\"true\">&times;</span>\n\t\t</button>\n  <div class=\"modal-body\">\n    <div class=\"add-track-modal\">\n\t\t\t<h3>Add New Track</h3>\n\t\t\t<div class=\"media-upload-btn\"> \n\t\t\t\t<span class=\"upl-img\"><i class=\"fa fa-cloud-upload\" aria-hidden=\"true\"></i></span> \n\t\t\t\t<span class=\"up_text\">Select Music</span> \n\t\t\t\t<input type=\"file\" name=\"my_doc_upload\" id=\"my_doc_upload\" (change)=\"changeAudio($event)\" multiple=\"false\"> \n\t\t\t\t<p class=\"instrution\">AIFF,WAV,FLAC,MP3 or less</p>\n\t\t\t</div>\n\t\t\t<div class=\"media_progress_bar\">\n\t\t\t\t<div class=\"det\">\n\t\t\t\t\t<div class=\"upl-file-name\">My Summer.mp3</div>\n\t\t\t\t\t<div class=\"upl-time-rem\">5 sec remaining</div>\n\t\t\t\t\t<div class=\"close-btn\"><img src=\"img/closeNormal.png\" alt=\"Close-btn\"></div>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"progress\">\n\t\t\t\t    <div class=\"progress-bar\" role=\"progressbar\" aria-valuenow=\"70\" aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width:70%\">\n\t\t\t\t      <span class=\"sr-only\">70% Complete</span>\n\t\t\t\t    </div>\n\t\t\t\t  </div>\n\t\t\t</div>\n\t\t\t<div class=\"form-group tr-name\">\n\t\t\t    <label for=\"tname\">Track Name</label>\n\t\t\t    <input type=\"text\" class=\"form-control\" id=\"tname\" name=\"name\" [(ngModel)]=\"trackdata.name\" placeholder=\"Track Name\">\n\t\t  \t</div>\n\t\t  \t<div class=\"form-group tr-price\">\n\t\t\t    <label for=\"tname\">Price</label>\n\t\t\t    <input type=\"number\" class=\"form-control\" id=\"tname\" name=\"price\" [(ngModel)]=\"trackdata.price\" placeholder=\"$ 1399\">\n\t\t  \t</div>\n\t\t  \t<div class=\"textarea-upload\">\n\t\t\t  \t<div class=\"media-upload-btn song-photo\"> \n  \t\t\t\t\t<span class=\"upl-img\"><i class=\"fa fa-cloud-upload\" aria-hidden=\"true\"></i></span> \n  \t\t\t\t\t<span class=\"up_text\">Upload <br>Photo</span> \n  \t\t\t\t\t<input type=\"file\" name=\"my_doc_upload\" id=\"my_doc_upload\" (change)=\"changeFile($event)\" multiple=\"false\"> \n  \t\t\t\t</div>\n\t\t\t\t  <div class=\"form-group\">\n            <label>Describe Yourself</label>\n            <textarea name=\"description\" placeholder=\"Describe Yourself\" [(ngModel)]=\"trackdata.description\" class=\"form-control\" ></textarea>\n          </div>\n      </div>\n\t\t\t<div class=\"button_group\">\n\t\t\t\t<button class=\"add-btn\" (click)=\"addTrack()\" [disabled]=\"show_spinner\">Add Track <i  *ngIf=\"show_spinner\" class=\"fa fa-spinner fa-spin\"></i></button>\n\t\t\t</div>\n\t  </div>\n  </div>\n</ng-template>\n<ng-template #editTrack let-c=\"close\" let-d=\"dismiss\">\n  \t<button type=\"button\" class=\"close\" aria-label=\"Close\" (click)=\"d('Cross click')\">\n\t\t<span aria-hidden=\"true\">&times;</span>\n\t\t</button>\n  <div class=\"modal-body\">\n    <form>\n    <div class=\"edit-track-modal\">\n        <h3>Edit Track</h3>\n        <div class=\"form-group tr-name\">\n            <label for=\"tname\">Track Name</label>\n            <input type=\"text\" class=\"form-control\" id=\"tname\" name=\"name\" [(ngModel)]=\"trackdata.name\" placeholder=\"Track Name\">\n          </div>\n          <div class=\"form-group tr-price\">\n            <label for=\"tname\">Price</label>\n            <input type=\"text\" class=\"form-control\" id=\"tname\" name=\"price\" placeholder=\"$ 1399\" [(ngModel)]=\"trackdata.price\">\n          </div>\n          <div class=\"textarea-upload\">\n            <div class=\"edit-profile-picture\">\n            <div class=\"upload-cover\"> \n              <img src=\"{{edit_image}}\" alt=\"Edit cover Image\">\n              <input type=\"file\" name=\"my_doc_upload\" id=\"my_doc_upload\" (change)=\"changeTrackImage($event)\" multiple=\"false\">\n              <a data-fancybox=\"\" data-animation-duration=\"700\" data-src=\"#delete\" *ngIf=\"trackdata.image\" href=\"javascript:;\" (click)=\"removeTrackImage(trackdata._id)\" class=\"delete\"><i class=\"fa fa-trash\"></i></a>\n            </div>\n          </div>\n          <div class=\"form-group\">\n            <label>Describe Yourself</label>\n            <textarea name=\"description\" [(ngModel)]=\"trackdata.description\" class=\"form-control\"></textarea>\n          </div>\n        </div>\n        <div class=\"button_group\">\n          <button type=\"submit\" (click)=\"updateTrack()\" [disabled]=\"show_spinner\" class=\"update-btn\">Update <i *ngIf=\"show_spinner\" class=\"fa fa-spinner fa-spin\"></i></button>\n        </div>\n    </div>\n    </form>\n  </div>\n</ng-template>\n<ng-template #contest let-c=\"close\" let-d=\"dismiss\">\n    <button type=\"button\" class=\"close\" aria-label=\"Close\" (click)=\"d('Cross click')\">\n        <span aria-hidden=\"true\">&times;</span>\n      </button>\n    <div class=\"modal-body\">\n        <div class=\"contest-wrap\" >\n          <h3>Add New Track</h3>\n          <div class=\"contest-table\" data-mcs-theme=\"dark-3\">\n            <table>\n              <tr *ngFor=\"let con of contest_list; let i = index;\">\n                <td>\n                    <!-- <input type=\"radio\" value=\"{{con._id}}\" name=\"card\" [(ngModel)]=\"contest_id\" /> -->\n                  <div class=\"radio\">\n                      <label>\n                        <input type=\"radio\" value=\"{{con._id}}\" name=\"card\" [(ngModel)]=\"contest_id\" />\n                        <span class=\"radio_check\"></span>\n                      </label>\n                  </div>\n                </td>\n                <td><img src=\"img/conest-img.jpg\" alt=\"Contest Image\"></td>\n                <td>\n                  <h3 class=\"c-name\">{{con.name}}</h3>\n                  <div class=\"c-dates\">{{con.start_date | date : 'MMMM dd, yyyy'}} - {{con.end_date | date : 'MMMM dd, yyyy'}}</div>\n                  <div class=\"c-part\">{{con.no_of_participants}} Contest Participants</div>\n                </td>\n              </tr>\n            </table>\n          </div>\n          <div class=\"button_group\">\n            <button type=\"submit\" [disabled]=\"show_spinner\" (click)=\"addTrackToContest()\" class=\"add-btn\">Submit <i *ngIf=\"show_spinner\" class=\"fa fa-spinner fa-spin\"></i></button>\n          </div>\n        </div>\n    </div>\n</ng-template>"
+module.exports = "<section class=\"mymusic-wrap\">\n  <div class=\"container\">\n    <div class=\"row\">\n      <div class=\"col-md-2 col-sm-3 col-xs-12\">\n        <div class=\"track-menu\">\n          <ul class=\"nav nav-tabs\" id=\"myTab\">\n            <li class=\"nav-item\">\n              <a class=\"nav-link {{tab_cnt == 1 ? 'active' : ''}}\" (click)=\"tabChanged(1)\" data-toggle=\"tab\" href=\"javascript:;\" >My Track</a>\n            </li>\n            <li class=\"nav-item\">\n              <a class=\"nav-link {{tab_cnt == 2 ? 'active' : ''}}\" (click)=\"tabChanged(2)\"  data-toggle=\"tab\" href=\"javascript:;\" >Stats</a>\n            </li>\n          </ul>\n          \n          <p><a data-fancybox data-animation-duration=\"700\" data-src=\"#addtrack\" (click)=\"openModal(content)\"  href=\"javascript:;\"><img src=\"img/icons8-plus_mathNormal.png\" alt=\"Plus Icone\"> Add Track</a></p>\n        </div>\n      </div>\n      <div class=\"col-md-10 col-sm-9 col-xs-12\">\n        <div class=\"tab-content\">\n          <div class=\"tab-pane fade {{tab_cnt == 1 ? 'show active' : ''}}\" id=\"mytracks\">\n            <div class=\"track-table\">\n              <div class=\"alert alert-info\" *ngIf=\"tracklist.length == 0\">\n                No data available.\n              </div>\n              <table>\n                <tbody>\n                  <tr *ngFor=\"let t of tracklist; let i =  index;\">\n                    <td class=\"serial-num\">{{i+1}}.</td>\n                    <td class=\"play-option\">\n                      <a href=\"javascript:;\" (click)=\"playAudio(t.audio, i)\" *ngIf=\"!audio_ins[i]\">\n                        <img src=\"img/new-play.png\" alt=\"Play\" >\n                      </a>\n                      <a href=\"javascript:;\" (click)=\"stopAudio(i)\" *ngIf=\"audio_ins[i]\">\n                        <img src=\"img/pause.png\" alt=\"Play\" >\n                      </a>\n                    </td>\n                    <td class=\"track-pic\"><a href=\"javascript:;\">\n                      <img src=\"{{track_url+t.image}}\" *ngIf=\"t.image\" width=\"50\" height=\"50\" alt=\"Track Image\">\n                      <img src=\"img/track-img.png\" *ngIf=\"!t.image\" alt=\"Track Image\">\n                    </a></td>\n                    <td class=\"track-det\" colspan=\"2\">\n                      <p class=\"track-name\">{{t.name}}</p>\n                      <p class=\"track-singer\">{{userinfo.artist.first_name + ' '+ userinfo.artist.last_name}}</p>\n                      <p class=\"track-year\">{{t.created_at | date : 'MMMM dd, yyyy'}}</p>\n                    </td>\n                    <td class=\"td track-vote\" style=\"display: none;\">\n                      <img src=\"img/start.png\" alt=\"start\">\n                      <span>1300 <br> <span>Votes</span></span>\n                    </td>\n\n                    <td class=\"contest-btn\" >\n                      <a data-fancybox data-animation-duration=\"700\" (click)=\"openContestModal(contest, t)\" data-src=\"#submitcontest\" href=\"javascript:;\">Submit for a Contest</a>\n                    </td>\n                    <td class=\"action\" colspan=\"2\">\n                      <div class=\"track-like\">\n                        <a href=\"javascript:;\"><img src=\"img/likehand.png\" alt=\"Like Thumb\"></a>\n                        <span class=\"new-up\"></span>\n                      </div>\n                      <div class=\"track-comment\">\n                        <a href=\"javascript:;\" routerLink=\"/artist_track_comment/{{t._id}}\"><img src=\"img/comment.png\" alt=\"Comment\"></a>\n                        <span class=\"new-up\"></span>\n                      </div>\n                      <div class=\"track-price\"><a href=\"#\">${{t.price}}</a></div>\n                      <div class=\"share\"><a href=\"javascript:;\"><img src=\"img/share.png\" alt=\"Track Share\"></a></div>\n                      <div class=\"track-edit\"><a data-fancybox data-animation-duration=\"700\" data-src=\"#edittrack\" (click)=\"openEditTrackModal(editTrack, t)\"  href=\"javascript:;\"><img src=\"img/edit.png\" alt=\"Track Edit\"></a></div>\n                      <div class=\"track-del\"><a data-fancybox data-animation-duration=\"700\" data-src=\"#delete\" (click)=\"removeTrack(t._id)\" href=\"javascript:;\"><img src=\"img/del.png\" alt=\"Track Delete\"></a></div>\n                    </td>\n                  </tr>\n                </tbody>\n              </table>\n            </div>\n          </div>\n          <div class=\"tab-pane fade {{tab_cnt == 2 ? 'show active' : ''}}\" id=\"stats\">\n            <div class=\"track-table\">\n                <div class=\"alert alert-info\" *ngIf=\"tracklist.length == 0\">\n                  No data available.\n                </div>\n              <table>\n                <tbody>\n                  <tr *ngFor=\"let t of tracklist; let i =  index;\">\n                    <td class=\"serial-num\">{{i+1}}.</td>\n                    <td class=\"play-option\">\n                        <a href=\"javascript:;\" >\n                          <img src=\"img/play.png \" alt=\"Pause \"  [style.display]=\"!audio_ins[i] ? 'block' : 'none'\" (click)=\"playAudio(t.audio, i)\">\n                          <img src=\"img/pause.png \" alt=\"Pause \"  [style.display]=\"audio_ins[i] ? 'block' : 'none'\" (click)=\"stopAudio(i)\">\n                        </a>\n                    </td>\n                    <td class=\"track-pic\"><a href=\"javascript:;\">\n                        <img src=\"{{track_url+t.image}}\" *ngIf=\"t.image\" width=\"50\" height=\"50\" alt=\"Track Image\">\n                        <img src=\"img/track-img.png\" *ngIf=\"!t.image\" alt=\"Track Image\">\n                    </a></td>\n                    <td class=\"track-det\" colspan=\"2\">\n                      <p class=\"track-name\">{{t.name}}</p>\n                      <p class=\"track-singer\">{{userinfo.artist.first_name + ' '+ userinfo.artist.last_name}}</p>\n                      <p class=\"track-year\">{{t.created_at | date : 'MMMM dd, yyyy'}}</p>\n                    </td>\n                    <td class=\"td track-vote\">\n                      <img src=\"img/start.png\" alt=\"start\">\n                      <span>{{t.no_of_votes}} <br> <span>Votes</span></span>\n                    </td>\n                    <td class=\"action\" colspan=\"2\">\n                      <div class=\"track-like\">\n                        <a href=\"javascript:;\"><img src=\"img/likehand.png\" alt=\"Like Thumb\"></a>\n                        <span class=\"new-up\"></span>\n                      </div>\n                      <div class=\"track-comment\">\n                        <a href=\"javascript:;\" routerLink=\"/artist_track_comment/{{t._id}}\"><img src=\"img/comment.png\" alt=\"Comment\"></a>\n                        <span class=\"new-up\"></span>\n                      </div>\n                      <div class=\"track-price\"><a href=\"javascript:;\">${{t.price}}</a></div>\n                      <div class=\"share\"><a href=\"javascript:;\"><img src=\"img/share.png\" alt=\"Track Share\"></a></div>\n                      <div class=\"track-edit\"><a data-fancybox data-animation-duration=\"700\" data-src=\"#edittrack\"  href=\"javascript:;\"><img src=\"img/edit.png\" alt=\"Track Edit\"></a></div>\n                      <div class=\"track-del\"><a data-fancybox data-animation-duration=\"700\" data-src=\"#delete\"  href=\"javascript:;\"><img src=\"img/del.png\" alt=\"Track Delete\"></a></div>\n                    </td>\n                  </tr>\n                </tbody>\n              </table>\n            </div>\n          </div>\n        </div>\n      </div>\n    </div>\n  </div>\n</section>\n<ng-template #content let-c=\"close\" let-d=\"dismiss\" >\n\t\t<button type=\"button\" class=\"close\" aria-label=\"Close\" (click)=\"d('Cross click')\">\n\t\t<span aria-hidden=\"true\">&times;</span>\n\t\t</button>\n  <div class=\"modal-body\">\n    <div class=\"add-track-modal\">\n\t\t\t<h3>Add New Track</h3>\n\t\t\t<div class=\"media-upload-btn\"> \n\t\t\t\t<span class=\"upl-img\"><i class=\"fa fa-cloud-upload\" aria-hidden=\"true\"></i></span> \n\t\t\t\t<span class=\"up_text\">Select Music</span> \n\t\t\t\t<input type=\"file\" name=\"my_doc_upload\" id=\"my_doc_upload\" (change)=\"changeAudio($event)\" multiple=\"false\"> \n\t\t\t\t<p class=\"instrution\">AIFF,WAV,FLAC,MP3 or less</p>\n\t\t\t</div>\n\t\t\t<div class=\"media_progress_bar\">\n\t\t\t\t<div class=\"det\">\n\t\t\t\t\t<div class=\"upl-file-name\">My Summer.mp3</div>\n\t\t\t\t\t<div class=\"upl-time-rem\">5 sec remaining</div>\n\t\t\t\t\t<div class=\"close-btn\"><img src=\"img/closeNormal.png\" alt=\"Close-btn\"></div>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"progress\">\n\t\t\t\t    <div class=\"progress-bar\" role=\"progressbar\" aria-valuenow=\"70\" aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width:70%\">\n\t\t\t\t      <span class=\"sr-only\">70% Complete</span>\n\t\t\t\t    </div>\n\t\t\t\t  </div>\n\t\t\t</div>\n\t\t\t<div class=\"form-group tr-name\">\n\t\t\t    <label for=\"tname\">Track Name</label>\n\t\t\t    <input type=\"text\" class=\"form-control\" id=\"tname\" name=\"name\" [(ngModel)]=\"trackdata.name\" placeholder=\"Track Name\">\n\t\t  \t</div>\n\t\t  \t<div class=\"form-group tr-price\">\n\t\t\t    <label for=\"tname\">Price</label>\n\t\t\t    <input type=\"number\" class=\"form-control\" id=\"tname\" name=\"price\" [(ngModel)]=\"trackdata.price\" placeholder=\"$ 1399\">\n\t\t  \t</div>\n\t\t  \t<div class=\"textarea-upload\">\n\t\t\t  \t<div class=\"media-upload-btn song-photo\"> \n  \t\t\t\t\t<span class=\"upl-img\"><i class=\"fa fa-cloud-upload\" aria-hidden=\"true\"></i></span> \n  \t\t\t\t\t<span class=\"up_text\">Upload <br>Photo</span> \n  \t\t\t\t\t<input type=\"file\" name=\"my_doc_upload\" id=\"my_doc_upload\" (change)=\"changeFile($event)\" multiple=\"false\"> \n  \t\t\t\t</div>\n\t\t\t\t  <div class=\"form-group\">\n            <label>Describe Yourself</label>\n            <textarea name=\"description\" placeholder=\"Describe Yourself\" [(ngModel)]=\"trackdata.description\" class=\"form-control\" ></textarea>\n          </div>\n      </div>\n\t\t\t<div class=\"button_group\">\n\t\t\t\t<button class=\"add-btn\" (click)=\"addTrack()\" [disabled]=\"show_spinner\">Add Track <i  *ngIf=\"show_spinner\" class=\"fa fa-spinner fa-spin\"></i></button>\n\t\t\t</div>\n\t  </div>\n  </div>\n</ng-template>\n<ng-template #editTrack let-c=\"close\" let-d=\"dismiss\">\n  \t<button type=\"button\" class=\"close\" aria-label=\"Close\" (click)=\"d('Cross click')\">\n\t\t<span aria-hidden=\"true\">&times;</span>\n\t\t</button>\n  <div class=\"modal-body\">\n    <form>\n    <div class=\"edit-track-modal\">\n        <h3>Edit Track</h3>\n        <div class=\"form-group tr-name\">\n            <label for=\"tname\">Track Name</label>\n            <input type=\"text\" class=\"form-control\" id=\"tname\" name=\"name\" [(ngModel)]=\"trackdata.name\" placeholder=\"Track Name\">\n          </div>\n          <div class=\"form-group tr-price\">\n            <label for=\"tname\">Price</label>\n            <input type=\"text\" class=\"form-control\" id=\"tname\" name=\"price\" placeholder=\"$ 1399\" [(ngModel)]=\"trackdata.price\">\n          </div>\n          <div class=\"textarea-upload\">\n            <div class=\"edit-profile-picture\">\n            <div class=\"upload-cover\"> \n              <img src=\"{{edit_image}}\" alt=\"Edit cover Image\">\n              <input type=\"file\" name=\"my_doc_upload\" id=\"my_doc_upload\" (change)=\"changeTrackImage($event)\" multiple=\"false\">\n              <a data-fancybox=\"\" data-animation-duration=\"700\" data-src=\"#delete\" *ngIf=\"trackdata.image\" href=\"javascript:;\" (click)=\"removeTrackImage(trackdata._id)\" class=\"delete\"><i class=\"fa fa-trash\"></i></a>\n            </div>\n          </div>\n          <div class=\"form-group\">\n            <label>Describe Yourself</label>\n            <textarea name=\"description\" [(ngModel)]=\"trackdata.description\" class=\"form-control\"></textarea>\n          </div>\n        </div>\n        <div class=\"button_group\">\n          <button type=\"submit\" (click)=\"updateTrack()\" [disabled]=\"show_spinner\" class=\"update-btn\">Update <i *ngIf=\"show_spinner\" class=\"fa fa-spinner fa-spin\"></i></button>\n        </div>\n    </div>\n    </form>\n  </div>\n</ng-template>\n<ng-template #contest let-c=\"close\" let-d=\"dismiss\">\n    <button type=\"button\" class=\"close\" aria-label=\"Close\" (click)=\"d('Cross click')\">\n        <span aria-hidden=\"true\">&times;</span>\n      </button>\n    <div class=\"modal-body\">\n        <div class=\"contest-wrap\" >\n          <h3>Add New Track</h3>\n          <div class=\"contest-table\" data-mcs-theme=\"dark-3\">\n            <table>\n              <tr *ngFor=\"let con of contest_list; let i = index;\">\n                <td>\n                    <!-- <input type=\"radio\" value=\"{{con._id}}\" name=\"card\" [(ngModel)]=\"contest_id\" /> -->\n                  <div class=\"radio\">\n                      <label>\n                        <input type=\"radio\" value=\"{{con._id}}\" name=\"card\" [(ngModel)]=\"contest_id\" />\n                        <span class=\"radio_check\"></span>\n                      </label>\n                  </div>\n                </td>\n                <td><img src=\"img/conest-img.jpg\" alt=\"Contest Image\"></td>\n                <td>\n                  <h3 class=\"c-name\">{{con.name}}</h3>\n                  <div class=\"c-dates\">{{con.start_date | date : 'MMMM dd, yyyy'}} - {{con.end_date | date : 'MMMM dd, yyyy'}}</div>\n                  <div class=\"c-part\">{{con.no_of_participants}} Contest Participants</div>\n                </td>\n              </tr>\n            </table>\n          </div>\n          <div class=\"button_group\">\n            <button type=\"submit\" [disabled]=\"show_spinner\" (click)=\"addTrackToContest()\" class=\"add-btn\">Submit <i *ngIf=\"show_spinner\" class=\"fa fa-spinner fa-spin\"></i></button>\n          </div>\n        </div>\n    </div>\n</ng-template>"
 
 /***/ }),
 
