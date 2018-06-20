@@ -292,4 +292,12 @@ export class MyMusicComponent implements OnInit {
       this.toastr.error('Please select at least one contest', 'Error!');
     }
   }
+  // Update download status
+  updateTrackDownLoadStatus(id : any) {
+    this.MyMusicService.trackDownload(id).subscribe(response => {
+      this.toastr.success(response['message'], 'Success!');
+    }, error => {
+      this.toastr.error(error['error'].message, 'Error!');
+    });
+  }
 }

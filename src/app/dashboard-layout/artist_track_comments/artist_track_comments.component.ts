@@ -75,7 +75,12 @@ export class ArtistTrackConmmentsComponent implements OnInit {
       confirmButtonText: 'Yes, delete it!'
     }).then(function(flag) {
       if(flag) {
-        
+        thi.ArtistTrackCommentsService.removeTrackComment(id).subscribe(response => {
+          thi.toastr.success(response['message'], 'Success!');
+          thi.getAllTrackComment(thi.track_id);
+        }, error => {
+          thi.toastr.error(error['error'].message, 'Error!');
+        });
       }
     });
   }

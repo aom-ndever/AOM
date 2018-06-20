@@ -42,6 +42,8 @@ export class ArtistTrackCommentsService {
   }
   // delete track comment
   removeTrackComment(id : any) {
-    return this.http.delete(`${this.api_host}`);
+    this.user = JSON.parse(localStorage.getItem('user'));
+    this.headers = new HttpHeaders({ 'x-access-token' : this.user.token });  
+    return this.http.delete(`${this.api_host}/artist/delete_comment/${id}`, {headers : this.headers});
   }
 }

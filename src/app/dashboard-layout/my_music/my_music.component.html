@@ -52,6 +52,13 @@
                       <a data-fancybox data-animation-duration="700" (click)="openContestModal(contest, t)" data-src="#submitcontest" href="javascript:;">Submit for a Contest</a>
                     </td>
                     <td class="action" colspan="2">
+                      <div class="track-like" style="top:10px;">
+                          <label class="switch" title="Track Download status">
+                              <input type="checkbox"  [checked]="t.is_downloadable" (change)="updateTrackDownLoadStatus(t._id)" />
+                              <!-- <input type="checkbox" *ngIf="!t.is_downloadable" (change)="updateTrackDownLoadStatus(t._id)" /> -->
+                              <span class="slider round"></span>
+                          </label>
+                      </div>
                       <div class="track-like">
                         <a href="javascript:;"><img src="img/likehand.png" alt="Like Thumb"></a>
                         <span class="new-up"></span>
