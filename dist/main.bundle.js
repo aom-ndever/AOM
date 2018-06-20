@@ -834,7 +834,7 @@ var ArtistProfileService = /** @class */ (function () {
 /***/ "../../../../../src/app/dashboard-layout/artist_track_comments/artist_track_comments.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"track-comment-wrap\">\n  <div class=\"container\">\n      <div class=\"col-md-12\">\n        <div class=\"profile-detail-wrap\">\n          <div class=\"row\">\n            <div class=\"col-md-12 col-sm-12 col-xs-12\">\n              <div class=\"comments\">\n                <h3 class=\"num-cmt\">{{trackcomments.length}} Comments</h3>\n                <div class=\"add-comment\" *ngIf=\"user && user.user\">\n                    <form>\n                      <div class=\"s-img\"><img src=\"{{user['user'].image ? user_img_url+user['user'].image : 'img/fan1.png'}}\" alt=\"img\"></div>\n                        <div class=\"form-group\">\n                            <label for=\"cmmt\">Write a Comment</label>\n                            <input type=\"text\" class=\"form-control\" id=\"cmmt\" name=\"comment\" [(ngModel)]=\"comment_txt\" placeholder=\"Write a comment\">\n                          </div>\n                          <div class=\"button_group\">\n                        <button type=\"submit\" (click)=\"postComment()\" [disabled]=\"show_spinner\" class=\"update-btn\">Post <i class=\"fa fa-spinner fa-spin\" *ngIf=\"show_spinner\"></i></button>\n                      </div>\n                    </form>\n\t\t\t\t\t\t\t\t\t</div>\n                <div class=\"login-alert\" *ngIf=\"!user\">Please Login to leave your comment</div>\n                <div class=\"comment-block col-md-12\" *ngFor=\"let comment of trackcomments; let i=index;\">\n                  <div class=\"s-name\">{{comment['track_id']['name']}}</div>\n                  <div class=\"pull-right\"><a href=\"javascript:;\"><i class=\"fa fa-trash\"></i></a></div>\n                  <div class=\"s-img\"><img src=\"{{comment['user_id']['image'] ? user_img_url+comment['user_id']['image'] : 'img/fan1.png'}}\" alt=\"img\"></div>\n                  <div class=\"cm-date-name\">\n                    <h6>{{comment['user_id']['first_name']+' '+comment['user_id']['last_name']}}.</h6>\n                    <p>{{comment['created_at'] | timeAgo}}</p>\n                    <div class=\"profile-descriptions\">\n                      <p>{{comment['comment']}}</p>\n                    </div>\n                  </div>\n                  \n\n                </div>\n              </div>\n            </div>\n        </div>\n      </div>\n    </div>\n  </div>\n</div>\n"
+module.exports = "<div class=\"track-comment-wrap\">\n  <div class=\"container\">\n      <div class=\"col-md-12\">\n        <div class=\"profile-detail-wrap\">\n          <div class=\"row\">\n            <div class=\"col-md-12 col-sm-12 col-xs-12\">\n              <div class=\"comments\">\n                <h3 class=\"num-cmt\">{{trackcomments.length}} Comments</h3>\n                <div class=\"add-comment\" *ngIf=\"user && user.user\">\n                    <form>\n                      <div class=\"s-img\"><img src=\"{{user['user'].image ? user_img_url+user['user'].image : 'img/fan1.png'}}\" alt=\"img\"></div>\n                        <div class=\"form-group\">\n                            <label for=\"cmmt\">Write a Comment</label>\n                            <input type=\"text\" class=\"form-control\" id=\"cmmt\" name=\"comment\" [(ngModel)]=\"comment_txt\" placeholder=\"Write a comment\">\n                          </div>\n                          <div class=\"button_group\">\n                        <button type=\"submit\" (click)=\"postComment()\" [disabled]=\"show_spinner\" class=\"update-btn\">Post <i class=\"fa fa-spinner fa-spin\" *ngIf=\"show_spinner\"></i></button>\n                      </div>\n                    </form>\n\t\t\t\t\t\t\t\t\t</div>\n                <div class=\"login-alert\" *ngIf=\"!user\">Please Login to leave your comment</div>\n                <div class=\"comment-block col-md-12\" *ngFor=\"let comment of trackcomments; let i=index;\">\n                  <div class=\"s-name\">{{comment['track_id']['name']}}</div>\n                  <div class=\"pull-right\"><a href=\"javascript:;\" (click)=\"removeComment(comment._id)\"><i class=\"fa fa-trash\"></i></a></div>\n                  <div class=\"s-img\"><img src=\"{{comment['user_id']['image'] ? user_img_url+comment['user_id']['image'] : 'img/fan1.png'}}\" alt=\"img\"></div>\n                  <div class=\"cm-date-name\">\n                    <h6>{{comment['user_id']['first_name']+' '+comment['user_id']['last_name']}}.</h6>\n                    <p>{{comment['created_at'] | timeAgo}}</p>\n                    <div class=\"profile-descriptions\">\n                      <p>{{comment['comment']}}</p>\n                    </div>\n                  </div>\n                  \n\n                </div>\n              </div>\n            </div>\n        </div>\n      </div>\n    </div>\n  </div>\n</div>\n"
 
 /***/ }),
 
@@ -911,6 +911,22 @@ var ArtistTrackConmmentsComponent = /** @class */ (function () {
             _this.trackcomments = response['comment'];
         });
     };
+    // Remove comment
+    ArtistTrackConmmentsComponent.prototype.removeComment = function (id) {
+        var thi = this;
+        swal({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then(function (flag) {
+            if (flag) {
+            }
+        });
+    };
     ArtistTrackConmmentsComponent = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
             selector: 'app-track-comments',
@@ -985,6 +1001,10 @@ var ArtistTrackCommentsService = /** @class */ (function () {
     // Track comment
     ArtistTrackCommentsService.prototype.getAllTrackComment = function (data) {
         return this.http.post(this.api_host + "/get_comment_by_track_id", data);
+    };
+    // delete track comment
+    ArtistTrackCommentsService.prototype.removeTrackComment = function (id) {
+        return this.http.delete("" + this.api_host);
     };
     ArtistTrackCommentsService = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Injectable"])(),

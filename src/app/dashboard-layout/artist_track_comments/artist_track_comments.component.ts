@@ -3,7 +3,7 @@ import { ArtistTrackCommentsService } from './artist_track_comments.service';
 import { ToastrService } from 'ngx-toastr';
 import { environment } from '../../../environments/environment' ;
 import {ActivatedRoute} from "@angular/router";
-
+declare var swal: any;
 @Component({
   selector: 'app-track-comments',
   templateUrl: './artist_track_comments.component.html',
@@ -60,6 +60,23 @@ export class ArtistTrackConmmentsComponent implements OnInit {
   getAllTrackComment(data) {
     this.ArtistTrackCommentsService.getAllTrackComment(data).subscribe(response => {
       this.trackcomments = response['comment'];
+    });
+  }
+  // Remove comment
+  removeComment(id : any) {
+    const thi = this;
+    swal({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    }).then(function(flag) {
+      if(flag) {
+        
+      }
     });
   }
 }
