@@ -19,7 +19,7 @@ var mongoose = require('mongoose');
 var ObjectId = mongoose.Types.ObjectId;
 var fs = require('fs');
 
-router.delete('/:comment_id', async (req, res) => {
+router.delete('/delete_comment/:comment_id', async (req, res) => {
     user_id = req.userInfo.id;
 
     var comment_data = await comment_helper.get_all_comments(req.params.comment_id);
