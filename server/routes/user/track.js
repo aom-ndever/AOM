@@ -287,7 +287,7 @@ router.get('/:track_id/download', async (req, res) => {
             archive.pipe(output);
             archive.append(fs.createReadStream(__dirname + '/../../uploads/track/' + track_resp.track.audio), { name: track_resp.track.audio });
             archive.finalize();
-            res.status(200).json({ "status": 1, "filename": "track downloaded : " + filename });
+            res.status(200).json({ "status": 1, "filename": filename });
 
           } else {
             res.status(200).json({ "status": 0, "message": "track not found" });
