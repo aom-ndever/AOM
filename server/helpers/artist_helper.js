@@ -458,4 +458,21 @@ artist_helper.get_new_uploads = async (filter = {}) => {
         return { "status": 0, "message": "Error occured while finding artist", "error": err }
     }
 };
+
+
+artist_helper.update_download = async (artist_id, track_id, is_downloadable) => {
+    try {
+        var artist = await Track.findOneAndUpdate({ "_id": new ObjectId(track_id), "artist_id": new ObjectId(artist_id) }, { "is_downloadable": is_downloadable });
+        if (artist) {
+            return { "status": 1, "message": "Download status updated", };
+        } else {
+            return { "status": 2, "message": "artist status found" };
+        }
+    } catch (err) {
+        return { "status": 0, "message": "Error occured while updating artist status", "error": err }
+    }
+};
+
+
+
 module.exports = artist_helper;
