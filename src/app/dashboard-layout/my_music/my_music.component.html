@@ -136,12 +136,19 @@
   <div class="modal-body">
     <div class="add-track-modal">
 			<h3>Add New Track</h3>
-			<div class="media-upload-btn"> 
+			<div class="media-upload-btn" *ngIf="!audio_file"> 
 				<span class="upl-img"><i class="fa fa-cloud-upload" aria-hidden="true"></i></span> 
 				<span class="up_text">Select Music</span> 
 				<input type="file" name="my_doc_upload" id="my_doc_upload" (change)="changeAudio($event)" multiple="false"> 
 				<p class="instrution">AIFF,WAV,FLAC,MP3 or less</p>
-			</div>
+      </div>
+      <div class="media-upload-btn" *ngIf="audio_file">
+        {{audio_file.name}}
+        <div class="upload-btn-div">
+          <label for="fileUpload">Upload a Different Photo</label>
+          <input type="file" name="my_doc_upload" (change)="changeAudio($event)" id="my_doc_upload" multiple="false"> 
+        </div>
+      </div>
 			<div class="media_progress_bar">
 				<div class="det">
 					<div class="upl-file-name">My Summer.mp3</div>
@@ -163,11 +170,15 @@
 			    <input type="number" class="form-control" id="tname" name="price" [(ngModel)]="trackdata.price" placeholder="$ 1399">
 		  	</div>
 		  	<div class="textarea-upload">
-			  	<div class="media-upload-btn song-photo"> 
+			  	<div class="media-upload-btn song-photo" *ngIf="!add_track_img"> 
   					<span class="upl-img"><i class="fa fa-cloud-upload" aria-hidden="true"></i></span> 
   					<span class="up_text">Upload <br>Photo</span> 
   					<input type="file" name="my_doc_upload" id="my_doc_upload" (change)="changeFile($event)" multiple="false"> 
-  				</div>
+          </div>
+          <div class="upload-cover" *ngIf="add_track_img" style="width:92.5px;height:85px;"> 
+            <img src="{{add_track_img}}" alt="Edit cover Image" >
+            <input type="file" name="my_doc_upload" id="my_doc_upload" (change)="changeFile($event)" multiple="false">
+          </div>
 				  <div class="form-group">
             <label>Describe Yourself</label>
             <textarea name="description" placeholder="Describe Yourself" [(ngModel)]="trackdata.description" class="form-control" ></textarea>

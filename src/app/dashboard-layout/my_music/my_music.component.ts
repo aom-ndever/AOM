@@ -25,6 +25,8 @@ export class MyMusicComponent implements OnInit {
   music_type_list : any = [];
   contest_list : any = [];
   contest_id : any = '';
+  add_track_img : any = '';
+  add_track_audio : any = '';
   constructor(
     private modalService: NgbModal,
     private MyMusicService : MyMusicService,
@@ -70,16 +72,14 @@ export class MyMusicComponent implements OnInit {
         return false;
       }
       this.image_upload = file;
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        const data = {};
+          let imageBuffer = e.target.result;
+          this.add_track_img = imageBuffer;
+      };
+      reader.readAsDataURL(event.target.files[0]);
     }
-    
-    // const reader = new FileReader();
-    //   reader.onload = (e: any) => {
-    //     const data = {};
-    //       let imageBuffer = e.target.result;
-    //       this.image_upload = imageBuffer;
-    //   };
-    //   reader.readAsDataURL(event.target.files[0]);
-      
   }
 
   changeTrackImage(event : any) {
@@ -102,6 +102,9 @@ export class MyMusicComponent implements OnInit {
   }
 
   openModal(content) {
+    this.trackdata = {};
+    this.add_track_img = '';
+    this.add_track_audio = '';
     this.modal_ref = this.modalService.open(content, { centered: true, windowClass:'add-track-popup', backdrop : 'static' });
   }
 

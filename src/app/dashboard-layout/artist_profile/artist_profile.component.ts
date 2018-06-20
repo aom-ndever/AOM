@@ -199,6 +199,7 @@ export class ArtistProfileComponent implements OnInit {
     if(user && user.user) {
       this.ArtistProfileService.downloadTrack(id).subscribe(response => {
         console.log(response);
+        window.location.href = this.user_img_url+response['filename'];
       }, error => {
         this.toastr.error(error['error'].message, 'Error!');
       });
