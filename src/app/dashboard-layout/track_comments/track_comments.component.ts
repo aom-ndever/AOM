@@ -27,7 +27,7 @@ export class TrackConmmentsComponent implements OnInit {
   ) {
     this.artistdata = this.route.snapshot.data['artist'].artist;
     this.trackcomments = this.route.snapshot.data['comment'].comment;
-    this.track = this.route.snapshot.data['track']['track'].track;
+    this.track = this.route.snapshot.data['track'].track;
     this.user = JSON.parse(localStorage.getItem('user'));
     console.log(this.track);
   }

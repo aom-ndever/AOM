@@ -49,4 +49,8 @@ export class MyMusicService {
   addTrackToContest(data : any) {
     return this.http.post(`${this.api_host}/artist/participate`, data, {headers : this.headers});
   }
+  // change status of track download
+  trackDownload(id : any) {
+    return this.http.post(`${this.api_host}/artist/track/change_status_of_download`,{track_id : id},  {headers : this.headers});
+  }
 }

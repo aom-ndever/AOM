@@ -40,4 +40,10 @@ export class ArtistTrackCommentsService {
    getAllTrackComment(data : any) {
     return this.http.post(`${this.api_host}/get_comment_by_track_id`, data);
   }
+  // delete track comment
+  removeTrackComment(id : any) {
+    this.user = JSON.parse(localStorage.getItem('user'));
+    this.headers = new HttpHeaders({ 'x-access-token' : this.user.token });  
+    return this.http.delete(`${this.api_host}/artist/delete_comment/${id}`, {headers : this.headers});
+  }
 }
