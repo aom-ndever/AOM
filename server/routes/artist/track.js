@@ -290,5 +290,25 @@ router.post('/downloaded_track', async (req, res) => {
     }
 });
 
+router.post("/change_status_of_download", async (req, res) => {
+    artist_id = req.userInfo.id
+    track_id = req.body.track_id
+    var resp = await track_helper.get_all_track_by_track_id(track_id);
+    if (resp.status == 0) {
+        logger.error("Error occured while fetching user = ", resp);
+        res.status(config.INTERNAL_SERVER_ERROR).json(resp);
+    } else {
+        if (resp.track.is_downloadable == false) {
+            var stat = "true"
+            var artist_resp = await artist_helper.update_download(artist_id, track_id, stat);
+        }
+        else {
+            var stat = "false"
+            var artist_resp = await artist_helper.update_download(artist_id, track_id, stat);
+        }
+        logger.trace("Artist = ", { "artist": artist_resp });
+        res.status(config.OK_STATUS).json({ "artist": artist_resp });
+    }
 
+});
 module.exports = router;
