@@ -67,13 +67,11 @@ router.post('/', async (req, res) => {
       res.status(config.INTERNAL_SERVER_ERROR).json(resp_data);
     } else {
       var resp = await artist_helper.get_artist_by_id(obj.artist_id);
-      console.log('resp', resp);
 
       no_comment = resp.artist.no_of_comments + 1
       var resp_data = await track_helper.update_artist_for_comments(obj.artist_id, no_comment);
 
       var resp_datas = await comment_helper.get_all_track_by_track_id(obj.track_id);
-      console.log('resp_datas', resp_datas);
 
       no_vote = resp_datas.track.no_of_comments + 1;
       var resp_data = await comment_helper.update_comment(obj.track_id, no_vote);
@@ -82,7 +80,6 @@ router.post('/', async (req, res) => {
       var resp = await user_helper.get_user_by_id(obj.user_id);
       no_comment = resp.user.no_of_comments + 1
       var resp_data = await user_helper.update_user_for_comments(obj.user_id, no_comment);
-
 
       logger.trace("music got successfully = ", resp_data);
       res.status(config.OK_STATUS).json(resp_data);
@@ -120,23 +117,9 @@ router.get("/", async (req, res) => {
 });
 
 
-/*router.get("/", async (req, res) => {
-  user_id = req.userInfo.id;
-  logger.trace("Get all Artist API called");
-  var resp_data = await c_helper.get_all_voted_artist_by_user_id(user_id);
-  if (resp_data.status == 0) {
-    logger.error("Error occured while fetching Artist = ", resp_data);
-    res.status(config.INTERNAL_SERVER_ERROR).json(resp_data);
-  } else {
-    logger.trace("Artist got successfully = ", resp_data);
-    res.status(config.OK_STATUS).json(resp_data);
-  }
-});*/
-
 
 // vote on comment
 router.post('/vote_comment', async (req, res) => {
-
   user_id = req.userInfo.id;
   var schema = {
     "artist_id": {
@@ -161,9 +144,7 @@ router.post('/vote_comment', async (req, res) => {
       comment_id: req.body.comment_id,
       status: req.body.status
     };
-
     var data = await vote_comment_helper.upvote_or_down_vote(user_id, obj);
-
     if (data && data.vote == 0) {
       // insert vote
       var resp_data = await vote_comment_helper.upvote_or_down_vote(user_id, obj);

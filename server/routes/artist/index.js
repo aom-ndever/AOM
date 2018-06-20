@@ -436,8 +436,6 @@ router.get('/track_comment', async (req, res) => {
  */
 router.post("/participate", async (req, res) => {
     artist_id = req.userInfo.id;
-    console.log('artist_id', artist_id);
-
     var schema = {
 
         "contest_id": {

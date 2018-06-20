@@ -1284,17 +1284,7 @@ router.post("/artistv1", async (req, res) => {
       _id: new ObjectId(req.body.music_type)
     }
 
-    // filter_for_charttoppers = {
-    //   music_type: {
-    //     _id: new ObjectId(req.body.music_type)
-    //   }
-    // }
-
     filter_for_charttoppers["music_type._id"] = new ObjectId(req.body.music_type)
-
-
-    console.log('filter_for_charttoppers', filter_for_charttoppers);
-
 
   }
   if (req.body.search) {
@@ -1435,7 +1425,6 @@ router.post('/get_comment_by_track_id', async (req, res) => {
 
 router.get('/tracks/:track_id', async (req, res) => {
   var track = await track_helper.get_all_track_by_track_id(req.params.track_id);
-  console.log('track', track);
 
   if (track.status === 1) {
     logger.trace("got details successfully");
