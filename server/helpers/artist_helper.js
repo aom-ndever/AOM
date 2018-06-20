@@ -243,8 +243,6 @@ artist_helper.update_artist_comment = async (artist_id, no_votes) => {
 
 
 artist_helper.update_track_comment = async (id, no_comment) => {
-    console.log('id', id);
-
     try {
         var track_data = await Track.findOneAndUpdate({ "_id": new ObjectId(id) }, { "no_of_comments": no_comment })
 
@@ -439,11 +437,7 @@ artist_helper.update_artist_password = async (artist_id, password) => {
 
 
 artist_helper.get_new_uploads = async (filter = {}) => {
-    console.log('filter for new upalo', filter);
-
     try {
-
-
         var artist = await Artist
             .find(filter)
             .populate('music_type')

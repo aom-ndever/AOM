@@ -110,13 +110,9 @@ comment_helper.update_votes = async (comment_id, no_votes) => {
     }
 };
 comment_helper.get_all_track_by_track_id = async (track_id) => {
-    console.log('track_id', track_id);
-
     try {
         var track = await Track
             .findOne({ "_id": new ObjectId(track_id) })
-
-        console.log('track ---> ', track);
 
         if (track) {
             return { "status": 1, "message": "Track details found", "track": track };
