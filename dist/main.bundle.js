@@ -17,6 +17,308 @@ webpackEmptyAsyncContext.id = "../../../../../src/$$_lazy_route_resource lazy re
 
 /***/ }),
 
+/***/ "../../../../../src/app/admin/admin_layout.module.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AdminLayoutModule; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common__ = __webpack_require__("../../../common/esm5/common.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_router__ = __webpack_require__("../../../router/esm5/router.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_http__ = __webpack_require__("../../../http/esm5/http.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__angular_common_http__ = __webpack_require__("../../../common/esm5/http.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__angular_forms__ = __webpack_require__("../../../forms/esm5/forms.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_ngx_toastr__ = __webpack_require__("../../../../ngx-toastr/fesm5/ngx-toastr.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_angular2_lightbox__ = __webpack_require__("../../../../angular2-lightbox/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_angular2_lightbox___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7_angular2_lightbox__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__angular_platform_browser_animations__ = __webpack_require__("../../../platform-browser/esm5/animations.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__shared_auth_service__ = __webpack_require__("../../../../../src/app/shared/auth.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__layout_admin_layout_component__ = __webpack_require__("../../../../../src/app/admin/layout/admin_layout.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__layout_admin_layout_module__ = __webpack_require__("../../../../../src/app/admin/layout/admin.layout.module.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__home_home_component__ = __webpack_require__("../../../../../src/app/admin/home/home.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__alerts_alerts_component__ = __webpack_require__("../../../../../src/app/admin/alerts/alerts.component.ts");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+var AdminLayoutModule = /** @class */ (function () {
+    function AdminLayoutModule() {
+    }
+    AdminLayoutModule = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["NgModule"])({
+            imports: [
+                __WEBPACK_IMPORTED_MODULE_1__angular_common__["b" /* CommonModule */],
+                __WEBPACK_IMPORTED_MODULE_3__angular_http__["a" /* HttpModule */],
+                __WEBPACK_IMPORTED_MODULE_4__angular_common_http__["b" /* HttpClientModule */],
+                __WEBPACK_IMPORTED_MODULE_5__angular_forms__["b" /* FormsModule */],
+                __WEBPACK_IMPORTED_MODULE_5__angular_forms__["e" /* ReactiveFormsModule */],
+                __WEBPACK_IMPORTED_MODULE_8__angular_platform_browser_animations__["a" /* BrowserAnimationsModule */],
+                __WEBPACK_IMPORTED_MODULE_11__layout_admin_layout_module__["a" /* LayoutModule */],
+                __WEBPACK_IMPORTED_MODULE_6_ngx_toastr__["a" /* ToastrModule */].forRoot(),
+                __WEBPACK_IMPORTED_MODULE_7_angular2_lightbox__["LightboxModule"],
+                __WEBPACK_IMPORTED_MODULE_2__angular_router__["c" /* RouterModule */].forChild([
+                    {
+                        path: 'admin',
+                        component: __WEBPACK_IMPORTED_MODULE_10__layout_admin_layout_component__["a" /* AdminLayoutComponent */],
+                        children: [
+                            { path: '', component: __WEBPACK_IMPORTED_MODULE_12__home_home_component__["a" /* HomeComponent */] },
+                            { path: 'alerts', component: __WEBPACK_IMPORTED_MODULE_13__alerts_alerts_component__["a" /* AlertsComponent */] }
+                        ]
+                    }
+                ])
+            ],
+            declarations: [
+                __WEBPACK_IMPORTED_MODULE_12__home_home_component__["a" /* HomeComponent */],
+                __WEBPACK_IMPORTED_MODULE_13__alerts_alerts_component__["a" /* AlertsComponent */]
+            ],
+            providers: [
+                __WEBPACK_IMPORTED_MODULE_9__shared_auth_service__["a" /* AuthService */],
+            ]
+        })
+    ], AdminLayoutModule);
+    return AdminLayoutModule;
+}());
+
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/admin/alerts/alerts.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<!-- Page Content -->\n<div id=\"page-content-wrapper\">\n           \n    <div class=\"container-fluid\">\n        <div>\n            <h3 class=\"Audience-Overview\">Copyright Notices </h3>\n            <div class=\"artists_table copyright_table table-responsive\">\n                <table class=\"table\">\n                    <thead>\n                      <tr>\n                        <th>N<sup>O</sup></th>\n                        <th>Artist Name</th>\n                        <th>Date</th>\n                        <th>Message</th>\n                        <th>Actions</th>\n                      </tr>\n                    </thead>\n                    <tbody>\n                    <tr>\n                        <td>1.</td>\n                        <td>Shavn Miller</td>\n                        <td>May 12, 2018</td>\n                        <td class=\"td_img\"><div class=\"meassge_td\"><img src=\"img/vote.png\"/>Lorem ipsum dolor sit amet, adipiscing</div></td>\n                        <td class=\"td_img\"><img src=\"img/likes.png\"/>Suspend</td>\n                    </tr>\n                    <tr>\n                        <td>2.</td>\n                        <td>Anna Bill</td>\n                        <td>May 11, 2018</td>\n                        <td class=\"td_img\"><div class=\"meassge_td\"><img src=\"img/vote.png\"/>Lorem ipsum dolor sit amet, adipiscing</div></td>\n                        <td class=\"td_img\"><img src=\"img/likes.png\"/>Suspend</td>\n                    </tr>\n                    <tr>\n                        <td>3.</td>\n                        <td>Lilo</td>\n                        <td>May 11, 2018</td>\n                        <td class=\"td_img\"><div class=\"meassge_td\"><img src=\"img/vote.png\"/>Lorem ipsum dolor sit amet, adipiscing</div></td>\n                        <td class=\"td_img\"><img src=\"img/likes.png\"/>Suspend</td>\n                    </tr>\n                    <tr>\n                        <td>4.</td>\n                        <td>Jocanne Murr</td>\n                        <td>May 11, 2018</td>\n                        <td class=\"td_img\"><div class=\"meassge_td\"><img src=\"img/vote.png\"/>Lorem ipsum dolor sit amet, adipiscing</div></td>\n                        <td class=\"td_img\"><img src=\"img/likes.png\"/>Suspend</td>\n                    </tr>\n                    <tr>\n                        <td>5.</td>\n                        <td>Lordi</td>\n                        <td>May 10, 2018</td>\n                        <td class=\"td_img\"><div class=\"meassge_td\"><img src=\"img/vote.png\"/>Lorem ipsum dolor sit amet, adipiscing</div></td>\n                        <td class=\"td_img\"><img src=\"img/likes.png\"/>Suspend</td>\n                    </tr>             \n                    <tr>\n                        <td>6.</td>\n                        <td>Lordi</td>\n                        <td>May 10, 2018</td>\n                        <td class=\"td_img\"><div class=\"meassge_td\"><img src=\"img/vote.png\"/>Lorem ipsum dolor sit amet, adipiscing</div></td>\n                        <td class=\"td_img\"><img src=\"img/likes.png\"/>Suspend</td>\n                    </tr> \n                    </tbody>\n                  </table>\n            </div>\n        </div>\n        <div>\n            <h3 class=\"Audience-Overview\">Commuinity Notices</h3>\n            <div class=\"artists_table community_tabel table-responsive\">\n                <table class=\"table\">\n                    <thead>\n                      <tr>\n                        <th>N<sup>O</sup></th>\n                        <th>Artist Name</th>\n                        <th>Date</th>\n                        <th>Message</th>\n                        <th>Actions</th>\n                      </tr>\n                    </thead>\n                    <tbody>\n                    <tr>\n                        <td>1.</td>\n                        <td>Shavn Miller</td>\n                        <td>May 12, 2018</td>\n                        <td class=\"td_img\"><img src=\"img/vote.png\"/>Lorem ipsum dolor sit amet, adipiscing...</td>\n                        <td class=\"td_img\">\n                            <div><img src=\"img/likes.png\"/>Remove</div>\n                            <div><img src=\"img/likes.png\"/>Suspend</div>\n                        </td>\n                    </tr>\n                    <tr>\n                        <td>2.</td>\n                        <td>Anna Bill</td>\n                        <td>May 11, 2018</td>\n                        <td class=\"td_img\"><img src=\"img/vote.png\"/>Lorem ipsum dolor sit amet, adipiscing...</td>\n                        <td class=\"td_img\">\n                            <div><img src=\"img/likes.png\"/>Remove</div>\n                            <div><img src=\"img/likes.png\"/>Suspend</div>\n                        </td>\n                    </tr>\n\n\n                    </tbody>\n                  </table>\n            </div>\n        </div>\n    </div>\n</div>\n<!-- /#page-content-wrapper -->"
+
+/***/ }),
+
+/***/ "../../../../../src/app/admin/alerts/alerts.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AlertsComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+var AlertsComponent = /** @class */ (function () {
+    function AlertsComponent() {
+        console.log("Admin dashboard component");
+    }
+    AlertsComponent.prototype.ngOnInit = function () {
+    };
+    AlertsComponent = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+            selector: 'app-alerts',
+            template: __webpack_require__("../../../../../src/app/admin/alerts/alerts.component.html"),
+            styleUrls: []
+        }),
+        __metadata("design:paramtypes", [])
+    ], AlertsComponent);
+    return AlertsComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/admin/home/home.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<!-- Page Content -->\n<div id=\"page-content-wrapper\">\n           \n        <div class=\"container-fluid\">\n            <h3 class=\"Audience-Overview\">Audience Overview </h3>\n            <div>\n                <div class=\"dropdown custom_dropdown\">\n                  <button type=\"button\" class=\"btn dropdown-toggle Days\" data-toggle=\"dropdown\">\n                    7 days\n                  </button>\n                  <div class=\"dropdown-menu\">\n                    <a class=\"dropdown-item\" href=\"javascript:;\">Link 1</a>\n                    <a class=\"dropdown-item\" href=\"javascript:;\">Link 2</a>\n                    <a class=\"dropdown-item\" href=\"javascript:;\">Link 3</a>\n                  </div>\n                </div>\n                <ul class=\"header_ul\">\n                    <li class=\"active\"><a>Votes</a></li>\n                    <li><a>Likes</a></li>\n                    <li><a>Comments</a></li>\n                </ul>\n            </div>\n            <div>\n                <h3 class=\"Last-7-Days-April-2\">Last 7 Days: April 23, 2018 - May 1, 2018</h3>\n                <div class=\"graph_container\">\n                    <img src=\"img/graph.jpg\" />\n                </div>\n            </div>\n            <div>\n                <h3 class=\"Audience-Overview\">Top Artists </h3>\n                <div class=\"artists_table table-responsive\">\n                    <table class=\"table\">\n                        <thead>\n                          <tr>\n                            <th>N<sup>O</sup></th>\n                            <th>Artist Name</th>\n                            <th>Location</th>\n                            <th>Gender</th>\n                            <th>Music Genre</th>\n                            <th>Tracks</th>\n                            <th>Votes</th>\n                            <th>Likes</th>\n                            <th>Followers</th>\n                            <th>Comments</th>\n                          </tr>\n                        </thead>\n                        <tbody>\n                          <tr>\n                            <td>1.</td>\n                            <td>Shavn Miller</td>\n                            <td>New Youk</td>\n                            <td>Male</td>\n                            <td>Hiphop</td>\n                            <td>12</td>\n                            <td class=\"td_img\"><img src=\"img/vote.png\"/>200</td>\n                            <td class=\"td_img\"><img src=\"img/likes.png\"/>2560</td>\n                            <td class=\"td_img\"><img src=\"img/followers.png\"/>4670</td>\n                            <td class=\"td_img\"><img src=\"img/comments.png\"/>23467</td>                                \n                          </tr>\n                              <tr>\n                            <td>2.</td>\n                            <td>Shavn Miller</td>\n                            <td>New Youk</td>\n                            <td>Male</td>\n                            <td>Hiphop</td>\n                            <td>12</td>\n                            <td class=\"td_img\"><img src=\"img/vote.png\"/>200</td>\n                            <td class=\"td_img\"><img src=\"img/likes.png\"/>2560</td>\n                            <td class=\"td_img\"><img src=\"img/followers.png\"/>4670</td>\n                            <td class=\"td_img\"><img src=\"img/comments.png\"/>23467</td>                                \n                          </tr>\n                              <tr>\n                            <td>3.</td>\n                            <td>Shavn Miller</td>\n                            <td>New Youk</td>\n                            <td>Male</td>\n                            <td>Hiphop</td>\n                            <td>12</td>\n                            <td class=\"td_img\"><img src=\"img/vote.png\"/>200</td>\n                            <td class=\"td_img\"><img src=\"img/likes.png\"/>2560</td>\n                            <td class=\"td_img\"><img src=\"img/followers.png\"/>4670</td>\n                            <td class=\"td_img\"><img src=\"img/comments.png\"/>23467</td>                                \n                          </tr>\n                              <tr>\n                            <td>4.</td>\n                            <td>Shavn Miller</td>\n                            <td>New Youk</td>\n                            <td>Male</td>\n                            <td>Hiphop</td>\n                            <td>12</td>\n                            <td class=\"td_img\"><img src=\"img/vote.png\"/>200</td>\n                            <td class=\"td_img\"><img src=\"img/likes.png\"/>2560</td>\n                            <td class=\"td_img\"><img src=\"img/followers.png\"/>4670</td>\n                            <td class=\"td_img\"><img src=\"img/comments.png\"/>23467</td>                                \n                          </tr>\n                              <tr>\n                            <td>5.</td>\n                            <td>Shavn Miller</td>\n                            <td>New Youk</td>\n                            <td>Male</td>\n                            <td>Hiphop</td>\n                            <td>12</td>\n                            <td class=\"td_img\"><img src=\"img/vote.png\"/>200</td>\n                            <td class=\"td_img\"><img src=\"img/likes.png\"/>2560</td>\n                            <td class=\"td_img\"><img src=\"img/followers.png\"/>4670</td>\n                            <td class=\"td_img\"><img src=\"img/comments.png\"/>23467</td>                                  \n                          </tr>\n\n                        </tbody>\n                      </table>\n                </div>\n            </div>\n            <div>\n                <h3 class=\"Audience-Overview\">Top Locations </h3>\n                <div class=\"location_top\">\n                    <img src=\"img/location_img.jpg\" />\n                </div>\n            </div>\n        </div>\n    </div>\n    <!-- /#page-content-wrapper -->"
+
+/***/ }),
+
+/***/ "../../../../../src/app/admin/home/home.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return HomeComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+var HomeComponent = /** @class */ (function () {
+    function HomeComponent() {
+        console.log("Admin dashboard component");
+    }
+    HomeComponent.prototype.ngOnInit = function () {
+    };
+    HomeComponent = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+            selector: 'app-home',
+            template: __webpack_require__("../../../../../src/app/admin/home/home.component.html"),
+            styleUrls: []
+        }),
+        __metadata("design:paramtypes", [])
+    ], HomeComponent);
+    return HomeComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/admin/layout/admin.layout.module.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return LayoutModule; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common__ = __webpack_require__("../../../common/esm5/common.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_router__ = __webpack_require__("../../../router/esm5/router.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__admin_layout_component__ = __webpack_require__("../../../../../src/app/admin/layout/admin_layout.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__sidebar_sidebar_component__ = __webpack_require__("../../../../../src/app/admin/sidebar/sidebar.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__angular_forms__ = __webpack_require__("../../../forms/esm5/forms.js");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+
+
+
+
+
+
+var LayoutModule = /** @class */ (function () {
+    function LayoutModule() {
+    }
+    LayoutModule = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["NgModule"])({
+            imports: [
+                __WEBPACK_IMPORTED_MODULE_1__angular_common__["b" /* CommonModule */],
+                __WEBPACK_IMPORTED_MODULE_5__angular_forms__["e" /* ReactiveFormsModule */],
+                __WEBPACK_IMPORTED_MODULE_2__angular_router__["c" /* RouterModule */].forChild([])
+            ],
+            declarations: [__WEBPACK_IMPORTED_MODULE_3__admin_layout_component__["a" /* AdminLayoutComponent */], __WEBPACK_IMPORTED_MODULE_4__sidebar_sidebar_component__["a" /* SidebarComponent */]],
+            exports: [__WEBPACK_IMPORTED_MODULE_3__admin_layout_component__["a" /* AdminLayoutComponent */]],
+        })
+    ], LayoutModule);
+    return LayoutModule;
+}());
+
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/admin/layout/admin_layout.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<div id=\"wrapper\">\n  <app-sidebar></app-sidebar>\n  <router-outlet></router-outlet>\n</div>"
+
+/***/ }),
+
+/***/ "../../../../../src/app/admin/layout/admin_layout.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AdminLayoutComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+var AdminLayoutComponent = /** @class */ (function () {
+    function AdminLayoutComponent() {
+        console.log("Admin dashboard component");
+    }
+    AdminLayoutComponent.prototype.ngOnInit = function () {
+    };
+    AdminLayoutComponent = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+            selector: 'app-dashboard-layout',
+            template: __webpack_require__("../../../../../src/app/admin/layout/admin_layout.component.html"),
+            styleUrls: []
+        }),
+        __metadata("design:paramtypes", [])
+    ], AdminLayoutComponent);
+    return AdminLayoutComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/admin/sidebar/sidebar.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<!-- Sidebar -->\n<div class=\"top_container\">\n        <ul class=\"profile_container\">\n            <li class=\"sidebar-brand\">\n                <a class=\"profile_name\" href=\"javascript:;\">\n                    <span class=\"user_profile\"><img src=\"img/user_profile.jpg\" /></span>\n                    <h3 class=\"user_name\">Rob Gales</h3>\n                    <h5 class=\"user_profession\">Admin</h5>\n                    <div class=\"dropdown\">\n                        <button type=\"button\" class=\"btn btn-primary dropdown-toggle drop_icon\" data-toggle=\"dropdown\">\n                        </button>\n                        <div class=\"dropdown-menu\">\n                            <a class=\"dropdown-item\" href=\"javascript:;\">Link 1</a>\n                            <a class=\"dropdown-item\" href=\"javascript:;\">Link 2</a>\n                            <a class=\"dropdown-item\" href=\"javascript:;\">Link 3</a>\n                        </div>\n                    </div>                      \n                </a>\n            </li>\n        </ul>\n         <a href=\"javascript:;menu-toggle\" class=\"btn btn-secondary\" id=\"menu-toggle\"><i class=\"fas fa-bars\"></i></a>\n        </div>\n    <div id=\"sidebar-wrapper\">\n\n        <ul class=\"sidebar-nav\">\n            <li class=\"home active\">\n                <a href=\"javascript:;\"><i></i>Home</a>\n            </li>\n            <li class=\"bell\">\n                <a href=\"javascript:;\"><i></i>Alert</a>\n            </li>\n            <li class=\"artist\">\n                <a href=\"javascript:;\"><i></i>Artist</a>\n            </li>\n            <li class=\"users\">\n                <a href=\"javascript:;\"><i></i>Users</a>\n            </li>\n            <li>\n                <hr/>\n            </li>\n            <li class=\"contest\">\n                <a href=\"javascript:;\"><i></i>Contest</a>\n            </li>\n            <li class=\"roles\">\n                <a href=\"javascript:;\"><i></i>Roles</a>\n            </li>\n        </ul>\n    </div>\n    <!-- /#sidebar-wrapper -->"
+
+/***/ }),
+
+/***/ "../../../../../src/app/admin/sidebar/sidebar.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return SidebarComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+var SidebarComponent = /** @class */ (function () {
+    function SidebarComponent() {
+        console.log("Admin dashboard component");
+    }
+    SidebarComponent.prototype.ngOnInit = function () {
+    };
+    SidebarComponent = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+            selector: 'app-sidebar',
+            template: __webpack_require__("../../../../../src/app/admin/sidebar/sidebar.component.html"),
+            styleUrls: []
+        }),
+        __metadata("design:paramtypes", [])
+    ], SidebarComponent);
+    return SidebarComponent;
+}());
+
+
+
+/***/ }),
+
 /***/ "../../../../../src/app/app.component.css":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -89,16 +391,18 @@ var AppComponent = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__app_component__ = __webpack_require__("../../../../../src/app/app.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__ng_bootstrap_ng_bootstrap__ = __webpack_require__("../../../../@ng-bootstrap/ng-bootstrap/index.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__dashboard_layout_layout_module__ = __webpack_require__("../../../../../src/app/dashboard-layout/layout.module.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__register_register_module__ = __webpack_require__("../../../../../src/app/register/register.module.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__email_varification_email_varification_module__ = __webpack_require__("../../../../../src/app/email_varification/email_varification.module.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__forget_password_forget_password_module__ = __webpack_require__("../../../../../src/app/forget_password/forget_password.module.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__shared_auth_service__ = __webpack_require__("../../../../../src/app/shared/auth.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__admin_admin_layout_module__ = __webpack_require__("../../../../../src/app/admin/admin_layout.module.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__register_register_module__ = __webpack_require__("../../../../../src/app/register/register.module.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__email_varification_email_varification_module__ = __webpack_require__("../../../../../src/app/email_varification/email_varification.module.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__forget_password_forget_password_module__ = __webpack_require__("../../../../../src/app/forget_password/forget_password.module.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__shared_auth_service__ = __webpack_require__("../../../../../src/app/shared/auth.service.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+
 
 
 
@@ -120,13 +424,14 @@ var AppModule = /** @class */ (function () {
             imports: [
                 __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser__["BrowserModule"],
                 __WEBPACK_IMPORTED_MODULE_5__dashboard_layout_layout_module__["a" /* LayoutModule */],
-                __WEBPACK_IMPORTED_MODULE_6__register_register_module__["a" /* RegisterModule */],
-                __WEBPACK_IMPORTED_MODULE_7__email_varification_email_varification_module__["a" /* EamilVarificationModule */],
-                __WEBPACK_IMPORTED_MODULE_8__forget_password_forget_password_module__["a" /* ForgetPasswordModule */],
+                __WEBPACK_IMPORTED_MODULE_7__register_register_module__["a" /* RegisterModule */],
+                __WEBPACK_IMPORTED_MODULE_6__admin_admin_layout_module__["a" /* AdminLayoutModule */],
+                __WEBPACK_IMPORTED_MODULE_8__email_varification_email_varification_module__["a" /* EamilVarificationModule */],
+                __WEBPACK_IMPORTED_MODULE_9__forget_password_forget_password_module__["a" /* ForgetPasswordModule */],
                 __WEBPACK_IMPORTED_MODULE_4__ng_bootstrap_ng_bootstrap__["b" /* NgbModule */].forRoot(),
                 __WEBPACK_IMPORTED_MODULE_2__angular_router__["c" /* RouterModule */].forRoot([], { useHash: false })
             ],
-            providers: [__WEBPACK_IMPORTED_MODULE_9__shared_auth_service__["a" /* AuthService */]],
+            providers: [__WEBPACK_IMPORTED_MODULE_10__shared_auth_service__["a" /* AuthService */]],
             bootstrap: [__WEBPACK_IMPORTED_MODULE_3__app_component__["a" /* AppComponent */]]
         })
     ], AppModule);
@@ -1071,7 +1376,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/dashboard-layout/dashboard/dashboard.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "\n<section class=\"banner-wrap\">\n  <div class=\"container\">\n    <div class=\"row\">\n      <div class=\"col-xs-12\">\n        <div class=\"banner-content\">\n          <h2>Lorem ipsum dolor sit amet</h2>\n          <p>ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodoco</p>\n          <div class=\"btn-grp\"><a href=\"javascript:;\" class=\"vote-now-btn\" >vote now</a></div>\n\n        </div>\n      </div>\n    </div>\n  </div>\n</section>\n<section class=\"filter-wrap\">\n  <div class=\"container\">\n    <div class=\"row\">\n      <div class=\"col-md-9 col-sm-9 col-xs-6\">\n        <div class=\"mobile-filter-list\"><i class=\"fa fa-filter\" aria-hidden=\"true\"></i></div>\n        <div class=\"filter-list\">\n          <ul>\n            <li class=\"{{music_type_index == -1 ? 'active' : ''}}\"><a href=\"javascript:;\" (click)=\"getDataByMusicType({}, -1)\">All Styles</a></li>\n            <li class=\"{{music_type_index == i ? 'active' : ''}}\" *ngFor=\"let music of music_type_list; let i = index;\">\n              <a href=\"javascript:;\" (click)=\"getDataByMusicType({music_type:music._id}, i)\">{{music.name}}</a>\n            </li>\n          </ul>\n        </div>\n      </div> \n      <div class=\"col-md-3 col-sm-3 col-xs-6\">\n        <div class=\"search-wrap\">\n          <form>\n            <div class=\"mobile-search\"><i class=\"fa fa-search\" aria-hidden=\"true\"></i></div>\n            <div class=\"search-input\">\n              <input type=\"text\" placeholder=\"Search by Artist Name or Song Title\" name=\"filter\" (keyup)=\"filter($event)\"  [(ngModel)]=\"search_str\"/>\n            </div>\n          </form>\n        </div>\n      </div>\n    </div>\n  </div>\n</section>\n\n<section class=\"finalist-wrap\">\n  <div class=\"container\">\n    <div class=\"row\">\n      <div class=\"col-md-12\">\n        <div class=\"head-global\"><h2>Round Two Finalists</h2></div>\n      </div>\n      <div class=\"finalists-container\">\n        \n          <app-carousel-scroll [images]=\"images\" [showFavourit]='true' [carouselType]='\"normal\"'></app-carousel-scroll>\n         \n      </div>\n    </div>\n  </div>\n</section>\n\n\n<section class=\"newuploads-wrap\">\n  <div class=\"container\">\n    <div class=\"row\">\n      <div class=\"col-md-12\">\n        <div class=\"head-global\"><h2>New Uploads</h2></div>\n      </div>\n    </div>\n      <div class=\"uploads-container\">\n        <div class=\"row\">\n          <div class=\"col-md-4 col-sm-4 col-xs-12\" *ngFor=\"let nupload of data['new_uploads']; let i = index;\">\n            <div class=\"upload\">\n              <div class=\"img-wrap\">\n                <img src=\"{{track_url+nupload.image}}\" alt=\"New Uploads\">\n              </div>\n              <div class=\"content-wrap\">\n                <div class=\"player\">\n                  <div class=\"title\"><a href=\"javascript:;\">{{nupload.name}}</a></div>\n                  <div class=\"finalist-name\">{{nupload.artist_id['first_name']+' '+nupload.artist_id['last_name']}}</div>\n                  <div class=\"action-btn custom-action-btn\">\n                \n                      <a [style.display]=\"!audio_ins[i] ? 'block' : 'none'\" (click)=\"playAudio(nupload.audio, i)\" class=\"play_img\" ><img src=\"img/play_icon.png\"/></a>\n                      <a [style.display]=\"audio_ins[i] ? 'block' : 'none'\" (click)=\"stopAudio(i)\" class=\"pause_img\"><img src=\"img/pause_icon.png\"/></a>\n                  </div>\n                  <!-- <div class=\"action-btn\"><a href=\"javascript:;\">\n                    <img src=\"img/play.png \" alt=\"Pause \"  [style.display]=\"!audio_ins[i] ? 'block' : 'none'\" (click)=\"playAudio(nupload.audio, i)\">\n                    <img src=\"img/pause.png \" alt=\"Pause \"  [style.display]=\"audio_ins[i] ? 'block' : 'none'\" (click)=\"stopAudio(i)\">\n                  </a></div> -->\n                </div>\n                <div class=\"location\">\n                  <p><i class=\"fa fa-map-marker\" aria-hidden=\"true\"></i><span>New York</span></p>\n                  <div class=\"cat {{nupload.artist_id.music_type['alias']}}\">{{nupload.artist_id.music_type['name']}}</div>\n                </div>\n              </div>\n            </div>\n          </div>\n        </div>\n      </div>\n\n  </div>\n</section>\n\n"
+module.exports = "\n<section class=\"banner-wrap\">\n  <div class=\"container\">\n    <div class=\"row\">\n      <div class=\"col-xs-12\">\n        <div class=\"banner-content\">\n          <h2>Lorem ipsum dolor sit amet</h2>\n          <p>ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodoco</p>\n          <div class=\"btn-grp\"><a href=\"javascript:;\" class=\"vote-now-btn\" >vote now</a></div>\n\n        </div>\n      </div>\n    </div>\n  </div>\n</section>\n<section class=\"filter-wrap\">\n  <div class=\"container\">\n    <div class=\"row\">\n      <div class=\"col-md-9 col-sm-9 col-xs-6\">\n        <div class=\"mobile-filter-list\"><i class=\"fa fa-filter\" aria-hidden=\"true\"></i></div>\n        <div class=\"filter-list\">\n          <ul>\n            <li class=\"{{music_type_index == -1 ? 'active' : ''}}\"><a href=\"javascript:;\" (click)=\"getDataByMusicType({}, -1)\">All Styles</a></li>\n            <li class=\"{{music_type_index == i ? 'active' : ''}}\" *ngFor=\"let music of music_type_list; let i = index;\">\n              <a href=\"javascript:;\" (click)=\"getDataByMusicType({music_type:music._id}, i)\">{{music.name}}</a>\n            </li>\n          </ul>\n        </div>\n      </div> \n      <div class=\"col-md-3 col-sm-3 col-xs-6\">\n        <div class=\"search-wrap\">\n          <form>\n            <div class=\"mobile-search\"><i class=\"fa fa-search\" aria-hidden=\"true\"></i></div>\n            <div class=\"search-input\">\n              <input type=\"text\" placeholder=\"Search by Artist Name or Song Title\" name=\"filter\" (keyup)=\"filter($event)\"  [(ngModel)]=\"search_str\"/>\n            </div>\n          </form>\n        </div>\n      </div>\n    </div>\n  </div>\n</section>\n\n<section class=\"finalist-wrap\">\n  <div class=\"container\">\n    <div class=\"row\">\n      <div class=\"col-md-12\">\n        <div class=\"head-global\"><h2>Round Two Finalists</h2></div>\n      </div>\n      <div class=\"finalists-container\">\n        \n          <app-carousel-scroll [images]=\"images\" [showFavourit]='true' [carouselType]='\"normal\"'></app-carousel-scroll>\n         \n      </div>\n    </div>\n  </div>\n</section>\n\n\n<section class=\"newuploads-wrap\">\n  <div class=\"container\">\n    <div class=\"row\">\n      <div class=\"col-md-12\">\n        <div class=\"head-global\"><h2>New Uploads</h2></div>\n      </div>\n    </div>\n      <div class=\"uploads-container\">\n        <div class=\"row\">\n          <div class=\"col-md-4 col-sm-4 col-xs-12\" *ngFor=\"let nupload of data['new_uploads']; let i = index;\">\n            <div class=\"upload\">\n              <div class=\"img-wrap\">\n                <img src=\"{{track_url+nupload.image}}\" alt=\"New Uploads\">\n              </div>\n              <div class=\"content-wrap\">\n                <div class=\"player\">\n                  <div class=\"title\"><a href=\"javascript:;\">{{nupload.name}}</a></div>\n                  <div class=\"finalist-name\">{{nupload.artist_id['first_name']+' '+nupload.artist_id['last_name']}}</div>\n                  <div class=\"action-btn custom-action-btn\">                \n                      <a [style.display]=\"!audio_ins[i] ? 'block' : 'none'\" (click)=\"playAudio(nupload.audio, i)\" class=\"play_img\" ><img src=\"img/play_icon.png\"/></a>\n                      <a [style.display]=\"audio_ins[i] ? 'block' : 'none'\" (click)=\"stopAudio(i)\" class=\"pause_img\"><img src=\"img/pause_icon.png\"/></a>\n                  </div>\n                  <!-- <div class=\"action-btn\"><a href=\"javascript:;\">\n                    <img src=\"img/play.png \" alt=\"Pause \"  [style.display]=\"!audio_ins[i] ? 'block' : 'none'\" (click)=\"playAudio(nupload.audio, i)\">\n                    <img src=\"img/pause.png \" alt=\"Pause \"  [style.display]=\"audio_ins[i] ? 'block' : 'none'\" (click)=\"stopAudio(i)\">\n                  </a></div> -->\n                </div>\n                <div class=\"location\">\n                  <p><i class=\"fa fa-map-marker\" aria-hidden=\"true\"></i><span>New York</span></p>\n                  <div class=\"cat {{nupload.artist_id.music_type['alias']}}\">{{nupload.artist_id.music_type['name']}}</div>\n                </div>\n              </div>\n            </div>\n          </div>\n        </div>\n      </div>\n\n  </div>\n</section>\n\n"
 
 /***/ }),
 
@@ -1340,7 +1645,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/dashboard-layout/header/header.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<header class=\"custom_header\">\n  <div class=\"container\">\n    <div class=\"row\" *ngIf=\"!user\">\n      <div class=\"col-md-3 col-sm-3 col-xs-3\">\n        <div class=\"logo-wrap\">\n          <a href=\"javascript:;\" routerLink=\"\">\n            <img src=\"img/logo.png\" alt=\"\">\n          </a>\n        </div>\n      </div>\n      <div class=\"col-md-9 col-sm-9 col-xs-9\">\n        <div class=\"mobile-nav\">\n          <a href=\"javascript:;\">\n            <i class=\"fa fa-bars\"></i>\n          </a>\n        </div>\n        <nav class=\"navigation\">\n          <ul>\n            <li routerLinkActive=\"active\">\n              <a href=\"javascript:;\" routerLink=\"/whats-new\">What's new</a>\n            </li>\n            <li routerLinkActive=\"active\">\n              <a href=\"javascript:;\" routerLink=\"/artist\">Artits</a>\n            </li>\n            <li routerLinkActive=\"active\">\n              <a href=\"javascript:;\" routerLink=\"/vote\">Vote</a>\n            </li>\n            <li data-fancybox data-animation-duration=\"700\" data-src=\"javascript:;login\">\n              <a href=\"javascript:;\" (click)=\"openVerticallyCentered(content)\">Login</a>\n            </li>\n            <li class=\"register-btn\">\n              <a href=\"javascript:;\" routerLink=\"/register\">Register</a>\n            </li>\n          </ul>\n        </nav>\n      </div>\n    </div>\n    <div class=\"row\" *ngIf=\"user && user.artist\">\n\t\t\t\t<div class=\"col-md-2 col-sm-2 col-xs-2\">\n\t\t\t\t\t<div class=\"logo-wrap\">\n\t\t\t\t\t\t<a href=\"javascript:;\" routerLink=\"\"><img src=\"img/logo.png\" alt=\"\"></a>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"col-md-10 col-sm-10 col-xs-10\">\n\t\t\t\t\t<div class=\"nav-header\">\n\t\t\t\t\t\t<div class=\"mobile-nav\"><a href=\"javascript:;\"><i class=\"fa fa-bars\"></i></a></div>\n\t\t\t\t\t\t<nav class=\"navigation\">\n\t\t\t\t\t\t\t<ul>\n\t\t\t\t\t\t\t\t<li routerLinkActive=\"active\"><a href=\"javascript:;\" routerLink=\"/whats-new\">What's new</a></li>\n\t\t\t\t\t\t\t\t<li routerLinkActive=\"active\"><a href=\"javascript:;\" routerLink=\"/artist\">Artits</a></li>\n\t\t\t\t\t\t\t\t<li routerLinkActive=\"active\"><a href=\"javascript:;\" routerLink=\"/vote\">Vote</a></li>\n\t\t\t\t\t\t\t\t<li routerLinkActive=\"active\"><a href=\"javascript:;\" routerLink=\"/my-music\">My Music</a></li>\n\t\t\t\t\t\t\t\t<li routerLinkActive=\"active\"><a href=\"javascript:;\" routerLink=\"/my-profile\">My Profile</a></li>\n\t\t\t\t\t\t\t</ul>\n\t\t\t\t\t\t</nav>\n\t\t\t\t\t\t<div class=\"logged-in-header\">\n\t\t\t\t\t\t\t<ul class=\"update-option\">\n\t\t\t\t\t\t\t\t<li class=\"message\"><a href=\"javascript:;\"><i class=\"fa fa-envelope-o\" aria-hidden=\"true\"></i> <span class=\"new-up\"></span></a></li>\n\t\t\t\t\t\t\t\t<li class=\"notification\"><a href=\"javascript:;\"><i class=\"fa fa-bell\" aria-hidden=\"true\"></i> <span class=\"new-up\"></span></a></li>\n\t\t\t\t\t\t\t</ul>\n\t\t\t\t\t\t\t<div class=\"profile-picture\" ngbDropdown >\n\t\t\t\t\t\t\t\t<a href=\"javascirpt:;\" ngbDropdownToggle>\n                  <img src=\"{{user.artist.image != '' ? user.artist.image : 'img/upload1.png'}}\" *ngIf=\"user.artist\" alt=\"Profile Picture\">\n                  <img src=\"{{user.user.image != '' ? user.user.image : 'img/upload1.png'}}\" *ngIf=\"user.user\" alt=\"Profile Picture\">\n                </a>\n                <!-- <div ngbDropdownMenu>\n                    <button class=\"dropdown-item\">Logout</button>\n                </div> -->\n\t\t\t\t\t\t\t</div>\n            </div>\n            <ul class=\"logout_ul\">\n              <li>\n                <a>LogOut</a></li>\n            </ul>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n    </div>\n    <div class=\"row\" *ngIf=\"user && user.user\">\n\t\t\t\t<div class=\"col-md-2 col-sm-2 col-xs-2\">\n\t\t\t\t\t<div class=\"logo-wrap\">\n\t\t\t\t\t\t<a href=\"javascript:;\" routerLink=\"\"><img src=\"img/logo.png\" alt=\"\"></a>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"col-md-10 col-sm-10 col-xs-10\">\n\t\t\t\t\t<div class=\"nav-header\">\n\t\t\t\t\t\t<div class=\"mobile-nav\"><a href=\"javascript:;\"><i class=\"fa fa-bars\"></i></a></div>\n\t\t\t\t\t\t<nav class=\"navigation\">\n\t\t\t\t\t\t\t<ul>\n\t\t\t\t\t\t\t\t<li routerLinkActive=\"active\"><a href=\"javascript:;\" routerLink=\"/whats-new\">What's new</a></li>\n\t\t\t\t\t\t\t\t<li routerLinkActive=\"active\"><a href=\"javascript:;\" routerLink=\"/artist\">Artits</a></li>\n\t\t\t\t\t\t\t\t<li routerLinkActive=\"active\"><a href=\"javascript:;\" routerLink=\"/vote\">Vote</a></li>\n\t\t\t\t\t\t\t\t<li routerLinkActive=\"active\"><a href=\"javascript:;\" routerLink=\"/my-profile\">My Profile</a></li>\n\t\t\t\t\t\t\t</ul>\n\t\t\t\t\t\t</nav>\n\t\t\t\t\t\t<div class=\"logged-in-header\">\n\t\t\t\t\t\t\t<ul class=\"update-option\">\n\t\t\t\t\t\t\t\t<li class=\"notification\"><a href=\"javascript:;\"><i class=\"fa fa-bell\" aria-hidden=\"true\"></i> <span class=\"new-up\"></span></a></li>\n\t\t\t\t\t\t\t</ul>\n\t\t\t\t\t\t\t<div class=\"profile-picture d-inline-block\" ngbDropdown>\n\t\t\t\t\t\t\t\t<a href=\"javascirpt:;\" ngbDropdownToggle>\n                  <img src=\"{{user.artist.image != '' ? user.artist.image : 'img/upload1.png'}}\" *ngIf=\"user.artist\" alt=\"Profile Picture\">\n                  <img src=\"{{user.user.image != '' ? user.user.image : 'img/upload1.png'}}\" *ngIf=\"user.user\" alt=\"Profile Picture\">\n                </a>\n                <!-- <div ngbDropdownMenu>\n                    <button class=\"dropdown-item\">Logout</button>\n                </div> -->\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n    </div>\n  </div>\n</header>\n<ng-template #content let-c=\"close\" let-d=\"dismiss\" >\n  <div class=\"modal_login_wrapper\">\n  <button type=\"button\" class=\"close\" aria-label=\"Close\" (click)=\"d('Cross click')\">\n    <span aria-hidden=\"true\">&times;</span>\n  </button>\n  <div class=\"modal-body\">\n    <div class=\"login-modal\">\n\t\t\t<div class=\"social-login\">\n\t\t\t\t<div class=\"google-login\">\n\t\t\t\t\t<a href=\"javascript:;\"><i class=\"fa fa-google\" aria-hidden=\"true\"></i> <span>Login with Google</span></a>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"fb-login\">\n\t\t\t\t\t<a href=\"javascript:;\"><i class=\"fa fa-facebook\" aria-hidden=\"true\"></i> <span>Login with Facebook</span></a>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t\t<div class=\"or\">or with email</div>\n\t\t\t<div class=\"email-form\">\n\t\t\t\t<form [formGroup]=\"login_form\">\n\t\t\t\t\t<div class=\"form-group\">\n            <label for=\"email\">Email</label>\n            <input type=\"email\" class=\"form-control\" formControlName=\"email\" name=\"email\" id=\"email\" [(ngModel)]=\"userdata.email\" placeholder=\"Email\">\n            <div *ngIf=\"!login_form.controls['email'].valid && login_form.controls['email'].dirty\">\n              <span *ngIf=\"login_form.controls['email'].errors['required']\" class=\"text-danger\">Email is required.</span>\n            </div>\n          </div>\n          <div class=\"form-group pwd-grp\">\n            <label for=\"pwd\">Password</label>\n            <input type=\"password\" class=\"form-control\" formControlName=\"password\" name=\"password\" id=\"pwd\" [(ngModel)]=\"userdata.password\" placeholder=\"Password\">\n            <div class=\"pwd-icon\"><i class=\"fa fa-eye\" aria-hidden=\"true\"></i></div>\n            <div *ngIf=\"!login_form.controls['password'].valid && login_form.controls['password'].dirty\">\n              <span *ngIf=\"login_form.controls['password'].errors['required']\" class=\"text-danger\">Password is required.</span>\n            </div>\n          </div>\n          <div class=\"form-group\">\n            <label for=\"pwd\">Type</label>\n            <select class=\"form-control\" name=\"type\" formControlName=\"type\" [(ngModel)]=\"userdata.type\">\n              <option value=\"artist\">Artist</option>\n              <option value=\"listener\">Listener</option>\n            </select>\n          </div>\n          <div class=\"login-btn\"><button (click)=\"login()\" [disabled]=\"!login_form.valid || show_spinner\">Log In <i *ngIf=\"show_spinner\" class=\"fa fa-spinner fa-spin\"></i></button></div>\n          <div class=\"forgot-link\"><a href=\"javascript:;\" (click)=\"openForgetPasswordModal(forget)\">Forgot Password</a></div>\n          <div class=\"register-link\">Don't have an account yet? <a href=\"javascript:;\" routerLink=\"/register\">Register</a></div>\n\t\t\t\t</form>\n\t\t\t</div>\n\t\t</div>\n  </div>\n</div>\n</ng-template>\n<ng-template #forget let-c=\"close\" let-d=\"dismiss\">\n    <div class=\"modal-header\" style=\"border:none;\">\n      <button type=\"button\" class=\"close\" aria-label=\"Close\" (click)=\"d('Cross click')\">\n        <span aria-hidden=\"true\">&times;</span>\n      </button>\n    </div>\n    <div class=\"modal-body\">\n      <form [formGroup]=\"forget_form\">\n        <div class=\"col-sm-12\">\n          <div class=\"form-group\">\n            <label class=\"control-label\">login Type</label>\n            <select class=\"form-control\" formControlName=\"type\" name=\"type\" [(ngModel)]=\"forget_pwd_data.type\">\n              <option value=\"artist\">Artist</option>\n              <option value=\"user\">User</option>\n            </select>\n          </div>\n          <div class=\"form-group\">\n            <label class=\"control-label\">Email Id</label>\n            <input class=\"form-control\" name=\"email\" formControlName=\"email\" [(ngModel)]=\"forget_pwd_data.email\"/>\n            <div *ngIf=\"!forget_form.controls['email'].valid && forget_form.controls['email'].dirty && forget_form.controls['email'].touched\">\n              <span *ngIf=\"forget_form.controls['email'].errors['required']\" class=\"text-danger\">Email is required.</span>\n              <span *ngIf=\"forget_form.controls['email'].errors['email']\" class=\"text-danger\">Enter valid email.</span>\n            </div>\n          </div>\n          <div class=\"form-group\">\n            <button class=\"btn btn-success\" (click)=\"forgetPassword()\" [disabled]=\"!forget_form.valid || show_spinner\">Submit <i *ngIf=\"show_spinner\" class=\"fa fa-spinner fa-spin\"></i></button>\n          </div>\n        </div>\n      </form>\n    </div>\n</ng-template>"
+module.exports = "<header class=\"custom_header\">\n  <div class=\"container\">\n    <div class=\"row\" *ngIf=\"!user\">\n      <div class=\"col-md-3 col-sm-3 col-xs-3\">\n        <div class=\"logo-wrap\">\n          <a href=\"javascript:;\" routerLink=\"\">\n            <img src=\"img/logo.png\" alt=\"\">\n          </a>\n        </div>\n      </div>\n      <div class=\"col-md-9 col-sm-9 col-xs-9\">\n        <div class=\"mobile-nav\">\n          <a href=\"javascript:;\">\n            <i class=\"fa fa-bars\"></i>\n          </a>\n        </div>\n        <nav class=\"navigation\">\n          <ul>\n            <li routerLinkActive=\"active\">\n              <a href=\"javascript:;\" routerLink=\"/whats-new\">What's new</a>\n            </li>\n            <li routerLinkActive=\"active\">\n              <a href=\"javascript:;\" routerLink=\"/artist\">Artits</a>\n            </li>\n            <li routerLinkActive=\"active\">\n              <a href=\"javascript:;\" routerLink=\"/vote\">Vote</a>\n            </li>\n            <li data-fancybox data-animation-duration=\"700\" data-src=\"javascript:;login\">\n              <a href=\"javascript:;\" (click)=\"openVerticallyCentered(content)\">Login</a>\n            </li>\n            <li class=\"register-btn\">\n              <a href=\"javascript:;\" routerLink=\"/register\">Register</a>\n            </li>\n          </ul>\n        </nav>\n      </div>\n    </div>\n    <div class=\"row\" *ngIf=\"user && user.artist\">\n\t\t\t\t<div class=\"col-md-2 col-sm-2 col-xs-2\">\n\t\t\t\t\t<div class=\"logo-wrap\">\n\t\t\t\t\t\t<a href=\"javascript:;\" routerLink=\"\"><img src=\"img/logo.png\" alt=\"\"></a>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"col-md-10 col-sm-10 col-xs-10\">\n\t\t\t\t\t<div class=\"nav-header\">\n\t\t\t\t\t\t<div class=\"mobile-nav\"><a href=\"javascript:;\"><i class=\"fa fa-bars\"></i></a></div>\n\t\t\t\t\t\t<nav class=\"navigation\">\n\t\t\t\t\t\t\t<ul>\n\t\t\t\t\t\t\t\t<li routerLinkActive=\"active\"><a href=\"javascript:;\" routerLink=\"/whats-new\">What's new</a></li>\n\t\t\t\t\t\t\t\t<li routerLinkActive=\"active\"><a href=\"javascript:;\" routerLink=\"/artist\">Artits</a></li>\n\t\t\t\t\t\t\t\t<li routerLinkActive=\"active\"><a href=\"javascript:;\" routerLink=\"/vote\">Vote</a></li>\n\t\t\t\t\t\t\t\t<li routerLinkActive=\"active\"><a href=\"javascript:;\" routerLink=\"/my-music\">My Music</a></li>\n\t\t\t\t\t\t\t\t<li routerLinkActive=\"active\"><a href=\"javascript:;\" routerLink=\"/my-profile\">My Profile</a></li>\n\t\t\t\t\t\t\t</ul>\n\t\t\t\t\t\t</nav>\n\t\t\t\t\t\t<div class=\"logged-in-header\">\n\t\t\t\t\t\t\t<ul class=\"update-option\">\n\t\t\t\t\t\t\t\t<li class=\"message\"><a href=\"javascript:;\"><i class=\"fa fa-envelope-o\" aria-hidden=\"true\"></i> <span class=\"new-up\"></span></a></li>\n\t\t\t\t\t\t\t\t<li class=\"notification\"><a href=\"javascript:;\"><i class=\"fa fa-bell\" aria-hidden=\"true\"></i> <span class=\"new-up\"></span></a></li>\n\t\t\t\t\t\t\t</ul>\n\t\t\t\t\t\t\t<div class=\"profile-picture\" ngbDropdown >\n\t\t\t\t\t\t\t\t<a href=\"javascirpt:;\" ngbDropdownToggle>\n                  <img src=\"{{user.artist.image != '' ? user.artist.image : 'img/upload1.png'}}\" *ngIf=\"user.artist\" alt=\"Profile Picture\">\n                  <img src=\"{{user.user.image != '' ? user.user.image : 'img/upload1.png'}}\" *ngIf=\"user.user\" alt=\"Profile Picture\">\n                </a>\n                <!-- <div ngbDropdownMenu>\n                    <button class=\"dropdown-item\">Logout</button>\n                </div> -->\n\t\t\t\t\t\t\t</div>\n            </div>\n            <ul class=\"logout_ul\">\n              <li>\n                <a href=\"javascript:;\" (click)=\"logout()\">LogOut</a></li>\n            </ul>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n    </div>\n    <div class=\"row\" *ngIf=\"user && user.user\">\n\t\t\t\t<div class=\"col-md-2 col-sm-2 col-xs-2\">\n\t\t\t\t\t<div class=\"logo-wrap\">\n\t\t\t\t\t\t<a href=\"javascript:;\" routerLink=\"\"><img src=\"img/logo.png\" alt=\"\"></a>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"col-md-10 col-sm-10 col-xs-10\">\n\t\t\t\t\t<div class=\"nav-header\">\n\t\t\t\t\t\t<div class=\"mobile-nav\"><a href=\"javascript:;\"><i class=\"fa fa-bars\"></i></a></div>\n\t\t\t\t\t\t<nav class=\"navigation\">\n\t\t\t\t\t\t\t<ul>\n\t\t\t\t\t\t\t\t<li routerLinkActive=\"active\"><a href=\"javascript:;\" routerLink=\"/whats-new\">What's new</a></li>\n\t\t\t\t\t\t\t\t<li routerLinkActive=\"active\"><a href=\"javascript:;\" routerLink=\"/artist\">Artits</a></li>\n\t\t\t\t\t\t\t\t<li routerLinkActive=\"active\"><a href=\"javascript:;\" routerLink=\"/vote\">Vote</a></li>\n\t\t\t\t\t\t\t\t<li routerLinkActive=\"active\"><a href=\"javascript:;\" routerLink=\"/my-profile\">My Profile</a></li>\n\t\t\t\t\t\t\t</ul>\n\t\t\t\t\t\t</nav>\n\t\t\t\t\t\t<div class=\"logged-in-header\">\n\t\t\t\t\t\t\t<ul class=\"update-option\">\n\t\t\t\t\t\t\t\t<li class=\"notification\"><a href=\"javascript:;\"><i class=\"fa fa-bell\" aria-hidden=\"true\"></i> <span class=\"new-up\"></span></a></li>\n\t\t\t\t\t\t\t</ul>\n\t\t\t\t\t\t\t<div class=\"profile-picture\" ngbDropdown>\n\t\t\t\t\t\t\t\t<a href=\"javascirpt:;\" ngbDropdownToggle>\n                  <img src=\"{{user.artist.image != '' ? user.artist.image : 'img/upload1.png'}}\" *ngIf=\"user.artist\" alt=\"Profile Picture\">\n                  <img src=\"{{user.user.image != '' ? user.user.image : 'img/upload1.png'}}\" *ngIf=\"user.user\" alt=\"Profile Picture\">\n                </a>\n                \n\t\t\t\t\t\t\t</div>\n            </div>\n            <ul class=\"logout_ul\">\n              <li>\n                <a href=\"javascript:;\" (click)=\"logout()\">LogOut</a></li>\n            </ul>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n    </div>\n  </div>\n</header>\n<ng-template #content let-c=\"close\" let-d=\"dismiss\" >\n  <div class=\"modal_login_wrapper\">\n  <button type=\"button\" class=\"close\" aria-label=\"Close\" (click)=\"d('Cross click')\">\n    <span aria-hidden=\"true\">&times;</span>\n  </button>\n  <div class=\"modal-body\">\n    <div class=\"login-modal\">\n\t\t\t<div class=\"social-login\">\n\t\t\t\t<div class=\"google-login\">\n\t\t\t\t\t<a href=\"javascript:;\"><i class=\"fa fa-google\" aria-hidden=\"true\"></i> <span>Login with Google</span></a>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"fb-login\">\n\t\t\t\t\t<a href=\"javascript:;\"><i class=\"fa fa-facebook\" aria-hidden=\"true\"></i> <span>Login with Facebook</span></a>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t\t<div class=\"or\">or with email</div>\n\t\t\t<div class=\"email-form\">\n\t\t\t\t<form [formGroup]=\"login_form\">\n\t\t\t\t\t<div class=\"form-group\">\n            <label for=\"email\">Email</label>\n            <input type=\"email\" class=\"form-control\" formControlName=\"email\" name=\"email\" id=\"email\" [(ngModel)]=\"userdata.email\" placeholder=\"Email\">\n            <div *ngIf=\"!login_form.controls['email'].valid && login_form.controls['email'].dirty\">\n              <span *ngIf=\"login_form.controls['email'].errors['required']\" class=\"text-danger\">Email is required.</span>\n            </div>\n          </div>\n          <div class=\"form-group pwd-grp\">\n            <label for=\"pwd\">Password</label>\n            <input type=\"password\" class=\"form-control\" formControlName=\"password\" name=\"password\" id=\"pwd\" [(ngModel)]=\"userdata.password\" placeholder=\"Password\">\n            <div class=\"pwd-icon\"><i class=\"fa fa-eye\" aria-hidden=\"true\"></i></div>\n            <div *ngIf=\"!login_form.controls['password'].valid && login_form.controls['password'].dirty\">\n              <span *ngIf=\"login_form.controls['password'].errors['required']\" class=\"text-danger\">Password is required.</span>\n            </div>\n          </div>\n          <div class=\"form-group\">\n            <label for=\"pwd\">Type</label>\n            <select class=\"form-control\" name=\"type\" formControlName=\"type\" [(ngModel)]=\"userdata.type\">\n              <option value=\"artist\">Artist</option>\n              <option value=\"listener\">Listener</option>\n            </select>\n          </div>\n          <div class=\"login-btn\"><button (click)=\"login()\" [disabled]=\"!login_form.valid || show_spinner\">Log In <i *ngIf=\"show_spinner\" class=\"fa fa-spinner fa-spin\"></i></button></div>\n          <div class=\"forgot-link\"><a href=\"javascript:;\" (click)=\"openForgetPasswordModal(forget)\">Forgot Password</a></div>\n          <div class=\"register-link\">Don't have an account yet? <a href=\"javascript:;\" routerLink=\"/register\">Register</a></div>\n\t\t\t\t</form>\n\t\t\t</div>\n\t\t</div>\n  </div>\n</div>\n</ng-template>\n<ng-template #forget let-c=\"close\" let-d=\"dismiss\">\n    <div class=\"modal-header\" style=\"border:none;\">\n      <button type=\"button\" class=\"close\" aria-label=\"Close\" (click)=\"d('Cross click')\">\n        <span aria-hidden=\"true\">&times;</span>\n      </button>\n    </div>\n    <div class=\"modal-body\">\n      <form [formGroup]=\"forget_form\">\n        <div class=\"col-sm-12\">\n          <div class=\"form-group\">\n            <label class=\"control-label\">login Type</label>\n            <select class=\"form-control\" formControlName=\"type\" name=\"type\" [(ngModel)]=\"forget_pwd_data.type\">\n              <option value=\"artist\">Artist</option>\n              <option value=\"user\">User</option>\n            </select>\n          </div>\n          <div class=\"form-group\">\n            <label class=\"control-label\">Email Id</label>\n            <input class=\"form-control\" name=\"email\" formControlName=\"email\" [(ngModel)]=\"forget_pwd_data.email\"/>\n            <div *ngIf=\"!forget_form.controls['email'].valid && forget_form.controls['email'].dirty && forget_form.controls['email'].touched\">\n              <span *ngIf=\"forget_form.controls['email'].errors['required']\" class=\"text-danger\">Email is required.</span>\n              <span *ngIf=\"forget_form.controls['email'].errors['email']\" class=\"text-danger\">Enter valid email.</span>\n            </div>\n          </div>\n          <div class=\"form-group\">\n            <button class=\"btn btn-success\" (click)=\"forgetPassword()\" [disabled]=\"!forget_form.valid || show_spinner\">Submit <i *ngIf=\"show_spinner\" class=\"fa fa-spinner fa-spin\"></i></button>\n          </div>\n        </div>\n      </form>\n    </div>\n</ng-template>"
 
 /***/ }),
 
@@ -1495,6 +1800,12 @@ var HeaderComponent = /** @class */ (function () {
                 _this.show_spinner = false;
             });
         }
+    };
+    // Logout
+    HeaderComponent.prototype.logout = function () {
+        localStorage.removeItem('user');
+        this.user = '';
+        this.router.navigate(['']);
     };
     HeaderComponent = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({

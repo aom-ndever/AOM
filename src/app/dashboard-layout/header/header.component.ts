@@ -135,5 +135,10 @@ export class HeaderComponent implements OnInit, OnDestroy  {
       });
     }
   }
-
+  // Logout
+  logout() {
+    localStorage.removeItem('user');
+    this.user = '';
+    this.router.navigate(['']);
+  }
 }

@@ -75,8 +75,7 @@
                 <div class="player">
                   <div class="title"><a href="javascript:;">{{nupload.name}}</a></div>
                   <div class="finalist-name">{{nupload.artist_id['first_name']+' '+nupload.artist_id['last_name']}}</div>
-                  <div class="action-btn custom-action-btn">
-                
+                  <div class="action-btn custom-action-btn">                
                       <a [style.display]="!audio_ins[i] ? 'block' : 'none'" (click)="playAudio(nupload.audio, i)" class="play_img" ><img src="img/play_icon.png"/></a>
                       <a [style.display]="audio_ins[i] ? 'block' : 'none'" (click)="stopAudio(i)" class="pause_img"><img src="img/pause_icon.png"/></a>
                   </div>
