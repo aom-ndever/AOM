@@ -143,7 +143,7 @@
 				<p class="instrution">AIFF,WAV,FLAC,MP3 or less</p>
       </div>
       <div class="media-upload-btn" *ngIf="audio_file">
-        {{audio_file.name}}
+        <span class="track_name">{{audio_file.name}}</span>
         <div class="upload-btn-div">
           <label for="fileUpload">Upload a Different Photo</label>
           <input type="file" name="my_doc_upload" (change)="changeAudio($event)" id="my_doc_upload" multiple="false"> 

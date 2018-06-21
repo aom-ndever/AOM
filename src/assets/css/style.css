@@ -77,7 +77,7 @@ li.notification span.new-up {
     justify-content:flex-start;
 }
 .navigation ul li,.update-option li {
-    padding: 0 15px;
+    padding: 0 25px;
 }
 .navigation ul li.active a ,.navigation ul li:hover a,.navigation ul li:active a,.navigation ul li:active a{
     border-bottom: 2px solid #9b26b0;
@@ -227,7 +227,7 @@ a.vote-now-btn {
         flex:0 0 100%;
 
 }
-.filter-list ul li{padding: 0 15px; position: relative;}
+.filter-list ul li{padding: 0 25px; position: relative;}
 .filter-list ul li.active:after {
     content: "";
     display: block;
@@ -322,7 +322,8 @@ input[type="password"]:-moz-placeholder{ /* Firefox 18- */
 	font-family: 'Poppins', sans-serif;
 	text-align: left;
 	font-weight: normal;
-	margin: 0 0 40px 0;
+    margin: 0 0 40px 0;
+    font-weight: 600;
 }
 .img-wrap,.player{position: relative;}
 .img-wrap img {width: 100%; max-height:138px;}
@@ -354,7 +355,17 @@ border-radius: 2px; font-family: 'Roboto', sans-serif;}
 	box-shadow: 0px 0px 10px rgba(0,0,0,0.2);
 	border-bottom-left-radius: 3px;
 	border-bottom-right-radius: 3px;
-	    margin-bottom: 20px;
+        margin-bottom: 20px;
+        border-radius: 5px !important;
+        overflow: hidden;
+        height: 400px;
+}
+.finalists-container  .final-wrap .img-wrap img {
+    height: 255px;
+    max-height:100%;
+}
+.finalists-container .content-wrap {
+    padding: 34px 20px;
 }
 .finalists-container{clear: both;}
 .finalist-carousel .owl-nav{display: none;}
@@ -424,7 +435,7 @@ border-radius: 2px; font-family: 'Roboto', sans-serif;}
     display: inline-block;
     width: 100%;
 }
-.foo-bottom{padding: 30px 0;}
+.foo-bottom{padding: 30px 15px;}
 /*footer*/
 
 /*player*/
@@ -1009,8 +1020,9 @@ border-radius: 2px; font-family: 'Roboto', sans-serif;}
     padding: 25px;
     cursor: pointer;
 }
-.upload-btn-div{ position:relative; overflow:hidden;}
-.upload-btn-div label{    width: 100%; color: #9b26b0; font-size: 13px; font-weight: 700; margin: 0;}
+.upload-btn-div{ position:relative;}
+.upload-btn-div label{   width: 100%;color: #9b26b0 !important;font-size: 13px !important;font-weight: 500 !important;margin: 0;padding: 0 !important;}
+.upload-btn-div label:hover{cursor:pointer;}
 input#my_doc_upload {
     opacity: 0;
     position: absolute;
@@ -1119,12 +1131,15 @@ span.up_text {
 }
 .filter-head span i{padding-left: 5px; vertical-align: middle;}
 .search-wrap{
-    -webkit-flex: 0 0 70%;
-    -moz-flex: 0 0 70%;
-    -ms-flex: 0 0 70%;
-    -o-flex: 0 0 70%;
-    flex: 0 0 70%;
-    max-width: 70%;
+    -webkit-flex: 0 0 100%;
+    -moz-flex: 0 0 100%;
+    -ms-flex: 0 0 100%;
+    -o-flex: 0 0 100%;
+    flex: 0 0 100%;
+    max-width: 100%;
+}
+[_nghost-c7]{
+    padding:10px 15px !important;
 }
 .filter-head{
     -webkit-flex: 0 0 30%;
@@ -3825,3 +3840,67 @@ input#cover_upload1 {
     max-height: 100%;
     height: 100%;
 }
+
+/*21-06-2018*/
+.track_name{
+    width: 100% !important;
+    padding: 0 15px !important;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.logout_ul{
+    list-style-type: none;
+    padding-left: 0;
+    line-height: 50px;
+    margin-bottom: 0;
+}.logout_ul li{
+    padding: 0 15px;
+}
+.logout_ul li a{
+    color: #9b26b0 !important;
+    font-size: 14px;
+    font-weight: 500;
+    text-decoration: none;
+}
+.logout_ul li a:hover{
+    cursor: pointer;
+}
+.custom-action-btn a{     position: absolute;
+    right: 0;
+    top: 0;
+    background-color: #9b26b0;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    /* padding: 6px; */
+    text-align: center;
+    line-height: 26px;
+    box-shadow: 0px 2px 10px rgba(0,0,0,0.3);
+}
+    .custom-action-btn a img{
+        width: 12px;
+        margin: 0 auto 0 auto;
+        height: auto;
+    }
+    .play_img img{
+        margin: 0 auto 0 4px !important;
+    }
+    .pause_img img{
+        width: 8px !important;
+        height: auto !important;
+    }
+    .ngxcarouselPointDefault[_ngcontent-c6] .ngxcarouselPoint[_ngcontent-c6] li[_ngcontent-c6]{
+        width: 10px !important;
+        height: 10px !important;
+        margin:0 3px !important
+    }
+    
+    .ngxcarouselPointDefault[_ngcontent-c6] .ngxcarouselPoint[_ngcontent-c6] li[_ngcontent-c6] {
+
+        background: #dedede !important;
+    }
+    .ngxcarouselPointDefault[_ngcontent-c6] .ngxcarouselPoint[_ngcontent-c6] li.active[_ngcontent-c6] {
+        background: #9c27b0 !important;
+        transform: scale(1) !important;
+    }
