@@ -298,10 +298,7 @@ router.get('/:track_id/download', async (req, res) => {
 
         }
       }
-
     }
-
-
   } catch (err) {
     res.send(err);
   }

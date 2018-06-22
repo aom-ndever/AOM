@@ -363,6 +363,10 @@ router.post('/user_registration', async (req, res) => {
       notEmpty: true,
       errorMessage: "DOB is required"
     },
+    "gender": {
+      notEmpty: true,
+      errorMessage: "DOB is required"
+    },
 
   };
   req.checkBody(schema);
@@ -376,7 +380,8 @@ router.post('/user_registration', async (req, res) => {
       "last_name": req.body.last_name,
       "zipcode": req.body.zipcode,
       "music_type": req.body.music_type,
-      "dob": req.body.dob
+      "dob": req.body.dob,
+      "gender": req.body.gender
     };
     if (req.body.share_url) {
       obj.social_media = req.body.share_url

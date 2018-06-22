@@ -59,6 +59,9 @@ router.put("/", async (req, res) => {
     if (req.body.music_type && req.body.music_type != null) {
         obj.music_type = req.body.music_type;
     }
+    if (req.body.gender && req.body.gender != null) {
+        obj.gender = req.body.gender;
+    }
     var resp_data = await user_helper.update_user_by_id(user_id, obj);
     if (resp_data.status == 0) {
         logger.error("Error occured while updating = ", resp_data);
