@@ -370,6 +370,16 @@
                         </select>
                       </div>
                       </div>
+                      <div class="form-group gender-grp">
+                        <label for="geder">Gender</label>
+                        <select class="form-control" id="listener_gender" formControlName="gender" name="listener_gender" [(ngModel)]="listener_data.gender">
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                        </select>
+                        <div *ngIf="!listener_step3.controls['gender'].valid && listener_step3.controls['gender'].dirty">
+                          <span *ngIf="listener_step3.controls['gender'].errors['required']" class="text-danger">Gender is required.</span>
+                        </div>
+                      </div>
                   </div>
                   <div class="button_group">
                     <a href="javascript:;" class="back-btn" (click)="back_btn('listener')"><img src="img/prev-arrow.png" alt="Previou Arrow"> Back</a>
