@@ -5,11 +5,9 @@ var comment_helper = {};
 var vote_track_helper = {};
 var mongoose = require('mongoose');
 var ObjectId = mongoose.Types.ObjectId;
-
 var moment = require('moment');
 
 vote_track_helper.vote_for_track = async (user_id, obj) => {
-
     let vote = new Vote(obj)
     try {
         let votes = await vote.save();
@@ -69,7 +67,6 @@ vote_track_helper.get_artist_vote_by_day = async (artist_id, day) => {
                 _id: 0
             }
         }
-
     ];
 
     let result = await Vote.aggregate(aggregate);
