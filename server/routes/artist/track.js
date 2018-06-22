@@ -279,11 +279,11 @@ router.post('/analytics/track', async (req, res) => {
 **/
 router.post('/downloaded_track', async (req, res) => {
     artist_id = req.userInfo.id;
-    var track = await download_helper.get_all_track_by_id(artist_id);
+    var track = await download_helper.get_all_downloaded_track_by_id(artist_id, req.body.day);
     var resp_day = await download_helper.get_downloads_by_day(req.userInfo.id, req.body.day);
     if (track.status === 1 && resp_day.status === 1) {
         logger.trace("got details successfully");
-        res.status(config.OK_STATUS).json({ "status": 1, "track": track.track, "day": resp_day.results });
+        res.status(config.OK_STATUS).json({ "status": 1, "track": track.track, "day": resp_day });
     } else {
         logger.error("Error occured while fetching = ", track);
         res.status(config.INTERNAL_SERVER_ERROR).json(track);

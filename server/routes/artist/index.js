@@ -14,6 +14,8 @@ var comment_helper = require('../../helpers/comment_helper');
 var participate_helper = require('../../helpers/participate_helper');
 var contest_helper = require('../../helpers/contest_helper');
 var user_helper = require('../../helpers/user_helper');
+var download_helper = require('../../helpers/download_helper');
+var vote_track_helper = require('../../helpers/vote_track_helper');
 
 var mongoose = require('mongoose');
 var ObjectId = mongoose.Types.ObjectId;
@@ -324,7 +326,20 @@ router.post('/analytics/followers', async (req, res) => {
     }
 });
 
+router.post('/analytics/overview', async (req, res) => {
+    var resp_gender = await follower_helper.get_artist_followers_by_gender(req.userInfo.id, req.body.day);
+    var track = await download_helper.get_all_downloaded_track_by_id(req.userInfo.id, req.body.day);
+    var resp_day = await vote_track_helper.get_artist_vote_by_day(req.userInfo.id, req.body.day);
+    console.log('resp_day', resp_day);
 
+    if (resp_gender.status === 0 && resp_day.status === 0 && track.status === 0) {
+        res.status(config.INTERNAL_SERVER_ERROR).json({ "status": 0, "message": "Error occured while finding artist", "error": resp_gender.error, "error": resp_day.error });
+    } else if (resp_gender.status === 2) {
+        res.status(config.BAD_REQUEST).json({ "status": 0, "message": "Not available" });
+    } else {
+        res.status(config.OK_STATUS).json({ "status": 1, "message": "found", "gender": resp_gender.results, "track": track.track, "vote": resp_day.results });
+    }
+});
 /**
  * @api {get} /artist/track_likes Artist track likes detail - Get 
  * @apiName Artist track likes detail- Get

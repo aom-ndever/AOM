@@ -59,10 +59,16 @@ vote_track_helper.get_artist_vote_by_day = async (artist_id, day) => {
         },
         {
             "$group": {
-                _id: "$_id._id",
+                _id: "$_id.days",
+                day: { $first: "$_id.days" },
                 count: { $sum: 1 },
             }
         },
+        {
+            $project: {
+                _id: 0
+            }
+        }
 
     ];
 

@@ -255,7 +255,8 @@ router.get('/:track_id/download', async (req, res) => {
   try {
     var obj = {
       user_id: req.userInfo.id,
-      track_id: req.params.track_id
+      track_id: req.params.track_id,
+      artist_id: req.params.artist_id
     }
     var resp = await track_helper.get_all_track_by_track_id(obj.track_id);
 
