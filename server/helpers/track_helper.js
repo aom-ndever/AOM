@@ -147,7 +147,6 @@ track_helper.update_votes = async (track_id, no_votes) => {
 
 
 
-
 track_helper.get_all_track_by_id = async (artist_id) => {
     try {
         var aggregate = [{

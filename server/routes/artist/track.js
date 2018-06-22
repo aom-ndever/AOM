@@ -254,7 +254,7 @@ router.delete('/image/:track_id', async (req, res) => {
  * @apiSuccess (Success 200) {Array} artist Array of artist vote document
  * @apiError (Error 4xx) {String} message Validation or error message.
  **/
-router.post('/votes_by_day', async (req, res) => {
+router.post('/analytics/track', async (req, res) => {
     var resp_day = await vote_track_helper.get_artist_vote_by_day(req.userInfo.id, req.body.day);
     var resp_gender = await vote_track_helper.get_artist_vote_by_gender(req.userInfo.id, req.body.day);
     var resp_track = await vote_track_helper.get_artist_vote_by_track(req.userInfo.id, req.body.day);
@@ -279,11 +279,11 @@ router.post('/votes_by_day', async (req, res) => {
 **/
 router.post('/downloaded_track', async (req, res) => {
     artist_id = req.userInfo.id;
-    var track = await download_helper.get_all_track_by_id(artist_id);
+    var track = await download_helper.get_all_downloaded_track_by_id(artist_id, req.body.day);
     var resp_day = await download_helper.get_downloads_by_day(req.userInfo.id, req.body.day);
     if (track.status === 1 && resp_day.status === 1) {
         logger.trace("got details successfully");
-        res.status(config.OK_STATUS).json({ "status": 1, "track": track.track, "day": resp_day.results });
+        res.status(config.OK_STATUS).json({ "status": 1, "track": track.track, "day": resp_day });
     } else {
         logger.error("Error occured while fetching = ", track);
         res.status(config.INTERNAL_SERVER_ERROR).json(track);

@@ -133,20 +133,19 @@ router.post('/vote_track', async (req, res) => {
 
         var resp_data = await track_helper.get_all_track_by_track_id(obj.track_id);
 
+
       no_vote = resp_data.track.no_of_votes + 1;
 
-      var resp_data = await track_helper.update_votes(obj.track_id, no_vote);
-      var resp = await artist_helper.get_artist_by_id(obj.artist_id);
-      no_vote = resp.artist.no_of_votes + 1
 
-      var resp_data = await track_helper.update_artist_for_votes(obj.artist_id, no_vote);
+      var resp_data = await track_helper.update_votes(obj.track_id, no_vote);
+
       logger.trace("voting done successfully = ", data);
 
 
 
-      var resp = await user_helper.get_user_by_id(obj.user_id);
-      no_vote = resp.user.no_of_votes + 1
-      var resp_data = await user_helper.update_user_for_votes(obj.user_id, no_vote);
+      // var resp = await user_helper.get_user_by_id(obj.user_id);
+      // no_vote = resp.user.no_of_votes + 1
+      // var resp_data = await user_helper.update_user_for_votes(obj.user_id, no_vote);
       logger.trace("voting done successfully = ", data);
       res.status(config.OK_STATUS).json(data);
     }
@@ -256,7 +255,8 @@ router.get('/:track_id/download', async (req, res) => {
   try {
     var obj = {
       user_id: req.userInfo.id,
-      track_id: req.params.track_id
+      track_id: req.params.track_id,
+      artist_id: req.params.artist_id
     }
     var resp = await track_helper.get_all_track_by_track_id(obj.track_id);
 
