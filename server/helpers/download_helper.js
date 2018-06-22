@@ -67,8 +67,6 @@ download_helper.get_all_track_by_track_id = async (track_id) => {
 };
 
 download_helper.get_downloads_by_day = async (artist_id, day) => {
-    console.log('artist_id', artist_id);
-    console.log('day', day);
 
     var to = moment().utcOffset(0);
     var from = moment(to).subtract(day, "days").utcOffset(0);
@@ -105,7 +103,7 @@ download_helper.get_downloads_by_day = async (artist_id, day) => {
 
     ];
     let result = await Track.aggregate(aggregate);
-    console.log('result', result);
+
 
     if (result) {
         return { "status": 1, "message": "Vote  found", "results": result }

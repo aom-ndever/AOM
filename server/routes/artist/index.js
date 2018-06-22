@@ -313,6 +313,7 @@ router.delete('/cover_image/:artist_id', async (req, res) => {
  * @apiSuccess (Success 200) {Array} artist detail analytics as per id
  * @apiError (Error 4xx) {String} message Validation or error message.
  */
+
 router.post('/analytics/followers', async (req, res) => {
     var resp_gender = await follower_helper.get_artist_followers_by_gender(req.userInfo.id, req.body.day);
     var resp_day = await follower_helper.get_artist_followers_by_day(req.userInfo.id, req.body.day);
@@ -320,17 +321,17 @@ router.post('/analytics/followers', async (req, res) => {
     if (resp_gender.status === 0 && resp_day.status === 0 && resp_age.status === 0) {
         res.status(config.INTERNAL_SERVER_ERROR).json({ "status": 0, "message": "Error occured while finding artist", "error": resp_gender.error, "error": resp_day.error });
     } else if (resp_gender.status === 2) {
-        res.status(config.BAD_REQUEST).json({ "status": 0, "message": "Not available" });
+        res.status(config.BAD_REQUEST).json({ "status": 0, "message": "Not available", "day": [], "gender": [], "track": [] });
     } else {
         res.status(config.OK_STATUS).json({ "status": 1, "message": "Followers found", "gender": resp_gender.results, "day": resp_day.results, "age": resp_age.results });
     }
 });
 
+
 router.post('/analytics/overview', async (req, res) => {
     var resp_gender = await follower_helper.get_artist_followers_by_gender(req.userInfo.id, req.body.day);
     var track = await download_helper.get_all_downloaded_track_by_id(req.userInfo.id, req.body.day);
     var resp_day = await vote_track_helper.get_artist_vote_by_day(req.userInfo.id, req.body.day);
-    console.log('resp_day', resp_day);
 
     if (resp_gender.status === 0 && resp_day.status === 0 && track.status === 0) {
         res.status(config.INTERNAL_SERVER_ERROR).json({ "status": 0, "message": "Error occured while finding artist", "error": resp_gender.error, "error": resp_day.error });
@@ -340,6 +341,8 @@ router.post('/analytics/overview', async (req, res) => {
         res.status(config.OK_STATUS).json({ "status": 1, "message": "found", "gender": resp_gender.results, "track": track.track, "vote": resp_day.results });
     }
 });
+
+
 /**
  * @api {get} /artist/track_likes Artist track likes detail - Get 
  * @apiName Artist track likes detail- Get
@@ -352,9 +355,7 @@ router.post('/analytics/overview', async (req, res) => {
  */
 router.get('/track_likes', async (req, res) => {
     artist_id = req.userInfo.id;
-
     var track = await track_helper.get_all_track_by_id(artist_id);
-
     if (track.status === 1) {
         logger.trace("got details successfully");
         res.status(config.OK_STATUS).json({ "status": 1, "track": track.track });
@@ -389,10 +390,8 @@ router.put('/settings/email', async (req, res) => {
 });
 router.put('/settings/password', async (req, res) => {
     artist_id = req.userInfo.id;
-
     var resp = await artist_helper.get_artist_by_id(artist_id);
     if (resp.status === 1) {
-
         if (bcrypt.compareSync(req.body.password, resp.artist.password)) {
             if (req.body.new_password) {
                 var resp = await artist_helper.update_artist_password(artist_id, { "password": bcrypt.hashSync(req.body.new_password, saltRounds) });
@@ -405,14 +404,14 @@ router.put('/settings/password', async (req, res) => {
         else {
             res.status(config.OK_STATUS).json({ "status": 1, "resp": "Password is wrong" });
         }
-
     }
-
     else {
         logger.error("Error occured while fetching = ", resp);
         res.status(config.INTERNAL_SERVER_ERROR).json(resp);
     }
 });
+
+
 /**
  * @api {get} /artist/track_comment Artist track likes comments - Get 
  * @apiName Artist track comments detail- Get
@@ -452,7 +451,6 @@ router.get('/track_comment', async (req, res) => {
 router.post("/participate", async (req, res) => {
     artist_id = req.userInfo.id;
     var schema = {
-
         "contest_id": {
             notEmpty: true,
             errorMessage: "Contest Id is required"
@@ -461,19 +459,15 @@ router.post("/participate", async (req, res) => {
             notEmpty: true,
             errorMessage: "Track Id is required"
         },
-
     };
-
     req.checkBody(schema);
     var errors = req.validationErrors();
     if (!errors) {
-
         var obj = {
             artist_id: req.userInfo.id,
             contest_id: req.body.contest_id,
             track_id: req.body.track_id
         };
-
         var contest_data = await contest_helper.get_contest_by_id(obj.contest_id);
         contest_music = contest_data.contest.music_type;
 
@@ -483,7 +477,6 @@ router.post("/participate", async (req, res) => {
         if (contest_music.toString() === artist_music.toString()) {
             var resp_data = await participate_helper.get_participant(obj.artist_id, obj.contest_id, obj.track_id);
             if (resp_data && resp_data.participate == 0) {
-
                 var resp_data = await participate_helper.insert_participant(obj);
                 if (resp_data.status == 0) {
                     logger.error("Error occured while inserting = ", resp_data);
@@ -505,8 +498,6 @@ router.post("/participate", async (req, res) => {
             res.status(config.OK_STATUS).json({ "message": "You are of Different Genre" });
         }
     }
-
-
     else {
         logger.error("Validation Error = ", errors);
         res.status(config.BAD_REQUEST).json({ message: errors });
@@ -525,7 +516,6 @@ router.get('/contest', async (req, res) => {
 });
 
 router.post("/suspend/artist/:user_id", async (req, res) => {
-
     var resp = await user_helper.get_user_by_id(req.params.user_id);
     if (resp.status == 0) {
         logger.error("Error occured while fetching user = ", resp);
@@ -542,7 +532,5 @@ router.post("/suspend/artist/:user_id", async (req, res) => {
         logger.trace("Artist Suspended= ", { "artist": artist_resp });
         res.status(config.OK_STATUS).json({ "artist": artist_resp });
     }
-
-
 });
 module.exports = router;
