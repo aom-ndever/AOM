@@ -100,4 +100,8 @@ export class MyProfileService {
   removeMediaById(id : any) {
     return this.http.delete(`${this.api_host}/artist/media/${id}`, {headers : this.headers});
   }
+  // Get analytics data
+  getAllAnalyticData(data) {
+    return this.http.post(`${this.api_host}`, data, {headers : this.headers} );
+  }
 }

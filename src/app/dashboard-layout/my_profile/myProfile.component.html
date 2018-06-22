@@ -589,17 +589,17 @@
 
                                 </div>
                                 <ul class="ana-tabs nav nav-tabs">
-                                    <li class="nav-item"><a class="active" data-toggle="tab" href="#overview">Overview</a></li>
-                                    <li class="nav-item"><a data-toggle="tab" href="#followers">Followers</a></li>
-                                    <li class="nav-item"><a data-toggle="tab" href="#trackscontent">Tracks/Contents</a></li>
-                                    <li class="nav-item"><a data-toggle="tab" href="#download">Downloads</a></li>
+                                    <li class="nav-item"><a class="{{analytic_tab == 1 ? 'active' : ''}}" (click)="changeAnlyticTab(1)" data-toggle="tab" href="javascript:;">Overview</a></li>
+                                    <li class="nav-item"><a class="{{analytic_tab == 2 ? 'active' : ''}}" (click)="changeAnlyticTab(2)" data-toggle="tab" href="javascript:;">Followers</a></li>
+                                    <li class="nav-item"><a class="{{analytic_tab == 3 ? 'active' : ''}}" (click)="changeAnlyticTab(3)" data-toggle="tab" href="javascript:;">Tracks/Contents</a></li>
+                                    <li class="nav-item"><a class="{{analytic_tab == 4 ? 'active' : ''}}" (click)="changeAnlyticTab(4)" data-toggle="tab" href="javascript:;">Downloads</a></li>
                                 </ul>
                                 <div class="time-frame">
                                     <h3>Last 7 Days: April 23,2018 - May 1, 2018</h3>
                                 </div>
                             </div>
                             <div class="tab-content ana-content">
-                                <div class="tab-pane fade active show" id="overview">
+                                <div class="tab-pane fade {{analytic_tab == 1 ? 'active show' : ''}}" id="overview">
                                     <div class="new-follow">
                                         <div class="edit-head">New Followers</div>
                                         <div class="progress-bar-chart">
@@ -684,7 +684,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="tab-pane fade" id="followers">
+                                <div class="tab-pane fade {{analytic_tab == 2 ? 'active show' : ''}}" id="followers">
                                     <div class="new-follow">
                                         <div class="edit-head">New Followers</div>
                                         <div class="progress-bar-chart">
@@ -741,7 +741,7 @@
                                     </div>
                                 </div>
 
-                                <div class="tab-pane fade" id="trackscontent">
+                                <div class="tab-pane fade {{analytic_tab == 3 ? 'active show' : ''}}" id="trackscontent">
                                     <div class="track-table mCustomScrollbar " data-mcs-theme="dark-3">
                                         <table>
                                             <tbody>
@@ -1083,7 +1083,7 @@
                                     </div>
                                 </div>
 
-                                <div class="tab-pane fade" id="download">
+                                <div class="tab-pane fade {{analytic_tab == 4 ? 'active show' : ''}}" id="download">
                                     <div class="track-table mCustomScrollbar " data-mcs-theme="dark-3">
                                         <table>
                                             <tbody>
