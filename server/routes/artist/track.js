@@ -254,7 +254,7 @@ router.delete('/image/:track_id', async (req, res) => {
  * @apiSuccess (Success 200) {Array} artist Array of artist vote document
  * @apiError (Error 4xx) {String} message Validation or error message.
  **/
-router.post('/votes_by_day', async (req, res) => {
+router.post('/analytics/track', async (req, res) => {
     var resp_day = await vote_track_helper.get_artist_vote_by_day(req.userInfo.id, req.body.day);
     var resp_gender = await vote_track_helper.get_artist_vote_by_gender(req.userInfo.id, req.body.day);
     var resp_track = await vote_track_helper.get_artist_vote_by_track(req.userInfo.id, req.body.day);
