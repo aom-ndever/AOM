@@ -36,6 +36,7 @@ export class MyProfileComponent implements OnInit {
   private _albums: any = [];
   artist_media_url : any = environment.API_URL+environment.ARTIST_MEDIA;
   video_url : any = '';
+  analytic_tab : any = 1;
   constructor(private MyProfileService : MyProfileService, 
     private toastr: ToastrService,
     private router: Router,
@@ -107,6 +108,9 @@ export class MyProfileComponent implements OnInit {
     this.tab_cnt = cnt;
   }
 
+  changeAnlyticTab(cnt : Number) {
+    this.analytic_tab = cnt;
+  }
   // Update user profile
   update() {
     if(this.userdata.type == 'artist') {
