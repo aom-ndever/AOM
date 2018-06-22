@@ -1,4 +1,3 @@
-
 var Download = require("./../models/download");
 var Track = require("./../models/track");
 
@@ -19,10 +18,10 @@ download_helper.download_track = async (obj) => {
     }
 };
 
-download_helper.update_downloads = async (id,no_downloads) => {
+download_helper.update_downloads = async (id, no_downloads) => {
     try {
-        var track = await Track.findOneAndUpdate({"_id": new ObjectId(id) },{"no_of_downloads":no_downloads})
-        if (track ) {
+        var track = await Track.findOneAndUpdate({ "_id": new ObjectId(id) }, { "no_of_downloads": no_downloads })
+        if (track) {
             return { "status": 1, "message": "track downloaded", };
         } else {
             return { "status": 2, "message": "track not found" };
@@ -39,13 +38,13 @@ download_helper.get_all_track_by_id = async (artist_id) => {
                 "artist_id": new ObjectId(artist_id)
             }
         },
+        {
+            "$project":
             {
-                "$project":
-                {
-                    "_id" : 1,
-                     "no_of_downloads" :1 
-                }
+                "_id": 1,
+                "no_of_downloads": 1
             }
+        }
         ];
         var track = await Track.aggregate(aggregate);
         if (track && track.length > 0) {
@@ -58,7 +57,7 @@ download_helper.get_all_track_by_id = async (artist_id) => {
     }
 };
 
-download_helper.get_all_track_by_track_id = async (track_id ) => {
+download_helper.get_all_track_by_track_id = async (track_id) => {
     try {
         var like = await Track
             .findOne({ "_id": new ObjectId(track_id) })
@@ -78,14 +77,14 @@ download_helper.get_downloads_by_day = async (artist_id, day) => {
     var aggregate = [
         {
             "$match":
-                {
-                    "created_at": { "$gt": new Date(from), "$lt": new Date(to) },
-                    "artist_id": new ObjectId(artist_id)
-                },
+            {
+                "created_at": { "$gt": new Date(from), "$lt": new Date(to) },
+                "artist_id": new ObjectId(artist_id)
+            },
         },
         {
             "$group": {
-                _id:  {$month: "$created_at"},
+                _id: { $month: "$created_at" },
                 count: { $sum: 1 },
             }
         },
