@@ -104,4 +104,8 @@ export class MyProfileService {
   getAllAnalyticData(data) {
     return this.http.post(`${this.api_host}`, data, {headers : this.headers} );
   }
+  // Get all followers analytics
+  getAllFollowerAnalytic(data) {
+    return this.http.post(`${this.api_host}/artist/analytics/followers`, data, {headers : this.headers} );
+  }
 }

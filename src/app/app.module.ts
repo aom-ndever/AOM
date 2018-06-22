@@ -2,6 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { AppComponent } from './app.component';
+import { ChartModule } from 'angular-highcharts';
 import { DashboardLayoutComponent } from './dashboard-layout/layout/dashboard-layout.component';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import { LayoutModule } from './dashboard-layout/layout.module';
@@ -23,6 +24,7 @@ import { AuthService } from './shared/auth.service';
     EamilVarificationModule,
     ForgetPasswordModule,
     NgbModule.forRoot(),
+    ChartModule,
     RouterModule.forRoot([
 
       // { 

@@ -1,6 +1,6 @@
-body{overflow-x: hidden;}
+body{overflow-x: hidden;   }
 a,a:hover,a:active,a:focus{text-decoration: none;}
-/*Home page*/
+
 
 /*header*/
 .navigation ul,.update-option{
@@ -249,7 +249,7 @@ a.vote-now-btn {
 .search-input input[type="text"] {
     border: 0;
     border-bottom: 1px solid #dedede;
-    width: 100%;
+    width: 70%;
     padding: 5px 5px 5px 30px;
     color:rgba(0,0,0,0.3);
     background: url("../../img/search.png") no-repeat;
@@ -1244,7 +1244,7 @@ span.up_text {
     top: 100%;
     left: 0;
     right: 0;
-    padding:70px 0;
+    padding:40px 0;
     background: #fff;
    box-shadow: 0px 4px 10px rgba(0,0,0,0.3);
    z-index: 99;
@@ -1277,17 +1277,21 @@ span.up_text {
     color: #000;
     line-height: 16px;
     font-weight: 400;
+    position: relative;
 }
 .filter-drop-down ul li label input[type="checkbox"]{
     width: 18px;
     height: 18px;
-    border:2px solid rgba(26,26,26,0.5);
+    border: 2px solid rgba(26,26,26,0.5);
     border-radius: 2px;
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
     vertical-align: middle;
     margin-top: 0;
+    position: absolute;
+    top: 3px;
+    left: 0;
 }
 .filter-drop-down ul li label input[type="radio"],
 .select-payemnt-table input[type="radio"]{    width: 20px;
@@ -1344,9 +1348,9 @@ span.up_text {
     font-style: normal;
     font-weight: normal;
     text-decoration: inherit;
-    top: 3px;
+    top: 0;
     position: absolute;
-    left: 2px;
+    left: 2.5px;
     font-size: 13px;
     color: #fff;
 }
@@ -1354,10 +1358,10 @@ span.up_text {
     -webkit-box-pack: flex-end;
     -ms-flex-pack: flex-end;
     justify-content: flex-end;
-    margin:0;
+    margin:0 -15px;
 }
 .filter-drop-down .button_group a {
-    margin: 0 15px;
+    margin: 0 0 0 15px;
 }
 .filter-drop-down .button_group a.cancel-btn{
     font-size: 18px;
@@ -1365,6 +1369,7 @@ span.up_text {
     line-height: 36px;
     font-weight: 400;
     font-family: 'Poppins', sans-serif;
+    margin-top:15px;
 }
 .filter-drop-down .button_group a.apply-btn{
     font-size: 18px;
@@ -1377,8 +1382,11 @@ span.up_text {
     font-family: 'Poppins', sans-serif;
     background: #9C27B0;
     border-radius: 2px;
+    margin-top:15px;
+    -webkit-box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.3);
+    box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.3);    
 }
-.filter-drop-down ul li label span{padding-left: 5px;}
+.filter-drop-down ul li label span{    padding-left: 25px !important;vertical-align: text-bottom;float: left;line-height: 20px;}
 .filter-drop-down .col-md-8.col-sm-12.col-xs-12,.filter-drop-down  .col-md-2.col-sm-6.col-xs-6{padding: 0;}
 /*filter drop down*/
 /*what's new page*/
@@ -3904,3 +3912,17 @@ input#cover_upload1 {
         background: #9c27b0 !important;
         transform: scale(1) !important;
     }
+.custom_search_wrap .search-input input{
+    width: 80%;
+    float: right;
+}
+.new-head .search-wrap{
+    max-width: unset;
+    flex: unset;
+    -moz-flex: unset;
+    -ms-flex: unset;
+    -o-flex: unset;
+    width: 280px;
+    margin-right:15px;
+}
+.new-head .search-input input[type="text"]{    width: 100%;}
