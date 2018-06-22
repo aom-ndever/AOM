@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-
+import { ChartModule } from 'angular-highcharts';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { SlimScroll } from 'angular-io-slimscroll';
@@ -56,6 +56,7 @@ import { AuthService } from '../shared/auth.service';
     ReactiveFormsModule,
     BrowserAnimationsModule,
     ToastrModule.forRoot(),
+    ChartModule,
     LightboxModule,
     RouterModule.forChild([
       {

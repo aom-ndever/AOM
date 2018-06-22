@@ -7,6 +7,7 @@ import { ToastrService } from 'ngx-toastr';
 import { environment } from '../../../environments/environment';
 import { every } from 'rxjs/operator/every';
 import { Lightbox } from 'angular2-lightbox';
+import { Chart } from 'angular-highcharts';
 declare var swal: any;
 @Component({
   selector: 'app-myProfile',
@@ -37,6 +38,10 @@ export class MyProfileComponent implements OnInit {
   artist_media_url : any = environment.API_URL+environment.ARTIST_MEDIA;
   video_url : any = '';
   analytic_tab : any = 1;
+  analytics_days : any = 7;
+  follower_analytic_data : any = {};
+  chart : any = '';
+  follower_age_chart : any = '';
   constructor(private MyProfileService : MyProfileService, 
     private toastr: ToastrService,
     private router: Router,
@@ -96,11 +101,48 @@ export class MyProfileComponent implements OnInit {
     this.MyProfileService.getAllMusicType().subscribe(response => {
       this.music_types = response['music'];
     });
+    this.chart = new Chart({
+      chart: {
+        type: 'column'
+      },
+      title: {
+        text: ''
+      },
+      xAxis : {
+        lineWidth: 0,
+        minorGridLineWidth: 0,
+        lineColor: 'transparent',
+        categories : ['13-17', '18-24', '25-34', '35-44', '45-54', '55-64', '65+'],
+        labels: {
+            enabled: true
+        },
+        minorTickLength: 0,
+        tickLength: 0
+      },
+      yAxis : {
+        visible : false
+      },
+      plotOptions: {
+        column : {
+          borderWidth: 0,
+          borderRadius:5
+        }
+      },
+      series: [
+        {
+          name : 'Person',
+          color : '#9b26b0',
+          data: [1, 2, 3,10, 5,2,8]
+        }
+      ]
+    });
   }
 
   ngOnInit() {
     if(this.userdata['type'] == 'artist') {
       this.getMediaList();
+      this.getAllFollowerAnalytics({day : this.analytics_days});
+      
     }
   }
 
@@ -504,6 +546,72 @@ export class MyProfileComponent implements OnInit {
   open(index: number): void {
     // open lightbox
     this.lightbox.open(this._albums, index);
+  }
+  // Get All follower analytics data
+  getAllFollowerAnalytics(data) {
+    this.MyProfileService.getAllFollowerAnalytic(data).subscribe(response => {
+        this.follower_analytic_data = response;
+        this.ageChart(response['age']);
+    });
+  }
+
+  // Age chart
+  ageChart(data : any) {
+    let result = [0,0,0,0,0,0,0];
+    data.forEach(ele => {
+      if(ele.age >= 13 && ele.age <= 17) {
+        result[0] = ele.count;
+      } else if(ele.age >= 18 && ele.age <= 24) {
+        result[1] = ele.count;
+      } else if(ele.age >= 25 && ele.age <= 34) {
+        result[2] = ele.count;
+      } else if(ele.age >= 35 && ele.age <= 44) {
+        result[3] = ele.count;
+      } else if(ele.age >= 45 && ele.age <= 54) {
+        result[4] = ele.count;
+      } else if(ele.age >= 55 && ele.age <= 64) {
+        result[5] = ele.count;
+      } else {
+        result[6] = ele.count;
+      }
+    });
+    console.log(result);
+    this.follower_age_chart = new Chart({
+      chart: {
+        type: 'column'
+      },
+      title: {
+        text: ''
+      },
+      xAxis : {
+        lineWidth: 0,
+        minorGridLineWidth: 0,
+        lineColor: 'transparent',
+        categories : ['13-17', '18-24', '25-34', '35-44', '45-54', '55-64', '65+'],
+        labels: {
+            enabled: true
+        },
+        minorTickLength: 0,
+        tickLength: 0
+      },
+      yAxis : {
+        visible : false
+      },
+      plotOptions: {
+        column : {
+          borderWidth: 0,
+          borderRadius:5
+        }
+      },
+      series: [
+        {
+          name : 'Person',
+          color : '#9b26b0',
+          data: result
+        }
+      ]
+    });
+
   }
 }
 
