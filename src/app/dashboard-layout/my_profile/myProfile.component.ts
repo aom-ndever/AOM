@@ -36,12 +36,14 @@ export class MyProfileComponent implements OnInit {
   media_list : any = [];
   private _albums: any = [];
   artist_media_url : any = environment.API_URL+environment.ARTIST_MEDIA;
+  track_url : any = environment.API_URL+environment.ARTIST_TRACK;
   video_url : any = '';
   analytic_tab : any = 1;
   analytics_days : any = 7;
   follower_analytic_data : any = {};
   chart : any = '';
   follower_age_chart : any = '';
+  track_analytic : any = '';
   constructor(private MyProfileService : MyProfileService, 
     private toastr: ToastrService,
     private router: Router,
@@ -142,7 +144,7 @@ export class MyProfileComponent implements OnInit {
     if(this.userdata['type'] == 'artist') {
       this.getMediaList();
       this.getAllFollowerAnalytics({day : this.analytics_days});
-      
+      this.getAllTrackAnalytic({day : this.analytics_days});
     }
   }
 
@@ -552,6 +554,12 @@ export class MyProfileComponent implements OnInit {
     this.MyProfileService.getAllFollowerAnalytic(data).subscribe(response => {
         this.follower_analytic_data = response;
         this.ageChart(response['age']);
+    });
+  }
+  // Get all track and contest details
+  getAllTrackAnalytic(data) {
+    this.MyProfileService.getAllTrackContestData(data).subscribe(response => {
+        this.track_analytic = response;
     });
   }
 
