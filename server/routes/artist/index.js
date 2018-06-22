@@ -311,7 +311,7 @@ router.delete('/cover_image/:artist_id', async (req, res) => {
  * @apiSuccess (Success 200) {Array} artist detail analytics as per id
  * @apiError (Error 4xx) {String} message Validation or error message.
  */
-router.post('/', async (req, res) => {
+router.post('/analytics/followers', async (req, res) => {
     var resp_gender = await follower_helper.get_artist_followers_by_gender(req.userInfo.id, req.body.day);
     var resp_day = await follower_helper.get_artist_followers_by_day(req.userInfo.id, req.body.day);
     var resp_age = await follower_helper.get_artist_followers_by_age(req.userInfo.id, req.body.day);
