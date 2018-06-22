@@ -109,7 +109,8 @@ export class RegisterComponent implements OnInit {
       lname : ['', [Validators.required]],
       day : ['', [Validators.required]],
       month : ['', [Validators.required]],
-      year : ['', [Validators.required]]
+      year : ['', [Validators.required]],
+      gender : ['', [Validators.required]]
     });
 
     this.listener_step4 = this.fb.group({
@@ -291,6 +292,7 @@ export class RegisterComponent implements OnInit {
       last_name : this.listener_data['lname'],
       zipcode : this.listener_data['zipcode'],
       music_type : this.listener_data['music_type'],
+      gender : this.listener_data['gender'],
       dob : new Date(this.listener_data['year'], this.listener_data['month'], this.listener_data['day'])
     };
     console.log('listener', data);
