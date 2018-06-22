@@ -5,6 +5,7 @@ import { AppComponent } from './app.component';
 import { DashboardLayoutComponent } from './dashboard-layout/layout/dashboard-layout.component';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import { LayoutModule } from './dashboard-layout/layout.module';
+import { AdminLayoutModule } from './admin/admin_layout.module';
 import { RegisterModule } from './register/register.module';
 import { EamilVarificationModule } from './email_varification/email_varification.module';
 import { ForgetPasswordModule } from './forget_password/forget_password.module';
@@ -18,6 +19,7 @@ import { AuthService } from './shared/auth.service';
     BrowserModule,
     LayoutModule,
     RegisterModule,
+    AdminLayoutModule,
     EamilVarificationModule,
     ForgetPasswordModule,
     NgbModule.forRoot(),

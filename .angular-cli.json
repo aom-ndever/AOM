@@ -25,6 +25,7 @@
         "../src/assets/css/font-awesome.min.css",
         "../src/assets/css/jquery.fancybox.min.css",
         "../src/assets/css/style.css",
+        "../src/assets/css/Dashboard.css",
         "../src/assets/css/font.googleapi.css",
         "../node_modules/ngx-toastr/toastr.css",
         "../node_modules/angular2-lightbox/lightbox.css"
