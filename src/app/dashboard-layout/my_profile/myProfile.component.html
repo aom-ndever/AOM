@@ -689,21 +689,11 @@
                                     <div class="new-follow">
                                         <div class="edit-head">New Followers</div>
                                         <div class="progress-bar-chart">
-                                            <span class="inner-text"><p>45</p><span>New Followers</span></span>
-                                            <ul class="chart-skills">
-
-                                                <li class="follow-women">
-                                                    <!-- <span>Women</span> -->
-                                                </li>
-                                                <li class="follow-men">
-                                                    <!-- <span>Men</span> -->
-                                                </li>
-                                                <li class="follow-other">
-                                                    <!-- <span>other</span> -->
-                                                </li>
-                                            </ul>
-                                        </div>
-                                        <div class="graph-states">
+                                            <!-- <span class="inner-text"><p>45</p><span>New Followers</span></span> -->
+                                            <div [chart]="gender_chart"></div>
+                                            
+                                        </div>  
+                                        <!-- <div class="graph-states">
                                             <ul>
                                                 <li class="state-women">
                                                     <p>52%</p>
@@ -718,7 +708,7 @@
                                                     <span>Other</span>
                                                 </li>
                                             </ul>
-                                        </div>
+                                        </div> -->
                                     </div>
                                     <div class="artist-vote">
                                         <div class="edit-head">12,300 Votes</div>

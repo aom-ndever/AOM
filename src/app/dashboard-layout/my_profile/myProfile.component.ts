@@ -43,6 +43,7 @@ export class MyProfileComponent implements OnInit {
   follower_analytic_data : any = {};
   chart : any = '';
   follower_age_chart : any = '';
+  gender_chart : any = '';
   track_analytic : any = '';
   constructor(private MyProfileService : MyProfileService, 
     private toastr: ToastrService,
@@ -554,6 +555,7 @@ export class MyProfileComponent implements OnInit {
     this.MyProfileService.getAllFollowerAnalytic(data).subscribe(response => {
         this.follower_analytic_data = response;
         this.ageChart(response['age']);
+        this.genderChart(response['gender']);
     });
   }
   // Get all track and contest details
@@ -620,6 +622,31 @@ export class MyProfileComponent implements OnInit {
       ]
     });
 
+  }
+  // Gender chart
+  genderChart(data : any) {
+    let result = [];
+    data.forEach(ele => {
+      console.log(ele);
+      result.push({
+        name : ele['_id'],
+        y : ele['percentage_value']
+      });
+    });
+    this.gender_chart = new Chart({
+      chart: {
+        type: 'pie'
+      },
+      title: {
+        text: ''
+      },
+      tooltip: {
+          pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+      },
+      series: [ {
+        data : result
+      }]
+    });
   }
 }
 
