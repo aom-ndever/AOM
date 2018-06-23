@@ -108,4 +108,8 @@ export class MyProfileService {
   getAllFollowerAnalytic(data) {
     return this.http.post(`${this.api_host}/artist/analytics/followers`, data, {headers : this.headers} );
   }
+  // Get all track/contenst 
+  getAllTrackContestData(data) {
+    return this.http.post(`${this.api_host}/artist/track/analytics/track`, data, {headers : this.headers});
+  }
 }
