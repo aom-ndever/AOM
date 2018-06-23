@@ -143,7 +143,7 @@ export class MyProfileComponent implements OnInit {
   ngOnInit() {
     if(this.userdata['type'] == 'artist') {
       this.getMediaList();
-      this.getAllFollowerAnalytics({day : this.analytics_days});
+      this.getAllFollowerAnalytics({day : 14});
       this.getAllTrackAnalytic({day : this.analytics_days});
     }
   }
