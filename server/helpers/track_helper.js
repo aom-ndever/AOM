@@ -253,7 +253,7 @@ track_helper.get_artist_by_day_vote = async (day) => {
         },
         {
             $group: {
-                _id: { days: { $dayOfWeek: "$created_at" } },
+                _id: { $dayOfWeek: "$created_at" },
                 count: { $sum: 1 }
             }
         },
