@@ -627,12 +627,12 @@ export class MyProfileComponent implements OnInit {
   genderChart(data : any) {
     let result = [];
     data.forEach(ele => {
-      console.log(ele);
       result.push({
         name : ele['_id'],
-        y : ele['percentage_value']
+        y : parseInt(ele['percentage_value'])
       });
     });
+    console.log(result);
     this.gender_chart = new Chart({
       chart: {
         type: 'pie'

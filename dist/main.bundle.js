@@ -3263,12 +3263,12 @@ var MyProfileComponent = /** @class */ (function () {
     MyProfileComponent.prototype.genderChart = function (data) {
         var result = [];
         data.forEach(function (ele) {
-            console.log(ele);
             result.push({
                 name: ele['_id'],
-                y: ele['percentage_value']
+                y: parseInt(ele['percentage_value'])
             });
         });
+        console.log(result);
         this.gender_chart = new __WEBPACK_IMPORTED_MODULE_8_angular_highcharts__["a" /* Chart */]({
             chart: {
                 type: 'pie'
