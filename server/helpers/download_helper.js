@@ -40,8 +40,9 @@ download_helper.get_all_downloaded_track_by_id = async (id, day) => {
     try {
         var track = await Track
             .find({ "artist_id": id, "created_at": { "$gt": new Date(from), "$lt": new Date(to) } })
-            .populate({ path: 'artist_id', populate: { path: 'music_type' } })
+            //.populate({ path: 'artist_id', populate: { path: 'music_type' } })
             .sort({ "no_of_downloads": -1 })
+            .limit(5)
         if (track) {
             return { "status": 1, "message": "track details found", "track": track };
         } else {

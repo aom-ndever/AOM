@@ -422,6 +422,8 @@ artist_helper.update_artist_email = async (artist_id, email) => {
         return { "status": 0, "message": "Error occured while updating artist", "error": err }
     }
 };
+
+
 artist_helper.update_artist_password = async (artist_id, password) => {
     try {
         let artist = await Artist.findOneAndUpdate({ _id: artist_id }, password);
