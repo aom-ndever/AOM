@@ -279,7 +279,7 @@ track_helper.get_artist_by_day_like = async (day) => {
         },
         {
             $group: {
-                _id: { days: { $dayOfWeek: "$created_at" } },
+                _id: { $dayOfWeek: "$created_at" },
                 count: { $sum: 1 }
             }
         },
@@ -303,7 +303,7 @@ track_helper.get_artist_by_day_comment = async (day) => {
         },
         {
             $group: {
-                _id: { days: { $dayOfWeek: "$created_at" } },
+                _id: { $dayOfWeek: "$created_at" },
                 count: { $sum: 1 }
             }
         },
