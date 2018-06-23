@@ -3265,7 +3265,7 @@ var MyProfileComponent = /** @class */ (function () {
         data.forEach(function (ele) {
             result.push({
                 name: ele['_id'],
-                y: parseInt(ele['percentage_value'])
+                y: parseFloat(ele['percentage_value'])
             });
         });
         console.log(result);

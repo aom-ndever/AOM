@@ -629,7 +629,7 @@ export class MyProfileComponent implements OnInit {
     data.forEach(ele => {
       result.push({
         name : ele['_id'],
-        y : parseInt(ele['percentage_value'])
+        y : parseFloat(ele['percentage_value'])
       });
     });
     console.log(result);
