@@ -2634,7 +2634,7 @@ span.inner-text span{
 .breakdown-age{clear: both;}
 .location-downloads .loc-icon-group {
     float: right;
-    padding: 30px 0 35px 0;
+    padding: 0 0 25px 0;
 }
 .location-downloads .loc-icon-group img{margin-left: 10px;}
 .location-downloads .edit-head {
@@ -3926,3 +3926,30 @@ input#cover_upload1 {
     margin-right:15px;
 }
 .new-head .search-input input[type="text"]{    width: 100%;}
+.progress-bar-chart {
+    width: 70%;
+    height: 200px;
+}
+.graph-states{
+    width:30%;
+    padding-left: 0;
+}
+.highcharts-container {
+    height:200px;
+}
+.edit-head{
+    width:100%
+}
+.new-follow {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.highcharts-container {
+    height: 250px !important;
+    width: 100% !important;
+}
+.highcharts-container svg {
+    max-height: 100%;
+    width: 100%;
+}

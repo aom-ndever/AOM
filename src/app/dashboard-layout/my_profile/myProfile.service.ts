@@ -101,15 +101,23 @@ export class MyProfileService {
     return this.http.delete(`${this.api_host}/artist/media/${id}`, {headers : this.headers});
   }
   // Get analytics data
-  getAllAnalyticData(data) {
+  getAllAnalyticData(data : any) {
     return this.http.post(`${this.api_host}`, data, {headers : this.headers} );
   }
   // Get all followers analytics
-  getAllFollowerAnalytic(data) {
+  getAllFollowerAnalytic(data : any) {
     return this.http.post(`${this.api_host}/artist/analytics/followers`, data, {headers : this.headers} );
   }
   // Get all track/contenst 
-  getAllTrackContestData(data) {
+  getAllTrackContestData(data : any) {
     return this.http.post(`${this.api_host}/artist/track/analytics/track`, data, {headers : this.headers});
+  }
+  // Get All overview analytics
+  getAllOverviewAnalytic(data : any) {
+    return this.http.post(`${this.api_host}/artist/analytics/overview`, data, {headers : this.headers});
+  }
+  // Get all download analytics
+  getAllDownloadAnalytic(data : any) {
+    return this.http.post(`${this.api_host}/artist/track/downloaded_track`, data, {headers : this.headers});
   }
 }

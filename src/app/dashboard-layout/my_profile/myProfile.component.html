@@ -582,7 +582,7 @@
                         <div class="tab-pane fade {{tab_cnt == 5 ? 'show active' : '' }}" id="analytics">
                             <div class="ana-header">
                                 <div class="form-group days-grp">
-                                    <select class="form-control" id="days-select" name="analytics_day" [(ngModel)]="analytics_days">
+                                    <select class="form-control" id="days-select" name="analytics_day" (change)="changeAnalyticsDays()" [(ngModel)]="analytics_days">
                                         <option value="7">7 Days</option>
                                         <option value="14">14 Days</option>
                                         <option value="30">1 Month</option>
@@ -596,7 +596,7 @@
                                     <li class="nav-item"><a class="{{analytic_tab == 4 ? 'active' : ''}}" (click)="changeAnlyticTab(4)" data-toggle="tab" href="javascript:;">Downloads</a></li>
                                 </ul>
                                 <div class="time-frame">
-                                    <h3>Last 7 Days: April 23,2018 - May 1, 2018</h3>
+                                    <h3>Last {{analytics_days}} Days: {{show_duration_date}}</h3>
                                 </div>
                             </div>
                             <div class="tab-content ana-content">
@@ -604,22 +604,23 @@
                                     <div class="new-follow">
                                         <div class="edit-head">New Followers</div>
                                         <div class="progress-bar-chart">
-                                            <span class="inner-text"><p>45</p><span>New Followers</span></span>
-                                            <ul class="chart-skills">
+                                            <!-- <span class="inner-text"><p>45</p><span>New Followers</span></span> -->
+                                            <!--ul class="chart-skills">
 
                                                 <li class="follow-women">
-                                                    <!-- <span>Women</span> -->
+                                                    <span>Women</span>
                                                 </li>
                                                 <li class="follow-men">
-                                                    <!-- <span>Men</span> -->
+                                                     <span>Men</span>
                                                 </li>
                                                 <li class="follow-other">
-                                                    <!-- <span>other</span> -->
+                                                     <span>other</span>
                                                 </li>
-                                            </ul>
+                                            </ul-->
+                                            <div style="height:100%;width:100%;" [chart]="overview_gender_chart"></div>
                                         </div>
                                         <div class="graph-states">
-                                            <ul>
+                                             <ul>
                                                 <li class="state-women">
                                                     <p>52%</p>
                                                     <span>Women</span>
@@ -632,45 +633,25 @@
                                                     <p>2%</p>
                                                     <span>Other</span>
                                                 </li>
-                                            </ul>
+                                            </ul> 
                                         </div>
                                     </div>
                                     <div class="artist-vote">
-                                        <div class="edit-head">12,300 Votes</div>
-                                        <div class="vote-graph">
+                                        <div class="edit-head">{{overview_vote_count}} Votes</div>
+                                        <!-- <div class="vote-graph">
                                             <img src="img/vote-map.jpg" alt="Vote Map">
-                                        </div>
+                                        </div> -->
+                                        <div [chart]="overview_vote_chart"></div>
                                     </div>
                                     <div class="artist-downloads">
-                                        <div class="edit-head">1360 Downloads</div>
+                                        <div class="edit-head">{{overview_download_total}} Downloads</div>
                                         <div class="download-graph">
                                             <ul>
-                                                <li>
-                                                    <span>Blue Stated Of Mind</span>
+                                                <li *ngFor="let track of overview_analytic_data['track']">
+                                                    <span>{{track.name}}</span>
                                                     <div class="d-num">
-                                                        <p>1300</p> <span>Downloads</span></div>
+                                                        <p>{{track.no_of_downloads}}</p> <span>Downloads</span></div>
                                                 </li>
-                                                <li>
-                                                    <span>Why Today</span>
-                                                    <div class="d-num">
-                                                        <p>600 </p><span>Downloads</span></div>
-                                                </li>
-                                                <li>
-                                                    <span>Friday</span>
-                                                    <div class="d-num">
-                                                        <p>300 </p><span>Downloads</span></div>
-                                                </li>
-                                                <li>
-                                                    <span>My Love</span>
-                                                    <div class="d-num">
-                                                        <p>340 </p><span>Downloads</span></div>
-                                                </li>
-                                                <li>
-                                                    <span>Say Thanks</span>
-                                                    <div class="d-num">
-                                                        <p>120 </p><span>Downloads</span></div>
-                                                </li>
-
                                             </ul>
                                         </div>
                                     </div>
@@ -690,10 +671,11 @@
                                         <div class="edit-head">New Followers</div>
                                         <div class="progress-bar-chart">
                                             <!-- <span class="inner-text"><p>45</p><span>New Followers</span></span> -->
-                                            <div [chart]="gender_chart"></div>
                                             
+                                            <div style="width:100%;height:100%;" [chart]="gender_chart"></div>
                                         </div>  
-                                        <!-- <div class="graph-states">
+                            
+                                        <div class="graph-states">
                                             <ul>
                                                 <li class="state-women">
                                                     <p>52%</p>
@@ -708,13 +690,14 @@
                                                     <span>Other</span>
                                                 </li>
                                             </ul>
-                                        </div> -->
+                                        </div>
                                     </div>
                                     <div class="artist-vote">
-                                        <div class="edit-head">12,300 Votes</div>
-                                        <div class="vote-graph">
+                                        <div class="edit-head">{{follower_vote_count}} Votes</div>
+                                        <!-- <div class="vote-graph">
                                             <img src="img/vote-map.jpg" alt="Vote Map">
-                                        </div>
+                                        </div> -->
+                                        <div [chart]="follower_vote_chart"></div>
                                     </div>
                                     <div class="breakdown-age">
                                         <div class="edit-head">Age Breakdown</div>
@@ -748,7 +731,7 @@
                                                         <p class="track-year">{{track['created_at'] | date : 'yyyy'}}</p>
                                                     </td>
                                                     <td class="track-download">{{track['no_of_downloads']}} <span>Downloads</span></td>
-                                                    <td class="track-share">560 <span>Shares</span></td>
+                                                    <td class="track-share">{{track['no_of_shares']}} <span>Shares</span></td>
                                                     <td class="track-likes">{{track['no_of_likes']}} <span>Likes</span></td>
                                                     <td class="track-comment">{{track['no_of_comments']}}<span>Comments</span></td>
                                                     <td class="td track-vote">
