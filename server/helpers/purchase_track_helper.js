@@ -31,6 +31,7 @@ purchase_helper.get_purchased_track = async (user_id) => {
         return { "status": 0, "message": "Error occured while finding track", "error": err }
     }
 }
+
 /*purchase_helper.get_all_bookmarked_artist = async (user_id) => {
     try {
         var artist = await Bookmark

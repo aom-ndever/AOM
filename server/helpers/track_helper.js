@@ -265,7 +265,6 @@ track_helper.get_artist_by_day_vote = async (day) => {
     } else {
         return { "status": 2, "message": "No  available Artist" }
     }
-
 };
 track_helper.get_artist_by_day_like = async (day) => {
     var to = moment();
@@ -291,6 +290,8 @@ track_helper.get_artist_by_day_like = async (day) => {
         return { "status": 2, "message": "No  available Artist" }
     }
 };
+
+
 track_helper.get_artist_by_day_comment = async (day) => {
     var to = moment();
     var from = moment(to).subtract(day, "days");
