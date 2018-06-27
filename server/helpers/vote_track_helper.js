@@ -151,20 +151,16 @@ vote_track_helper.get_artist_vote_by_gender = async (artist_id, day) => {
 
             }
         },
-        {
-            "$unwind": "$gender"
-        },
-        {
-            $addFields: {
-                "gender.percentage_value": { "$multiply": [{ "$divide": ["$gender.count", "$total"] }, 100] }
-            }
-        },
 
     ];
 
     let result = await Vote.aggregate(aggregate);
     if (result) {
-        return { "status": 1, "message": "followers  found", "results": result }
+        result[0].gender = result[0].gender.map((gender_data) => {
+            gender_data.percentage_value = parseFloat(gender_data.count * 100 / result[0].total).toFixed(2);
+            return gender_data;
+        });
+        return { "status": 1, "message": "followers  found", "results": result[0].gender }
     } else {
         return { "status": 2, "message": "No  available followers" }
     }
