@@ -41,9 +41,18 @@ export class MyProfileComponent implements OnInit {
   analytic_tab : any = 1;
   analytics_days : any = 7;
   follower_analytic_data : any = {};
+  overview_analytic_data : any = {};
   chart : any = '';
   follower_age_chart : any = '';
+  gender_chart : any = '';
+  overview_gender_chart : any = '';
   track_analytic : any = '';
+  follower_vote_chart : any = '';
+  follower_vote_count : any = 0;
+  overview_vote_chart : any = '';
+  overview_vote_count : any = 0;
+  overview_download_total :  any = 0;
+  show_duration_date : any = '';
   constructor(private MyProfileService : MyProfileService, 
     private toastr: ToastrService,
     private router: Router,
@@ -103,49 +112,45 @@ export class MyProfileComponent implements OnInit {
     this.MyProfileService.getAllMusicType().subscribe(response => {
       this.music_types = response['music'];
     });
-    this.chart = new Chart({
-      chart: {
-        type: 'column'
-      },
-      title: {
-        text: ''
-      },
-      xAxis : {
-        lineWidth: 0,
-        minorGridLineWidth: 0,
-        lineColor: 'transparent',
-        categories : ['13-17', '18-24', '25-34', '35-44', '45-54', '55-64', '65+'],
-        labels: {
-            enabled: true
-        },
-        minorTickLength: 0,
-        tickLength: 0
-      },
-      yAxis : {
-        visible : false
-      },
-      plotOptions: {
-        column : {
-          borderWidth: 0,
-          borderRadius:5
-        }
-      },
-      series: [
-        {
-          name : 'Person',
-          color : '#9b26b0',
-          data: [1, 2, 3,10, 5,2,8]
-        }
-      ]
-    });
+    
   }
 
   ngOnInit() {
     if(this.userdata['type'] == 'artist') {
       this.getMediaList();
+      this.calculateDateFromDays(this.analytics_days);
       this.getAllFollowerAnalytics({day : 14});
       this.getAllTrackAnalytic({day : this.analytics_days});
+      this.getAllOverviewAnalytic({day : 14});
     }
+  }
+
+  calculateDateFromDays(days : any) {
+    var date = new Date();
+    var last = new Date(date.getTime() - (days * 24 * 60 * 60 * 1000));
+    this.show_duration_date = this.formatDate(last)+' - '+this.formatDate(date);
+  }
+
+  formatDate(date) {
+    var monthNames = [
+      "January", "February", "March",
+      "April", "May", "June", "July",
+      "August", "September", "October",
+      "November", "December"
+    ];
+  
+    var day = date.getDate();
+    var monthIndex = date.getMonth();
+    var year = date.getFullYear();
+  
+    return  monthNames[monthIndex] + ' '+day+ ', '+ year;
+  }
+
+  changeAnalyticsDays() {
+    this.calculateDateFromDays(this.analytics_days);
+    this.getAllFollowerAnalytics({day : this.analytics_days});
+    this.getAllTrackAnalytic({day : this.analytics_days});
+    this.getAllOverviewAnalytic({day : this.analytics_days});
   }
 
   tabChange(cnt : Number) {
@@ -554,6 +559,8 @@ export class MyProfileComponent implements OnInit {
     this.MyProfileService.getAllFollowerAnalytic(data).subscribe(response => {
         this.follower_analytic_data = response;
         this.ageChart(response['age']);
+        this.genderChart(response['gender']);
+        this.followerVoteChart(response['day']);
     });
   }
   // Get all track and contest details
@@ -562,7 +569,20 @@ export class MyProfileComponent implements OnInit {
         this.track_analytic = response;
     });
   }
-
+  // Get all overview analytics data
+  getAllOverviewAnalytic(data) {
+    this.MyProfileService.getAllOverviewAnalytic(data).subscribe(response => {
+        this.overview_analytic_data = response;
+        this.overview_download_total = 0;
+        if(response['track']) {
+          response['track'].forEach(ele => {
+            this.overview_download_total += ele['no_of_downloads'];
+          });
+        }
+        this.overviewVoteChart(response['vote']);
+        this.overviewGenderChart(response['gender']);
+    });
+  }
   // Age chart
   ageChart(data : any) {
     let result = [0,0,0,0,0,0,0];
@@ -621,5 +641,127 @@ export class MyProfileComponent implements OnInit {
     });
 
   }
+  // Gender chart
+  genderChart(data : any) {
+    let result = [];
+    data.forEach(ele => {
+      result.push({
+        name : ele['_id'],
+        y : parseFloat(ele['percentage_value'])
+      });
+    });
+    console.log(result);
+    this.gender_chart = new Chart({
+      chart: {
+        type: 'pie'
+      },
+      title: {
+        text: ''
+      },
+      tooltip: {
+          pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+      },
+      series: [ {
+        name: 'Followers',
+        data : result
+      }]
+    });
+  }
+  // Followers vote chart
+  followerVoteChart(data : any) {
+    let result = [0,0,0,0,0,0,0];
+    this.follower_vote_count = 0;
+    data.forEach(ele => {
+      result[ele['_id']['days']] = ele.count;
+      this.follower_vote_count += ele.count;
+    });
+    this.follower_vote_chart = new Chart({
+      chart: {
+        type: 'area'
+      },
+      title: {
+        text: ''
+      },
+      xAxis : {
+        categories : ['M', 'T', 'W', 'T', 'F', 'S', 'S'],
+        labels: {
+            enabled: true
+        },
+        tickmarkPlacement: 'on',
+        minorTickLength: 0,
+        tickLength: 0
+      },
+      yAxis : {
+        visible : true
+      },
+      series: [
+        {
+          name : 'Votes',
+          color : '#9b26b0',
+          data: result
+        }
+      ]
+    });
+  }
+  // Overview vote chart
+  overviewVoteChart(data :  any) {
+    let result = [0,0,0,0,0,0,0];
+    this.overview_vote_count = 0;
+    data.forEach(ele => {
+      result[ele['day']] = ele.count;
+      this.overview_vote_count += ele.count;
+    });
+    this.overview_vote_chart = new Chart({
+      chart: {
+        type: 'area'
+      },
+      title: {
+        text: ''
+      },
+      xAxis : {
+        categories : ['M', 'T', 'W', 'T', 'F', 'S', 'S'],
+        labels: {
+            enabled: true
+        },
+        tickmarkPlacement: 'on',
+        minorTickLength: 0,
+        tickLength: 0
+      },
+      yAxis : {
+        visible : true
+      },
+      series: [
+        {
+          name : 'Votes',
+          color : '#9b26b0',
+          data: result
+        }
+      ]
+    });
+  }
+  // Overview Gender chart
+  overviewGenderChart(data : any) {
+    let result = [];
+    data.forEach(ele => {
+      result.push({
+        name : ele['_id'],
+        y : parseFloat(ele['percentage_value'])
+      });
+    });
+    this.overview_gender_chart = new Chart({
+      chart: {
+        type: 'pie'
+      },
+      title: {
+        text: ''
+      },
+      tooltip: {
+          pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+      },
+      series: [ {
+        name: 'Followers',
+        data : result
+      }]
+    });
+  }
 }
-
