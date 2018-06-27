@@ -137,10 +137,8 @@ vote_track_helper.get_artist_vote_by_gender = async (artist_id, day) => {
         },
         {
             $group: {
-                _id: {
-                    gender: "$user.gender",
-                },
-                count: { $sum: 1 },
+                _id: "$user.gender",
+                count: { $sum: 1 }
             }
         },
         {
@@ -148,21 +146,22 @@ vote_track_helper.get_artist_vote_by_gender = async (artist_id, day) => {
                 "_id": null,
                 "gender": { $push: "$$ROOT" },
                 "total": { $sum: "$count" },
-
             }
         },
 
     ];
 
     let result = await Vote.aggregate(aggregate);
-    if (result) {
+    if (result && result.length > 0) {
+
         result[0].gender = result[0].gender.map((gender_data) => {
             gender_data.percentage_value = parseFloat(gender_data.count * 100 / result[0].total).toFixed(2);
             return gender_data;
         });
-        return { "status": 1, "message": "followers  found", "results": result[0].gender }
+
+        return { "status": 1, "message": "Track  found", "results": result[0].gender }
     } else {
-        return { "status": 2, "message": "No  available followers" }
+        return { "status": 2, "message": "No  available Track" }
     }
 
 };
