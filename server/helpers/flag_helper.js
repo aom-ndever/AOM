@@ -1,5 +1,5 @@
 
-var Flag = require("./../models/flag");
+var Flag = require("../models/flag");
 
 var flag_helper = {};
 
