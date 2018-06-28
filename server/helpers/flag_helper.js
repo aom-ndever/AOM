@@ -9,6 +9,8 @@ var ObjectId = mongoose.Types.ObjectId;
 flag_helper.insert_flag = async (object) => {
     let flag = new Flag(object)
     try {
+
+
         let data = await flag.save();
         return { "status": 1, "message": "Record inserted", "flag": data };
     } catch (err) {
