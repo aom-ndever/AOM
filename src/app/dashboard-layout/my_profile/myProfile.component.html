@@ -617,22 +617,22 @@
                                                      <span>other</span>
                                                 </li>
                                             </ul-->
-                                            <div style="height:100%;width:100%;" [chart]="overview_gender_chart"></div>
+                                            <div  [chart]="overview_gender_chart"></div>
                                         </div>
                                         <div class="graph-states">
                                              <ul>
                                                 <li class="state-women">
-                                                    <p>52%</p>
+                                                    <p>{{overview_female_per}}%</p>
                                                     <span>Women</span>
                                                 </li>
                                                 <li class="state-men">
-                                                    <p>46%</p>
+                                                    <p>{{overview_male_per}}%</p>
                                                     <span>Men</span>
                                                 </li>
-                                                <li class="state-other">
+                                                <!-- <li class="state-other">
                                                     <p>2%</p>
                                                     <span>Other</span>
-                                                </li>
+                                                </li> -->
                                             </ul> 
                                         </div>
                                     </div>
@@ -672,23 +672,23 @@
                                         <div class="progress-bar-chart">
                                             <!-- <span class="inner-text"><p>45</p><span>New Followers</span></span> -->
                                             
-                                            <div style="width:100%;height:100%;" [chart]="gender_chart"></div>
+                                            <div [chart]="follower_gender_chart"></div>
                                         </div>  
                             
                                         <div class="graph-states">
                                             <ul>
                                                 <li class="state-women">
-                                                    <p>52%</p>
+                                                    <p>{{follower_male_per}}%</p>
                                                     <span>Women</span>
                                                 </li>
                                                 <li class="state-men">
-                                                    <p>46%</p>
+                                                    <p>{{follower_female_per}}%</p>
                                                     <span>Men</span>
                                                 </li>
-                                                <li class="state-other">
+                                                <!-- <li class="state-other">
                                                     <p>2%</p>
                                                     <span>Other</span>
-                                                </li>
+                                                </li> -->
                                             </ul>
                                         </div>
                                     </div>
@@ -745,46 +745,31 @@
                                     <div class="new-follow">
                                         <div class="edit-head">New Followers</div>
                                         <div class="progress-bar-chart">
-                                            <span class="inner-text"><p>45</p><span>New Followers</span></span>
-                                            <ul class="chart-skills">
-
-                                                <li class="follow-women">
-                                                    <!-- <span>Women</span> -->
-                                                </li>
-                                                <li class="follow-men">
-                                                    <!-- <span>Men</span> -->
-                                                </li>
-                                                <li class="follow-other">
-                                                    <!-- <span>other</span> -->
-                                                </li>
-                                            </ul>
+                                            <span class="inner-text"><p>{{track_vote_count}}</p><span>New Followers</span></span>
+                                            <div [chart]="track_gender_chart"></div>
                                         </div>
                                         <div class="graph-states">
                                             <ul>
                                                 <li class="state-women">
-                                                    <p>52%</p>
+                                                    <p>{{track_male_per}}%</p>
                                                     <span>Women</span>
                                                 </li>
                                                 <li class="state-men">
-                                                    <p>46%</p>
+                                                    <p>{{track_female_per}}%</p>
                                                     <span>Men</span>
-                                                </li>
-                                                <li class="state-other">
-                                                    <p>2%</p>
-                                                    <span>Other</span>
                                                 </li>
                                             </ul>
                                         </div>
                                     </div>
                                     <div class="artist-vote">
-                                        <div class="edit-head">12,300 Votes</div>
+                                        <div class="edit-head">{{track_vote_count}} Votes</div>
                                         <div class="vote-graph">
-                                            <img src="img/vote-map.jpg" alt="Vote Map">
+                                            <div [chart]="track_vote_chart"></div>
                                         </div>
                                     </div>
                                     <div class="artist-downloads">
                                         <div class="edit-head">Rank</div>
-                                        <div class="transaction-table mCustomScrollbar " data-mcs-theme="dark-3">
+                                        <div class="transaction-table mCustomScrollbar table-responsive " data-mcs-theme="dark-3">
                                             <table>
                                                 <thead>
                                                     <tr>

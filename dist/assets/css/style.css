@@ -2067,7 +2067,7 @@ input:checked + .slider:before {
    padding: 10px;
 }
 .transaction-table {
-    height: 230px;
+    height: 277px;
 }
 .proceeds img{width: 100%;}
 #media .media-wrapper .img-wrap{position: relative; width: 100%; margin-bottom: 0;}
@@ -2365,8 +2365,8 @@ ul.ana-tabs.nav.nav-tabs {
   box-sizing: border-box;
 }
 .progress-bar-chart {
-    width: 200px;
-    height: 200px;
+    /* width: 200px;
+    height: 200px; */
     position: relative;
     float: left;
 }
@@ -3928,7 +3928,7 @@ input#cover_upload1 {
 .new-head .search-input input[type="text"]{    width: 100%;}
 .progress-bar-chart {
     width: 70%;
-    height: 200px;
+    /* height: 200px; */
 }
 .graph-states{
     width:30%;

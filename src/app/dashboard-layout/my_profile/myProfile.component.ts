@@ -44,13 +44,22 @@ export class MyProfileComponent implements OnInit {
   overview_analytic_data : any = {};
   chart : any = '';
   follower_age_chart : any = '';
-  gender_chart : any = '';
+  follower_gender_chart : any = '';
   overview_gender_chart : any = '';
+  track_gender_chart : any = '';
+  track_vote_chart : any = '';
+  track_vote_count : any = 0;
+  track_male_per  : any = 0;
+  track_female_per : any = 0;
   track_analytic : any = '';
   follower_vote_chart : any = '';
   follower_vote_count : any = 0;
+  follower_male_per  : any = 0;
+  follower_female_per : any = 0;
   overview_vote_chart : any = '';
   overview_vote_count : any = 0;
+  overview_male_per : any = 0;
+  overview_female_per : any = 0;
   overview_download_total :  any = 0;
   show_duration_date : any = '';
   constructor(private MyProfileService : MyProfileService, 
@@ -119,7 +128,7 @@ export class MyProfileComponent implements OnInit {
     if(this.userdata['type'] == 'artist') {
       this.getMediaList();
       this.calculateDateFromDays(this.analytics_days);
-      this.getAllFollowerAnalytics({day : 14});
+      
       this.getAllTrackAnalytic({day : this.analytics_days});
       this.getAllOverviewAnalytic({day : 14});
     }
@@ -159,6 +168,13 @@ export class MyProfileComponent implements OnInit {
 
   changeAnlyticTab(cnt : Number) {
     this.analytic_tab = cnt;
+    if(cnt == 1) {
+      this.getAllOverviewAnalytic({day : this.analytics_days});
+    } else if(cnt == 2) {
+      this.getAllFollowerAnalytics({day : this.analytics_days});
+    } else if (cnt == 3) {
+      this.getAllTrackAnalytic({day : this.analytics_days});
+    }
   }
   // Update user profile
   update() {
@@ -567,6 +583,8 @@ export class MyProfileComponent implements OnInit {
   getAllTrackAnalytic(data) {
     this.MyProfileService.getAllTrackContestData(data).subscribe(response => {
         this.track_analytic = response;
+        this.trackGenderChart(response['gender']);
+        this.trackVoteChart(response['day']);
     });
   }
   // Get all overview analytics data
@@ -606,7 +624,8 @@ export class MyProfileComponent implements OnInit {
     console.log(result);
     this.follower_age_chart = new Chart({
       chart: {
-        type: 'column'
+        type: 'column',
+        height : 200
       },
       title: {
         text: ''
@@ -645,15 +664,19 @@ export class MyProfileComponent implements OnInit {
   genderChart(data : any) {
     let result = [];
     data.forEach(ele => {
+      if(ele['_id'] == 'male') 
+        this.follower_male_per = ele['percentage_value'];
+      else
+        this.follower_female_per = ele['percentage_value'];
       result.push({
         name : ele['_id'],
         y : parseFloat(ele['percentage_value'])
       });
     });
-    console.log(result);
-    this.gender_chart = new Chart({
+    this.follower_gender_chart = new Chart({
       chart: {
-        type: 'pie'
+        type: 'pie',
+        height: 200
       },
       title: {
         text: ''
@@ -662,7 +685,7 @@ export class MyProfileComponent implements OnInit {
           pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
       },
       series: [ {
-        name: 'Followers',
+        name: 'New Followers',
         data : result
       }]
     });
@@ -677,7 +700,8 @@ export class MyProfileComponent implements OnInit {
     });
     this.follower_vote_chart = new Chart({
       chart: {
-        type: 'area'
+        type: 'area',
+        height:200
       },
       title: {
         text: ''
@@ -713,7 +737,8 @@ export class MyProfileComponent implements OnInit {
     });
     this.overview_vote_chart = new Chart({
       chart: {
-        type: 'area'
+        type: 'area',
+        height : 200
       },
       title: {
         text: ''
@@ -743,6 +768,10 @@ export class MyProfileComponent implements OnInit {
   overviewGenderChart(data : any) {
     let result = [];
     data.forEach(ele => {
+      if(ele['_id'] == 'male') 
+        this.overview_male_per = ele['percentage_value'];
+      else
+      this.overview_female_per = ele['percentage_value'];
       result.push({
         name : ele['_id'],
         y : parseFloat(ele['percentage_value'])
@@ -750,7 +779,75 @@ export class MyProfileComponent implements OnInit {
     });
     this.overview_gender_chart = new Chart({
       chart: {
-        type: 'pie'
+        type: 'pie',
+        height:200
+      },
+      title: {
+        text: ''
+      },
+      tooltip: {
+          pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+      },
+      series: [ {
+        name: 'Followers',
+        data : result
+      }]
+    });
+  }
+   // track vote chart
+   trackVoteChart(data :  any) {
+    let result = [0,0,0,0,0,0,0];
+    this.track_vote_count = 0;
+    data.forEach(ele => {
+      result[ele['day']] = ele.count;
+      this.track_vote_count += ele.count;
+    });
+    this.track_vote_chart = new Chart({
+      chart: {
+        type: 'area',
+        height : 200
+      },
+      title: {
+        text: ''
+      },
+      xAxis : {
+        categories : ['M', 'T', 'W', 'T', 'F', 'S', 'S'],
+        labels: {
+            enabled: true
+        },
+        tickmarkPlacement: 'on',
+        minorTickLength: 0,
+        tickLength: 0
+      },
+      yAxis : {
+        visible : true
+      },
+      series: [
+        {
+          name : 'Votes',
+          color : '#9b26b0',
+          data: result
+        }
+      ]
+    });
+  }
+  // Track Gender chart
+  trackGenderChart(data : any) {
+    let result = [];
+    data.forEach(ele => {
+      if(ele['_id'] == 'male') 
+        this.track_male_per = ele['percentage_value'];
+      else
+      this.track_female_per = ele['percentage_value'];
+      result.push({
+        name : ele['_id'],
+        y : parseFloat(ele['percentage_value'])
+      });
+    });
+    this.track_gender_chart = new Chart({
+      chart: {
+        type: 'pie',
+        height:200
       },
       title: {
         text: ''
