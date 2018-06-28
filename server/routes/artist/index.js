@@ -515,22 +515,23 @@ router.get('/contest', async (req, res) => {
     }
 });
 
-router.post("/suspend/artist/:user_id", async (req, res) => {
+router.post("/suspend/user/:user_id", async (req, res) => {
     var resp = await user_helper.get_user_by_id(req.params.user_id);
     if (resp.status == 0) {
         logger.error("Error occured while fetching user = ", resp);
         res.status(config.INTERNAL_SERVER_ERROR).json(resp);
     } else {
-        if (resp.artist.status == "active") {
+        if (resp.user.status == "active") {
             var stat = "suspended"
-            var artist_resp = await artist_helper.update_user_status(req.params.artist_id, stat);
+            var user_resp = await user_helper.update_user_status(req.params.user_id, stat);
         }
         else {
             var stat = "active"
-            var artist_resp = await artist_helper.update_user_status(req.params.artist_id, stat);
+            var user_resp = await user_helper.update_user_status(req.params.user_id, stat);
         }
-        logger.trace("Artist Suspended= ", { "artist": artist_resp });
-        res.status(config.OK_STATUS).json({ "artist": artist_resp });
+        logger.trace("User Suspended = ", { "user": user_resp });
+        res.status(config.OK_STATUS).json({ "artist": user_resp });
     }
 });
+
 module.exports = router;
