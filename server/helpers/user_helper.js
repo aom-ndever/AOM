@@ -162,6 +162,19 @@ user_helper.update_user_status = async (user_id, status) => {
     }
 };
 
+user_helper.update_user_flag = async (user_id, flag) => {
+
+    try {
+        var user = await User.findOneAndUpdate({ "_id": new ObjectId(user_id) }, { "flag": flag });
+        if (user) {
+            return { "status": 1, "message": "user flag updated", };
+        } else {
+            return { "status": 2, "message": "user flag found" };
+        }
+    } catch (err) {
+        return { "status": 0, "message": "Error occured while updating user flag", "error": err }
+    }
+};
 user_helper.update_user_for_votes = async (id, no_vote) => {
     try {
         var contest = await User.findOneAndUpdate({ "_id": new ObjectId(id) }, { "no_of_votes": no_vote })

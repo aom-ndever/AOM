@@ -203,5 +203,23 @@ router.put('/change/password', async (req, res) => {
     }
 });
 
+router.post("/flag/user/:user_id", async (req, res) => {
+    var resp = await user_helper.get_user_by_id(req.params.user_id);
+    if (resp.status == 0) {
+        logger.error("Error occured while fetching user = ", resp);
+        res.status(config.INTERNAL_SERVER_ERROR).json(resp);
+    } else {
+        if (resp.user.flag == false) {
+            var stat = true
+            var user_resp = await user_helper.update_user_flag(req.params.user_id, stat);
+        }
+        else {
+            var stat = false
+            var user_resp = await user_helper.update_user_flag(req.params.user_id, stat);
+        }
+        logger.trace("User flagged = ", { "user": user_resp });
+        res.status(config.OK_STATUS).json({ "artist": user_resp });
+    }
+});
 
 module.exports = router;

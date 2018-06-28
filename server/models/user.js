@@ -24,6 +24,7 @@ var UserModelSchema = new Schema({
     status: { type: String, default: "active" },
     email_verified: Boolean,
     refresh_token: { type: String },
+    flag: { type: Boolean, default: false },
     created_at: { type: Date, default: Date.now }
 }, { versionKey: false });
 
