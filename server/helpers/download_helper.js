@@ -107,9 +107,9 @@ download_helper.get_downloads_by_day = async (artist_id, day) => {
 
 
     if (result) {
-        return { "status": 1, "message": "Vote  found", "results": result }
+        return { "status": 1, "message": "Track  found", "results": result }
     } else {
-        return { "status": 2, "message": "No  available Vote" }
+        return { "status": 2, "message": "No  available Track" }
     }
 
 };

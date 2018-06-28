@@ -283,7 +283,7 @@ router.post('/downloaded_track', async (req, res) => {
     var resp_day = await download_helper.get_downloads_by_day(req.userInfo.id, req.body.day);
     if (track.status === 1 && resp_day.status === 1) {
         logger.trace("got details successfully");
-        res.status(config.OK_STATUS).json({ "status": 1, "track": track.track, "day": resp_day });
+        res.status(config.OK_STATUS).json({ "status": 1, "track": track.track, "day": resp_day.results });
     } else {
         logger.error("Error occured while fetching = ", track);
         res.status(config.INTERNAL_SERVER_ERROR).json(track);
