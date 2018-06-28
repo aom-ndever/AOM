@@ -9,6 +9,7 @@ const saltRounds = 10;
 
 var user_helper = require('../../helpers/user_helper');
 var participate_helper = require('../../helpers/participate_helper');
+var flag_helper = require('../../helpers/flag_helper');
 
 var mongoose = require('mongoose');
 var ObjectId = mongoose.Types.ObjectId;
@@ -204,6 +205,10 @@ router.put('/change/password', async (req, res) => {
 });
 
 router.post("/flag/user/:user_id", async (req, res) => {
+    var obj = {
+        from: req.userInfo.id,
+        to: req.params.user_id
+    }
     var resp = await user_helper.get_user_by_id(req.params.user_id);
     if (resp.status == 0) {
         logger.error("Error occured while fetching user = ", resp);
@@ -211,14 +216,20 @@ router.post("/flag/user/:user_id", async (req, res) => {
     } else {
         if (resp.user.flag == false) {
             var stat = true
+            var user_resp = await flag_helper.insert_flag(obj);
             var user_resp = await user_helper.update_user_flag(req.params.user_id, stat);
+            logger.trace("User flagged");
+            res.status(config.OK_STATUS).json({ "message": "User flagged" });
         }
+
         else {
             var stat = false
             var user_resp = await user_helper.update_user_flag(req.params.user_id, stat);
+            var user_resp = await flag_helper.delete_flag(obj.from, obj.to);
+            logger.trace("flag deleted");
+            res.status(config.OK_STATUS).json({ "message": "flag deleted" });
         }
-        logger.trace("User flagged = ", { "user": user_resp });
-        res.status(config.OK_STATUS).json({ "artist": user_resp });
+
     }
 });
 
