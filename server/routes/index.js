@@ -22,7 +22,7 @@ var admin_helper = require('./../helpers/admin_helper');
 var media_helper = require('./../helpers/media_helper');
 var follower_helper = require('./../helpers/follower_helper');
 var comment_helper = require('./../helpers/comment_helper');
-var demo_helper = require('./../helpers/demo_helper');
+var demo_helper = require('../../helpers/demo_helper');
 
 /**
  * @api {post} /artist_registration Artist Registration
