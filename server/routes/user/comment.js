@@ -61,30 +61,38 @@ router.post('/', async (req, res) => {
       comment: req.body.comment
 
     };
-    var resp_data = await comment_helper.insert_comment_on_artist(obj);
-    if (resp_data.status == 0) {
-      logger.error("Error occured while fetching music = ", resp_data);
-      res.status(config.INTERNAL_SERVER_ERROR).json(resp_data);
-    } else {
-      var resp = await artist_helper.get_artist_by_id(obj.artist_id);
-
-      no_comment = resp.artist.no_of_comments + 1
-      var resp_data = await track_helper.update_artist_for_comments(obj.artist_id, no_comment);
-
-      var resp_datas = await comment_helper.get_all_track_by_track_id(obj.track_id);
-
-      no_vote = resp_datas.track.no_of_comments + 1;
-      var resp_data = await comment_helper.update_comment(obj.track_id, no_vote);
-
-
-      var resp = await user_helper.get_user_by_id(obj.user_id);
-      no_comment = resp.user.no_of_comments + 1
-      var resp_data = await user_helper.update_user_for_comments(obj.user_id, no_comment);
-
-      logger.trace("music got successfully = ", resp_data);
-      res.status(config.OK_STATUS).json(resp_data);
+    var resp = await user_helper.get_user_by_id(obj.user_id);
+    if (resp.user.status == 'suspended') {
+      logger.trace("you are blocked to comment = ");
+      res.status(config.OK_STATUS).json("you are blocked to comment");
     }
-  } else {
+    else {
+      var resp_data = await comment_helper.insert_comment_on_artist(obj);
+      if (resp_data.status == 0) {
+        logger.error("Error occured while fetching music = ", resp_data);
+        res.status(config.INTERNAL_SERVER_ERROR).json(resp_data);
+      } else {
+        var resp = await artist_helper.get_artist_by_id(obj.artist_id);
+
+        no_comment = resp.artist.no_of_comments + 1
+        var resp_data = await track_helper.update_artist_for_comments(obj.artist_id, no_comment);
+
+        var resp_datas = await comment_helper.get_all_track_by_track_id(obj.track_id);
+
+        no_vote = resp_datas.track.no_of_comments + 1;
+        var resp_data = await comment_helper.update_comment(obj.track_id, no_vote);
+
+
+        var resp = await user_helper.get_user_by_id(obj.user_id);
+        no_comment = resp.user.no_of_comments + 1
+        var resp_data = await user_helper.update_user_for_comments(obj.user_id, no_comment);
+
+        logger.trace("music got successfully = ", resp_data);
+        res.status(config.OK_STATUS).json(resp_data);
+      }
+    }
+  }
+  else {
     logger.error("Validation Error = ", errors);
     res.status(config.BAD_REQUEST).json({ message: errors });
   }
