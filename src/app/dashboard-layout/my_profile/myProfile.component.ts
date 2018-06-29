@@ -42,6 +42,7 @@ export class MyProfileComponent implements OnInit {
   analytics_days : any = 7;
   follower_analytic_data : any = {};
   overview_analytic_data : any = {};
+  download_analytic_data : any = {};
   chart : any = '';
   follower_age_chart : any = '';
   follower_gender_chart : any = '';
@@ -61,6 +62,8 @@ export class MyProfileComponent implements OnInit {
   overview_male_per : any = 0;
   overview_female_per : any = 0;
   overview_download_total :  any = 0;
+  download_chart : any = '';
+  download_analytic_count : any = 0;
   show_duration_date : any = '';
   constructor(private MyProfileService : MyProfileService, 
     private toastr: ToastrService,
@@ -129,8 +132,9 @@ export class MyProfileComponent implements OnInit {
       this.getMediaList();
       this.calculateDateFromDays(this.analytics_days);
       
-      this.getAllTrackAnalytic({day : this.analytics_days});
+      //this.getAllTrackAnalytic({day : this.analytics_days});
       this.getAllOverviewAnalytic({day : 14});
+      this.getAllDownloadAnalytic({day : this.analytics_days});
     }
   }
 
@@ -160,6 +164,7 @@ export class MyProfileComponent implements OnInit {
     this.getAllFollowerAnalytics({day : this.analytics_days});
     this.getAllTrackAnalytic({day : this.analytics_days});
     this.getAllOverviewAnalytic({day : this.analytics_days});
+    this.getAllDownloadAnalytic({day : this.analytics_days});
   }
 
   tabChange(cnt : Number) {
@@ -174,6 +179,8 @@ export class MyProfileComponent implements OnInit {
       this.getAllFollowerAnalytics({day : this.analytics_days});
     } else if (cnt == 3) {
       this.getAllTrackAnalytic({day : this.analytics_days});
+    } else if(cnt == 4) {
+      this.getAllDownloadAnalytic({day : this.analytics_days});
     }
   }
   // Update user profile
@@ -601,6 +608,13 @@ export class MyProfileComponent implements OnInit {
         this.overviewGenderChart(response['gender']);
     });
   }
+  // Get all download analytics data
+  getAllDownloadAnalytic(data) {
+    this.MyProfileService.getAllDownloadAnalytic(data).subscribe(response => {
+      this.download_analytic_data = response;
+      this.downloadChart(response['day']);
+    });
+  }
   // Age chart
   ageChart(data : any) {
     let result = [0,0,0,0,0,0,0];
@@ -794,8 +808,8 @@ export class MyProfileComponent implements OnInit {
       }]
     });
   }
-   // track vote chart
-   trackVoteChart(data :  any) {
+  // track vote chart
+  trackVoteChart(data :  any) {
     let result = [0,0,0,0,0,0,0];
     this.track_vote_count = 0;
     data.forEach(ele => {
@@ -859,6 +873,53 @@ export class MyProfileComponent implements OnInit {
         name: 'Followers',
         data : result
       }]
+    });
+  }
+  month_name(dt){
+    let mlist = [ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ];
+      return mlist[dt.getMonth()];
+   };
+  // Download chart
+  downloadChart(data :  any) {
+    let result = [];
+    let cat = [];
+    let dt = new Date();
+    for(let i = 1; i<= this.analytics_days; i++) {
+      cat.push(this.month_name(dt)+" "+i);
+      result.push(0);
+    }
+    this.download_analytic_count = 0;
+    data.forEach(ele => {
+      result[ele['day'] - 1] = ele.count;
+      this.download_analytic_count += ele.count;
+    });
+    this.download_chart = new Chart({
+      chart: {
+        type: 'area',
+        height : 200
+      },
+      title: {
+        text: ''
+      },
+      xAxis : {
+        categories : cat,
+        labels: {
+            enabled: true
+        },
+        tickmarkPlacement: 'on',
+        minorTickLength: 0,
+        tickLength: 0
+      },
+      yAxis : {
+        visible : true
+      },
+      series: [
+        {
+          name : 'Votes',
+          color : '#9b26b0',
+          data: result
+        }
+      ]
     });
   }
 }
