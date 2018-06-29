@@ -872,194 +872,29 @@
                                     <div class="track-table mCustomScrollbar " data-mcs-theme="dark-3">
                                         <table>
                                             <tbody>
-                                                <tr>
-                                                    <td class="serial-num">1.</td>
+                                                <tr *ngFor="let download of download_analytic_data['track']; let i=index;">
+                                                    <td class="serial-num">{{i+1}}.</td>
                                                     <td class="track-pic">
-                                                        <a href="#"><img src="img/track-img.png" alt="Track Image"></a>
+                                                        <a href="javascript:;"><img style="height: 50px;width:50px;" src="{{download.image ? track_url+download.image : 'img/track-img.png'}}" alt="Track Image"></a>
                                                     </td>
                                                     <td class="track-det" colspan="2">
-                                                        <p class="track-name">Blue State of Mind</p>
-                                                        <p class="track-singer">Shavan Miller</p>
-                                                        <p class="track-year">2017</p>
+                                                        <p class="track-name">{{download.name}}</p>
+                                                        <p class="track-singer">{{download['artist_id']['name']}}</p>
+                                                        <p class="track-year">{{download.created_at | date : 'yyyy'}}</p>
                                                     </td>
-                                                    <td class="track-date">March 12,2017</td>
-                                                    <td class="track-download">1200 <span>Downloads</span></td>
+                                                    <td class="track-date">{{download.created_at | date : 'MMMM dd, yyyy'}}</td>
+                                                    <td class="track-download">{{download.no_of_downloads}} <span>Downloads</span></td>
 
-                                                    <td class="track-share">560 <span>Shares</span></td>
+                                                    <td class="track-share">{{download.no_of_shares}} <span>Shares</span></td>
                                                 </tr>
-                                                <tr>
-                                                    <td class="serial-num">2.</td>
-                                                    <td class="track-pic">
-                                                        <a href="#"><img src="img/track-img.png" alt="Track Image"></a>
-                                                    </td>
-                                                    <td class="track-det" colspan="2">
-                                                        <p class="track-name">Blue State of Mind</p>
-                                                        <p class="track-singer">Shavan Miller</p>
-                                                        <p class="track-year">2017</p>
-                                                    </td>
-                                                    <td class="track-date">March 12,2017</td>
-                                                    <td class="track-download">1200 <span>Downloads</span></td>
-
-                                                    <td class="track-share">560 <span>Shares</span></td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="serial-num">3.</td>
-                                                    <td class="track-pic">
-                                                        <a href="#"><img src="img/track-img.png" alt="Track Image"></a>
-                                                    </td>
-                                                    <td class="track-det" colspan="2">
-                                                        <p class="track-name">Blue State of Mind</p>
-                                                        <p class="track-singer">Shavan Miller</p>
-                                                        <p class="track-year">2017</p>
-                                                    </td>
-                                                    <td class="track-date">March 12,2017</td>
-                                                    <td class="track-download">1200 <span>Downloads</span></td>
-
-                                                    <td class="track-share">560 <span>Shares</span></td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="serial-num">4.</td>
-                                                    <td class="track-pic">
-                                                        <a href="#"><img src="img/track-img.png" alt="Track Image"></a>
-                                                    </td>
-                                                    <td class="track-det" colspan="2">
-                                                        <p class="track-name">Blue State of Mind</p>
-                                                        <p class="track-singer">Shavan Miller</p>
-                                                        <p class="track-year">2017</p>
-                                                    </td>
-                                                    <td class="track-date">March 12,2017</td>
-                                                    <td class="track-download">1200 <span>Downloads</span></td>
-
-                                                    <td class="track-share">560 <span>Shares</span></td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="serial-num">5.</td>
-                                                    <td class="track-pic">
-                                                        <a href="#"><img src="img/track-img.png" alt="Track Image"></a>
-                                                    </td>
-                                                    <td class="track-det" colspan="2">
-                                                        <p class="track-name">Blue State of Mind</p>
-                                                        <p class="track-singer">Shavan Miller</p>
-                                                        <p class="track-year">2017</p>
-                                                    </td>
-                                                    <td class="track-date">March 12,2017</td>
-                                                    <td class="track-download">1200 <span>Downloads</span></td>
-
-                                                    <td class="track-share">560 <span>Shares</span></td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="serial-num">6.</td>
-                                                    <td class="track-pic">
-                                                        <a href="#"><img src="img/track-img.png" alt="Track Image"></a>
-                                                    </td>
-                                                    <td class="track-det" colspan="2">
-                                                        <p class="track-name">Blue State of Mind</p>
-                                                        <p class="track-singer">Shavan Miller</p>
-                                                        <p class="track-year">2017</p>
-                                                    </td>
-                                                    <td class="track-date">March 12,2017</td>
-                                                    <td class="track-download">1200 <span>Downloads</span></td>
-
-                                                    <td class="track-share">560 <span>Shares</span></td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="serial-num">7.</td>
-                                                    <td class="track-pic">
-                                                        <a href="#"><img src="img/track-img.png" alt="Track Image"></a>
-                                                    </td>
-                                                    <td class="track-det" colspan="2">
-                                                        <p class="track-name">Blue State of Mind</p>
-                                                        <p class="track-singer">Shavan Miller</p>
-                                                        <p class="track-year">2017</p>
-                                                    </td>
-                                                    <td class="track-date">March 12,2017</td>
-                                                    <td class="track-download">1200 <span>Downloads</span></td>
-
-                                                    <td class="track-share">560 <span>Shares</span></td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="serial-num">8.</td>
-                                                    <td class="track-pic">
-                                                        <a href="#"><img src="img/track-img.png" alt="Track Image"></a>
-                                                    </td>
-                                                    <td class="track-det" colspan="2">
-                                                        <p class="track-name">Blue State of Mind</p>
-                                                        <p class="track-singer">Shavan Miller</p>
-                                                        <p class="track-year">2017</p>
-                                                    </td>
-                                                    <td class="track-date">March 12,2017</td>
-                                                    <td class="track-download">1200 <span>Downloads</span></td>
-
-                                                    <td class="track-share">560 <span>Shares</span></td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="serial-num">9.</td>
-                                                    <td class="track-pic">
-                                                        <a href="#"><img src="img/track-img.png" alt="Track Image"></a>
-                                                    </td>
-                                                    <td class="track-det" colspan="2">
-                                                        <p class="track-name">Blue State of Mind</p>
-                                                        <p class="track-singer">Shavan Miller</p>
-                                                        <p class="track-year">2017</p>
-                                                    </td>
-                                                    <td class="track-date">March 12,2017</td>
-                                                    <td class="track-download">1200 <span>Downloads</span></td>
-
-                                                    <td class="track-share">560 <span>Shares</span></td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="serial-num">10.</td>
-                                                    <td class="track-pic">
-                                                        <a href="#"><img src="img/track-img.png" alt="Track Image"></a>
-                                                    </td>
-                                                    <td class="track-det" colspan="2">
-                                                        <p class="track-name">Blue State of Mind</p>
-                                                        <p class="track-singer">Shavan Miller</p>
-                                                        <p class="track-year">2017</p>
-                                                    </td>
-                                                    <td class="track-date">March 12,2017</td>
-                                                    <td class="track-download">1200 <span>Downloads</span></td>
-
-                                                    <td class="track-share">560 <span>Shares</span></td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="serial-num">11.</td>
-                                                    <td class="track-pic">
-                                                        <a href="#"><img src="img/track-img.png" alt="Track Image"></a>
-                                                    </td>
-                                                    <td class="track-det" colspan="2">
-                                                        <p class="track-name">Blue State of Mind</p>
-                                                        <p class="track-singer">Shavan Miller</p>
-                                                        <p class="track-year">2017</p>
-                                                    </td>
-                                                    <td class="track-date">March 12,2017</td>
-                                                    <td class="track-download">1200 <span>Downloads</span></td>
-
-                                                    <td class="track-share">560 <span>Shares</span></td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="serial-num">12.</td>
-                                                    <td class="track-pic">
-                                                        <a href="#"><img src="img/track-img.png" alt="Track Image"></a>
-                                                    </td>
-                                                    <td class="track-det" colspan="2">
-                                                        <p class="track-name">Blue State of Mind</p>
-                                                        <p class="track-singer">Shavan Miller</p>
-                                                        <p class="track-year">2017</p>
-                                                    </td>
-                                                    <td class="track-date">March 12,2017</td>
-                                                    <td class="track-download">1200 <span>Downloads</span></td>
-
-                                                    <td class="track-share">560 <span>Shares</span></td>
-                                                </tr>
-
                                             </tbody>
                                         </table>
                                     </div>
                                     <div class="artist-downloads">
-                                        <div class="edit-head">1300 Downloads</div>
+                                        <div class="edit-head">{{download_analytic_count}} Downloads</div>
                                         <div class="vote-graph">
-                                            <img src="img/d-download.jpg" alt="Downloads Map">
+                                            <!-- img src="img/d-download.jpg" alt="Downloads Map"> -->
+                                            <div [chart]="download_chart"></div>
                                         </div>
                                     </div>
                                     <div class="artist-proceeds">
