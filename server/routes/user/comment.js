@@ -64,7 +64,7 @@ router.post('/', async (req, res) => {
     var resp = await user_helper.get_user_by_id(obj.user_id);
     if (resp.user.status == 'suspended') {
       logger.trace("you are blocked to comment = ");
-      res.status(config.OK_STATUS).json("you are blocked to comment");
+      res.status(config.OK_STATUS).json({ "message": "you are blocked to comment" });
     }
     else {
       var resp_data = await comment_helper.insert_comment_on_artist(obj);

@@ -22,6 +22,7 @@ var admin_helper = require('./../helpers/admin_helper');
 var media_helper = require('./../helpers/media_helper');
 var follower_helper = require('./../helpers/follower_helper');
 var comment_helper = require('./../helpers/comment_helper');
+var demo_helper = require('./../helpers/demo_helper');
 
 /**
  * @api {post} /artist_registration Artist Registration
@@ -1437,6 +1438,58 @@ router.get('/tracks/:track_id', async (req, res) => {
   } else {
     logger.error("Error occured while fetching = ", track);
     res.status(config.INTERNAL_SERVER_ERROR).json(track);
+  }
+});
+
+
+router.post("/add_user", async (req, res) => {
+  var schema = {
+    "name": {
+      notEmpty: true,
+      errorMessage: "name is required"
+    },
+    "city": {
+      notEmpty: true,
+      errorMessage: "City is required"
+    },
+
+  };
+  req.checkBody(schema);
+  var errors = req.validationErrors();
+  if (!errors) {
+    var obj = {
+      name: req.body.name,
+      city: req.body.city,
+
+    };
+
+    var resp_data = await demo_helper.insert_user(obj);
+    if (resp_data.status == 0) {
+      logger.error("Error occured while inserting = ", resp_data);
+      res.status(config.INTERNAL_SERVER_ERROR).json(resp_data);
+    } else {
+      logger.trace(" got successfully = ", resp_data);
+      res.status(config.OK_STATUS).json(resp_data);
+    }
+  }
+
+  else {
+    logger.error("Validation Error = ", errors);
+    res.status(config.BAD_REQUEST).json({ message: errors });
+  }
+});
+
+
+router.get('/user', async (req, res) => {
+  filter = {};
+  var user = await demo_helper.get_all_user(filter);
+
+  if (user.status === 1) {
+    logger.trace("got details successfully");
+    res.status(config.OK_STATUS).json({ "status": 1, "users": user.user });
+  } else {
+    logger.error("Error occured while fetching = ", user);
+    res.status(config.INTERNAL_SERVER_ERROR).json(user);
   }
 });
 
