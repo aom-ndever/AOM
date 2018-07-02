@@ -270,6 +270,7 @@ artist_helper.get_all_artist_by_vote = async () => {
                 "no_of_comments": 1,
             })
             .sort({ "no_of_votes": - 1 })
+            .populate('music_type')
             .limit(10)
             .lean();
 

@@ -260,7 +260,7 @@ track_helper.get_artist_by_day_vote = async (day) => {
     ];
 
     let result = await Vote_track.aggregate(aggregate);
-    if (result && result.length > 0) {
+    if (result) {
         return { "status": 1, "message": "Artist  found", "results": result }
     } else {
         return { "status": 2, "message": "No  available Artist" }
