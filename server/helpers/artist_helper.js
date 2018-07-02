@@ -300,6 +300,7 @@ artist_helper.get_all_artist_by_likes = async () => {
                 "no_of_comments": 1,
             })
             .sort({ "no_of_likes": - 1 })
+            .populate('music_type')
             .limit(10)
             .lean();
 
@@ -329,6 +330,7 @@ artist_helper.get_all_artist_by_comment = async () => {
                 "no_of_comments": 1,
             })
             .sort({ "no_of_comments": - 1 })
+            .populate('music_type')
             .limit(10)
             .lean();
 
