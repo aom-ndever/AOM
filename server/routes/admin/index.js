@@ -347,8 +347,8 @@ router.post("/get_artist", async (req, res) => {
     logger.error("Error occured while fetching artist = ", resp_data);
     res.status(config.INTERNAL_SERVER_ERROR).json(resp_data);
   } else {
-    logger.trace("artist got successfully = ", { "artist": resp_data });
-    res.status(config.OK_STATUS).json({ "artist": resp_data });
+    logger.trace("artist got successfully = ", { "artist": resp_data.artist });
+    res.status(config.OK_STATUS).json({ "artist": resp_data.artist });
   }
 });
 
@@ -468,8 +468,8 @@ router.post("/get_user", async (req, res) => {
     logger.error("Error occured while fetching artist = ", resp_data);
     res.status(config.INTERNAL_SERVER_ERROR).json(resp_data);
   } else {
-    logger.trace("artist got successfully = ", { "artist": resp_data });
-    res.status(config.OK_STATUS).json({ "artist": resp_data });
+    logger.trace("user got successfully = ", { "user": resp_data.user });
+    res.status(config.OK_STATUS).json({ "user": resp_data.user });
   }
 });
 
