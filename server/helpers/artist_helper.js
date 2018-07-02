@@ -304,7 +304,7 @@ artist_helper.get_all_artist_by_likes = async () => {
             .limit(10)
             .lean();
 
-        if (artist && artist.length > 0) {
+        if (artist) {
             return { "status": 1, "message": "artist details found", "artist": artist };
         } else {
             return { "status": 2, "message": "artist not found" };
@@ -360,7 +360,7 @@ artist_helper.get_all_active_and_suspend_artist = async (filter) => {
                 "no_of_comments": 1,
             })
 
-        if (artist && artist.length > 0) {
+        if (artist) {
             return { "status": 1, "message": "artist details found", "artist": artist };
         } else {
             return { "status": 2, "message": "artist not found" };
