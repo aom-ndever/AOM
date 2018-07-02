@@ -31,6 +31,9 @@ bookmark_helper.get_all_bookmarked_artist = async (user_id) => {
 };
 
 
+
+
+
 bookmark_helper.delete_bookmark = async (user_id, bookmark_id) => {
     try {
         let user = await Bookmark.findOneAndRemove({ user_id: new ObjectId(user_id), _id: new ObjectId(bookmark_id) });
@@ -40,7 +43,7 @@ bookmark_helper.delete_bookmark = async (user_id, bookmark_id) => {
             return { status: 1, message: "Record has been Deleted" };
         }
     } catch (err) {
-        return {status: 0, message: "Error occured while deleting user",error: err};
+        return { status: 0, message: "Error occured while deleting user", error: err };
     }
 };
 
