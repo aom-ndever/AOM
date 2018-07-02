@@ -225,7 +225,7 @@ user_helper.update_user_for_comments = async (id, no_comment) => {
     }
 };
 
-user_helper.get_all_active_and_suspend_user = async (filter) => {
+user_helper.get_all_active_and_suspend_user = async (filter, sort_by = {}) => {
     try {
 
         var user = await User
@@ -240,6 +240,7 @@ user_helper.get_all_active_and_suspend_user = async (filter) => {
                 "no_of_followers": 1,
                 "no_of_comments": 1,
             })
+            .sort(sort_by)
 
         if (user && user.length > 0) {
             return { "status": 1, "message": "user details found", "user": user };

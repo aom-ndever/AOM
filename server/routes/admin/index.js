@@ -331,6 +331,11 @@ router.post("/home_comment", async (req, res) => {
  */
 router.post("/get_artist", async (req, res) => {
   var filter = {};
+  var sort_by = 1;
+  if (req.body.sort_by != 1) {
+    sort_by = -1;
+  }
+  var sort = { no_of_votes: -1, created_at: sort_by }
   if (req.body.location) {
     filter.location = req.body.location;
   }
@@ -342,7 +347,7 @@ router.post("/get_artist", async (req, res) => {
     var search = { "$regex": r, "$options": "i" };
     filter.first_name = search;
   }
-  var resp_data = await artist_helper.get_all_active_and_suspend_artist(filter);
+  var resp_data = await artist_helper.get_all_active_and_suspend_artist(filter, sort);
   if (resp_data.status == 0) {
     logger.error("Error occured while fetching artist = ", resp_data);
     res.status(config.INTERNAL_SERVER_ERROR).json(resp_data);
@@ -455,6 +460,11 @@ router.post("/get_user", async (req, res) => {
   if (req.body.location) {
     filter.location = req.body.location;
   }
+  var sort_by = 1;
+  if (req.body.sort_by != 1) {
+    sort_by = -1;
+  }
+  var sort = { no_of_votes: -1, created_at: sort_by }
   if (req.body.music_type) {
     filter.music_type = new ObjectId(req.body.music_type);
   }
@@ -463,7 +473,7 @@ router.post("/get_user", async (req, res) => {
     var search = { "$regex": r, "$options": "i" };
     filter.first_name = search;
   }
-  var resp_data = await user_helper.get_all_active_and_suspend_user(filter);
+  var resp_data = await user_helper.get_all_active_and_suspend_user(filter, sort);
   if (resp_data.status == 0) {
     logger.error("Error occured while fetching artist = ", resp_data);
     res.status(config.INTERNAL_SERVER_ERROR).json(resp_data);

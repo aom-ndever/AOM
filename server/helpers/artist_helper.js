@@ -343,7 +343,7 @@ artist_helper.get_all_artist_by_comment = async () => {
         return { "status": 0, "message": "Error occured while finding music", "error": err }
     }
 };
-artist_helper.get_all_active_and_suspend_artist = async (filter) => {
+artist_helper.get_all_active_and_suspend_artist = async (filter, sort_by = {}) => {
     try {
 
         var artist = await Artist
@@ -359,6 +359,7 @@ artist_helper.get_all_active_and_suspend_artist = async (filter) => {
                 "no_of_followers": 1,
                 "no_of_comments": 1,
             })
+            .sort(sort_by)
 
         if (artist) {
             return { "status": 1, "message": "artist details found", "artist": artist };
