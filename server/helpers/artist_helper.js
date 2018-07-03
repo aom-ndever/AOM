@@ -343,7 +343,7 @@ artist_helper.get_all_artist_by_comment = async () => {
         return { "status": 0, "message": "Error occured while finding music", "error": err }
     }
 };
-artist_helper.get_all_active_and_suspend_artist = async (page_no, page_size, filter, sort_by = {}) => {
+artist_helper.get_all_active_and_suspend_artist = async (start, length, filter, sort_by = {}) => {
     try {
 
         var artists = await Artist
@@ -379,8 +379,8 @@ artist_helper.get_all_active_and_suspend_artist = async (page_no, page_size, fil
             })
 
             .sort(sort_by)
-            .skip((page_size * page_no) - page_size)
-            .limit(page_size)
+            .skip(start)
+            .limit(length)
         var filter_cnt = artist.length;
 
         if (artist) {
