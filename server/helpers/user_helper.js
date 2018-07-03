@@ -260,7 +260,7 @@ user_helper.get_all_active_and_suspend_user = async (page_no, page_size, filter,
         var filter_cnt = user.length;
 
         if (user) {
-            return { "status": 1, "message": "user details found", "user": user, "recordsFiltered": filter_cnt, "recordsTotal": tot_cnt };
+            return { "status": 1, "message": "user details found", "user": user, "recordsFiltered": filter_cnt, "recordsTotal": tot_cnt, "draw": page_no };
         } else {
             return { "status": 2, "message": "user not found" };
         }
