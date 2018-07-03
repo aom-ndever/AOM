@@ -359,6 +359,7 @@ artist_helper.get_all_active_and_suspend_artist = async (page_no, page_size, fil
                 "no_of_followers": 1,
                 "no_of_comments": 1,
             })
+
             .sort(sort_by)
             .skip((page_size * page_no) - page_size)
             .limit(page_size)
