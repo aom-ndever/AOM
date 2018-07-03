@@ -225,7 +225,7 @@ user_helper.update_user_for_comments = async (id, no_comment) => {
     }
 };
 
-user_helper.get_all_active_and_suspend_user = async (filter, sort_by = {}) => {
+user_helper.get_all_active_and_suspend_user = async (page_no, page_size, filter, sort_by = {}) => {
     try {
 
         var user = await User
@@ -241,8 +241,10 @@ user_helper.get_all_active_and_suspend_user = async (filter, sort_by = {}) => {
                 "no_of_comments": 1,
             })
             .sort(sort_by)
+            .skip((page_size * page_no) - page_size)
+            .limit(page_size)
 
-        if (user && user.length > 0) {
+        if (user) {
             return { "status": 1, "message": "user details found", "user": user };
         } else {
             return { "status": 2, "message": "user not found" };

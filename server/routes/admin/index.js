@@ -347,7 +347,7 @@ router.post("/get_artist", async (req, res) => {
     var search = { "$regex": r, "$options": "i" };
     filter.first_name = search;
   }
-  var resp_data = await artist_helper.get_all_active_and_suspend_artist(filter, sort);
+  var resp_data = await artist_helper.get_all_active_and_suspend_artist(req.body.draw, req.body.length, filter, sort);
   if (resp_data.status == 0) {
     logger.error("Error occured while fetching artist = ", resp_data);
     res.status(config.INTERNAL_SERVER_ERROR).json(resp_data);
@@ -473,7 +473,7 @@ router.post("/get_user", async (req, res) => {
     var search = { "$regex": r, "$options": "i" };
     filter.first_name = search;
   }
-  var resp_data = await user_helper.get_all_active_and_suspend_user(filter, sort);
+  var resp_data = await user_helper.get_all_active_and_suspend_user(req.body.draw, req.body.length, filter, sort);
   if (resp_data.status == 0) {
     logger.error("Error occured while fetching artist = ", resp_data);
     res.status(config.INTERNAL_SERVER_ERROR).json(resp_data);

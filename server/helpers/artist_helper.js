@@ -343,7 +343,7 @@ artist_helper.get_all_artist_by_comment = async () => {
         return { "status": 0, "message": "Error occured while finding music", "error": err }
     }
 };
-artist_helper.get_all_active_and_suspend_artist = async (filter, sort_by = {}) => {
+artist_helper.get_all_active_and_suspend_artist = async (page_no, page_size, filter, sort_by = {}) => {
     try {
 
         var artist = await Artist
@@ -360,6 +360,8 @@ artist_helper.get_all_active_and_suspend_artist = async (filter, sort_by = {}) =
                 "no_of_comments": 1,
             })
             .sort(sort_by)
+            .skip((page_size * page_no) - page_size)
+            .limit(page_size)
 
         if (artist) {
             return { "status": 1, "message": "artist details found", "artist": artist };
@@ -399,6 +401,7 @@ artist_helper.delete_artist_image = async (artist_id) => {
         return { "status": 0, "message": "Error occured while finding artist", "error": err }
     }
 };
+
 artist_helper.delete_artist_cover_image = async (artist_id) => {
 
     try {
