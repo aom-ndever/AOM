@@ -205,8 +205,8 @@ router.post("/add_contest", async (req, res) => {
  * @apiSuccess (Success 200) {Array} contect detail 
  * @apiError (Error 4xx) {String} message Validation or error message.
  */
-router.get('/contest', async (req, res) => {
-  var contest = await contest_helper.get_all_contest_and_participant();
+router.post('/contest', async (req, res) => {
+  var contest = await contest_helper.get_all_contest_and_participant(req.body.draw, req.body.length);
   if (contest.status === 1) {
     logger.trace("got details successfully");
     res.status(config.OK_STATUS).json({ "status": 1, "contest": contest.participate });
