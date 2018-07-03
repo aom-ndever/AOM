@@ -227,6 +227,19 @@ user_helper.update_user_for_comments = async (id, no_comment) => {
 
 user_helper.get_all_active_and_suspend_user = async (page_no, page_size, filter, sort_by = {}) => {
     try {
+        var users = await User
+            .find({}, {
+                "first_name": 1,
+                "last_name": 1,
+                "gender": 1,
+                "music_type": 1,
+                "status": 1,
+                "no_of_votes": 1,
+                "no_of_likes": 1,
+                "no_of_followers": 1,
+                "no_of_comments": 1,
+            })
+        var tot_cnt = users.length;
 
         var user = await User
             .find(filter, {
@@ -244,8 +257,10 @@ user_helper.get_all_active_and_suspend_user = async (page_no, page_size, filter,
             .skip((page_size * page_no) - page_size)
             .limit(page_size)
 
+        var filter_cnt = user.length;
+
         if (user) {
-            return { "status": 1, "message": "user details found", "user": user };
+            return { "status": 1, "message": "user details found", "user": user, "recordsFiltered": filter_cnt, "recordsTotal": tot_cnt };
         } else {
             return { "status": 2, "message": "user not found" };
         }

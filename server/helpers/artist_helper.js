@@ -346,6 +346,24 @@ artist_helper.get_all_artist_by_comment = async () => {
 artist_helper.get_all_active_and_suspend_artist = async (page_no, page_size, filter, sort_by = {}) => {
     try {
 
+        var artists = await Artist
+            .find({}, {
+                "first_name": 1,
+                "last_name": 1,
+                "gender": 1,
+                "music_type": 1,
+                "status": 1,
+                "no_of_tracks": 1,
+                "no_of_votes": 1,
+                "no_of_likes": 1,
+                "no_of_followers": 1,
+                "no_of_comments": 1,
+            })
+
+
+        var tot_cnt = artists.length;
+
+
         var artist = await Artist
             .find(filter, {
                 "first_name": 1,
@@ -363,9 +381,10 @@ artist_helper.get_all_active_and_suspend_artist = async (page_no, page_size, fil
             .sort(sort_by)
             .skip((page_size * page_no) - page_size)
             .limit(page_size)
+        var filter_cnt = artist.length;
 
         if (artist) {
-            return { "status": 1, "message": "artist details found", "artist": artist };
+            return { "status": 1, "message": "artist details found", "artist": artist, "recordsFiltered": filter_cnt, "recordsTotal": tot_cnt };
         } else {
             return { "status": 2, "message": "artist not found" };
         }
