@@ -384,7 +384,7 @@ artist_helper.get_all_active_and_suspend_artist = async (page_no, page_size, fil
         var filter_cnt = artist.length;
 
         if (artist) {
-            return { "status": 1, "message": "artist details found", "artist": artist, "recordsFiltered": filter_cnt, "recordsTotal": tot_cnt, "draw": page_no };
+            return { "status": 1, "message": "artist details found", "artist": artist, "recordsFiltered": filter_cnt, "recordsTotal": tot_cnt };
         } else {
             return { "status": 2, "message": "artist not found" };
         }

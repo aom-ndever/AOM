@@ -206,7 +206,7 @@ router.post("/add_contest", async (req, res) => {
  * @apiError (Error 4xx) {String} message Validation or error message.
  */
 router.post('/contest', async (req, res) => {
-  var contest = await contest_helper.get_all_contest_and_participant(req.body.draw, req.body.length);
+  var contest = await contest_helper.get_all_contest_and_participant(req.body.start, req.body.length);
   if (contest.status === 1) {
     logger.trace("got details successfully");
     res.status(config.OK_STATUS).json({ "status": 1, "contest": contest.participate });
@@ -347,7 +347,7 @@ router.post("/get_artist", async (req, res) => {
     var search = { "$regex": r, "$options": "i" };
     filter.first_name = search;
   }
-  var resp_data = await artist_helper.get_all_active_and_suspend_artist(req.body.draw, req.body.length, filter, sort);
+  var resp_data = await artist_helper.get_all_active_and_suspend_artist(req.body.start, req.body.length, filter, sort);
   if (resp_data.status == 0) {
     logger.error("Error occured while fetching artist = ", resp_data);
     res.status(config.INTERNAL_SERVER_ERROR).json(resp_data);
@@ -473,7 +473,7 @@ router.post("/get_user", async (req, res) => {
     var search = { "$regex": r, "$options": "i" };
     filter.first_name = search;
   }
-  var resp_data = await user_helper.get_all_active_and_suspend_user(req.body.draw, req.body.length, filter, sort);
+  var resp_data = await user_helper.get_all_active_and_suspend_user(req.body.start, req.body.length, filter, sort);
   if (resp_data.status == 0) {
     logger.error("Error occured while fetching artist = ", resp_data);
     res.status(config.INTERNAL_SERVER_ERROR).json(resp_data);
