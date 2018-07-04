@@ -41,7 +41,7 @@ contest_helper.update_participant = async (id, no_participants) => {
     }
 };
 
-contest_helper.get_all_contest_and_participant = async (page_no, page_size, ) => {
+contest_helper.get_all_contest_and_participant = async (page_no, page_size) => {
     try {
         var participate = await Contest.find({}, { "name": 1, "start_date": 1, "end_date": 1, "music_type": 1, "location": 1, "no_of_participants": 1 })
             .skip((page_size * page_no) - page_size)

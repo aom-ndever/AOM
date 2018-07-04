@@ -343,11 +343,11 @@ artist_helper.get_all_artist_by_comment = async () => {
         return { "status": 0, "message": "Error occured while finding music", "error": err }
     }
 };
-artist_helper.get_all_active_and_suspend_artist = async (start, length, filter, sort_by = {}) => {
+artist_helper.get_all_active_and_suspend_artist = async (start, length, filter = {}, sort_by = {}) => {
     try {
 
         var artists = await Artist
-            .find({}, {
+            .find(filter, {
                 "first_name": 1,
                 "last_name": 1,
                 "gender": 1,
