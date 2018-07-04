@@ -19,6 +19,7 @@ var ArtistModelSchema = new Schema({
     zipcode: Number,
     image: String,
     cover_image: String,
+    flag: { type: Boolean, default: false },
     status: { type: String, default: "active" },
     no_of_tracks: { type: Number, default: 0 },
     no_of_votes: { type: Number, default: 0 },

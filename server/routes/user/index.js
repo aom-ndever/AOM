@@ -10,6 +10,7 @@ const saltRounds = 10;
 var user_helper = require('../../helpers/user_helper');
 var participate_helper = require('../../helpers/participate_helper');
 var flag_helper = require('../../helpers/flag_helper');
+var block_helper = require('../../helpers/block_helper');
 
 var mongoose = require('mongoose');
 var ObjectId = mongoose.Types.ObjectId;
@@ -232,5 +233,8 @@ router.post("/flag/user/:user_id", async (req, res) => {
 
     }
 });
+
+
+
 
 module.exports = router;

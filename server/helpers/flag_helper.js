@@ -20,6 +20,22 @@ flag_helper.insert_flag = async (object) => {
 
 
 
+flag_helper.get_flag = async (id) => {
+    try {
+
+        var artist = await Flag
+            .findOne({ _id: new ObjectId(id) })
+
+
+        if (artist) {
+            return { "status": 1, "message": "artist details found", "artist": artist };
+        } else {
+            return { "status": 2, "message": "artist not found" };
+        }
+    } catch (err) {
+        return { "status": 0, "message": "Error occured while finding artist", "error": err }
+    }
+};
 
 flag_helper.delete_flag = async (from, to) => {
 

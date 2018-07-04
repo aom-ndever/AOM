@@ -496,6 +496,18 @@ artist_helper.update_download = async (artist_id, track_id, is_downloadable) => 
     }
 };
 
+artist_helper.update_artist_flag = async (artist_id, flag) => {
 
+    try {
+        var artist = await Artist.findOneAndUpdate({ "_id": new ObjectId(artist_id) }, { "flag": flag });
+        if (artist) {
+            return { "status": 1, "message": "artist flag updated", };
+        } else {
+            return { "status": 2, "message": "artist flag found" };
+        }
+    } catch (err) {
+        return { "status": 0, "message": "Error occured while updating user flag", "error": err }
+    }
+};
 
 module.exports = artist_helper;

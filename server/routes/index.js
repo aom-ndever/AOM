@@ -75,10 +75,7 @@ router.post('/artist_registration', async (req, res) => {
       notEmpty: true,
       errorMessage: "zipcode is required"
     }
-    // "gender": {
-    //   notEmpty: true,
-    //   errorMessage: "Gender is required"
-    // }
+
 
   };
   req.checkBody(schema);

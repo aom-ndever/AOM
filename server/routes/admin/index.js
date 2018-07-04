@@ -12,6 +12,8 @@ var artist_helper = require('../../helpers/artist_helper');
 var user_helper = require('../../helpers/user_helper');
 var track_helper = require('../../helpers/track_helper');
 var mail_helper = require('../../helpers/mail_helper');
+var flag_helper = require('../../helpers/flag_helper');
+var block_helper = require('../../helpers/block_helper');
 
 
 var mongoose = require('mongoose');
@@ -483,5 +485,50 @@ router.post("/get_user", async (req, res) => {
   }
 });
 
+
+router.post("/get_flag", async (req, res) => {
+  artist_id = req.body.artist_id;
+  var resp_data = await block_helper.get_flag(artist_id);
+  if (resp_data.status == 0) {
+    logger.error("Error occured while fetching artist = ", resp_data);
+    res.status(config.INTERNAL_SERVER_ERROR).json(resp_data);
+  } else {
+    logger.trace("artist got successfully = ", { "artist": resp_data });
+    res.status(config.OK_STATUS).json({ "artist": resp_data.artist });
+  }
+});
+
+
+router.post("/flag/artist/:artist_id", async (req, res) => {
+  var obj = {
+    from: req.userInfo.id,
+    to: req.params.artist_id
+  }
+  var resp = await artist_helper.get_artist_by_id(req.params.artist_id);
+
+
+  if (resp.status == 0) {
+    logger.error("Error occured while fetching artist = ", resp);
+    res.status(config.INTERNAL_SERVER_ERROR).json(resp);
+  } else {
+
+    if (resp.artist.flag == false) {
+      var stat = true
+      var artist_resp = await block_helper.insert_flag(obj);
+      var artist_resp = await artist_helper.update_artist_flag(req.params.artist_id, stat);
+      logger.trace("artist flagged");
+      res.status(config.OK_STATUS).json({ "message": "artist flagged" });
+    }
+
+    else {
+      var stat = false
+      var artist_resp = await artist_helper.update_artist_flag(req.params.artist_id, stat);
+      var artist_resp = await block_helper.delete_flag(obj.from, obj.to);
+      logger.trace("flag deleted");
+      res.status(config.OK_STATUS).json({ "message": "flag deleted" });
+    }
+
+  }
+});
 
 module.exports = router;
