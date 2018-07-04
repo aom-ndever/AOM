@@ -41,11 +41,12 @@ contest_helper.update_participant = async (id, no_participants) => {
     }
 };
 
-contest_helper.get_all_contest_and_participant = async (page_no, page_size) => {
+contest_helper.get_all_contest_and_participant = async (start, length, sort_by = {}) => {
     try {
         var participate = await Contest.find({}, { "name": 1, "start_date": 1, "end_date": 1, "music_type": 1, "location": 1, "no_of_participants": 1 })
-            .skip((page_size * page_no) - page_size)
-            .limit(page_size)
+            .sort(sort_by)
+            .skip(start)
+            .limit(length)
         if (participate) {
             return { "status": 1, "message": "participants details found", "participate": participate };
         } else {
