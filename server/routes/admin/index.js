@@ -246,6 +246,8 @@ router.delete('/track/:track_id', async (req, res) => {
     } else {
       artist_id = track_resp.track.artist_id._id
 
+
+
       var resp = await artist_helper.get_artist_by_id(artist_id);
       no_track = resp.artist.no_of_tracks - 1
       var resp_data = await track_helper.update_artist_for_track(artist_id, no_track);
