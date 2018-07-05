@@ -21,7 +21,7 @@ block_helper.get_flag = async (id) => {
     try {
 
         var artist = await Block
-            .findOne({ to: new ObjectId(id) })
+            .find({ to: new ObjectId(id) })
             .populate('from')
             .populate('to')
 
