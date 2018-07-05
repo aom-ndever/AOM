@@ -236,22 +236,29 @@ router.post('/contest', async (req, res) => {
 router.delete('/track/:track_id', async (req, res) => {
   track_id = req.params.track_id;
   let track_resp = await track_helper.get_all_track_by_track_id(track_id);
+  console.log('track_resp', track_resp);
+
   type = await admin_helper.get_admin_by_id(req.userInfo.id)
+  console.log('type', type);
+
   if (type.admin.account_type == "super_admin" || type.admin.account_type == "admin") {
+
     var del_resp = await track_helper.delete_track_by_admin(track_id);
+    console.log('del_resp', del_resp);
+
     if (del_resp.status === 0) {
       res.status(config.INTERNAL_SERVER_ERROR).json({ "status": 0, "message": "Error occured while deleting track", "error": del_resp.error });
     } else if (del_resp.status === 2) {
       res.status(config.BAD_REQUEST).json({ "status": 0, "message": "Can't delete track" });
     } else {
+
       artist_id = track_resp.track.artist_id._id
-
-
-
       var resp = await artist_helper.get_artist_by_id(artist_id);
+
       no_track = resp.artist.no_of_tracks - 1
       var resp_data = await track_helper.update_artist_for_track(artist_id, no_track);
       res.status(config.OK_STATUS).json({ "status": 1, "message": "track has been deleted" });
+
     }
   }
   else {
@@ -517,8 +524,10 @@ router.post("/flag/artist/:artist_id", async (req, res) => {
     to: req.params.artist_id
   }
   var resp = await artist_helper.get_artist_by_id(req.params.artist_id);
+  console.log('resp', resp);
 
   type = await admin_helper.get_admin_by_id(req.userInfo.id)
+  console.log('type', type);
 
   if (type.admin.account_type == "super_admin" || type.admin.account_type == "admin") {
     if (resp.status == 0) {
