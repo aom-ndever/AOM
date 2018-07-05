@@ -22,6 +22,8 @@ block_helper.get_flag = async (id) => {
 
         var artist = await Block
             .findOne({ to: new ObjectId(id) })
+            .populate('from')
+            .populate('to')
 
         if (artist) {
             return { "status": 1, "message": "artist details found", "artist": artist };

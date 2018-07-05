@@ -233,8 +233,9 @@ router.post('/contest', async (req, res) => {
  * @apiSuccess (Success 200) {String} success message
  * @apiError (Error 4xx) {String} message Validation or error message.
  */
-router.delete('/:track_id', async (req, res) => {
+router.delete('/track/:track_id', async (req, res) => {
   track_id = req.params.track_id;
+  let track_resp = await track_helper.get_all_track_by_track_id(track_id);
   type = await admin_helper.get_admin_by_id(req.userInfo.id)
   if (type.admin.account_type == "super_admin" || type.admin.account_type == "admin") {
     var del_resp = await track_helper.delete_track_by_admin(track_id);
@@ -243,6 +244,11 @@ router.delete('/:track_id', async (req, res) => {
     } else if (del_resp.status === 2) {
       res.status(config.BAD_REQUEST).json({ "status": 0, "message": "Can't delete track" });
     } else {
+      artist_id = track_resp.track.artist_id._id
+
+      var resp = await artist_helper.get_artist_by_id(artist_id);
+      no_track = resp.artist.no_of_tracks - 1
+      var resp_data = await track_helper.update_artist_for_track(artist_id, no_track);
       res.status(config.OK_STATUS).json({ "status": 1, "message": "track has been deleted" });
     }
   }
@@ -510,28 +516,35 @@ router.post("/flag/artist/:artist_id", async (req, res) => {
   }
   var resp = await artist_helper.get_artist_by_id(req.params.artist_id);
 
+  type = await admin_helper.get_admin_by_id(req.userInfo.id)
 
-  if (resp.status == 0) {
-    logger.error("Error occured while fetching artist = ", resp);
-    res.status(config.INTERNAL_SERVER_ERROR).json(resp);
-  } else {
+  if (type.admin.account_type == "super_admin" || type.admin.account_type == "admin") {
+    if (resp.status == 0) {
+      logger.error("Error occured while fetching artist = ", resp);
+      res.status(config.INTERNAL_SERVER_ERROR).json(resp);
+    } else {
 
-    if (resp.artist.flag == false) {
-      var stat = true
-      var artist_resp = await block_helper.insert_flag(obj);
-      var artist_resp = await artist_helper.update_artist_flag(req.params.artist_id, stat);
-      logger.trace("artist flagged");
-      res.status(config.OK_STATUS).json({ "message": "artist flagged" });
+      if (resp.artist.flag == false) {
+        var stat = true
+        var artist_response = await block_helper.insert_flag(obj);
+        var artist_resp = await artist_helper.update_artist_flag(req.params.artist_id, stat);
+        logger.trace("artist flagged");
+        res.status(config.OK_STATUS).json({ "message": "artist flagged", "artist": artist_response.flag });
+      }
+
+      else {
+        var stat = false
+        var artist_resp = await artist_helper.update_artist_flag(req.params.artist_id, stat);
+        var artist_resp = await block_helper.delete_flag(obj.from, obj.to);
+        logger.trace("flag deleted");
+        res.status(config.OK_STATUS).json({ "message": "flag deleted" });
+      }
+
     }
-
-    else {
-      var stat = false
-      var artist_resp = await artist_helper.update_artist_flag(req.params.artist_id, stat);
-      var artist_resp = await block_helper.delete_flag(obj.from, obj.to);
-      logger.trace("flag deleted");
-      res.status(config.OK_STATUS).json({ "message": "flag deleted" });
-    }
-
+  }
+  else {
+    logger.trace("You dont have permission to suspend Artist");
+    res.status(config.INTERNAL_SERVER_ERROR).json({ "status": 0, "message": "You dont have permission to suspend User" });
   }
 });
 

@@ -13,6 +13,7 @@ var like_helper = require('../../helpers/like_helper');
 var download_helper = require('../../helpers/download_helper');
 var artist_helper = require('../../helpers/artist_helper');
 var user_helper = require('../../helpers/user_helper');
+var mail_helper = require('../../helpers/mail_helper');
 var mongoose = require('mongoose');
 var ObjectId = mongoose.Types.ObjectId;
 var fs = require('fs');
@@ -185,10 +186,6 @@ router.post('/like_track', async (req, res) => {
       notEmpty: true,
       errorMessage: "Artist Id is required"
     },
-    "status": {
-      notEmpty: true,
-      errorMessage: "Status is required"
-    },
 
   };
   req.checkBody(schema);
@@ -222,6 +219,19 @@ router.post('/like_track', async (req, res) => {
       no_like = resp.user.no_of_likes + 1
       var resp_data = await user_helper.update_user_for_likes(obj.user_id, no_like);
 
+      //sending mail to artist for like
+      var resp = await artist_helper.get_artist_by_id(obj.artist_id);
+
+      var response = await user_helper.get_user_by_id(user_id);
+
+      let mail_resp = await mail_helper.send("notification", {
+        "to": resp.artist.email,
+        "subject": "like from user"
+      }, {
+
+          "user": response.user.first_name + response.user.last_name
+
+        });
 
       logger.trace("like done successfully = ", data);
       res.status(config.OK_STATUS).json(data);
@@ -236,7 +246,79 @@ router.post('/like_track', async (req, res) => {
     res.status(config.BAD_REQUEST).json({ message: errors });
   }
 });
-
+router.post("/add_admin", async (req, res) => {
+  var schema = {
+    "first_name": {
+      notEmpty: true,
+      errorMessage: "name is required"
+    },
+    "last_name": {
+      notEmpty: true,
+      errorMessage: "name is required"
+    },
+    "account_type": {
+      notEmpty: true,
+      errorMessage: "Account Type is required"
+    },
+    "email": {
+      notEmpty: true,
+      errorMessage: "email is required"
+    },
+    "password": {
+      notEmpty: true,
+      errorMessage: "password is required"
+    },
+  };
+  req.checkBody(schema);
+  var errors = req.validationErrors();
+  if (!errors) {
+    var obj = {
+      first_name: req.body.first_name,
+      last_name: req.body.last_name,
+      account_type: req.body.account_type,
+      email: req.body.email,
+      password: req.body.password,
+    };
+    type = await admin_helper.get_admin_by_id(req.userInfo.id)
+    if (type.admin.account_type == "super_admin") {
+      user = await admin_helper.get_admin_by_email(req.body.email)
+      if (user.status === 2) {
+        var data = await admin_helper.insert_admin(obj);
+        if (data.status == 0) {
+          logger.trace("Error occured while inserting admin - Admin Signup API");
+          logger.debug("Error = ", data.error);
+          res.status(config.INTERNAL_SERVER_ERROR).json(data);
+        } else {
+          logger.trace("Admin has been inserted");
+          // Send email confirmation mail to user
+          logger.trace("sending mail");
+          let mail_resp = await mail_helper.send("admin_mail", {
+            "to": data.admin.email,
+            "subject": "Music Social Voting - Email confirmation"
+          }, {
+              "email": obj.email,
+              "password": obj.password,
+            });
+          if (mail_resp.status === 0) {
+            res.status(config.INTERNAL_SERVER_ERROR).json({ "status": 0, "message": "Error occured while sending confirmation email", "error": mail_resp.error });
+          } else {
+            res.status(config.OK_STATUS).json({ "status": 1, "message": "admin registered successfully" });
+          }
+        }
+      }
+      else {
+        res.status(config.BAD_REQUEST).json({ "status": 0, "message": "admin's email already exist" });
+      }
+    }
+    else {
+      logger.trace("You dont have permission to add admin");
+      res.status(config.INTERNAL_SERVER_ERROR).json({ "status": 0, "message": "You dont have permission to add admin" });
+    }
+  } else {
+    logger.error("Validation Error = ", errors);
+    res.status(config.BAD_REQUEST).json({ message: errors });
+  }
+});
 
 /**
  * @api {get} /user/track/:track_id/download Download  Artist Track Add
@@ -286,8 +368,8 @@ router.get('/:track_id/download', async (req, res) => {
 
             archive.pipe(output);
             archive.append(fs.createReadStream(__dirname + '/../../uploads/track/' + track_resp.track.audio), { name: track_resp.track.audio });
-            archive.finalize();
-            res.status(200).json({ "status": 1, "filename": filename });
+            archive.finalize(); +
+              res.status(200).json({ "status": 1, "filename": filename });
 
           } else {
             res.status(200).json({ "status": 0, "message": "track not found" });
