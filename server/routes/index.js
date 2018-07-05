@@ -272,7 +272,7 @@ router.post('/artist_login', async (req, res) => {
 
 
           var refreshToken = jwt.sign({ id: login_resp.artist._id }, config.REFRESH_TOKEN_SECRET_KEY, {});
-          let update_resp = await artist_helper.update_artist_by_id(login_resp.artist._id, { "refresh_token": refreshToken, "last_login_date": Date.now() });
+          let update_resp = await artist_helper.update_artist_by_id(login_resp.artist._id, { "refresh_token": refreshToken, "last_login": Date.now() });
           var LoginJson = { id: login_resp.artist._id, email: login_resp.email, role: "artist" };
           var token = jwt.sign(LoginJson, config.ACCESS_TOKEN_SECRET_KEY, {
             expiresIn: config.ACCESS_TOKEN_EXPIRE_TIME

@@ -5,6 +5,7 @@ var block_helper = {};
 var mongoose = require('mongoose');
 var ObjectId = mongoose.Types.ObjectId;
 
+
 block_helper.insert_flag = async (object) => {
     let flag = new Block(object)
     try {
@@ -19,7 +20,6 @@ block_helper.insert_flag = async (object) => {
 
 block_helper.get_flag = async (id) => {
     try {
-
         var artist = await Block
             .find({ to: new ObjectId(id) })
             .populate('from')

@@ -99,7 +99,7 @@ artist_helper.get_artist_by_id = async (artist_id) => {
  */
 artist_helper.update_artist_by_id = async (artist_id, artist_object) => {
     try {
-        let artist = await Artist.findOneAndUpdate({ _id: artist_id }, artist_object);
+        let artist = await Artist.findOneAndUpdate({ _id: artist_id }, artist_object, { new: true });
         if (!artist) {
             return { "status": 2, "message": "Record has not updated" };
         } else {
@@ -109,6 +109,9 @@ artist_helper.update_artist_by_id = async (artist_id, artist_object) => {
         return { "status": 0, "message": "Error occured while updating artist", "error": err }
     }
 };
+
+
+
 
 artist_helper.get_login_by_email = async (email) => {
     try {

@@ -31,6 +31,7 @@ var ArtistModelSchema = new Schema({
     location: String,
     description: String,
     refresh_token: { type: String },
+    last_login: { type: Date, default: Date.now },
     created_at: { type: Date, default: Date.now }
 }, { versionKey: false });
 
