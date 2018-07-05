@@ -84,4 +84,13 @@ export class ArtistTrackConmmentsComponent implements OnInit {
       }
     });
   }
+  // Block or unblock the user
+  blockUnblockUser(id : any) {
+    this.ArtistTrackCommentsService.blockUser(id).subscribe(response => {
+      this.toastr.success(response['message'], 'Success!');
+      this.getAllTrackComment({track_id : this.track_id});
+    }, error => {
+      this.toastr.error(error['error'].message,  'Error!');
+    });
+  }
 }

@@ -1,0 +1,334 @@
+<!-- Page Content -->
+<div id="page-content-wrapper">           
+  <div class="artist_content" style="display: block;">
+    <div class="container-fluid">
+      <h3 class="Audience-Overview">Search Users </h3>
+      <div class="search-input header_search">
+          <i class="fa fa-search" aria-hidden="true"></i>
+        <input type="text" name="search" [(ngModel)]="search_str" (keyup)="filterBasedOnSearch($event)" placeholder="Search by User Name">
+      </div>
+      <div class="row">
+        
+        <div class="col-md-10 col-sm-12 col-xs-12">
+          <div class="sub-menu-filter">
+          <div class="artist_heading">Region</div>
+            <div class="row">
+              <div class="col-md-2 col-sm-4 col-xs-4">
+                <div class="filter-subhead">Northeast</div>
+                <ul>
+                  <li>
+                    <div class="checkbox">
+                        <label>
+                          <input type="checkbox" value="">
+                          <div class="chk_check"></div>
+                          <span>Marryland</span>
+                        </label>
+                    </div>
+                  </li>
+                  <li>
+                    <div class="checkbox">
+                        <label>
+                          <input type="checkbox" value="">
+                          <div class="chk_check"></div>
+                          <span>New Jersey</span>
+                        </label>
+                    </div>
+                  </li>
+                  <li>
+                    <div class="checkbox">
+                        <label>
+                          <input type="checkbox" value="">
+                          <div class="chk_check"></div>
+                          <span>Pennsylvania</span>
+                        </label>
+                    </div>
+                  </li>
+                  <li>
+                    <div class="checkbox">
+                        <label>
+                          <input checked="" type="checkbox" value="">
+                          <div class="chk_check"></div>
+                          <span>New York</span>
+                        </label>
+                    </div>
+                  </li>
+                  <li>
+                    <div class="checkbox">
+                        <label>
+                          <input type="checkbox" value="">    
+                          <div class="chk_check"></div>
+                          <span>Delaware</span>
+                        </label>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+              <div class="col-md-2 col-sm-4 col-xs-4">
+                <div class="filter-subhead">southeast</div>
+                <ul>
+                  <li>
+                    <div class="checkbox">
+                        <label>
+                          <input type="checkbox" value="">
+                          <div class="chk_check"></div>
+                          <span>Marryland</span>
+                        </label>
+                    </div>
+                  </li>
+                  <li>
+                    <div class="checkbox">
+                        <label>
+                          <input type="checkbox" value="">
+                          <div class="chk_check"></div>
+                          <span>New Jersey</span>
+                        </label>
+                    </div>
+                  </li>
+                  <li>
+                    <div class="checkbox">
+                        <label>
+                          <input type="checkbox" value="">
+                          <div class="chk_check"></div>
+                          <span>Pennsylvania</span>
+                        </label>
+                    </div>
+                  </li>
+                  <li>
+                    <div class="checkbox">
+                        <label>
+                          <input checked="" type="checkbox" value=""> 
+                          <div class="chk_check"></div>
+                          <span>New York</span>
+                        </label>
+                    </div>
+                  </li>
+                  <li>
+                    <div class="checkbox">
+                        <label>
+                          <input type="checkbox" value="">    
+                          <div class="chk_check"></div>
+                          <span>Delaware</span>
+                        </label>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+              <div class="col-md-2 col-sm-4 col-xs-4">
+                <div class="filter-subhead">Midwest</div>
+                <ul>
+                  <li>
+                    <div class="checkbox">
+                        <label>
+                          <input type="checkbox" value="">
+                          <div class="chk_check"></div>
+                          <span>Marryland</span>
+                        </label>
+                    </div>
+                  </li>
+                  <li>
+                    <div class="checkbox">
+                        <label>
+                          <input type="checkbox" value="">
+                          <div class="chk_check"></div>
+                          <span>New Jersey</span>
+                        </label>
+                    </div>
+                  </li>
+                  <li>
+                    <div class="checkbox">
+                        <label>
+                          <input type="checkbox" value="">
+                          <div class="chk_check"></div>
+                          <span>Pennsylvania</span>
+                        </label>
+                    </div>
+                  </li>
+                  <li>
+                    <div class="checkbox">
+                        <label>
+                          <input checked="" type="checkbox" value=""> 
+                          <div class="chk_check"></div>
+                          <span>New York</span>
+                        </label>
+                    </div>
+                  </li>
+                  <li>
+                    <div class="checkbox">
+                        <label>
+                          <input type="checkbox" value="">    
+                          <div class="chk_check"></div>
+                          <span>Delaware</span>
+                        </label>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+              <div class="col-md-2 col-sm-4 col-xs-4">
+                <div class="filter-subhead">Southwest</div>
+                <ul>
+                  <li>
+                    <div class="checkbox">
+                        <label>
+                          <input type="checkbox" value="">
+                          <div class="chk_check"></div>
+                          <span>Marryland</span>
+                        </label>
+                    </div>
+                  </li>
+                  <li>
+                    <div class="checkbox">
+                        <label>
+                          <input type="checkbox" value="">
+                          <div class="chk_check"></div>
+                          <span>New Jersey</span>
+                        </label>
+                    </div>
+                  </li>
+                  <li>
+                    <div class="checkbox">
+                        <label>
+                          <input type="checkbox" value="">
+                          <div class="chk_check"></div>
+                          <span>Pennsylvania</span>
+                        </label>
+                    </div>
+                  </li>
+                  <li>
+                    <div class="checkbox">
+                        <label>
+                          <input checked="" type="checkbox" value=""> 
+                          <div class="chk_check"></div>
+                          <span>New York</span>
+                        </label>
+                    </div>
+                  </li>
+                  <li>
+                    <div class="checkbox">
+                        <label>
+                          <input type="checkbox" value="">    
+                          <div class="chk_check"></div>
+                          <span>Delaware</span>
+                        </label>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+              <div class="col-md-2 col-sm-4 col-xs-4">
+                <div class="filter-subhead">West</div>
+                <ul>
+                  <li>
+                    <div class="checkbox">
+                        <label>
+                          <input type="checkbox" value="">
+                          <div class="chk_check"></div>
+                          <span>Marryland</span>
+                        </label>
+                    </div>
+                  </li>
+                  <li>
+                    <div class="checkbox">
+                        <label>
+                          <input type="checkbox" value="">
+                          <div class="chk_check"></div>
+                          <span>New Jersey</span>
+                        </label>
+                    </div>
+                  </li>
+                  <li>
+                    <div class="checkbox">
+                        <label>
+                          <input type="checkbox" value="">
+                          <div class="chk_check"></div>
+                          <span>Pennsylvania</span>
+                        </label>
+                    </div>
+                  </li>
+                  <li>
+                    <div class="checkbox">
+                        <label>
+                          <input checked="" type="checkbox" value=""> 
+                          <div class="chk_check"></div>
+                          <span>New York</span>
+                        </label>
+                    </div>
+                  </li>
+                  <li>
+                    <div class="checkbox">
+                        <label>
+                          <input type="checkbox" value="">    
+                          <div class="chk_check"></div>
+                          <span>Delaware</span>
+                        </label>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+              <div class="col-md-2 col-sm-4 col-xs-4">
+                <div class="filter-subhead">other</div>
+                <ul>
+                  <li>
+                    <div class="checkbox">
+                        <label>
+                          <input type="checkbox" value="">
+                          <div class="chk_check"></div>
+                          <span>Puerto Rico</span>
+                        </label>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+     <div>
+          <h3 class="Audience-Overview">Users </h3>
+          <div class="dropdown table_dropdown custom_dropdown">
+            <select class="form-control" id="sort" name="sort_by" [(ngModel)]="sort_by" (change)="sortUser($event.target.value)">
+              <option value="-1">Newest First</option>
+              <option value="1">Newest Last</option>
+            </select>
+          </div> 
+          <div class="artists_table copyright_table table-responsive">
+            <table class="table" datatable [dtOptions]="dtOptions">
+                  <thead>
+                    <tr>
+                      <th>N<sup>O</sup></th>
+                      <th>User Name</th>
+                      <th>Status</th>
+                      <th>Artist Followers</th>
+                      <th>Votes Casted</th>
+                      <th>Likes Casted</th>
+                      <th>Comments</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let user of user_data; let i = index;">
+                      <td>{{i+1}}.</td>
+                      <td><a href="javascript:;" (click)="openModal(template)">{{user['first_name']+' '+user['last_name']}}</a></td>
+                      <td class="status {{user['status'] == 'active' ? 'active_status' : user['status'] == 'suspended' ? 'suspend_status' : ''}}"><span>{{user['status']}}</span></td>  
+                      <td class="td_img"><img src="img/followers.png"/>{{user['no_of_followers']}}</td>                             
+                      <td class="td_img"><img src="img/vote.png"/>{{user['no_of_votes']}}</td>
+                      <td class="td_img"><img src="img/likes.png"/>{{user['no_of_likes']}}</td>
+                      <td class="td_img"><img src="img/comments.png"/>{{user['no_of_followers']}}</td> 
+                      <td class="td_img"><img src="img/suspend.png">
+                        <a href="javascript:;" (click)="suspendUser(user['_id'])">{{user['status'] == 'suspended' ? 'Un-suspend' : 'suspend'}}</a>
+                      </td>                               
+                    </tr>                     
+                  </tbody>
+                </table>
+          </div>
+      </div>
+</div>
+<!-- /#page-content-wrapper -->
+<ng-template #template>
+  <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+  <div class="modal-body">
+    This is a modal.
+  </div>
+</ng-template>

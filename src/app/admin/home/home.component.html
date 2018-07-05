@@ -3,8 +3,16 @@
            
         <div class="container-fluid">
             <h3 class="Audience-Overview">Audience Overview </h3>
-            <div>
-                <div class="dropdown custom_dropdown">
+            <div class="ana-header">
+                <div class="form-group days-grp">
+                    <select class="form-control" id="days-select" name="analytics_day" (change)="changeAnalyticsDays()" [(ngModel)]="analytics_days">
+                        <option value="7">7 Days</option>
+                        <option value="14">14 Days</option>
+                        <option value="30">1 Month</option>
+                    </select>
+
+                </div>
+                <!-- <div class="dropdown custom_dropdown">
                   <button type="button" class="btn dropdown-toggle Days" data-toggle="dropdown">
                     7 days
                   </button>
@@ -13,17 +21,18 @@
                     <a class="dropdown-item" href="javascript:;">Link 2</a>
                     <a class="dropdown-item" href="javascript:;">Link 3</a>
                   </div>
-                </div>
+                </div> -->
                 <ul class="header_ul">
-                    <li class="active"><a>Votes</a></li>
-                    <li><a>Likes</a></li>
-                    <li><a>Comments</a></li>
+                    <li class="{{home_tab_cnt == 1 ? 'active' : ''}}" (click)="homeTabChange(1)"><a>Votes</a></li>
+                    <li class="{{home_tab_cnt == 2 ? 'active' : ''}}" (click)="homeTabChange(2)"><a>Likes</a></li>
+                    <li class="{{home_tab_cnt == 3 ? 'active' : ''}}" (click)="homeTabChange(3)"><a>Comments</a></li>
                 </ul>
             </div>
             <div>
-                <h3 class="Last-7-Days-April-2">Last 7 Days: April 23, 2018 - May 1, 2018</h3>
+                <h3 class="Last-7-Days-April-2">Last {{analytics_days}} Days: {{show_duration_date}}</h3>
                 <div class="graph_container">
-                    <img src="img/graph.jpg" />
+                    <!-- <img src="img/graph.jpg" /> -->
+                    <div [chart]="artist_chart"></div>
                 </div>
             </div>
             <div>
@@ -45,67 +54,18 @@
                           </tr>
                         </thead>
                         <tbody>
-                          <tr>
-                            <td>1.</td>
-                            <td>Shavn Miller</td>
+                          <tr *ngFor="let artist of artist_vote['artist'];let i = index;">
+                            <td>{{i+1}}.</td>
+                            <td>{{artist.first_name + ' '+ artist.last_name}}</td>
                             <td>New Youk</td>
-                            <td>Male</td>
-                            <td>Hiphop</td>
-                            <td>12</td>
-                            <td class="td_img"><img src="img/vote.png"/>200</td>
-                            <td class="td_img"><img src="img/likes.png"/>2560</td>
-                            <td class="td_img"><img src="img/followers.png"/>4670</td>
-                            <td class="td_img"><img src="img/comments.png"/>23467</td>                                
+                            <td>{{artist.gender}}</td>
+                            <td>{{artist['music_type']['name']}}</td>
+                            <td>{{artist.no_of_tracks}}</td>
+                            <td class="td_img"><img src="img/vote.png"/>{{artist.no_of_votes}}</td>
+                            <td class="td_img"><img src="img/likes.png"/>{{artist.no_of_likes}}</td>
+                            <td class="td_img"><img src="img/followers.png"/>{{artist.no_of_followers}}</td>
+                            <td class="td_img"><img src="img/comments.png"/>{{artist.no_of_comments}}</td>                                
                           </tr>
-                              <tr>
-                            <td>2.</td>
-                            <td>Shavn Miller</td>
-                            <td>New Youk</td>
-                            <td>Male</td>
-                            <td>Hiphop</td>
-                            <td>12</td>
-                            <td class="td_img"><img src="img/vote.png"/>200</td>
-                            <td class="td_img"><img src="img/likes.png"/>2560</td>
-                            <td class="td_img"><img src="img/followers.png"/>4670</td>
-                            <td class="td_img"><img src="img/comments.png"/>23467</td>                                
-                          </tr>
-                              <tr>
-                            <td>3.</td>
-                            <td>Shavn Miller</td>
-                            <td>New Youk</td>
-                            <td>Male</td>
-                            <td>Hiphop</td>
-                            <td>12</td>
-                            <td class="td_img"><img src="img/vote.png"/>200</td>
-                            <td class="td_img"><img src="img/likes.png"/>2560</td>
-                            <td class="td_img"><img src="img/followers.png"/>4670</td>
-                            <td class="td_img"><img src="img/comments.png"/>23467</td>                                
-                          </tr>
-                              <tr>
-                            <td>4.</td>
-                            <td>Shavn Miller</td>
-                            <td>New Youk</td>
-                            <td>Male</td>
-                            <td>Hiphop</td>
-                            <td>12</td>
-                            <td class="td_img"><img src="img/vote.png"/>200</td>
-                            <td class="td_img"><img src="img/likes.png"/>2560</td>
-                            <td class="td_img"><img src="img/followers.png"/>4670</td>
-                            <td class="td_img"><img src="img/comments.png"/>23467</td>                                
-                          </tr>
-                              <tr>
-                            <td>5.</td>
-                            <td>Shavn Miller</td>
-                            <td>New Youk</td>
-                            <td>Male</td>
-                            <td>Hiphop</td>
-                            <td>12</td>
-                            <td class="td_img"><img src="img/vote.png"/>200</td>
-                            <td class="td_img"><img src="img/likes.png"/>2560</td>
-                            <td class="td_img"><img src="img/followers.png"/>4670</td>
-                            <td class="td_img"><img src="img/comments.png"/>23467</td>                                  
-                          </tr>
-
                         </tbody>
                       </table>
                 </div>

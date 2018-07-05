@@ -76,8 +76,23 @@ body{
   text-decoration: none;
 }
 
+.profile_dropdown .dropdown-menu {
+  background-color: #f5e9f7;
+  border-radius: 0;
+  border-top: 2px solid #9c27b0;
+  margin: 0;
+  padding: 0;
+}
+.profile_dropdown .dropdown-item{
+ font-size: 13px;
+}
+.profile_dropdown .dropdown-item:hover{
+color: #ffffff;
+text-decoration: none;
+background-color: #9c27b0;
+}
 
-.sidebar-brand a {
+.sidebar-brand > a {
   color: #999999;
   opacity: 1;
   padding: 0;
@@ -99,6 +114,21 @@ body{
 .custom_dropdown{
     margin-bottom: 30px;
     display: inline-block;
+}
+.table_dropdown{
+  display: inline-block;
+  float: right;
+}
+.custom_drop_btn{
+    border-top: 5px solid;
+    border-right: 5px solid transparent;
+    border-left: 5px solid transparent;
+    box-shadow: none !important;
+}
+.show>.btn-primary.dropdown-toggle.custom_drop_btn, .custom_drop_btn:hover, .custom_drop_btn:focus{
+      color: #9c27b0;
+    background-color: transparent;
+    border-color: snow;
 }
 .Days{
     font-family: Helvetica;
@@ -142,14 +172,16 @@ body{
 }
 .artists_table .table thead th {
     vertical-align: bottom;
-    border-bottom: 2px solid #dee2e6;
-    background-color: rgba(156, 39, 176, 0.1);
+    border-bottom: none;
     font-size: 12px;
     font-weight: 600;
     letter-spacing: 0;
     text-align: left;
     color: #1a1a1a;
     padding: 6px 10px;
+}
+.artists_table  table{
+  background-color: rgba(156, 39, 176, 0.1);
 }
 .artists_table .table tbody td {
   font-size: 14px;
@@ -159,6 +191,7 @@ body{
   border-bottom: 1px solid #dee2e6;
   padding: 14px 10px;
   border-top:none;
+  background-color: #fff;
 }
 .artists_table .table tbody td:first-child {color:#1a1a1a;}
 .artists_table .table tbody td:nth-child(2) {color:#1a1a1a;}
@@ -176,7 +209,7 @@ body{
   max-width:100%;
 }
 .custom_dropdown .dropdown-menu {
-    background-color: #f5e9f7;
+    background-color: #fff;
     border-radius: 0;
     border-top: 2px solid #9c27b0;
     margin: 0;
@@ -190,6 +223,104 @@ body{
     text-decoration: none;
     background-color: #9c27b0;
 }
+
+/**********************artist page css********************************************/
+.custom_check {
+  display: block;
+  position: relative;
+  padding-left: 35px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  font-size: 22px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* Hide the browser's default checkbox */
+.custom_check input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+}
+
+/* Create a custom checkbox */
+.checkmark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 25px;
+  width: 25px;
+  background-color: #eee;
+}
+
+/* On mouse-over, add a grey background color */
+.custom_check:hover input ~ .checkmark {
+  background-color: #ccc;
+}
+
+/* When the checkbox is checked, add a blue background */
+.custom_check input:checked ~ .checkmark {
+  background-color: #2196F3;
+}
+
+/* Create the checkmark/indicator (hidden when not checked) */
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+/* Show the checkmark when checked */
+.custom_check input:checked ~ .checkmark:after {
+  display: block;
+}
+
+/* Style the checkmark/indicator */
+.custom_check .checkmark:after {
+  left: 9px;
+  top: 5px;
+  width: 5px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 3px 3px 0;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+.custom_drop_btn{
+    font-family: Helvetica;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.8px;
+  text-align: center;
+  color: #9c27b0;
+  background-color: transparent;
+  text-transform: capitalize;
+  margin-bottom: 0;
+  padding-left: 0;
+  border: none;
+
+}
+.custom_modal .modal-dialog{
+  max-width: 570px;
+}
+.custom_modal .modal-content{
+    border-radius: 15px;
+  box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.3);
+}
+.modal_close_btn{
+position: absolute;
+right: 15px;
+top: 15px;
+z-index:99;
+}
+.modal_close_btn:focus{
+box-shadow: none;
+    outline: none;
+}
+
 @media(min-width:768px) {
 
   #wrapper #sidebar-wrapper {
@@ -219,7 +350,7 @@ body{
     padding-top: 0;
     padding-bottom: 6px;
     width: 235px;
-    z-index: 9999;
+    z-index: 999;
     top: 0;
         box-shadow: 7px -3px 10px #e2e2e2;
 }
@@ -329,19 +460,19 @@ h3.user_name {
 .sidebar-nav li.home a:hover i:after {
       background-image: url("/img/home_color.png");
 }
-.sidebar-nav li.bell a:hover i:after {
+.sidebar-nav li.bell a:hover i:after, , .sidebar-nav li.active.bell a i:after {
       background-image: url("/img/bell_color.png");
 }
-.sidebar-nav li.artist a:hover i:after {
+.sidebar-nav li.artist a:hover i:after, .sidebar-nav li.active.artist a i:after {
       background-image: url("/img/mike_color.png");
 }
-.sidebar-nav li.users a:hover i:after {
+.sidebar-nav li.users a:hover i:after, .sidebar-nav li.active.users a i:after {
       background-image: url("/img/user_color.png");
 }
-.sidebar-nav li.contest a:hover i:after {
+.sidebar-nav li.contest a:hover i:after, .sidebar-nav li.active.contest a i:after {
       background-image: url("/img/contest_color.png");
 }
-.sidebar-nav li.roles a:hover i:after {
+.sidebar-nav li.roles a:hover i:after, .sidebar-nav li.active.roles a i:after  {
       background-image: url("/img/roles_color.png");
 }
 #menu-toggle{
@@ -356,6 +487,17 @@ background-color: transparent;
     left: 5px;
     top: 5px;
     display: none;
+}
+.drop_icon {
+  position: absolute;
+  top: -28px;
+  right: 15px;
+  color: #fff;
+  font-size: 15px;
+  line-height: normal;
+  background-color: transparent;
+  border: transparent;
+  padding: 0;
 }
 .drop_icon.dropdown-toggle::after {
     border-top: 5px solid;
@@ -427,11 +569,11 @@ background-color: transparent;
   border-left: 4px solid transparent;
 }
 
-.artists_table tbody {
+/* .artists_table tbody {
     display:block;
     height:250px;
     overflow:auto;
-}
+} */
 .artists_table thead,.artists_table tbody tr {
     display:table;
     width:100%;
@@ -446,6 +588,176 @@ background-color: transparent;
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
+}
+
+.artists_table  ::-webkit-scrollbar
+{
+  width: 8px;  /* for vertical scrollbars */
+  height: 12px; /* for horizontal scrollbars */
+  border-radius: 12px;
+}
+
+.artists_table  ::-webkit-scrollbar-track
+{
+  background: #dedede;
+    border-radius: 12px;
+}
+
+.artists_table  ::-webkit-scrollbar-thumb
+{
+  background:#9c27b0;
+    border-radius: 12px;
+}
+.flex_content{
+  display: flex;
+  display:-webkit-flex;
+}
+.flex_content div:first-child{
+  margin-right:12px;
+}
+
+.artist_content ul li label input[type="radio"], .select-payemnt-table input[type="radio"] {
+    width: 20px;
+    height: 20px;
+    border: 2px solid rgba(26,26,26,0.5);
+    border-radius: 50%;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    vertical-align: middle;
+    margin-top: 0;
+    margin-right: 5px;
+    outline:none;
+}
+.artist_content ul li label input[type="radio"]:checked + .radio_check:after, .artist_content .select-payemnt-table input[type="radio"]:checked + .radio_check:after,.artist_content .contest-table input[type="radio"]:checked + .radio_check:after {
+    content: "";
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #9C27B0;
+}
+.artist_content .checkbox {
+    position: relative;
+}
+.artist_content ul li label input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    border: 2px solid rgba(26,26,26,0.5);
+    border-radius: 2px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    vertical-align: middle;
+    margin-top: 0;
+    position: absolute;
+    top: 3px;
+    left: 0;
+}
+.artist_content .chk_check,.artist_content .chk_check + span {
+    display: inline-block;
+    font-size: 13px;
+    line-height: 2;
+}
+.artist_content ul li label span {
+    padding-left: 25px !important;
+    vertical-align: text-bottom;
+    float: left;
+    line-height: 20px;
+    font-weight: 600;
+    color: #1a1a1a;
+}
+.artist_content ul li label input[type="checkbox"]:checked + .chk_check:after {
+    content: "\F00C";
+    font-family: FontAwesome;
+    font-style: normal;
+    font-weight: normal;
+    text-decoration: inherit;
+    top: 0;
+    position: absolute;
+    left: 2.5px;
+    font-size: 13px;
+    color: #fff;
+}
+.artist_content ul li label input[type="checkbox"]:checked {
+    background: #9C27B0;
+    border: 0;
+    outline: none;
+}
+.artist_content .filter-subhead{
+      font-size: 14px;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+.artist_content{
+  margin-bottom: 50px;
+}
+.artists_table table{
+      display: block;
+    max-height: 281px;
+    overflow: auto;
+}
+.artists_table .table thead th:first-child, .artists_table .table tbody tr td:first-child{
+  width:7%;
+}
+.active_status span{
+  color: #4caf50;
+}
+.suspended_status span{
+      color: #d0021b;
+}
+.header_search{
+    position: relative;
+    width: 250px;
+    display: inline-block;
+    float: right;
+}
+.header_search.search-input input[type="text"] {
+    border: 0;
+    border-bottom: 1px solid #dedede;
+    width: 100%;
+    padding: 5px 5px 5px 28px;
+    color: rgba(0,0,0,0.3);
+    height: 36px;
+    font-size: 12px;
+}
+.header_search.search-input input:focus{
+  outline:none;
+
+}
+.header_search.search-input i{
+    color: rgba(0,0,0,0.3);
+    position: absolute;
+    top: 9px;
+    font-size: 14px;
+}
+.create_contest_btn {
+      border-radius: 2px;
+    background-color: #9c27b0;
+    box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.3);
+    color: #fff;
+    font-size: 18px;
+    font-weight: 600;
+    padding: 4px 39px;
+    margin-bottom: 50px;
+}
+.contest_table table{
+    max-height: 481px;
+}
+.suspend_btn{
+      font-size: 14px;
+    font-weight: 400;
+    text-align: left;
+    color: #999898;
+    border: none;
+    background-color: #fff;
+    padding: 0;
+    outline:none;
+}
+.suspend_btn:focus{
+  box-shadow:none;
 }
 
 @media(max-width:1024px){
@@ -576,4 +888,34 @@ background-color: transparent;
       background-color: #fff;
       border-bottom: 1px solid #ddd;
   }
+}
+/*filter design*/
+.artist_heading {
+  font-size: 16px;
+  color: #000;
+  line-height: 24px;
+  font-weight: normal;
+  font-family: 'Poppins', sans-serif;
+  margin-bottom: 20px;
+  text-transform: capitalize;
+  font-weight: 600;
+}
+.artist_content ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+.radio {
+  position: relative;
+}
+.artist_content ul li label {
+  font-size: 14px;
+  color: #000;
+  line-height: 16px;
+  font-weight: 400;
+  position: relative;
+}
+label {
+  display: inline-block;
+  margin-bottom: .5rem;
 }

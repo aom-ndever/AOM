@@ -219,6 +219,7 @@ export class MyProfileComponent implements OnInit {
     console.log(fileList);
     let formData: FormData = new FormData();
     formData.append('image', fileList[0]);
+    console.log(formData);
     if(this.userdata.type == 'artist') {
       this.MyProfileService.updateArtistProfileImage(formData).subscribe(response => {
         console.log('uploaded image', response);

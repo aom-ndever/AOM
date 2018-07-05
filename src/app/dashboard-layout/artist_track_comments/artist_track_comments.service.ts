@@ -46,4 +46,10 @@ export class ArtistTrackCommentsService {
     this.headers = new HttpHeaders({ 'x-access-token' : this.user.token });  
     return this.http.delete(`${this.api_host}/artist/delete_comment/${id}`, {headers : this.headers});
   }
+  // Block the user
+  blockUser(id : any) {
+    this.user = JSON.parse(localStorage.getItem('user'));
+    this.headers = new HttpHeaders({ 'x-access-token' : this.user.token });
+    return this.http.post(`${this.api_host}/artist/suspend/user/${id}`, {}, {headers : this.headers});
+  }
 }

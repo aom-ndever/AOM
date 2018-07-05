@@ -3,3 +3,5 @@
 .artist-highlight .highlights-wrap {max-height: 600px;overflow: auto;width: 100%;}
 .newuploads-wrap .uploads-container {width: 100%;}
 .track-table, .highlights-wrap{max-height: 1110px;overflow: auto;width: 100%;}
+.no-data-available {text-align: center;}
+.dataTables_empty {display: none;}

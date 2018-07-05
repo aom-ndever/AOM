@@ -40,4 +40,10 @@ export class TrackCommentsService {
    getAllTrackComment(data : any) {
     return this.http.post(`${this.api_host}/get_comment_by_track_id`, data);
   }
+  // Flag other user
+  flagUser(id : any) {
+    this.user = JSON.parse(localStorage.getItem('user'));
+    this.headers = new HttpHeaders({ 'x-access-token' : this.user.token });
+    return this.http.post(`${this.api_host}/user/flag/user/${id}`, {}, {headers : this.headers});
+  }
 }
