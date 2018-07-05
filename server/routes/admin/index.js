@@ -218,7 +218,6 @@ router.post('/contest', async (req, res) => {
     logger.trace("got details successfully");
     res.status(config.OK_STATUS).json({ "status": 1, "contest": contest });
   } else {
-    logger.error("Error occured while fetching = ", contest);
     res.status(config.INTERNAL_SERVER_ERROR).json(contest);
   }
 });
