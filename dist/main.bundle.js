@@ -32,17 +32,37 @@ webpackEmptyAsyncContext.id = "../../../../../src/$$_lazy_route_resource lazy re
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_angular2_lightbox__ = __webpack_require__("../../../../angular2-lightbox/index.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_angular2_lightbox___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7_angular2_lightbox__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__angular_platform_browser_animations__ = __webpack_require__("../../../platform-browser/esm5/animations.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__shared_auth_service__ = __webpack_require__("../../../../../src/app/shared/auth.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__layout_admin_layout_component__ = __webpack_require__("../../../../../src/app/admin/layout/admin_layout.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__layout_admin_layout_module__ = __webpack_require__("../../../../../src/app/admin/layout/admin.layout.module.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__home_home_component__ = __webpack_require__("../../../../../src/app/admin/home/home.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__alerts_alerts_component__ = __webpack_require__("../../../../../src/app/admin/alerts/alerts.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_angular_highcharts__ = __webpack_require__("../../../../angular-highcharts/angular-highcharts.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10_ngx_bootstrap__ = __webpack_require__("../../../../ngx-bootstrap/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11_angular_datatables__ = __webpack_require__("../../../../angular-datatables/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__shared_auth_service__ = __webpack_require__("../../../../../src/app/shared/auth.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__layout_admin_layout_component__ = __webpack_require__("../../../../../src/app/admin/layout/admin_layout.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__layout_admin_layout_module__ = __webpack_require__("../../../../../src/app/admin/layout/admin.layout.module.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__home_home_component__ = __webpack_require__("../../../../../src/app/admin/home/home.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__alerts_alerts_component__ = __webpack_require__("../../../../../src/app/admin/alerts/alerts.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__artist_artist_component__ = __webpack_require__("../../../../../src/app/admin/artist/artist.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__users_users_component__ = __webpack_require__("../../../../../src/app/admin/users/users.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__contest_contest_component__ = __webpack_require__("../../../../../src/app/admin/contest/contest.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__home_home_service__ = __webpack_require__("../../../../../src/app/admin/home/home.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__artist_artist_service__ = __webpack_require__("../../../../../src/app/admin/artist/artist.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__users_users_service__ = __webpack_require__("../../../../../src/app/admin/users/users.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__contest_contest_service__ = __webpack_require__("../../../../../src/app/admin/contest/contest.service.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -67,28 +87,42 @@ var AdminLayoutModule = /** @class */ (function () {
                 __WEBPACK_IMPORTED_MODULE_3__angular_http__["a" /* HttpModule */],
                 __WEBPACK_IMPORTED_MODULE_4__angular_common_http__["b" /* HttpClientModule */],
                 __WEBPACK_IMPORTED_MODULE_5__angular_forms__["b" /* FormsModule */],
-                __WEBPACK_IMPORTED_MODULE_5__angular_forms__["e" /* ReactiveFormsModule */],
+                __WEBPACK_IMPORTED_MODULE_5__angular_forms__["f" /* ReactiveFormsModule */],
                 __WEBPACK_IMPORTED_MODULE_8__angular_platform_browser_animations__["a" /* BrowserAnimationsModule */],
-                __WEBPACK_IMPORTED_MODULE_11__layout_admin_layout_module__["a" /* LayoutModule */],
+                __WEBPACK_IMPORTED_MODULE_14__layout_admin_layout_module__["a" /* LayoutModule */],
                 __WEBPACK_IMPORTED_MODULE_6_ngx_toastr__["a" /* ToastrModule */].forRoot(),
+                __WEBPACK_IMPORTED_MODULE_10_ngx_bootstrap__["a" /* BsDropdownModule */].forRoot(),
+                __WEBPACK_IMPORTED_MODULE_10_ngx_bootstrap__["b" /* ModalModule */].forRoot(),
                 __WEBPACK_IMPORTED_MODULE_7_angular2_lightbox__["LightboxModule"],
+                __WEBPACK_IMPORTED_MODULE_9_angular_highcharts__["b" /* ChartModule */],
+                __WEBPACK_IMPORTED_MODULE_11_angular_datatables__["b" /* DataTablesModule */],
                 __WEBPACK_IMPORTED_MODULE_2__angular_router__["c" /* RouterModule */].forChild([
                     {
                         path: 'admin',
-                        component: __WEBPACK_IMPORTED_MODULE_10__layout_admin_layout_component__["a" /* AdminLayoutComponent */],
+                        component: __WEBPACK_IMPORTED_MODULE_13__layout_admin_layout_component__["a" /* AdminLayoutComponent */],
                         children: [
-                            { path: '', component: __WEBPACK_IMPORTED_MODULE_12__home_home_component__["a" /* HomeComponent */] },
-                            { path: 'alerts', component: __WEBPACK_IMPORTED_MODULE_13__alerts_alerts_component__["a" /* AlertsComponent */] }
+                            { path: '', component: __WEBPACK_IMPORTED_MODULE_15__home_home_component__["a" /* HomeComponent */], canActivate: [__WEBPACK_IMPORTED_MODULE_12__shared_auth_service__["a" /* AuthService */]] },
+                            { path: 'alerts', component: __WEBPACK_IMPORTED_MODULE_16__alerts_alerts_component__["a" /* AlertsComponent */], canActivate: [__WEBPACK_IMPORTED_MODULE_12__shared_auth_service__["a" /* AuthService */]] },
+                            { path: 'artist', component: __WEBPACK_IMPORTED_MODULE_17__artist_artist_component__["a" /* ArtistComponent */], canActivate: [__WEBPACK_IMPORTED_MODULE_12__shared_auth_service__["a" /* AuthService */]] },
+                            { path: 'users', component: __WEBPACK_IMPORTED_MODULE_18__users_users_component__["a" /* UsersComponent */], canActivate: [__WEBPACK_IMPORTED_MODULE_12__shared_auth_service__["a" /* AuthService */]] },
+                            { path: 'contest', component: __WEBPACK_IMPORTED_MODULE_19__contest_contest_component__["a" /* ContestComponent */], canActivate: [__WEBPACK_IMPORTED_MODULE_12__shared_auth_service__["a" /* AuthService */]] }
                         ]
                     }
                 ])
             ],
             declarations: [
-                __WEBPACK_IMPORTED_MODULE_12__home_home_component__["a" /* HomeComponent */],
-                __WEBPACK_IMPORTED_MODULE_13__alerts_alerts_component__["a" /* AlertsComponent */]
+                __WEBPACK_IMPORTED_MODULE_15__home_home_component__["a" /* HomeComponent */],
+                __WEBPACK_IMPORTED_MODULE_16__alerts_alerts_component__["a" /* AlertsComponent */],
+                __WEBPACK_IMPORTED_MODULE_17__artist_artist_component__["a" /* ArtistComponent */],
+                __WEBPACK_IMPORTED_MODULE_18__users_users_component__["a" /* UsersComponent */],
+                __WEBPACK_IMPORTED_MODULE_19__contest_contest_component__["a" /* ContestComponent */]
             ],
             providers: [
-                __WEBPACK_IMPORTED_MODULE_9__shared_auth_service__["a" /* AuthService */],
+                __WEBPACK_IMPORTED_MODULE_12__shared_auth_service__["a" /* AuthService */],
+                __WEBPACK_IMPORTED_MODULE_20__home_home_service__["a" /* HomeService */],
+                __WEBPACK_IMPORTED_MODULE_21__artist_artist_service__["a" /* ArtistService */],
+                __WEBPACK_IMPORTED_MODULE_22__users_users_service__["a" /* UsersService */],
+                __WEBPACK_IMPORTED_MODULE_23__contest_contest_service__["a" /* ContestService */]
             ]
         })
     ], AdminLayoutModule);
@@ -143,19 +177,24 @@ var AlertsComponent = /** @class */ (function () {
 
 /***/ }),
 
-/***/ "../../../../../src/app/admin/home/home.component.html":
+/***/ "../../../../../src/app/admin/artist/artist.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<!-- Page Content -->\n<div id=\"page-content-wrapper\">\n           \n        <div class=\"container-fluid\">\n            <h3 class=\"Audience-Overview\">Audience Overview </h3>\n            <div>\n                <div class=\"dropdown custom_dropdown\">\n                  <button type=\"button\" class=\"btn dropdown-toggle Days\" data-toggle=\"dropdown\">\n                    7 days\n                  </button>\n                  <div class=\"dropdown-menu\">\n                    <a class=\"dropdown-item\" href=\"javascript:;\">Link 1</a>\n                    <a class=\"dropdown-item\" href=\"javascript:;\">Link 2</a>\n                    <a class=\"dropdown-item\" href=\"javascript:;\">Link 3</a>\n                  </div>\n                </div>\n                <ul class=\"header_ul\">\n                    <li class=\"active\"><a>Votes</a></li>\n                    <li><a>Likes</a></li>\n                    <li><a>Comments</a></li>\n                </ul>\n            </div>\n            <div>\n                <h3 class=\"Last-7-Days-April-2\">Last 7 Days: April 23, 2018 - May 1, 2018</h3>\n                <div class=\"graph_container\">\n                    <img src=\"img/graph.jpg\" />\n                </div>\n            </div>\n            <div>\n                <h3 class=\"Audience-Overview\">Top Artists </h3>\n                <div class=\"artists_table table-responsive\">\n                    <table class=\"table\">\n                        <thead>\n                          <tr>\n                            <th>N<sup>O</sup></th>\n                            <th>Artist Name</th>\n                            <th>Location</th>\n                            <th>Gender</th>\n                            <th>Music Genre</th>\n                            <th>Tracks</th>\n                            <th>Votes</th>\n                            <th>Likes</th>\n                            <th>Followers</th>\n                            <th>Comments</th>\n                          </tr>\n                        </thead>\n                        <tbody>\n                          <tr>\n                            <td>1.</td>\n                            <td>Shavn Miller</td>\n                            <td>New Youk</td>\n                            <td>Male</td>\n                            <td>Hiphop</td>\n                            <td>12</td>\n                            <td class=\"td_img\"><img src=\"img/vote.png\"/>200</td>\n                            <td class=\"td_img\"><img src=\"img/likes.png\"/>2560</td>\n                            <td class=\"td_img\"><img src=\"img/followers.png\"/>4670</td>\n                            <td class=\"td_img\"><img src=\"img/comments.png\"/>23467</td>                                \n                          </tr>\n                              <tr>\n                            <td>2.</td>\n                            <td>Shavn Miller</td>\n                            <td>New Youk</td>\n                            <td>Male</td>\n                            <td>Hiphop</td>\n                            <td>12</td>\n                            <td class=\"td_img\"><img src=\"img/vote.png\"/>200</td>\n                            <td class=\"td_img\"><img src=\"img/likes.png\"/>2560</td>\n                            <td class=\"td_img\"><img src=\"img/followers.png\"/>4670</td>\n                            <td class=\"td_img\"><img src=\"img/comments.png\"/>23467</td>                                \n                          </tr>\n                              <tr>\n                            <td>3.</td>\n                            <td>Shavn Miller</td>\n                            <td>New Youk</td>\n                            <td>Male</td>\n                            <td>Hiphop</td>\n                            <td>12</td>\n                            <td class=\"td_img\"><img src=\"img/vote.png\"/>200</td>\n                            <td class=\"td_img\"><img src=\"img/likes.png\"/>2560</td>\n                            <td class=\"td_img\"><img src=\"img/followers.png\"/>4670</td>\n                            <td class=\"td_img\"><img src=\"img/comments.png\"/>23467</td>                                \n                          </tr>\n                              <tr>\n                            <td>4.</td>\n                            <td>Shavn Miller</td>\n                            <td>New Youk</td>\n                            <td>Male</td>\n                            <td>Hiphop</td>\n                            <td>12</td>\n                            <td class=\"td_img\"><img src=\"img/vote.png\"/>200</td>\n                            <td class=\"td_img\"><img src=\"img/likes.png\"/>2560</td>\n                            <td class=\"td_img\"><img src=\"img/followers.png\"/>4670</td>\n                            <td class=\"td_img\"><img src=\"img/comments.png\"/>23467</td>                                \n                          </tr>\n                              <tr>\n                            <td>5.</td>\n                            <td>Shavn Miller</td>\n                            <td>New Youk</td>\n                            <td>Male</td>\n                            <td>Hiphop</td>\n                            <td>12</td>\n                            <td class=\"td_img\"><img src=\"img/vote.png\"/>200</td>\n                            <td class=\"td_img\"><img src=\"img/likes.png\"/>2560</td>\n                            <td class=\"td_img\"><img src=\"img/followers.png\"/>4670</td>\n                            <td class=\"td_img\"><img src=\"img/comments.png\"/>23467</td>                                  \n                          </tr>\n\n                        </tbody>\n                      </table>\n                </div>\n            </div>\n            <div>\n                <h3 class=\"Audience-Overview\">Top Locations </h3>\n                <div class=\"location_top\">\n                    <img src=\"img/location_img.jpg\" />\n                </div>\n            </div>\n        </div>\n    </div>\n    <!-- /#page-content-wrapper -->"
+module.exports = " <!-- Page Content -->\n <div id=\"page-content-wrapper\">           \n    <div class=\"artist_content\" style=\"display: block;\">\n      <div class=\"container-fluid\">\n        <h3 class=\"Audience-Overview\">Search Artist </h3>\n        <div class=\"search-input header_search\">\n            <i class=\"fa fa-search\" aria-hidden=\"true\"></i>\n          <input type=\"text\" name=\"search\" [(ngModel)]=\"search_str\" (keyup)=\"filterBasedOnSearch($event)\" placeholder=\"Search by Artist Name or Song Title\">\n        </div>\n        <div class=\"row\">\n          <div class=\"col-md-2 col-sm-6 col-xs-6\">\n            <div>\n              <div class=\"artist_heading\">Music Genre</div>\n              <ul>\n                <li>\n                  <div class=\"radio\">\n                      <label>\n                        <input name=\"musicgenre\" type=\"radio\" value=\"\" [(ngModel)]=\"music_type_id\" (click)=\"filterByMusicType('')\">All styles\n                        <div class=\"radio_check\"></div>\n                      </label>\n                  </div>\n                </li>\n                <li *ngFor=\"let music of music_type;\">\n                    <div class=\"radio\">\n                        <label>\n                          <input name=\"musicgenre\" type=\"radio\" [value]=\"music._id\" [(ngModel)]=\"music_type_id\" (click)=\"filterByMusicType(music._id)\">{{music['name']}}\n                          <div class=\"radio_check\"></div>\n                        </label>\n                    </div>\n                </li>\n              </ul>\n            </div>\n            \n          </div>\n          \n          <div class=\"col-md-10 col-sm-12 col-xs-12\">\n            <div class=\"sub-menu-filter\">\n            <div class=\"artist_heading\">Region</div>\n              <div class=\"row\">\n                <div class=\"col-md-2 col-sm-4 col-xs-4\">\n                  <div class=\"filter-subhead\">Northeast</div>\n                  <ul>\n                    <li>\n                      <div class=\"checkbox\">\n                          <label>\n                            <input type=\"checkbox\" value=\"\">\n                            <div class=\"chk_check\"></div>\n                            <span>Marryland</span>\n                          </label>\n                      </div>\n                    </li>\n                    <li>\n                      <div class=\"checkbox\">\n                          <label>\n                            <input type=\"checkbox\" value=\"\">\n                            <div class=\"chk_check\"></div>\n                            <span>New Jersey</span>\n                          </label>\n                      </div>\n                    </li>\n                    <li>\n                      <div class=\"checkbox\">\n                          <label>\n                            <input type=\"checkbox\" value=\"\">\n                            <div class=\"chk_check\"></div>\n                            <span>Pennsylvania</span>\n                          </label>\n                      </div>\n                    </li>\n                    <li>\n                      <div class=\"checkbox\">\n                          <label>\n                            <input checked=\"\" type=\"checkbox\" value=\"\">\n                            <div class=\"chk_check\"></div>\n                            <span>New York</span>\n                          </label>\n                      </div>\n                    </li>\n                    <li>\n                      <div class=\"checkbox\">\n                          <label>\n                            <input type=\"checkbox\" value=\"\">    \n                            <div class=\"chk_check\"></div>\n                            <span>Delaware</span>\n                          </label>\n                      </div>\n                    </li>\n                  </ul>\n                </div>\n                <div class=\"col-md-2 col-sm-4 col-xs-4\">\n                  <div class=\"filter-subhead\">southeast</div>\n                  <ul>\n                    <li>\n                      <div class=\"checkbox\">\n                          <label>\n                            <input type=\"checkbox\" value=\"\">\n                            <div class=\"chk_check\"></div>\n                            <span>Marryland</span>\n                          </label>\n                      </div>\n                    </li>\n                    <li>\n                      <div class=\"checkbox\">\n                          <label>\n                            <input type=\"checkbox\" value=\"\">\n                            <div class=\"chk_check\"></div>\n                            <span>New Jersey</span>\n                          </label>\n                      </div>\n                    </li>\n                    <li>\n                      <div class=\"checkbox\">\n                          <label>\n                            <input type=\"checkbox\" value=\"\">\n                            <div class=\"chk_check\"></div>\n                            <span>Pennsylvania</span>\n                          </label>\n                      </div>\n                    </li>\n                    <li>\n                      <div class=\"checkbox\">\n                          <label>\n                            <input checked=\"\" type=\"checkbox\" value=\"\"> \n                            <div class=\"chk_check\"></div>\n                            <span>New York</span>\n                          </label>\n                      </div>\n                    </li>\n                    <li>\n                      <div class=\"checkbox\">\n                          <label>\n                            <input type=\"checkbox\" value=\"\">    \n                            <div class=\"chk_check\"></div>\n                            <span>Delaware</span>\n                          </label>\n                      </div>\n                    </li>\n                  </ul>\n                </div>\n                <div class=\"col-md-2 col-sm-4 col-xs-4\">\n                  <div class=\"filter-subhead\">Midwest</div>\n                  <ul>\n                    <li>\n                      <div class=\"checkbox\">\n                          <label>\n                            <input type=\"checkbox\" value=\"\">\n                            <div class=\"chk_check\"></div>\n                            <span>Marryland</span>\n                          </label>\n                      </div>\n                    </li>\n                    <li>\n                      <div class=\"checkbox\">\n                          <label>\n                            <input type=\"checkbox\" value=\"\">\n                            <div class=\"chk_check\"></div>\n                            <span>New Jersey</span>\n                          </label>\n                      </div>\n                    </li>\n                    <li>\n                      <div class=\"checkbox\">\n                          <label>\n                            <input type=\"checkbox\" value=\"\">\n                            <div class=\"chk_check\"></div>\n                            <span>Pennsylvania</span>\n                          </label>\n                      </div>\n                    </li>\n                    <li>\n                      <div class=\"checkbox\">\n                          <label>\n                            <input checked=\"\" type=\"checkbox\" value=\"\"> \n                            <div class=\"chk_check\"></div>\n                            <span>New York</span>\n                          </label>\n                      </div>\n                    </li>\n                    <li>\n                      <div class=\"checkbox\">\n                          <label>\n                            <input type=\"checkbox\" value=\"\">    \n                            <div class=\"chk_check\"></div>\n                            <span>Delaware</span>\n                          </label>\n                      </div>\n                    </li>\n                  </ul>\n                </div>\n                <div class=\"col-md-2 col-sm-4 col-xs-4\">\n                  <div class=\"filter-subhead\">Southwest</div>\n                  <ul>\n                    <li>\n                      <div class=\"checkbox\">\n                          <label>\n                            <input type=\"checkbox\" value=\"\">\n                            <div class=\"chk_check\"></div>\n                            <span>Marryland</span>\n                          </label>\n                      </div>\n                    </li>\n                    <li>\n                      <div class=\"checkbox\">\n                          <label>\n                            <input type=\"checkbox\" value=\"\">\n                            <div class=\"chk_check\"></div>\n                            <span>New Jersey</span>\n                          </label>\n                      </div>\n                    </li>\n                    <li>\n                      <div class=\"checkbox\">\n                          <label>\n                            <input type=\"checkbox\" value=\"\">\n                            <div class=\"chk_check\"></div>\n                            <span>Pennsylvania</span>\n                          </label>\n                      </div>\n                    </li>\n                    <li>\n                      <div class=\"checkbox\">\n                          <label>\n                            <input checked=\"\" type=\"checkbox\" value=\"\"> \n                            <div class=\"chk_check\"></div>\n                            <span>New York</span>\n                          </label>\n                      </div>\n                    </li>\n                    <li>\n                      <div class=\"checkbox\">\n                          <label>\n                            <input type=\"checkbox\" value=\"\">    \n                            <div class=\"chk_check\"></div>\n                            <span>Delaware</span>\n                          </label>\n                      </div>\n                    </li>\n                  </ul>\n                </div>\n                <div class=\"col-md-2 col-sm-4 col-xs-4\">\n                  <div class=\"filter-subhead\">West</div>\n                  <ul>\n                    <li>\n                      <div class=\"checkbox\">\n                          <label>\n                            <input type=\"checkbox\" value=\"\">\n                            <div class=\"chk_check\"></div>\n                            <span>Marryland</span>\n                          </label>\n                      </div>\n                    </li>\n                    <li>\n                      <div class=\"checkbox\">\n                          <label>\n                            <input type=\"checkbox\" value=\"\">\n                            <div class=\"chk_check\"></div>\n                            <span>New Jersey</span>\n                          </label>\n                      </div>\n                    </li>\n                    <li>\n                      <div class=\"checkbox\">\n                          <label>\n                            <input type=\"checkbox\" value=\"\">\n                            <div class=\"chk_check\"></div>\n                            <span>Pennsylvania</span>\n                          </label>\n                      </div>\n                    </li>\n                    <li>\n                      <div class=\"checkbox\">\n                          <label>\n                            <input checked=\"\" type=\"checkbox\" value=\"\"> \n                            <div class=\"chk_check\"></div>\n                            <span>New York</span>\n                          </label>\n                      </div>\n                    </li>\n                    <li>\n                      <div class=\"checkbox\">\n                          <label>\n                            <input type=\"checkbox\" value=\"\">    \n                            <div class=\"chk_check\"></div>\n                            <span>Delaware</span>\n                          </label>\n                      </div>\n                    </li>\n                  </ul>\n                </div>\n                <div class=\"col-md-2 col-sm-4 col-xs-4\">\n                  <div class=\"filter-subhead\">other</div>\n                  <ul>\n                    <li>\n                      <div class=\"checkbox\">\n                          <label>\n                            <input type=\"checkbox\" value=\"\">\n                            <div class=\"chk_check\"></div>\n                            <span>Puerto Rico</span>\n                          </label>\n                      </div>\n                    </li>\n                  </ul>\n                </div>\n              </div>\n            </div>\n          </div>\n        </div>\n      </div>\n    </div>\n       <div>\n            <h3 class=\"Audience-Overview\">Artists </h3>\n            <div class=\"dropdown table_dropdown custom_dropdown\">\n              <select class=\"form-control\" id=\"sort\" name=\"sort_by\" [(ngModel)]=\"sort_by\" (change)=\"sortArtist($event.target.value)\">\n                <option value=\"-1\">Newest First</option>\n                <option value=\"1\">Newest Last</option>\n              </select>\n            </div> \n            <div class=\"artists_table copyright_table table-responsive\">\n              <table class=\"table\" datatable [dtOptions]=\"dtOptions\">\n                    <thead>\n                      <tr>\n                        <th>N<sup>O</sup></th>\n                        <th>Artist Name</th>\n                        <th>Status</th>\n                        <th>Votes</th>\n                        <th>Likes</th>\n                        <th>Followers</th>\n                        <th>Comments</th>\n                        <th>Actions</th>\n                      </tr>\n                    </thead>\n                    <tbody>\n                      <tr *ngFor=\"let artist of artist_data; let i = index;\">\n                        <td>{{i+1}}.</td>\n                        <td><a href=\"javascript:;\" (click)=\"openModal(template, artist['_id'])\">{{artist['first_name']+' '+artist['last_name']}}</a></td>\n                        <td class=\"status {{artist['status'] == 'active' ? 'active_status' : artist['status'] == 'suspended' ? 'suspend_status' : ''}}\"><span>{{artist['status']}}</span></td>                               \n                        <td class=\"td_img\"><img src=\"img/vote.png\"/>{{artist['no_of_votes']}}</td>\n                        <td class=\"td_img\"><img src=\"img/likes.png\"/>{{artist['no_of_likes']}}</td>\n                        <td class=\"td_img\"><img src=\"img/followers.png\"/>{{artist['no_of_followers']}}</td>\n                        <td class=\"td_img\"><img src=\"img/comments.png\"/>{{artist['no_of_comments']}}</td> \n                        <td class=\"td_img\"><img src=\"img/suspend.png\">\n                          <a href=\"javascript:;\" (click)=\"suspendArtist(artist['_id'])\">{{artist['status'] == 'suspended' ? 'Un-suspend' : 'suspend'}}</a>\n                        </td>                               \n                      </tr>\n                      <tr *ngIf=\"artist_data?.length == 0\">\n                        <td colspan=\"8\" class=\"no-data-available\">No data!</td>\n                      </tr>\n                    </tbody>\n                  </table>\n            </div>\n        </div>\n</div>\n<!-- /#page-content-wrapper -->\n<!-- /#page-content-wrapper -->\n<ng-template #template>\n  <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"modalRef.hide()\">\n    <span aria-hidden=\"true\">&times;</span>\n  </button>\n  <div class=\"modal-body\">\n    <div class=\"row\" style=\"padding: 5px;\" >\n      <div class=\"col-sm-3\">\n        <img src=\"{{artist_detail['image'] ? artist_img_url+artist_detail['image'] : 'img/profile-img.png'}}\" />\n      </div>\n      <div class=\"col-sm-9\">\n        <h3>{{artist_detail['first_name']+' '+artist_detail['last_name']}}</h3>\n        <span>Featured Artist</span>\n        <div>\n          <span>Votes {{artist_detail['no_of_votes']}}</span>\n          <span>Like {{artist_detail['no_of_likes']}}</span>\n          <span>Followers {{artist_detail['no_of_followers']}}</span>\n          <span>Comments {{artist_detail['no_of_comments']}}</span>\n        </div>\n        <div>\n          <span>Signup date : {{artist_detail['created_at'] | date : 'yyyy/MM/dd'}}</span>\n          <span>Last Login : {{artist_detail['last_login'] | date : 'yyyy/MM/dd'}}</span>\n        </div>\n      </div>\n    </div>\n    <div class=\"row\">\n      <div class=\"col-sm-12\">\n        <b>Tracks</b>\n      </div>\n      <div class=\"artists_table copyright_table table-responsive col-sm-12\">\n        <table class=\"table\">\n            <thead>\n              <tr>\n                <th>N<sup>O</sup></th>\n                <th>Track Name</th>\n                <th>Duration</th>\n                <th>Actions</th>\n              </tr>\n            </thead>\n            <tbody>\n              <tr *ngFor=\"let track of artist_track; let i = index;\">\n                <td>{{i+1}}</td>\n                <td>{{track['name']}}</td>\n                <td>3:10</td>\n                <td class=\"td_img\">\n                  <a href=\"javascript:;\" (click)=\"removeTrack(track['_id'])\"><i class=\"fa fa-trash\"></i> Delete</a>&nbsp;\n                  <img src=\"img/suspend.png\">\n                  <a href=\"javascript:;\"> Suspend</a>\n                </td>\n              </tr>\n              <tr *ngIf=\"artist_track?.length == 0\">\n                <td colspan=\"4\">No data available.</td>\n              </tr>\n            </tbody>\n        </table>\n      </div>\n    </div>\n    <div class=\"row\">\n      <div class=\"col-sm-12\">\n        <b>Flags</b>\n      </div>\n      <div class=\"table-responsive col-sm-12\">\n        <table class=\"table\">\n            <thead>\n              <tr>\n                <th>Date</th>\n                <th>Type</th>\n                <th>Actions</th>\n              </tr>\n            </thead>\n            <tbody>\n              <tr *ngFor=\"let val of artist_flag\">\n                <td>{{val.created_at | date : 'MMMM dd, yyyy'}}</td>\n                <td>{{val['from']['account_type']}}</td>\n                <td>Suspended by {{val['from']['account_type']}}</td>\n              </tr>\n            </tbody>\n        </table>\n      </div>\n    </div>\n  </div>\n</ng-template>"
 
 /***/ }),
 
-/***/ "../../../../../src/app/admin/home/home.component.ts":
+/***/ "../../../../../src/app/admin/artist/artist.component.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return HomeComponent; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ArtistComponent; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__artist_service__ = __webpack_require__("../../../../../src/app/admin/artist/artist.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_angular_datatables__ = __webpack_require__("../../../../angular-datatables/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_ngx_toastr__ = __webpack_require__("../../../../ngx-toastr/fesm5/ngx-toastr.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_ngx_bootstrap_modal__ = __webpack_require__("../../../../ngx-bootstrap/modal/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__environments_environment__ = __webpack_require__("../../../../../src/environments/environment.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -166,11 +205,543 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 
+
+
+
+
+
+var DataTablesResponse = /** @class */ (function () {
+    function DataTablesResponse() {
+    }
+    return DataTablesResponse;
+}());
+var ArtistComponent = /** @class */ (function () {
+    function ArtistComponent(ArtistService, toastr, modalService) {
+        this.ArtistService = ArtistService;
+        this.toastr = toastr;
+        this.modalService = modalService;
+        this.dtOptions = {};
+        this.artist_data = [];
+        this.music_type = [];
+        this.search_str = '';
+        this.music_type_id = '';
+        this.artist_id = '';
+        this.sort_by = -1;
+        this.artist_detail = {};
+        this.artist_track = [];
+        this.artist_flag = [];
+        this.artist_img_url = __WEBPACK_IMPORTED_MODULE_5__environments_environment__["a" /* environment */].API_URL + __WEBPACK_IMPORTED_MODULE_5__environments_environment__["a" /* environment */].ARTIST_IMG;
+        this.artist_media_url = __WEBPACK_IMPORTED_MODULE_5__environments_environment__["a" /* environment */].API_URL + __WEBPACK_IMPORTED_MODULE_5__environments_environment__["a" /* environment */].ARTIST_MEDIA;
+        console.log("Admin dashboard component");
+    }
+    ArtistComponent.prototype.ngOnInit = function () {
+        var that = this;
+        this.getAllMusicType();
+        this.dtOptions = {
+            pagingType: 'full_numbers',
+            pageLength: 5,
+            serverSide: true,
+            processing: true,
+            searching: false,
+            ordering: false,
+            lengthChange: false,
+            ajax: function (dataTablesParameters, callback) {
+                console.log(dataTablesParameters);
+                setTimeout(function () {
+                    dataTablesParameters['search'] = that.search_str;
+                    dataTablesParameters['order'] = '';
+                    dataTablesParameters['music_type'] = that.music_type_id;
+                    dataTablesParameters['sort_by'] = that.sort_by;
+                    that.ArtistService.getAllArtist(dataTablesParameters).subscribe(function (response) {
+                        that.artist_data = response['artist']['artist'];
+                        callback({
+                            recordsTotal: response['artist']['recordsTotal'],
+                            recordsFiltered: response['artist']['recordsTotal'],
+                            data: []
+                        });
+                    });
+                }, 0);
+            },
+            columns: [{ data: '' },
+                { data: 'first_name' },
+                { data: 'status' },
+                { data: 'no_of_votes' },
+                { data: 'no_of_likes' },
+                { data: 'no_of_followers' },
+                { data: 'no_of_comments' },
+                { data: '' }
+            ]
+        };
+    };
+    // get all artist data
+    ArtistComponent.prototype.getAllArtistData = function (data) {
+        var _this = this;
+        this.ArtistService.getAllArtist(data).subscribe(function (response) {
+            _this.artist_data = response['artist'];
+        });
+    };
+    // get all music type
+    ArtistComponent.prototype.getAllMusicType = function () {
+        var _this = this;
+        this.ArtistService.getAllMusicType().subscribe(function (response) {
+            _this.music_type = response['music'];
+        });
+    };
+    // Filter data based on music type
+    ArtistComponent.prototype.filterByMusicType = function (id) {
+        var that = this;
+        this.datatableElement.dtInstance.then(function (dtInstance) {
+            dtInstance.draw();
+        });
+    };
+    // Filter artist based on search string
+    ArtistComponent.prototype.filterBasedOnSearch = function (e) {
+        if (e.keyCode == 13) {
+            var that = this;
+            this.datatableElement.dtInstance.then(function (dtInstance) {
+                dtInstance.draw();
+            });
+        }
+    };
+    // Sort artist data
+    ArtistComponent.prototype.sortArtist = function (val) {
+        var that = this;
+        this.datatableElement.dtInstance.then(function (dtInstance) {
+            dtInstance.draw();
+        });
+    };
+    // suspend artist
+    ArtistComponent.prototype.suspendArtist = function (id) {
+        var _this = this;
+        this.ArtistService.suspendArtist(id).subscribe(function (response) {
+            _this.toastr.success(response['message'], 'Success!');
+            _this.datatableElement.dtInstance.then(function (dtInstance) {
+                dtInstance.draw();
+            });
+        }, function (error) {
+            _this.toastr.error(error['error'].message, 'Error!');
+        });
+    };
+    ArtistComponent.prototype.openModal = function (template, id) {
+        var _this = this;
+        var data = {
+            artist_id: id
+        };
+        this.artist_id = id;
+        this.ArtistService.getArtist(data).subscribe(function (response) {
+            _this.artist_detail = response['artist'];
+        });
+        this.ArtistService.getArtistTrack(data).subscribe(function (response) {
+            _this.artist_track = response['track'];
+        });
+        this.ArtistService.getArtistFlagDetails(data).subscribe(function (response) {
+            _this.artist_flag = response['artist'];
+        });
+        this.modalRef = this.modalService.show(template, { backdrop: 'static' });
+    };
+    ArtistComponent.prototype.removeTrack = function (id) {
+        var thi = this;
+        swal({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then(function (flag) {
+            if (flag) {
+                thi.ArtistService.removeArtistTrack(id).subscribe(function (response) {
+                    var data = { artist_id: thi.artist_id };
+                    thi.ArtistService.getArtistTrack(data).subscribe(function (response) {
+                        thi.artist_track = response['track'];
+                    });
+                    thi.toastr.success(response['message'], 'Success!');
+                }, function (error) {
+                    thi.toastr.error(error['error'].message, 'Error!');
+                });
+            }
+        });
+    };
+    __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewChild"])(__WEBPACK_IMPORTED_MODULE_2_angular_datatables__["a" /* DataTableDirective */]),
+        __metadata("design:type", __WEBPACK_IMPORTED_MODULE_2_angular_datatables__["a" /* DataTableDirective */])
+    ], ArtistComponent.prototype, "datatableElement", void 0);
+    ArtistComponent = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+            selector: 'app-artist',
+            template: __webpack_require__("../../../../../src/app/admin/artist/artist.component.html"),
+            styleUrls: []
+        }),
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__artist_service__["a" /* ArtistService */],
+            __WEBPACK_IMPORTED_MODULE_3_ngx_toastr__["b" /* ToastrService */],
+            __WEBPACK_IMPORTED_MODULE_4_ngx_bootstrap_modal__["a" /* BsModalService */]])
+    ], ArtistComponent);
+    return ArtistComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/admin/artist/artist.service.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ArtistService; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common_http__ = __webpack_require__("../../../common/esm5/http.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_add_operator_toPromise__ = __webpack_require__("../../../../rxjs/_esm5/add/operator/toPromise.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_add_operator_toPromise___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_rxjs_add_operator_toPromise__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__environments_environment__ = __webpack_require__("../../../../../src/environments/environment.ts");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+var ArtistService = /** @class */ (function () {
+    function ArtistService(http) {
+        this.http = http;
+        this.api_host = __WEBPACK_IMPORTED_MODULE_3__environments_environment__["a" /* environment */].API_URL;
+        this.user = '';
+        this.headers = '';
+        this.user = JSON.parse(localStorage.getItem('user'));
+        this.headers = new __WEBPACK_IMPORTED_MODULE_1__angular_common_http__["d" /* HttpHeaders */]({ 'x-access-token': this.user.token });
+    }
+    // Get all artist details
+    ArtistService.prototype.getAllArtist = function (data) {
+        return this.http.post(this.api_host + "/admin/get_artist", data, { headers: this.headers });
+    };
+    // get All music type
+    ArtistService.prototype.getAllMusicType = function () {
+        return this.http.get(this.api_host + "/music_type");
+    };
+    // suspend artist
+    ArtistService.prototype.suspendArtist = function (id) {
+        return this.http.post(this.api_host + "/admin/suspend/artist/" + id, null, { headers: this.headers });
+    };
+    // Get artist details
+    ArtistService.prototype.getArtist = function (data) {
+        return this.http.post(this.api_host + "/get_artist", data);
+    };
+    // Get artist track
+    ArtistService.prototype.getArtistTrack = function (data) {
+        return this.http.post(this.api_host + "/get_track", data);
+    };
+    // Get Artist flag details
+    ArtistService.prototype.getArtistFlagDetails = function (data) {
+        return this.http.post(this.api_host + "/admin/get_flag", data, { headers: this.headers });
+    };
+    // Remove track 
+    ArtistService.prototype.removeArtistTrack = function (id) {
+        return this.http.delete(this.api_host + "/admin/track/" + id, { headers: this.headers });
+    };
+    ArtistService = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Injectable"])(),
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__angular_common_http__["a" /* HttpClient */]])
+    ], ArtistService);
+    return ArtistService;
+}());
+
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/admin/contest/contest.component.html":
+/***/ (function(module, exports) {
+
+module.exports = " <!-- Page Content -->\n <div id=\"page-content-wrapper\">  \n  <div class=\"text-right\">\n    <button class=\"create_contest_btn btn\">Create Contest</button>\n  </div>         \n           <div>\n                <h3 class=\"Audience-Overview\">Contests </h3>\n                <div class=\"dropdown table_dropdown custom_dropdown\">\n                    <button type=\"button\" class=\"btn dropdown-toggle custom_drop_btn\" data-toggle=\"dropdown\">\n                        Sort By End Date\n                    </button>\n                    <div class=\"dropdown-menu\">\n                        <a class=\"dropdown-item\" href=\"#\">Lfbdfink 1</a>\n                        <a class=\"dropdown-item\" href=\"#\">Link 2</a>\n                        <a class=\"dropdown-item\" href=\"#\">Link 3</a>\n                    </div>\n                </div> \n                <div class=\"artists_table contest_table table-responsive\">\n                  <table class=\"table\" datatable [dtOptions]=\"dtOptions\">\n                        <thead>\n                          <tr>\n                            <th>N<sup>O</sup></th>\n                            <th>Contest Name</th>\n                            <th>Start Date</th>\n                            <th>End Date</th>\n                            <th>Days Remain</th>\n                            <th>Music Genre</th>\n                            <th>Region</th>\n                            <th>Participants</th>\n                          </tr>\n                        </thead>\n                        <tbody>\n                        <tr *ngFor=\"let contest of contest_data; let i = index;\">\n                          <td>{{i+1}}.</td>\n                          <td>{{contest['name']}}</td>\n                          <td>{{contest['start_date'] | date : 'MMMM dd, yyyy'}}</td>\n                          <td>{{contest['end_date'] | date : 'MMMM dd, yyyy'}}</td>\n                          <td>{{contest['days']}}</td>\n                          <td>{{contest['music_type']['name']}}</td>\n                          <td>{{contest['location']}}</td>\n                          <td>{{contest['no_of_participants']}}</td>\n                        </tr>\n                        </tbody>\n                      </table>\n                </div>\n            </div>\n    </div>\n    <!-- /#page-content-wrapper -->"
+
+/***/ }),
+
+/***/ "../../../../../src/app/admin/contest/contest.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ContestComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__contest_service__ = __webpack_require__("../../../../../src/app/admin/contest/contest.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_angular_datatables__ = __webpack_require__("../../../../angular-datatables/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_ngx_toastr__ = __webpack_require__("../../../../ngx-toastr/fesm5/ngx-toastr.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_ngx_bootstrap_modal__ = __webpack_require__("../../../../ngx-bootstrap/modal/index.js");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+
+var ContestComponent = /** @class */ (function () {
+    function ContestComponent(ContestService, toastr, modalService) {
+        this.ContestService = ContestService;
+        this.toastr = toastr;
+        this.modalService = modalService;
+        this.dtOptions = {};
+        this.contest_data = [];
+        this.search_str = '';
+        this.sort_by = -1;
+        console.log("Admin dashboard component");
+    }
+    ContestComponent.prototype.ngOnInit = function () {
+        var that = this;
+        this.dtOptions = {
+            pagingType: 'full_numbers',
+            pageLength: 5,
+            serverSide: true,
+            processing: true,
+            searching: false,
+            ordering: false,
+            lengthChange: false,
+            ajax: function (dataTablesParameters, callback) {
+                setTimeout(function () {
+                    dataTablesParameters['search'] = that.search_str;
+                    dataTablesParameters['sort_by'] = that.sort_by;
+                    that.ContestService.getAllContest(dataTablesParameters).subscribe(function (response) {
+                        that.contest_data = response['contest']['participate'];
+                        that.contest_data.forEach(function (ele) {
+                            ele['days'] = that.getDaysDiff(ele['start_date'], new Date());
+                        });
+                        callback({
+                            recordsTotal: response['contest']['recordsTotal'],
+                            recordsFiltered: response['contest']['recordsTotal'],
+                            data: []
+                        });
+                    });
+                }, 0);
+            }
+        };
+    };
+    // Get day difference between dates
+    ContestComponent.prototype.getDaysDiff = function (dt1, dt2) {
+        var date1 = new Date(dt1);
+        var date2 = new Date(dt2);
+        var timeDiff = Math.abs(date2.getTime() - date1.getTime());
+        var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
+        return diffDays;
+    };
+    __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewChild"])(__WEBPACK_IMPORTED_MODULE_2_angular_datatables__["a" /* DataTableDirective */]),
+        __metadata("design:type", __WEBPACK_IMPORTED_MODULE_2_angular_datatables__["a" /* DataTableDirective */])
+    ], ContestComponent.prototype, "datatableElement", void 0);
+    ContestComponent = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+            selector: 'app-contest',
+            template: __webpack_require__("../../../../../src/app/admin/contest/contest.component.html"),
+            styleUrls: []
+        }),
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__contest_service__["a" /* ContestService */],
+            __WEBPACK_IMPORTED_MODULE_3_ngx_toastr__["b" /* ToastrService */],
+            __WEBPACK_IMPORTED_MODULE_4_ngx_bootstrap_modal__["a" /* BsModalService */]])
+    ], ContestComponent);
+    return ContestComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/admin/contest/contest.service.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ContestService; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common_http__ = __webpack_require__("../../../common/esm5/http.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_add_operator_toPromise__ = __webpack_require__("../../../../rxjs/_esm5/add/operator/toPromise.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_add_operator_toPromise___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_rxjs_add_operator_toPromise__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__environments_environment__ = __webpack_require__("../../../../../src/environments/environment.ts");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+var ContestService = /** @class */ (function () {
+    function ContestService(http) {
+        this.http = http;
+        this.api_host = __WEBPACK_IMPORTED_MODULE_3__environments_environment__["a" /* environment */].API_URL;
+        this.user = '';
+        this.headers = '';
+        this.user = JSON.parse(localStorage.getItem('user'));
+        this.headers = new __WEBPACK_IMPORTED_MODULE_1__angular_common_http__["d" /* HttpHeaders */]({ 'x-access-token': this.user.token });
+    }
+    // Get all artist details
+    ContestService.prototype.getAllContest = function (data) {
+        return this.http.post(this.api_host + "/admin/contest", data, { headers: this.headers });
+    };
+    ContestService = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Injectable"])(),
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__angular_common_http__["a" /* HttpClient */]])
+    ], ContestService);
+    return ContestService;
+}());
+
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/admin/home/home.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<!-- Page Content -->\n<div id=\"page-content-wrapper\">\n           \n        <div class=\"container-fluid\">\n            <h3 class=\"Audience-Overview\">Audience Overview </h3>\n            <div class=\"ana-header\">\n                <div class=\"form-group days-grp\">\n                    <select class=\"form-control\" id=\"days-select\" name=\"analytics_day\" (change)=\"changeAnalyticsDays()\" [(ngModel)]=\"analytics_days\">\n                        <option value=\"7\">7 Days</option>\n                        <option value=\"14\">14 Days</option>\n                        <option value=\"30\">1 Month</option>\n                    </select>\n\n                </div>\n                <!-- <div class=\"dropdown custom_dropdown\">\n                  <button type=\"button\" class=\"btn dropdown-toggle Days\" data-toggle=\"dropdown\">\n                    7 days\n                  </button>\n                  <div class=\"dropdown-menu\">\n                    <a class=\"dropdown-item\" href=\"javascript:;\">Link 1</a>\n                    <a class=\"dropdown-item\" href=\"javascript:;\">Link 2</a>\n                    <a class=\"dropdown-item\" href=\"javascript:;\">Link 3</a>\n                  </div>\n                </div> -->\n                <ul class=\"header_ul\">\n                    <li class=\"{{home_tab_cnt == 1 ? 'active' : ''}}\" (click)=\"homeTabChange(1)\"><a>Votes</a></li>\n                    <li class=\"{{home_tab_cnt == 2 ? 'active' : ''}}\" (click)=\"homeTabChange(2)\"><a>Likes</a></li>\n                    <li class=\"{{home_tab_cnt == 3 ? 'active' : ''}}\" (click)=\"homeTabChange(3)\"><a>Comments</a></li>\n                </ul>\n            </div>\n            <div>\n                <h3 class=\"Last-7-Days-April-2\">Last {{analytics_days}} Days: {{show_duration_date}}</h3>\n                <div class=\"graph_container\">\n                    <!-- <img src=\"img/graph.jpg\" /> -->\n                    <div [chart]=\"artist_chart\"></div>\n                </div>\n            </div>\n            <div>\n                <h3 class=\"Audience-Overview\">Top Artists </h3>\n                <div class=\"artists_table table-responsive\">\n                    <table class=\"table\">\n                        <thead>\n                          <tr>\n                            <th>N<sup>O</sup></th>\n                            <th>Artist Name</th>\n                            <th>Location</th>\n                            <th>Gender</th>\n                            <th>Music Genre</th>\n                            <th>Tracks</th>\n                            <th>Votes</th>\n                            <th>Likes</th>\n                            <th>Followers</th>\n                            <th>Comments</th>\n                          </tr>\n                        </thead>\n                        <tbody>\n                          <tr *ngFor=\"let artist of artist_vote['artist'];let i = index;\">\n                            <td>{{i+1}}.</td>\n                            <td>{{artist.first_name + ' '+ artist.last_name}}</td>\n                            <td>New Youk</td>\n                            <td>{{artist.gender}}</td>\n                            <td>{{artist['music_type']['name']}}</td>\n                            <td>{{artist.no_of_tracks}}</td>\n                            <td class=\"td_img\"><img src=\"img/vote.png\"/>{{artist.no_of_votes}}</td>\n                            <td class=\"td_img\"><img src=\"img/likes.png\"/>{{artist.no_of_likes}}</td>\n                            <td class=\"td_img\"><img src=\"img/followers.png\"/>{{artist.no_of_followers}}</td>\n                            <td class=\"td_img\"><img src=\"img/comments.png\"/>{{artist.no_of_comments}}</td>                                \n                          </tr>\n                        </tbody>\n                      </table>\n                </div>\n            </div>\n            <div>\n                <h3 class=\"Audience-Overview\">Top Locations </h3>\n                <div class=\"location_top\">\n                    <img src=\"img/location_img.jpg\" />\n                </div>\n            </div>\n        </div>\n    </div>\n    <!-- /#page-content-wrapper -->"
+
+/***/ }),
+
+/***/ "../../../../../src/app/admin/home/home.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return HomeComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__home_service__ = __webpack_require__("../../../../../src/app/admin/home/home.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_angular_highcharts__ = __webpack_require__("../../../../angular-highcharts/angular-highcharts.es5.js");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
 var HomeComponent = /** @class */ (function () {
-    function HomeComponent() {
+    function HomeComponent(HomeService) {
+        this.HomeService = HomeService;
+        this.artist_vote = {};
+        this.home_tab_cnt = 1;
+        this.analytics_days = 7;
+        this.show_duration_date = '';
+        this.artist_chart = '';
         console.log("Admin dashboard component");
     }
     HomeComponent.prototype.ngOnInit = function () {
+        this.getMaxVoteAritst({ day: this.analytics_days });
+        this.calculateDateFromDays(this.analytics_days);
+    };
+    HomeComponent.prototype.homeTabChange = function (index) {
+        this.home_tab_cnt = index;
+        if (index == 1) {
+            this.getMaxVoteAritst({ day: this.analytics_days });
+        }
+        else if (index == 2) {
+            this.getMaxLikeAritst({ day: this.analytics_days });
+        }
+        else {
+            this.getMaxCommentAritst({ day: this.analytics_days });
+        }
+    };
+    HomeComponent.prototype.calculateDateFromDays = function (days) {
+        var date = new Date();
+        var last = new Date(date.getTime() - (days * 24 * 60 * 60 * 1000));
+        this.show_duration_date = this.formatDate(last) + ' - ' + this.formatDate(date);
+    };
+    HomeComponent.prototype.formatDate = function (date) {
+        var monthNames = [
+            "January", "February", "March",
+            "April", "May", "June", "July",
+            "August", "September", "October",
+            "November", "December"
+        ];
+        var day = date.getDate();
+        var monthIndex = date.getMonth();
+        var year = date.getFullYear();
+        return monthNames[monthIndex] + ' ' + day + ', ' + year;
+    };
+    HomeComponent.prototype.changeAnalyticsDays = function () {
+        this.calculateDateFromDays(this.analytics_days);
+        if (this.home_tab_cnt == 1) {
+            this.getMaxVoteAritst({ day: this.analytics_days });
+        }
+        else if (this.home_tab_cnt == 2) {
+            this.getMaxLikeAritst({ day: this.analytics_days });
+        }
+        else {
+            this.getMaxCommentAritst({ day: this.analytics_days });
+        }
+    };
+    // Get all aritst based on max vote
+    HomeComponent.prototype.getMaxVoteAritst = function (data) {
+        var _this = this;
+        this.HomeService.getMaxVoteArtists(data).subscribe(function (response) {
+            _this.artist_vote = response;
+            _this.artistChart(response['day_vote']);
+        });
+    };
+    // Get all aritst based on max vote
+    HomeComponent.prototype.getMaxLikeAritst = function (data) {
+        var _this = this;
+        this.HomeService.getMaxLikeArtists(data).subscribe(function (response) {
+            _this.artist_vote = response;
+            _this.artistChart(response['likes']);
+        });
+    };
+    // Get all aritst based on max vote
+    HomeComponent.prototype.getMaxCommentAritst = function (data) {
+        var _this = this;
+        this.HomeService.getMaxCommentArtists(data).subscribe(function (response) {
+            _this.artist_vote = response;
+            _this.artistChart(response['comment']);
+        });
+    };
+    // Artist chart
+    HomeComponent.prototype.artistChart = function (data) {
+        var result = [0, 0, 0, 0, 0, 0, 0];
+        data.forEach(function (ele) {
+            result[ele['_id']] = ele.count;
+        });
+        this.artist_chart = new __WEBPACK_IMPORTED_MODULE_2_angular_highcharts__["a" /* Chart */]({
+            chart: {
+                type: 'area',
+                height: 200
+            },
+            title: {
+                text: ''
+            },
+            xAxis: {
+                categories: ['M', 'T', 'W', 'T', 'F', 'S', 'S'],
+                labels: {
+                    enabled: true
+                },
+                tickmarkPlacement: 'on',
+                minorTickLength: 0,
+                tickLength: 0
+            },
+            yAxis: {
+                visible: true
+            },
+            series: [
+                {
+                    name: 'Artist',
+                    color: '#9b26b0',
+                    data: result
+                }
+            ]
+        });
     };
     HomeComponent = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
@@ -178,9 +749,70 @@ var HomeComponent = /** @class */ (function () {
             template: __webpack_require__("../../../../../src/app/admin/home/home.component.html"),
             styleUrls: []
         }),
-        __metadata("design:paramtypes", [])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__home_service__["a" /* HomeService */]])
     ], HomeComponent);
     return HomeComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/admin/home/home.service.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return HomeService; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common_http__ = __webpack_require__("../../../common/esm5/http.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_add_operator_toPromise__ = __webpack_require__("../../../../rxjs/_esm5/add/operator/toPromise.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_add_operator_toPromise___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_rxjs_add_operator_toPromise__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__environments_environment__ = __webpack_require__("../../../../../src/environments/environment.ts");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+var HomeService = /** @class */ (function () {
+    function HomeService(http) {
+        this.http = http;
+        this.api_host = __WEBPACK_IMPORTED_MODULE_3__environments_environment__["a" /* environment */].API_URL;
+        this.user = '';
+        this.headers = '';
+        // this.user = JSON.parse(localStorage.getItem('user'));
+        // this.headers = new HttpHeaders({ 'x-access-token' : this.user.token });  
+    }
+    // Get artist details who has max vote
+    HomeService.prototype.getMaxVoteArtists = function (data) {
+        this.user = JSON.parse(localStorage.getItem('user'));
+        this.headers = new __WEBPACK_IMPORTED_MODULE_1__angular_common_http__["d" /* HttpHeaders */]({ 'x-access-token': this.user.token });
+        return this.http.post(this.api_host + "/admin/home_vote", data, { headers: this.headers });
+    };
+    // Get artist details who has max likes
+    HomeService.prototype.getMaxLikeArtists = function (data) {
+        this.user = JSON.parse(localStorage.getItem('user'));
+        this.headers = new __WEBPACK_IMPORTED_MODULE_1__angular_common_http__["d" /* HttpHeaders */]({ 'x-access-token': this.user.token });
+        return this.http.post(this.api_host + "/admin/home_likes", data, { headers: this.headers });
+    };
+    // Get artist details who has max comments
+    HomeService.prototype.getMaxCommentArtists = function (data) {
+        this.user = JSON.parse(localStorage.getItem('user'));
+        this.headers = new __WEBPACK_IMPORTED_MODULE_1__angular_common_http__["d" /* HttpHeaders */]({ 'x-access-token': this.user.token });
+        return this.http.post(this.api_host + "/admin/home_comment", data, { headers: this.headers });
+    };
+    HomeService = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Injectable"])(),
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__angular_common_http__["a" /* HttpClient */]])
+    ], HomeService);
+    return HomeService;
 }());
 
 
@@ -217,7 +849,7 @@ var LayoutModule = /** @class */ (function () {
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["NgModule"])({
             imports: [
                 __WEBPACK_IMPORTED_MODULE_1__angular_common__["b" /* CommonModule */],
-                __WEBPACK_IMPORTED_MODULE_5__angular_forms__["e" /* ReactiveFormsModule */],
+                __WEBPACK_IMPORTED_MODULE_5__angular_forms__["f" /* ReactiveFormsModule */],
                 __WEBPACK_IMPORTED_MODULE_2__angular_router__["c" /* RouterModule */].forChild([])
             ],
             declarations: [__WEBPACK_IMPORTED_MODULE_3__admin_layout_component__["a" /* AdminLayoutComponent */], __WEBPACK_IMPORTED_MODULE_4__sidebar_sidebar_component__["a" /* SidebarComponent */]],
@@ -278,7 +910,7 @@ var AdminLayoutComponent = /** @class */ (function () {
 /***/ "../../../../../src/app/admin/sidebar/sidebar.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<!-- Sidebar -->\n<div class=\"top_container\">\n        <ul class=\"profile_container\">\n            <li class=\"sidebar-brand\">\n                <a class=\"profile_name\" href=\"javascript:;\">\n                    <span class=\"user_profile\"><img src=\"img/user_profile.jpg\" /></span>\n                    <h3 class=\"user_name\">Rob Gales</h3>\n                    <h5 class=\"user_profession\">Admin</h5>\n                    <div class=\"dropdown\">\n                        <button type=\"button\" class=\"btn btn-primary dropdown-toggle drop_icon\" data-toggle=\"dropdown\">\n                        </button>\n                        <div class=\"dropdown-menu\">\n                            <a class=\"dropdown-item\" href=\"javascript:;\">Link 1</a>\n                            <a class=\"dropdown-item\" href=\"javascript:;\">Link 2</a>\n                            <a class=\"dropdown-item\" href=\"javascript:;\">Link 3</a>\n                        </div>\n                    </div>                      \n                </a>\n            </li>\n        </ul>\n         <a href=\"javascript:;menu-toggle\" class=\"btn btn-secondary\" id=\"menu-toggle\"><i class=\"fas fa-bars\"></i></a>\n        </div>\n    <div id=\"sidebar-wrapper\">\n\n        <ul class=\"sidebar-nav\">\n            <li class=\"home active\">\n                <a href=\"javascript:;\"><i></i>Home</a>\n            </li>\n            <li class=\"bell\">\n                <a href=\"javascript:;\"><i></i>Alert</a>\n            </li>\n            <li class=\"artist\">\n                <a href=\"javascript:;\"><i></i>Artist</a>\n            </li>\n            <li class=\"users\">\n                <a href=\"javascript:;\"><i></i>Users</a>\n            </li>\n            <li>\n                <hr/>\n            </li>\n            <li class=\"contest\">\n                <a href=\"javascript:;\"><i></i>Contest</a>\n            </li>\n            <li class=\"roles\">\n                <a href=\"javascript:;\"><i></i>Roles</a>\n            </li>\n        </ul>\n    </div>\n    <!-- /#sidebar-wrapper -->"
+module.exports = "<!-- Sidebar -->\n<div class=\"top_container\">\n    <ul class=\"profile_container\">\n        <li class=\"sidebar-brand\">\n            <a class=\"profile_name\" href=\"javascript:;\">\n                <span class=\"user_profile\">\n                    <img src=\"img/user_profile.jpg\" />\n                </span>\n                <h3 class=\"user_name\">Rob Gales</h3>\n                <h5 class=\"user_profession\">Admin</h5>\n                <div class=\"dropdown\" dropdown>\n                    <button type=\"button\" dropdownToggle class=\"btn btn-primary dropdown-toggle drop_icon\">\n                    </button>\n                    <ul id=\"dropdown-basic\" *dropdownMenu class=\"dropdown-menu\" role=\"menu\" aria-labelledby=\"button-basic\">\n                        <li role=\"menuitem\">\n                            <a class=\"dropdown-item\" href=\"#\">Action</a>\n                        </li>\n                        <li role=\"menuitem\">\n                            <a class=\"dropdown-item\" href=\"#\">Another action</a>\n                        </li>\n                        <li role=\"menuitem\">\n                            <a class=\"dropdown-item\" href=\"#\">Something else here</a>\n                        </li>\n                        <li class=\"divider dropdown-divider\"></li>\n                        <li role=\"menuitem\">\n                            <a class=\"dropdown-item\" href=\"#\">Separated link</a>\n                        </li>\n                    </ul>\n                </div>\n            </a>\n        </li>\n    </ul>\n    <a href=\"javascript:;menu-toggle\" class=\"btn btn-secondary\" id=\"menu-toggle\">\n        <i class=\"fas fa-bars\"></i>\n    </a>\n</div>\n<div id=\"sidebar-wrapper\">\n\n    <ul class=\"sidebar-nav\">\n        <li class=\"home\" routerLinkActive=\"active\">\n            <a href=\"javascript:;\" routerLink=\"/admin\">\n                <i></i>Home</a>\n        </li>\n        <li class=\"bell\" routerLinkActive=\"active\">\n            <a href=\"javascript:;\" routerLink=\"/admin/alerts\">\n                <i></i>Alert</a>\n        </li>\n        <li class=\"artist\" routerLinkActive=\"active\">\n            <a href=\"javascript:;\" routerLink=\"/admin/artist\">\n                <i></i>Artist</a>\n        </li>\n        <li class=\"users\" routerLinkActive=\"active\">\n            <a href=\"javascript:;\" routerLink=\"/admin/users\">\n                <i></i>Users</a>\n        </li>\n        <li>\n            <hr/>\n        </li>\n        <li class=\"contest\" routerLinkActive=\"active\">\n            <a href=\"javascript:;\" routerLink=\"/admin/contest\">\n                <i></i>Contest</a>\n        </li>\n        <li class=\"roles\" routerLinkActive=\"active\">\n            <a href=\"javascript:;\">\n                <i></i>Roles</a>\n        </li>\n        <li class=\"roles\" >\n            <a href=\"javascript:;\" (click)=\"logout()\">\n                <i></i>Logout</a>\n        </li>\n    </ul>\n</div>\n<!-- /#sidebar-wrapper -->"
 
 /***/ }),
 
@@ -288,6 +920,7 @@ module.exports = "<!-- Sidebar -->\n<div class=\"top_container\">\n        <ul c
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return SidebarComponent; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__("../../../router/esm5/router.js");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -298,11 +931,17 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 
+
 var SidebarComponent = /** @class */ (function () {
-    function SidebarComponent() {
+    function SidebarComponent(router) {
+        this.router = router;
         console.log("Admin dashboard component");
     }
     SidebarComponent.prototype.ngOnInit = function () {
+    };
+    SidebarComponent.prototype.logout = function () {
+        localStorage.clear();
+        this.router.navigate(['/admin/login']);
     };
     SidebarComponent = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
@@ -310,9 +949,369 @@ var SidebarComponent = /** @class */ (function () {
             template: __webpack_require__("../../../../../src/app/admin/sidebar/sidebar.component.html"),
             styleUrls: []
         }),
-        __metadata("design:paramtypes", [])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* Router */]])
     ], SidebarComponent);
     return SidebarComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/admin/users/users.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<!-- Page Content -->\n<div id=\"page-content-wrapper\">           \n  <div class=\"artist_content\" style=\"display: block;\">\n    <div class=\"container-fluid\">\n      <h3 class=\"Audience-Overview\">Search Users </h3>\n      <div class=\"search-input header_search\">\n          <i class=\"fa fa-search\" aria-hidden=\"true\"></i>\n        <input type=\"text\" name=\"search\" [(ngModel)]=\"search_str\" (keyup)=\"filterBasedOnSearch($event)\" placeholder=\"Search by User Name\">\n      </div>\n      <div class=\"row\">\n        \n        <div class=\"col-md-10 col-sm-12 col-xs-12\">\n          <div class=\"sub-menu-filter\">\n          <div class=\"artist_heading\">Region</div>\n            <div class=\"row\">\n              <div class=\"col-md-2 col-sm-4 col-xs-4\">\n                <div class=\"filter-subhead\">Northeast</div>\n                <ul>\n                  <li>\n                    <div class=\"checkbox\">\n                        <label>\n                          <input type=\"checkbox\" value=\"\">\n                          <div class=\"chk_check\"></div>\n                          <span>Marryland</span>\n                        </label>\n                    </div>\n                  </li>\n                  <li>\n                    <div class=\"checkbox\">\n                        <label>\n                          <input type=\"checkbox\" value=\"\">\n                          <div class=\"chk_check\"></div>\n                          <span>New Jersey</span>\n                        </label>\n                    </div>\n                  </li>\n                  <li>\n                    <div class=\"checkbox\">\n                        <label>\n                          <input type=\"checkbox\" value=\"\">\n                          <div class=\"chk_check\"></div>\n                          <span>Pennsylvania</span>\n                        </label>\n                    </div>\n                  </li>\n                  <li>\n                    <div class=\"checkbox\">\n                        <label>\n                          <input checked=\"\" type=\"checkbox\" value=\"\">\n                          <div class=\"chk_check\"></div>\n                          <span>New York</span>\n                        </label>\n                    </div>\n                  </li>\n                  <li>\n                    <div class=\"checkbox\">\n                        <label>\n                          <input type=\"checkbox\" value=\"\">    \n                          <div class=\"chk_check\"></div>\n                          <span>Delaware</span>\n                        </label>\n                    </div>\n                  </li>\n                </ul>\n              </div>\n              <div class=\"col-md-2 col-sm-4 col-xs-4\">\n                <div class=\"filter-subhead\">southeast</div>\n                <ul>\n                  <li>\n                    <div class=\"checkbox\">\n                        <label>\n                          <input type=\"checkbox\" value=\"\">\n                          <div class=\"chk_check\"></div>\n                          <span>Marryland</span>\n                        </label>\n                    </div>\n                  </li>\n                  <li>\n                    <div class=\"checkbox\">\n                        <label>\n                          <input type=\"checkbox\" value=\"\">\n                          <div class=\"chk_check\"></div>\n                          <span>New Jersey</span>\n                        </label>\n                    </div>\n                  </li>\n                  <li>\n                    <div class=\"checkbox\">\n                        <label>\n                          <input type=\"checkbox\" value=\"\">\n                          <div class=\"chk_check\"></div>\n                          <span>Pennsylvania</span>\n                        </label>\n                    </div>\n                  </li>\n                  <li>\n                    <div class=\"checkbox\">\n                        <label>\n                          <input checked=\"\" type=\"checkbox\" value=\"\"> \n                          <div class=\"chk_check\"></div>\n                          <span>New York</span>\n                        </label>\n                    </div>\n                  </li>\n                  <li>\n                    <div class=\"checkbox\">\n                        <label>\n                          <input type=\"checkbox\" value=\"\">    \n                          <div class=\"chk_check\"></div>\n                          <span>Delaware</span>\n                        </label>\n                    </div>\n                  </li>\n                </ul>\n              </div>\n              <div class=\"col-md-2 col-sm-4 col-xs-4\">\n                <div class=\"filter-subhead\">Midwest</div>\n                <ul>\n                  <li>\n                    <div class=\"checkbox\">\n                        <label>\n                          <input type=\"checkbox\" value=\"\">\n                          <div class=\"chk_check\"></div>\n                          <span>Marryland</span>\n                        </label>\n                    </div>\n                  </li>\n                  <li>\n                    <div class=\"checkbox\">\n                        <label>\n                          <input type=\"checkbox\" value=\"\">\n                          <div class=\"chk_check\"></div>\n                          <span>New Jersey</span>\n                        </label>\n                    </div>\n                  </li>\n                  <li>\n                    <div class=\"checkbox\">\n                        <label>\n                          <input type=\"checkbox\" value=\"\">\n                          <div class=\"chk_check\"></div>\n                          <span>Pennsylvania</span>\n                        </label>\n                    </div>\n                  </li>\n                  <li>\n                    <div class=\"checkbox\">\n                        <label>\n                          <input checked=\"\" type=\"checkbox\" value=\"\"> \n                          <div class=\"chk_check\"></div>\n                          <span>New York</span>\n                        </label>\n                    </div>\n                  </li>\n                  <li>\n                    <div class=\"checkbox\">\n                        <label>\n                          <input type=\"checkbox\" value=\"\">    \n                          <div class=\"chk_check\"></div>\n                          <span>Delaware</span>\n                        </label>\n                    </div>\n                  </li>\n                </ul>\n              </div>\n              <div class=\"col-md-2 col-sm-4 col-xs-4\">\n                <div class=\"filter-subhead\">Southwest</div>\n                <ul>\n                  <li>\n                    <div class=\"checkbox\">\n                        <label>\n                          <input type=\"checkbox\" value=\"\">\n                          <div class=\"chk_check\"></div>\n                          <span>Marryland</span>\n                        </label>\n                    </div>\n                  </li>\n                  <li>\n                    <div class=\"checkbox\">\n                        <label>\n                          <input type=\"checkbox\" value=\"\">\n                          <div class=\"chk_check\"></div>\n                          <span>New Jersey</span>\n                        </label>\n                    </div>\n                  </li>\n                  <li>\n                    <div class=\"checkbox\">\n                        <label>\n                          <input type=\"checkbox\" value=\"\">\n                          <div class=\"chk_check\"></div>\n                          <span>Pennsylvania</span>\n                        </label>\n                    </div>\n                  </li>\n                  <li>\n                    <div class=\"checkbox\">\n                        <label>\n                          <input checked=\"\" type=\"checkbox\" value=\"\"> \n                          <div class=\"chk_check\"></div>\n                          <span>New York</span>\n                        </label>\n                    </div>\n                  </li>\n                  <li>\n                    <div class=\"checkbox\">\n                        <label>\n                          <input type=\"checkbox\" value=\"\">    \n                          <div class=\"chk_check\"></div>\n                          <span>Delaware</span>\n                        </label>\n                    </div>\n                  </li>\n                </ul>\n              </div>\n              <div class=\"col-md-2 col-sm-4 col-xs-4\">\n                <div class=\"filter-subhead\">West</div>\n                <ul>\n                  <li>\n                    <div class=\"checkbox\">\n                        <label>\n                          <input type=\"checkbox\" value=\"\">\n                          <div class=\"chk_check\"></div>\n                          <span>Marryland</span>\n                        </label>\n                    </div>\n                  </li>\n                  <li>\n                    <div class=\"checkbox\">\n                        <label>\n                          <input type=\"checkbox\" value=\"\">\n                          <div class=\"chk_check\"></div>\n                          <span>New Jersey</span>\n                        </label>\n                    </div>\n                  </li>\n                  <li>\n                    <div class=\"checkbox\">\n                        <label>\n                          <input type=\"checkbox\" value=\"\">\n                          <div class=\"chk_check\"></div>\n                          <span>Pennsylvania</span>\n                        </label>\n                    </div>\n                  </li>\n                  <li>\n                    <div class=\"checkbox\">\n                        <label>\n                          <input checked=\"\" type=\"checkbox\" value=\"\"> \n                          <div class=\"chk_check\"></div>\n                          <span>New York</span>\n                        </label>\n                    </div>\n                  </li>\n                  <li>\n                    <div class=\"checkbox\">\n                        <label>\n                          <input type=\"checkbox\" value=\"\">    \n                          <div class=\"chk_check\"></div>\n                          <span>Delaware</span>\n                        </label>\n                    </div>\n                  </li>\n                </ul>\n              </div>\n              <div class=\"col-md-2 col-sm-4 col-xs-4\">\n                <div class=\"filter-subhead\">other</div>\n                <ul>\n                  <li>\n                    <div class=\"checkbox\">\n                        <label>\n                          <input type=\"checkbox\" value=\"\">\n                          <div class=\"chk_check\"></div>\n                          <span>Puerto Rico</span>\n                        </label>\n                    </div>\n                  </li>\n                </ul>\n              </div>\n            </div>\n          </div>\n        </div>\n      </div>\n    </div>\n  </div>\n     <div>\n          <h3 class=\"Audience-Overview\">Users </h3>\n          <div class=\"dropdown table_dropdown custom_dropdown\">\n            <select class=\"form-control\" id=\"sort\" name=\"sort_by\" [(ngModel)]=\"sort_by\" (change)=\"sortUser($event.target.value)\">\n              <option value=\"-1\">Newest First</option>\n              <option value=\"1\">Newest Last</option>\n            </select>\n          </div> \n          <div class=\"artists_table copyright_table table-responsive\">\n            <table class=\"table\" datatable [dtOptions]=\"dtOptions\">\n                  <thead>\n                    <tr>\n                      <th>N<sup>O</sup></th>\n                      <th>User Name</th>\n                      <th>Status</th>\n                      <th>Artist Followers</th>\n                      <th>Votes Casted</th>\n                      <th>Likes Casted</th>\n                      <th>Comments</th>\n                      <th>Actions</th>\n                    </tr>\n                  </thead>\n                  <tbody>\n                    <tr *ngFor=\"let user of user_data; let i = index;\">\n                      <td>{{i+1}}.</td>\n                      <td><a href=\"javascript:;\" (click)=\"openModal(template)\">{{user['first_name']+' '+user['last_name']}}</a></td>\n                      <td class=\"status {{user['status'] == 'active' ? 'active_status' : user['status'] == 'suspended' ? 'suspend_status' : ''}}\"><span>{{user['status']}}</span></td>  \n                      <td class=\"td_img\"><img src=\"img/followers.png\"/>{{user['no_of_followers']}}</td>                             \n                      <td class=\"td_img\"><img src=\"img/vote.png\"/>{{user['no_of_votes']}}</td>\n                      <td class=\"td_img\"><img src=\"img/likes.png\"/>{{user['no_of_likes']}}</td>\n                      <td class=\"td_img\"><img src=\"img/comments.png\"/>{{user['no_of_followers']}}</td> \n                      <td class=\"td_img\"><img src=\"img/suspend.png\">\n                        <a href=\"javascript:;\" (click)=\"suspendUser(user['_id'])\">{{user['status'] == 'suspended' ? 'Un-suspend' : 'suspend'}}</a>\n                      </td>                               \n                    </tr>                     \n                  </tbody>\n                </table>\n          </div>\n      </div>\n</div>\n<!-- /#page-content-wrapper -->\n<ng-template #template>\n  <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"modalRef.hide()\">\n    <span aria-hidden=\"true\">&times;</span>\n  </button>\n  <div class=\"modal-body\">\n    This is a modal.\n  </div>\n</ng-template>"
+
+/***/ }),
+
+/***/ "../../../../../src/app/admin/users/users.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return UsersComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__users_service__ = __webpack_require__("../../../../../src/app/admin/users/users.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_angular_datatables__ = __webpack_require__("../../../../angular-datatables/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_ngx_toastr__ = __webpack_require__("../../../../ngx-toastr/fesm5/ngx-toastr.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_ngx_bootstrap_modal__ = __webpack_require__("../../../../ngx-bootstrap/modal/index.js");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+
+var DataTablesResponse = /** @class */ (function () {
+    function DataTablesResponse() {
+    }
+    return DataTablesResponse;
+}());
+var UsersComponent = /** @class */ (function () {
+    function UsersComponent(UsersService, toastr, modalService) {
+        this.UsersService = UsersService;
+        this.toastr = toastr;
+        this.modalService = modalService;
+        this.dtOptions = {};
+        this.user_data = [];
+        this.search_str = '';
+        this.sort_by = -1;
+        console.log("Admin dashboard component");
+    }
+    UsersComponent.prototype.ngOnInit = function () {
+        var that = this;
+        this.dtOptions = {
+            pagingType: 'full_numbers',
+            pageLength: 5,
+            serverSide: true,
+            processing: true,
+            searching: false,
+            ordering: false,
+            lengthChange: false,
+            ajax: function (dataTablesParameters, callback) {
+                setTimeout(function () {
+                    dataTablesParameters['search'] = that.search_str;
+                    dataTablesParameters['sort_by'] = that.sort_by;
+                    that.UsersService.getAllUser(dataTablesParameters).subscribe(function (response) {
+                        that.user_data = response['user']['user'];
+                        callback({
+                            recordsTotal: response['user']['recordsTotal'],
+                            recordsFiltered: response['user']['recordsTotal'],
+                            data: []
+                        });
+                    });
+                }, 0);
+            }
+        };
+    };
+    // suspend user
+    UsersComponent.prototype.suspendUser = function (id) {
+        var _this = this;
+        this.UsersService.suspendUser(id).subscribe(function (response) {
+            _this.toastr.success(response['message'], 'Success!');
+            _this.datatableElement.dtInstance.then(function (dtInstance) {
+                dtInstance.draw();
+            });
+        }, function (error) {
+            _this.toastr.error(error['error'].message, 'Error!');
+        });
+    };
+    // Filter user based on search string
+    UsersComponent.prototype.filterBasedOnSearch = function (e) {
+        if (e.keyCode == 13) {
+            var that = this;
+            this.datatableElement.dtInstance.then(function (dtInstance) {
+                dtInstance.draw();
+            });
+        }
+    };
+    // Sort user data
+    UsersComponent.prototype.sortUser = function (val) {
+        var that = this;
+        this.datatableElement.dtInstance.then(function (dtInstance) {
+            dtInstance.draw();
+        });
+    };
+    UsersComponent.prototype.openModal = function (template) {
+        this.modalRef = this.modalService.show(template, { backdrop: 'static' });
+    };
+    __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewChild"])(__WEBPACK_IMPORTED_MODULE_2_angular_datatables__["a" /* DataTableDirective */]),
+        __metadata("design:type", __WEBPACK_IMPORTED_MODULE_2_angular_datatables__["a" /* DataTableDirective */])
+    ], UsersComponent.prototype, "datatableElement", void 0);
+    UsersComponent = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+            selector: 'app-users',
+            template: __webpack_require__("../../../../../src/app/admin/users/users.component.html"),
+            styleUrls: []
+        }),
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__users_service__["a" /* UsersService */],
+            __WEBPACK_IMPORTED_MODULE_3_ngx_toastr__["b" /* ToastrService */],
+            __WEBPACK_IMPORTED_MODULE_4_ngx_bootstrap_modal__["a" /* BsModalService */]])
+    ], UsersComponent);
+    return UsersComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/admin/users/users.service.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return UsersService; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common_http__ = __webpack_require__("../../../common/esm5/http.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_add_operator_toPromise__ = __webpack_require__("../../../../rxjs/_esm5/add/operator/toPromise.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_add_operator_toPromise___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_rxjs_add_operator_toPromise__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__environments_environment__ = __webpack_require__("../../../../../src/environments/environment.ts");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+var UsersService = /** @class */ (function () {
+    function UsersService(http) {
+        this.http = http;
+        this.api_host = __WEBPACK_IMPORTED_MODULE_3__environments_environment__["a" /* environment */].API_URL;
+        this.user = '';
+        this.headers = '';
+        this.user = JSON.parse(localStorage.getItem('user'));
+        this.headers = new __WEBPACK_IMPORTED_MODULE_1__angular_common_http__["d" /* HttpHeaders */]({ 'x-access-token': this.user.token });
+    }
+    // Get all artist details
+    UsersService.prototype.getAllUser = function (data) {
+        return this.http.post(this.api_host + "/admin/get_user", data, { headers: this.headers });
+    };
+    // suspend artist
+    UsersService.prototype.suspendUser = function (id) {
+        return this.http.post(this.api_host + "/admin/suspend/user/" + id, null, { headers: this.headers });
+    };
+    UsersService = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Injectable"])(),
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__angular_common_http__["a" /* HttpClient */]])
+    ], UsersService);
+    return UsersService;
+}());
+
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/admin_login/admin_login.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"container\">    \n  <div id=\"loginbox\" style=\"margin-top:50px;\" class=\"mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2\">                    \n      <div class=\"panel panel-info\" >\n        <div class=\"panel-heading\">\n            <div class=\"panel-title\">Sign In</div>\n        </div>     \n        <div style=\"padding-top:30px\" class=\"panel-body\" >\n          <div style=\"display:none\" id=\"login-alert\" class=\"alert alert-danger col-sm-12\"></div>\n            <form id=\"loginform\" class=\"form-horizontal\" role=\"form\" [formGroup]=\"admin_formgroup\">\n                <div class=\"form-group\">\n                    <input id=\"login-username\" type=\"text\" formControlName=\"email\"  [(ngModel)]=\"admin_data.email\" class=\"form-control\" name=\"username\" value=\"\" placeholder=\"username or email\">                                        \n                    <div *ngIf=\"!admin_formgroup.controls['email'].valid && admin_formgroup.controls['email'].dirty\">\n                      <span *ngIf=\"admin_formgroup.controls['email'].errors['required']\" class=\"text-danger\">Email is required.</span>\n                      <span *ngIf=\"admin_formgroup.controls['email'].errors['email']\" class=\"text-danger\">Email Mismatched.</span>\n                    </div>\n                </div>\n                <div class=\"form-group\">\n                    <input id=\"login-password\" type=\"password\" formControlName=\"password\"  [(ngModel)]=\"admin_data.password\" class=\"form-control\" name=\"password\" placeholder=\"password\">\n                    <div *ngIf=\"!admin_formgroup.controls['password'].valid && admin_formgroup.controls['password'].dirty\">\n                      <span *ngIf=\"admin_formgroup.controls['password'].errors['required']\" class=\"text-danger\">Password is required.</span>\n                    </div>\n                </div>                          \n                <!-- <div class=\"input-group\">\n                  <div class=\"checkbox\">\n                    <label>\n                      <input id=\"login-remember\" type=\"checkbox\" name=\"remember\" value=\"1\"> Remember me\n                    </label>\n                  </div>\n                </div> -->\n                <div  class=\"form-group\">\n                    <!-- Button -->\n                    <button type=\"submit\" class=\"btn btn-success\" (click)=\"signin()\" [disabled]=\"!admin_formgroup.valid && show_spinner\">Login <i *ngIf=\"show_spinner\" class=\"fa fa-spinner fa-spin\"></i> </button>\n                </div> \n              </form>     \n        </div>                     \n    </div>  \n  </div>\n</div>"
+
+/***/ }),
+
+/***/ "../../../../../src/app/admin_login/admin_login.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AdminLoginComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__admin_login_service__ = __webpack_require__("../../../../../src/app/admin_login/admin_login.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_forms__ = __webpack_require__("../../../forms/esm5/forms.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_ngx_toastr__ = __webpack_require__("../../../../ngx-toastr/fesm5/ngx-toastr.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__angular_router__ = __webpack_require__("../../../router/esm5/router.js");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+
+var AdminLoginComponent = /** @class */ (function () {
+    function AdminLoginComponent(AdminLoginService, fb, toastr, router) {
+        this.AdminLoginService = AdminLoginService;
+        this.fb = fb;
+        this.toastr = toastr;
+        this.router = router;
+        this.admin_data = {};
+        this.show_spinner = false;
+        this.admin_formgroup = this.fb.group({
+            'email': ['', [__WEBPACK_IMPORTED_MODULE_2__angular_forms__["g" /* Validators */].required, __WEBPACK_IMPORTED_MODULE_2__angular_forms__["g" /* Validators */].email]],
+            'password': ['', [__WEBPACK_IMPORTED_MODULE_2__angular_forms__["g" /* Validators */].required]],
+        });
+    }
+    AdminLoginComponent.prototype.ngOnInit = function () {
+    };
+    AdminLoginComponent.prototype.signin = function () {
+        var _this = this;
+        this.show_spinner = true;
+        this.AdminLoginService.login(this.admin_data).subscribe(function (response) {
+            console.log(response);
+            localStorage.setItem('user', JSON.stringify(response));
+            _this.router.navigate(['/admin']);
+        }, function (error) {
+            _this.toastr.error(error['error'].message, 'Error!');
+            _this.show_spinner = false;
+        }, function () {
+            _this.show_spinner = false;
+        });
+    };
+    AdminLoginComponent = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+            selector: 'app-admin_login',
+            template: __webpack_require__("../../../../../src/app/admin_login/admin_login.component.html"),
+            styleUrls: []
+        }),
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__admin_login_service__["a" /* AdminLoginService */], __WEBPACK_IMPORTED_MODULE_2__angular_forms__["a" /* FormBuilder */], __WEBPACK_IMPORTED_MODULE_3_ngx_toastr__["b" /* ToastrService */], __WEBPACK_IMPORTED_MODULE_4__angular_router__["b" /* Router */]])
+    ], AdminLoginComponent);
+    return AdminLoginComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/admin_login/admin_login.module.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AdminLoginModule; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common__ = __webpack_require__("../../../common/esm5/common.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_router__ = __webpack_require__("../../../router/esm5/router.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_forms__ = __webpack_require__("../../../forms/esm5/forms.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__admin_login_component__ = __webpack_require__("../../../../../src/app/admin_login/admin_login.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__admin_login_service__ = __webpack_require__("../../../../../src/app/admin_login/admin_login.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__angular_http__ = __webpack_require__("../../../http/esm5/http.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__angular_common_http__ = __webpack_require__("../../../common/esm5/http.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_ngx_image_cropper__ = __webpack_require__("../../../../ngx-image-cropper/ngx-image-cropper.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_ngx_toastr__ = __webpack_require__("../../../../ngx-toastr/fesm5/ngx-toastr.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__angular_platform_browser_animations__ = __webpack_require__("../../../platform-browser/esm5/animations.js");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+
+
+
+
+
+
+
+// import { HttpClientModule, HttpClient } from '@angular/common/http';
+
+
+
+
+var AdminLoginModule = /** @class */ (function () {
+    function AdminLoginModule() {
+    }
+    AdminLoginModule = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["NgModule"])({
+            imports: [
+                __WEBPACK_IMPORTED_MODULE_1__angular_common__["b" /* CommonModule */],
+                __WEBPACK_IMPORTED_MODULE_3__angular_forms__["b" /* FormsModule */],
+                __WEBPACK_IMPORTED_MODULE_6__angular_http__["a" /* HttpModule */],
+                __WEBPACK_IMPORTED_MODULE_7__angular_common_http__["b" /* HttpClientModule */],
+                __WEBPACK_IMPORTED_MODULE_3__angular_forms__["f" /* ReactiveFormsModule */],
+                __WEBPACK_IMPORTED_MODULE_8_ngx_image_cropper__["a" /* ImageCropperModule */],
+                __WEBPACK_IMPORTED_MODULE_10__angular_platform_browser_animations__["a" /* BrowserAnimationsModule */],
+                __WEBPACK_IMPORTED_MODULE_9_ngx_toastr__["a" /* ToastrModule */].forRoot(),
+                __WEBPACK_IMPORTED_MODULE_2__angular_router__["c" /* RouterModule */].forChild([
+                    { path: 'admin/login', component: __WEBPACK_IMPORTED_MODULE_4__admin_login_component__["a" /* AdminLoginComponent */] }
+                ])
+            ],
+            declarations: [__WEBPACK_IMPORTED_MODULE_4__admin_login_component__["a" /* AdminLoginComponent */]],
+            providers: [__WEBPACK_IMPORTED_MODULE_5__admin_login_service__["a" /* AdminLoginService */]]
+        })
+    ], AdminLoginModule);
+    return AdminLoginModule;
+}());
+
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/admin_login/admin_login.service.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AdminLoginService; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common_http__ = __webpack_require__("../../../common/esm5/http.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_add_operator_toPromise__ = __webpack_require__("../../../../rxjs/_esm5/add/operator/toPromise.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_add_operator_toPromise___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_rxjs_add_operator_toPromise__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__environments_environment__ = __webpack_require__("../../../../../src/environments/environment.ts");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+var AdminLoginService = /** @class */ (function () {
+    function AdminLoginService(http) {
+        this.http = http;
+        this.api_host = __WEBPACK_IMPORTED_MODULE_3__environments_environment__["a" /* environment */].API_URL;
+        this.user = '';
+        this.headers = '';
+        // this.user = JSON.parse(localStorage.getItem('user'));
+        // this.headers = new HttpHeaders({ 'x-access-token' : this.user.token });  
+    }
+    AdminLoginService.prototype.login = function (data) {
+        return this.http.post(this.api_host + "/admin_login", data);
+    };
+    AdminLoginService = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Injectable"])(),
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__angular_common_http__["a" /* HttpClient */]])
+    ], AdminLoginService);
+    return AdminLoginService;
 }());
 
 
@@ -350,6 +1349,7 @@ module.exports = "<router-outlet></router-outlet>"
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AppComponent; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ngx_bootstrap_utils__ = __webpack_require__("../../../../ngx-bootstrap/utils/index.js");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -360,10 +1360,12 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 
+
 var AppComponent = /** @class */ (function () {
     function AppComponent() {
         this.title = 'app';
         console.log("App component");
+        Object(__WEBPACK_IMPORTED_MODULE_1_ngx_bootstrap_utils__["d" /* setTheme */])('bs4'); // or 'bs4'
     }
     AppComponent = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
@@ -390,19 +1392,23 @@ var AppComponent = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_router__ = __webpack_require__("../../../router/esm5/router.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__app_component__ = __webpack_require__("../../../../../src/app/app.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_angular_highcharts__ = __webpack_require__("../../../../angular-highcharts/angular-highcharts.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__ng_bootstrap_ng_bootstrap__ = __webpack_require__("../../../../@ng-bootstrap/ng-bootstrap/index.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__dashboard_layout_layout_module__ = __webpack_require__("../../../../../src/app/dashboard-layout/layout.module.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__admin_admin_layout_module__ = __webpack_require__("../../../../../src/app/admin/admin_layout.module.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__register_register_module__ = __webpack_require__("../../../../../src/app/register/register.module.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__email_varification_email_varification_module__ = __webpack_require__("../../../../../src/app/email_varification/email_varification.module.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__forget_password_forget_password_module__ = __webpack_require__("../../../../../src/app/forget_password/forget_password.module.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__shared_auth_service__ = __webpack_require__("../../../../../src/app/shared/auth.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_angular_datatables__ = __webpack_require__("../../../../angular-datatables/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__ng_bootstrap_ng_bootstrap__ = __webpack_require__("../../../../@ng-bootstrap/ng-bootstrap/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__dashboard_layout_layout_module__ = __webpack_require__("../../../../../src/app/dashboard-layout/layout.module.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__admin_admin_layout_module__ = __webpack_require__("../../../../../src/app/admin/admin_layout.module.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__register_register_module__ = __webpack_require__("../../../../../src/app/register/register.module.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__admin_login_admin_login_module__ = __webpack_require__("../../../../../src/app/admin_login/admin_login.module.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__email_varification_email_varification_module__ = __webpack_require__("../../../../../src/app/email_varification/email_varification.module.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__forget_password_forget_password_module__ = __webpack_require__("../../../../../src/app/forget_password/forget_password.module.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__shared_auth_service__ = __webpack_require__("../../../../../src/app/shared/auth.service.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+
+
 
 
 
@@ -425,16 +1431,18 @@ var AppModule = /** @class */ (function () {
             ],
             imports: [
                 __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser__["BrowserModule"],
-                __WEBPACK_IMPORTED_MODULE_6__dashboard_layout_layout_module__["a" /* LayoutModule */],
-                __WEBPACK_IMPORTED_MODULE_8__register_register_module__["a" /* RegisterModule */],
-                __WEBPACK_IMPORTED_MODULE_7__admin_admin_layout_module__["a" /* AdminLayoutModule */],
-                __WEBPACK_IMPORTED_MODULE_9__email_varification_email_varification_module__["a" /* EamilVarificationModule */],
-                __WEBPACK_IMPORTED_MODULE_10__forget_password_forget_password_module__["a" /* ForgetPasswordModule */],
-                __WEBPACK_IMPORTED_MODULE_5__ng_bootstrap_ng_bootstrap__["b" /* NgbModule */].forRoot(),
+                __WEBPACK_IMPORTED_MODULE_7__dashboard_layout_layout_module__["a" /* LayoutModule */],
+                __WEBPACK_IMPORTED_MODULE_9__register_register_module__["a" /* RegisterModule */],
+                __WEBPACK_IMPORTED_MODULE_10__admin_login_admin_login_module__["a" /* AdminLoginModule */],
+                __WEBPACK_IMPORTED_MODULE_8__admin_admin_layout_module__["a" /* AdminLayoutModule */],
+                __WEBPACK_IMPORTED_MODULE_11__email_varification_email_varification_module__["a" /* EamilVarificationModule */],
+                __WEBPACK_IMPORTED_MODULE_12__forget_password_forget_password_module__["a" /* ForgetPasswordModule */],
+                __WEBPACK_IMPORTED_MODULE_6__ng_bootstrap_ng_bootstrap__["b" /* NgbModule */].forRoot(),
                 __WEBPACK_IMPORTED_MODULE_4_angular_highcharts__["b" /* ChartModule */],
+                __WEBPACK_IMPORTED_MODULE_5_angular_datatables__["b" /* DataTablesModule */],
                 __WEBPACK_IMPORTED_MODULE_2__angular_router__["c" /* RouterModule */].forRoot([], { useHash: false })
             ],
-            providers: [__WEBPACK_IMPORTED_MODULE_11__shared_auth_service__["a" /* AuthService */]],
+            providers: [__WEBPACK_IMPORTED_MODULE_13__shared_auth_service__["a" /* AuthService */]],
             bootstrap: [__WEBPACK_IMPORTED_MODULE_3__app_component__["a" /* AppComponent */]]
         })
     ], AppModule);
@@ -688,7 +1696,7 @@ var ArtistService = /** @class */ (function () {
 /***/ "../../../../../src/app/dashboard-layout/artist_comments/comments.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"comment-wrap\">\n  <div class=\"container\">\n      <div class=\"row\">\n        <div class=\"col-md-2 col-sm-3 col-xs-6\">\n          <div class=\"profile-img\">\n            <a href=\"javascript:;\"><img src=\"{{artistdata.image ? artist_img_url+artistdata.image : 'img/profile-img.png'}}\" alt=\"Profile Images\"></a>\n          </div>\n        </div>\n        <div class=\"col-md-10 col-sm-8 col-xs-6\">\n          <div class=\"artist-name\"><h2><a href=\"javascript:;\">{{artistdata.first_name+' '+artistdata.last_name}}</a></h2>\n            <span class=\"{{artistdata.music_type['alias']}} tag\">{{artistdata.music_type['name']}}</span>\n          </div>\n          <div class=\"profile-location\"><i class=\"fa fa-map-marker\" aria-hidden=\"true\"></i> <span>New York</span></div>\n          <div class=\"profile-description\">\n            <p>{{artistdata.description}}</p>\n          </div>\n        </div>\n        <div class=\"col-md-12\">\n          <div class=\"profile-detail-wrap\">\n            <div class=\"row\">\n              <div class=\"col-md-12 col-sm-12 col-xs-12\">\n                <div class=\"comments\">\n                  <h3 class=\"num-cmt\">{{artistcomments.length}} Comments</h3>\n                  <div class=\"login-alert\">Please Login to leave your comment</div>\n                  <div class=\"comment-block col-md-12 col-sm-12 col-xs-12\" *ngFor=\"let comment of artistcomments;\">\n                    <div class=\"s-name\" *ngIf=\"comment.track_id\">{{comment.track_id.name}}</div>\n                    <div class=\"s-img\"><img src=\"{{comment.user_id.image ? user_img_url+comment.user_id.image : 'img/fan1.png' }}\" alt=\"img\"></div>\n                    <div class=\"cm-date-name\">\n                      <h6>{{comment.user_id.first_name+ ' '+comment.user_id.last_name}}.</h6>\n                      <p>{{comment.created_at | timeAgo}}</p>\n                      <div class=\"profile-descriptions\">\n                        <p>{{comment.comment}}</p>\n                      </div>\n                    </div>\n                  </div>\n                </div>\n              </div>\n          </div>\n        </div>\n      </div>\n    </div>\n  </div>\n</div>"
+module.exports = "<div class=\"comment-wrap\">\n  <div class=\"container\">\n      <div class=\"row\">\n        <div class=\"col-md-2 col-sm-3 col-xs-6\">\n          <div class=\"profile-img\">\n            <a href=\"javascript:;\"><img src=\"{{artistdata.image ? artist_img_url+artistdata.image : 'img/profile-img.png'}}\" alt=\"Profile Images\"></a>\n          </div>\n        </div>\n        <div class=\"col-md-10 col-sm-8 col-xs-6\">\n          <div class=\"artist-name\"><h2><a href=\"javascript:;\">{{artistdata.first_name+' '+artistdata.last_name}}</a></h2>\n            <span class=\"{{artistdata.music_type['alias']}} tag\">{{artistdata.music_type['name']}}</span>\n          </div>\n          <div class=\"profile-location\"><i class=\"fa fa-map-marker\" aria-hidden=\"true\"></i> <span>New York</span></div>\n          <div class=\"profile-description\">\n            <p>{{artistdata.description}}</p>\n          </div>\n        </div>\n        <div class=\"col-md-12\">\n          <div class=\"profile-detail-wrap\">\n            <div class=\"row\">\n              <div class=\"col-md-12 col-sm-12 col-xs-12\">\n                <div class=\"comments\">\n                  <h3 class=\"num-cmt\">{{artistcomments.length}} Comments</h3>\n                  <div class=\"login-alert\">Please Login to leave your comment</div>\n                  <div class=\"comment-block col-md-12 col-sm-12 col-xs-12\" *ngFor=\"let comment of artistcomments;\">\n                    <div class=\"s-name\" *ngIf=\"comment.track_id\">{{comment.track_id.name}}</div>\n                    <div class=\"pull-right\" *ngIf=\"user && user.user && comment['user_id']['_id'] != user['user']['_id']\">\n                        <a href=\"javascript:;\"  (click)=\"flagUser(comment['user_id']['_id'])\"><i class=\"fa fa-flag\"></i></a>\n                      </div>\n                    <div class=\"s-img\"><img src=\"{{comment.user_id.image ? user_img_url+comment.user_id.image : 'img/fan1.png' }}\" alt=\"img\"></div>\n                    <div class=\"cm-date-name\">\n                      <h6>{{comment.user_id.first_name+ ' '+comment.user_id.last_name}}.</h6>\n                      <p>{{comment.created_at | timeAgo}}</p>\n                      <div class=\"profile-descriptions\">\n                        <p>{{comment.comment}}</p>\n                      </div>\n                    </div>\n                  </div>\n                </div>\n              </div>\n          </div>\n        </div>\n      </div>\n    </div>\n  </div>\n</div>"
 
 /***/ }),
 
@@ -728,6 +1736,7 @@ var ConmmentsComponent = /** @class */ (function () {
         this.user_img_url = __WEBPACK_IMPORTED_MODULE_3__environments_environment__["a" /* environment */].API_URL + __WEBPACK_IMPORTED_MODULE_3__environments_environment__["a" /* environment */].USER_IMG;
         this.artistdata = this.route.snapshot.data['artist'].artist;
         this.artistcomments = this.route.snapshot.data['comments'].comment;
+        this.user = JSON.parse(localStorage.getItem('user'));
     }
     ConmmentsComponent.prototype.ngOnInit = function () {
     };
@@ -1167,7 +2176,7 @@ var ArtistProfileService = /** @class */ (function () {
 /***/ "../../../../../src/app/dashboard-layout/artist_track_comments/artist_track_comments.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"track-comment-wrap\">\n  <div class=\"container\">\n      <div class=\"col-md-12\">\n        <div class=\"profile-detail-wrap\">\n          <div class=\"row\">\n            <div class=\"col-md-12 col-sm-12 col-xs-12\">\n              <div class=\"comments\">\n                <h3 class=\"num-cmt\">{{trackcomments.length}} Comments</h3>\n                <div class=\"add-comment\" *ngIf=\"user && user.user\">\n                    <form>\n                      <div class=\"s-img\"><img src=\"{{user['user'].image ? user_img_url+user['user'].image : 'img/fan1.png'}}\" alt=\"img\"></div>\n                        <div class=\"form-group\">\n                            <label for=\"cmmt\">Write a Comment</label>\n                            <input type=\"text\" class=\"form-control\" id=\"cmmt\" name=\"comment\" [(ngModel)]=\"comment_txt\" placeholder=\"Write a comment\">\n                          </div>\n                          <div class=\"button_group\">\n                        <button type=\"submit\" (click)=\"postComment()\" [disabled]=\"show_spinner\" class=\"update-btn\">Post <i class=\"fa fa-spinner fa-spin\" *ngIf=\"show_spinner\"></i></button>\n                      </div>\n                    </form>\n\t\t\t\t\t\t\t\t\t</div>\n                <div class=\"login-alert\" *ngIf=\"!user\">Please Login to leave your comment</div>\n                <div class=\"comment-block col-md-12\" *ngFor=\"let comment of trackcomments; let i=index;\">\n                  <div class=\"s-name\">{{comment['track_id']['name']}}</div>\n                  <div class=\"pull-right\"><a href=\"javascript:;\" (click)=\"removeComment(comment._id)\"><i class=\"fa fa-trash\"></i></a></div>\n                  <div class=\"s-img\"><img src=\"{{comment['user_id']['image'] ? user_img_url+comment['user_id']['image'] : 'img/fan1.png'}}\" alt=\"img\"></div>\n                  <div class=\"cm-date-name\">\n                    <h6>{{comment['user_id']['first_name']+' '+comment['user_id']['last_name']}}.</h6>\n                    <p>{{comment['created_at'] | timeAgo}}</p>\n                    <div class=\"profile-descriptions\">\n                      <p>{{comment['comment']}}</p>\n                    </div>\n                  </div>\n                  \n\n                </div>\n              </div>\n            </div>\n        </div>\n      </div>\n    </div>\n  </div>\n</div>\n"
+module.exports = "<div class=\"track-comment-wrap\">\n  <div class=\"container\">\n      <div class=\"col-md-12\">\n        <div class=\"profile-detail-wrap\">\n          <div class=\"row\">\n            <div class=\"col-md-12 col-sm-12 col-xs-12\">\n              <div class=\"comments\">\n                <h3 class=\"num-cmt\">{{trackcomments.length}} Comments</h3>\n                <div class=\"add-comment\" *ngIf=\"user && user.user\">\n                    <form>\n                      <div class=\"s-img\"><img src=\"{{user['user'].image ? user_img_url+user['user'].image : 'img/fan1.png'}}\" alt=\"img\"></div>\n                        <div class=\"form-group\">\n                            <label for=\"cmmt\">Write a Comment</label>\n                            <input type=\"text\" class=\"form-control\" id=\"cmmt\" name=\"comment\" [(ngModel)]=\"comment_txt\" placeholder=\"Write a comment\">\n                          </div>\n                          <div class=\"button_group\">\n                        <button type=\"submit\" (click)=\"postComment()\" [disabled]=\"show_spinner\" class=\"update-btn\">Post <i class=\"fa fa-spinner fa-spin\" *ngIf=\"show_spinner\"></i></button>\n                      </div>\n                    </form>\n\t\t\t\t\t\t\t\t\t</div>\n                <div class=\"login-alert\" *ngIf=\"!user\">Please Login to leave your comment</div>\n                <div class=\"comment-block col-md-12\" *ngFor=\"let comment of trackcomments; let i=index;\">\n                  <div class=\"s-name\">{{comment['track_id']['name']}}</div>\n                  <div class=\"pull-right\">\n                    <a href=\"javascript:;\" *ngIf=\"comment['user_id']['status'] == 'active'\" (click)=\"blockUnblockUser(comment['user_id']['_id'])\"><i class=\"fa fa-unlock\"></i></a>\n                    <a  href=\"javascript:;\" *ngIf=\"comment['user_id']['status'] == 'suspended'\" (click)=\"blockUnblockUser(comment['user_id']['_id'])\"><i class=\"fa fa-lock\"></i></a>\n                    <a href=\"javascript:;\" (click)=\"removeComment(comment._id)\"><i class=\"fa fa-trash\"></i></a>\n                  </div>\n                  <div class=\"s-img\"><img src=\"{{comment['user_id']['image'] ? user_img_url+comment['user_id']['image'] : 'img/fan1.png'}}\" alt=\"img\"></div>\n                  <div class=\"cm-date-name\">\n                    <h6>{{comment['user_id']['first_name']+' '+comment['user_id']['last_name']}}.</h6>\n                    <p>{{comment['created_at'] | timeAgo}}</p>\n                    <div class=\"profile-descriptions\">\n                      <p>{{comment['comment']}}</p>\n                    </div>\n                  </div>\n                  \n\n                </div>\n              </div>\n            </div>\n        </div>\n      </div>\n    </div>\n  </div>\n</div>\n"
 
 /***/ }),
 
@@ -1266,6 +2275,16 @@ var ArtistTrackConmmentsComponent = /** @class */ (function () {
             }
         });
     };
+    // Block or unblock the user
+    ArtistTrackConmmentsComponent.prototype.blockUnblockUser = function (id) {
+        var _this = this;
+        this.ArtistTrackCommentsService.blockUser(id).subscribe(function (response) {
+            _this.toastr.success(response['message'], 'Success!');
+            _this.getAllTrackComment({ track_id: _this.track_id });
+        }, function (error) {
+            _this.toastr.error(error['error'].message, 'Error!');
+        });
+    };
     ArtistTrackConmmentsComponent = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
             selector: 'app-track-comments',
@@ -1346,6 +2365,12 @@ var ArtistTrackCommentsService = /** @class */ (function () {
         this.user = JSON.parse(localStorage.getItem('user'));
         this.headers = new __WEBPACK_IMPORTED_MODULE_1__angular_common_http__["d" /* HttpHeaders */]({ 'x-access-token': this.user.token });
         return this.http.delete(this.api_host + "/artist/delete_comment/" + id, { headers: this.headers });
+    };
+    // Block the user
+    ArtistTrackCommentsService.prototype.blockUser = function (id) {
+        this.user = JSON.parse(localStorage.getItem('user'));
+        this.headers = new __WEBPACK_IMPORTED_MODULE_1__angular_common_http__["d" /* HttpHeaders */]({ 'x-access-token': this.user.token });
+        return this.http.post(this.api_host + "/artist/suspend/user/" + id, {}, { headers: this.headers });
     };
     ArtistTrackCommentsService = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Injectable"])(),
@@ -1648,7 +2673,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/dashboard-layout/header/header.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<header class=\"custom_header\">\n  <div class=\"container\">\n    <div class=\"row\" *ngIf=\"!user\">\n      <div class=\"col-md-3 col-sm-3 col-xs-3\">\n        <div class=\"logo-wrap\">\n          <a href=\"javascript:;\" routerLink=\"\">\n            <img src=\"img/logo.png\" alt=\"\">\n          </a>\n        </div>\n      </div>\n      <div class=\"col-md-9 col-sm-9 col-xs-9\">\n        <div class=\"mobile-nav\">\n          <a href=\"javascript:;\">\n            <i class=\"fa fa-bars\"></i>\n          </a>\n        </div>\n        <nav class=\"navigation\">\n          <ul>\n            <li routerLinkActive=\"active\">\n              <a href=\"javascript:;\" routerLink=\"/whats-new\">What's new</a>\n            </li>\n            <li routerLinkActive=\"active\">\n              <a href=\"javascript:;\" routerLink=\"/artist\">Artits</a>\n            </li>\n            <li routerLinkActive=\"active\">\n              <a href=\"javascript:;\" routerLink=\"/vote\">Vote</a>\n            </li>\n            <li data-fancybox data-animation-duration=\"700\" data-src=\"javascript:;login\">\n              <a href=\"javascript:;\" (click)=\"openVerticallyCentered(content)\">Login</a>\n            </li>\n            <li class=\"register-btn\">\n              <a href=\"javascript:;\" routerLink=\"/register\">Register</a>\n            </li>\n          </ul>\n        </nav>\n      </div>\n    </div>\n    <div class=\"row\" *ngIf=\"user && user.artist\">\n\t\t\t\t<div class=\"col-md-2 col-sm-2 col-xs-2\">\n\t\t\t\t\t<div class=\"logo-wrap\">\n\t\t\t\t\t\t<a href=\"javascript:;\" routerLink=\"\"><img src=\"img/logo.png\" alt=\"\"></a>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"col-md-10 col-sm-10 col-xs-10\">\n\t\t\t\t\t<div class=\"nav-header\">\n\t\t\t\t\t\t<div class=\"mobile-nav\"><a href=\"javascript:;\"><i class=\"fa fa-bars\"></i></a></div>\n\t\t\t\t\t\t<nav class=\"navigation\">\n\t\t\t\t\t\t\t<ul>\n\t\t\t\t\t\t\t\t<li routerLinkActive=\"active\"><a href=\"javascript:;\" routerLink=\"/whats-new\">What's new</a></li>\n\t\t\t\t\t\t\t\t<li routerLinkActive=\"active\"><a href=\"javascript:;\" routerLink=\"/artist\">Artits</a></li>\n\t\t\t\t\t\t\t\t<li routerLinkActive=\"active\"><a href=\"javascript:;\" routerLink=\"/vote\">Vote</a></li>\n\t\t\t\t\t\t\t\t<li routerLinkActive=\"active\"><a href=\"javascript:;\" routerLink=\"/my-music\">My Music</a></li>\n\t\t\t\t\t\t\t\t<li routerLinkActive=\"active\"><a href=\"javascript:;\" routerLink=\"/my-profile\">My Profile</a></li>\n\t\t\t\t\t\t\t</ul>\n\t\t\t\t\t\t</nav>\n\t\t\t\t\t\t<div class=\"logged-in-header\">\n\t\t\t\t\t\t\t<ul class=\"update-option\">\n\t\t\t\t\t\t\t\t<li class=\"message\"><a href=\"javascript:;\"><i class=\"fa fa-envelope-o\" aria-hidden=\"true\"></i> <span class=\"new-up\"></span></a></li>\n\t\t\t\t\t\t\t\t<li class=\"notification\"><a href=\"javascript:;\"><i class=\"fa fa-bell\" aria-hidden=\"true\"></i> <span class=\"new-up\"></span></a></li>\n\t\t\t\t\t\t\t</ul>\n\t\t\t\t\t\t\t<div class=\"profile-picture\" ngbDropdown >\n\t\t\t\t\t\t\t\t<a href=\"javascirpt:;\" ngbDropdownToggle>\n                  <img src=\"{{user.artist.image != '' ? user.artist.image : 'img/upload1.png'}}\" *ngIf=\"user.artist\" alt=\"Profile Picture\">\n                  <img src=\"{{user.user.image != '' ? user.user.image : 'img/upload1.png'}}\" *ngIf=\"user.user\" alt=\"Profile Picture\">\n                </a>\n                <!-- <div ngbDropdownMenu>\n                    <button class=\"dropdown-item\">Logout</button>\n                </div> -->\n\t\t\t\t\t\t\t</div>\n            </div>\n            <ul class=\"logout_ul\">\n              <li>\n                <a href=\"javascript:;\" (click)=\"logout()\">LogOut</a></li>\n            </ul>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n    </div>\n    <div class=\"row\" *ngIf=\"user && user.user\">\n\t\t\t\t<div class=\"col-md-2 col-sm-2 col-xs-2\">\n\t\t\t\t\t<div class=\"logo-wrap\">\n\t\t\t\t\t\t<a href=\"javascript:;\" routerLink=\"\"><img src=\"img/logo.png\" alt=\"\"></a>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"col-md-10 col-sm-10 col-xs-10\">\n\t\t\t\t\t<div class=\"nav-header\">\n\t\t\t\t\t\t<div class=\"mobile-nav\"><a href=\"javascript:;\"><i class=\"fa fa-bars\"></i></a></div>\n\t\t\t\t\t\t<nav class=\"navigation\">\n\t\t\t\t\t\t\t<ul>\n\t\t\t\t\t\t\t\t<li routerLinkActive=\"active\"><a href=\"javascript:;\" routerLink=\"/whats-new\">What's new</a></li>\n\t\t\t\t\t\t\t\t<li routerLinkActive=\"active\"><a href=\"javascript:;\" routerLink=\"/artist\">Artits</a></li>\n\t\t\t\t\t\t\t\t<li routerLinkActive=\"active\"><a href=\"javascript:;\" routerLink=\"/vote\">Vote</a></li>\n\t\t\t\t\t\t\t\t<li routerLinkActive=\"active\"><a href=\"javascript:;\" routerLink=\"/my-profile\">My Profile</a></li>\n\t\t\t\t\t\t\t</ul>\n\t\t\t\t\t\t</nav>\n\t\t\t\t\t\t<div class=\"logged-in-header\">\n\t\t\t\t\t\t\t<ul class=\"update-option\">\n\t\t\t\t\t\t\t\t<li class=\"notification\"><a href=\"javascript:;\"><i class=\"fa fa-bell\" aria-hidden=\"true\"></i> <span class=\"new-up\"></span></a></li>\n\t\t\t\t\t\t\t</ul>\n\t\t\t\t\t\t\t<div class=\"profile-picture\" ngbDropdown>\n\t\t\t\t\t\t\t\t<a href=\"javascirpt:;\" ngbDropdownToggle>\n                  <img src=\"{{user.artist.image != '' ? user.artist.image : 'img/upload1.png'}}\" *ngIf=\"user.artist\" alt=\"Profile Picture\">\n                  <img src=\"{{user.user.image != '' ? user.user.image : 'img/upload1.png'}}\" *ngIf=\"user.user\" alt=\"Profile Picture\">\n                </a>\n                \n\t\t\t\t\t\t\t</div>\n            </div>\n            <ul class=\"logout_ul\">\n              <li>\n                <a href=\"javascript:;\" (click)=\"logout()\">LogOut</a></li>\n            </ul>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n    </div>\n  </div>\n</header>\n<ng-template #content let-c=\"close\" let-d=\"dismiss\" >\n  <div class=\"modal_login_wrapper\">\n  <button type=\"button\" class=\"close\" aria-label=\"Close\" (click)=\"d('Cross click')\">\n    <span aria-hidden=\"true\">&times;</span>\n  </button>\n  <div class=\"modal-body\">\n    <div class=\"login-modal\">\n\t\t\t<div class=\"social-login\">\n\t\t\t\t<div class=\"google-login\">\n\t\t\t\t\t<a href=\"javascript:;\"><i class=\"fa fa-google\" aria-hidden=\"true\"></i> <span>Login with Google</span></a>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"fb-login\">\n\t\t\t\t\t<a href=\"javascript:;\"><i class=\"fa fa-facebook\" aria-hidden=\"true\"></i> <span>Login with Facebook</span></a>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t\t<div class=\"or\">or with email</div>\n\t\t\t<div class=\"email-form\">\n\t\t\t\t<form [formGroup]=\"login_form\">\n\t\t\t\t\t<div class=\"form-group\">\n            <label for=\"email\">Email</label>\n            <input type=\"email\" class=\"form-control\" formControlName=\"email\" name=\"email\" id=\"email\" [(ngModel)]=\"userdata.email\" placeholder=\"Email\">\n            <div *ngIf=\"!login_form.controls['email'].valid && login_form.controls['email'].dirty\">\n              <span *ngIf=\"login_form.controls['email'].errors['required']\" class=\"text-danger\">Email is required.</span>\n            </div>\n          </div>\n          <div class=\"form-group pwd-grp\">\n            <label for=\"pwd\">Password</label>\n            <input type=\"password\" class=\"form-control\" formControlName=\"password\" name=\"password\" id=\"pwd\" [(ngModel)]=\"userdata.password\" placeholder=\"Password\">\n            <div class=\"pwd-icon\"><i class=\"fa fa-eye\" aria-hidden=\"true\"></i></div>\n            <div *ngIf=\"!login_form.controls['password'].valid && login_form.controls['password'].dirty\">\n              <span *ngIf=\"login_form.controls['password'].errors['required']\" class=\"text-danger\">Password is required.</span>\n            </div>\n          </div>\n          <div class=\"form-group\">\n            <label for=\"pwd\">Type</label>\n            <select class=\"form-control\" name=\"type\" formControlName=\"type\" [(ngModel)]=\"userdata.type\">\n              <option value=\"artist\">Artist</option>\n              <option value=\"listener\">Listener</option>\n            </select>\n          </div>\n          <div class=\"login-btn\"><button (click)=\"login()\" [disabled]=\"!login_form.valid || show_spinner\">Log In <i *ngIf=\"show_spinner\" class=\"fa fa-spinner fa-spin\"></i></button></div>\n          <div class=\"forgot-link\"><a href=\"javascript:;\" (click)=\"openForgetPasswordModal(forget)\">Forgot Password</a></div>\n          <div class=\"register-link\">Don't have an account yet? <a href=\"javascript:;\" routerLink=\"/register\">Register</a></div>\n\t\t\t\t</form>\n\t\t\t</div>\n\t\t</div>\n  </div>\n</div>\n</ng-template>\n<ng-template #forget let-c=\"close\" let-d=\"dismiss\">\n    <div class=\"modal-header\" style=\"border:none;\">\n      <button type=\"button\" class=\"close\" aria-label=\"Close\" (click)=\"d('Cross click')\">\n        <span aria-hidden=\"true\">&times;</span>\n      </button>\n    </div>\n    <div class=\"modal-body\">\n      <form [formGroup]=\"forget_form\">\n        <div class=\"col-sm-12\">\n          <div class=\"form-group\">\n            <label class=\"control-label\">login Type</label>\n            <select class=\"form-control\" formControlName=\"type\" name=\"type\" [(ngModel)]=\"forget_pwd_data.type\">\n              <option value=\"artist\">Artist</option>\n              <option value=\"user\">User</option>\n            </select>\n          </div>\n          <div class=\"form-group\">\n            <label class=\"control-label\">Email Id</label>\n            <input class=\"form-control\" name=\"email\" formControlName=\"email\" [(ngModel)]=\"forget_pwd_data.email\"/>\n            <div *ngIf=\"!forget_form.controls['email'].valid && forget_form.controls['email'].dirty && forget_form.controls['email'].touched\">\n              <span *ngIf=\"forget_form.controls['email'].errors['required']\" class=\"text-danger\">Email is required.</span>\n              <span *ngIf=\"forget_form.controls['email'].errors['email']\" class=\"text-danger\">Enter valid email.</span>\n            </div>\n          </div>\n          <div class=\"form-group\">\n            <button class=\"btn btn-success\" (click)=\"forgetPassword()\" [disabled]=\"!forget_form.valid || show_spinner\">Submit <i *ngIf=\"show_spinner\" class=\"fa fa-spinner fa-spin\"></i></button>\n          </div>\n        </div>\n      </form>\n    </div>\n</ng-template>"
+module.exports = "<header class=\"custom_header\">\n  <div class=\"container\">\n    <div class=\"row\" *ngIf=\"!user || user.admin\">\n      <div class=\"col-md-3 col-sm-3 col-xs-3\">\n        <div class=\"logo-wrap\">\n          <a href=\"javascript:;\" routerLink=\"\">\n            <img src=\"img/logo.png\" alt=\"\">\n          </a>\n        </div>\n      </div>\n      <div class=\"col-md-9 col-sm-9 col-xs-9\">\n        <div class=\"mobile-nav\">\n          <a href=\"javascript:;\">\n            <i class=\"fa fa-bars\"></i>\n          </a>\n        </div>\n        <nav class=\"navigation\">\n          <ul>\n            <li routerLinkActive=\"active\">\n              <a href=\"javascript:;\" routerLink=\"/whats-new\">What's new</a>\n            </li>\n            <li routerLinkActive=\"active\">\n              <a href=\"javascript:;\" routerLink=\"/artist\">Artits</a>\n            </li>\n            <li routerLinkActive=\"active\">\n              <a href=\"javascript:;\" routerLink=\"/vote\">Vote</a>\n            </li>\n            <li data-fancybox data-animation-duration=\"700\" data-src=\"javascript:;login\">\n              <a href=\"javascript:;\" (click)=\"openVerticallyCentered(content)\">Login</a>\n            </li>\n            <li class=\"register-btn\">\n              <a href=\"javascript:;\" routerLink=\"/register\">Register</a>\n            </li>\n          </ul>\n        </nav>\n      </div>\n    </div>\n    <div class=\"row\" *ngIf=\"user && user.artist\">\n\t\t\t\t<div class=\"col-md-2 col-sm-2 col-xs-2\">\n\t\t\t\t\t<div class=\"logo-wrap\">\n\t\t\t\t\t\t<a href=\"javascript:;\" routerLink=\"\"><img src=\"img/logo.png\" alt=\"\"></a>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"col-md-10 col-sm-10 col-xs-10\">\n\t\t\t\t\t<div class=\"nav-header\">\n\t\t\t\t\t\t<div class=\"mobile-nav\"><a href=\"javascript:;\"><i class=\"fa fa-bars\"></i></a></div>\n\t\t\t\t\t\t<nav class=\"navigation\">\n\t\t\t\t\t\t\t<ul>\n\t\t\t\t\t\t\t\t<li routerLinkActive=\"active\"><a href=\"javascript:;\" routerLink=\"/whats-new\">What's new</a></li>\n\t\t\t\t\t\t\t\t<li routerLinkActive=\"active\"><a href=\"javascript:;\" routerLink=\"/artist\">Artits</a></li>\n\t\t\t\t\t\t\t\t<li routerLinkActive=\"active\"><a href=\"javascript:;\" routerLink=\"/vote\">Vote</a></li>\n\t\t\t\t\t\t\t\t<li routerLinkActive=\"active\"><a href=\"javascript:;\" routerLink=\"/my-music\">My Music</a></li>\n\t\t\t\t\t\t\t\t<li routerLinkActive=\"active\"><a href=\"javascript:;\" routerLink=\"/my-profile\">My Profile</a></li>\n\t\t\t\t\t\t\t</ul>\n\t\t\t\t\t\t</nav>\n\t\t\t\t\t\t<div class=\"logged-in-header\">\n\t\t\t\t\t\t\t<ul class=\"update-option\">\n\t\t\t\t\t\t\t\t<li class=\"message\"><a href=\"javascript:;\"><i class=\"fa fa-envelope-o\" aria-hidden=\"true\"></i> <span class=\"new-up\"></span></a></li>\n\t\t\t\t\t\t\t\t<li class=\"notification\"><a href=\"javascript:;\"><i class=\"fa fa-bell\" aria-hidden=\"true\"></i> <span class=\"new-up\"></span></a></li>\n\t\t\t\t\t\t\t</ul>\n\t\t\t\t\t\t\t<div class=\"profile-picture\" ngbDropdown >\n\t\t\t\t\t\t\t\t<a href=\"javascirpt:;\" ngbDropdownToggle>\n                  <img src=\"{{user.artist.image != '' ? user.artist.image : 'img/upload1.png'}}\" *ngIf=\"user.artist\" alt=\"Profile Picture\">\n                  <img src=\"{{user.user.image != '' ? user.user.image : 'img/upload1.png'}}\" *ngIf=\"user.user\" alt=\"Profile Picture\">\n                </a>\n                <!-- <div ngbDropdownMenu>\n                    <button class=\"dropdown-item\">Logout</button>\n                </div> -->\n\t\t\t\t\t\t\t</div>\n            </div>\n            <ul class=\"logout_ul\">\n              <li>\n                <a href=\"javascript:;\" (click)=\"logout()\">LogOut</a></li>\n            </ul>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n    </div>\n    <div class=\"row\" *ngIf=\"user && user.user\">\n\t\t\t\t<div class=\"col-md-2 col-sm-2 col-xs-2\">\n\t\t\t\t\t<div class=\"logo-wrap\">\n\t\t\t\t\t\t<a href=\"javascript:;\" routerLink=\"\"><img src=\"img/logo.png\" alt=\"\"></a>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"col-md-10 col-sm-10 col-xs-10\">\n\t\t\t\t\t<div class=\"nav-header\">\n\t\t\t\t\t\t<div class=\"mobile-nav\"><a href=\"javascript:;\"><i class=\"fa fa-bars\"></i></a></div>\n\t\t\t\t\t\t<nav class=\"navigation\">\n\t\t\t\t\t\t\t<ul>\n\t\t\t\t\t\t\t\t<li routerLinkActive=\"active\"><a href=\"javascript:;\" routerLink=\"/whats-new\">What's new</a></li>\n\t\t\t\t\t\t\t\t<li routerLinkActive=\"active\"><a href=\"javascript:;\" routerLink=\"/artist\">Artits</a></li>\n\t\t\t\t\t\t\t\t<li routerLinkActive=\"active\"><a href=\"javascript:;\" routerLink=\"/vote\">Vote</a></li>\n\t\t\t\t\t\t\t\t<li routerLinkActive=\"active\"><a href=\"javascript:;\" routerLink=\"/my-profile\">My Profile</a></li>\n\t\t\t\t\t\t\t</ul>\n\t\t\t\t\t\t</nav>\n\t\t\t\t\t\t<div class=\"logged-in-header\">\n\t\t\t\t\t\t\t<ul class=\"update-option\">\n\t\t\t\t\t\t\t\t<li class=\"notification\"><a href=\"javascript:;\"><i class=\"fa fa-bell\" aria-hidden=\"true\"></i> <span class=\"new-up\"></span></a></li>\n\t\t\t\t\t\t\t</ul>\n\t\t\t\t\t\t\t<div class=\"profile-picture\" ngbDropdown>\n\t\t\t\t\t\t\t\t<a href=\"javascirpt:;\" ngbDropdownToggle>\n                  <img src=\"{{user.artist.image != '' ? user.artist.image : 'img/upload1.png'}}\" *ngIf=\"user.artist\" alt=\"Profile Picture\">\n                  <img src=\"{{user.user.image != '' ? user.user.image : 'img/upload1.png'}}\" *ngIf=\"user.user\" alt=\"Profile Picture\">\n                </a>\n                \n\t\t\t\t\t\t\t</div>\n            </div>\n            <ul class=\"logout_ul\">\n              <li>\n                <a href=\"javascript:;\" (click)=\"logout()\">LogOut</a></li>\n            </ul>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n    </div>\n  </div>\n</header>\n<ng-template #content let-c=\"close\" let-d=\"dismiss\" >\n  <div class=\"modal_login_wrapper\">\n  <button type=\"button\" class=\"close\" aria-label=\"Close\" (click)=\"d('Cross click')\">\n    <span aria-hidden=\"true\">&times;</span>\n  </button>\n  <div class=\"modal-body\">\n    <div class=\"login-modal\">\n\t\t\t<div class=\"social-login\">\n\t\t\t\t<div class=\"google-login\">\n\t\t\t\t\t<a href=\"javascript:;\"><i class=\"fa fa-google\" aria-hidden=\"true\"></i> <span>Login with Google</span></a>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"fb-login\">\n\t\t\t\t\t<a href=\"javascript:;\"><i class=\"fa fa-facebook\" aria-hidden=\"true\"></i> <span>Login with Facebook</span></a>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t\t<div class=\"or\">or with email</div>\n\t\t\t<div class=\"email-form\">\n\t\t\t\t<form [formGroup]=\"login_form\">\n\t\t\t\t\t<div class=\"form-group\">\n            <label for=\"email\">Email</label>\n            <input type=\"email\" class=\"form-control\" formControlName=\"email\" name=\"email\" id=\"email\" [(ngModel)]=\"userdata.email\" placeholder=\"Email\">\n            <div *ngIf=\"!login_form.controls['email'].valid && login_form.controls['email'].dirty\">\n              <span *ngIf=\"login_form.controls['email'].errors['required']\" class=\"text-danger\">Email is required.</span>\n            </div>\n          </div>\n          <div class=\"form-group pwd-grp\">\n            <label for=\"pwd\">Password</label>\n            <input type=\"password\" class=\"form-control\" formControlName=\"password\" name=\"password\" id=\"pwd\" [(ngModel)]=\"userdata.password\" placeholder=\"Password\">\n            <div class=\"pwd-icon\"><i class=\"fa fa-eye\" aria-hidden=\"true\"></i></div>\n            <div *ngIf=\"!login_form.controls['password'].valid && login_form.controls['password'].dirty\">\n              <span *ngIf=\"login_form.controls['password'].errors['required']\" class=\"text-danger\">Password is required.</span>\n            </div>\n          </div>\n          <div class=\"form-group\">\n            <label for=\"pwd\">Type</label>\n            <select class=\"form-control\" name=\"type\" formControlName=\"type\" [(ngModel)]=\"userdata.type\">\n              <option value=\"artist\">Artist</option>\n              <option value=\"listener\">Listener</option>\n            </select>\n          </div>\n          <div class=\"login-btn\"><button (click)=\"login()\" [disabled]=\"!login_form.valid || show_spinner\">Log In <i *ngIf=\"show_spinner\" class=\"fa fa-spinner fa-spin\"></i></button></div>\n          <div class=\"forgot-link\"><a href=\"javascript:;\" (click)=\"openForgetPasswordModal(forget)\">Forgot Password</a></div>\n          <div class=\"register-link\">Don't have an account yet? <a href=\"javascript:;\" routerLink=\"/register\">Register</a></div>\n\t\t\t\t</form>\n\t\t\t</div>\n\t\t</div>\n  </div>\n</div>\n</ng-template>\n<ng-template #forget let-c=\"close\" let-d=\"dismiss\">\n    <div class=\"modal-header\" style=\"border:none;\">\n      <button type=\"button\" class=\"close\" aria-label=\"Close\" (click)=\"d('Cross click')\">\n        <span aria-hidden=\"true\">&times;</span>\n      </button>\n    </div>\n    <div class=\"modal-body\">\n      <form [formGroup]=\"forget_form\">\n        <div class=\"col-sm-12\">\n          <div class=\"form-group\">\n            <label class=\"control-label\">login Type</label>\n            <select class=\"form-control\" formControlName=\"type\" name=\"type\" [(ngModel)]=\"forget_pwd_data.type\">\n              <option value=\"artist\">Artist</option>\n              <option value=\"user\">User</option>\n            </select>\n          </div>\n          <div class=\"form-group\">\n            <label class=\"control-label\">Email Id</label>\n            <input class=\"form-control\" name=\"email\" formControlName=\"email\" [(ngModel)]=\"forget_pwd_data.email\"/>\n            <div *ngIf=\"!forget_form.controls['email'].valid && forget_form.controls['email'].dirty && forget_form.controls['email'].touched\">\n              <span *ngIf=\"forget_form.controls['email'].errors['required']\" class=\"text-danger\">Email is required.</span>\n              <span *ngIf=\"forget_form.controls['email'].errors['email']\" class=\"text-danger\">Enter valid email.</span>\n            </div>\n          </div>\n          <div class=\"form-group\">\n            <button class=\"btn btn-success\" (click)=\"forgetPassword()\" [disabled]=\"!forget_form.valid || show_spinner\">Submit <i *ngIf=\"show_spinner\" class=\"fa fa-spinner fa-spin\"></i></button>\n          </div>\n        </div>\n      </form>\n    </div>\n</ng-template>"
 
 /***/ }),
 
@@ -1699,13 +2724,13 @@ var HeaderComponent = /** @class */ (function () {
             this.user.user['image'] = typeof this.user.user['image'] != 'undefined' ? __WEBPACK_IMPORTED_MODULE_6__environments_environment__["a" /* environment */].API_URL + __WEBPACK_IMPORTED_MODULE_6__environments_environment__["a" /* environment */].USER_IMG + this.user.user['image'] : '';
         }
         this.login_form = this.fb.group({
-            email: ['', [__WEBPACK_IMPORTED_MODULE_2__angular_forms__["f" /* Validators */].required]],
-            password: ['', [__WEBPACK_IMPORTED_MODULE_2__angular_forms__["f" /* Validators */].required]],
-            type: ['', [__WEBPACK_IMPORTED_MODULE_2__angular_forms__["f" /* Validators */].required]]
+            email: ['', [__WEBPACK_IMPORTED_MODULE_2__angular_forms__["g" /* Validators */].required]],
+            password: ['', [__WEBPACK_IMPORTED_MODULE_2__angular_forms__["g" /* Validators */].required]],
+            type: ['', [__WEBPACK_IMPORTED_MODULE_2__angular_forms__["g" /* Validators */].required]]
         });
         this.forget_form = this.fb.group({
-            email: ['', [__WEBPACK_IMPORTED_MODULE_2__angular_forms__["f" /* Validators */].required, __WEBPACK_IMPORTED_MODULE_2__angular_forms__["f" /* Validators */].email]],
-            type: ['', [__WEBPACK_IMPORTED_MODULE_2__angular_forms__["f" /* Validators */].required]]
+            email: ['', [__WEBPACK_IMPORTED_MODULE_2__angular_forms__["g" /* Validators */].required, __WEBPACK_IMPORTED_MODULE_2__angular_forms__["g" /* Validators */].email]],
+            type: ['', [__WEBPACK_IMPORTED_MODULE_2__angular_forms__["g" /* Validators */].required]]
         });
     }
     HeaderComponent.prototype.ngOnInit = function () {
@@ -1987,7 +3012,7 @@ var LayoutModule = /** @class */ (function () {
                 __WEBPACK_IMPORTED_MODULE_18__angular_http__["a" /* HttpModule */],
                 __WEBPACK_IMPORTED_MODULE_19__angular_common_http__["b" /* HttpClientModule */],
                 __WEBPACK_IMPORTED_MODULE_32__angular_forms__["b" /* FormsModule */],
-                __WEBPACK_IMPORTED_MODULE_32__angular_forms__["e" /* ReactiveFormsModule */],
+                __WEBPACK_IMPORTED_MODULE_32__angular_forms__["f" /* ReactiveFormsModule */],
                 __WEBPACK_IMPORTED_MODULE_36__angular_platform_browser_animations__["a" /* BrowserAnimationsModule */],
                 __WEBPACK_IMPORTED_MODULE_33_ngx_toastr__["a" /* ToastrModule */].forRoot(),
                 __WEBPACK_IMPORTED_MODULE_1_angular_highcharts__["b" /* ChartModule */],
@@ -2148,7 +3173,7 @@ var DashboardLayoutModule = /** @class */ (function () {
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["NgModule"])({
             imports: [
                 __WEBPACK_IMPORTED_MODULE_1__angular_common__["b" /* CommonModule */],
-                __WEBPACK_IMPORTED_MODULE_6__angular_forms__["e" /* ReactiveFormsModule */],
+                __WEBPACK_IMPORTED_MODULE_6__angular_forms__["f" /* ReactiveFormsModule */],
                 __WEBPACK_IMPORTED_MODULE_2__angular_router__["c" /* RouterModule */].forChild([])
             ],
             declarations: [__WEBPACK_IMPORTED_MODULE_3__dashboard_layout_component__["a" /* DashboardLayoutComponent */], __WEBPACK_IMPORTED_MODULE_4__header_header_component__["a" /* HeaderComponent */], __WEBPACK_IMPORTED_MODULE_5__footer_footer_component__["a" /* FooterComponent */]],
@@ -2840,6 +3865,7 @@ var MyProfileComponent = /** @class */ (function () {
         console.log(fileList);
         var formData = new FormData();
         formData.append('image', fileList[0]);
+        console.log(formData);
         if (this.userdata.type == 'artist') {
             this.MyProfileService.updateArtistProfileImage(formData).subscribe(function (response) {
                 console.log('uploaded image', response);
@@ -4095,7 +5121,7 @@ var TrackDetailResolve = /** @class */ (function () {
 /***/ "../../../../../src/app/dashboard-layout/track_comments/track_comments.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"track-comment-wrap\">\n  <div class=\"container\">\n    <div class=\"row\">\n        <div class=\"col-md-2 col-sm-3 col-xs-6\">\n            <div class=\"profile-img\">\n                <a href=\"javascript:;\"><img src=\"{{artistdata.image ? artist_img_url+artistdata.image : 'img/profile-img.png'}}\" alt=\"Profile Images\"></a>\n            </div>\n          </div>\n          <div class=\"col-md-10 col-sm-8 col-xs-6\">\n            <div class=\"abt-tr\">\n              <div class=\"play-btn\">\n                <a href=\"javascript:;\">\n                  <img src=\"img/play.png\" alt=\"\" (click)=\"playAudio(track.audio, 1)\" [style.display]=\"audio_ins.length == 0 && !audio_ins[1] ? 'block' : 'none'\">\n                  <img src=\"img/pause.png\" alt=\"\" (click)=\"stopAudio(1)\" [style.display]=\"audio_ins.length > 0 && audio_ins[1] ? 'block' : 'none'\">\n                </a>\n              </div>\n              <div class=\"track-cname\"><a href=\"javascript:;\">{{track['name']}}</a></div>\n              <div class=\"artist-name\"><h2><a href=\"javascript:;\">{{artistdata.first_name+' '+artistdata.last_name}}</a></h2></div>\n            </div>\n            <div class=\"action\">\n                <div class=\"cmt-like\"><a href=\"javascript:;\" class=\"liked\"><img src=\"img/likehand.png\" alt=\"\">{{track.no_of_likes}}</a></div>\n                <div class=\"download\"><a href=\"javascript:;\"><img src=\"img/download.png\" alt=\"\">${{track.price}}</a></div>\n                <div class=\"share\"><a href=\"javascript:;\"><img src=\"img/share.png\" alt=\"\"></a></div>\n  \n              </div>\n            <div class=\"profile-location\"><i class=\"fa fa-map-marker\" aria-hidden=\"true\"></i> <span>New York</span>\n            <p class=\"{{artistdata['music_type']['alias']}} tag\">{{artistdata['music_type']['name']}}</p></div>\n  \n            <div class=\"profile-description\">\n              <p>{{track.description}}</p>\n              \n            </div>\n          </div>\n      </div>\n      <div class=\"col-md-12\">\n        <div class=\"profile-detail-wrap\">\n          <div class=\"row\">\n            <div class=\"col-md-12 col-sm-12 col-xs-12\">\n              <div class=\"comments\">\n                <h3 class=\"num-cmt\">{{trackcomments.length}} Comments</h3>\n                <div class=\"add-comment\" *ngIf=\"user && user.user\">\n                    <form>\n                      <div class=\"s-img\"><img src=\"{{user['user'].image ? user_img_url+user['user'].image : 'img/fan1.png'}}\" alt=\"img\"></div>\n                        <div class=\"form-group\">\n                            <label for=\"cmmt\">Write a Comment</label>\n                            <input type=\"text\" class=\"form-control\" id=\"cmmt\" name=\"comment\" [(ngModel)]=\"comment_txt\" placeholder=\"Write a comment\">\n                          </div>\n                          <div class=\"button_group\">\n                        <button type=\"submit\" (click)=\"postComment()\" [disabled]=\"show_spinner\" class=\"update-btn\">Post <i class=\"fa fa-spinner fa-spin\" *ngIf=\"show_spinner\"></i></button>\n                      </div>\n                    </form>\n\t\t\t\t\t\t\t\t\t</div>\n                <div class=\"login-alert\" *ngIf=\"!user\">Please Login to leave your comment</div>\n                <div class=\"comment-block col-md-12\" *ngFor=\"let comment of trackcomments; let i=index;\">\n                  <div class=\"s-name\">{{comment['track_id']['name']}}</div>\n                  <div class=\"s-img\"><img src=\"{{comment['user_id']['image'] ? user_img_url+comment['user_id']['image'] : 'img/fan1.png'}}\" alt=\"img\"></div>\n                  <div class=\"cm-date-name\">\n                    <h6>{{comment['user_id']['first_name']+' '+comment['user_id']['last_name']}}.</h6>\n                    <p>{{comment['created_at'] | timeAgo}}</p>\n                    <div class=\"profile-descriptions\">\n                      <p>{{comment['comment']}}</p>\n                    </div>\n                  </div>\n                  \n\n                </div>\n              </div>\n            </div>\n        </div>\n      </div>\n    </div>\n  </div>\n</div>\n"
+module.exports = "<div class=\"track-comment-wrap\">\n  <div class=\"container\">\n    <div class=\"row\">\n        <div class=\"col-md-2 col-sm-3 col-xs-6\">\n            <div class=\"profile-img\">\n                <a href=\"javascript:;\"><img src=\"{{artistdata.image ? artist_img_url+artistdata.image : 'img/profile-img.png'}}\" alt=\"Profile Images\"></a>\n            </div>\n          </div>\n          <div class=\"col-md-10 col-sm-8 col-xs-6\">\n            <div class=\"abt-tr\">\n              <div class=\"play-btn\">\n                <a href=\"javascript:;\">\n                  <img src=\"img/play.png\" alt=\"\" (click)=\"playAudio(track.audio, 1)\" [style.display]=\"audio_ins.length == 0 && !audio_ins[1] ? 'block' : 'none'\">\n                  <img src=\"img/pause.png\" alt=\"\" (click)=\"stopAudio(1)\" [style.display]=\"audio_ins.length > 0 && audio_ins[1] ? 'block' : 'none'\">\n                </a>\n              </div>\n              <div class=\"track-cname\"><a href=\"javascript:;\">{{track['name']}}</a></div>\n              <div class=\"artist-name\"><h2><a href=\"javascript:;\">{{artistdata.first_name+' '+artistdata.last_name}}</a></h2></div>\n            </div>\n            <div class=\"action\">\n                <div class=\"cmt-like\"><a href=\"javascript:;\" class=\"liked\"><img src=\"img/likehand.png\" alt=\"\">{{track.no_of_likes}}</a></div>\n                <div class=\"download\"><a href=\"javascript:;\"><img src=\"img/download.png\" alt=\"\">${{track.price}}</a></div>\n                <div class=\"share\"><a href=\"javascript:;\"><img src=\"img/share.png\" alt=\"\"></a></div>\n  \n              </div>\n            <div class=\"profile-location\"><i class=\"fa fa-map-marker\" aria-hidden=\"true\"></i> <span>New York</span>\n            <p class=\"{{artistdata['music_type']['alias']}} tag\">{{artistdata['music_type']['name']}}</p></div>\n  \n            <div class=\"profile-description\">\n              <p>{{track.description}}</p>\n              \n            </div>\n          </div>\n      </div>\n      <div class=\"col-md-12\">\n        <div class=\"profile-detail-wrap\">\n          <div class=\"row\">\n            <div class=\"col-md-12 col-sm-12 col-xs-12\">\n              <div class=\"comments\">\n                <h3 class=\"num-cmt\">{{trackcomments.length}} Comments</h3>\n                <div class=\"add-comment\" *ngIf=\"user && user.user\">\n                    <form>\n                      <div class=\"s-img\"><img src=\"{{user['user'].image ? user_img_url+user['user'].image : 'img/fan1.png'}}\" alt=\"img\"></div>\n                        <div class=\"form-group\">\n                            <label for=\"cmmt\">Write a Comment</label>\n                            <input type=\"text\" class=\"form-control\" id=\"cmmt\" name=\"comment\" [(ngModel)]=\"comment_txt\" placeholder=\"Write a comment\">\n                          </div>\n                          <div class=\"button_group\">\n                        <button type=\"submit\" (click)=\"postComment()\" [disabled]=\"show_spinner\" class=\"update-btn\">Post <i class=\"fa fa-spinner fa-spin\" *ngIf=\"show_spinner\"></i></button>\n                      </div>\n                    </form>\n\t\t\t\t\t\t\t\t\t</div>\n                <div class=\"login-alert\" *ngIf=\"!user\">Please Login to leave your comment</div>\n                <div class=\"comment-block col-md-12\" *ngFor=\"let comment of trackcomments; let i=index;\">\n                  <div class=\"s-name\">{{comment['track_id']['name']}}</div>\n                  <div class=\"pull-right\" *ngIf=\"user && user.user && comment['user_id']['_id'] != user['user']['_id']\">\n                      <a href=\"javascript:;\"  (click)=\"flagUser(comment['user_id']['_id'])\"><i class=\"fa fa-flag\"></i></a>\n                    </div>\n                  <div class=\"s-img\"><img src=\"{{comment['user_id']['image'] ? user_img_url+comment['user_id']['image'] : 'img/fan1.png'}}\" alt=\"img\"></div>\n                  <div class=\"cm-date-name\">\n                    <h6>{{comment['user_id']['first_name']+' '+comment['user_id']['last_name']}}.</h6>\n                    <p>{{comment['created_at'] | timeAgo}}</p>\n                    <div class=\"profile-descriptions\">\n                      <p>{{comment['comment']}}</p>\n                    </div>\n                  </div>\n                  \n\n                </div>\n              </div>\n            </div>\n        </div>\n      </div>\n    </div>\n  </div>\n</div>\n"
 
 /***/ }),
 
@@ -4198,6 +5224,16 @@ var TrackConmmentsComponent = /** @class */ (function () {
             _this.trackcomments = response['comment'];
         });
     };
+    // Flag other user
+    TrackConmmentsComponent.prototype.flagUser = function (id) {
+        var _this = this;
+        this.TrackCommentsService.flagUser(id).subscribe(function (response) {
+            _this.toastr.success(response['message'], 'Success!');
+            _this.getAllTrackComment();
+        }, function (error) {
+            _this.toastr.error(error['error'].message, 'Error!');
+        });
+    };
     TrackConmmentsComponent = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
             selector: 'app-track-comments',
@@ -4272,6 +5308,12 @@ var TrackCommentsService = /** @class */ (function () {
     // Track comment
     TrackCommentsService.prototype.getAllTrackComment = function (data) {
         return this.http.post(this.api_host + "/get_comment_by_track_id", data);
+    };
+    // Flag other user
+    TrackCommentsService.prototype.flagUser = function (id) {
+        this.user = JSON.parse(localStorage.getItem('user'));
+        this.headers = new __WEBPACK_IMPORTED_MODULE_1__angular_common_http__["d" /* HttpHeaders */]({ 'x-access-token': this.user.token });
+        return this.http.post(this.api_host + "/user/flag/user/" + id, {}, { headers: this.headers });
     };
     TrackCommentsService = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Injectable"])(),
@@ -4722,7 +5764,7 @@ var EamilVarificationModule = /** @class */ (function () {
                 __WEBPACK_IMPORTED_MODULE_3__angular_forms__["b" /* FormsModule */],
                 __WEBPACK_IMPORTED_MODULE_6__angular_http__["a" /* HttpModule */],
                 __WEBPACK_IMPORTED_MODULE_7__angular_common_http__["b" /* HttpClientModule */],
-                __WEBPACK_IMPORTED_MODULE_3__angular_forms__["e" /* ReactiveFormsModule */],
+                __WEBPACK_IMPORTED_MODULE_3__angular_forms__["f" /* ReactiveFormsModule */],
                 __WEBPACK_IMPORTED_MODULE_8_ngx_image_cropper__["a" /* ImageCropperModule */],
                 __WEBPACK_IMPORTED_MODULE_10__angular_platform_browser_animations__["a" /* BrowserAnimationsModule */],
                 __WEBPACK_IMPORTED_MODULE_9_ngx_toastr__["a" /* ToastrModule */].forRoot(),
@@ -4834,8 +5876,8 @@ var ForgetPasswordComponent = /** @class */ (function () {
         this.conf = '';
         this.param = {};
         this.passwordFormGroup = this.fb.group({
-            password: ['', [__WEBPACK_IMPORTED_MODULE_1__angular_forms__["f" /* Validators */].required, __WEBPACK_IMPORTED_MODULE_1__angular_forms__["f" /* Validators */].maxLength(6)]],
-            conf: ['', [__WEBPACK_IMPORTED_MODULE_1__angular_forms__["f" /* Validators */].required, __WEBPACK_IMPORTED_MODULE_1__angular_forms__["f" /* Validators */].maxLength(6)]]
+            password: ['', [__WEBPACK_IMPORTED_MODULE_1__angular_forms__["g" /* Validators */].required, __WEBPACK_IMPORTED_MODULE_1__angular_forms__["g" /* Validators */].maxLength(6)]],
+            conf: ['', [__WEBPACK_IMPORTED_MODULE_1__angular_forms__["g" /* Validators */].required, __WEBPACK_IMPORTED_MODULE_1__angular_forms__["g" /* Validators */].maxLength(6)]]
         }, {
             validator: this.passwordMatchValidator
         });
@@ -4950,7 +5992,7 @@ var ForgetPasswordModule = /** @class */ (function () {
                 __WEBPACK_IMPORTED_MODULE_3__angular_forms__["b" /* FormsModule */],
                 __WEBPACK_IMPORTED_MODULE_6__angular_http__["a" /* HttpModule */],
                 __WEBPACK_IMPORTED_MODULE_7__angular_common_http__["b" /* HttpClientModule */],
-                __WEBPACK_IMPORTED_MODULE_3__angular_forms__["e" /* ReactiveFormsModule */],
+                __WEBPACK_IMPORTED_MODULE_3__angular_forms__["f" /* ReactiveFormsModule */],
                 __WEBPACK_IMPORTED_MODULE_8_ngx_image_cropper__["a" /* ImageCropperModule */],
                 __WEBPACK_IMPORTED_MODULE_10__angular_platform_browser_animations__["a" /* BrowserAnimationsModule */],
                 __WEBPACK_IMPORTED_MODULE_9_ngx_toastr__["a" /* ToastrModule */].forRoot(),
@@ -5095,49 +6137,49 @@ var RegisterComponent = /** @class */ (function () {
             this.year.push(i);
         }
         this.artist_step1 = this.fb.group({
-            terms_condtion: ['', __WEBPACK_IMPORTED_MODULE_1__angular_forms__["f" /* Validators */].required]
+            terms_condtion: ['', __WEBPACK_IMPORTED_MODULE_1__angular_forms__["g" /* Validators */].required]
         });
         this.passwordFormGroup1 = this.fb.group({
-            artist_password: ['', __WEBPACK_IMPORTED_MODULE_1__angular_forms__["f" /* Validators */].minLength(6)],
-            artist_conf: ['', __WEBPACK_IMPORTED_MODULE_1__angular_forms__["f" /* Validators */].minLength(6)]
+            artist_password: ['', __WEBPACK_IMPORTED_MODULE_1__angular_forms__["g" /* Validators */].minLength(6)],
+            artist_conf: ['', __WEBPACK_IMPORTED_MODULE_1__angular_forms__["g" /* Validators */].minLength(6)]
         }, {
             validator: this.passwordMatchValidator
         });
         this.passwordFormGroup = this.fb.group({
-            password: ['', __WEBPACK_IMPORTED_MODULE_1__angular_forms__["f" /* Validators */].minLength(6)],
-            conf: ['', __WEBPACK_IMPORTED_MODULE_1__angular_forms__["f" /* Validators */].minLength(6)]
+            password: ['', __WEBPACK_IMPORTED_MODULE_1__angular_forms__["g" /* Validators */].minLength(6)],
+            conf: ['', __WEBPACK_IMPORTED_MODULE_1__angular_forms__["g" /* Validators */].minLength(6)]
         }, {
             validator: this.passwordMatchValidatorListener
         });
         this.artist_step2 = this.fb.group({
-            'email': ['', [__WEBPACK_IMPORTED_MODULE_1__angular_forms__["f" /* Validators */].required, __WEBPACK_IMPORTED_MODULE_1__angular_forms__["f" /* Validators */].email]],
+            'email': ['', [__WEBPACK_IMPORTED_MODULE_1__angular_forms__["g" /* Validators */].required, __WEBPACK_IMPORTED_MODULE_1__angular_forms__["g" /* Validators */].email]],
             passwordFormGroup1: this.passwordFormGroup1
         });
         this.artist_step3 = this.fb.group({
-            fname: ['', [__WEBPACK_IMPORTED_MODULE_1__angular_forms__["f" /* Validators */].required]],
-            lname: ['', [__WEBPACK_IMPORTED_MODULE_1__angular_forms__["f" /* Validators */].required]],
+            fname: ['', [__WEBPACK_IMPORTED_MODULE_1__angular_forms__["g" /* Validators */].required]],
+            lname: ['', [__WEBPACK_IMPORTED_MODULE_1__angular_forms__["g" /* Validators */].required]],
             gender: []
         });
         this.artist_step4 = this.fb.group({
-            zipcode: ['', [__WEBPACK_IMPORTED_MODULE_1__angular_forms__["f" /* Validators */].required, __WEBPACK_IMPORTED_MODULE_1__angular_forms__["f" /* Validators */].pattern('^[A-Za-z0-9]+$')]]
+            zipcode: ['', [__WEBPACK_IMPORTED_MODULE_1__angular_forms__["g" /* Validators */].required, __WEBPACK_IMPORTED_MODULE_1__angular_forms__["g" /* Validators */].pattern('^[A-Za-z0-9]+$')]]
         });
         this.listener_step1 = this.fb.group({
-            email: ['', [__WEBPACK_IMPORTED_MODULE_1__angular_forms__["f" /* Validators */].required, __WEBPACK_IMPORTED_MODULE_1__angular_forms__["f" /* Validators */].email]],
+            email: ['', [__WEBPACK_IMPORTED_MODULE_1__angular_forms__["g" /* Validators */].required, __WEBPACK_IMPORTED_MODULE_1__angular_forms__["g" /* Validators */].email]],
             passwordFormGroup: this.passwordFormGroup
         });
         this.listener_step2 = this.fb.group({
-            terms_condtion: ['', __WEBPACK_IMPORTED_MODULE_1__angular_forms__["f" /* Validators */].required]
+            terms_condtion: ['', __WEBPACK_IMPORTED_MODULE_1__angular_forms__["g" /* Validators */].required]
         });
         this.listener_step3 = this.fb.group({
-            fname: ['', [__WEBPACK_IMPORTED_MODULE_1__angular_forms__["f" /* Validators */].required]],
-            lname: ['', [__WEBPACK_IMPORTED_MODULE_1__angular_forms__["f" /* Validators */].required]],
-            day: ['', [__WEBPACK_IMPORTED_MODULE_1__angular_forms__["f" /* Validators */].required]],
-            month: ['', [__WEBPACK_IMPORTED_MODULE_1__angular_forms__["f" /* Validators */].required]],
-            year: ['', [__WEBPACK_IMPORTED_MODULE_1__angular_forms__["f" /* Validators */].required]],
-            gender: ['', [__WEBPACK_IMPORTED_MODULE_1__angular_forms__["f" /* Validators */].required]]
+            fname: ['', [__WEBPACK_IMPORTED_MODULE_1__angular_forms__["g" /* Validators */].required]],
+            lname: ['', [__WEBPACK_IMPORTED_MODULE_1__angular_forms__["g" /* Validators */].required]],
+            day: ['', [__WEBPACK_IMPORTED_MODULE_1__angular_forms__["g" /* Validators */].required]],
+            month: ['', [__WEBPACK_IMPORTED_MODULE_1__angular_forms__["g" /* Validators */].required]],
+            year: ['', [__WEBPACK_IMPORTED_MODULE_1__angular_forms__["g" /* Validators */].required]],
+            gender: ['', [__WEBPACK_IMPORTED_MODULE_1__angular_forms__["g" /* Validators */].required]]
         });
         this.listener_step4 = this.fb.group({
-            zipcode: ['', [__WEBPACK_IMPORTED_MODULE_1__angular_forms__["f" /* Validators */].required, __WEBPACK_IMPORTED_MODULE_1__angular_forms__["f" /* Validators */].pattern('^[0-9]+$')]]
+            zipcode: ['', [__WEBPACK_IMPORTED_MODULE_1__angular_forms__["g" /* Validators */].required, __WEBPACK_IMPORTED_MODULE_1__angular_forms__["g" /* Validators */].pattern('^[0-9]+$')]]
         });
         this.RegisterService.getAllMusicType().subscribe(function (response) {
             _this.music_types = response['music'];
@@ -5424,7 +6466,7 @@ var RegisterModule = /** @class */ (function () {
                 __WEBPACK_IMPORTED_MODULE_3__angular_forms__["b" /* FormsModule */],
                 __WEBPACK_IMPORTED_MODULE_6__angular_http__["a" /* HttpModule */],
                 __WEBPACK_IMPORTED_MODULE_7__angular_common_http__["b" /* HttpClientModule */],
-                __WEBPACK_IMPORTED_MODULE_3__angular_forms__["e" /* ReactiveFormsModule */],
+                __WEBPACK_IMPORTED_MODULE_3__angular_forms__["f" /* ReactiveFormsModule */],
                 __WEBPACK_IMPORTED_MODULE_8_ngx_image_cropper__["a" /* ImageCropperModule */],
                 __WEBPACK_IMPORTED_MODULE_10__angular_platform_browser_animations__["a" /* BrowserAnimationsModule */],
                 __WEBPACK_IMPORTED_MODULE_9_ngx_toastr__["a" /* ToastrModule */].forRoot(),
@@ -5527,7 +6569,12 @@ var AuthService = /** @class */ (function () {
         if (user) {
             return true;
         }
-        this.router.navigate(['']);
+        if (state.url.includes('/admin')) {
+            this.router.navigate(['/admin/login']);
+        }
+        else {
+            this.router.navigate(['']);
+        }
         return false;
     };
     AuthService = __decorate([

@@ -21,7 +21,11 @@
                 <div class="login-alert" *ngIf="!user">Please Login to leave your comment</div>
                 <div class="comment-block col-md-12" *ngFor="let comment of trackcomments; let i=index;">
                   <div class="s-name">{{comment['track_id']['name']}}</div>
-                  <div class="pull-right"><a href="javascript:;" (click)="removeComment(comment._id)"><i class="fa fa-trash"></i></a></div>
+                  <div class="pull-right">
+                    <a href="javascript:;" *ngIf="comment['user_id']['status'] == 'active'" (click)="blockUnblockUser(comment['user_id']['_id'])"><i class="fa fa-unlock"></i></a>
+                    <a  href="javascript:;" *ngIf="comment['user_id']['status'] == 'suspended'" (click)="blockUnblockUser(comment['user_id']['_id'])"><i class="fa fa-lock"></i></a>
+                    <a href="javascript:;" (click)="removeComment(comment._id)"><i class="fa fa-trash"></i></a>
+                  </div>
                   <div class="s-img"><img src="{{comment['user_id']['image'] ? user_img_url+comment['user_id']['image'] : 'img/fan1.png'}}" alt="img"></div>
                   <div class="cm-date-name">
                     <h6>{{comment['user_id']['first_name']+' '+comment['user_id']['last_name']}}.</h6>

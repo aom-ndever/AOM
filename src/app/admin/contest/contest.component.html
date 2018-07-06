@@ -1,0 +1,48 @@
+ <!-- Page Content -->
+ <div id="page-content-wrapper">  
+  <div class="text-right">
+    <button class="create_contest_btn btn">Create Contest</button>
+  </div>         
+           <div>
+                <h3 class="Audience-Overview">Contests </h3>
+                <div class="dropdown table_dropdown custom_dropdown">
+                    <button type="button" class="btn dropdown-toggle custom_drop_btn" data-toggle="dropdown">
+                        Sort By End Date
+                    </button>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="#">Lfbdfink 1</a>
+                        <a class="dropdown-item" href="#">Link 2</a>
+                        <a class="dropdown-item" href="#">Link 3</a>
+                    </div>
+                </div> 
+                <div class="artists_table contest_table table-responsive">
+                  <table class="table" datatable [dtOptions]="dtOptions">
+                        <thead>
+                          <tr>
+                            <th>N<sup>O</sup></th>
+                            <th>Contest Name</th>
+                            <th>Start Date</th>
+                            <th>End Date</th>
+                            <th>Days Remain</th>
+                            <th>Music Genre</th>
+                            <th>Region</th>
+                            <th>Participants</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                        <tr *ngFor="let contest of contest_data; let i = index;">
+                          <td>{{i+1}}.</td>
+                          <td>{{contest['name']}}</td>
+                          <td>{{contest['start_date'] | date : 'MMMM dd, yyyy'}}</td>
+                          <td>{{contest['end_date'] | date : 'MMMM dd, yyyy'}}</td>
+                          <td>{{contest['days']}}</td>
+                          <td>{{contest['music_type']['name']}}</td>
+                          <td>{{contest['location']}}</td>
+                          <td>{{contest['no_of_participants']}}</td>
+                        </tr>
+                        </tbody>
+                      </table>
+                </div>
+            </div>
+    </div>
+    <!-- /#page-content-wrapper -->

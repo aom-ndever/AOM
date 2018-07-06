@@ -12,6 +12,7 @@ import {ActivatedRoute} from "@angular/router";
 export class ConmmentsComponent implements OnInit {
   artistdata : any = {};
   artistcomments : any = [];
+  user : any;
   artist_img_url : any = environment.API_URL+environment.ARTIST_IMG;
   track_url : any = environment.API_URL+environment.ARTIST_TRACK;
   user_img_url : any = environment.API_URL+environment.USER_IMG;
@@ -22,11 +23,11 @@ export class ConmmentsComponent implements OnInit {
   ) {
     this.artistdata = this.route.snapshot.data['artist'].artist;
     this.artistcomments = this.route.snapshot.data['comments'].comment;
+    this.user = JSON.parse(localStorage.getItem('user'));
   }
 
   ngOnInit() {
     
   }
-
   
 }

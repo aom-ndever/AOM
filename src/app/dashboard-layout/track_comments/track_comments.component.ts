@@ -86,4 +86,13 @@ export class TrackConmmentsComponent implements OnInit {
       this.trackcomments = response['comment'];
     });
   }
+  // Flag other user
+  flagUser(id : any) {
+    this.TrackCommentsService.flagUser(id).subscribe((response) => {
+      this.toastr.success(response['message'], 'Success!');
+      this.getAllTrackComment();
+    }, (error) => {
+      this.toastr.error(error['error'].message, 'Error!');
+    });
+  }
 }

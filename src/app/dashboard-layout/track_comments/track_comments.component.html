@@ -53,6 +53,9 @@
                 <div class="login-alert" *ngIf="!user">Please Login to leave your comment</div>
                 <div class="comment-block col-md-12" *ngFor="let comment of trackcomments; let i=index;">
                   <div class="s-name">{{comment['track_id']['name']}}</div>
+                  <div class="pull-right" *ngIf="user && user.user && comment['user_id']['_id'] != user['user']['_id']">
+                      <a href="javascript:;"  (click)="flagUser(comment['user_id']['_id'])"><i class="fa fa-flag"></i></a>
+                    </div>
                   <div class="s-img"><img src="{{comment['user_id']['image'] ? user_img_url+comment['user_id']['image'] : 'img/fan1.png'}}" alt="img"></div>
                   <div class="cm-date-name">
                     <h6>{{comment['user_id']['first_name']+' '+comment['user_id']['last_name']}}.</h6>

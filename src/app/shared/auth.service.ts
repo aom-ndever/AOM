@@ -12,7 +12,11 @@ export class AuthService implements CanActivate {
     if (user) {
       return true
     }
-    this.router.navigate(['']);
+    if(state.url.includes('/admin')) {
+      this.router.navigate(['/admin/login']);
+    } else {
+      this.router.navigate(['']);
+    }
     return false;
   }
 }
