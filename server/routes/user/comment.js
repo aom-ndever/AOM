@@ -12,6 +12,7 @@ var vote_comment_helper = require('../../helpers/vote_comment_helper');
 var artist_helper = require('../../helpers/artist_helper');
 var track_helper = require('../../helpers/track_helper');
 var user_helper = require('../../helpers/user_helper');
+var mail_helper = require('../../helpers/mail_helper');
 
 var mongoose = require('mongoose');
 var ObjectId = mongoose.Types.ObjectId;
@@ -72,8 +73,19 @@ router.post('/', async (req, res) => {
         logger.error("Error occured while fetching music = ", resp_data);
         res.status(config.INTERNAL_SERVER_ERROR).json(resp_data);
       } else {
-        var resp = await artist_helper.get_artist_by_id(obj.artist_id);
+        var response = await user_helper.get_user_by_id(obj.user_id);
 
+        var resp = await artist_helper.get_artist_by_id(obj.artist_id);
+        if (responses.artist.notification_settings.like_by_email == true) {
+
+
+          let mail_resp = await mail_helper.send("notification_comment", {
+            "to": resp.artist.email,
+            "subject": "like from user"
+          }, {
+              "user": response.user.first_name + response.user.last_name
+            });
+        }
         no_comment = resp.artist.no_of_comments + 1
         var resp_data = await track_helper.update_artist_for_comments(obj.artist_id, no_comment);
 

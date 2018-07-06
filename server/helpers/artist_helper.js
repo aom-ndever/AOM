@@ -352,36 +352,14 @@ artist_helper.get_all_active_and_suspend_artist = async (start, length, filter =
     try {
 
         var artists = await Artist
-            .find(filter, {
-                "first_name": 1,
-                "last_name": 1,
-                "gender": 1,
-                "music_type": 1,
-                "status": 1,
-                "no_of_tracks": 1,
-                "no_of_votes": 1,
-                "no_of_likes": 1,
-                "no_of_followers": 1,
-                "no_of_comments": 1,
-            })
+            .find(filter)
 
 
         var tot_cnt = artists.length;
 
 
         var artist = await Artist
-            .find(filter, {
-                "first_name": 1,
-                "last_name": 1,
-                "gender": 1,
-                "music_type": 1,
-                "status": 1,
-                "no_of_tracks": 1,
-                "no_of_votes": 1,
-                "no_of_likes": 1,
-                "no_of_followers": 1,
-                "no_of_comments": 1,
-            })
+            .find(filter)
 
             .sort(sort_by)
             .skip(start)

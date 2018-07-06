@@ -228,31 +228,11 @@ user_helper.update_user_for_comments = async (id, no_comment) => {
 user_helper.get_all_active_and_suspend_user = async (start, length, filter, sort_by = {}) => {
     try {
         var users = await User
-            .find(filter, {
-                "first_name": 1,
-                "last_name": 1,
-                "gender": 1,
-                "music_type": 1,
-                "status": 1,
-                "no_of_votes": 1,
-                "no_of_likes": 1,
-                "no_of_followers": 1,
-                "no_of_comments": 1,
-            })
+            .find(filter)
         var tot_cnt = users.length;
 
         var user = await User
-            .find(filter, {
-                "first_name": 1,
-                "last_name": 1,
-                "gender": 1,
-                "music_type": 1,
-                "status": 1,
-                "no_of_votes": 1,
-                "no_of_likes": 1,
-                "no_of_followers": 1,
-                "no_of_comments": 1,
-            })
+            .find(filter)
             .sort(sort_by)
             .skip(start)
             .limit(length)

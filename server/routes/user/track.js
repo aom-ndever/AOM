@@ -231,9 +231,7 @@ router.post('/like_track', async (req, res) => {
           "to": resp.artist.email,
           "subject": "like from user"
         }, {
-
             "user": response.user.first_name + response.user.last_name
-
           });
       }
       logger.trace("like done successfully = ", data);
