@@ -50,3 +50,5 @@ Thumbs.db
 /server/log_file.log
 /server/.env
 /server/helpers/demo_helper.js
+/server/helpers/block_helper.js
+/server/models/block.js

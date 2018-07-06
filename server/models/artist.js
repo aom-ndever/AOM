@@ -26,6 +26,7 @@ var ArtistModelSchema = new Schema({
     image: String,
     cover_image: String,
     notification_settings: NotificationSettings,
+
     flag: { type: Boolean, default: false },
     status: { type: String, default: "active" },
     no_of_tracks: { type: Number, default: 0 },
