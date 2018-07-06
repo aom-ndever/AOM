@@ -15,6 +15,7 @@ var mail_helper = require('../../helpers/mail_helper');
 var flag_helper = require('../../helpers/flag_helper');
 var flag_artist_helper = require('../../helpers/flag_artist_helper');
 var flag_user_helper = require('../../helpers/flag_user_helper');
+var follower_helper = require('../../helpers/follower_helper');
 
 
 var mongoose = require('mongoose');
@@ -581,43 +582,31 @@ router.post("/flag/artist/:artist_id", async (req, res) => {
   }
 });
 
-/*router.post("/flag/user/:user_id", async (req, res) => {
-  var obj = {
-    from: req.userInfo.id,
-    to: req.user.user_id
+
+
+router.post('/user', async (req, res) => {
+  user_id = req.body.user_id
+  var user = await user_helper.get_user_by_id(user_id);
+
+  if (user.status === 1) {
+    logger.trace("got details successfully");
+    res.status(config.OK_STATUS).json({ "status": 1, "user": user.user });
+  } else {
+    logger.error("Error occured while fetching = ", user);
+    res.status(config.INTERNAL_SERVER_ERROR).json(user);
   }
-  var resp = await user_helper.get_user_by_id(req.params.user_id);
-  console.log('resp', resp);
+});
 
-  type = await admin_helper.get_admin_by_id(req.userInfo.id)
+router.post('/user/artist_follow', async (req, res) => {
+  user_id = req.body.user_id
+  var user = await follower_helper.get_all_followers_by_user_id(user_id);
 
-  if (type.admin.account_type == "super_admin" || type.admin.account_type == "admin") {
-    if (resp.status == 0) {
-      logger.error("Error occured while fetching user = ", resp);
-      res.status(config.INTERNAL_SERVER_ERROR).json(resp);
-    } else {
-
-      if (resp.user.flag == false) {
-        var stat = true
-        var user_response = await block_helper.insert_flag(obj);
-        var user_resp = await user_helper.update_user_flag(req.params.user_id, stat);
-        logger.trace("user flagged");
-        res.status(config.OK_STATUS).json({ "message": "user flagged", "user": user_response.flag });
-      }
-      else {
-        var stat = false
-        var user_resp = await user_helper.update_user_flag(req.params.user_id, stat);
-        var user_resp = await block_helper.delete_flag(obj.from, obj.to);
-        logger.trace("flag deleted");
-        res.status(config.OK_STATUS).json({ "message": "flag deleted" });
-      }
-
-    }
+  if (user.status === 1) {
+    logger.trace("got details successfully");
+    res.status(config.OK_STATUS).json({ "status": 1, "user": user.user });
+  } else {
+    logger.error("Error occured while fetching = ", user);
+    res.status(config.INTERNAL_SERVER_ERROR).json(user);
   }
-  else {
-    logger.trace("You dont have permission to suspend user");
-    res.status(config.INTERNAL_SERVER_ERROR).json({ "status": 0, "message": "You dont have permission to suspend User" });
-  }
-});*/
-
+});
 module.exports = router;

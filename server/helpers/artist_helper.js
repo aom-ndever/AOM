@@ -360,7 +360,6 @@ artist_helper.get_all_active_and_suspend_artist = async (start, length, filter =
 
         var artist = await Artist
             .find(filter)
-
             .sort(sort_by)
             .skip(start)
             .limit(length)

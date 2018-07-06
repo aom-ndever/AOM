@@ -61,7 +61,8 @@ user_helper.get_user_by_email = async (email) => {
  */
 user_helper.get_user_by_id = async (user_id) => {
     try {
-        var user = await User.findOne({ "_id": { "$eq": user_id } });
+        var user = await User.findOne({ "_id": { "$eq": user_id } })
+            .populate('music_type')
         if (user) {
             return { "status": 1, "message": "user details found", "user": user };
         } else {
