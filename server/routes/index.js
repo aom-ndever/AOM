@@ -497,12 +497,10 @@ router.post('/user_login', async (req, res) => {
       notEmpty: true,
       errorMessage: "password is required."
     },
-
   };
   req.checkBody(schema);
   var errors = req.validationErrors();
   if (!errors) {
-
     let login_resp = await user_helper.get_login_by_email(req.body.email);
     logger.trace("Login checked resp = ", login_resp);
     if (login_resp.status === 0) {
