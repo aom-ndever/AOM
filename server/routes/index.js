@@ -516,7 +516,7 @@ router.post('/user_login', async (req, res) => {
 
           if (login_resp.user.email_verified) {
             var refreshToken = jwt.sign({ id: login_resp.user._id }, config.REFRESH_TOKEN_SECRET_KEY, {});
-            let update_resp = await user_helper.update_user_by_id(login_resp.user._id, { "refresh_token": refreshToken, "last_login_date": Date.now() });
+            let update_resp = await user_helper.update_user_by_id(login_resp.user._id, { "refresh_token": refreshToken, "last_login": Date.now() });
             var LoginJson = { id: login_resp.user._id, email: login_resp.email, role: "user" };
             var token = jwt.sign(LoginJson, config.ACCESS_TOKEN_SECRET_KEY, {
               expiresIn: config.ACCESS_TOKEN_EXPIRE_TIME
