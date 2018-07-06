@@ -208,11 +208,12 @@ router.post('/like_track', async (req, res) => {
 
       } else
         var resp_data = await like_helper.get_all_track_by_track_id(obj.track_id);
-      no_vote = resp_data.like[0].no_of_likes + 1;
+      no_vote = resp_data.like.no_of_likes + 1;
       var resp_data = await like_helper.update_likes(obj.track_id, no_vote);
 
-      var resp = await artist_helper.get_artist_by_id(obj.artist_id);
-      no_like = resp.artist.no_of_likes + 1
+      var responses = await artist_helper.get_artist_by_id(obj.artist_id);
+
+      no_like = responses.artist.no_of_likes + 1
       var resp_data = await track_helper.update_artist_for_likes(obj.artist_id, no_like);
 
       var resp = await user_helper.get_user_by_id(obj.user_id);
@@ -223,16 +224,18 @@ router.post('/like_track', async (req, res) => {
       var resp = await artist_helper.get_artist_by_id(obj.artist_id);
 
       var response = await user_helper.get_user_by_id(user_id);
+      if (responses.artist.notification_settings.like_by_email == true) {
 
-      let mail_resp = await mail_helper.send("notification", {
-        "to": resp.artist.email,
-        "subject": "like from user"
-      }, {
 
-          "user": response.user.first_name + response.user.last_name
+        let mail_resp = await mail_helper.send("notification", {
+          "to": resp.artist.email,
+          "subject": "like from user"
+        }, {
 
-        });
+            "user": response.user.first_name + response.user.last_name
 
+          });
+      }
       logger.trace("like done successfully = ", data);
       res.status(config.OK_STATUS).json(data);
     }

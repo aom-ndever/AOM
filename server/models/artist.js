@@ -8,7 +8,7 @@ var Schema = mongoose.Schema;
 var NotificationSettings = new Schema({
     like_by_email: { type: Boolean, default: true },
     comment_by_email: { type: Boolean, default: true },
-    like_by_sms: { type: Boolean, default: false },
+    like_by_sms: { type: Boolean, default: true },
     comment_by_sms: { type: Boolean, default: true },
 
 });
@@ -25,8 +25,7 @@ var ArtistModelSchema = new Schema({
     zipcode: Number,
     image: String,
     cover_image: String,
-    notification_settings: NotificationSettings,
-
+    notification_settings: { type: NotificationSettings, default: true },
     flag: { type: Boolean, default: false },
     status: { type: String, default: "active" },
     no_of_tracks: { type: Number, default: 0 },

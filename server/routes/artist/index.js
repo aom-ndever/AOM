@@ -164,6 +164,39 @@ router.put('/', function (req, res) {
 });
 
 
+router.put('/notification_settings', function (req, res) {
+    user_id = req.userInfo.id;
+
+    var obj = {};
+    if (req.body.like_by_email != null) {
+        obj = {
+            "notification_settings.like_by_email": req.body.like_by_email
+        }
+    }
+    if (req.body.comment_by_email != null) {
+        obj = {
+            "notification_settings.comment_by_email": req.body.comment_by_email
+        }
+    }
+    if (req.body.like_by_sms != null) {
+        obj = {
+            "notification_settings.like_by_sms": req.body.like_by_sms
+        }
+    }
+    if (req.body.comment_by_sms != null) {
+        obj = {
+            "notification_settings.comment_by_sms": req.body.comment_by_sms
+        }
+    }
+    var user_resp = artist_helper.update_artist_by_id(req.userInfo.id, obj);
+    if (user_resp.status === 0) {
+        res.status(config.INTERNAL_SERVER_ERROR).json({ "error": user_resp.error });
+    } else {
+        res.status(config.OK_STATUS).json({ "message": "Notification has been updated successfully" });
+    }
+
+});
+
 router.put('/update_image', function (req, res) {
     user_id = req.userInfo.id;
     var obj = {
