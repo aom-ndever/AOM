@@ -76,14 +76,15 @@ router.post('/', async (req, res) => {
         var response = await user_helper.get_user_by_id(obj.user_id);
 
         var resp = await artist_helper.get_artist_by_id(obj.artist_id);
-        if (responses.artist.notification_settings.like_by_email == true) {
+        if (resp.artist.notification_settings.comment_by_email == true) {
 
 
           let mail_resp = await mail_helper.send("notification_comment", {
             "to": resp.artist.email,
-            "subject": "like from user"
+            "subject": "Comment from user"
           }, {
-              "user": response.user.first_name + response.user.last_name
+              "user": response.user.first_name + response.user.last_name,
+              "comment": obj.comment
             });
         }
         no_comment = resp.artist.no_of_comments + 1
