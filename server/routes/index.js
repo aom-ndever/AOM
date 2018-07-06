@@ -511,7 +511,7 @@ router.post('/user_login', async (req, res) => {
     } else if (login_resp.status === 1) {
       logger.trace("Artist found. Executing next instruction");
       logger.trace("valid token. Generating token");
-      if (login_resp.artist.flag == false) {
+      if (login_resp.user.flag == false) {
         if (bcrypt.compareSync(req.body.password, login_resp.user.password)) {
 
           if (login_resp.user.email_verified) {

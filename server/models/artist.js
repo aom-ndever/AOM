@@ -5,7 +5,13 @@ var SALT_WORK_FACTOR = 10;
 
 //Define a schema
 var Schema = mongoose.Schema;
+var NotificationSettings = new Schema({
+    like_by_email: { type: Boolean, default: true },
+    comment_by_email: { type: Boolean, default: true },
+    like_by_sms: { type: Boolean, default: false },
+    comment_by_sms: { type: Boolean, default: true },
 
+});
 var ArtistModelSchema = new Schema({
     social_media: {
         type: Object, default: null
@@ -19,6 +25,7 @@ var ArtistModelSchema = new Schema({
     zipcode: Number,
     image: String,
     cover_image: String,
+    notification_settings: NotificationSettings,
     flag: { type: Boolean, default: false },
     status: { type: String, default: "active" },
     no_of_tracks: { type: Number, default: 0 },
