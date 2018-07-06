@@ -13,7 +13,8 @@ var user_helper = require('../../helpers/user_helper');
 var track_helper = require('../../helpers/track_helper');
 var mail_helper = require('../../helpers/mail_helper');
 var flag_helper = require('../../helpers/flag_helper');
-var block_helper = require('../../helpers/block_helper');
+var flag_artist_helper = require('../../helpers/flag_artist_helper');
+var flag_user_helper = require('../../helpers/flag_user_helper');
 
 
 var mongoose = require('mongoose');
@@ -434,28 +435,38 @@ router.post("/suspend/artist/:artist_id", async (req, res) => {
  * @apiSuccess (Success 200) {JSON} User details
  * @apiError (Error 4xx) {String} message Validation or error message.
  */
-router.post("/suspend/user/:user_id", async (req, res) => {
+router.post("/flag/user/:user_id", async (req, res) => {
+  var obj = {
+    from: req.userInfo.id,
+    to: req.params.user_id
+  }
   type = await admin_helper.get_admin_by_id(req.userInfo.id)
   if (type.admin.account_type == "super_admin" || type.admin.account_type == "admin") {
     var resp = await user_helper.get_user_by_id(req.params.user_id);
+    console.log('response------------->', resp);
+
     if (resp.status == 0) {
       logger.error("Error occured while fetching artist = ", resp);
       res.status(config.INTERNAL_SERVER_ERROR).json(resp);
     } else {
-      if (resp.user.status == "active") {
-        var stat = "suspended"
-        var user_resp = await user_helper.update_user_status(req.params.user_id, stat);
+      if (resp.user.flag == false) {
+        var stat = true
+        var user_response = await flag_user_helper.insert_flag(obj);
+        var user_resp = await user_helper.update_user_flag(req.params.user_id, stat);
+        logger.trace("user flagged");
+        res.status(config.OK_STATUS).json({ "message": "user flagged", "user": user_response.flag });
       }
       else {
-        var stat = "active"
-        var user_resp = await user_helper.update_user_status(req.params.user_id, stat);
+        var stat = false
+        var user_resp = await user_helper.update_user_flag(req.params.user_id, stat);
+        var user_resp = await flag_user_helper.delete_flag(obj.from, obj.to);
+        logger.trace("flag deleted");
+        res.status(config.OK_STATUS).json({ "message": "flag deleted" });
       }
-      logger.trace("User Suspended = ", { "user": user_resp });
-      res.status(config.OK_STATUS).json({ "artist": user_resp });
     }
   }
   else {
-    logger.trace("You dont have permission to suspend Artist");
+    logger.trace("You dont have permission to suspend User");
     res.status(config.INTERNAL_SERVER_ERROR).json({ "status": 0, "message": "You dont have permission to suspend User" });
   }
 });
@@ -504,10 +515,22 @@ router.post("/get_user", async (req, res) => {
   }
 });
 
+router.post("/get_flagged_user", async (req, res) => {
+  user_id = req.body.user_id;
+  var resp_data = await flag_user_helper.get_flag(user_id);
+  if (resp_data.status == 0) {
+    logger.error("Error occured while fetching user = ", resp_data);
+    res.status(config.INTERNAL_SERVER_ERROR).json(resp_data);
+  } else {
+    logger.trace("user got successfully = ", { "user": resp_data });
+    res.status(config.OK_STATUS).json({ "user": resp_data.user });
+  }
+});
+
 
 router.post("/get_flag", async (req, res) => {
   artist_id = req.body.artist_id;
-  var resp_data = await block_helper.get_flag(artist_id);
+  var resp_data = await flag_artist_helper.get_flag(artist_id);
   if (resp_data.status == 0) {
     logger.error("Error occured while fetching artist = ", resp_data);
     res.status(config.INTERNAL_SERVER_ERROR).json(resp_data);
@@ -537,16 +560,15 @@ router.post("/flag/artist/:artist_id", async (req, res) => {
 
       if (resp.artist.flag == false) {
         var stat = true
-        var artist_response = await block_helper.insert_flag(obj);
+        var artist_response = await flag_artist_helper.insert_flag(obj);
         var artist_resp = await artist_helper.update_artist_flag(req.params.artist_id, stat);
         logger.trace("artist flagged");
         res.status(config.OK_STATUS).json({ "message": "artist flagged", "artist": artist_response.flag });
       }
-
       else {
         var stat = false
         var artist_resp = await artist_helper.update_artist_flag(req.params.artist_id, stat);
-        var artist_resp = await block_helper.delete_flag(obj.from, obj.to);
+        var artist_resp = await flag_artist_helper.delete_flag(obj.from, obj.to);
         logger.trace("flag deleted");
         res.status(config.OK_STATUS).json({ "message": "flag deleted" });
       }
@@ -558,5 +580,44 @@ router.post("/flag/artist/:artist_id", async (req, res) => {
     res.status(config.INTERNAL_SERVER_ERROR).json({ "status": 0, "message": "You dont have permission to suspend User" });
   }
 });
+
+/*router.post("/flag/user/:user_id", async (req, res) => {
+  var obj = {
+    from: req.userInfo.id,
+    to: req.user.user_id
+  }
+  var resp = await user_helper.get_user_by_id(req.params.user_id);
+  console.log('resp', resp);
+
+  type = await admin_helper.get_admin_by_id(req.userInfo.id)
+
+  if (type.admin.account_type == "super_admin" || type.admin.account_type == "admin") {
+    if (resp.status == 0) {
+      logger.error("Error occured while fetching user = ", resp);
+      res.status(config.INTERNAL_SERVER_ERROR).json(resp);
+    } else {
+
+      if (resp.user.flag == false) {
+        var stat = true
+        var user_response = await block_helper.insert_flag(obj);
+        var user_resp = await user_helper.update_user_flag(req.params.user_id, stat);
+        logger.trace("user flagged");
+        res.status(config.OK_STATUS).json({ "message": "user flagged", "user": user_response.flag });
+      }
+      else {
+        var stat = false
+        var user_resp = await user_helper.update_user_flag(req.params.user_id, stat);
+        var user_resp = await block_helper.delete_flag(obj.from, obj.to);
+        logger.trace("flag deleted");
+        res.status(config.OK_STATUS).json({ "message": "flag deleted" });
+      }
+
+    }
+  }
+  else {
+    logger.trace("You dont have permission to suspend user");
+    res.status(config.INTERNAL_SERVER_ERROR).json({ "status": 0, "message": "You dont have permission to suspend User" });
+  }
+});*/
 
 module.exports = router;
