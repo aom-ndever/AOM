@@ -19,6 +19,18 @@ export class UsersService {
   }
    // suspend artist
    suspendUser(id : any) {
-    return this.http.post(`${this.api_host}/admin/suspend/user/${id}`, null, {headers : this.headers});
+    return this.http.post(`${this.api_host}/admin/flag/user/${id}`, null, {headers : this.headers});
+  }
+  // Flaged user
+  getFlagedUser(data : any) {
+    return this.http.post(`${this.api_host}/admin/get_flagged_user`, data, {headers : this.headers});
+  }
+  // Artist following by user 
+  getUserFollowingArtist(data : any) {
+    return this.http.post(`${this.api_host}/admin/user/artist_follow`, data, {headers : this.headers});
+  }
+  // Get user details by id
+  getUserById(data : any) {
+    return this.http.post(`${this.api_host}/admin/user`, data, {headers : this.headers});
   }
 }

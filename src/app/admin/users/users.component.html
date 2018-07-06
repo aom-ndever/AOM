@@ -4,16 +4,15 @@
     <div class="container-fluid">
       <h3 class="Audience-Overview">Search Users </h3>
       <div class="search-input header_search">
-          <i class="fa fa-search" aria-hidden="true"></i>
         <input type="text" name="search" [(ngModel)]="search_str" (keyup)="filterBasedOnSearch($event)" placeholder="Search by User Name">
       </div>
-      <div class="row">
+      <div class="row top_header_filter">
         
-        <div class="col-md-10 col-sm-12 col-xs-12">
+        <div class="col-lg-10 col-md-9 col-sm-12 col-xs-12">
           <div class="sub-menu-filter">
           <div class="artist_heading">Region</div>
-            <div class="row">
-              <div class="col-md-2 col-sm-4 col-xs-4">
+            <div class="row ">
+              <div class="col-lg-2 col-md-4 col-sm-4 col-xs-4">
                 <div class="filter-subhead">Northeast</div>
                 <ul>
                   <li>
@@ -63,7 +62,7 @@
                   </li>
                 </ul>
               </div>
-              <div class="col-md-2 col-sm-4 col-xs-4">
+              <div class="col-lg-2 col-md-4 col-sm-4 col-xs-4">
                 <div class="filter-subhead">southeast</div>
                 <ul>
                   <li>
@@ -113,7 +112,7 @@
                   </li>
                 </ul>
               </div>
-              <div class="col-md-2 col-sm-4 col-xs-4">
+              <div class="col-lg-2 col-md-4 col-sm-4 col-xs-4">
                 <div class="filter-subhead">Midwest</div>
                 <ul>
                   <li>
@@ -163,7 +162,7 @@
                   </li>
                 </ul>
               </div>
-              <div class="col-md-2 col-sm-4 col-xs-4">
+              <div class="col-lg-2 col-md-4 col-sm-4 col-xs-4">
                 <div class="filter-subhead">Southwest</div>
                 <ul>
                   <li>
@@ -213,7 +212,7 @@
                   </li>
                 </ul>
               </div>
-              <div class="col-md-2 col-sm-4 col-xs-4">
+              <div class="col-lg-2 col-md-4 col-sm-4 col-xs-4">
                 <div class="filter-subhead">West</div>
                 <ul>
                   <li>
@@ -263,7 +262,7 @@
                   </li>
                 </ul>
               </div>
-              <div class="col-md-2 col-sm-4 col-xs-4">
+              <div class="col-lg-2 col-md-4 col-sm-4 col-xs-4">
                 <div class="filter-subhead">other</div>
                 <ul>
                   <li>
@@ -286,7 +285,7 @@
      <div>
           <h3 class="Audience-Overview">Users </h3>
           <div class="dropdown table_dropdown custom_dropdown">
-            <select class="form-control" id="sort" name="sort_by" [(ngModel)]="sort_by" (change)="sortUser($event.target.value)">
+            <select class="form-control custom_drop_btn" id="sort" name="sort_by" [(ngModel)]="sort_by" (change)="sortUser($event.target.value)">
               <option value="-1">Newest First</option>
               <option value="1">Newest Last</option>
             </select>
@@ -308,14 +307,14 @@
                   <tbody>
                     <tr *ngFor="let user of user_data; let i = index;">
                       <td>{{i+1}}.</td>
-                      <td><a href="javascript:;" (click)="openModal(template)">{{user['first_name']+' '+user['last_name']}}</a></td>
-                      <td class="status {{user['status'] == 'active' ? 'active_status' : user['status'] == 'suspended' ? 'suspend_status' : ''}}"><span>{{user['status']}}</span></td>  
+                      <td><a href="javascript:;" (click)="openModal(template, user['_id'])">{{user['first_name']+' '+user['last_name']}}</a></td>
+                      <td class="status {{user['status'] == 'active' ? 'active_status' : user['status'] == 'Suspended' ? 'suspended_status' : ''}}"><span>{{user['status']}}</span></td>  
                       <td class="td_img"><img src="img/followers.png"/>{{user['no_of_followers']}}</td>                             
                       <td class="td_img"><img src="img/vote.png"/>{{user['no_of_votes']}}</td>
                       <td class="td_img"><img src="img/likes.png"/>{{user['no_of_likes']}}</td>
                       <td class="td_img"><img src="img/comments.png"/>{{user['no_of_followers']}}</td> 
                       <td class="td_img"><img src="img/suspend.png">
-                        <a href="javascript:;" (click)="suspendUser(user['_id'])">{{user['status'] == 'suspended' ? 'Un-suspend' : 'suspend'}}</a>
+                        <a href="javascript:;" (click)="suspendUser(user['_id'])">{{user['flag']? 'Un-suspend' : 'suspend'}}</a>
                       </td>                               
                     </tr>                     
                   </tbody>
@@ -329,6 +328,76 @@
     <span aria-hidden="true">&times;</span>
   </button>
   <div class="modal-body">
-    This is a modal.
+      <div class="row" style="padding: 5px;" >
+          <div class="col-sm-12">
+            <h3>{{user_detail['first_name']+' '+user_detail['last_name']}}</h3>
+            <div>
+              <span>{{user_detail['gender']}}</span>
+              <span>32 y.o.</span>
+              <span>{{user_detail['location']}}</span>
+            </div>
+            <div>
+              <span>Votes {{user_detail['no_of_votes']}}</span>
+              <span>Like {{user_detail['no_of_likes']}}</span>
+              <span>Followers {{user_detail['no_of_followers']}}</span>
+              <span>Comments {{user_detail['no_of_comments']}}</span>
+            </div>
+            <div>
+              <span>Signup date : {{user_detail['created_at'] | date : 'yyyy/MM/dd'}}</span>
+              <span>Last Login : {{user_detail['last_login'] | date : 'yyyy/MM/dd'}}</span>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-12">
+            <b>Artists Following</b>
+          </div>
+          <div class="artists_table copyright_table table-responsive col-sm-12">
+            <table class="table">
+                <thead>
+                  <tr>
+                    <th>N<sup>O</sup></th>
+                    <th>Artist Name</th>
+                    <th>Music Genre</th>
+                    <th>Tracks</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let artist of user_following; let i = index;" >
+                    <td>{{i+1}}</td>
+                    <td>{{artist['artist_id']['first_name']+' '+artist['artist_id']['last_name']}}</td>
+                    <td>{{artist['artist_id']['music_type']['name']}}</td>
+                    <td >{{artist['artist_id']['no_of_tracks']}}</td>
+                  </tr>
+                  <tr *ngIf="artist?.length == 0">
+                    <td colspan="4">No data available.</td>
+                  </tr>
+                </tbody>
+            </table>
+          </div>
+        </div>
+    <div class="row">
+      <div class="col-sm-12">
+        <b>Flags</b>
+      </div>
+      <div class="table-responsive col-sm-12">
+        <table class="table">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Type</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let val of user_flag">
+                <td>{{val.created_at | date : 'MMMM dd, yyyy'}}</td>
+                <td>{{val['from']['account_type']}}</td>
+                <td>Suspended by {{val['from']['account_type']}}</td>
+              </tr>
+            </tbody>
+        </table>
+      </div>
+    </div>
   </div>
 </ng-template>

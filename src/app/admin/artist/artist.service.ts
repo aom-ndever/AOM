@@ -25,7 +25,7 @@ export class ArtistService {
 
   // suspend artist
   suspendArtist(id : any) {
-    return this.http.post(`${this.api_host}/admin/suspend/artist/${id}`, null, {headers : this.headers});
+    return this.http.post(`${this.api_host}/admin/flag/artist/${id}`, null, {headers : this.headers});
   }
 
   // Get artist details
