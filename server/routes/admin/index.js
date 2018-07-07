@@ -211,6 +211,7 @@ router.post("/add_contest", async (req, res) => {
  * @apiError (Error 4xx) {String} message Validation or error message.
  */
 router.post('/contest', async (req, res) => {
+  var sort = {};
   if (req.body.sort) {
     req.body.sort.forEach(sort_criteria => {
       sort[sort_criteria.field] = sort_criteria.value;
@@ -224,7 +225,7 @@ router.post('/contest', async (req, res) => {
   var contest = await contest_helper.get_all_contest_and_participant(req.body.start, req.body.length, sort);
   if (contest.status === 1) {
     logger.trace("got details successfully");
-    res.status(config.OK_STATUS).json({ "status": 1, "contest": contest });
+    res.status(config.OK_STATUS).json({ "status": 1, "contest": contest.participate });
   } else {
     res.status(config.INTERNAL_SERVER_ERROR).json(contest);
   }
