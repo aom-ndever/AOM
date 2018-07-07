@@ -212,12 +212,7 @@ router.post("/add_contest", async (req, res) => {
  */
 router.post('/contest', async (req, res) => {
   var sort;
-  if (req.body.start_date) {
-    sort = 1;
-  }
-  if (req.body.end_date) {
-    sort = -1;
-  }
+  sort = req.body.sort;
 
   var contest = await contest_helper.get_all_contest_and_participant(req.body.start, req.body.length, sort);
   if (contest.status === 1) {

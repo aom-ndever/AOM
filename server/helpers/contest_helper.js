@@ -41,7 +41,7 @@ contest_helper.update_participant = async (id, no_participants) => {
     }
 };
 
-contest_helper.get_all_contest_and_participant = async (start, length, sort_by = {}) => {
+contest_helper.get_all_contest_and_participant = async (start, length, sort = {}) => {
     try {
 
         var contests = await Contest.find({}, { "name": 1, "start_date": 1, "end_date": 1, "music_type": 1, "location": 1, "no_of_participants": 1 })
@@ -49,7 +49,7 @@ contest_helper.get_all_contest_and_participant = async (start, length, sort_by =
 
         var participate = await Contest.find({}, { "name": 1, "start_date": 1, "end_date": 1, "music_type": 1, "location": 1, "no_of_participants": 1 })
             .populate('music_type')
-            .sort(sort_by)
+            .sort(sort)
             .skip(start)
             .limit(length)
 
