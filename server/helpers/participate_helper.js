@@ -37,6 +37,7 @@ participate_helper.get_participated_artist = async (ids) => {
             .find({ "contest_id": new ObjectId(ids) })
             .populate('contest_id')
             .populate({ path: 'artist_id', populate: { path: 'music_type' } })
+            .populate('track_id')
         if (participate) {
             return { "status": 1, "message": "comment details found", "participate": participate };
         } else {
