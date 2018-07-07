@@ -4,6 +4,7 @@ import { DataTableDirective } from 'angular-datatables';
 import { ToastrService } from 'ngx-toastr';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
+import { environment } from '../../../environments/environment';
 
 class DataTablesResponse {
   data: any[];
@@ -24,6 +25,11 @@ export class UsersComponent implements OnInit {
   user_data : any = [];
   search_str : any = '';
   sort_by : any = -1;
+  user_flag : any = [];
+  user_detail : any = [];
+  user_following : any = [];
+  user_id : any = '';
+  user_img_url : any = environment.API_URL+environment.USER_IMG;
   constructor(private UsersService : UsersService,
     private toastr: ToastrService,
     private modalService: BsModalService
@@ -85,7 +91,20 @@ export class UsersComponent implements OnInit {
         dtInstance.draw();
       });
   }
-  openModal(template: any) {
+  openModal(template: any, id : any) {
+    let data = {
+      user_id : id
+    };
     this.modalRef = this.modalService.show(template, { backdrop : 'static' });
+    
+    this.UsersService.getUserFollowingArtist(data).subscribe((response) => {
+      this.user_following = response['user'];
+    });
+    this.UsersService.getUserById(data).subscribe((response) => {
+      this.user_detail = response['user'];
+    });
+    this.UsersService.getFlagedUser(data).subscribe((response) => {
+      this.user_flag = response['user'];
+    });
   }
 }
