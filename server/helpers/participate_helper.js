@@ -31,5 +31,19 @@ participate_helper.get_participant = async (id, ids, trackid) => {
     }
 };
 
-
+participate_helper.get_participated_artist = async (ids) => {
+    try {
+        var participate = await Participate
+            .find({ "contest_id": new ObjectId(ids) })
+            .populate('contest_id')
+            .populate({ path: 'artist_id', populate: { path: 'music_type' } })
+        if (participate) {
+            return { "status": 1, "message": "comment details found", "participate": participate };
+        } else {
+            return { "status": 2, "message": "comment not found" };
+        }
+    } catch (err) {
+        return { "status": 0, "message": "Error occured while finding artist", "error": err }
+    }
+};
 module.exports = participate_helper;

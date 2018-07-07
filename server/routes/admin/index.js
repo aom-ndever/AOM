@@ -16,6 +16,7 @@ var flag_helper = require('../../helpers/flag_helper');
 var flag_artist_helper = require('../../helpers/flag_artist_helper');
 var flag_user_helper = require('../../helpers/flag_user_helper');
 var follower_helper = require('../../helpers/follower_helper');
+var participate_helper = require('../../helpers/participate_helper');
 
 
 var mongoose = require('mongoose');
@@ -210,11 +211,14 @@ router.post("/add_contest", async (req, res) => {
  * @apiError (Error 4xx) {String} message Validation or error message.
  */
 router.post('/contest', async (req, res) => {
-  var sort_by = 1;
-  if (req.body.sort_by != 1) {
-    sort_by = -1;
+  var sort;
+  if (req.body.start_date) {
+    sort = 1;
   }
-  var sort = { no_of_votes: -1, created_at: sort_by }
+  if (req.body.end_date) {
+    sort = -1;
+  }
+
   var contest = await contest_helper.get_all_contest_and_participant(req.body.start, req.body.length, sort);
   if (contest.status === 1) {
     logger.trace("got details successfully");
@@ -609,4 +613,20 @@ router.post('/user/artist_follow', async (req, res) => {
     res.status(config.INTERNAL_SERVER_ERROR).json(user);
   }
 });
+
+
+
+router.post('/get_participants_of_contest', async (req, res) => {
+  contest_id = req.body.contest_id
+  var artist = await participate_helper.get_participated_artist(contest_id);
+
+  if (artist.status === 1) {
+    logger.trace("got details successfully");
+    res.status(config.OK_STATUS).json({ "status": 1, "artist": artist.participate });
+  } else {
+    logger.error("Error occured while fetching = ", artist);
+    res.status(config.INTERNAL_SERVER_ERROR).json(artist);
+  }
+});
+
 module.exports = router;
