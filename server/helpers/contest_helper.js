@@ -1,6 +1,7 @@
 var Contest = require("./../models/contest");
 var contest_helper = {};
 var mongoose = require('mongoose');
+var _ = require('underscore');
 var ObjectId = mongoose.Types.ObjectId;
 
 
@@ -43,6 +44,7 @@ contest_helper.update_participant = async (id, no_participants) => {
 
 contest_helper.get_all_contest_and_participant = async (start, length, sort = {}) => {
     try {
+        console.log('1');
 
         var contests = await Contest.find({}, { "name": 1, "start_date": 1, "end_date": 1, "music_type": 1, "location": 1, "no_of_participants": 1 })
         var tot_cnt = contests.length;
@@ -53,6 +55,10 @@ contest_helper.get_all_contest_and_participant = async (start, length, sort = {}
             .skip(start)
             .limit(length)
 
+        var sorting = _.each(participate, p => {
+            console.log('p', p);
+
+        })
         var filter_cnt = participate.length;
         if (participate) {
             return { "status": 1, "message": "participants details found", "participate": participate, "recordsFiltered": filter_cnt, "recordsTotal": tot_cnt };

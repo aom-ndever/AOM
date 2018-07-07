@@ -2,6 +2,8 @@ var Participate = require("./../models/participate");
 var Contest = require("./../models/contest");
 var participate_helper = {};
 var mongoose = require('mongoose');
+var _ = require('underscore');
+
 var ObjectId = mongoose.Types.ObjectId;
 
 
@@ -38,6 +40,16 @@ participate_helper.get_participated_artist = async (ids) => {
             .populate('contest_id')
             .populate({ path: 'artist_id', populate: { path: 'music_type' } })
             .populate('track_id')
+
+
+        participate = _.sortBy(participate, function (p) {
+
+            return p.artist_id.no_of_votes;
+        });
+
+        participate = participate.reverse();
+
+
         if (participate) {
             return { "status": 1, "message": "comment details found", "participate": participate };
         } else {
