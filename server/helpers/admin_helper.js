@@ -31,11 +31,22 @@ admin_helper.get_admin_by_id = async (id) => {
 
 admin_helper.get_all_admin = async (start, length, ) => {
     try {
+
+        var admins = await Admin.find()
+
+
+        var tot_cnt = admins.length;
+
+
         var admin = await Admin.find()
             .skip(start)
             .limit(length);
+
+
+        var filter_cnt = admin.length;
+
         if (admin) {
-            return { "status": 1, "message": "admin details found", "admin": admin };
+            return { "status": 1, "message": "admin details found", "admin": admin, "recordsFiltered": filter_cnt, "recordsTotal": tot_cnt };
         } else {
             return { "status": 2, "message": "admin not found" };
         }
