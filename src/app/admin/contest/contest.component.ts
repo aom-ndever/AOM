@@ -17,7 +17,8 @@ export class ContestComponent implements OnInit {
   dtOptions: DataTables.Settings = {};
   contest_data : any = [];
   search_str : any = '';
-  sort_by : any = -1;
+  sort : any = -1;
+  participant_data : any = [];
 
   constructor(
     private ContestService : ContestService,
@@ -40,7 +41,7 @@ export class ContestComponent implements OnInit {
       ajax: (dataTablesParameters: any, callback) => {
         setTimeout(() => {
           dataTablesParameters['search'] = that.search_str;
-          dataTablesParameters['sort_by'] = that.sort_by;
+          dataTablesParameters['sort'] = [this.sort == -1 ? {"field" : "end_date", value : -1} : {"field" : "start_date", value : 1}];
           that.ContestService.getAllContest(dataTablesParameters).subscribe(response => {
             that.contest_data = response['contest']['participate'];
             that.contest_data.forEach((ele) => {
@@ -66,4 +67,19 @@ export class ContestComponent implements OnInit {
     return diffDays;
   }
 
+  openModal(template: any, id : any) {
+    let data = {
+      contest_id : id
+    };
+    this.ContestService.getContestParticipants(data).subscribe((response) => {
+      this.participant_data =  response['artist'];
+    });
+    this.modalRef = this.modalService.show(template, { backdrop : 'static' });
+  }
+
+  sortArtist() {
+    this.datatableElement.dtInstance.then((dtInstance: DataTables.Api) => {
+      dtInstance.draw();
+    });
+  }
 }

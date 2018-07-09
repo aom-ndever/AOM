@@ -364,6 +364,11 @@
         <h3>{{artist_detail['first_name']+' '+artist_detail['last_name']}}</h3>
         <span>Featured Artist</span>
         <div>
+          <span>{{artist_detail['gender']}}</span>
+          <span>{{artist_detail['old'] }} y.o.</span>
+          <span>{{artist_detail['location']}}</span>
+        </div>
+        <div>
           <span>Votes {{artist_detail['no_of_votes']}}</span>
           <span>Like {{artist_detail['no_of_likes']}}</span>
           <span>Followers {{artist_detail['no_of_followers']}}</span>

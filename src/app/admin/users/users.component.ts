@@ -102,6 +102,11 @@ export class UsersComponent implements OnInit {
     });
     this.UsersService.getUserById(data).subscribe((response) => {
       this.user_detail = response['user'];
+      if(this.user_detail['dob']) {
+        let dob = new Date(this.user_detail['dob']);
+        let dt =  new Date();
+        this.user_detail['old'] = dt.getFullYear() - dob.getFullYear();
+      }
     });
     this.UsersService.getFlagedUser(data).subscribe((response) => {
       this.user_flag = response['user'];
