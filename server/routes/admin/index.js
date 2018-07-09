@@ -16,6 +16,7 @@ var flag_helper = require('../../helpers/flag_helper');
 var flag_artist_helper = require('../../helpers/flag_artist_helper');
 var flag_user_helper = require('../../helpers/flag_user_helper');
 var follower_helper = require('../../helpers/follower_helper');
+var participate_helper = require('../../helpers/participate_helper');
 
 
 var mongoose = require('mongoose');
@@ -210,11 +211,17 @@ router.post("/add_contest", async (req, res) => {
  * @apiError (Error 4xx) {String} message Validation or error message.
  */
 router.post('/contest', async (req, res) => {
-  var sort_by = 1;
-  if (req.body.sort_by != 1) {
-    sort_by = -1;
+  var sort = {};
+  if (req.body.sort) {
+    req.body.sort.forEach(sort_criteria => {
+      sort[sort_criteria.field] = sort_criteria.value;
+    });
   }
-  var sort = { no_of_votes: -1, created_at: sort_by }
+
+  if (Object.keys(sort).length === 0) {
+    sort["_id"] = 1;
+  }
+
   var contest = await contest_helper.get_all_contest_and_participant(req.body.start, req.body.length, sort);
   if (contest.status === 1) {
     logger.trace("got details successfully");
@@ -340,7 +347,7 @@ router.post("/home_comment", async (req, res) => {
  * @api {post} /super_admin/get_artist  Get Artist Details with the day and other filter-Get
  * @apiName  Get Artist Details with the day and other filter-Get
  * @apiGroup Super Admin
-
+ 
  * @apiHeader {String}  Content-Type application/json
  * @apiHeader {String}  x-access-token  unique access-key
  * 
@@ -385,12 +392,12 @@ router.post("/get_artist", async (req, res) => {
  * @api {post} /suspend/artist/:track_id  Suspend Artist
  * @apiName Suspend Artist
  * @apiGroup Super Admin
-
+ 
  * @apiHeader {String}  Content-Type application/json
  * @apiHeader {String}  x-access-token  unique access-key
  * 
  * @apiParam {String} artist_id Artist Id
-
+ 
  
  * @apiSuccess (Success 200) {JSON} Artist details
  * @apiError (Error 4xx) {String} message Validation or error message.
@@ -426,7 +433,7 @@ router.post("/suspend/artist/:artist_id", async (req, res) => {
  * @api {post} /suspend/artist/:user_id  Suspend User
  * @apiName Suspend User
  * @apiGroup Super Admin
-
+ 
  * @apiHeader {String}  Content-Type application/json
  * @apiHeader {String}  x-access-token  unique access-key
  * 
@@ -478,7 +485,7 @@ router.post("/flag/user/:user_id", async (req, res) => {
  * @api {post} /super_admin/get_user  Get User Details with the day and other filter-Get
  * @apiName  Get User Details with the day and other filter-Get
  * @apiGroup Super Admin
-
+ 
  * @apiHeader {String}  Content-Type application/json
  * @apiHeader {String}  x-access-token  unique access-key
  * 
@@ -609,4 +616,20 @@ router.post('/user/artist_follow', async (req, res) => {
     res.status(config.INTERNAL_SERVER_ERROR).json(user);
   }
 });
+
+
+
+router.post('/get_participants_of_contest', async (req, res) => {
+  contest_id = req.body.contest_id
+  var artist = await participate_helper.get_participated_artist(contest_id);
+
+  if (artist.status === 1) {
+    logger.trace("got details successfully");
+    res.status(config.OK_STATUS).json({ "status": 1, "artist": artist.participate });
+  } else {
+    logger.error("Error occured while fetching = ", artist);
+    res.status(config.INTERNAL_SERVER_ERROR).json(artist);
+  }
+});
+
 module.exports = router;
