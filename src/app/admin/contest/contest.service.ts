@@ -17,5 +17,9 @@ export class ContestService {
   getAllContest(data : any) {
     return this.http.post(`${this.api_host}/admin/contest`, data, {headers : this.headers});
   }
+  // Get Contest participants by contest id
+  getContestParticipants(data : any) {
+    return this.http.post(`${this.api_host}/admin/get_participants_of_contest`, data, {headers : this.headers});
+  }
   
 }

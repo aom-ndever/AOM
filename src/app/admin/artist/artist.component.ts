@@ -140,6 +140,9 @@ export class ArtistComponent implements OnInit {
     this.artist_id = id;
     this.ArtistService.getArtist(data).subscribe((response) => {
       this.artist_detail = response['artist'];
+      let dob = new Date(this.artist_detail['dob']);
+        let dt =  new Date();
+        this.artist_detail['old'] = dt.getFullYear() - dob.getFullYear();
     });
     this.ArtistService.getArtistTrack(data).subscribe((response) => {
       this.artist_track = response['track'];

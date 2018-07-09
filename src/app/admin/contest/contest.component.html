@@ -6,14 +6,10 @@
            <div>
                 <h3 class="Audience-Overview">Contests </h3>
                 <div class="dropdown table_dropdown custom_dropdown">
-                    <button type="button" class="btn dropdown-toggle custom_drop_btn" data-toggle="dropdown">
-                        Sort By End Date
-                    </button>
-                    <div class="dropdown-menu">
-                        <a class="dropdown-item" href="#">Lfbdfink 1</a>
-                        <a class="dropdown-item" href="#">Link 2</a>
-                        <a class="dropdown-item" href="#">Link 3</a>
-                    </div>
+                  <select class="form-control custom_drop_btn" id="sort" name="sort_by" [(ngModel)]="sort" (change)="sortArtist()">
+                    <option value="-1">Sort By End Date</option>
+                    <option value="1">Sort By Start Date</option>
+                  </select>
                 </div> 
                 <div class="artists_table contest_table table-responsive">
                   <table class="table" datatable [dtOptions]="dtOptions">
@@ -38,7 +34,7 @@
                           <td>{{contest['days']}}</td>
                           <td>{{contest['music_type']['name']}}</td>
                           <td>{{contest['location']}}</td>
-                          <td>{{contest['no_of_participants']}}</td>
+                          <td><a href="javascript:;" (click)="openModal(paricipant, contest['_id'])">{{contest['no_of_participants']}}</a></td>
                         </tr>
                         </tbody>
                       </table>
@@ -46,3 +42,35 @@
             </div>
     </div>
     <!-- /#page-content-wrapper -->
+<ng-template #paricipant>
+  <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+  <div class="modal-body">
+    <div class="row">
+      <div class="artists_table copyright_table table-responsive col-sm-12">
+        <table class="table">
+            <thead>
+              <tr>
+                <th>Rank</th>
+                <th>Artist Name</th>
+                <th>Track Name</th>
+                <th>Votes</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let contest of participant_data; let i = index;">
+                <td>{{i+1}}</td>
+                <td>{{contest['artist_id']['first_name']+' '+contest['artist_id']['last_name']}}</td>
+                <td>{{contest['track_id']['name']}}</td>
+                <td>{{contest['artist_id']['no_of_votes']}}</td>
+              </tr>
+              <tr *ngIf="participant_data?.length == 0">
+                <td colspan="4">No data available.</td>
+              </tr>
+            </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</ng-template>
