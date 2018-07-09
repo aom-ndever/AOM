@@ -59,4 +59,5 @@ participate_helper.get_participated_artist = async (ids) => {
         return { "status": 0, "message": "Error occured while finding artist", "error": err }
     }
 };
+
 module.exports = participate_helper;

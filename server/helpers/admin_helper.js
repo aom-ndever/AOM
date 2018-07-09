@@ -29,9 +29,11 @@ admin_helper.get_admin_by_id = async (id) => {
     }
 };
 
-admin_helper.get_all_admin = async () => {
+admin_helper.get_all_admin = async (start, length, ) => {
     try {
-        var admin = await Admin.find().lean();
+        var admin = await Admin.find()
+            .skip(start)
+            .limit(length);
         if (admin) {
             return { "status": 1, "message": "admin details found", "admin": admin };
         } else {

@@ -14,6 +14,7 @@ contest_helper.insert_contest = async (object) => {
         return { "status": 0, "message": "Error occured while inserting contest", "error": err };
     }
 };
+
 contest_helper.get_contest_by_id = async (id) => {
 
     try {

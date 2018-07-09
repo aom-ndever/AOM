@@ -118,8 +118,9 @@ router.post("/add_admin", async (req, res) => {
 });
 
 
-router.get('/', async (req, res) => {
-  var admin = await admin_helper.get_all_admin();
+router.post('/', async (req, res) => {
+
+  var admin = await admin_helper.get_all_admin(req.body.start, req.body.length);
   if (admin.status === 1) {
     logger.trace("got details successfully");
     res.status(config.OK_STATUS).json(admin);
