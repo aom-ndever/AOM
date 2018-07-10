@@ -256,7 +256,6 @@ router.post('/artist_login', async (req, res) => {
   if (!errors) {
 
     let login_resp = await artist_helper.get_login_by_email(req.body.email);
-    console.log('login_resp', login_resp);
 
     logger.trace("Login checked resp = ", login_resp);
     if (login_resp.status === 0) {

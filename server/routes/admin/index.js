@@ -44,6 +44,7 @@ var fs = require('fs');
 
 
 router.post("/add_admin", async (req, res) => {
+
   var schema = {
     "first_name": {
       notEmpty: true,
@@ -68,6 +69,7 @@ router.post("/add_admin", async (req, res) => {
   };
   req.checkBody(schema);
   var errors = req.validationErrors();
+
   if (!errors) {
     var obj = {
       first_name: req.body.first_name,
@@ -87,7 +89,6 @@ router.post("/add_admin", async (req, res) => {
           res.status(config.INTERNAL_SERVER_ERROR).json(data);
         } else {
           logger.trace("Admin has been inserted");
-          // Send email confirmation mail to user
           logger.trace("sending mail");
           let mail_resp = await mail_helper.send("admin_mail", {
             "to": data.admin.email,
@@ -118,8 +119,8 @@ router.post("/add_admin", async (req, res) => {
 });
 
 
-router.get('/', async (req, res) => {
-  var admin = await admin_helper.get_all_admin();
+router.post('/', async (req, res) => {
+  var admin = await admin_helper.get_all_admin(req.body.start, req.body.length);
   if (admin.status === 1) {
     logger.trace("got details successfully");
     res.status(config.OK_STATUS).json(admin);
@@ -168,6 +169,7 @@ router.post("/add_contest", async (req, res) => {
   };
   req.checkBody(schema);
   var errors = req.validationErrors();
+
   if (!errors) {
     var obj = {
       name: req.body.name,
@@ -176,6 +178,7 @@ router.post("/add_contest", async (req, res) => {
       music_type: req.body.music_type,
       location: req.body.location
     };
+
     type = await admin_helper.get_admin_by_id(req.userInfo.id)
     if (type.admin.account_type == "super_admin" || type.admin.account_type == "admin") {
       var resp_data = await contest_helper.insert_contest(obj);
@@ -206,7 +209,7 @@ router.post("/add_contest", async (req, res) => {
  * @apiGroup  Admin
  *
  * @apiHeader {String}  x-access-token unique access-key
- *
+ 
  * @apiSuccess (Success 200) {Array} contect detail 
  * @apiError (Error 4xx) {String} message Validation or error message.
  */
@@ -229,6 +232,7 @@ router.post('/contest', async (req, res) => {
   } else {
     res.status(config.INTERNAL_SERVER_ERROR).json(contest);
   }
+
 });
 
 
@@ -245,15 +249,12 @@ router.post('/contest', async (req, res) => {
 router.delete('/track/:track_id', async (req, res) => {
   track_id = req.params.track_id;
   let track_resp = await track_helper.get_all_track_by_track_id(track_id);
-  console.log('track_resp', track_resp);
 
   type = await admin_helper.get_admin_by_id(req.userInfo.id)
-  console.log('type', type);
 
   if (type.admin.account_type == "super_admin" || type.admin.account_type == "admin") {
 
     var del_resp = await track_helper.delete_track_by_admin(track_id);
-    console.log('del_resp', del_resp);
 
     if (del_resp.status === 0) {
       res.status(config.INTERNAL_SERVER_ERROR).json({ "status": 0, "message": "Error occured while deleting track", "error": del_resp.error });
@@ -267,7 +268,6 @@ router.delete('/track/:track_id', async (req, res) => {
       no_track = resp.artist.no_of_tracks - 1
       var resp_data = await track_helper.update_artist_for_track(artist_id, no_track);
       res.status(config.OK_STATUS).json({ "status": 1, "message": "track has been deleted" });
-
     }
   }
   else {
@@ -276,6 +276,57 @@ router.delete('/track/:track_id', async (req, res) => {
   }
 });
 
+
+router.delete('/delete/:admin_id', async (req, res) => {
+  admin_id = req.params.admin_id;
+  type = await admin_helper.get_admin_by_id(req.userInfo.id)
+
+  if (type.admin.account_type == "super_admin") {
+    var del_resp = await admin_helper.delete_admin(admin_id);
+    if (del_resp.status === 0) {
+      res.status(config.INTERNAL_SERVER_ERROR).json({ "status": 0, "message": "Error occured while deleting admin", "error": del_resp.error });
+    } else if (del_resp.status === 2) {
+      res.status(config.BAD_REQUEST).json({ "status": 0, "message": "Can't delete admin" });
+    } else {
+
+      res.status(config.OK_STATUS).json({ "status": 1, "message": "Administrator has been deleted" });
+    }
+  }
+  else {
+    logger.trace("You dont have permission to delete admin");
+    res.status(config.INTERNAL_SERVER_ERROR).json({ "status": 0, "message": "You dont have permission to delete other admin" });
+  }
+});
+
+router.post('/suspend/:admin_id', async (req, res) => {
+
+  type = await admin_helper.get_admin_by_id(req.userInfo.id)
+  if (type.admin.account_type == "super_admin") {
+
+    var resp = await admin_helper.get_admin_by_id(req.params.admin_id);
+
+    if (resp.status == 0) {
+      logger.error("Error occured while fetching admin = ", resp);
+      res.status(config.INTERNAL_SERVER_ERROR).json(resp);
+    } else {
+
+      if (resp.admin.status == "active") {
+        var stat = "suspended"
+        var admin_resp = await admin_helper.update_admin_status(req.params.admin_id, stat);
+      }
+      else {
+        var stat = "active"
+        var admin_resp = await admin_helper.update_admin_status(req.params.admin_id, stat);
+      }
+      logger.trace("Admin Suspended= ", { "admin": admin_resp });
+      res.status(config.OK_STATUS).json({ "admin": admin_resp });
+    }
+  }
+  else {
+    logger.trace("You dont have permission to suspend Admin");
+    res.status(config.INTERNAL_SERVER_ERROR).json({ "status": 0, "message": "You dont have permission to suspend Admin" });
+  }
+});
 
 
 /**
@@ -389,7 +440,7 @@ router.post("/get_artist", async (req, res) => {
 
 
 /**
- * @api {post} /suspend/artist/:track_id  Suspend Artist
+ * @api {post} /suspend/artist/:admin_id  Suspend Artist
  * @apiName Suspend Artist
  * @apiGroup Super Admin
  
