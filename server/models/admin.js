@@ -10,6 +10,7 @@ var AdminModelSchema = new Schema({
     first_name: String,
     last_name: String,
     account_type: String,
+    status: { type: String, default: "active" },
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     refresh_token: { type: String },

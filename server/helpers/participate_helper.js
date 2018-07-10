@@ -49,7 +49,6 @@ participate_helper.get_participated_artist = async (ids) => {
 
         participate = participate.reverse();
 
-
         if (participate) {
             return { "status": 1, "message": "comment details found", "participate": participate };
         } else {
