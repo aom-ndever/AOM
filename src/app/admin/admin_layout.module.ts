@@ -18,10 +18,12 @@ import { AlertsComponent } from './alerts/alerts.component';
 import { ArtistComponent } from './artist/artist.component';
 import { UsersComponent } from './users/users.component';
 import { ContestComponent } from './contest/contest.component';
+import { RolesComponent } from './roles/roles.component';
 import { HomeService } from './home/home.service';
 import { ArtistService } from './artist/artist.service';
 import { UsersService } from './users/users.service';
 import { ContestService } from './contest/contest.service';
+import { RolesService } from './roles/roles.service';
 
 @NgModule({
   imports: [
@@ -47,7 +49,8 @@ import { ContestService } from './contest/contest.service';
           {path: 'alerts', component: AlertsComponent,canActivate: [AuthService]},
           {path: 'artist', component: ArtistComponent,canActivate: [AuthService]},
           {path: 'users', component: UsersComponent,canActivate: [AuthService]},
-          {path: 'contest', component: ContestComponent,canActivate: [AuthService]}
+          {path: 'contest', component: ContestComponent,canActivate: [AuthService]},
+          {path: 'roles', component: RolesComponent,canActivate: [AuthService]}
         ]
       }
     ])
@@ -57,14 +60,16 @@ import { ContestService } from './contest/contest.service';
                   AlertsComponent,
                   ArtistComponent,
                   UsersComponent,
-                  ContestComponent
+                  ContestComponent,
+                  RolesComponent
                 ],
   providers : [
      AuthService, 
      HomeService,
      ArtistService,
      UsersService,
-     ContestService
+     ContestService,
+     RolesService
     ]
 })
 export class AdminLayoutModule { }

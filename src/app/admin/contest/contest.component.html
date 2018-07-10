@@ -1,7 +1,7 @@
  <!-- Page Content -->
  <div id="page-content-wrapper">  
   <div class="text-right">
-    <button class="create_contest_btn btn">Create Contest</button>
+    <button class="create_contest_btn btn" (click)="openContestModel(contest)">Create Contest</button>
   </div>         
            <div>
                 <h3 class="Audience-Overview">Contests </h3>
@@ -28,13 +28,13 @@
                         <tbody>
                         <tr *ngFor="let contest of contest_data; let i = index;">
                           <td>{{i+1}}.</td>
-                          <td>{{contest['name']}}</td>
+                          <td><a href="javascript:;" (click)="openModal(paricipant, contest['_id'])">{{contest['name']}}</a></td>
                           <td>{{contest['start_date'] | date : 'MMMM dd, yyyy'}}</td>
                           <td>{{contest['end_date'] | date : 'MMMM dd, yyyy'}}</td>
                           <td>{{contest['days']}}</td>
                           <td>{{contest['music_type']['name']}}</td>
                           <td>{{contest['location']}}</td>
-                          <td><a href="javascript:;" (click)="openModal(paricipant, contest['_id'])">{{contest['no_of_participants']}}</a></td>
+                          <td>{{contest['no_of_participants']}}</td>
                         </tr>
                         </tbody>
                       </table>
@@ -47,30 +47,135 @@
     <span aria-hidden="true">&times;</span>
   </button>
   <div class="modal-body">
-    <div class="row">
-      <div class="artists_table copyright_table table-responsive col-sm-12">
-        <table class="table">
-            <thead>
-              <tr>
-                <th>Rank</th>
-                <th>Artist Name</th>
-                <th>Track Name</th>
-                <th>Votes</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let contest of participant_data; let i = index;">
-                <td>{{i+1}}</td>
-                <td>{{contest['artist_id']['first_name']+' '+contest['artist_id']['last_name']}}</td>
-                <td>{{contest['track_id']['name']}}</td>
-                <td>{{contest['artist_id']['no_of_votes']}}</td>
-              </tr>
-              <tr *ngIf="participant_data?.length == 0">
-                <td colspan="4">No data available.</td>
-              </tr>
-            </tbody>
-        </table>
+    <div class="custom_modal">
+        <div class="row">
+            <div class="col-sm-12">
+                <b class="template_modal_name">Participants</b>
+              </div>
+          <div class="artists_table copyright_table table-responsive col-sm-12">
+            <table class="table">
+                <thead>
+                  <tr>
+                    <th>Rank</th>
+                    <th>Artist Name</th>
+                    <th>Track Name</th>
+                    <th>Votes</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let contest of participant_data; let i = index;">
+                    <td>{{i+1}}</td>
+                    <td>{{contest['artist_id'] != null && contest['artist_id']['first_name'] != '' ? contest['artist_id']['first_name'] : '' +' '+contest['artist_id'] != null && contest['artist_id']['last_name'] != '' ? contest['artist_id']['last_name'] : ''}}</td>
+                    <td>{{contest['track_id'] != null && contest['track_id']['name'] != '' ? contest['track_id']['name'] : '' }}</td>
+                    <td>{{contest['artist_id'] != null && contest['artist_id']['no_of_votes'] != '' ? contest['artist_id']['no_of_votes'] : '' }}</td>
+                  </tr>
+                  <tr *ngIf="participant_data?.length == 0">
+                    <td colspan="4">No data available.</td>
+                  </tr>
+                </tbody>
+            </table>
+          </div>
+        </div>
       </div>
-    </div>
+  </div>
+</ng-template>
+<ng-template #contest>
+  <button type="button" class="close pull-right" aria-label="Close" (click)="contestModelRef.hide()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+  <div class="modal-body">
+    <div class="creat_contest_body">
+        <div class="col-sm-12 text-center">
+          <h4 class="custom_modal_head">Create Contest</h4>
+        </div>
+        <div class="form-group custom_modal_form">
+          <label class="control-label">Contest Name</label>
+          <input name="name" class="form-control" />
+        </div>
+        <div class="custom_modal_form">
+            <div class="date-of-birth row">
+                <label class="col-sm-12" for="date">Start Date</label>
+                <div class="form-group custom_modal_form">
+                    <select class="form-control" id="day" name="day" >
+                        <option value="">Day</option>
+                        <option *ngFor="let d of day" value="{{d}}">{{d}}</option>
+                    </select>
+                </div>
+                <div class="form-group custom_modal_form">
+                    <select class="form-control" id="month" name="month" >
+                        <option value="">Month</option>
+                        <option *ngFor="let m of month" value="{{m}}">{{m}}</option>
+                    </select>
+                </div>
+                <div class="form-group custom_modal_form">
+                    <select class="form-control" id="year" name="year" >
+                        <option value="">Year</option>
+                        <option *ngFor="let y of year" value="{{y}}">{{y}}</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div >
+          <div class="row">
+          <div class="col-sm-6">
+            <div class="form-group custom_modal_form">
+              <label class="control-label">Duration</label>
+              <select class="form-control" name="duration">
+                <option value="">Select Duration</option>
+                <option value="4">4 weeks</option>
+              </select>
+          </div>
+          </div>
+          <div class="col-sm-6">
+              <div class="form-group custom_modal_form">
+                <label class="control-label">Number of Rounds</label>
+                <select class="form-control" name="duration">
+                  <option value="">Select Rounds</option>
+                  <option value="4">4 weeks</option>
+                </select>
+              </div>
+          </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="form-group custom_modal_form">
+            <label class="control-label">Music Genre</label>
+            <select name="music_type" class="form-control">
+              <option value="">Select Music Gener</option>
+              <option *ngFor="let music of music_type;" value="{{music['_id']}}">{{music['name']}}</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="form-group custom_modal_form">
+            <label class="control-label">Location</label>
+            <select class="form-control" name="location">
+              <option value="">Select Location</option>
+              <option value="">Maryland</option>
+              <option value="">New Jersey</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+           <div class="form-group custom_modal_form">
+            <label class="control-label">Participants</label>
+            <select class="form-control" name="participant">
+              <option value="">Select Participants</option>
+              <option value="">Northeast Hiphop Round 3 Finalist</option>
+              <option value="">Southeast Hiphop Round 3 Finalist</option>
+              <option value="">Midwest Hiphop Round 3 Finalist</option>
+              
+            </select>
+          </div>
+        </div>
+        <div class="row modal_btns">
+          <div class="col-sm-6">
+              <button class="custom_cancel_btn btn" (click)="contestModelRef.hide()">Cancel</button>
+          </div>
+          <div class="col-sm-6 text-right">
+              <button class="custom_save btn">Create</button>
+          </div>
+        </div>
+      </div>
   </div>
 </ng-template>

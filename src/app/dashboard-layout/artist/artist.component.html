@@ -2,10 +2,10 @@
   <div class="container-fluid">
     <div class="row">
       <div class="col-md-12 col-sm-12 col-xs-12">
-        <div class="news-header">
+        <div class="container">
           <div class="row">
             <div class="col-md-7 col-sm-6 col-xs-5">
-              <div class="head-global"><h2>Artists</h2></div>
+              <div class="head-global artist_header"><h2>Artists</h2></div>
             </div>
             <div class="col-md-5 col-sm-6 col-xs-7">
               <div class="new-head">
@@ -377,9 +377,10 @@
   <div class="container">
     <div class="rising-star">
       <div class="row">
-        <div class="">
+        <div class="col-sm-12">
           <div class="head-global"><h2>Rising Star</h2></div>
         </div>
+      </div>
         <div class="highlights-wrap mCustomScrollbar " data-mcs-theme="dark-3">
           <div class="row">
             <div class="alert alert-info col-sm-12" *ngIf="artistv1['rising_stars']['length'] <= 0">No data available.</div>
@@ -405,12 +406,12 @@
   
           </div>
         </div>
-      </div>
+     
     </div>
 
     <div class="chart-topper" style="padding:30px 0;">
-      <div class="row">
-        <div class="">
+      <div>
+        <div>
           <div class="head-global"><h2>Chart Topper</h2></div>
         </div>
         <div class="highlights-wrap mCustomScrollbar " data-mcs-theme="dark-3">
@@ -445,7 +446,8 @@
         <div class="col-md-12">
           <div class="head-global"><h2>My Artists</h2></div>
         </div>
-        <div class="highlights-wrap " >
+      </div>
+        <div class="highlights-wrap">
           <div class="row">
             <div class="col-md-3 col-sm-4 col-xs-6">
               <div class="final-wrap">
@@ -486,7 +488,7 @@
             </div>           
           </div>
         </div>
-      </div>
+
     </div>
   </div>
 </section>

@@ -4,7 +4,7 @@ import 'rxjs/add/operator/toPromise';
 import { environment } from '../../../environments/environment';
 import { dashCaseToCamelCase } from '@angular/compiler/src/util';
 @Injectable()
-export class ContestService {
+export class RolesService {
   private api_host : any = environment.API_URL;
   private user : any = '';
   private headers : any = '';
@@ -24,5 +24,21 @@ export class ContestService {
   // get All music type
   getAllMusicType() {
     return this.http.get(`${this.api_host}/music_type`);
+  }
+  // Get all administrator
+  getAllAdministrator(data) {
+    return this.http.post(`${this.api_host}/admin`, data, {headers:this.headers});
+  }
+  // Add new admin
+  addNewAdmin(data : any) {
+    return this.http.post(`${this.api_host}/admin/add_admin`, data, {headers : this.headers});
+  }
+  // Remove admin
+  deleteAdmin(id : any) {
+    return this.http.delete(`${this.api_host}/admin/delete/${id}`, {headers: this.headers});
+  }
+   // Remove admin
+  suspendAdmin(id : any) {
+    return this.http.post(`${this.api_host}/admin/suspend/${id}`, null, {headers: this.headers});
   }
 }

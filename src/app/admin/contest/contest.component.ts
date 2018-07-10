@@ -14,18 +14,34 @@ export class ContestComponent implements OnInit {
   @ViewChild(DataTableDirective)
   datatableElement: DataTableDirective;
   modalRef: BsModalRef;
+  contestModelRef : BsModalRef;
   dtOptions: DataTables.Settings = {};
   contest_data : any = [];
   search_str : any = '';
   sort : any = -1;
   participant_data : any = [];
+  day : any = [];
+  month : any = [];
+  year : any = [];
+  music_type : any = [];
 
   constructor(
     private ContestService : ContestService,
     private toastr: ToastrService,
     private modalService: BsModalService
   ) {
-    console.log("Admin dashboard component");
+    this.day = [];
+    this.month = [];
+    this.year = [];
+    for(let i = 1; i<= 31; i++ ) {
+      this.day.push(i);
+    }
+    for(let i = 1; i<= 12; i++ ) {
+      this.month.push(i);
+    }
+    for(let i = 1900; i<= (new Date()).getFullYear(); i++ ) {
+      this.year.push(i);
+    }
   }
 
   ngOnInit() {
@@ -56,6 +72,7 @@ export class ContestComponent implements OnInit {
         },0);
       }
     };
+    this.getAllMusicTypes();
   }
 
   // Get day difference between dates
@@ -77,9 +94,20 @@ export class ContestComponent implements OnInit {
     this.modalRef = this.modalService.show(template, { backdrop : 'static' });
   }
 
+  openContestModel(template : any) {
+    this.contestModelRef = this.modalService.show(template, {backdrop : 'static'});
+  }
+
   sortArtist() {
     this.datatableElement.dtInstance.then((dtInstance: DataTables.Api) => {
       dtInstance.draw();
+    });
+  }
+
+  // Get all music type
+  getAllMusicTypes() {
+    this.ContestService.getAllMusicType().subscribe((response) => {
+      this.music_type = response['music'];
     });
   }
 }
