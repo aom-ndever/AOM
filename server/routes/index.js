@@ -767,7 +767,7 @@ router.post('/user_reset_password', async (req, res) => {
       } else {
         logger.trace("Valid token. Reseting password for artist");
         if (decoded.user_id) {
-          var update_resp = await artist_helper.update_user_by_id(decoded.user_id, { "password": bcrypt.hashSync(req.body.password, saltRounds) });
+          var update_resp = await user_helper.update_user_by_id(decoded.user_id, { "password": bcrypt.hashSync(req.body.password, saltRounds) });
           if (update_resp.status === 0) {
             logger.trace("Error occured while updating artist : ", update_resp.error);
             res.status(config.INTERNAL_SERVER_ERROR).json({ "status": 0, "message": "Error occured while verifying user_id's email" });
@@ -1076,6 +1076,7 @@ router.post('/admin_reset_password', async (req, res) => {
         }
       } else {
         logger.trace("Valid token. Reseting password for artist");
+
         if (decoded.admin_id) {
           var update_resp = await admin_helper.update_admin_by_id(decoded.admin_id, { "password": req.body.password });
           if (update_resp.status === 0) {

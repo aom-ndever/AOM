@@ -68,7 +68,7 @@ admin_helper.get_login_by_email = async (email, password) => {
 
 admin_helper.update_admin_by_id = async (id, object) => {
     try {
-        let admin = await Admin.findOneAndUpdate({ "_id": new Object(id) }, object);
+        let admin = await Admin.findOneAndUpdate({ _id: id }, object);
         if (!admin) {
             return { "status": 2, "message": "Record has not updated" };
         } else {
