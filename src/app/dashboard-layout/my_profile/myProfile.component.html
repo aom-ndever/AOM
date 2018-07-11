@@ -216,7 +216,7 @@
                                                 <p>New Followers</p>
                                                 <div class="f-toggle">
                                                     <label class="switch">
-                                                        <input type="checkbox" checked>
+                                                        <input type="checkbox" (click)="updateNotificationSetting('like_by_email', $event.target.checked)" [checked]="userdata['notification_settings']['like_by_email']">
                                                         <span class="slider round"></span>
                                                     </label>
                                                 </div>
@@ -225,7 +225,7 @@
                                                 <p>Comments</p>
                                                 <div class="f-toggle">
                                                     <label class="switch">
-                                                        <input type="checkbox">
+                                                        <input type="checkbox" (click)="updateNotificationSetting('comment_by_email', $event.target.checked)" [checked]="userdata['notification_settings']['comment_by_email']">
                                                         <span class="slider round"></span>
                                                     </label>
                                                 </div>
@@ -248,7 +248,7 @@
                                                 <p>New Followers</p>
                                                 <div class="f-toggle">
                                                     <label class="switch">
-                                                        <input type="checkbox" checked>
+                                                        <input type="checkbox" (click)="updateNotificationSetting('comment_by_sms', $event.target.checked)" [checked]="userdata['notification_settings']['comment_by_sms']">
                                                         <span class="slider round"></span>
                                                     </label>
                                                 </div>
@@ -257,7 +257,7 @@
                                                 <p>Comments</p>
                                                 <div class="f-toggle">
                                                     <label class="switch">
-                                                        <input type="checkbox">
+                                                        <input type="checkbox" (click)="updateNotificationSetting('comment_by_sms', $event.target.checked)" [checked]="userdata['notification_settings']['comment_by_sms']">
                                                         <span class="slider round"></span>
                                                     </label>
                                                 </div>
