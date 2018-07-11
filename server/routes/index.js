@@ -1122,7 +1122,7 @@ router.get("/music_type", async (req, res) => {
 
 
 /**
- * @api {get} /whatsnew Artist detail By Filter - Get 
+ * @api {post} /whatsnew Artist detail By Filter - Get 
  * @apiName Artist detail By Filter - Get
  * @apiGroup Root
  *
@@ -1188,7 +1188,7 @@ router.get("/music_type", async (req, res) => {
 
 
 /**
- * @api {get} /mainpage Track detail - Get 
+ * @api {post} /mainpage Track detail - Get 
  * @apiName Track - Get
  * @apiGroup Root
  *
@@ -1288,7 +1288,7 @@ router.post("/artistv1", async (req, res) => {
 });
 
 /**
- * @api {get} /get_media Media detail - Get 
+ * @api {post} /get_media Media detail - Get 
  * @apiName Media - Get
  * @apiGroup Root
  *
@@ -1311,7 +1311,7 @@ router.post('/get_media', async (req, res) => {
 
 
 /**
- * @api {get} /get_track Track detail by Artist id- Get 
+ * @api {post} /get_track Track detail by Artist id- Get 
  * @apiName Track detail by Artist id - Get
  * @apiGroup Root
  *
@@ -1341,7 +1341,7 @@ router.post('/get_track', async (req, res) => {
 });
 
 /**
- * @api {get} /get_ranking Artist detail by Ranking - Get 
+ * @api {post} /get_ranking Artist detail by Ranking - Get 
  * @apiName Artist detail by Ranking- Get
  * @apiGroup Root
  *
@@ -1370,7 +1370,7 @@ router.post('/get_ranking', async (req, res) => {
 });
 
 /**
- * @api {get} /get_artist Artist detail by Artist Id - Get 
+ * @api {post} /get_artist Artist detail by Artist Id - Get 
  * @apiName Artist detail by Artist Id- Get
  * @apiGroup Root
  *
@@ -1391,6 +1391,17 @@ router.post('/get_artist', async (req, res) => {
   }
 });
 
+
+/**
+ * @api {post} /followers Followers detail by Artist id- Get 
+ * @apiName Followers detail by Artist id- Get
+ * @apiGroup Root
+ *
+ * @apiParam {String} artist_id Artist Id
+ * 
+ * @apiSuccess (Success 200) {Array} Followers detail as per artist id
+ * @apiError (Error 4xx) {String} message Validation or error message.
+ */
 router.post('/followers', async (req, res) => {
   artist_id = req.body.artist_id
   var user = await follower_helper.get_all_followers(artist_id);
@@ -1403,6 +1414,17 @@ router.post('/followers', async (req, res) => {
   }
 });
 
+
+/**
+ * @api {post} /comment Comment detail by Artist id- Get 
+ * @apiName Comment detail by Artist id - Get
+ * @apiGroup Root
+ *
+ * @apiParam {String} artist_id Artist Id
+ * 
+ * @apiSuccess (Success 200) {Array} Comment detail as per artist id
+ * @apiError (Error 4xx) {String} message Validation or error message.
+ */
 router.post('/comment', async (req, res) => {
   artist_id = req.body.artist_id
   var user = await comment_helper.get_all_comment_by_artist_id(artist_id);
@@ -1415,6 +1437,17 @@ router.post('/comment', async (req, res) => {
   }
 });
 
+
+/**
+ * @api {post} /comment Comment detail by Track id- Get 
+ * @apiName Comment detail by Track id- Get
+ * @apiGroup Root
+ *
+ * @apiParam {String} track_id Track Id
+ * 
+ * @apiSuccess (Success 200) {Array} Comment detail by Track id
+ * @apiError (Error 4xx) {String} message Validation or error message.
+ */
 router.post('/get_comment_by_track_id', async (req, res) => {
   track_id = req.body.track_id
   var user = await comment_helper.get_all_comment_by_track_id(track_id);
@@ -1427,6 +1460,17 @@ router.post('/get_comment_by_track_id', async (req, res) => {
   }
 });
 
+
+/**
+ * @api {post} /tracks/:track_id Track detail by Track id- Get 
+ * @apiName Track detail by Track id- Get
+ * @apiGroup Root
+ *
+ * @apiParam {String}track_id Track Id
+ * 
+ * @apiSuccess (Success 200) {Array} Track detail by Track id
+ * @apiError (Error 4xx) {String} message Validation or error message.
+ */
 router.get('/tracks/:track_id', async (req, res) => {
   var track = await track_helper.get_all_track_by_track_id(req.params.track_id);
 
