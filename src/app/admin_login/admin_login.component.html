@@ -1,38 +1,42 @@
-<div class="container">    
-  <div id="loginbox" style="margin-top:50px;" class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">                    
-      <div class="panel panel-info" >
-        <div class="panel-heading">
-            <div class="panel-title">Sign In</div>
-        </div>     
-        <div style="padding-top:30px" class="panel-body" >
-          <div style="display:none" id="login-alert" class="alert alert-danger col-sm-12"></div>
-            <form id="loginform" class="form-horizontal" role="form" [formGroup]="admin_formgroup">
-                <div class="form-group">
-                    <input id="login-username" type="text" formControlName="email"  [(ngModel)]="admin_data.email" class="form-control" name="username" value="" placeholder="username or email">                                        
-                    <div *ngIf="!admin_formgroup.controls['email'].valid && admin_formgroup.controls['email'].dirty">
-                      <span *ngIf="admin_formgroup.controls['email'].errors['required']" class="text-danger">Email is required.</span>
-                      <span *ngIf="admin_formgroup.controls['email'].errors['email']" class="text-danger">Email Mismatched.</span>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <input id="login-password" type="password" formControlName="password"  [(ngModel)]="admin_data.password" class="form-control" name="password" placeholder="password">
-                    <div *ngIf="!admin_formgroup.controls['password'].valid && admin_formgroup.controls['password'].dirty">
-                      <span *ngIf="admin_formgroup.controls['password'].errors['required']" class="text-danger">Password is required.</span>
-                    </div>
-                </div>                          
-                <!-- <div class="input-group">
-                  <div class="checkbox">
-                    <label>
-                      <input id="login-remember" type="checkbox" name="remember" value="1"> Remember me
-                    </label>
+<div class="login_container">
+  <div class="row">    
+    <div id="loginbox" class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">                    
+        <div class="panel panel-info" >
+          <div class="panel-heading">
+              <div class="panel-title">Sign In</div>
+          </div>     
+          <div style="padding-top:30px" class="panel-body" >
+            <div style="display:none" id="login-alert" class="alert alert-danger col-sm-12"></div>
+              <form id="loginform" class="form-horizontal" role="form" [formGroup]="admin_formgroup">
+                  <div class="form-group">
+                      <input id="login-username" type="text" formControlName="email"  [(ngModel)]="admin_data.email" class="form-control login_form" name="username" value="" placeholder="username or email">                                        
+                      <div *ngIf="!admin_formgroup.controls['email'].valid && admin_formgroup.controls['email'].dirty">
+                        <span *ngIf="admin_formgroup.controls['email'].errors['required']" class="text-danger error_msg">Email is required.</span>
+                      </div>
                   </div>
-                </div> -->
-                <div  class="form-group">
-                    <!-- Button -->
-                    <button type="submit" class="btn btn-success" (click)="signin()" [disabled]="!admin_formgroup.valid && show_spinner">Login <i *ngIf="show_spinner" class="fa fa-spinner fa-spin"></i> </button>
-                </div> 
-              </form>     
-        </div>                     
-    </div>  
+                  <div class="form-group">
+                      <input id="login-password" type="password" formControlName="password"  [(ngModel)]="admin_data.password" class="form-control login_form" name="password" placeholder="password">
+                      <div *ngIf="!admin_formgroup.controls['password'].valid && admin_formgroup.controls['password'].dirty">
+                        <span *ngIf="admin_formgroup.controls['password'].errors['required']" class="text-danger error_msg">Password is required.</span>
+                      </div>
+                  </div>  
+                  <div class="forget_password">
+                    <a class="" href="#">Forget Password</a>
+                  </div>                        
+                  <!-- <div class="input-group">
+                    <div class="checkbox">
+                      <label>
+                        <input id="login-remember" type="checkbox" name="remember" value="1"> Remember me
+                      </label>
+                    </div>
+                  </div> -->
+                  <div  class="form-group">
+                      <!-- Button -->
+                      <button type="submit" class="btn  login_btn" (click)="signin()" [disabled]="!admin_formgroup.valid && show_spinner">Login <i *ngIf="show_spinner" class="fa fa-spinner fa-spin"></i> </button>
+                  </div> 
+                </form>     
+          </div>                     
+      </div>  
+    </div>
   </div>
 </div>

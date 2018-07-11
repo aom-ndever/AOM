@@ -356,83 +356,92 @@
     <span aria-hidden="true">&times;</span>
   </button>
   <div class="modal-body">
-    <div class="row" style="padding: 5px;" >
-      <div class="col-sm-3">
-        <img src="{{artist_detail['image'] ? artist_img_url+artist_detail['image'] : 'img/profile-img.png'}}" />
-      </div>
-      <div class="col-sm-9">
-        <h3>{{artist_detail['first_name']+' '+artist_detail['last_name']}}</h3>
-        <span>Featured Artist</span>
-        <div>
-          <span>{{artist_detail['gender']}}</span>
-          <span>{{artist_detail['old'] }} y.o.</span>
-          <span>{{artist_detail['location']}}</span>
+    <div class="custom_modal">
+      <div class="row" style="padding: 5px;" >
+        <div class="col-sm-4 artist_img">
+          <img src="{{artist_detail['image'] ? artist_img_url+artist_detail['image'] : 'img/profile-img.png'}}" />
         </div>
-        <div>
-          <span>Votes {{artist_detail['no_of_votes']}}</span>
-          <span>Like {{artist_detail['no_of_likes']}}</span>
-          <span>Followers {{artist_detail['no_of_followers']}}</span>
-          <span>Comments {{artist_detail['no_of_comments']}}</span>
+        <div class="col-sm-8 profile_detail">
+          <h3>{{artist_detail['first_name']+' '+artist_detail['last_name']}}</h3>
+          <div class="checkbox custom_check_box">
+              <label>
+                <input checked="" type="checkbox" value=""> 
+                <div class="chk_check"></div>
+                <span>Featured Artist</span>
+              </label>
+          </div>
+ 
+          <div class="gray_font">
+            <span class="cap">{{artist_detail['gender']}}</span>
+            <span>{{artist_detail['old'] }} y.o.</span>
+            <span>{{artist_detail['location']}}</span>
+          </div>
+          <ul class="gray_font">
+            <li><i class="fa fa-star-o" aria-hidden="true"></i>Votes {{artist_detail['no_of_votes']}}</li>
+            <li><i class="fa fa-thumbs-o-up" aria-hidden="true"></i>Like {{artist_detail['no_of_likes']}}</li>
+            <li><i class="fa fa-heart-o" aria-hidden="true"></i>Followers {{artist_detail['no_of_followers']}}</li>
+            <li><i class="fa fa-commenting-o" aria-hidden="true"></i>Comments {{artist_detail['no_of_comments']}}</li>
+          </ul>
+          <div class="gray_font">
+            <span class="sign_up">Sign up date : {{artist_detail['created_at'] | date : 'yyyy/MM/dd'}}</span>
+            <span class="right_span sign_up">Last Login : {{artist_detail['last_login'] | date : 'yyyy/MM/dd'}}</span>
+          </div>
         </div>
-        <div>
-          <span>Signup date : {{artist_detail['created_at'] | date : 'yyyy/MM/dd'}}</span>
-          <span>Last Login : {{artist_detail['last_login'] | date : 'yyyy/MM/dd'}}</span>
+      </div>
+      <div class="row">
+        <div class="col-sm-12">
+          <b class="template_modal_name">Tracks</b>
+        </div>
+        <div class="artists_table copyright_table table-responsive col-sm-12">
+          <table class="table">
+              <thead>
+                <tr>
+                  <th>N<sup>O</sup></th>
+                  <th>Track Name</th>
+                  <th>Duration</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let track of artist_track; let i = index;">
+                  <td>{{i+1}}</td>
+                  <td>{{track['name']}}</td>
+                  <td>3:10</td>
+                  <td class="td_img">
+                    <a href="javascript:;" (click)="removeTrack(track['_id'])"><i class="fa fa-trash"></i> Delete</a>&nbsp;
+                    <img src="img/suspend.png">
+                    <a href="javascript:;"> Suspend</a>
+                  </td>
+                </tr>
+                <tr *ngIf="artist_track?.length == 0">
+                  <td colspan="4">No data available.</td>
+                </tr>
+              </tbody>
+          </table>
         </div>
       </div>
-    </div>
-    <div class="row">
-      <div class="col-sm-12">
-        <b>Tracks</b>
-      </div>
-      <div class="artists_table copyright_table table-responsive col-sm-12">
-        <table class="table">
-            <thead>
-              <tr>
-                <th>N<sup>O</sup></th>
-                <th>Track Name</th>
-                <th>Duration</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let track of artist_track; let i = index;">
-                <td>{{i+1}}</td>
-                <td>{{track['name']}}</td>
-                <td>3:10</td>
-                <td class="td_img">
-                  <a href="javascript:;" (click)="removeTrack(track['_id'])"><i class="fa fa-trash"></i> Delete</a>&nbsp;
-                  <img src="img/suspend.png">
-                  <a href="javascript:;"> Suspend</a>
-                </td>
-              </tr>
-              <tr *ngIf="artist_track?.length == 0">
-                <td colspan="4">No data available.</td>
-              </tr>
-            </tbody>
-        </table>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-sm-12">
-        <b>Flags</b>
-      </div>
-      <div class="table-responsive col-sm-12">
-        <table class="table">
-            <thead>
-              <tr>
-                <th>Date</th>
-                <th>Type</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let val of artist_flag">
-                <td>{{val.created_at | date : 'MMMM dd, yyyy'}}</td>
-                <td>{{val['from']['account_type']}}</td>
-                <td>Suspended by {{val['from']['account_type']}}</td>
-              </tr>
-            </tbody>
-        </table>
+      <div class="row">
+        <div class="col-sm-12">
+          <b class="template_modal_name">Flags</b>
+        </div>
+        <div class="artists_table table-responsive col-sm-12">
+          <table class="table">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Type</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let val of artist_flag">
+                  <td>{{val.created_at | date : 'MMMM dd, yyyy'}}</td>
+                  <td>{{val['from']['account_type']}}</td>
+                  <td>Suspended by {{val['from']['account_type']}}</td>
+                </tr>
+              </tbody>
+          </table>
+        </div>
       </div>
     </div>
   </div>

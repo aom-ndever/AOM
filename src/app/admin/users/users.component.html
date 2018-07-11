@@ -323,34 +323,43 @@
       </div>
 </div>
 <!-- /#page-content-wrapper -->
+
 <ng-template #template>
   <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
     <span aria-hidden="true">&times;</span>
   </button>
   <div class="modal-body">
+    <div class="custom_modal">
       <div class="row" style="padding: 5px;" >
           <div class="col-sm-12">
-            <h3>{{user_detail['first_name']+' '+user_detail['last_name']}}</h3>
-            <div>
-              <span>{{user_detail['gender']}}</span>
-              <span>{{user_detail['old'] }} y.o.</span>
-              <span>{{user_detail['location']}}</span>
+            <div class="following_artist_header">
+              <h3>{{user_detail['first_name']+' '+user_detail['last_name']}}</h3>
             </div>
-            <div>
-              <span>Votes {{user_detail['no_of_votes']}}</span>
-              <span>Like {{user_detail['no_of_likes']}}</span>
-              <span>Followers {{user_detail['no_of_followers']}}</span>
-              <span>Comments {{user_detail['no_of_comments']}}</span>
+            <div class="template_modal_data">
+              <div>
+                <span>{{user_detail['gender']}}</span>
+                <span>{{user_detail['old'] }} y.o.</span>
+                <span>{{user_detail['location']}}</span>
+              </div>
+              <div class="right_span"><span>Signup date : {{user_detail['created_at'] | date : 'yyyy/MM/dd'}}</span></div>
             </div>
-            <div>
-              <span>Signup date : {{user_detail['created_at'] | date : 'yyyy/MM/dd'}}</span>
-              <span>Last Login : {{user_detail['last_login'] | date : 'yyyy/MM/dd'}}</span>
-            </div>
+            <div class="template_modal_data">
+              <ul>
+                  <li><i class="fa fa-star-o" aria-hidden="true"></i>Votes {{user_detail['no_of_votes']}}</li>
+                  <li><i class="fa fa-thumbs-o-up" aria-hidden="true"></i>Like {{user_detail['no_of_likes']}}</li>
+                  <li><i class="fa fa-heart-o" aria-hidden="true"></i>Followers {{user_detail['no_of_followers']}}</li>
+                  <li><i class="fa fa-commenting-o" aria-hidden="true"></i>Comments {{user_detail['no_of_comments']}}</li>
+              </ul>
+              <div  class="right_span">
+
+                <span>Last Login : {{user_detail['last_login'] | date : 'yyyy/MM/dd'}}</span>
+              </div>
+           </div>
           </div>
         </div>
         <div class="row">
           <div class="col-sm-12">
-            <b>Artists Following</b>
+            <b class="template_modal_name">Artists Following</b>
           </div>
           <div class="artists_table copyright_table table-responsive col-sm-12">
             <table class="table">
@@ -378,9 +387,9 @@
         </div>
     <div class="row">
       <div class="col-sm-12">
-        <b>Flags</b>
+        <b class="flag_head">Flags</b>
       </div>
-      <div class="table-responsive col-sm-12">
+      <div class="artists_table  table-responsive col-sm-12">
         <table class="table">
             <thead>
               <tr>
@@ -399,5 +408,6 @@
         </table>
       </div>
     </div>
-  </div>
+</div>
+</div>
 </ng-template>

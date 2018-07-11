@@ -437,10 +437,16 @@
                 <div class="player ">
                   <div class="title "><a href="javascript:; ">{{track.name}}</a></div>
                   <div class="finalist-name ">{{track.artist_id['first_name']+' '+track.artist_id['last_name']}}</div>
-                  <div class="action-btn "><a href="javascript:; ">
-                    <img src="img/play.png " alt="Pause "  [style.display]="!audio_ins[i] ? 'block' : 'none'" (click)="playAudio(track.audio, i)">
-                    <img src="img/pause.png " alt="Pause "  [style.display]="audio_ins[i] ? 'block' : 'none'" (click)="stopAudio(i)">
-                  </a></div>
+                  <div class="action-btn ">
+                    <a href="javascript:; ">
+                        <div  class="action-btn custom-action-btn">                
+                            <a  class="play_img" [style.display]="!audio_ins[i] ? 'block' : 'none'" (click)="playAudio(track.audio, i)"><img  src="img/play_icon.png"></a>
+                            <a  class="pause_img" [style.display]="audio_ins[i] ? 'block' : 'none'" (click)="stopAudio(i)"><img  src="img/pause_icon.png"></a>
+                        </div>
+                    <!-- <img src="img/play.png " alt="Pause "  [style.display]="!audio_ins[i] ? 'block' : 'none'" (click)="playAudio(track.audio, i)">
+                    <img src="img/pause.png " alt="Pause "  [style.display]="audio_ins[i] ? 'block' : 'none'" (click)="stopAudio(i)"> -->
+                  </a>
+                </div>
                 </div>
                 <div class="location ">
                   <p><i class="fa fa-map-marker " aria-hidden="true "></i><span>New York</span></p>

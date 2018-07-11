@@ -1,0 +1,120 @@
+ <!-- Page Content -->
+<div id="page-content-wrapper">  
+  <div class="text-right">
+    <button class="create_contest_btn btn" *ngIf="user['admin']['account_type'] == 'super_admin'" (click)="openContestModel(contest)">Create New Admin</button>
+  </div>         
+  <div>
+                <h3 class="Audience-Overview">Administrators</h3>
+                <div class="dropdown table_dropdown custom_dropdown">
+                  <select class="form-control custom_drop_btn" id="sort" name="sort_by" [(ngModel)]="sort" (change)="sortArtist()">
+                    <option value="-1">Sort by Name</option>
+                    <option value="1">Old First</option>
+                  </select>
+                </div> 
+                <div class="artists_table contest_table table-responsive">
+                  <table class="table" datatable [dtOptions]="dtOptions">
+                        <thead>
+                          <tr>
+                            <th>N<sup>O</sup></th>
+                            <th>Administrator Name</th>
+                            <th>Role</th>
+                            <th>Date Creation</th>
+                            <th>Actions</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                        <tr *ngFor="let role of roles_data; let i = index;">
+                          <td>{{i+1}}.</td>
+                          <td>{{role['first_name']+' '+role['last_name']}}</td>
+                          <td>{{role['account_type']}}</td>
+                          <td>{{role['created_at'] | date : 'MMMM dd, yyyy'}}</td>
+                          <td class="td_img">
+                            <a href="javascript:;" *ngIf="user['admin']['account_type'] == 'super_admin'" (click)="removeAdmin(role['_id'])"><i class="fa fa-trash"></i> Delete</a>&nbsp;
+                            <img src="img/suspend.png" *ngIf="user['admin']['account_type'] == 'super_admin'">
+                            <a href="javascript:;" *ngIf="user['admin']['account_type'] == 'super_admin'" (click)="suspendAdmin(role['_id'])">
+                              {{role['status'] == 'suspended' ? 'un-suspend' : 'Suspend'}}
+                            </a>
+                          </td>
+                        </tr>
+                        </tbody>
+                      </table>
+                </div>
+  </div>
+</div>
+<!-- /#page-content-wrapper -->
+<ng-template #contest>
+  <button type="button" class="close pull-right" aria-label="Close" (click)="contestModelRef.hide()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+  <div class="modal-body">
+    <form [formGroup]="add_admin">
+      <div class="creat_contest_body">
+        <div class="col-sm-12 text-center">
+          <h4 class="custom_modal_head">Create New Admin</h4>
+        </div>
+        <div class="form-group custom_modal_form">
+          <label class="control-label">First Name</label>
+          <input name="fname" class="form-control" formControlName="fname"  [(ngModel)]="user_data.first_name" />
+          <div *ngIf="!add_admin.controls['fname'].valid && add_admin.controls['fname'].dirty">
+              <span *ngIf="add_admin.controls['fname'].errors['required']" class="text-danger">First Name is required.</span>
+          </div>
+        </div>
+        <div class="form-group custom_modal_form">
+          <label class="control-label">Last Name</label>
+          <input name="lname" class="form-control" formControlName="lname"  [(ngModel)]="user_data.last_name" />
+          <div *ngIf="!add_admin.controls['lname'].valid && add_admin.controls['lname'].dirty">
+              <span *ngIf="add_admin.controls['lname'].errors['required']" class="text-danger">Last Name is required.</span>
+          </div>
+        </div>
+        <div class="form-group custom_modal_form">
+          <label class="control-label">Account Type</label>
+          <select class="form-control" name="account_type" formControlName="account_type"  [(ngModel)]="user_data.account_type">
+            <option value="">Select Account Type</option>
+            <option value="admin">Admin</option>
+            <option value="moderator">Moderator</option>
+          </select>
+          <div *ngIf="!add_admin.controls['account_type'].valid && add_admin.controls['account_type'].dirty">
+              <span *ngIf="add_admin.controls['account_type'].errors['required']" class="text-danger">Account type is required.</span>
+          </div>
+        </div>
+        <div class="form-group custom_modal_form">
+          <label class="control-label">Email</label>
+          <input type="email" name="email" class="form-control" formControlName="email"  [(ngModel)]="user_data.email"/>
+          <div *ngIf="!add_admin.controls['email'].valid && add_admin.controls['email'].dirty">
+              <span *ngIf="add_admin.controls['email'].errors['required']" class="text-danger">Email is required.</span>
+              <span *ngIf="add_admin.controls['email'].errors['email']" class="text-danger">Email Mismatched.</span>
+          </div>
+        </div>
+        <div [formGroup]="passwordFormGroup">
+          <div class="form-group custom_modal_form">
+            <label class="control-label">Password</label>
+            <input type="password" name="password" class="form-control" formControlName="password"  [(ngModel)]="user_data.password"/>
+            <div class="pwd-icon"><i class="fa fa-eye" aria-hidden="true"></i></div>
+            <div *ngIf="!passwordFormGroup.controls['password'].valid && passwordFormGroup.controls['password'].dirty">
+                <span *ngIf="passwordFormGroup.controls['password'].errors['required']" class="text-danger">Password is required.</span>
+                <span *ngIf="passwordFormGroup.controls['password'].errors['minlength']" class="text-danger">Must be longer than 6 characters.</span>
+            </div>
+          </div>
+          <div class="form-group custom_modal_form">
+            <label class="control-label">Confirm Password</label>
+            <input type="password" name="conf" class="form-control" formControlName="conf"/>
+            <div class="pwd-icon"><i class="fa fa-eye" aria-hidden="true"></i></div>
+            <div *ngIf="!passwordFormGroup.controls['password'].valid && passwordFormGroup.controls['password'].dirty">
+                <span *ngIf="passwordFormGroup.controls['password'].errors['required']" class="text-danger">Confirm Password is required.</span>
+                <span *ngIf="passwordFormGroup.controls['password'].errors['minlength']" class="text-danger">Must be longer than 6 characters.</span>
+                <span *ngIf="passwordFormGroup.controls['password'].errors['mismatch']" class="text-danger">Please enter correct confirm password.</span>
+            </div>
+          </div>
+        </div>
+        <div class="row modal_btns">
+            <div class="col-sm-6">
+                <button type="button" class="custom_cancel_btn btn" (click)="contestModelRef.hide()">Cancel</button>
+            </div>
+            <div class="col-sm-6 text-right">
+                <button type="submit" class="custom_save btn" (click)="addNewAdmin()" [disabled]="!add_admin.valid || show_spinner">Create <i class="fa fa-spinner fa-spin" *ngIf="show_spinner"></i></button>
+            </div>
+          </div>
+      </div>
+    </form>
+  </div>
+</ng-template>

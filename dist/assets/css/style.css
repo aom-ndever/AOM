@@ -335,6 +335,7 @@ input[type="password"]:-moz-placeholder{ /* Firefox 18- */
 .finalist-wrap .tile{box-shadow:none !important; }
 .artist-highlight .highlights-wrap{ overflow-y:auto !important; overflow-x:hidden !important;}
 .fan i{font-size: 16px; color:#fff;}
+.highlights-wrap{ padding-right: 10px;    padding-left: 5px;    margin-bottom: 30px;}
 .content-wrap{padding: 20px;}
 .title a {font-size: 14px; color: #1a1a1a; font-weight: 600; line-height: 16px;}
 .finalist-name,.location p{font-size: 12px; color: #1a1a1a; font-weight: 400; line-height: 14px; opacity: .5;}
@@ -1222,7 +1223,7 @@ span.up_text {
 }
 .highlights-wrap {
     display: inline-block;
-    height: 600px;
+    max-height: 600px;
 }
 .highlights-wrap .mCSB_scrollTools,.transaction-table .mCSB_scrollTools{opacity: 1;}
 .highlights-wrap  .mCS-dark-3.mCSB_scrollTools .mCSB_dragger .mCSB_dragger_bar,
@@ -3048,7 +3049,7 @@ div#submitcontest {
     margin-bottom: 30px;
 }
 .vote-wrap .head-global h2{margin-bottom: 10px;}
-.vote-wrap .track-table{margin-top: 35px; margin-bottom: 35px;}
+.vote-wrap .track-table{margin-top: 35px; margin-bottom: 50px;}
 .vote-wrap .track-table  table{width: 100%;}
 .vote-wrap .track-table  table thead tr td{
     padding: 10px;
@@ -3076,7 +3077,7 @@ div#submitcontest {
   font-weight: normal;
   font-style: normal;
   font-stretch: normal;
-  line-height: normal;
+  line-height: 20px;
   letter-spacing: normal;
   text-align: left;
   color: #ffffff;
@@ -3134,8 +3135,10 @@ button.close{    background: transparent;
 }
 .new-add-track-popup .modal-content{position: initial;}
 .new-add-track-popup .modal-dialog-centered {min-height: initial;}
-.vote-title{ padding:50px 0 0;}
-.vote-title h2{ margin:0; line-height:50px; }
+.track-table.mCustomScrollbar {
+    padding-right: 10px;
+}
+
 
 /*MEDIA START*/
 @media screen and (min-width: 768px){
@@ -3952,4 +3955,34 @@ input#cover_upload1 {
 .highcharts-container svg {
     max-height: 100%;
     width: 100%;
+}
+/*10-07-2018*/
+.artist-highlight ::-webkit-scrollbar, .contest-wrapper ::-webkit-scrollbar, .vote-wrap ::-webkit-scrollbar
+{
+  width: 8px;  /* for vertical scrollbars */
+  height: 12px; /* for horizontal scrollbars */
+  border-radius: 12px;
+}
+
+.artist-highlight ::-webkit-scrollbar-track, .contest-wrapper ::-webkit-scrollbar-track, .vote-wrap ::-webkit-scrollbar-track
+{
+  background: #dedede;
+    border-radius: 12px;
+}
+
+.artist-highlight ::-webkit-scrollbar-thumb, .contest-wrapper ::-webkit-scrollbar-thumb, .vote-wrap ::-webkit-scrollbar-thumb
+{
+  background:#9c27b0;
+    border-radius: 12px;
+}
+.artist_header h2{
+    font-size: 36px;
+    margin-top: 8px;
+}
+.artist-highlight{
+    padding-bottom: 0;
+}
+.head-global h2{
+    margin-bottom: 20px;
+    
 }
