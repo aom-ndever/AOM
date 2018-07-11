@@ -1,6 +1,6 @@
 <div class="login_container">
-  <div class="row">    
-    <div id="loginbox" class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">                    
+  <div>    
+    <div id="loginbox" class="mainbox">                    
         <div class="panel panel-info" >
           <div class="panel-heading">
               <div class="panel-title">Sign In</div>
@@ -21,7 +21,7 @@
                       </div>
                   </div>  
                   <div class="forget_password">
-                    <a class="" href="#">Forget Password</a>
+                    <a class="" href="javascript:;" (click)="openContestModel(forget)">Forget Password</a>
                   </div>                        
                   <!-- <div class="input-group">
                     <div class="checkbox">
@@ -40,3 +40,31 @@
     </div>
   </div>
 </div>
+<ng-template #forget>
+  <button type="button" class="close pull-right" aria-label="Close" (click)="ModelRef.hide()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+
+  <div class="modal-body">
+    <form [formGroup]="forget_formgroup">
+      <div class="creat_contest_body">
+        <div class="col-sm-12 text-center">
+          <h4 class="custom_modal_head">Forget Password</h4>
+        </div>
+        <div class="form-group custom_modal_form">
+          <label class="control-label">Email</label>
+          <input type="email" name="email" class="form-control" formControlName="email" [(ngModel)]="forget_data.email" />
+          <div *ngIf="!forget_formgroup.controls['email'].valid && forget_formgroup.controls['email'].dirty">
+              <span *ngIf="forget_formgroup.controls['email'].errors['required']" class="text-danger">Email is required.</span>
+              <span *ngIf="forget_formgroup.controls['email'].errors['email']" class="text-danger">Email Mismatched.</span>
+          </div>
+        </div>
+        <div class="row modal_btns">
+          <div class="col-sm-12 text-right">
+              <button class="custom_save btn" (click)="forgetPassword()" [disabled]="!forget_formgroup.valid || show_spinner">Forget <i class="fa fa-spinner" *ngIf="show_spinner"></i></button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</ng-template>

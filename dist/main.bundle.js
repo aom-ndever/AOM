@@ -1508,7 +1508,7 @@ var UsersService = /** @class */ (function () {
 /***/ "../../../../../src/app/admin_login/admin_login.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"login_container\">\n  <div class=\"row\">    \n    <div id=\"loginbox\" class=\"mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2\">                    \n        <div class=\"panel panel-info\" >\n          <div class=\"panel-heading\">\n              <div class=\"panel-title\">Sign In</div>\n          </div>     \n          <div style=\"padding-top:30px\" class=\"panel-body\" >\n            <div style=\"display:none\" id=\"login-alert\" class=\"alert alert-danger col-sm-12\"></div>\n              <form id=\"loginform\" class=\"form-horizontal\" role=\"form\" [formGroup]=\"admin_formgroup\">\n                  <div class=\"form-group\">\n                      <input id=\"login-username\" type=\"text\" formControlName=\"email\"  [(ngModel)]=\"admin_data.email\" class=\"form-control login_form\" name=\"username\" value=\"\" placeholder=\"username or email\">                                        \n                      <div *ngIf=\"!admin_formgroup.controls['email'].valid && admin_formgroup.controls['email'].dirty\">\n                        <span *ngIf=\"admin_formgroup.controls['email'].errors['required']\" class=\"text-danger error_msg\">Email is required.</span>\n                      </div>\n                  </div>\n                  <div class=\"form-group\">\n                      <input id=\"login-password\" type=\"password\" formControlName=\"password\"  [(ngModel)]=\"admin_data.password\" class=\"form-control login_form\" name=\"password\" placeholder=\"password\">\n                      <div *ngIf=\"!admin_formgroup.controls['password'].valid && admin_formgroup.controls['password'].dirty\">\n                        <span *ngIf=\"admin_formgroup.controls['password'].errors['required']\" class=\"text-danger error_msg\">Password is required.</span>\n                      </div>\n                  </div>  \n                  <div class=\"forget_password\">\n                    <a class=\"\" href=\"#\">Forget Password</a>\n                  </div>                        \n                  <!-- <div class=\"input-group\">\n                    <div class=\"checkbox\">\n                      <label>\n                        <input id=\"login-remember\" type=\"checkbox\" name=\"remember\" value=\"1\"> Remember me\n                      </label>\n                    </div>\n                  </div> -->\n                  <div  class=\"form-group\">\n                      <!-- Button -->\n                      <button type=\"submit\" class=\"btn  login_btn\" (click)=\"signin()\" [disabled]=\"!admin_formgroup.valid && show_spinner\">Login <i *ngIf=\"show_spinner\" class=\"fa fa-spinner fa-spin\"></i> </button>\n                  </div> \n                </form>     \n          </div>                     \n      </div>  \n    </div>\n  </div>\n</div>"
+module.exports = "<div class=\"login_container\">\n  <div>    \n    <div id=\"loginbox\" class=\"mainbox\">                    \n        <div class=\"panel panel-info\" >\n          <div class=\"panel-heading\">\n              <div class=\"panel-title\">Sign In</div>\n          </div>     \n          <div style=\"padding-top:30px\" class=\"panel-body\" >\n            <div style=\"display:none\" id=\"login-alert\" class=\"alert alert-danger col-sm-12\"></div>\n              <form id=\"loginform\" class=\"form-horizontal\" role=\"form\" [formGroup]=\"admin_formgroup\">\n                  <div class=\"form-group\">\n                      <input id=\"login-username\" type=\"text\" formControlName=\"email\"  [(ngModel)]=\"admin_data.email\" class=\"form-control login_form\" name=\"username\" value=\"\" placeholder=\"username or email\">                                        \n                      <div *ngIf=\"!admin_formgroup.controls['email'].valid && admin_formgroup.controls['email'].dirty\">\n                        <span *ngIf=\"admin_formgroup.controls['email'].errors['required']\" class=\"text-danger error_msg\">Email is required.</span>\n                      </div>\n                  </div>\n                  <div class=\"form-group\">\n                      <input id=\"login-password\" type=\"password\" formControlName=\"password\"  [(ngModel)]=\"admin_data.password\" class=\"form-control login_form\" name=\"password\" placeholder=\"password\">\n                      <div *ngIf=\"!admin_formgroup.controls['password'].valid && admin_formgroup.controls['password'].dirty\">\n                        <span *ngIf=\"admin_formgroup.controls['password'].errors['required']\" class=\"text-danger error_msg\">Password is required.</span>\n                      </div>\n                  </div>  \n                  <div class=\"forget_password\">\n                    <a class=\"\" href=\"javascript:;\" (click)=\"openContestModel(forget)\">Forget Password</a>\n                  </div>                        \n                  <!-- <div class=\"input-group\">\n                    <div class=\"checkbox\">\n                      <label>\n                        <input id=\"login-remember\" type=\"checkbox\" name=\"remember\" value=\"1\"> Remember me\n                      </label>\n                    </div>\n                  </div> -->\n                  <div  class=\"form-group\">\n                      <!-- Button -->\n                      <button type=\"submit\" class=\"btn  login_btn\" (click)=\"signin()\" [disabled]=\"!admin_formgroup.valid && show_spinner\">Login <i *ngIf=\"show_spinner\" class=\"fa fa-spinner fa-spin\"></i> </button>\n                  </div> \n                </form>     \n          </div>                     \n      </div>  \n    </div>\n  </div>\n</div>\n<ng-template #forget>\n  <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"ModelRef.hide()\">\n    <span aria-hidden=\"true\">&times;</span>\n  </button>\n\n  <div class=\"modal-body\">\n    <form [formGroup]=\"forget_formgroup\">\n      <div class=\"creat_contest_body\">\n        <div class=\"col-sm-12 text-center\">\n          <h4 class=\"custom_modal_head\">Forget Password</h4>\n        </div>\n        <div class=\"form-group custom_modal_form\">\n          <label class=\"control-label\">Email</label>\n          <input type=\"email\" name=\"email\" class=\"form-control\" formControlName=\"email\" [(ngModel)]=\"forget_data.email\" />\n          <div *ngIf=\"!forget_formgroup.controls['email'].valid && forget_formgroup.controls['email'].dirty\">\n              <span *ngIf=\"forget_formgroup.controls['email'].errors['required']\" class=\"text-danger\">Email is required.</span>\n              <span *ngIf=\"forget_formgroup.controls['email'].errors['email']\" class=\"text-danger\">Email Mismatched.</span>\n          </div>\n        </div>\n        <div class=\"row modal_btns\">\n          <div class=\"col-sm-12 text-right\">\n              <button class=\"custom_save btn\" (click)=\"forgetPassword()\" [disabled]=\"!forget_formgroup.valid || show_spinner\">Forget <i class=\"fa fa-spinner\" *ngIf=\"show_spinner\"></i></button>\n          </div>\n        </div>\n      </div>\n    </form>\n  </div>\n</ng-template>"
 
 /***/ }),
 
@@ -1522,6 +1522,7 @@ module.exports = "<div class=\"login_container\">\n  <div class=\"row\">    \n  
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_forms__ = __webpack_require__("../../../forms/esm5/forms.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_ngx_toastr__ = __webpack_require__("../../../../ngx-toastr/fesm5/ngx-toastr.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__angular_router__ = __webpack_require__("../../../router/esm5/router.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_ngx_bootstrap_modal__ = __webpack_require__("../../../../ngx-bootstrap/modal/index.js");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1536,17 +1537,23 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+
 var AdminLoginComponent = /** @class */ (function () {
-    function AdminLoginComponent(AdminLoginService, fb, toastr, router) {
+    function AdminLoginComponent(AdminLoginService, fb, toastr, router, modalService) {
         this.AdminLoginService = AdminLoginService;
         this.fb = fb;
         this.toastr = toastr;
         this.router = router;
+        this.modalService = modalService;
         this.admin_data = {};
         this.show_spinner = false;
+        this.forget_data = {};
         this.admin_formgroup = this.fb.group({
             'email': ['', [__WEBPACK_IMPORTED_MODULE_2__angular_forms__["g" /* Validators */].required, __WEBPACK_IMPORTED_MODULE_2__angular_forms__["g" /* Validators */].email]],
             'password': ['', [__WEBPACK_IMPORTED_MODULE_2__angular_forms__["g" /* Validators */].required]],
+        });
+        this.forget_formgroup = this.fb.group({
+            email: ['', [__WEBPACK_IMPORTED_MODULE_2__angular_forms__["g" /* Validators */].required, __WEBPACK_IMPORTED_MODULE_2__angular_forms__["g" /* Validators */].email]]
         });
     }
     AdminLoginComponent.prototype.ngOnInit = function () {
@@ -1565,13 +1572,35 @@ var AdminLoginComponent = /** @class */ (function () {
             _this.show_spinner = false;
         });
     };
+    AdminLoginComponent.prototype.openContestModel = function (template) {
+        this.ModelRef = this.modalService.show(template, { backdrop: 'static' });
+    };
+    // Forget password
+    AdminLoginComponent.prototype.forgetPassword = function () {
+        var _this = this;
+        this.show_spinner = true;
+        this.AdminLoginService.forgetPassword(this.forget_data).subscribe(function (response) {
+            _this.forget_data = {};
+            _this.ModelRef.hide();
+            _this.toastr.success(response['message'], 'Success!');
+        }, function (error) {
+            _this.toastr.error(error['error'].message, 'Error!');
+            _this.show_spinner = false;
+        }, function () {
+            _this.show_spinner = false;
+        });
+    };
     AdminLoginComponent = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
             selector: 'app-admin_login',
             template: __webpack_require__("../../../../../src/app/admin_login/admin_login.component.html"),
             styleUrls: []
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__admin_login_service__["a" /* AdminLoginService */], __WEBPACK_IMPORTED_MODULE_2__angular_forms__["a" /* FormBuilder */], __WEBPACK_IMPORTED_MODULE_3_ngx_toastr__["b" /* ToastrService */], __WEBPACK_IMPORTED_MODULE_4__angular_router__["b" /* Router */]])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__admin_login_service__["a" /* AdminLoginService */],
+            __WEBPACK_IMPORTED_MODULE_2__angular_forms__["a" /* FormBuilder */],
+            __WEBPACK_IMPORTED_MODULE_3_ngx_toastr__["b" /* ToastrService */],
+            __WEBPACK_IMPORTED_MODULE_4__angular_router__["b" /* Router */],
+            __WEBPACK_IMPORTED_MODULE_5_ngx_bootstrap_modal__["a" /* BsModalService */]])
     ], AdminLoginComponent);
     return AdminLoginComponent;
 }());
@@ -1677,6 +1706,10 @@ var AdminLoginService = /** @class */ (function () {
     }
     AdminLoginService.prototype.login = function (data) {
         return this.http.post(this.api_host + "/admin_login", data);
+    };
+    // Forget passowrd
+    AdminLoginService.prototype.forgetPassword = function (data) {
+        return this.http.post(this.api_host + "/admin_forgot_password", data);
     };
     AdminLoginService = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Injectable"])(),
@@ -6281,6 +6314,23 @@ var ForgetPasswordComponent = /** @class */ (function () {
                 _this.show_spinner = false;
             });
         }
+        else if (this.param && this.param.type == 'admin') {
+            var data = {
+                token: this.param.id,
+                password: this.forget_password
+            };
+            this.show_spinner = true;
+            this.ForgetPasswordService.adminChangePassword(data).subscribe(function (response) {
+                _this.forget_password = '';
+                _this.conf = '';
+                _this.toastr.success(response['message'], 'Success!');
+            }, function (error) {
+                _this.toastr.error(error['error'].message, 'Error!');
+                _this.show_spinner = false;
+            }, function () {
+                _this.show_spinner = false;
+            });
+        }
         else {
             var data = {
                 token: this.param.id,
@@ -6419,6 +6469,10 @@ var ForgetPasswordService = /** @class */ (function () {
     // User change password
     ForgetPasswordService.prototype.userChangePassword = function (data) {
         return this.http.post(this.api_host + "/user_reset_password", data);
+    };
+    // Admin user reset password
+    ForgetPasswordService.prototype.adminChangePassword = function (data) {
+        return this.http.post(this.api_host + "/admin_reset_password", data);
     };
     ForgetPasswordService = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Injectable"])(),

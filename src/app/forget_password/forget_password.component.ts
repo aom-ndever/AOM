@@ -60,6 +60,22 @@ export class ForgetPasswordComponent implements OnInit {
       }, () => {
         this.show_spinner = false;
       });
+    } else if(this.param && this.param.type == 'admin') {
+      const data = {
+        token : this.param.id,
+        password : this.forget_password
+      };
+      this.show_spinner = true;
+      this.ForgetPasswordService.adminChangePassword(data).subscribe(response => {
+        this.forget_password = '';
+        this.conf = '';
+        this.toastr.success(response['message'], 'Success!');
+      }, error => {
+        this.toastr.error(error['error'].message, 'Error!');
+        this.show_spinner = false;
+      }, () => {
+        this.show_spinner = false;
+      });
     } else {
       const data = {
         token : this.param.id,
