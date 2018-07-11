@@ -19,12 +19,7 @@ var fs = require('fs');
 var archiver = require('archiver');
 
 
-const Nexmo = require('nexmo')
 
-const nexmo = new Nexmo({
-  apiKey: 'd72b5c39',
-  apiSecret: '5ea31585'
-})
 
 
 
@@ -237,11 +232,6 @@ router.post('/like_track', async (req, res) => {
             "user": response.user.first_name + response.user.last_name
           });
       }
-      const from = 'Mansi'
-      const to = 7405843252
-      const text = 'A text message sent using the Nexmo SMS API'
-
-      nexmo.message.sendSms(from, to, text)
 
       logger.trace("like done successfully = ", data);
       res.status(config.OK_STATUS).json(data);
