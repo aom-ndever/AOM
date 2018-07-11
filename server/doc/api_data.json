@@ -1,9 +1,106 @@
 [
   {
-    "type": "delete",
-    "url": "/admin/track/:user_id",
-    "title": "Delete Track",
-    "name": "Delete_Track",
+    "type": "post",
+    "url": "/admin/add_contest",
+    "title": "Add Contest",
+    "name": "Add_Contest",
+    "group": "Admin",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Content-Type",
+            "description": "<p>application/json</p>"
+          },
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "x-access-token",
+            "description": "<p>unique access-key</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "name",
+            "description": "<p>Contest Name</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "start_date",
+            "description": "<p>Contest start date</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "end_date",
+            "description": "<p>Contest end date</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "music_type",
+            "description": "<p>Contest Music Type</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "location",
+            "description": "<p>Contest Location</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "JSON",
+            "optional": false,
+            "field": "Contest",
+            "description": "<p>details</p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>Validation or error message.</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "routes/admin/index.js",
+    "groupTitle": "Admin"
+  },
+  {
+    "type": "get",
+    "url": "/admin",
+    "title": "Administrator detail with total participant - Get",
+    "name": "Contest_detail_with_total_participant___Get",
     "group": "Admin",
     "header": {
       "fields": {
@@ -23,10 +120,10 @@
         "Success 200": [
           {
             "group": "Success 200",
-            "type": "String",
+            "type": "Array",
             "optional": false,
-            "field": "success",
-            "description": "<p>message</p>"
+            "field": "contect",
+            "description": "<p>detail</p>"
           }
         ]
       }
@@ -45,52 +142,24 @@
       }
     },
     "version": "0.0.0",
-    "filename": "routes/admin/track.js",
+    "filename": "routes/admin/index.js",
     "groupTitle": "Admin"
   },
   {
-    "type": "post",
-    "url": "/admin/track/list_tracks",
-    "title": "Get all Tracks",
-    "name": "Get_all_Tracks",
+    "type": "get",
+    "url": "/admin/contest",
+    "title": "Contest detail with total participant - Get",
+    "name": "Contest_detail_with_total_participant___Get",
     "group": "Admin",
-    "parameter": {
+    "header": {
       "fields": {
-        "Parameter": [
+        "Header": [
           {
-            "group": "Parameter",
-            "type": "Number",
-            "optional": false,
-            "field": "page_no",
-            "description": "<p>Page Number</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "Number",
-            "optional": false,
-            "field": "page_size",
-            "description": "<p>Page Size</p>"
-          },
-          {
-            "group": "Parameter",
+            "group": "Header",
             "type": "String",
             "optional": false,
-            "field": "gender",
-            "description": "<p>Gender for filter</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "first_name",
-            "description": "<p>First Name for filter</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "last_name",
-            "description": "<p>Last Name for filter</p>"
+            "field": "x-access-token",
+            "description": "<p>unique access-key</p>"
           }
         ]
       }
@@ -102,8 +171,8 @@
             "group": "Success 200",
             "type": "Array",
             "optional": false,
-            "field": "users",
-            "description": "<p>Array of users document</p>"
+            "field": "contect",
+            "description": "<p>detail</p>"
           }
         ]
       }
@@ -122,7 +191,7 @@
       }
     },
     "version": "0.0.0",
-    "filename": "routes/admin/track.js",
+    "filename": "routes/admin/index.js",
     "groupTitle": "Admin"
   },
   {
@@ -832,7 +901,7 @@
     "type": "post",
     "url": "/login",
     "title": "Admin Login",
-    "name": "admin",
+    "name": "Admin_Login",
     "group": "Root",
     "description": "<p>Login request for admin role</p>",
     "header": {
@@ -977,7 +1046,7 @@
   },
   {
     "type": "post",
-    "url": "/reset_password",
+    "url": "/admin_reset_password",
     "title": "Admin reset password",
     "name": "Admin_reset_password",
     "group": "Root",
@@ -1154,14 +1223,14 @@
         "Parameter": [
           {
             "group": "Parameter",
-            "type": "String",
+            "type": "object",
             "optional": false,
             "field": "social_media",
-            "description": "<p>Social Media of artist</p>"
+            "description": "<p>Type of Social Media</p>"
           },
           {
             "group": "Parameter",
-            "type": "String",
+            "type": "Array",
             "optional": false,
             "field": "music_type",
             "description": "<p>Type of music</p>"
@@ -1179,13 +1248,6 @@
             "optional": false,
             "field": "password",
             "description": "<p>Password</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "confirm_password",
-            "description": "<p>Confirm Password</p>"
           },
           {
             "group": "Parameter",
@@ -1219,8 +1281,8 @@
             "group": "Parameter",
             "type": "String",
             "optional": false,
-            "field": "image",
-            "description": "<p>Image</p>"
+            "field": "Image",
+            "description": "<p>image</p>"
           }
         ]
       }
@@ -1681,7 +1743,7 @@
     "type": "post",
     "url": "/super_admin",
     "title": "Super Admin Login",
-    "name": "Super_admin",
+    "name": "Super_Admin_Login",
     "group": "Root",
     "description": "<p>Login request for admin role</p>",
     "header": {
@@ -1870,14 +1932,7 @@
         "Parameter": [
           {
             "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "social_media",
-            "description": "<p>Social Media of artist</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
+            "type": "Array",
             "optional": false,
             "field": "music_type",
             "description": "<p>Type of music</p>"
@@ -1895,13 +1950,6 @@
             "optional": false,
             "field": "password",
             "description": "<p>Password</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "confirm_password",
-            "description": "<p>Confirm Password</p>"
           },
           {
             "group": "Parameter",
@@ -2136,8 +2184,8 @@
   },
   {
     "type": "post",
-    "url": "/super_admin/add_admin",
-    "title": "Add Admin",
+    "url": "/admin/add_admin",
+    "title": "admin/add_admin Add Admin",
     "name": "Add_Admin",
     "group": "Super_Admin",
     "header": {
@@ -2167,8 +2215,22 @@
             "group": "Parameter",
             "type": "String",
             "optional": false,
-            "field": "name",
-            "description": "<p>Admin Name</p>"
+            "field": "first_name",
+            "description": "<p>Admin First Name</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "last_name",
+            "description": "<p>Admin Last Name</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "account_type",
+            "description": "<p>Admin Account type</p>"
           },
           {
             "group": "Parameter",
@@ -2183,13 +2245,6 @@
             "optional": false,
             "field": "password",
             "description": "<p>Admin password</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "permission",
-            "description": "<p>Permission to Admin</p>"
           }
         ]
       }
@@ -2221,268 +2276,12 @@
       }
     },
     "version": "0.0.0",
-    "filename": "routes/super_admin/index.js",
-    "groupTitle": "Super_Admin"
-  },
-  {
-    "type": "post",
-    "url": "/super_admin/add_contest",
-    "title": "Add Contest",
-    "name": "Add_Contest",
-    "group": "Super_Admin",
-    "header": {
-      "fields": {
-        "Header": [
-          {
-            "group": "Header",
-            "type": "String",
-            "optional": false,
-            "field": "Content-Type",
-            "description": "<p>application/json</p>"
-          },
-          {
-            "group": "Header",
-            "type": "String",
-            "optional": false,
-            "field": "x-access-token",
-            "description": "<p>unique access-key</p>"
-          }
-        ]
-      }
-    },
-    "parameter": {
-      "fields": {
-        "Parameter": [
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "name",
-            "description": "<p>Contest Name</p>"
-          }
-        ]
-      }
-    },
-    "success": {
-      "fields": {
-        "Success 200": [
-          {
-            "group": "Success 200",
-            "type": "JSON",
-            "optional": false,
-            "field": "Contest",
-            "description": "<p>details</p>"
-          }
-        ]
-      }
-    },
-    "error": {
-      "fields": {
-        "Error 4xx": [
-          {
-            "group": "Error 4xx",
-            "type": "String",
-            "optional": false,
-            "field": "message",
-            "description": "<p>Validation or error message.</p>"
-          }
-        ]
-      }
-    },
-    "version": "0.0.0",
-    "filename": "routes/super_admin/index.js",
-    "groupTitle": "Super_Admin"
-  },
-  {
-    "type": "post",
-    "url": "/super_admin/add_permission",
-    "title": "Add Permission",
-    "name": "Add_Permission",
-    "group": "Super_Admin",
-    "header": {
-      "fields": {
-        "Header": [
-          {
-            "group": "Header",
-            "type": "String",
-            "optional": false,
-            "field": "Content-Type",
-            "description": "<p>application/json</p>"
-          },
-          {
-            "group": "Header",
-            "type": "String",
-            "optional": false,
-            "field": "x-access-token",
-            "description": "<p>unique access-key</p>"
-          }
-        ]
-      }
-    },
-    "parameter": {
-      "fields": {
-        "Parameter": [
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "name",
-            "description": "<p>Permission Name</p>"
-          }
-        ]
-      }
-    },
-    "success": {
-      "fields": {
-        "Success 200": [
-          {
-            "group": "Success 200",
-            "type": "JSON",
-            "optional": false,
-            "field": "admin",
-            "description": "<p>details</p>"
-          }
-        ]
-      }
-    },
-    "error": {
-      "fields": {
-        "Error 4xx": [
-          {
-            "group": "Error 4xx",
-            "type": "String",
-            "optional": false,
-            "field": "message",
-            "description": "<p>Validation or error message.</p>"
-          }
-        ]
-      }
-    },
-    "version": "0.0.0",
-    "filename": "routes/super_admin/index.js",
-    "groupTitle": "Super_Admin"
-  },
-  {
-    "type": "post",
-    "url": "/super_admin/home",
-    "title": "Get Artist Details with the day-Get",
-    "name": "Artist_Details_with_the_day_Get",
-    "group": "Super_Admin",
-    "header": {
-      "fields": {
-        "Header": [
-          {
-            "group": "Header",
-            "type": "String",
-            "optional": false,
-            "field": "Content-Type",
-            "description": "<p>application/json</p>"
-          },
-          {
-            "group": "Header",
-            "type": "String",
-            "optional": false,
-            "field": "x-access-token",
-            "description": "<p>unique access-key</p>"
-          }
-        ]
-      }
-    },
-    "parameter": {
-      "fields": {
-        "Parameter": [
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "day",
-            "description": "<p>Artist day</p>"
-          }
-        ]
-      }
-    },
-    "success": {
-      "fields": {
-        "Success 200": [
-          {
-            "group": "Success 200",
-            "type": "JSON",
-            "optional": false,
-            "field": "Artist",
-            "description": "<p>details</p>"
-          }
-        ]
-      }
-    },
-    "error": {
-      "fields": {
-        "Error 4xx": [
-          {
-            "group": "Error 4xx",
-            "type": "String",
-            "optional": false,
-            "field": "message",
-            "description": "<p>Validation or error message.</p>"
-          }
-        ]
-      }
-    },
-    "version": "0.0.0",
-    "filename": "routes/super_admin/index.js",
-    "groupTitle": "Super_Admin"
-  },
-  {
-    "type": "get",
-    "url": "/super_admin/add_contest",
-    "title": "Contest detail with total participant - Get",
-    "name": "Contest_detail_with_total_participant___Get",
-    "group": "Super_Admin",
-    "header": {
-      "fields": {
-        "Header": [
-          {
-            "group": "Header",
-            "type": "String",
-            "optional": false,
-            "field": "x-access-token",
-            "description": "<p>unique access-key</p>"
-          }
-        ]
-      }
-    },
-    "success": {
-      "fields": {
-        "Success 200": [
-          {
-            "group": "Success 200",
-            "type": "Array",
-            "optional": false,
-            "field": "contect",
-            "description": "<p>detail</p>"
-          }
-        ]
-      }
-    },
-    "error": {
-      "fields": {
-        "Error 4xx": [
-          {
-            "group": "Error 4xx",
-            "type": "String",
-            "optional": false,
-            "field": "message",
-            "description": "<p>Validation or error message.</p>"
-          }
-        ]
-      }
-    },
-    "version": "0.0.0",
-    "filename": "routes/super_admin/index.js",
+    "filename": "routes/admin/index.js",
     "groupTitle": "Super_Admin"
   },
   {
     "type": "delete",
-    "url": "/super_admin/:artist_id",
+    "url": "/track/:artist_id",
     "title": "Delete Artist",
     "name": "Delete_Artist",
     "group": "Super_Admin",
@@ -2526,7 +2325,7 @@
       }
     },
     "version": "0.0.0",
-    "filename": "routes/super_admin/index.js",
+    "filename": "routes/admin/index.js",
     "groupTitle": "Super_Admin"
   },
   {
@@ -2575,7 +2374,7 @@
       }
     },
     "version": "0.0.0",
-    "filename": "routes/super_admin/index.js",
+    "filename": "routes/admin/index.js",
     "groupTitle": "Super_Admin"
   },
   {
@@ -2665,7 +2464,7 @@
       }
     },
     "version": "0.0.0",
-    "filename": "routes/super_admin/index.js",
+    "filename": "routes/admin/index.js",
     "groupTitle": "Super_Admin"
   },
   {
@@ -2741,12 +2540,12 @@
       }
     },
     "version": "0.0.0",
-    "filename": "routes/super_admin/index.js",
+    "filename": "routes/admin/index.js",
     "groupTitle": "Super_Admin"
   },
   {
     "type": "post",
-    "url": "/suspend/artist/:artist_id",
+    "url": "/suspend/artist/:admin_id",
     "title": "Suspend Artist",
     "name": "Suspend_Artist",
     "group": "Super_Admin",
@@ -2778,7 +2577,7 @@
             "type": "String",
             "optional": false,
             "field": "artist_id",
-            "description": "<p>Artist Id e</p>"
+            "description": "<p>Artist Id</p>"
           }
         ]
       }
@@ -2810,7 +2609,7 @@
       }
     },
     "version": "0.0.0",
-    "filename": "routes/super_admin/index.js",
+    "filename": "routes/admin/index.js",
     "groupTitle": "Super_Admin"
   },
   {
@@ -2847,7 +2646,7 @@
             "type": "String",
             "optional": false,
             "field": "user_id",
-            "description": "<p>User Id e</p>"
+            "description": "<p>User Id</p>"
           }
         ]
       }
@@ -2879,7 +2678,7 @@
       }
     },
     "version": "0.0.0",
-    "filename": "routes/super_admin/index.js",
+    "filename": "routes/admin/index.js",
     "groupTitle": "Super_Admin"
   },
   {
@@ -3101,6 +2900,82 @@
     },
     "version": "0.0.0",
     "filename": "routes/user/track.js",
+    "groupTitle": "User"
+  },
+  {
+    "type": "post",
+    "url": "/user/flag/user/:user_id",
+    "title": "Flag User Add",
+    "name": "Flag_User___Add",
+    "group": "User",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Content-Type",
+            "description": "<p>application/json</p>"
+          },
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "x-access-token",
+            "description": "<p>unique access-key</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "from",
+            "description": "<p>User id of user who flag user</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "to",
+            "description": "<p>User id of user  who gets flagged</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "JSON",
+            "optional": false,
+            "field": "track",
+            "description": "<p>details</p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>Validation or error message.</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "routes/user/index.js",
     "groupTitle": "User"
   },
   {
@@ -3431,82 +3306,6 @@
   },
   {
     "type": "put",
-    "url": "/admin",
-    "title": "Update admin profile",
-    "name": "Update_admin_profile",
-    "group": "User",
-    "header": {
-      "fields": {
-        "Header": [
-          {
-            "group": "Header",
-            "type": "String",
-            "optional": false,
-            "field": "Content-Type",
-            "description": "<p>application/json</p>"
-          },
-          {
-            "group": "Header",
-            "type": "String",
-            "optional": false,
-            "field": "x-access-token",
-            "description": "<p>unique access-key</p>"
-          }
-        ]
-      }
-    },
-    "parameter": {
-      "fields": {
-        "Parameter": [
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "name",
-            "description": "<p>Name of admin</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "password",
-            "description": "<p>Admin Password</p>"
-          }
-        ]
-      }
-    },
-    "success": {
-      "fields": {
-        "Success 200": [
-          {
-            "group": "Success 200",
-            "type": "JSON",
-            "optional": false,
-            "field": "admin",
-            "description": "<p>Admin details</p>"
-          }
-        ]
-      }
-    },
-    "error": {
-      "fields": {
-        "Error 4xx": [
-          {
-            "group": "Error 4xx",
-            "type": "String",
-            "optional": false,
-            "field": "message",
-            "description": "<p>Validation or error message.</p>"
-          }
-        ]
-      }
-    },
-    "version": "0.0.0",
-    "filename": "routes/admin/index.js",
-    "groupTitle": "User"
-  },
-  {
-    "type": "put",
     "url": "/user/playlist/:playlist_id",
     "title": "Update playlist",
     "name": "Update_playlist",
@@ -3586,6 +3385,213 @@
     },
     "version": "0.0.0",
     "filename": "routes/user/playlist.js",
+    "groupTitle": "User"
+  },
+  {
+    "type": "put",
+    "url": "/change/email",
+    "title": "Update user email",
+    "name": "Update_user_email",
+    "group": "User",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Content-Type",
+            "description": "<p>application/json</p>"
+          },
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "x-access-token",
+            "description": "<p>unique access-key</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "email",
+            "description": "<p>User email</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "JSON",
+            "optional": false,
+            "field": "user",
+            "description": "<p>email details</p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>Validation or error message.</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "routes/user/index.js",
+    "groupTitle": "User"
+  },
+  {
+    "type": "put",
+    "url": "/update_image",
+    "title": "Update user image",
+    "name": "Update_user_image",
+    "group": "User",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Content-Type",
+            "description": "<p>application/json</p>"
+          },
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "x-access-token",
+            "description": "<p>unique access-key</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "image",
+            "description": "<p>User image</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "JSON",
+            "optional": false,
+            "field": "user",
+            "description": "<p>image details</p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>Validation or error message.</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "routes/user/index.js",
+    "groupTitle": "User"
+  },
+  {
+    "type": "put",
+    "url": "/change/password",
+    "title": "Update user email",
+    "name": "Update_user_password",
+    "group": "User",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Content-Type",
+            "description": "<p>application/json</p>"
+          },
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "x-access-token",
+            "description": "<p>unique access-key</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "password",
+            "description": "<p>User password</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "JSON",
+            "optional": false,
+            "field": "user",
+            "description": "<p>password details</p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>Validation or error message.</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "routes/user/index.js",
     "groupTitle": "User"
   },
   {
@@ -3923,6 +3929,55 @@
     "groupTitle": "User"
   },
   {
+    "type": "delete",
+    "url": "/user/image/:user_id",
+    "title": "Delete image",
+    "name": "delete_user_image",
+    "group": "User",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "x-access-token",
+            "description": "<p>unique access-key</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "success",
+            "description": "<p>message</p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>Validation or error message.</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "routes/user/index.js",
+    "groupTitle": "User"
+  },
+  {
     "type": "get",
     "url": "/user/comment",
     "title": "Comment by user id - Get",
@@ -4018,6 +4073,104 @@
     },
     "version": "0.0.0",
     "filename": "routes/user/bookmark.js",
+    "groupTitle": "User"
+  },
+  {
+    "type": "get",
+    "url": "/user/followers",
+    "title": "followers detail - Get",
+    "name": "get_all_followers___Get",
+    "group": "User",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "x-access-token",
+            "description": "<p>unique access-key</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Array",
+            "optional": false,
+            "field": "followers",
+            "description": "<p>detail as per id</p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>Validation or error message.</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "routes/user/artist.js",
+    "groupTitle": "User"
+  },
+  {
+    "type": "get",
+    "url": "/user",
+    "title": "User detail - Get",
+    "name": "get_user_by_id___Get",
+    "group": "User",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "x-access-token",
+            "description": "<p>unique access-key</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Array",
+            "optional": false,
+            "field": "User",
+            "description": "<p>detail as per id</p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>Validation or error message.</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "routes/user/index.js",
     "groupTitle": "User"
   },
   {

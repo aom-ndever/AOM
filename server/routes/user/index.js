@@ -74,6 +74,21 @@ router.put("/", async (req, res) => {
 });
 
 
+
+/**
+ * @api {put} /update_image Update user image
+ * @apiName Update user image
+ * @apiGroup User
+ * 
+ * @apiHeader {String}  Content-Type application/json
+ * @apiHeader {String}  x-access-token  unique access-key
+ * 
+ * @apiParam {String} image User image
+ 
+ * 
+ * @apiSuccess (Success 200) {JSON} user image details
+ * @apiError (Error 4xx) {String} message Validation or error message.
+ */
 router.put('/update_image', function (req, res) {
     user_id = req.userInfo.id;
     var obj = {
@@ -130,6 +145,17 @@ router.put('/update_image', function (req, res) {
 });
 
 
+
+/**
+ * @api {get} /user User detail - Get 
+ * @apiName get_user_by_id - Get
+ * @apiGroup User
+ *
+ * @apiHeader {String}  x-access-token unique access-key
+ *
+ * @apiSuccess (Success 200) {Array} User detail as per id
+ * @apiError (Error 4xx) {String} message Validation or error message.
+ */
 router.get("/", async (req, res) => {
     user_id = req.userInfo.id;
     var resp_data = await user_helper.get_user_by_id(user_id);
@@ -142,7 +168,18 @@ router.get("/", async (req, res) => {
     }
 });
 
-// delete image of user
+
+
+/**
+ * @api {delete} /user/image/:user_id Delete image  
+ * @apiName delete_user_image 
+ * @apiGroup User
+ *
+ * @apiHeader {String}  x-access-token unique access-key
+ *
+ * @apiSuccess (Success 200) {String} success message
+ * @apiError (Error 4xx) {String} message Validation or error message.
+ */
 router.delete('/image/:user_id', async (req, res) => {
     user_id = req.params.user_id;
     var del_resp = await user_helper.delete_user_image(user_id);
@@ -156,7 +193,20 @@ router.delete('/image/:user_id', async (req, res) => {
 });
 
 
-
+/**
+ * @api {put} /change/email Update user email
+ * @apiName Update user email
+ * @apiGroup User
+ * 
+ * @apiHeader {String}  Content-Type application/json
+ * @apiHeader {String}  x-access-token  unique access-key
+ * 
+ * @apiParam {String} email User email
+ 
+ * 
+ * @apiSuccess (Success 200) {JSON} user email details
+ * @apiError (Error 4xx) {String} message Validation or error message.
+ */
 router.put('/change/email', async (req, res) => {
     user_id = req.userInfo.id;
 
@@ -179,6 +229,22 @@ router.put('/change/email', async (req, res) => {
         res.status(config.INTERNAL_SERVER_ERROR).json(resp);
     }
 });
+
+
+/**
+ * @api {put} /change/password Update user email
+ * @apiName Update user password
+ * @apiGroup User
+ * 
+ * @apiHeader {String}  Content-Type application/json
+ * @apiHeader {String}  x-access-token  unique access-key
+ * 
+ * @apiParam {String} password User password
+ 
+ * 
+ * @apiSuccess (Success 200) {JSON} user password details
+ * @apiError (Error 4xx) {String} message Validation or error message.
+ */
 router.put('/change/password', async (req, res) => {
     user_id = req.userInfo.id;
 
@@ -204,6 +270,21 @@ router.put('/change/password', async (req, res) => {
     }
 });
 
+
+/**
+ * @api {post} /user/flag/user/:user_id Flag User Add
+ * @apiName Flag User - Add
+ * @apiGroup User
+
+ * @apiHeader {String}  Content-Type application/json
+ * @apiHeader {String}  x-access-token  unique access-key
+ * 
+ * @apiParam {String} from User id of user who flag user
+ * @apiParam {String} to User id of user  who gets flagged
+ *
+ * @apiSuccess (Success 200) {JSON} track details
+ * @apiError (Error 4xx) {String} message Validation or error message.
+ */
 router.post("/flag/user/:user_id", async (req, res) => {
     var obj = {
         from: req.userInfo.id,
@@ -232,8 +313,6 @@ router.post("/flag/user/:user_id", async (req, res) => {
 
     }
 });
-
-
 
 
 module.exports = router;

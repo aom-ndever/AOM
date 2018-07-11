@@ -81,6 +81,16 @@ router.post('/follow', async (req, res) => {
 });
 
 
+/**
+ * @api {get} /user/followers followers detail - Get 
+ * @apiName get_all_followers - Get
+ * @apiGroup User
+ *
+ * @apiHeader {String}  x-access-token unique access-key
+ *
+ * @apiSuccess (Success 200) {Array} followers detail as per id
+ * @apiError (Error 4xx) {String} message Validation or error message.
+ */
 router.get('/followers', async (req, res) => {
   user_id = req.userInfo.id
   var user = await follower_helper.get_all_followers(user_id);
@@ -92,4 +102,5 @@ router.get('/followers', async (req, res) => {
     res.status(config.INTERNAL_SERVER_ERROR).json(user);
   }
 });
+
 module.exports = router;

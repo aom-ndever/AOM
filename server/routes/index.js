@@ -44,8 +44,6 @@ var comment_helper = require('./../helpers/comment_helper');
  * @apiParam {String} gender Gender
  * @apiParam {String} Image image
 
-
- * 
  * @apiSuccess (Success 200) {String} message Success message
  * @apiError (Error 4xx) {String} message Validation or error message.
  */
@@ -982,7 +980,7 @@ router.post('/admin_login', async (req, res) => {
 
 
 /**
- * @api {post} /forgot_password Admin forgot password
+ * @api {post} /admin_forgot_password Admin forgot password
  * @apiName Admin forgot password
  * @apiGroup Root
  * 
@@ -1012,7 +1010,6 @@ router.post('/admin_forgot_password', async (req, res) => {
     } else if (resp.status === 2) {
       res.status(config.BAD_REQUEST).json({ "status": 0, "message": "No admin available with given email" });
     } else {
-      // Send mail on user's email address
       var reset_token = Buffer.from(jwt.sign({ "admin_id": resp.admin._id }, config.ACCESS_TOKEN_SECRET_KEY, {
         expiresIn: 60 * 60 * 2 // expires in 2 hour
       })).toString('base64');
@@ -1021,7 +1018,7 @@ router.post('/admin_forgot_password', async (req, res) => {
         "to": resp.admin.email,
         "subject": "Music Social Voting"
       }, {
-          "reset_link": config.website_url + "/forgot_password/" + reset_token
+          "reset_link": config.website_url + "/forgot_password/admin/" + reset_token
         });
 
       if (mail_resp.status === 0) {
@@ -1037,7 +1034,7 @@ router.post('/admin_forgot_password', async (req, res) => {
 
 
 /**
- * @api {post} /reset_password Admin reset password
+ * @api {post} /admin_reset_password Admin reset password
  * @apiName Admin reset password
  * @apiGroup Root
  * 
@@ -1080,7 +1077,7 @@ router.post('/admin_reset_password', async (req, res) => {
       } else {
         logger.trace("Valid token. Reseting password for artist");
         if (decoded.admin_id) {
-          var update_resp = await admin_helper.update_admin_by_id(decoded.admin_id, { "password": bcrypt.hashSync(req.body.password, saltRounds) });
+          var update_resp = await admin_helper.update_admin_by_id(decoded.admin_id, { "password": req.body.password });
           if (update_resp.status === 0) {
             logger.trace("Error occured while updating admin : ", update_resp.error);
             res.status(config.INTERNAL_SERVER_ERROR).json({ "status": 0, "message": "Error occured while verifying admin_id's email" });
@@ -1104,71 +1101,14 @@ router.post('/admin_reset_password', async (req, res) => {
 
 
 /**
- * @api {post} /super_admin Super Admin Login
- * @apiName Super Admin Login
+ * @api {get} /music_type Music Type detail - Get 
+ * @apiName Get All music Type - Get
  * @apiGroup Root
- * 
- * @apiDescription  Login request for admin role
- * 
- * @apiHeader {String}  Content-Type application/json
- * 
- * @apiParam {String} email Email 
- * @apiParam {String} password Password
- * 
- * @apiSuccess (Success 200) {JSON}  admin object.
- * @apiSuccess (Success 200) {String} token Unique token which needs to be passed in subsequent requests.
- * @apiSuccess (Success 200) {String} refresh_token Unique token which needs to be passed to generate next access token.
+ *
+ *
+ * @apiSuccess (Success 200) {Array} bookmark detail as per id
  * @apiError (Error 4xx) {String} message Validation or error message.
  */
-router.post('/super_admin', async (req, res) => {
-  var schema = {
-    'email': {
-      notEmpty: true,
-      errorMessage: "Email is required.",
-      isEmail: { errorMessage: "Please enter valid email address" }
-    },
-    'password': {
-      notEmpty: true,
-      errorMessage: "password is required."
-    },
-
-  };
-  req.checkBody(schema);
-  var errors = req.validationErrors();
-  if (!errors) {
-    let login_resp = await super_admin_helper.get_login_by_email(req.body.email, req.body.password);
-    if (login_resp.status === 0) {
-      res.status(config.INTERNAL_SERVER_ERROR).json({ "status": 0, "message": "Something went wrong while finding admin", "error": login_resp.error });
-    } else if (login_resp.status === 1) {
-      logger.trace("Admin found. Executing next instruction");
-      logger.trace("valid token. Generating token");
-      var refreshToken = jwt.sign({ id: login_resp.super_admin._id }, config.REFRESH_TOKEN_SECRET_KEY, {});
-      let update_resp = await admin_helper.update_admin_by_id(login_resp.super_admin._id, { "refresh_token": refreshToken, "last_login_date": Date.now() });
-      var LoginJson = { id: login_resp.super_admin._id, email: login_resp.email, role: "super_admin" };
-      var token = jwt.sign(LoginJson, config.ACCESS_TOKEN_SECRET_KEY, {
-        expiresIn: config.ACCESS_TOKEN_EXPIRE_TIME
-      });
-
-
-      delete login_resp.super_admin.status;
-      delete login_resp.super_admin.password;
-      delete login_resp.super_admin.refresh_token;
-      delete login_resp.super_admin.last_login_date;
-      delete login_resp.super_admin.created_at;
-
-      logger.info("Token generated");
-      res.status(config.OK_STATUS).json({ "status": 1, "message": "Logged in successful", "super_admin": login_resp.admin, "token": token, "refresh_token": refreshToken });
-    } else {
-      res.status(config.BAD_REQUEST).json({ "status": 0, "message": "Invalid email address or token" });
-    }
-
-  } else {
-    logger.error("Validation Error = ", errors);
-    res.status(config.BAD_REQUEST).json({ message: errors });
-  }
-});
-
-
 router.get("/music_type", async (req, res) => {
   var resp_data = await music_helper.get_all_music_type();
   if (resp_data.status == 0) {
@@ -1181,8 +1121,14 @@ router.get("/music_type", async (req, res) => {
 });
 
 
-// whats new page track and artist
-router.post("/whatsnew", async (req, res) => {
+/**
+ * @api {get} /whatsnew Artist detail By Filter - Get 
+ * @apiName Artist detail By Filter - Get
+ * @apiGroup Root
+ *
+ * @apiSuccess (Success 200) {Array} bookmark detail as per id
+ * @apiError (Error 4xx) {String} message Validation or error message.
+ */router.post("/whatsnew", async (req, res) => {
   var filter = {};
   var page_no = {};
   var page_size = {};
@@ -1241,7 +1187,15 @@ router.post("/whatsnew", async (req, res) => {
 
 
 
-// main page v2 track
+/**
+ * @api {get} /mainpage Track detail - Get 
+ * @apiName Track - Get
+ * @apiGroup Root
+ *
+ *
+ * @apiSuccess (Success 200) {Array} Track detail as per id
+ * @apiError (Error 4xx) {String} message Validation or error message.
+ */
 router.post("/mainpage", async (req, res) => {
   var filter = {};
   var filters = {};
@@ -1333,7 +1287,15 @@ router.post("/artistv1", async (req, res) => {
   }
 });
 
-
+/**
+ * @api {get} /get_media Media detail - Get 
+ * @apiName Media - Get
+ * @apiGroup Root
+ *
+ *
+ * @apiSuccess (Success 200) {Array} Media detail as per artist id
+ * @apiError (Error 4xx) {String} message Validation or error message.
+ */
 router.post('/get_media', async (req, res) => {
   artist_id = req.body.artist_id
   var media = await media_helper.get_all_media_of_artist(artist_id);
@@ -1346,6 +1308,18 @@ router.post('/get_media', async (req, res) => {
   }
 });
 
+
+
+/**
+ * @api {get} /get_track Track detail by Artist id- Get 
+ * @apiName Track detail by Artist id - Get
+ * @apiGroup Root
+ *
+ * @apiParam {String} artist_id Artist Id
+ * 
+ * @apiSuccess (Success 200) {Array} Media detail as per artist id
+ * @apiError (Error 4xx) {String} message Validation or error message.
+ */
 router.post('/get_track', async (req, res) => {
   artist_id = req.body.artist_id
   var filter = {};
@@ -1366,7 +1340,16 @@ router.post('/get_track', async (req, res) => {
   }
 });
 
-
+/**
+ * @api {get} /get_ranking Artist detail by Ranking - Get 
+ * @apiName Artist detail by Ranking- Get
+ * @apiGroup Root
+ *
+ * @apiParam {String} artist_id Artist Id
+ * 
+ * @apiSuccess (Success 200) {Array} Media detail as per artist id
+ * @apiError (Error 4xx) {String} message Validation or error message.
+ */
 router.post('/get_ranking', async (req, res) => {
   var filter = {};
 
@@ -1386,7 +1369,16 @@ router.post('/get_ranking', async (req, res) => {
   }
 });
 
-
+/**
+ * @api {get} /get_artist Artist detail by Artist Id - Get 
+ * @apiName Artist detail by Artist Id- Get
+ * @apiGroup Root
+ *
+ * @apiParam {String} artist_id Artist Id
+ * 
+ * @apiSuccess (Success 200) {Array} Media detail as per artist id
+ * @apiError (Error 4xx) {String} message Validation or error message.
+ */
 router.post('/get_artist', async (req, res) => {
   artist_id = req.body.artist_id
   var artist = await artist_helper.get_artist_by_id(artist_id);
@@ -1447,56 +1439,5 @@ router.get('/tracks/:track_id', async (req, res) => {
   }
 });
 
-
-// router.post("/add_user", async (req, res) => {
-//   var schema = {
-//     "name": {
-//       notEmpty: true,
-//       errorMessage: "name is required"
-//     },
-//     "city": {
-//       notEmpty: true,
-//       errorMessage: "City is required"
-//     },
-
-//   };
-//   req.checkBody(schema);
-//   var errors = req.validationErrors();
-//   if (!errors) {
-//     var obj = {
-//       name: req.body.name,
-//       city: req.body.city,
-
-//     };
-
-//     var resp_data = await demo_helper.insert_user(obj);
-//     if (resp_data.status == 0) {
-//       logger.error("Error occured while inserting = ", resp_data);
-//       res.status(config.INTERNAL_SERVER_ERROR).json(resp_data);
-//     } else {
-//       logger.trace(" got successfully = ", resp_data);
-//       res.status(config.OK_STATUS).json(resp_data);
-//     }
-//   }
-
-//   else {
-//     logger.error("Validation Error = ", errors);
-//     res.status(config.BAD_REQUEST).json({ message: errors });
-//   }
-// });
-
-
-// router.get('/user', async (req, res) => {
-//   filter = {};
-//   var user = await demo_helper.get_all_user(filter);
-
-//   if (user.status === 1) {
-//     logger.trace("got details successfully");
-//     res.status(config.OK_STATUS).json({ "status": 1, "users": user.user });
-//   } else {
-//     logger.error("Error occured while fetching = ", user);
-//     res.status(config.INTERNAL_SERVER_ERROR).json(user);
-//   }
-// });
 
 module.exports = router;
