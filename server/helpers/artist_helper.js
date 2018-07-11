@@ -214,7 +214,19 @@ artist_helper.delete_artist_by_admin = async (artist_id) => {
     }
 };
 
+artist_helper.update_featured_artist = async (artist_id, feature) => {
 
+    try {
+        var artist = await Artist.findOneAndUpdate({ "_id": (artist_id) }, { "featured": feature })
+        if (artist) {
+            return { "status": 1, "message": "artist details found", "artist": artist };
+        } else {
+            return { "status": 2, "message": "artist not found" };
+        }
+    } catch (err) {
+        return { "status": 0, "message": "Error occured while finding artist", "error": err }
+    }
+};
 
 artist_helper.update_artist_votes = async (artist_id, no_votes) => {
 

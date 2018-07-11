@@ -137,7 +137,6 @@ router.post("/", async (req, res) => {
  */
 router.get('/', async (req, res) => {
     artist_id = req.userInfo.id;
-
     var track = await track_helper.get_all_track_of_artist(artist_id);
     if (track.status === 1) {
         logger.trace("got details successfully");

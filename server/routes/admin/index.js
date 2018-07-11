@@ -699,4 +699,26 @@ router.post('/get_participants_of_contest', async (req, res) => {
   }
 });
 
+router.put("/featured_artist", async (req, res) => {
+  artist_id = req.body.artist_id
+  var resp = await artist_helper.get_artist_by_id(artist_id);
+  if (resp.status == 0) {
+    logger.error("Error occured while fetching artist = ", resp);
+    res.status(config.INTERNAL_SERVER_ERROR).json(resp);
+  } else {
+    if (resp.artist.featured == false) {
+      var feature = true
+      var artist_resp = await artist_helper.update_featured_artist(artist_id, feature);
+      logger.trace("Artist selected as featured artist = ");
+      res.status(config.OK_STATUS).json({ "message": "Artist selected as featured artist " });
+    }
+    else {
+      var feature = false
+      var artist_resp = await artist_helper.update_featured_artist(artist_id, feature);
+      logger.trace("Artist removed from featured artist = ");
+      res.status(config.OK_STATUS).json({ "message": "Artist removed from featured artist" });
+    }
+
+  }
+});
 module.exports = router;
