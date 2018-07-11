@@ -25,7 +25,7 @@ var fs = require('fs');
 
 
 /**
- * @api {post} /
+ * @api {post} /admin/add_admin
  * admin/add_admin Add Admin 
  * @apiName Add Admin
  * @apiGroup Super Admin
@@ -33,11 +33,12 @@ var fs = require('fs');
  * @apiHeader {String}  Content-Type application/json
  * @apiHeader {String}  x-access-token  unique access-key
  * 
- * @apiParam {String} name Admin Name
+ * @apiParam {String} first_name Admin First Name
+ * @apiParam {String} last_name Admin Last Name
+ * @apiParam {String} account_type Admin Account type
  * @apiParam {String} email Admin Email
  * @apiParam {String} password Admin password
- * @apiParam {String} permission Permission to Admin
- *
+ *  
  * @apiSuccess (Success 200) {JSON} admin details
  * @apiError (Error 4xx) {String} message Validation or error message.
  */
@@ -119,6 +120,17 @@ router.post("/add_admin", async (req, res) => {
 });
 
 
+
+/**
+ * @api {get} /admin   Administrator detail with total participant - Get 
+ * @apiName Contest detail with total participant - Get
+ * @apiGroup  Admin
+ *
+ * @apiHeader {String}  x-access-token unique access-key
+ 
+ * @apiSuccess (Success 200) {Array} contect detail 
+ * @apiError (Error 4xx) {String} message Validation or error message.
+ */
 router.post('/', async (req, res) => {
   var admin = await admin_helper.get_all_admin(req.body.start, req.body.length);
   if (admin.status === 1) {
@@ -140,6 +152,10 @@ router.post('/', async (req, res) => {
  * @apiHeader {String}  x-access-token  unique access-key
  * 
  * @apiParam {String} name Contest Name
+ * @apiParam {String} start_date Contest start date
+ * @apiParam {String} end_date Contest end date
+ * @apiParam {String} music_type Contest Music Type
+ * @apiParam {String} location Contest Location
  
  * @apiSuccess (Success 200) {JSON} Contest details
  * @apiError (Error 4xx) {String} message Validation or error message.
@@ -237,7 +253,7 @@ router.post('/contest', async (req, res) => {
 
 
 /**
- * @api {delete} /admin/:artist_id Delete Artist  
+ * @api {delete} /track/:artist_id Delete Artist  
  * @apiName Delete Artist  
  * @apiGroup Super Admin
  *

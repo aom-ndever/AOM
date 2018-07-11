@@ -5,7 +5,6 @@ var logger = config.logger;
 var bcrypt = require('bcrypt');
 var jwt = require('jsonwebtoken');
 var async = require('async');
-
 var purchase_helper = require('../../helpers/purchase_track_helper');
 var vote_track_helper = require('../../helpers/vote_track_helper');
 var track_helper = require('../../helpers/track_helper');
@@ -18,6 +17,15 @@ var mongoose = require('mongoose');
 var ObjectId = mongoose.Types.ObjectId;
 var fs = require('fs');
 var archiver = require('archiver');
+
+
+const Nexmo = require('nexmo')
+
+const nexmo = new Nexmo({
+  apiKey: 'd72b5c39',
+  apiSecret: '5ea31585'
+})
+
 
 
 
@@ -115,12 +123,12 @@ router.post('/vote_track', async (req, res) => {
   };
   req.checkBody(schema);
   var errors = req.validationErrors();
+
   if (!errors) {
     var obj = {
       user_id: req.userInfo.id,
       track_id: req.body.track_id,
       artist_id: req.body.artist_id
-
     };
 
     var resp_data = await vote_track_helper.get_all_voted_artist(user_id, obj.track_id);
@@ -133,17 +141,12 @@ router.post('/vote_track', async (req, res) => {
       } else
 
         var resp_data = await track_helper.get_all_track_by_track_id(obj.track_id);
-
-
       no_vote = resp_data.track.no_of_votes + 1;
 
 
       var resp_data = await track_helper.update_votes(obj.track_id, no_vote);
 
       logger.trace("voting done successfully = ", data);
-
-
-
       // var resp = await user_helper.get_user_by_id(obj.user_id);
       // no_vote = resp.user.no_of_votes + 1
       // var resp_data = await user_helper.update_user_for_votes(obj.user_id, no_vote);
@@ -234,6 +237,12 @@ router.post('/like_track', async (req, res) => {
             "user": response.user.first_name + response.user.last_name
           });
       }
+      const from = 'Mansi'
+      const to = 7405843252
+      const text = 'A text message sent using the Nexmo SMS API'
+
+      nexmo.message.sendSms(from, to, text)
+
       logger.trace("like done successfully = ", data);
       res.status(config.OK_STATUS).json(data);
     }

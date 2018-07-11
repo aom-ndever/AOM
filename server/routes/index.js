@@ -1037,7 +1037,7 @@ router.post('/admin_forgot_password', async (req, res) => {
 
 
 /**
- * @api {post} /reset_password Admin reset password
+ * @api {post} /admin_reset_password Admin reset password
  * @apiName Admin reset password
  * @apiGroup Root
  * 
@@ -1080,7 +1080,7 @@ router.post('/admin_reset_password', async (req, res) => {
       } else {
         logger.trace("Valid token. Reseting password for artist");
         if (decoded.admin_id) {
-          var update_resp = await admin_helper.update_admin_by_id(decoded.admin_id, { "password": bcrypt.hashSync(req.body.password, saltRounds) });
+          var update_resp = await admin_helper.update_admin_by_id(decoded.admin_id, { "password": req.body.password });
           if (update_resp.status === 0) {
             logger.trace("Error occured while updating admin : ", update_resp.error);
             res.status(config.INTERNAL_SERVER_ERROR).json({ "status": 0, "message": "Error occured while verifying admin_id's email" });

@@ -66,7 +66,7 @@ admin_helper.get_login_by_email = async (email, password) => {
 
 
 
-admin_helper.update_admin_by_id = async (user_id, object) => {
+admin_helper.update_admin_by_id = async (object) => {
     try {
         let admin = await Admin.findOneAndUpdate(object);
         if (!admin) {

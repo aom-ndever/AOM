@@ -74,6 +74,21 @@ router.put("/", async (req, res) => {
 });
 
 
+
+/**
+ * @api {put} /update_image Update user image
+ * @apiName Update user image
+ * @apiGroup User
+ * 
+ * @apiHeader {String}  Content-Type application/json
+ * @apiHeader {String}  x-access-token  unique access-key
+ * 
+ * @apiParam {String} image User image
+ 
+ * 
+ * @apiSuccess (Success 200) {JSON} user image details
+ * @apiError (Error 4xx) {String} message Validation or error message.
+ */
 router.put('/update_image', function (req, res) {
     user_id = req.userInfo.id;
     var obj = {
@@ -130,6 +145,17 @@ router.put('/update_image', function (req, res) {
 });
 
 
+
+/**
+ * @api {get} /user User detail - Get 
+ * @apiName get_user_by_id - Get
+ * @apiGroup User
+ *
+ * @apiHeader {String}  x-access-token unique access-key
+ *
+ * @apiSuccess (Success 200) {Array} User detail as per id
+ * @apiError (Error 4xx) {String} message Validation or error message.
+ */
 router.get("/", async (req, res) => {
     user_id = req.userInfo.id;
     var resp_data = await user_helper.get_user_by_id(user_id);
@@ -142,7 +168,18 @@ router.get("/", async (req, res) => {
     }
 });
 
-// delete image of user
+
+
+/**
+ * @api {delete} /user/image/:user_id Delete image  
+ * @apiName delete_user_image 
+ * @apiGroup User
+ *
+ * @apiHeader {String}  x-access-token unique access-key
+ *
+ * @apiSuccess (Success 200) {String} success message
+ * @apiError (Error 4xx) {String} message Validation or error message.
+ */
 router.delete('/image/:user_id', async (req, res) => {
     user_id = req.params.user_id;
     var del_resp = await user_helper.delete_user_image(user_id);
@@ -179,6 +216,9 @@ router.put('/change/email', async (req, res) => {
         res.status(config.INTERNAL_SERVER_ERROR).json(resp);
     }
 });
+
+
+
 router.put('/change/password', async (req, res) => {
     user_id = req.userInfo.id;
 
