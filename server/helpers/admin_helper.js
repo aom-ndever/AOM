@@ -117,4 +117,17 @@ admin_helper.update_admin_status = async (admin_id, status) => {
         return { "status": 0, "message": "Error occured while updating admin status", "error": err }
     }
 };
+
+admin_helper.update_admin_reset = async (admin_id, reset) => {
+    try {
+        var admin = await Admin.update({ _id: admin_id }, { "reset": reset })
+        if (admin) {
+            return { "status": 1, "message": "admin status updated", };
+        } else {
+            return { "status": 2, "message": "admin status found" };
+        }
+    } catch (err) {
+        return { "status": 0, "message": "Error occured while updating admin status", "error": err }
+    }
+};
 module.exports = admin_helper;

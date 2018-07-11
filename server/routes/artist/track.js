@@ -149,7 +149,24 @@ router.get('/', async (req, res) => {
 
 
 
+/**
+ * @api {put} /artist/track/:track_id  track update
+ * @apiName track update
+ * @apiGroup Artist
 
+ * @apiHeader {String}  Content-Type multipart/form-data
+ * @apiHeader {String}  x-access-token  unique access-key
+ * 
+ * @apiParam {String} artist_id Artist id of artist
+ * @apiParam {String} name Name of track
+ * @apiParam {String} price Price of track
+ * @apiParam {String} description Description of track
+ * @apiParam {String} music_type Music Type of track
+ * @apiParam {String} image Image of Artist
+ *
+ * @apiSuccess (Success 200) {JSON} purchase details
+ * @apiError (Error 4xx) {String} message Validation or error message.
+ */
 
 router.put("/:track_id", async (req, res) => {
     artist_id = req.userInfo.id;
@@ -214,7 +231,16 @@ router.put("/:track_id", async (req, res) => {
 });
 
 
-//delete track
+/**
+ * @api {delete} /artist/track/:track_id Delete Track  
+ * @apiName Delete Track  
+ * @apiGroup Artist
+ *
+ * @apiHeader {String}  x-access-token unique access-key
+ *
+ * @apiSuccess (Success 200) {String} success message
+ * @apiError (Error 4xx) {String} message Validation or error message.
+ */
 router.delete('/:track_id', async (req, res) => {
     track_id = req.params.track_id;
     artist_id = req.userInfo.id
@@ -232,7 +258,17 @@ router.delete('/:track_id', async (req, res) => {
 });
 
 
-//delete image of track
+
+/**
+ * @api {delete} /artist/image/:track_id Delete Image  
+ * @apiNameDelete Image  
+ * @apiGroup Artist
+ *
+ * @apiHeader {String}  x-access-token unique access-key
+ *
+ * @apiSuccess (Success 200) {String} success message
+ * @apiError (Error 4xx) {String} message Validation or error message.
+ */
 router.delete('/image/:track_id', async (req, res) => {
     track_id = req.params.track_id;
     var del_resp = await track_helper.delete_track_image(track_id);

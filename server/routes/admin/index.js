@@ -26,9 +26,9 @@ var fs = require('fs');
 
 /**
  * @api {post} /admin/add_admin
- * admin/add_admin Add Admin 
+
  * @apiName Add Admin
- * @apiGroup Super Admin
+ * @apiGroup  Admin
 
  * @apiHeader {String}  Content-Type application/json
  * @apiHeader {String}  x-access-token  unique access-key
@@ -122,7 +122,7 @@ router.post("/add_admin", async (req, res) => {
 
 
 /**
- * @api {get} /admin   Administrator detail with total participant - Get 
+ * @api {post} /admin   Administrator detail with total participant - Get 
  * @apiName Contest detail with total participant - Get
  * @apiGroup  Admin
  *
@@ -721,4 +721,5 @@ router.put("/featured_artist", async (req, res) => {
 
   }
 });
+
 module.exports = router;

@@ -1014,6 +1014,10 @@ router.post('/admin_forgot_password', async (req, res) => {
         expiresIn: 60 * 60 * 2 // expires in 2 hour
       })).toString('base64');
 
+      // for reseting the value as 0 
+      let reset_response = await admin_helper.update_admin_reset(resp.admin._id, 1)
+
+
       let mail_resp = await mail_helper.send("reset_password", {
         "to": resp.admin.email,
         "subject": "Music Social Voting"
@@ -1076,22 +1080,27 @@ router.post('/admin_reset_password', async (req, res) => {
         }
       } else {
         logger.trace("Valid token. Reseting password for artist");
-
-        if (decoded.admin_id) {
-          var update_resp = await admin_helper.update_admin_by_id(decoded.admin_id, { "password": req.body.password });
-          if (update_resp.status === 0) {
-            logger.trace("Error occured while updating admin : ", update_resp.error);
-            res.status(config.INTERNAL_SERVER_ERROR).json({ "status": 0, "message": "Error occured while verifying admin_id's email" });
-          } else if (update_resp.status === 2) {
-            logger.trace("admin has not updated");
-            res.status(config.BAD_REQUEST).json({ "status": 0, "message": "Error occured while reseting password of admin" });
+        var reset_resp = await admin_helper.get_admin_by_id(decoded.admin_id);
+        if (reset_resp.admin.reset == 1) {
+          if (decoded.admin_id) {
+            var update_resp = await admin_helper.update_admin_by_id(decoded.admin_id, { "password": req.body.password });
+            if (update_resp.status === 0) {
+              logger.trace("Error occured while updating admin : ", update_resp.error);
+              res.status(config.INTERNAL_SERVER_ERROR).json({ "status": 0, "message": "Error occured while verifying admin_id's email" });
+            } else if (update_resp.status === 2) {
+              logger.trace("admin has not updated");
+              res.status(config.BAD_REQUEST).json({ "status": 0, "message": "Error occured while reseting password of admin" });
+            } else {
+              let reset_response = await admin_helper.update_admin_reset(resp.admin._id, 0)
+              logger.trace("Password has been changed for admin - ", decoded.admin_id);
+              res.status(config.OK_STATUS).json({ "status": 1, "message": "Password has been changed" });
+            }
           } else {
-            // Password reset!
-            logger.trace("Password has been changed for admin - ", decoded.admin_id);
-            res.status(config.OK_STATUS).json({ "status": 1, "message": "Password has been changed" });
-          }
-        } else {
 
+          }
+        }
+        else {
+          res.status(config.BAD_REQUEST).json({ message: "You have already used this linl.. plz use forget password for another link" });
         }
       }
     });
