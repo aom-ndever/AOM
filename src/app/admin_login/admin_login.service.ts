@@ -17,4 +17,8 @@ export class AdminLoginService {
   login(data : any) {
     return this.http.post(`${this.api_host}/admin_login`, data);
   }
+  // Forget passowrd
+  forgetPassword(data : any) {
+    return this.http.post(`${this.api_host}/admin_forgot_password`, data);
+  }
 }

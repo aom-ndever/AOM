@@ -20,4 +20,10 @@ export class ForgetPasswordService {
   userChangePassword(data : any) {
     return this.http.post(`${this.api_host}/user_reset_password`, data);
   }
+
+  // Admin user reset password
+  adminChangePassword(data : any) {
+    return this.http.post(`${this.api_host}/admin_reset_password`, data);
+  }
+
 }
