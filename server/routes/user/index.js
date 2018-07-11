@@ -193,7 +193,20 @@ router.delete('/image/:user_id', async (req, res) => {
 });
 
 
-
+/**
+ * @api {put} /change/email Update user email
+ * @apiName Update user email
+ * @apiGroup User
+ * 
+ * @apiHeader {String}  Content-Type application/json
+ * @apiHeader {String}  x-access-token  unique access-key
+ * 
+ * @apiParam {String} email User email
+ 
+ * 
+ * @apiSuccess (Success 200) {JSON} user email details
+ * @apiError (Error 4xx) {String} message Validation or error message.
+ */
 router.put('/change/email', async (req, res) => {
     user_id = req.userInfo.id;
 
@@ -218,7 +231,20 @@ router.put('/change/email', async (req, res) => {
 });
 
 
-
+/**
+ * @api {put} /change/password Update user email
+ * @apiName Update user password
+ * @apiGroup User
+ * 
+ * @apiHeader {String}  Content-Type application/json
+ * @apiHeader {String}  x-access-token  unique access-key
+ * 
+ * @apiParam {String} password User password
+ 
+ * 
+ * @apiSuccess (Success 200) {JSON} user password details
+ * @apiError (Error 4xx) {String} message Validation or error message.
+ */
 router.put('/change/password', async (req, res) => {
     user_id = req.userInfo.id;
 
@@ -244,6 +270,21 @@ router.put('/change/password', async (req, res) => {
     }
 });
 
+
+/**
+ * @api {post} /user/flag/user/:user_id Flag User Add
+ * @apiName Flag User - Add
+ * @apiGroup User
+
+ * @apiHeader {String}  Content-Type application/json
+ * @apiHeader {String}  x-access-token  unique access-key
+ * 
+ * @apiParam {String} from User id of user who flag user
+ * @apiParam {String} to User id of user  who gets flagged
+ *
+ * @apiSuccess (Success 200) {JSON} track details
+ * @apiError (Error 4xx) {String} message Validation or error message.
+ */
 router.post("/flag/user/:user_id", async (req, res) => {
     var obj = {
         from: req.userInfo.id,
@@ -272,8 +313,6 @@ router.post("/flag/user/:user_id", async (req, res) => {
 
     }
 });
-
-
 
 
 module.exports = router;

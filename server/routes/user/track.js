@@ -20,11 +20,6 @@ var archiver = require('archiver');
 
 
 
-
-
-
-
-
 /**
  * @api {post} /user/track/purchase purchase  track Add
  * @apiName purchase track - Add
