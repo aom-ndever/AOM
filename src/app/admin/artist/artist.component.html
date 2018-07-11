@@ -365,7 +365,7 @@
           <h3>{{artist_detail['first_name']+' '+artist_detail['last_name']}}</h3>
           <div class="checkbox custom_check_box">
               <label>
-                <input checked="" type="checkbox" value=""> 
+                <input [checked]="artist_detail['featured']" type="checkbox" (click)="markAsFeatured()"> 
                 <div class="chk_check"></div>
                 <span>Featured Artist</span>
               </label>

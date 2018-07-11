@@ -120,4 +120,9 @@ export class MyProfileService {
   getAllDownloadAnalytic(data : any) {
     return this.http.post(`${this.api_host}/artist/track/downloaded_track`, data, {headers : this.headers});
   }
+  // Update notification setting for artist
+  updateSettings(data : any) {
+    return this.http.put(`${this.api_host}/artist/notification_settings`, data, {headers : this.headers});
+  }
+
 }

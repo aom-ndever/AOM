@@ -44,4 +44,8 @@ export class ArtistService {
   removeArtistTrack(id : any) {
     return this.http.delete(`${this.api_host}/admin/track/${id}`, {headers : this.headers});
   }
+  // Mark as featured
+  markAsFeatured(data : any) {
+    return this.http.put(`${this.api_host}/admin/featured_artist`, data, {headers : this.headers});
+  }
 }

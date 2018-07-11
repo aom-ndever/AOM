@@ -178,4 +178,21 @@ export class ArtistComponent implements OnInit {
       }
     });
   }
+
+  markAsFeatured() {
+    let data = {
+      artist_id : this.artist_detail['_id']
+    };
+    this.ArtistService.markAsFeatured(data).subscribe((response)=>{
+      this.toastr.success(response['message'], 'Success!');
+      this.ArtistService.getArtist(data).subscribe((response) => {
+        this.artist_detail = response['artist'];
+        let dob = new Date(this.artist_detail['dob']);
+          let dt =  new Date();
+          this.artist_detail['old'] = dt.getFullYear() - dob.getFullYear();
+      });
+    }, (error) => {
+      this.toastr.error(error['error'].message, 'Error!');
+    });
+  }
 }

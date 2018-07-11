@@ -923,4 +923,15 @@ export class MyProfileComponent implements OnInit {
       ]
     });
   }
+  // update notification settings
+  updateNotificationSetting(key : any, val : any ) {
+    let data = {};
+    data[key] = val;
+    this.MyProfileService.updateSettings(data).subscribe((response) => {
+      this.updateLocalStorage();
+      this.toastr.success(response['message'], 'Success!');
+    }, (error) => {
+      this.toastr.error(error['error'].message, 'Error!');
+    });
+  }
 }
