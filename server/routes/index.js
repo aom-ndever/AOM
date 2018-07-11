@@ -1081,6 +1081,8 @@ router.post('/admin_reset_password', async (req, res) => {
       } else {
         logger.trace("Valid token. Reseting password for artist");
         var reset_resp = await admin_helper.get_admin_by_id(decoded.admin_id);
+        console.log('fcvgnjmk,ol', reset_resp.admin.reset);
+
         if (reset_resp.admin.reset == 1) {
           if (decoded.admin_id) {
             var update_resp = await admin_helper.update_admin_by_id(decoded.admin_id, { "password": req.body.password });
@@ -1091,7 +1093,7 @@ router.post('/admin_reset_password', async (req, res) => {
               logger.trace("admin has not updated");
               res.status(config.BAD_REQUEST).json({ "status": 0, "message": "Error occured while reseting password of admin" });
             } else {
-              let reset_response = await admin_helper.update_admin_reset(resp.admin._id, 0)
+              let reset_response = await admin_helper.update_admin_reset(decoded.admin_id, 0)
               logger.trace("Password has been changed for admin - ", decoded.admin_id);
               res.status(config.OK_STATUS).json({ "status": 1, "message": "Password has been changed" });
             }
