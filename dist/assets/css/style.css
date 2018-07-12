@@ -440,11 +440,11 @@ border-radius: 2px; font-family: 'Roboto', sans-serif;}
 /*footer*/
 
 /*player*/
-.aom_audio_player{
+/* .aom_audio_player{
     background: url(../../img/player.png) no-repeat;
     height: 100px;
     background-position: left;
-}
+} */
 .player-wrapper{margin-top: 50px;   box-shadow: 0px 0px 10px rgba(0,0,0,0.2);}
 /*player*/
 /*Homepage*/
@@ -593,6 +593,10 @@ border-radius: 2px; font-family: 'Roboto', sans-serif;}
     -webkit-box-align:center;
     -ms-flex-align:center;
     align-items:center;
+}
+.vote-wrap .highlights-wrap{
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
 }
 .register-container {
     width: 570px;
@@ -3986,3 +3990,238 @@ input#cover_upload1 {
     margin-bottom: 20px;
     
 }
+/*11-07-2018*/
+.forget_password_containerr{
+    width: 433px;
+    height: auto;
+    -webkit-box-shadow: 0px 2px 10px rgba(0,0,0,0.3);
+    box-shadow: 0px 2px 10px rgba(0,0,0,0.3);
+    background: #fff;
+    margin: 0 auto;
+    border-radius: 15px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -ms-flex-wrap: wrap;
+    -o-flex-wrap: wrap;
+    flex-wrap: wrap;
+}
+.forget_password_content{
+    width: 100%;
+    padding: 30px;
+}
+.forget_password_content h4{
+    margin-bottom: 20px;
+}
+.submit_forget_password_btn{
+    height: 36px;
+    line-height: 24px;
+    width: 100px;
+    display: block;
+    background: #9B26B0;
+    text-align: center;
+    font-family: 'Poppins', sans-serif;
+    font-size: 18px;
+    color: #fff;
+    border-radius: 3px;
+    border: 0;
+    float: right;
+}
+.submit_forget_password_btn:hover{
+    cursor: pointer;
+}
+.cancel_btn{
+    background-color: transparent;
+    font-size: 18px;
+    font-weight: 400;
+    text-align: center;
+    color: rgba(130, 126, 126, 0.5);
+}
+.cancel_btn:focus{
+    box-shadow: none;
+}
+.forget_password_btn{
+    margin-top: 25px;
+}
+.custom_form{
+    border: 0;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    border-bottom: 1px solid #DEDEDE;
+    color: #1a1a1a;
+    font-size: 14px;
+    font-weight: 400;
+    border-radius: 0;
+}
+.custom_form:focus{
+    box-shadow: none;
+    border:none;
+    border-bottom: 1px solid #9B26B0;
+
+}
+.custom_form_label{
+    color: rgba(26,26,26,0.5);
+    font-size: 10px;
+    font-weight: 400;
+    padding: 0;
+    margin-bottom: 0;
+}
+
+/* HTML5 Audio player with playlist styles */
+.example1 {
+    margin: 50px auto 0;
+    width: 400px;
+}
+.player1 {
+    background: transparent url("../../img/spr.png") no-repeat scroll center top;
+    height: 162px;
+    position: relative;
+    width: 326px;
+    z-index: 2;
+}
+.title1, .artist1 {
+    font-family: verdana;
+    left: 167px;
+    position: absolute;
+
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+}
+.title1 {
+    color: #FFFFFF;
+    font-size: 14px;
+    font-weight: bold;
+    top: 23px;
+}
+.artist1 {
+    color: #EEEEEE;
+    font-size: 12px;
+    top: 40px;
+}
+.pl1 {
+    background: transparent url("../../img/spr.png") no-repeat scroll -274px -175px;
+    cursor: pointer;
+    height: 34px;
+    left: 270px;
+    position: absolute;
+    top: 20px;
+    width: 32px;
+}
+.pl1:hover {
+    top: 21px;
+}
+.cover1 {
+    background: transparent url('../../img/user_profile.jpg') no-repeat scroll center top;
+    border-radius: 5px 5px 5px 5px;
+    height: 94px;
+    left: 20px;
+    position: absolute;
+    top: 20px;
+    width: 94px;
+}
+.controls1 {
+    cursor: pointer;
+    height: 23px;
+    left: 167px;
+    position: absolute;
+    top: 65px;
+    width: 138px;
+}
+.controls1 .play, .controls1 .pause, .controls1 .rew, .controls1 .fwd {
+    background: transparent url("../../img/spr.png") no-repeat scroll 0 0;
+    float: left;
+    height: 100%;
+    width: 33%;
+}
+.controls1 .play {
+    background-position: -8px -171px;
+}
+.controls1 .pause {
+    background-position: -8px -198px;
+    display: none;
+}
+.controls1 .rew {
+    background-position: -54px -171px;
+}
+.controls1 .fwd {
+    background-position: -100px -171px;
+}
+.controls1 .play:hover {
+    background-position: -8px -170px;
+}
+.controls1 .pause:hover {
+    background-position: -8px -197px;
+}
+.contcontrols1rols .rew:hover {
+    background-position: -54px -170px;
+}
+.controls1 .fwd:hover {
+    background-position: -100px -170px;
+}
+.hidden {
+    display: none;
+}
+.controls1 .visible {
+    display: block;
+}
+.volume1 {
+    height: 11px;
+    left: 186px;
+    position: absolute;
+    top: 96px;
+    width: 112px;
+}
+.tracker1 {
+    height: 15px;
+    left: 20px;
+    position: absolute;
+    top: 126px;
+    width: 285px;
+}
+.ui-slider-range1 {
+    background: transparent url("../../img/spr.png") no-repeat scroll 5px -222px;
+    height: 100%;
+    position: absolute;
+    top: 0;
+}
+.ui-slider-handle1 {
+    cursor: pointer;
+    height: 10px;
+    margin-left: -5px;
+    position: absolute;
+    top: 2px;
+    width: 10px;
+    z-index: 2;
+}
+.volume1 .ui-slider-handle1 {
+    background: url("../../img/spr.png") no-repeat scroll -201px -188px rgba(0, 0, 0, 0);
+    height: 13px;
+    width: 13px;
+}
+.playlist1 {
+    background-color: #333333;
+    border-radius: 5px 5px 5px 5px;
+    list-style-type: none;
+    margin: -10px 0 0 2px;
+    padding-bottom: 10px;
+    padding-top: 15px;
+    position: relative;
+    width: 326px;
+    z-index: 1;
+}
+.playlist1 li {
+    color: #EEEEEE;
+    cursor: pointer;
+    margin: 0 0 5px 15px;
+}
+.playlist li.active {
+    font-weight: bold;
+}
+

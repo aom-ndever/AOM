@@ -62,6 +62,8 @@ export class RolesComponent implements OnInit {
       searching: false,
       ordering: false,
       lengthChange: false,
+      scrollY :'200px',
+      scrollCollapse: true,
       ajax: (dataTablesParameters: any, callback) => {
         setTimeout(() => {
           dataTablesParameters['sort'] = [this.sort == -1 ? {"field" : "end_date", value : -1} : {"field" : "start_date", value : 1}];

@@ -214,8 +214,15 @@ background-color: #9c27b0;
   top: 19px;
 }
 .td_img.actions{
-  position: relative;
-    padding-left: 10px;
+  position: relative !important;
+    padding-left: 10px !important;
+}
+.td_img.actions > div > i{
+  width: 12px;
+    margin-right: 7px;
+    position: absolute;
+    top: 3px;
+    left: 0;
 }
 .artists_table{
   margin-bottom: 50px;
@@ -711,17 +718,20 @@ ul.gray_font{
   position: absolute;
   width: 400px;
   top: 50%;
+  -webkit-transform: translate(-50%,-50%);
   transform: translate(-50%,-50%);
   left: 50%;
   padding: 23px;
-  border-top: 2px solid #9c27b0;
-  box-shadow: 2px 2px 2px #ddd;
+  /* border-top: 2px solid #9c27b0; */
+  -webkit-box-shadow: 2px 2px 2px #ddd;
+  box-shadow: 1px 7px 20px #6a078c;
   max-width: 100%;
+  border-radius: 12px;
 }
 .login_container .mainbox .panel-title{   
-   color: #9c27b0;
-  font-size: 18px;
-  text-transform: uppercase;
+  color: #9c27b0;
+  font-size: 26px;
+  text-align: center;
 }
 .login_form{
   border: none;
@@ -1206,6 +1216,13 @@ background-color: transparent;
 }
 .suspend_btn:focus{
   box-shadow:none;
+}
+.login_container{
+  background: url("../../img/register-bg.png") no-repeat;
+  background-size: cover;
+}
+.admin_name_th{
+  width:170px !important;
 }
 
 @media(max-width:1024px){

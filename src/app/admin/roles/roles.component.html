@@ -16,7 +16,7 @@
                         <thead>
                           <tr>
                             <th>N<sup>O</sup></th>
-                            <th>Administrator Name</th>
+                            <th class="admin_name_th">Administrator Name</th>
                             <th>Role</th>
                             <th>Date Creation</th>
                             <th>Actions</th>
@@ -28,12 +28,18 @@
                           <td>{{role['first_name']+' '+role['last_name']}}</td>
                           <td>{{role['account_type']}}</td>
                           <td>{{role['created_at'] | date : 'MMMM dd, yyyy'}}</td>
-                          <td class="td_img">
-                            <a href="javascript:;" *ngIf="user['admin']['account_type'] == 'super_admin'" (click)="removeAdmin(role['_id'])"><i class="fa fa-trash"></i> Delete</a>&nbsp;
-                            <img src="img/suspend.png" *ngIf="user['admin']['account_type'] == 'super_admin'">
-                            <a href="javascript:;" *ngIf="user['admin']['account_type'] == 'super_admin'" (click)="suspendAdmin(role['_id'])">
-                              {{role['status'] == 'suspended' ? 'un-suspend' : 'Suspend'}}
-                            </a>
+                          <td class="td_img actions">
+                            <div>
+                                <i class="fa fa-trash"></i>
+                              <a href="javascript:;" *ngIf="user['admin']['account_type'] == 'super_admin'" (click)="removeAdmin(role['_id'])"> Delete</a>&nbsp;
+                              
+                            </div>
+                            <div>
+                                <img src="img/suspend.png" *ngIf="user['admin']['account_type'] == 'super_admin'">
+                              <a href="javascript:;" *ngIf="user['admin']['account_type'] == 'super_admin'" (click)="suspendAdmin(role['_id'])">
+                                {{role['status'] == 'suspended' ? 'un-suspend' : 'Suspend'}}
+                              </a>
+                            </div>
                           </td>
                         </tr>
                         </tbody>
