@@ -164,7 +164,21 @@ router.put('/', function (req, res) {
 
 });
 
-
+/**
+ * @api {put} /artist/notification_settings Update notification
+ * @apiName Update notification
+ * @apiGroup Artist
+ * 
+ * @apiHeader {String}  Content-Type application/json
+ * @apiHeader {String}  x-access-token  unique access-key
+ * 
+ * @apiParam {Boolean} like_by_email
+ * @apiParam {Boolean} aomment_by_email
+ 
+ * 
+ * @apiSuccess (Success 200) {JSON} Update notification
+ * @apiError (Error 4xx) {String} message Validation or error message.
+ */
 router.put('/notification_settings', function (req, res) {
     user_id = req.userInfo.id;
 
@@ -198,6 +212,21 @@ router.put('/notification_settings', function (req, res) {
 
 });
 
+
+/**
+ * @api {put} /artist/update_image Update artist image
+ * @apiName Update artist image
+ * @apiGroup Artist
+ * 
+ * @apiHeader {String}  Content-Type application/json
+ * @apiHeader {String}  x-access-token  unique access-key
+ * 
+ * @apiParam {String} image Artist Image
+ 
+ * 
+ * @apiSuccess (Success 200) {JSON} Update artist image
+ * @apiError (Error 4xx) {String} message Validation or error message.
+ */
 router.put('/update_image', function (req, res) {
     user_id = req.userInfo.id;
     var obj = {
@@ -307,7 +336,7 @@ router.put('/update_cover_image', function (req, res) {
 });
 
 
-// delete image of artist
+
 router.delete('/image/:artist_id', async (req, res) => {
     artist_id = req.params.artist_id;
     var del_resp = await artist_helper.delete_artist_image(artist_id);
@@ -321,7 +350,7 @@ router.delete('/image/:artist_id', async (req, res) => {
 });
 
 
-// delete cover image of artist
+
 router.delete('/cover_image/:artist_id', async (req, res) => {
     artist_id = req.params.artist_id;
     var del_resp = await artist_helper.delete_artist_cover_image(artist_id);
@@ -399,7 +428,20 @@ router.get('/track_likes', async (req, res) => {
     }
 });
 
-
+/**
+ * @api {put} /settings/email Update artist email
+ * @apiName Update artist email
+ * @apiGroup User
+ * 
+ * @apiHeader {String}  Content-Type application/json
+ * @apiHeader {String}  x-access-token  unique access-key
+ * 
+ * @apiParam {String} email Artist email
+ 
+ * 
+ * @apiSuccess (Success 200) {JSON} Update artist email
+ * @apiError (Error 4xx) {String} message Validation or error message.
+ */
 router.put('/settings/email', async (req, res) => {
     artist_id = req.userInfo.id;
 
@@ -422,6 +464,22 @@ router.put('/settings/email', async (req, res) => {
         res.status(config.INTERNAL_SERVER_ERROR).json(resp);
     }
 });
+
+
+/**
+ * @api {put} /settings/email Update artist password
+ * @apiName Update artist password
+ * @apiGroup User
+ * 
+ * @apiHeader {String}  Content-Type application/json
+ * @apiHeader {String}  x-access-token  unique access-key
+ * 
+ * @apiParam {String} password Artist password
+ 
+ * 
+ * @apiSuccess (Success 200) {JSON} Update artist password
+ * @apiError (Error 4xx) {String} message Validation or error message.
+ */
 router.put('/settings/password', async (req, res) => {
     artist_id = req.userInfo.id;
     var resp = await artist_helper.get_artist_by_id(artist_id);
@@ -478,6 +536,7 @@ router.get('/track_comment', async (req, res) => {
  * @apiHeader {String}  x-access-token  unique access-key
  * 
  * @apiParam {String} contest_id Contest id of contest 
+ * @apiParam {String} track_id Track id of track 
  *
  * @apiSuccess (Success 200) {JSON} artist participate details
  * @apiError (Error 4xx) {String} message Validation or error message.
@@ -548,6 +607,7 @@ router.get('/contest', async (req, res) => {
         res.status(config.INTERNAL_SERVER_ERROR).json(contest);
     }
 });
+
 
 router.post("/suspend/user/:user_id", async (req, res) => {
     var resp = await user_helper.get_user_by_id(req.params.user_id);

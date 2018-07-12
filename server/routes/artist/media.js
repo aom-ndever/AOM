@@ -113,7 +113,16 @@ router.get("/", async (req, res) => {
     }
 });
 
-
+/**
+ * @api {delete} /artist/media/:media_id Delete Media  
+ * @apiName Delete Media  
+ * @apiGroup Artist
+ *
+ * @apiHeader {String}  x-access-token unique access-key
+ *
+ * @apiSuccess (Success 200) {String} success message
+ * @apiError (Error 4xx) {String} message Validation or error message.
+ */
 router.delete('/:media_id', async (req, res) => {
     media_id = req.params.media_id;
     artist_id = req.userInfo.id
