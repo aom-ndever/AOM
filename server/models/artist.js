@@ -24,6 +24,7 @@ var ArtistModelSchema = new Schema({
     gender: { type: String, enum: ["male", "female"] },
     zipcode: Number,
     image: String,
+    phone_no: Number,
     cover_image: String,
     notification_settings: { type: NotificationSettings, default: true },
     flag: { type: Boolean, default: false },

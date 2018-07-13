@@ -72,6 +72,10 @@ router.post('/artist_registration', async (req, res) => {
     "zipcode": {
       notEmpty: true,
       errorMessage: "zipcode is required"
+    },
+    "phone_no": {
+      notEmpty: true,
+      errorMessage: "Phone Number is required"
     }
 
 
@@ -81,7 +85,7 @@ router.post('/artist_registration', async (req, res) => {
   if (!errors) {
     var reg_obj = {
       "email": req.body.email,
-      // "gender": req.body.gender,
+      "phone_no": req.body.phone_no,
       "password": req.body.password,
       "first_name": req.body.first_name,
       "last_name": req.body.last_name,
@@ -1102,7 +1106,7 @@ router.post('/admin_reset_password', async (req, res) => {
           }
         }
         else {
-          res.status(config.BAD_REQUEST).json({ message: "You have already used this linl.. plz use forget password for another link" });
+          res.status(config.BAD_REQUEST).json({ message: "You have already used this link.. plz use forget password for another link" });
         }
       }
     });

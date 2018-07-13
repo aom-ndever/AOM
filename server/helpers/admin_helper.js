@@ -80,7 +80,6 @@ admin_helper.update_admin_by_id = async (id, object) => {
 };
 
 admin_helper.delete_admin = async (admin_id) => {
-
     try {
         var admin = await Admin.findOneAndRemove({ "_id": (admin_id) })
         if (admin) {
@@ -92,6 +91,7 @@ admin_helper.delete_admin = async (admin_id) => {
         return { "status": 0, "message": "Error occured while finding admin", "error": err }
     }
 };
+
 admin_helper.get_admin_by_email = async (email) => {
     try {
         var admin = await Admin.findOne({ "email": email }).lean();

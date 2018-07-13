@@ -17,6 +17,7 @@ var flag_artist_helper = require('../../helpers/flag_artist_helper');
 var flag_user_helper = require('../../helpers/flag_user_helper');
 var follower_helper = require('../../helpers/follower_helper');
 var participate_helper = require('../../helpers/participate_helper');
+var contest_request_helper = require('../../helpers/contest_request_helper');
 
 
 var mongoose = require('mongoose');
@@ -188,6 +189,7 @@ router.post("/add_contest", async (req, res) => {
 
   if (!errors) {
     var obj = {
+      admin_id: req.userInfo.id,
       name: req.body.name,
       start_date: req.body.start_date,
       end_date: req.body.end_date,
@@ -202,13 +204,35 @@ router.post("/add_contest", async (req, res) => {
         logger.error("Error occured while inserting = ", resp_data);
         res.status(config.INTERNAL_SERVER_ERROR).json(resp_data);
       } else {
+        var resp_music = await artist_helper.get_artist_by_music_id(obj.music_type);
+        console.log('resp_music', resp_music);
+        if (resp_music.status == 1) {
+          console.log('1', 1);
+
+          logger.trace("sending mail");
+          let mail_resp = await mail_helper.send("contest", {
+            "to": resp_music.artist.email,
+            "subject": "Contest Creation"
+          }, {
+              "Note": "new contest has been created named :" + obj.name,
+
+            });
+
+        }
         logger.trace(" got successfully = ", resp_data);
         res.status(config.OK_STATUS).json(resp_data);
       }
     }
     else {
-      logger.trace("You dont have permission to add contest");
-      res.status(config.INTERNAL_SERVER_ERROR).json({ "status": 0, "message": "You dont have permission to add contest" });
+      var resp_data = await contest_request_helper.insert_contest_request(obj);
+      if (resp_data.status == 0) {
+        logger.error("Error occured while inserting = ", resp_data);
+        res.status(config.INTERNAL_SERVER_ERROR).json(resp_data);
+      } else {
+
+        logger.trace(" got successfully = ", resp_data);
+        res.status(config.OK_STATUS).json(resp_data);
+      }
     }
   }
   else {
@@ -220,7 +244,7 @@ router.post("/add_contest", async (req, res) => {
 
 
 /**
- * @api {get} /admin/contest   Contest detail with total participant - Get 
+ * @api {post} /admin/contest   Contest detail with total participant - Get 
  * @apiName Contest detail with total participant - Get
  * @apiGroup  Admin
  *
@@ -253,16 +277,16 @@ router.post('/contest', async (req, res) => {
 
 
 /**
- * @api {delete} /track/:artist_id Delete Artist  
+ * @api {delete} /admin/track/:artist_id Delete Artist  
  * @apiName Delete Artist  
- * @apiGroup Super Admin
+ * @apiGroup  Admin
  *
  * @apiHeader {String}  x-access-token unique access-key
  *
  * @apiSuccess (Success 200) {String} success message
  * @apiError (Error 4xx) {String} message Validation or error message.
  */
-router.delete('/track/:track_id', async (req, res) => {
+router.delete('/admin/track/:track_id', async (req, res) => {
   track_id = req.params.track_id;
   let track_resp = await track_helper.get_all_track_by_track_id(track_id);
 
@@ -292,6 +316,17 @@ router.delete('/track/:track_id', async (req, res) => {
   }
 });
 
+/**
+ * @api {delete} /delete/:admin_id Delete Admin  
+ * @apiName Delete Admin  
+ * @apiGroup  Admin
+ *
+ * @apiHeader {String}  x-access-token unique access-key
+ * @apiParam {String} admin_id Admin Id
+ *
+ * @apiSuccess (Success 200) {String} success message
+ * @apiError (Error 4xx) {String} message Validation or error message.
+ */
 
 router.delete('/delete/:admin_id', async (req, res) => {
   admin_id = req.params.admin_id;
@@ -314,8 +349,22 @@ router.delete('/delete/:admin_id', async (req, res) => {
   }
 });
 
-router.post('/suspend/:admin_id', async (req, res) => {
 
+
+
+
+/**
+ * @api {post} /admin/suspend/:admin_id  Suspend Admin - post 
+ * @apiName Suspend Admin - post
+ * @apiGroup  Admin
+ *
+ * @apiHeader {String}  x-access-token unique access-key
+ * @apiParam {String} admin_id Admin Id
+ 
+ * @apiSuccess (Success 200) {Array} contect detail 
+ * @apiError (Error 4xx) {String} message Validation or error message.
+ */
+router.post('/suspend/:admin_id', async (req, res) => {
   type = await admin_helper.get_admin_by_id(req.userInfo.id)
   if (type.admin.account_type == "super_admin") {
 
@@ -346,9 +395,9 @@ router.post('/suspend/:admin_id', async (req, res) => {
 
 
 /**
- * @api {delete} /super_admin/:user_id Delete User  
+ * @api {delete} /admin/:user_id Delete User  
  * @apiName Delete User  
- * @apiGroup Super Admin
+ * @apiGroup  Admin
  *
  * @apiHeader {String}  x-access-token unique access-key
  *
@@ -369,7 +418,16 @@ router.delete('/:user_id', async (req, res) => {
 
 
 
-
+/**
+ * @api {post} /admin/home_vote  Artist Vote - post 
+ * @apiName Artist Vote- post
+ * @apiGroup  Admin
+ *
+ * @apiHeader {String}  x-access-token unique access-key
+ 
+ * @apiSuccess (Success 200) {Array} artist vote detail 
+ * @apiError (Error 4xx) {String} message Validation or error message.
+ */
 router.post("/home_vote", async (req, res) => {
   var resp_data = await artist_helper.get_all_artist_by_vote();
   var resp = await track_helper.get_artist_by_day_vote(req.body.day);
@@ -382,7 +440,16 @@ router.post("/home_vote", async (req, res) => {
   }
 });
 
-
+/**
+ * @api {post} /admin/home_like  Artist like - post 
+ * @apiName Artist like - post
+ * @apiGroup  Admin
+ *
+ * @apiHeader {String}  x-access-token unique access-key
+ 
+ * @apiSuccess (Success 200) {Array} artist like detail 
+ * @apiError (Error 4xx) {String} message Validation or error message.
+ */
 router.post("/home_likes", async (req, res) => {
   var resp_data = await artist_helper.get_all_artist_by_likes();
   var resp_like = await track_helper.get_artist_by_day_like(req.body.day);
@@ -396,7 +463,16 @@ router.post("/home_likes", async (req, res) => {
   }
 });
 
-
+/**
+ * @api {post} /admin/home_comment  Artist comment - post 
+ * @apiName Artist comment- post
+ * @apiGroup  Admin
+ *
+ * @apiHeader {String}  x-access-token unique access-key
+ 
+ * @apiSuccess (Success 200) {Array} artist comment detail 
+ * @apiError (Error 4xx) {String} message Validation or error message.
+ */
 router.post("/home_comment", async (req, res) => {
   var resp_data = await artist_helper.get_all_artist_by_comment();
   var resp_comment = await track_helper.get_artist_by_day_comment(req.body.day);
@@ -411,9 +487,9 @@ router.post("/home_comment", async (req, res) => {
 });
 
 /**
- * @api {post} /super_admin/get_artist  Get Artist Details with the day and other filter-Get
+ * @api {post} /admin/get_artist  Get Artist Details with the day and other filter-Get
  * @apiName  Get Artist Details with the day and other filter-Get
- * @apiGroup Super Admin
+ * @apiGroup Admin
  
  * @apiHeader {String}  Content-Type application/json
  * @apiHeader {String}  x-access-token  unique access-key
@@ -458,7 +534,7 @@ router.post("/get_artist", async (req, res) => {
 /**
  * @api {post} /suspend/artist/:admin_id  Suspend Artist
  * @apiName Suspend Artist
- * @apiGroup Super Admin
+ * @apiGroup  Admin
  
  * @apiHeader {String}  Content-Type application/json
  * @apiHeader {String}  x-access-token  unique access-key
@@ -497,9 +573,85 @@ router.post("/suspend/artist/:artist_id", async (req, res) => {
 
 
 /**
- * @api {post} /suspend/artist/:user_id  Suspend User
- * @apiName Suspend User
- * @apiGroup Super Admin
+ * @api {post} /admin/accept/contest_request/:contest_id  Accept Request
+ * @apiName Accept Request
+ * @apiGroup  Admin
+ 
+ * @apiHeader {String}  Content-Type application/json
+ * @apiHeader {String}  x-access-token  unique access-key
+ * 
+ * @apiParam {String} contest_id contest Id
+ 
+ 
+ * @apiSuccess (Success 200) {JSON} Contest details
+ * @apiError (Error 4xx) {String} message Validation or error message.
+ */
+router.post("/accept/contest_request/:contest_id", async (req, res) => {
+  admin_id = req.userInfo.id
+  contest_resp = await contest_request_helper.get_contest_by_id(req.params.contest_id)
+  console.log('contest_resp', contest_resp);
+  var obj = {
+    name: contest_resp.contest.name,
+    _id: contest_resp.contest._id,
+    start_date: contest_resp.contest.start_date,
+    end_date: contest_resp.contest.end_date,
+    end_date: contest_resp.contest.end_date,
+    no_of_participants: contest_resp.contest.no_of_participants,
+    admin_id: contest_resp.contest.admin_id,
+    created_at: contest_resp.contest.created_at,
+    music_type: contest_resp.contest.music_type,
+    location: contest_resp.contest.location
+  }
+  contest_resp = await admin_helper.get_admin_by_id(admin_id)
+  if (contest_resp.admin.account_type == 'super_admin') {
+    var resp_data = await contest_helper.insert_contest(obj);
+    var resp_data = await contest_request_helper.delete_request(req.params.contest_id);
+    logger.trace("Contest Request Accepted");
+    res.status(config.OK_STATUS).json({ "message": "Contest Request Accepted" });
+  }
+  else {
+    logger.trace("You don't have permission to accept the request");
+    res.status(config.OK_STATUS).json({ "message": "You don't have permission to accept the request" });
+  }
+});
+
+
+/**
+ * @api {post} /admin/reject/contest_request/:contest_id  Accept Request
+ * @apiName Reject Request
+ * @apiGroup  Admin
+ 
+ * @apiHeader {String}  Content-Type application/json
+ * @apiHeader {String}  x-access-token  unique access-key
+ * 
+ * @apiParam {String} contest_id contest Id
+ 
+ 
+ * @apiSuccess (Success 200) {JSON} Contest details
+ * @apiError (Error 4xx) {String} message Validation or error message.
+ */
+router.post("/reject/contest_request/:contest_id", async (req, res) => {
+  contest_resp = await contest_request_helper.get_contest_by_id(req.params.contest_id)
+  admin_id = req.userInfo.id
+  contest_resp = await admin_helper.get_admin_by_id(admin_id)
+  if (contest_resp.admin.account_type == 'super_admin') {
+
+    var resp_data = await contest_request_helper.delete_request(req.params.contest_id);
+    logger.trace("Contest Request Rejected");
+    res.status(config.OK_STATUS).json({ "message": "Contest Request Rejected" });
+  }
+  else {
+    logger.trace("You don't have permission to reject the request");
+    res.status(config.OK_STATUS).json({ "message": "You don't have permission to reject the request" });
+  }
+});
+
+
+
+/**
+ * @api {post} /admin/suspend/artist/:user_id  Flag User
+ * @apiName Flag User
+ * @apiGroup  Admin
  
  * @apiHeader {String}  Content-Type application/json
  * @apiHeader {String}  x-access-token  unique access-key
@@ -518,8 +670,6 @@ router.post("/flag/user/:user_id", async (req, res) => {
   type = await admin_helper.get_admin_by_id(req.userInfo.id)
   if (type.admin.account_type == "super_admin" || type.admin.account_type == "admin") {
     var resp = await user_helper.get_user_by_id(req.params.user_id);
-    console.log('response------------->', resp);
-
     if (resp.status == 0) {
       logger.error("Error occured while fetching artist = ", resp);
       res.status(config.INTERNAL_SERVER_ERROR).json(resp);
@@ -549,9 +699,9 @@ router.post("/flag/user/:user_id", async (req, res) => {
 
 
 /**
- * @api {post} /super_admin/get_user  Get User Details with the day and other filter-Get
+ * @api {post} /admin/get_user  Get User Details with the day and other filter-Get
  * @apiName  Get User Details with the day and other filter-Get
- * @apiGroup Super Admin
+ * @apiGroup Admin
  
  * @apiHeader {String}  Content-Type application/json
  * @apiHeader {String}  x-access-token  unique access-key
@@ -590,6 +740,18 @@ router.post("/get_user", async (req, res) => {
   }
 });
 
+
+/**
+ * @api {get} /admin/get_flagged_user  Get Flagged user - Get 
+ * @apiName Get Flagged user - Get 
+  * @apiGroup Admin
+ * @apiHeader {String}  x-access-token unique access-key
+ * 
+ * @apiParam {String} user_id User Id
+ *
+ * @apiSuccess (Success 200) {Array} Get Flagged user document
+ * @apiError (Error 4xx) {String} message Validation or error message.
+ */
 router.post("/get_flagged_user", async (req, res) => {
   user_id = req.body.user_id;
   var resp_data = await flag_user_helper.get_flag(user_id);
@@ -602,7 +764,39 @@ router.post("/get_flagged_user", async (req, res) => {
   }
 });
 
+/**
+ * @api {get} /admin/contest_request  Get Contest request - Get 
+ * @apiName  Get Contest request - Get 
+  * @apiGroup Admin
+ * @apiHeader {String}  x-access-token unique access-key
+ * 
+ *
+ * @apiSuccess (Success 200) {Array} contest request document
+ * @apiError (Error 4xx) {String} message Validation or error message.
+ */
+router.get("/contest_request", async (req, res) => {
+  var resp_data = await contest_request_helper.get_contest_request();
+  if (resp_data.status == 0) {
+    logger.error("Error occured while fetching contest = ", resp_data);
+    res.status(config.INTERNAL_SERVER_ERROR).json(resp_data);
+  } else {
+    logger.trace("user got successfully = ", { "contest": resp_data });
+    res.status(config.OK_STATUS).json({ "contest": resp_data });
+  }
+});
 
+
+/**
+ * @api {get} /admin/get_flag  Get Flagged artist - Get 
+ * @apiName Get Flagged artist - Get 
+  * @apiGroup Admin
+ * @apiHeader {String}  x-access-token unique access-key
+ * 
+ * @apiParam {String} artist_id artist Id
+ *
+ * @apiSuccess (Success 200) {Array} Get Flagged artist document
+ * @apiError (Error 4xx) {String} message Validation or error message.
+ */
 router.post("/get_flag", async (req, res) => {
   artist_id = req.body.artist_id;
   var resp_data = await flag_artist_helper.get_flag(artist_id);
@@ -615,18 +809,24 @@ router.post("/get_flag", async (req, res) => {
   }
 });
 
-
+/**
+ * @api {post} /admin/flag/artist/:artist_id  Flag Artist - post 
+ * @apiName S Flag Artist - post
+ * @apiGroup  Admin
+ *
+ * @apiHeader {String}  x-access-token unique access-key
+ * @apiParam {String} artist_id Artist Id
+ 
+ * @apiSuccess (Success 200) {Array}  Flag Artist detail 
+ * @apiError (Error 4xx) {String} message Validation or error message.
+ */
 router.post("/flag/artist/:artist_id", async (req, res) => {
   var obj = {
     from: req.userInfo.id,
     to: req.params.artist_id
   }
   var resp = await artist_helper.get_artist_by_id(req.params.artist_id);
-  console.log('resp', resp);
-
   type = await admin_helper.get_admin_by_id(req.userInfo.id)
-  console.log('type', type);
-
   if (type.admin.account_type == "super_admin" || type.admin.account_type == "admin") {
     if (resp.status == 0) {
       logger.error("Error occured while fetching artist = ", resp);
@@ -647,7 +847,6 @@ router.post("/flag/artist/:artist_id", async (req, res) => {
         logger.trace("flag deleted");
         res.status(config.OK_STATUS).json({ "message": "flag deleted" });
       }
-
     }
   }
   else {
@@ -657,7 +856,17 @@ router.post("/flag/artist/:artist_id", async (req, res) => {
 });
 
 
-
+/**
+ * @api {post} /admin/user Get User by user id- post 
+ * @apiName Get User by user id - post
+ * @apiGroup  Admin
+ *
+ * @apiHeader {String}  x-access-token unique access-key
+ * @apiParam {String} user_id User Id
+ 
+ * @apiSuccess (Success 200) {Array} User detail 
+ * @apiError (Error 4xx) {String} message Validation or error message.
+ */
 router.post('/user', async (req, res) => {
   user_id = req.body.user_id
   var user = await user_helper.get_user_by_id(user_id);
@@ -671,10 +880,21 @@ router.post('/user', async (req, res) => {
   }
 });
 
+
+/**
+ * @api {post} /admin/user/artist_follow Get followers by user id- post 
+ * @apiName Get followers by user id - post
+ * @apiGroup  Admin
+ *
+ * @apiHeader {String}  x-access-token unique access-key
+ * @apiParam {String} user_id User Id
+ 
+ * @apiSuccess (Success 200) {Array} Followers detail 
+ * @apiError (Error 4xx) {String} message Validation or error message.
+ */
 router.post('/user/artist_follow', async (req, res) => {
   user_id = req.body.user_id
   var user = await follower_helper.get_all_followers_by_user_id(user_id);
-
   if (user.status === 1) {
     logger.trace("got details successfully");
     res.status(config.OK_STATUS).json({ "status": 1, "user": user.user });
@@ -685,7 +905,17 @@ router.post('/user/artist_follow', async (req, res) => {
 });
 
 
-
+/**
+ * @api {post} /admin/get_participants_of_contest  Get participants as per conteset id - post 
+ * @apiName Get participants as per conteset id- post
+ * @apiGroup  Admin
+ *
+ * @apiHeader {String}  x-access-token unique access-key
+ * @apiParam {String} contest_id Contest Id
+ 
+ * @apiSuccess (Success 200) {Array} participant detail 
+ * @apiError (Error 4xx) {String} message Validation or error message.
+ */
 router.post('/get_participants_of_contest', async (req, res) => {
   contest_id = req.body.contest_id
   var artist = await participate_helper.get_participated_artist(contest_id);
@@ -699,6 +929,20 @@ router.post('/get_participants_of_contest', async (req, res) => {
   }
 });
 
+
+/**
+ * @api {put} /admin/featured_artist Update artist as featured - put
+ * @apiName Update artist as featured - put
+ * @apiGroup User
+ * 
+ * @apiHeader {String}  Content-Type application/json
+ * @apiHeader {String}  x-access-token  unique access-key
+ * 
+  * @apiParam {String} artist_id Artist Id
+ * 
+ * @apiSuccess (Success 200) {JSON} artist featured details
+ * @apiError (Error 4xx) {String} message Validation or error message.
+ */
 router.put("/featured_artist", async (req, res) => {
   artist_id = req.body.artist_id
   var resp = await artist_helper.get_artist_by_id(artist_id);
@@ -718,7 +962,6 @@ router.put("/featured_artist", async (req, res) => {
       logger.trace("Artist removed from featured artist = ");
       res.status(config.OK_STATUS).json({ "message": "Artist removed from featured artist" });
     }
-
   }
 });
 
