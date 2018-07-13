@@ -47,6 +47,9 @@ export class UsersComponent implements OnInit {
       processing: true,
       searching: false,
       ordering: false,
+      responsive: true,
+      scrollY :'200px',
+      scrollCollapse: true,
       lengthChange: false,
       ajax: (dataTablesParameters: any, callback) => {
         setTimeout(() => {
