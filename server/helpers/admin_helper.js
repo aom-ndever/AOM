@@ -27,7 +27,7 @@ admin_helper.get_admin_by_id = async (id) => {
     }
 };
 
-admin_helper.get_all_admin = async (start, length, ) => {
+admin_helper.get_all_admin = async (start, length, sort = {}) => {
     try {
         var admins = await Admin.find()
 
@@ -35,6 +35,7 @@ admin_helper.get_all_admin = async (start, length, ) => {
 
 
         var admin = await Admin.find()
+            .sort(sort)
             .skip(start)
             .limit(length);
 

@@ -133,7 +133,19 @@ router.post("/add_admin", async (req, res) => {
  * @apiError (Error 4xx) {String} message Validation or error message.
  */
 router.post('/', async (req, res) => {
-  var admin = await admin_helper.get_all_admin(req.body.start, req.body.length);
+  var sort = {};
+
+  if (req.body.sort) {
+    req.body.sort.forEach(sort_criteria => {
+      sort[sort_criteria.field] = sort_criteria.value;
+    });
+  }
+
+  if (Object.keys(sort).length === 0) {
+    sort["_id"] = 1;
+  }
+  var admin = await admin_helper.get_all_admin(req.body.start, req.body.length, sort);
+
   if (admin.status === 1) {
     logger.trace("got details successfully");
     res.status(config.OK_STATUS).json(admin);
