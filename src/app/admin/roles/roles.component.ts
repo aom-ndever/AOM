@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, QueryList, ViewChildren  } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl, AbstractControl, NG_VALIDATORS, Validator } from '@angular/forms';
 import { RolesService } from './roles.service';
 import { DataTableDirective } from 'angular-datatables';
@@ -12,15 +12,18 @@ declare var swal: any;
   styleUrls: []
 })
 export class RolesComponent implements OnInit {
-  @ViewChild(DataTableDirective)
-  datatableElement: DataTableDirective;
+  @ViewChildren(DataTableDirective) 
+  dtElements: QueryList<DataTableDirective>;
+
   show_spinner : boolean = false;
   modalRef: BsModalRef;
   contestModelRef : BsModalRef;
-  dtOptions: DataTables.Settings = {};
+  dtOptions: DataTables.Settings[] = [];
+  request_data : any = [];
   roles_data : any = [];
   search_str : any = '';
-  sort : any = -1;
+  sort : any = 'name';
+  sort_request : any = -1;
   year : any = [];
   music_type : any = [];
   user_data : any = {};
@@ -54,7 +57,7 @@ export class RolesComponent implements OnInit {
   }
   ngOnInit() {
     const that = this;
-    this.dtOptions = {
+    this.dtOptions[0] = {
       pagingType: 'full_numbers',
       pageLength: 5,
       serverSide: true,
@@ -66,13 +69,38 @@ export class RolesComponent implements OnInit {
       scrollCollapse: true,
       ajax: (dataTablesParameters: any, callback) => {
         setTimeout(() => {
-          dataTablesParameters['sort'] = [this.sort == -1 ? {"field" : "end_date", value : -1} : {"field" : "start_date", value : 1}];
+          dataTablesParameters['sort'] = [{"field" : this.sort, value : 1}];
           that.RolesService.getAllAdministrator(dataTablesParameters).subscribe(response => {
             that.roles_data = response['admin'];
             
             callback({
               recordsTotal: response['recordsTotal'],
               recordsFiltered: response['recordsTotal'],
+              data: []
+            });
+          });
+        },0);
+      }
+    };
+    this.dtOptions[1] = {
+      pagingType: 'full_numbers',
+      pageLength: 5,
+      serverSide: true,
+      processing: true,
+      searching: false,
+      ordering: false,
+      lengthChange: false,
+      scrollY :'200px',
+      scrollCollapse: true,
+      ajax: (dataTablesParameters: any, callback) => {
+        setTimeout(() => {
+          dataTablesParameters['sort'] = [this.sort_request == -1 ? {"field" : "end_date", value : -1} : {"field" : "start_date", value : 1}];
+          that.RolesService.getAllRequest(dataTablesParameters).subscribe(response => {
+            that.request_data = response['contest']['contest'];
+            
+            callback({
+              recordsTotal: response['contest']['recordsTotal'],
+              recordsFiltered: response['contest']['recordsTotal'],
               data: []
             });
           });
@@ -95,9 +123,75 @@ export class RolesComponent implements OnInit {
     this.contestModelRef = this.modalService.show(template, {backdrop : 'static'});
   }
 
-  sortArtist() {
-    this.datatableElement.dtInstance.then((dtInstance: DataTables.Api) => {
-      dtInstance.draw();
+  sortRole(idx : any) {
+    this.dtElements.forEach((dtElement: DataTableDirective, index: number) => {
+      if(idx == index) {
+        dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
+          dtInstance.draw();
+        });
+      }
+    });
+  }
+
+  sortRequest(idx : any) {
+    this.dtElements.forEach((dtElement: DataTableDirective, index: number) => {
+      if(idx == index) {
+        dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
+          dtInstance.draw();
+        });
+      }
+    });
+  }
+  // Accept contest request
+  acceptRequest(id : any,idx : any) {
+    let thi = this;
+    swal({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, Accept it!'
+    }).then(function(flag) {
+      thi.RolesService.acceptContestRequest(id).subscribe(response =>{
+        thi.toastr.success(response['message'], 'Success!');
+        thi.dtElements.forEach((dtElement: DataTableDirective, index: number) => {
+          if(idx == index) {
+            dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
+              dtInstance.draw();
+            });
+          }
+        });
+      }, error => {
+        thi.toastr.error(error['error'].message, 'Error!');
+      });
+    });
+  }
+  // Reject contest request
+  rejectRequest(id : any,idx : any) {
+    let thi = this;
+    swal({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, Reject it!'
+    }).then(function(flag) {
+      thi.RolesService.rejectContestRequest(id).subscribe(response =>{
+        thi.toastr.success(response['message'], 'Success!');
+        thi.dtElements.forEach((dtElement: DataTableDirective, index: number) => {
+          if(idx == index) {
+            dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
+              dtInstance.draw();
+            });
+          }
+        });
+      }, error => {
+        thi.toastr.error(error['error'].message, 'Error!');
+      });
     });
   }
 
@@ -109,11 +203,15 @@ export class RolesComponent implements OnInit {
   }
 
   // Create new admin
-  addNewAdmin() {
+  addNewAdmin(idx : any) {
     this.show_spinner = true;
     this.RolesService.addNewAdmin(this.user_data).subscribe((response) => {
-      this.datatableElement.dtInstance.then((dtInstance: DataTables.Api) => {
-        dtInstance.draw();
+      this.dtElements.forEach((dtElement: DataTableDirective, index: number) => {
+        if(idx == index) {
+          dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
+            dtInstance.draw();
+          });
+        }
       });
       this.toastr.success(response['message'], 'Success!');
       this.contestModelRef.hide();
@@ -125,7 +223,7 @@ export class RolesComponent implements OnInit {
     });
   }
   // remove admin 
-  removeAdmin(id : any) {
+  removeAdmin(id : any, idx : any) {
     let thi = this;
     swal({
       title: 'Are you sure?',
@@ -138,8 +236,12 @@ export class RolesComponent implements OnInit {
     }).then(function(flag) {
       thi.RolesService.deleteAdmin(id).subscribe(response =>{
         thi.toastr.success(response['message'], 'Success!');
-        thi.datatableElement.dtInstance.then((dtInstance: DataTables.Api) => {
-          dtInstance.draw();
+        thi.dtElements.forEach((dtElement: DataTableDirective, index: number) => {
+          if(idx == index) {
+            dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
+              dtInstance.draw();
+            });
+          }
         });
       }, error => {
         thi.toastr.error(error['error'].message, 'Error!');
@@ -147,7 +249,7 @@ export class RolesComponent implements OnInit {
     });
   }
   // suspend admin account
-  suspendAdmin(id : any) {
+  suspendAdmin(id : any, idx : any) {
     let thi = this;
     swal({
       title: 'Are you sure?',
@@ -160,8 +262,12 @@ export class RolesComponent implements OnInit {
     }).then(function(flag) {
       thi.RolesService.suspendAdmin(id).subscribe(response =>{
         thi.toastr.success(response['message'], 'Success!');
-        thi.datatableElement.dtInstance.then((dtInstance: DataTables.Api) => {
-          dtInstance.draw();
+        thi.dtElements.forEach((dtElement: DataTableDirective, index: number) => {
+          if(idx == index) {
+            dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
+              dtInstance.draw();
+            });
+          }
         });
       }, error => {
         thi.toastr.error(error['error'].message, 'Error!');

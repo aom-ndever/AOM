@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { NgxCarousel } from 'ngx-carousel';
 import { environment } from '../../../environments/environment';
+import { MessageService } from '../message.service';
 
 @Component({
   moduleId: module.id,
@@ -15,7 +16,9 @@ export class CarouselComponent implements OnInit {
   public carouselOne: NgxCarousel;
   track_url : any = environment.API_URL+environment.ARTIST_TRACK;
   audio_ins : any = [];
-  constructor() {
+  constructor(
+    private MessageService : MessageService
+  ) {
   }
   onChange(index: any) {
     if (this.images[index]['enable']) {
@@ -57,13 +60,15 @@ export class CarouselComponent implements OnInit {
   }
 
   // Play audio
-  playAudio(name : any, index : any){
-    let audio = new Audio();
-    audio.src = this.track_url+name;
-    audio.load();
-    audio.play();
+  playAudio(name : any, index : any, data : any){
+    // let audio = new Audio();
+    // audio.src = this.track_url+name;
+    // audio.load();
+    // audio.play();
     if(!this.audio_ins.hasOwnProperty(index)) {
-      this.audio_ins[index] = audio;
+      this.audio_ins[index] = this.track_url+name;
+      // this.audio_ins[index] = audio;
+      this.MessageService.sendMessage({data : data, index : index, action : 'start'});
     }
   }
   // Stop audio

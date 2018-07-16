@@ -4,47 +4,99 @@
     <button class="create_contest_btn btn" *ngIf="user['admin']['account_type'] == 'super_admin'" (click)="openContestModel(contest)">Create New Admin</button>
   </div>         
   <div>
-                <h3 class="Audience-Overview">Administrators</h3>
-                <div class="dropdown table_dropdown custom_dropdown">
-                  <select class="form-control custom_drop_btn" id="sort" name="sort_by" [(ngModel)]="sort" (change)="sortArtist()">
-                    <option value="-1">Sort by Name</option>
-                    <option value="1">Old First</option>
-                  </select>
-                </div> 
-                <div class="artists_table contest_table table-responsive">
-                  <table class="table" datatable [dtOptions]="dtOptions">
-                        <thead>
-                          <tr>
-                            <th>N<sup>O</sup></th>
-                            <th class="admin_name_th">Administrator Name</th>
-                            <th>Role</th>
-                            <th>Date Creation</th>
-                            <th>Actions</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                        <tr *ngFor="let role of roles_data; let i = index;">
-                          <td>{{i+1}}.</td>
-                          <td>{{role['first_name']+' '+role['last_name']}}</td>
-                          <td>{{role['account_type']}}</td>
-                          <td>{{role['created_at'] | date : 'MMMM dd, yyyy'}}</td>
-                          <td class="td_img actions">
-                            <div>
-                                <i class="fa fa-trash"></i>
-                              <a href="javascript:;" *ngIf="user['admin']['account_type'] == 'super_admin'" (click)="removeAdmin(role['_id'])"> Delete</a>&nbsp;
-                              
-                            </div>
-                            <div>
-                                <img src="img/suspend.png" *ngIf="user['admin']['account_type'] == 'super_admin'">
-                              <a href="javascript:;" *ngIf="user['admin']['account_type'] == 'super_admin'" (click)="suspendAdmin(role['_id'])">
-                                {{role['status'] == 'suspended' ? 'un-suspend' : 'Suspend'}}
-                              </a>
-                            </div>
-                          </td>
-                        </tr>
-                        </tbody>
-                      </table>
+    <h3 class="Audience-Overview">Administrators</h3>
+    <div class="dropdown table_dropdown custom_dropdown">
+      <select class="form-control custom_drop_btn" id="sort" name="sort_by" [(ngModel)]="sort" (change)="sortRole(0)">
+        <option value="name">Sort by Name</option>
+        <option value="account_type">Role</option>
+        <option value="created_at">Date Creation</option>
+        <option value="suspend">Suspended</option>
+      </select>
+    </div> 
+    <div class="artists_table contest_table table-responsive">
+      <table class="table" datatable [dtOptions]="dtOptions[0]">
+            <thead>
+              <tr>
+                <th>N<sup>O</sup></th>
+                <th class="admin_name_th">Administrator Name</th>
+                <th>Role</th>
+                <th>Date Creation</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let role of roles_data; let i = index;">
+              <td>{{i+1}}.</td>
+              <td>{{role['first_name']+' '+role['last_name']}}</td>
+              <td>{{role['account_type']}}</td>
+              <td>{{role['created_at'] | date : 'MMMM dd, yyyy'}}</td>
+              <td class="td_img actions">
+                <div>
+                    <i class="fa fa-trash"></i>
+                  <a href="javascript:;" *ngIf="user['admin']['account_type'] == 'super_admin'" (click)="removeAdmin(role['_id'], 0)"> Delete</a>&nbsp;
+                  
                 </div>
+                <div>
+                    <img src="img/suspend.png" *ngIf="user['admin']['account_type'] == 'super_admin'">
+                  <a href="javascript:;" *ngIf="user['admin']['account_type'] == 'super_admin'" (click)="suspendAdmin(role['_id'], 0)">
+                    {{role['status'] == 'suspended' ? 'un-suspend' : 'Suspend'}}
+                  </a>
+                </div>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+    </div>
+  </div>
+  <div>
+    <h3 class="Audience-Overview">Requests</h3>
+    <div class="dropdown table_dropdown custom_dropdown">
+      <select class="form-control custom_drop_btn" id="sort" name="sort_by" [(ngModel)]="sort_request" (change)="sortRequest(1)">
+        <option value="-1">Sort by End Date</option>
+        <option value="1">Sort by Start Date</option>
+      </select>
+    </div> 
+    <div class="artists_table contest_table table-responsive">
+      <table class="table" datatable [dtOptions]="dtOptions[1]">
+            <thead>
+              <tr>
+                <th>N<sup>O</sup></th>
+                <th class="admin_name_th">Name</th>
+                <th>Date</th>
+                <th>Message</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let role of request_data; let i = index;">
+              <td>{{i+1}}.</td>
+              <td>{{role['name']}}</td>
+              <td>{{role['created_at'] | date : 'MMMM dd, yyyy'}}</td>
+              <td>{{role['admin_id']['first_name']+" "+role['admin_id']['last_name']+ "("+ role['admin_id']['account_type']+")"}}</td>
+              <td class="td_img actions">
+                <div *ngIf="!role['action']">
+                  <i class="fa fa-check-square-o"></i>
+                  <a href="javascript:;" (click)="acceptRequest(role['_id'], 1)"> Accept</a>&nbsp;
+                </div>
+                <div *ngIf="role['action'] && role['action'] == 'accepted'">
+                  <i class="fa fa-check-square-o"></i>
+                   Accepted &nbsp;
+                </div>
+                <div *ngIf="!role['action']">
+                  <i class="fa fa-ban"></i>
+                  <a href="javascript:;" (click)="rejectRequest(role['_id'], 1)">
+                    Reject
+                  </a>
+                </div>
+                <div *ngIf="role['action'] && role['action'] == 'rejected'">
+                  <i class="fa fa-ban"></i>
+                   Rejected &nbsp;
+                </div>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+    </div>
   </div>
 </div>
 <!-- /#page-content-wrapper -->
@@ -117,7 +169,7 @@
                 <button type="button" class="custom_cancel_btn btn" (click)="contestModelRef.hide()">Cancel</button>
             </div>
             <div class="col-sm-6 text-right">
-                <button type="submit" class="custom_save btn" (click)="addNewAdmin()" [disabled]="!add_admin.valid || show_spinner">Create <i class="fa fa-spinner fa-spin" *ngIf="show_spinner"></i></button>
+                <button type="submit" class="custom_save btn" (click)="addNewAdmin(0)" [disabled]="!add_admin.valid || show_spinner">Create <i class="fa fa-spinner fa-spin" *ngIf="show_spinner"></i></button>
             </div>
           </div>
       </div>

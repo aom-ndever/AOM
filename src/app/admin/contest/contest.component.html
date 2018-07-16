@@ -122,17 +122,18 @@
               <label class="control-label">Duration</label>
               <select class="form-control" name="duration">
                 <option value="">Select Duration</option>
+                <option value="1">1 weeks</option>
+                <option value="2">2 weeks</option>
+                <option value="3">3 weeks</option>
                 <option value="4">4 weeks</option>
+                <option value="8">8 weeks</option>
               </select>
           </div>
           </div>
           <div class="col-sm-6">
               <div class="form-group custom_modal_form">
                 <label class="control-label">Number of Rounds</label>
-                <select class="form-control" name="duration">
-                  <option value="">Select Rounds</option>
-                  <option value="4">4 weeks</option>
-                </select>
+                <input type="number" name="rounds" max="8" min="1" class="form-control" />
               </div>
           </div>
           </div>

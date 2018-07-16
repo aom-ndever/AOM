@@ -2,7 +2,7 @@
 <router-outlet></router-outlet>
 <app-footer></app-footer>
 
-<section class="player-wrapper">
+<section class="player-wrapper" [style.display]="audio_instance_list.length > 0 ? 'block' : 'none'">
   <div class="container">
     <div class="row">
       <div class="col-md-11 audio_container">
@@ -12,7 +12,7 @@
               <button id="pButton" class="play" (click)="play()"></button>
               <button class="btn  next_icon" (click)="next()"><img src="img/next.png"/></button>
               <div class="audio_profile">
-                  <img src="img/profile-img.png"/>
+                  <img src="{{audio_list[song_cnt] &&  audio_list[song_cnt]['image'] ? track_url+audio_list[song_cnt]['image'] : 'img/profile-img.png' }}"/>
               </div>
               <div class="audio_content">
                 <div class="audio_profile_name">
@@ -20,13 +20,17 @@
                     <span>Saven Miller</span>
                 </div> 
                 <div class="volume_section">
-                    <img src="img/volume.png"/>
-                    <span></span>
-                    <div class="audio_time"><span>1:25</span> / <span>3:26</span></div>
+                    <img class="volume_btn" src="img/volume.png"/>
+                    <span>
+                        <input type="range" id="myRange" min="1" value="100" (change)="mangeVolumn($event)">
+                    </span>
+                    <div class="audio_time"><span id="running_time">{{running_time}}</span> / <span>{{total_time}}</span></div>
                 </div>  
-                <div id="timeline"> 
-                    <div id="playhead"></div>
-                </div>
+                <div class="progress " id="timeline">
+                        <div class="progress-bar" id="playhead" role="progressbar"  aria-valuemax="100" style="width:10%">
+                          <span class="sr-only">70% Complete</span>
+                        </div>
+                      </div>
               </div>
               <div class="music_icons">
                   <img src="img/download.png"/>
@@ -36,37 +40,6 @@
 
           </div>
         <div class="aom_audio_player">
-          <!-- <img src="img/player.png" alt=""> -->
-          <!-- <audio controls>
-              <source src="horse.ogg" type="audio/ogg">
-              <source src="img/In My City - Priyanka Chopra (ft. Will.i.am).mp3" type="audio/mpeg">
-            Your browser does not support the audio element.
-          </audio> -->
-      <!-- <div class="example1">
-        <div class="player1">
-            <div class="pl1"></div>
-            <div class="title1"></div>
-            <div class="artist1"></div>
-            <div class="cover1"></div>
-            <div class="controls1">
-                <div class="play"></div>
-                <div class="pause"></div>
-                <div class="rew"></div>
-                <div class="fwd"></div>
-            </div>
-            <div class="volume1"></div>
-            <div class="tracker1"></div>
-        </div>
-        <ul class="playlist1 hidden">
-            <li audiourl="01.mp3" cover="cover1.jpg" artist="Artist 1">01.mp3</li>
-            <li audiourl="02.mp3" cover="cover2.jpg" artist="Artist 2">02.mp3</li>
-            <li audiourl="03.mp3" cover="cover3.jpg" artist="Artist 3">03.mp3</li>
-            <li audiourl="04.mp3" cover="cover4.jpg" artist="Artist 4">04.mp3</li>
-            <li audiourl="05.mp3" cover="cover5.jpg" artist="Artist 5">05.mp3</li>
-            <li audiourl="06.mp3" cover="cover6.jpg" artist="Artist 6">06.mp3</li>
-            <li audiourl="07.mp3" cover="cover7.jpg" artist="Artist 7">07.mp3</li>
-        </ul>
-    </div> -->
         </div>
       </div>
     </div>
