@@ -778,7 +778,7 @@ router.post("/get_flagged_user", async (req, res) => {
 
 
 /**
- * @api {get} /admin/contest_request  Get Contest request - Get 
+ * @api {post} /admin/contest_request  Get Contest request - Get 
  * @apiName  Get Contest request - Get 
   * @apiGroup Admin
  * @apiHeader {String}  x-access-token unique access-key
@@ -787,7 +787,7 @@ router.post("/get_flagged_user", async (req, res) => {
  * @apiSuccess (Success 200) {Array} contest request document
  * @apiError (Error 4xx) {String} message Validation or error message.
  */
-router.get("/contest_request", async (req, res) => {
+router.post("/contest_request", async (req, res) => {
   var resp_data = await contest_request_helper.get_contest_request(req.body.start, req.body.length);
   if (resp_data.status == 0) {
     logger.error("Error occured while fetching contest = ", resp_data);
