@@ -33,6 +33,7 @@
     "sendmail": "^1.4.1",
     "serve-favicon": "^2.5.0",
     "textmagic-rest-client": "^1.0.10",
+    "twilio": "^3.17.6",
     "underscore": "^1.9.1"
   }
 }

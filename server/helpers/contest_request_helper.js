@@ -19,12 +19,20 @@ contest_request_helper.insert_contest_request = async (object) => {
 contest_request_helper.get_contest_request = async (start, length) => {
 
     try {
+        var contests = await Contest
+            .find()
+
+        var tot_cnt = contests.length;
+
         var contest = await Contest
             .find()
+            .populate('admin_id')
             .skip(start)
             .limit(length)
+
+        var filter_cnt = contest.length;
         if (contest) {
-            return { "status": 1, "message": "contest details found", "contest": contest };
+            return { "status": 1, "message": "contest details found", "contest": contest, "recordsFiltered": filter_cnt, "recordsTotal": tot_cnt };
         } else {
             return { "status": 2, "message": "contest not found" };
         }
