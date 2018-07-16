@@ -229,7 +229,6 @@ router.post("/add_contest", async (req, res) => {
               "Note": "new contest has been created named :" + obj.name,
 
             });
-
         }
         logger.trace(" got successfully = ", resp_data);
         res.status(config.OK_STATUS).json(resp_data);
@@ -776,6 +775,8 @@ router.post("/get_flagged_user", async (req, res) => {
   }
 });
 
+
+
 /**
  * @api {get} /admin/contest_request  Get Contest request - Get 
  * @apiName  Get Contest request - Get 
@@ -787,7 +788,7 @@ router.post("/get_flagged_user", async (req, res) => {
  * @apiError (Error 4xx) {String} message Validation or error message.
  */
 router.get("/contest_request", async (req, res) => {
-  var resp_data = await contest_request_helper.get_contest_request();
+  var resp_data = await contest_request_helper.get_contest_request(req.body.start, req.body.length);
   if (resp_data.status == 0) {
     logger.error("Error occured while fetching contest = ", resp_data);
     res.status(config.INTERNAL_SERVER_ERROR).json(resp_data);

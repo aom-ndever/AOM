@@ -69,4 +69,5 @@ contest_helper.get_all_contest_and_participant = async (start, length, sort = {}
         return { "status": 0, "message": "Error occured while finding participants", "error": err }
     }
 }
+
 module.exports = contest_helper;

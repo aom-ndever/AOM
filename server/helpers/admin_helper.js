@@ -119,6 +119,7 @@ admin_helper.update_admin_status = async (admin_id, status) => {
     }
 };
 
+
 admin_helper.update_admin_reset = async (admin_id, reset) => {
     try {
         var admin = await Admin.update({ _id: admin_id }, { "reset": reset })
@@ -131,4 +132,7 @@ admin_helper.update_admin_reset = async (admin_id, reset) => {
         return { "status": 0, "message": "Error occured while updating admin status", "error": err }
     }
 };
+
+
+
 module.exports = admin_helper;

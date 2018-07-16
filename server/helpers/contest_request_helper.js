@@ -16,11 +16,13 @@ contest_request_helper.insert_contest_request = async (object) => {
 };
 
 
-contest_request_helper.get_contest_request = async () => {
+contest_request_helper.get_contest_request = async (start, length) => {
 
     try {
         var contest = await Contest
             .find()
+            .skip(start)
+            .limit(length)
         if (contest) {
             return { "status": 1, "message": "contest details found", "contest": contest };
         } else {
