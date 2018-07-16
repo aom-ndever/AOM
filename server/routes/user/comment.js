@@ -87,6 +87,22 @@ router.post('/', async (req, res) => {
               "comment": obj.comment
             });
         }
+
+
+        if (resp.artist.notification_settings.comment_by_sms == true) {
+          const accountSid = 'AC07190084851dbbe340c260b740a08ced';
+          const authToken = '96ae4c1342bee3f471fc54d471dbbe3f';
+          const client = require('twilio')(accountSid, authToken);
+
+          client.messages
+            .create({
+              body: 'you got comment from' + '\t' + response.user.first_name + response.user.last_name,
+              from: '+12526801944',
+              to: '+917405843252'
+            })
+            .then(message => console.log(message.sid))
+            .done();
+        }
         no_comment = resp.artist.no_of_comments + 1
         var resp_data = await track_helper.update_artist_for_comments(obj.artist_id, no_comment);
 

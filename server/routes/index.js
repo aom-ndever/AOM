@@ -22,7 +22,7 @@ var admin_helper = require('./../helpers/admin_helper');
 var media_helper = require('./../helpers/media_helper');
 var follower_helper = require('./../helpers/follower_helper');
 var comment_helper = require('./../helpers/comment_helper');
-//var demo_helper = require('./../helpers/demo_helper');
+var state_helper = require('./../helpers/state_helper');
 
 /**
  * @api {post} /artist_registration Artist Registration
@@ -72,6 +72,10 @@ router.post('/artist_registration', async (req, res) => {
     "zipcode": {
       notEmpty: true,
       errorMessage: "zipcode is required"
+    },
+    "phone_no": {
+      notEmpty: true,
+      errorMessage: "Phone Number is required"
     }
 
 
@@ -81,7 +85,7 @@ router.post('/artist_registration', async (req, res) => {
   if (!errors) {
     var reg_obj = {
       "email": req.body.email,
-      // "gender": req.body.gender,
+      "phone_no": req.body.phone_no,
       "password": req.body.password,
       "first_name": req.body.first_name,
       "last_name": req.body.last_name,
@@ -1102,7 +1106,7 @@ router.post('/admin_reset_password', async (req, res) => {
           }
         }
         else {
-          res.status(config.BAD_REQUEST).json({ message: "You have already used this linl.. plz use forget password for another link" });
+          res.status(config.BAD_REQUEST).json({ message: "You have already used this link.. plz use forget password for another link" });
         }
       }
     });
@@ -1128,6 +1132,19 @@ router.get("/music_type", async (req, res) => {
     res.status(config.INTERNAL_SERVER_ERROR).json(resp_data);
   } else {
     logger.trace("Music got successfully = ", resp_data);
+    res.status(config.OK_STATUS).json(resp_data);
+  }
+});
+
+
+
+router.get("/state", async (req, res) => {
+  var resp_data = await state_helper.get_all_state();
+  if (resp_data.status == 0) {
+    logger.error("Error occured while fetching State = ", resp_data);
+    res.status(config.INTERNAL_SERVER_ERROR).json(resp_data);
+  } else {
+    logger.trace("State got successfully = ", resp_data);
     res.status(config.OK_STATUS).json(resp_data);
   }
 });
@@ -1252,9 +1269,15 @@ router.post("/artistv1", async (req, res) => {
   var filter_for_charttoppers = {
   };
 
-
+  var filter = {};
   var page_no = {};
   var page_size = {};
+
+  if (req.body.filter) {
+    req.body.filter.forEach(filter_criteria => {
+      filter[filter_criteria.field] = filter_criteria.value;
+    });
+  }
 
   var schema = {};
   if (req.body.music_type) {
@@ -1281,10 +1304,10 @@ router.post("/artistv1", async (req, res) => {
     var from = moment(to).subtract(30, "days").utcOffset(0);
     filter_for_risingstar.created_at = { "$gt": new Date(from), "$lt": new Date(to) };
 
-    var resp_artist = await artist_helper.get_new_uploads(filter_for_risingstar);
+    var resp_artist = await artist_helper.get_new_uploads(filter);
 
     //var resp_track = await artist_helper.get_artist_by_id(filter);
-    var resp_chart = await artist_helper.get_all_artist(filter_for_charttoppers);
+    var resp_chart = await artist_helper.get_all_artist(filter);
 
     if (resp_artist.status == 0 && resp_chart.status == 0) {
       logger.error("Error occured while fetching users = ", resp_artist);

@@ -27,7 +27,7 @@ admin_helper.get_admin_by_id = async (id) => {
     }
 };
 
-admin_helper.get_all_admin = async (start, length, ) => {
+admin_helper.get_all_admin = async (start, length, sort = {}) => {
     try {
         var admins = await Admin.find()
 
@@ -35,6 +35,7 @@ admin_helper.get_all_admin = async (start, length, ) => {
 
 
         var admin = await Admin.find()
+            .sort(sort)
             .skip(start)
             .limit(length);
 
@@ -80,7 +81,6 @@ admin_helper.update_admin_by_id = async (id, object) => {
 };
 
 admin_helper.delete_admin = async (admin_id) => {
-
     try {
         var admin = await Admin.findOneAndRemove({ "_id": (admin_id) })
         if (admin) {
@@ -92,6 +92,7 @@ admin_helper.delete_admin = async (admin_id) => {
         return { "status": 0, "message": "Error occured while finding admin", "error": err }
     }
 };
+
 admin_helper.get_admin_by_email = async (email) => {
     try {
         var admin = await Admin.findOne({ "email": email }).lean();
@@ -118,6 +119,7 @@ admin_helper.update_admin_status = async (admin_id, status) => {
     }
 };
 
+
 admin_helper.update_admin_reset = async (admin_id, reset) => {
     try {
         var admin = await Admin.update({ _id: admin_id }, { "reset": reset })
@@ -130,4 +132,8 @@ admin_helper.update_admin_reset = async (admin_id, reset) => {
         return { "status": 0, "message": "Error occured while updating admin status", "error": err }
     }
 };
+
+
+
+
 module.exports = admin_helper;

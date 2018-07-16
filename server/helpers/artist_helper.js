@@ -85,6 +85,29 @@ artist_helper.get_artist_by_id = async (artist_id) => {
 };
 
 
+/*
+ * get_artist_by_music_id is used to fetch artist details by music id
+ * 
+ * @params  music_id      music_id  field of artist collection
+ * 
+ * @return  status 0 - If any internal error occured while fetching artist data, with error
+ *          status 1 - If artist data found, with artist object
+ *          status 2 - If artist not found, with appropriate message
+ */
+artist_helper.get_artist_by_music_id = async (id) => {
+    try {
+
+        var artist = await Artist.findOne({ "music_type": new ObjectId(id) });
+        if (artist) {
+            return { "status": 1, "message": "Artist details found", "artist": artist };
+        } else {
+            return { "status": 2, "message": "Artist not found" };
+        }
+    } catch (err) {
+        return { "status": 0, "message": "Error occured while finding artist", "error": err }
+    }
+};
+
 
 /*
  * update_artist_by_id is used to update artist data based on artist_id
@@ -111,8 +134,6 @@ artist_helper.update_artist_by_id = async (artist_id, artist_object) => {
         return { "status": 0, "message": "Error occured while updating artist", "error": err }
     }
 };
-
-
 
 
 artist_helper.get_login_by_email = async (email) => {
@@ -460,6 +481,8 @@ artist_helper.update_artist_password = async (artist_id, password) => {
 
 
 artist_helper.get_new_uploads = async (filter = {}) => {
+    console.log('filter', filter);
+
     try {
         var artist = await Artist
             .find(filter)
