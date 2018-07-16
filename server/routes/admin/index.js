@@ -615,8 +615,9 @@ router.post("/accept/contest_request/:contest_id", async (req, res) => {
   }
   contest_resp = await admin_helper.get_admin_by_id(admin_id)
   if (contest_resp.admin.account_type == 'super_admin') {
+    var action = "accepted"
     var resp_data = await contest_helper.insert_contest(obj);
-    var resp_data = await contest_request_helper.delete_request(req.params.contest_id);
+    var resp_data = await contest_request_helper.insert_action(req.params.contest_id, action);
     logger.trace("Contest Request Accepted");
     res.status(config.OK_STATUS).json({ "message": "Contest Request Accepted" });
   }
@@ -644,10 +645,12 @@ router.post("/accept/contest_request/:contest_id", async (req, res) => {
 router.post("/reject/contest_request/:contest_id", async (req, res) => {
   contest_resp = await contest_request_helper.get_contest_by_id(req.params.contest_id)
   admin_id = req.userInfo.id
+  var action = "rejected"
   contest_resp = await admin_helper.get_admin_by_id(admin_id)
   if (contest_resp.admin.account_type == 'super_admin') {
 
-    var resp_data = await contest_request_helper.delete_request(req.params.contest_id);
+    var resp_data = await contest_request_helper.insert_action(req.params.contest_id, action);
+
     logger.trace("Contest Request Rejected");
     res.status(config.OK_STATUS).json({ "message": "Contest Request Rejected" });
   }

@@ -56,16 +56,16 @@ contest_request_helper.get_contest_by_id = async (id) => {
     }
 };
 
-contest_request_helper.delete_request = async (id) => {
+contest_request_helper.insert_action = async (id, action) => {
     try {
-        let contest = await Contest.findOneAndRemove({ _id: new ObjectId(id) });
+        let contest = await Contest.update({ _id: new ObjectId(id) }, { $set: { "action": action } });
         if (!contest) {
-            return { status: 2, message: "Record has not Deleted" };
+            return { status: 2, message: "Record has not updated" };
         } else {
-            return { status: 1, message: "Record has been Deleted" };
+            return { status: 1, message: "Record has been updated" };
         }
     } catch (err) {
-        return { status: 0, message: "Error occured while deleting request", error: err };
+        return { status: 0, message: "Error occured while updating request", error: err };
     }
 };
 
