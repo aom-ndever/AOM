@@ -22,7 +22,7 @@ var admin_helper = require('./../helpers/admin_helper');
 var media_helper = require('./../helpers/media_helper');
 var follower_helper = require('./../helpers/follower_helper');
 var comment_helper = require('./../helpers/comment_helper');
-//var demo_helper = require('./../helpers/demo_helper');
+var state_helper = require('./../helpers/state_helper');
 
 /**
  * @api {post} /artist_registration Artist Registration
@@ -1132,6 +1132,19 @@ router.get("/music_type", async (req, res) => {
     res.status(config.INTERNAL_SERVER_ERROR).json(resp_data);
   } else {
     logger.trace("Music got successfully = ", resp_data);
+    res.status(config.OK_STATUS).json(resp_data);
+  }
+});
+
+
+
+router.get("/state", async (req, res) => {
+  var resp_data = await state_helper.get_all_state();
+  if (resp_data.status == 0) {
+    logger.error("Error occured while fetching State = ", resp_data);
+    res.status(config.INTERNAL_SERVER_ERROR).json(resp_data);
+  } else {
+    logger.trace("State got successfully = ", resp_data);
     res.status(config.OK_STATUS).json(resp_data);
   }
 });
