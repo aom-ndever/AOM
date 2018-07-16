@@ -481,6 +481,8 @@ artist_helper.update_artist_password = async (artist_id, password) => {
 
 
 artist_helper.get_new_uploads = async (filter = {}) => {
+    console.log('filter', filter);
+
     try {
         var artist = await Artist
             .find(filter)

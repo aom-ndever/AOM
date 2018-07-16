@@ -1269,9 +1269,15 @@ router.post("/artistv1", async (req, res) => {
   var filter_for_charttoppers = {
   };
 
-
+  var filter = {};
   var page_no = {};
   var page_size = {};
+
+  if (req.body.filter) {
+    req.body.filter.forEach(filter_criteria => {
+      filter[filter_criteria.field] = filter_criteria.value;
+    });
+  }
 
   var schema = {};
   if (req.body.music_type) {
@@ -1298,10 +1304,10 @@ router.post("/artistv1", async (req, res) => {
     var from = moment(to).subtract(30, "days").utcOffset(0);
     filter_for_risingstar.created_at = { "$gt": new Date(from), "$lt": new Date(to) };
 
-    var resp_artist = await artist_helper.get_new_uploads(filter_for_risingstar);
+    var resp_artist = await artist_helper.get_new_uploads(filter);
 
     //var resp_track = await artist_helper.get_artist_by_id(filter);
-    var resp_chart = await artist_helper.get_all_artist(filter_for_charttoppers);
+    var resp_chart = await artist_helper.get_all_artist(filter);
 
     if (resp_artist.status == 0 && resp_chart.status == 0) {
       logger.error("Error occured while fetching users = ", resp_artist);
