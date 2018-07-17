@@ -8,6 +8,7 @@ state_helper.get_all_state = async () => {
     try {
         var state = await State
             .find()
+            .populate('region')
 
         if (state) {
             return { "status": 1, "message": "state details found", "state": state };

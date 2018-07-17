@@ -10,6 +10,7 @@ Region_helper.get_all_region = async () => {
         var region = await Region
             .find()
 
+
         if (region) {
             return { "status": 1, "message": "Region details found", "Region": region };
         } else {
