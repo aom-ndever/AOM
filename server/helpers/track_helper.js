@@ -132,7 +132,6 @@ track_helper.get_all_track_by_track_id = async (track_id) => {
 
 
 track_helper.update_votes = async (track_id, no_votes) => {
-
     try {
         var vote = await Track.findOneAndUpdate({ "_id": new ObjectId(track_id) }, { "no_of_votes": no_votes })
         if (vote) {

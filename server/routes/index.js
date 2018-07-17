@@ -23,6 +23,7 @@ var media_helper = require('./../helpers/media_helper');
 var follower_helper = require('./../helpers/follower_helper');
 var comment_helper = require('./../helpers/comment_helper');
 var state_helper = require('./../helpers/state_helper');
+var global_helper = require('./../helpers/global_helper');
 
 /**
  * @api {post} /artist_registration Artist Registration
@@ -1172,7 +1173,11 @@ router.get("/state", async (req, res) => {
        errorMessage: "page_size is required"
      }*/
   };
-
+  if (req.body.filter) {
+    req.body.filter.forEach(filter_criteria => {
+      filter[filter_criteria.field] = filter_criteria.value;
+    });
+  }
   if (req.body.music_type) {
     filter.music_type = new ObjectId(req.body.music_type);
   }
@@ -1195,7 +1200,7 @@ router.get("/state", async (req, res) => {
         artist_ids.push(new ObjectId(artist._id));
 
       });
-      var resp_track = await track_helper.get_track_by_filter(artist_ids);
+      var resp_track = await track_helper.get_track_by_filter(artist_ids, filter);
       if (resp_track.status == 0 && resp_artist.status == 0) {
         logger.error("Error occured while fetching users = ", resp_track);
         res.status(config.INTERNAL_SERVER_ERROR).json(resp_track);
@@ -1269,6 +1274,7 @@ router.post("/artistv1", async (req, res) => {
   var filter_for_charttoppers = {
   };
 
+
   var filter = {};
   var page_no = {};
   var page_size = {};
@@ -1278,22 +1284,24 @@ router.post("/artistv1", async (req, res) => {
       filter[filter_criteria.field] = filter_criteria.value;
     });
   }
-
+  console.log('filter========>', filter);
   var schema = {};
-  if (req.body.music_type) {
-    filter_for_risingstar.music_type = {
-      _id: new ObjectId(req.body.music_type)
-    }
+  // if (req.body.music_type) {
+  //   filter_for_risingstar.music_type = {
+  //     _id: new ObjectId(req.body.music_type)
+  //   }
 
-    filter_for_charttoppers["music_type._id"] = new ObjectId(req.body.music_type)
+  //   filter_for_charttoppers["music_type._id"] = new ObjectId(req.body.music_type)
 
-  }
+  // }
   if (req.body.search) {
     var r = new RegExp(req.body.search);
     var search = { "$regex": r, "$options": "i" };
     filter_for_risingstar.first_name = search;
     filter_for_charttoppers.first_name = search;
   }
+
+
 
 
   req.checkBody(schema);
@@ -1307,7 +1315,7 @@ router.post("/artistv1", async (req, res) => {
     var resp_artist = await artist_helper.get_new_uploads(filter);
 
     //var resp_track = await artist_helper.get_artist_by_id(filter);
-    var resp_chart = await artist_helper.get_all_artist(filter);
+    var resp_chart = await artist_helper.get_all_artist(filter_for_charttoppers);
 
     if (resp_artist.status == 0 && resp_chart.status == 0) {
       logger.error("Error occured while fetching users = ", resp_artist);

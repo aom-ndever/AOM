@@ -158,6 +158,7 @@ artist_helper.get_login_by_email = async (email) => {
  *          status 2 - If artist not found, with appropriate message
  */
 artist_helper.get_all_artist = async (filter = {}) => {
+    console.log('filter', filter);
 
     try {
         var artist = await Artist.aggregate([
@@ -171,6 +172,18 @@ artist_helper.get_all_artist = async (filter = {}) => {
             },
             {
                 $unwind: "$music_type"
+            },
+
+            {
+                $lookup: {
+                    from: "state",
+                    localField: "state",
+                    foreignField: "_id",
+                    as: "state"
+                }
+            },
+            {
+                $unwind: "$state"
             },
             {
                 $match: filter
@@ -193,6 +206,7 @@ artist_helper.get_all_artist = async (filter = {}) => {
             }
 
         ]);
+        console.log('artist', artist);
 
         if (artist) {
             return { "status": 1, "message": "artist details found", "artist": artist };
