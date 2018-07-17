@@ -23,6 +23,8 @@ var media_helper = require('./../helpers/media_helper');
 var follower_helper = require('./../helpers/follower_helper');
 var comment_helper = require('./../helpers/comment_helper');
 var state_helper = require('./../helpers/state_helper');
+var region_helper = require('./../helpers/region_helper');
+var global_helper = require('./../helpers/global_helper');
 
 /**
  * @api {post} /artist_registration Artist Registration
@@ -90,7 +92,8 @@ router.post('/artist_registration', async (req, res) => {
       "first_name": req.body.first_name,
       "last_name": req.body.last_name,
       "zipcode": req.body.zipcode,
-      "music_type": req.body.music_type
+      "music_type": req.body.music_type,
+      "state": req.body.state
     };
     if (req.body.share_url) {
       reg_obj.social_media = req.body.share_url
@@ -1137,9 +1140,20 @@ router.get("/music_type", async (req, res) => {
 });
 
 
+router.get("/region", async (req, res) => {
+  var resp_data = await region_helper.get_all_region();
+  if (resp_data.status == 0) {
+    logger.error("Error occured while fetching region = ", resp_data);
+    res.status(config.INTERNAL_SERVER_ERROR).json(resp_data);
+  } else {
+    logger.trace("region got successfully = ", resp_data);
+    res.status(config.OK_STATUS).json(resp_data);
+  }
+});
 
-router.get("/state", async (req, res) => {
-  var resp_data = await state_helper.get_all_state();
+router.post("/state_by_region", async (req, res) => {
+  region = req.body.region
+  var resp_data = await state_helper.get_all_state_by_region(region);
   if (resp_data.status == 0) {
     logger.error("Error occured while fetching State = ", resp_data);
     res.status(config.INTERNAL_SERVER_ERROR).json(resp_data);
@@ -1149,6 +1163,16 @@ router.get("/state", async (req, res) => {
   }
 });
 
+router.post("/state", async (req, res) => {
+  var resp_data = await state_helper.get_all_state();
+  if (resp_data.status == 0) {
+    logger.error("Error occured while fetching State = ", resp_data);
+    res.status(config.INTERNAL_SERVER_ERROR).json(resp_data);
+  } else {
+    logger.trace("State got successfully = ", resp_data);
+    res.status(config.OK_STATUS).json(resp_data);
+  }
+});
 
 /**
  * @api {post} /whatsnew Artist detail By Filter - Get 
@@ -1172,7 +1196,11 @@ router.get("/state", async (req, res) => {
        errorMessage: "page_size is required"
      }*/
   };
-
+  if (req.body.filter) {
+    req.body.filter.forEach(filter_criteria => {
+      filter[filter_criteria.field] = filter_criteria.value;
+    });
+  }
   if (req.body.music_type) {
     filter.music_type = new ObjectId(req.body.music_type);
   }
@@ -1195,7 +1223,7 @@ router.get("/state", async (req, res) => {
         artist_ids.push(new ObjectId(artist._id));
 
       });
-      var resp_track = await track_helper.get_track_by_filter(artist_ids);
+      var resp_track = await track_helper.get_track_by_filter(artist_ids, filter);
       if (resp_track.status == 0 && resp_artist.status == 0) {
         logger.error("Error occured while fetching users = ", resp_track);
         res.status(config.INTERNAL_SERVER_ERROR).json(resp_track);
@@ -1269,6 +1297,7 @@ router.post("/artistv1", async (req, res) => {
   var filter_for_charttoppers = {
   };
 
+
   var filter = {};
   var page_no = {};
   var page_size = {};
@@ -1278,7 +1307,7 @@ router.post("/artistv1", async (req, res) => {
       filter[filter_criteria.field] = filter_criteria.value;
     });
   }
-
+  console.log('filter========>', filter);
   var schema = {};
   if (req.body.music_type) {
     filter_for_risingstar.music_type = {
@@ -1296,6 +1325,8 @@ router.post("/artistv1", async (req, res) => {
   }
 
 
+
+
   req.checkBody(schema);
   var errors = req.validationErrors();
   if (!errors) {
@@ -1307,7 +1338,7 @@ router.post("/artistv1", async (req, res) => {
     var resp_artist = await artist_helper.get_new_uploads(filter);
 
     //var resp_track = await artist_helper.get_artist_by_id(filter);
-    var resp_chart = await artist_helper.get_all_artist(filter);
+    var resp_chart = await artist_helper.get_all_artist();
 
     if (resp_artist.status == 0 && resp_chart.status == 0) {
       logger.error("Error occured while fetching users = ", resp_artist);
