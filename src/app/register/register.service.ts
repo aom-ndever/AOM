@@ -28,4 +28,13 @@ export class RegisterService {
   getAllMusicType() {
     return this.http.get(`${this.api_host}/music_type`);
   }
+
+  // get all region
+  getAllRegion() {
+    return this.http.get(`${this.api_host}/region`);
+  }
+  // Get state based on region
+  getStateByRegion(data : any) {
+    return this.http.post(`${this.api_host}/state_by_region`, data);
+  }
 }

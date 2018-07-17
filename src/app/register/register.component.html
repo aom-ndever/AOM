@@ -5,10 +5,11 @@
         <div class="register-container">
           <div class="fle-row">
             <div class="main-step {{step_flag ? 'next_form' : 'previous_form'}}">
+                <a class="back-btn main_step_back" routerLink="" href="javascript:;"><img alt="Previou Arrow" src="img/prev-arrow.png"> Back</a>
               <div class="heading"><h3>Who are you?</h3></div>
               <div class="select-who">
-                <div class="artist"><a href="javascript:;"><img src="img/artist.png" alt="Artist" (click)="nxt_btn('artist')"><h3>Artist</h3></a></div>
-                <div class="listner"><a  href="javascript:;"><img src="img/listiner.png" alt="listner" (click)="nxt_btn('listener')"><h3>Listener</h3></a></div>
+                <div class="artist"><a href="javascript:;"><img src="img/artist.png" alt="Artist" (click)="nxt_btn('artist', true)"><h3>Artist</h3></a></div>
+                <div class="listner"><a  href="javascript:;"><img src="img/listiner.png" alt="listner" (click)="nxt_btn('listener', true)"><h3>Listener</h3></a></div>
               </div>
             </div>
             <div class="for-artist">
@@ -26,10 +27,13 @@
                           <div class="chk_check"></div>
                         </label>
                     </div>
+                    <div class="terms_error_msg" *ngIf="artist_validation[0] && !artist_step1.controls['terms_condtion'].valid">
+                      <span *ngIf="artist_step1.controls['terms_condtion'].errors['required']" class="text-danger">Please select terms and conditions..</span>
+                    </div>
                   </div>
-                  <div class="button_group">
+                  <div class="button_group terms_btn">
                     <a href="javascript:;" class="back-btn" (click)="back_btn('artist')"><img src="img/prev-arrow.png" alt="Previou Arrow"> Back</a>
-                    <button type="submit" (click)="nxt_btn('artist')" class="next-btn" [disabled]="!artist_step1.valid">Next</button>
+                    <button type="submit" (click)="nxt_btn('artist', artist_step1.valid, 0)" class="next-btn" >Next</button>
                   </div>
                 </form>
               </div>
@@ -43,17 +47,17 @@
                         <div class="form-group">
                             <label for="email">Email</label>
                             <input type="email" class="form-control" formControlName="email"  [(ngModel)]="artist_data.email" name="artist_email" id="email" placeholder="Email">
-                            <div *ngIf="!artist_step2.controls['email'].valid && artist_step2.controls['email'].dirty">
+                            <div class="cust_err_msg" *ngIf="artist_validation[1] && !artist_step2.controls['email'].valid">
                               <span *ngIf="artist_step2.controls['email'].errors['required']" class="text-danger">Email is required.</span>
-                              <span *ngIf="artist_step2.controls['email'].errors['email']" class="text-danger">Email Mismatched.</span>
+                              <span *ngIf="artist_step2.controls['email'].errors['email'] && artist_step2.controls['email'].dirty" class="text-danger">Email Mismatched.</span>
                             </div>
-                          </div>
+                          </div>                          
                           <div [formGroup]="passwordFormGroup1">
                             <div class="form-group pwd-grp">
                               <label for="pwd">Password</label>
                               <input type="password" class="form-control" formControlName="artist_password" placeholder="Password"  required [(ngModel)]="artist_data.password" name="password">
                               <div class="pwd-icon"><i class="fa fa-eye" aria-hidden="true"></i></div>
-                              <div *ngIf="!passwordFormGroup1.controls['artist_password'].valid && passwordFormGroup1.controls['artist_password'].dirty">
+                              <div class="cust_err_msg" *ngIf="artist_validation[1] && !passwordFormGroup1.controls['artist_password'].valid ">
                                 <span *ngIf="passwordFormGroup1.controls['artist_password'].errors['required']" class="text-danger">Password is required.</span>
                                 <span *ngIf="passwordFormGroup1.controls['artist_password'].errors['minlength']" class="text-danger">Must be longer than 6 characters.</span>
                               </div>
@@ -62,7 +66,7 @@
                               <label for="pwd">Confirm Password</label>
                               <input type="password" class="form-control" formControlName="artist_conf"  name="confirm" [(ngModel)]="artist_data.confirm_password" placeholder="Password" required >
                               <div class="pwd-icon"><i class="fa fa-eye" aria-hidden="true"></i></div>
-                              <div *ngIf="!passwordFormGroup1.controls['artist_conf'].valid && passwordFormGroup1.controls['artist_conf'].dirty">
+                              <div class="cust_err_msg" *ngIf="artist_validation[1] && !passwordFormGroup1.controls['artist_conf'].valid">
                                 <!-- <span *ngIf="passwordFormGroup.controls['conf'].errors['required']" class="text-danger">Confirm Password is required.</span> -->
                                 <span *ngIf="passwordFormGroup1.controls['artist_conf'].errors['minlength']" class="text-danger">Must be longer than 6 characters.</span>
                                 <span *ngIf="passwordFormGroup1.controls['artist_conf'].errors['mismatch']" class="text-danger">Please enter correct confirm password.</span>
@@ -72,7 +76,7 @@
                     </div>
                     <div class="button_group">
                       <a href="javascript:;" class="back-btn" (click)="back_btn('artist')"><img src="img/prev-arrow.png" alt="Previou Arrow"> Back</a>
-                      <button type="submit" (click)="nxt_btn('artist')" class="next-btn"  [disabled]="!artist_step2.valid">Next</button>
+                      <button type="submit" (click)="nxt_btn('artist', artist_step2.valid , 1)" class="next-btn"  >Next</button>
                     </div>
                 </form>
               </div>
@@ -85,14 +89,14 @@
                       <div class="form-group">
                           <label for="fname">First Name</label>
                           <input type="text" class="form-control" formControlName="fname"  name="artist_fname" [(ngModel)]="artist_data.fname"  placeholder="First Name">
-                          <div *ngIf="!artist_step3.controls['fname'].valid && artist_step3.controls['fname'].dirty">
+                          <div class="cust_err_msg" *ngIf="artist_validation[2] && !artist_step3.controls['fname'].valid">
                             <span *ngIf="artist_step3.controls['fname'].errors['required']" class="text-danger">First name is required.</span>
                           </div>
                         </div>
                         <div class="form-group pwd-grp">
                           <label for="lanem">Last Name</label>
                           <input type="text" class="form-control"  formControlName="lname" [(ngModel)]="artist_data.lname"  name="artist_lname" placeholder="Last Name">
-                          <div *ngIf="!artist_step3.controls['lname'].valid && artist_step3.controls['lname'].dirty">
+                          <div class="cust_err_msg" *ngIf="artist_validation[2] && !artist_step3.controls['lname'].valid">
                             <span *ngIf="artist_step3.controls['lname'].errors['required']" class="text-danger">First name is required.</span>
                           </div>
                         </div>
@@ -102,11 +106,22 @@
                               <option value="male">Male</option>
                               <option value="female">Female</option>
                           </select>
+                          <div class="cust_err_msg" *ngIf="artist_validation[2] && !artist_step3.controls['lname'].valid">
+                              <span *ngIf="artist_step3.controls['gender'].errors['required']" class="text-danger">Gender is required.</span>
+                          </div>
+                        </div>
+                        <div class="form-group gender-grp">
+                          <label for="geder">Phone Number</label>
+                          <input class="form-control" id="phone" formControlName="phone" name="artist_phone" [(ngModel)]="artist_data.phone_no" />
+                          <div class="cust_err_msg" *ngIf="artist_validation[2] && !artist_step3.controls['phone'].valid">
+                            <span *ngIf="artist_step3.controls['phone'].errors['required']" class="text-danger">Phone Number is required.</span>
+                            <span *ngIf="artist_step3.controls['phone'].dirty && (artist_step3.controls['phone'].errors['pattern'] || artist_step3.controls['phone'].errors['maxlength'])" class="text-danger">Please enter valid format.</span>
+                          </div>
                         </div>
                   </div>
                   <div class="button_group">
                     <a href="javascript:;" class="back-btn" (click)="back_btn('artist')"><img src="img/prev-arrow.png" alt="Previou Arrow"> Back</a>
-                    <button type="submit" (click)="nxt_btn('artist')"  class="next-btn">Next</button>
+                    <button type="submit" (click)="nxt_btn('artist', artist_step3.valid , 2)"  class="next-btn">Next</button>
                   </div>
                 </form>
               </div>
@@ -122,17 +137,37 @@
                         <p *ngIf="location != ''">{{location}}</p>
                       </div>
                       <div class="form-group">
-                          <label for="zipcode">Zip code</label>
-                          <input type="text" class="form-control" formControlName="zipcode" (keyup)="getLocation()"  [(ngModel)]="artist_data.zipcode" name="artist_zipcode" placeholder="Zip Code">
-                          <div *ngIf="!artist_step4.controls['zipcode'].valid && artist_step4.controls['zipcode'].dirty">
-                            <span *ngIf="artist_step4.controls['zipcode'].errors['required']" class="text-danger">Zipcode is required.</span>
-                            <span *ngIf="artist_step4.controls['zipcode'].errors['pattern']" class="text-danger">please enter valid zipcode.</span>
-                          </div>
+                        <label for="zipcode">Zip code</label>
+                        <input type="text" class="form-control" formControlName="zipcode" (keyup)="getLocation()"  [(ngModel)]="artist_data.zipcode" name="artist_zipcode" placeholder="Zip Code">
+                        <div class="cust_err_msg" *ngIf="artist_validation[3] && !artist_step4.controls['zipcode'].valid">
+                          <span *ngIf="artist_step4.controls['zipcode'].errors['required']" class="text-danger">Zipcode is required.</span>
+                          <span *ngIf="artist_step4.controls['zipcode'].errors['pattern'] && artist_step4.controls['zipcode'].dirty" class="text-danger">please enter valid zipcode.</span>
                         </div>
+                      </div>
+                      <div class="form-group gender-grp">
+                          <label for="region">Region</label>
+                          <select formControlName="region" class="form-control" name="artist_region" [(ngModel)]="artist_data.region" (change)="getStateByRegion(artist_data.region)">
+                            <option value="">Select Region</option>
+                            <option *ngFor="let r of region_list;" [value]="r._id">{{r['name']}}</option>
+                          </select>
+                          <div class="cust_err_msg" *ngIf="artist_validation[3] && !artist_step4.controls['region'].valid">
+                            <span *ngIf="artist_step4.controls['region'].errors['required']" class="text-danger">Region is required.</span>
+                          </div>
+                      </div>
+                      <div class="form-group gender-grp">
+                          <label for="region">State</label>
+                          <select formControlName="state" class="form-control" name="artist_state" [(ngModel)]="artist_data.state" >
+                            <option value="">Select State</option>
+                            <option *ngFor="let s of state_list;" [value]="s._id">{{s['name']}}</option>
+                          </select>
+                          <div class="cust_err_msg" *ngIf="artist_validation[3] && !artist_step4.controls['state'].valid">
+                            <span *ngIf="artist_step4.controls['state'].errors['required']" class="text-danger">State is required.</span>
+                          </div>
+                      </div>
                   </div>
                   <div class="button_group">
                     <a href="javascript:;" class="back-btn" (click)="back_btn('artist')"><img src="img/prev-arrow.png" alt="Previou Arrow"> Back</a>
-                    <button type="submit" (click)="nxt_btn('artist')" [disabled]="!artist_step4.valid" class="next-btn" >Next</button>
+                    <button type="submit" (click)="nxt_btn('artist', artist_step4.valid , 3)" class="next-btn" >Next</button>
                   </div>
                 </form>
               </div>
@@ -149,10 +184,13 @@
                           <label for="{{i}}">{{x.name}}</label>
                       </li>
                     </ul>
+                    <div class="cust_err_msg" *ngIf="artist_validation[4]">
+                        <span class="text-danger">Music Type is required.</span>
+                    </div>
                   </div>
                   <div class="button_group">
                     <a href="javascript:;" class="back-btn" (click)="back_btn('artist')"><img src="img/prev-arrow.png" alt="Previou Arrow"> Back</a>
-                    <button type="submit" (click)="nxt_btn('artist')" [disabled]="!artist_data.music_type ? true : false" class="next-btn">Next</button>
+                    <button type="submit" (click)="nxt_btn('artist', (artist_data.music_type ? true : false) , 4)"  class="next-btn">Next</button>
                   </div>
                 </form>
               </div>
@@ -203,10 +241,14 @@
                   <div class="error">
                     <div class="error-message"><p>Please add at least one account  </p><i class="fa fa-exclamation-triangle"></i></div>
                   </div>
+                  <div class="cust_err_msg" *ngIf="artist_validation[5]">
+                      <span class="text-danger">Avatar is required..</span>
+                  </div>
                 </div>
+                
                 <div class="button_group">
                   <a href="javascript:;" class="back-btn" (click)="back_btn('artist')"><img src="img/prev-arrow.png" alt="Previou Arrow"> Back</a>
-                  <button  (click)="nxt_btn('artist')" [disabled]="!cropperReady" class="next-btn">Next</button>
+                  <button  (click)="nxt_btn('artist', cropperReady, 5)"  class="next-btn">Next</button>
                 </div>
               </div>
 

@@ -16,6 +16,8 @@ export class WhatsNewComponent implements OnInit {
     artist : [],
     track : []
   };
+  state_list : any = [];
+  region_filter : any = [];
   artist_img_url : any = environment.API_URL+environment.ARTIST_IMG;
   track_url : any = environment.API_URL+environment.ARTIST_TRACK;
   search_str : any = '';
@@ -54,7 +56,8 @@ export class WhatsNewComponent implements OnInit {
         "description" : "Ut enim ad minim veniam",
         "enable": true
       }];
-   }
+    this.getAllState();
+  }
 
   ngOnInit() {
     this.getAllData();
@@ -103,9 +106,32 @@ export class WhatsNewComponent implements OnInit {
       });
     }
   }
+  // Add region for filtering
+  addRegionForFilter(flag : any, val : any) {
+    if(flag) {
+      this.region_filter.push(val);
+    } else {
+      let index = this.region_filter.indxOf(val);
+      this.region_filter.splice(index, 1);
+    }
+  }
   // Advance filter
   advanceFilter() {
-    this.WhatsNewService.getWhatsnewData(this.advance_filter).subscribe(response => {
+    let data = {
+      "filter" : []
+    };
+    if(this.advance_filter.music_type && this.advance_filter.music_type != "") {
+      data['filter'].push({
+        'field' : 'music_type', value :  this.advance_filter.music_type
+      });
+    }
+    
+    if(this.region_filter.length > 0) {
+      data['filter'].push({
+        'field' : 'state', value :  this.region_filter
+      });
+    }
+    this.WhatsNewService.getWhatsnewData(data).subscribe(response => {
       this.whatsnewdata = response;
       this.getAllFollower();
       if(response['artist'].length <= 0)
@@ -158,5 +184,11 @@ export class WhatsNewComponent implements OnInit {
         });
       });
     }
+  }
+  // get all state
+  getAllState() {
+    this.WhatsNewService.getAllState().subscribe((response) => {
+      this.state_list = response['state'];
+    });
   }
 }

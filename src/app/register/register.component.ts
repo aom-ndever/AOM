@@ -17,6 +17,8 @@ export class RegisterComponent implements OnInit {
   public auth2: any;
   public show_spinner : boolean =  false;
   public music_types : any = [];
+  public region_list : any = [];
+  public state_list : any = [];
   public artist_data : any = {
     'share_url' : {
       'facebook' : '',
@@ -37,7 +39,7 @@ export class RegisterComponent implements OnInit {
   imageChangedEvent: any = '';
   croppedImage: any = '';
   cropperReady = false;
-  
+  artist_validation = [false, false, false, false, false, false, false];
   // Artist From Group for validation
   artist_step1 : FormGroup;
   artist_step2 : FormGroup;
@@ -89,10 +91,13 @@ export class RegisterComponent implements OnInit {
     this.artist_step3 = this.fb.group({
       fname : ['', [Validators.required]],
       lname : ['', [Validators.required]],
-      gender : [] 
+      gender : ['', [Validators.required]] ,
+      phone : ['', [Validators.required, Validators.pattern('[0-9]+'), Validators.minLength(10),Validators.maxLength(10)]]
     });
     this.artist_step4 = this.fb.group({
-      zipcode : ['', [Validators.required, Validators.pattern('^[A-Za-z0-9]+$')]]
+      zipcode : ['', [Validators.required, Validators.pattern('^[A-Za-z0-9]+$')]],
+      region : ['', [Validators.required]],
+      state : ['', [Validators.required]]
     });
 
     this.listener_step1 = this.fb.group({
@@ -120,6 +125,7 @@ export class RegisterComponent implements OnInit {
     this.RegisterService.getAllMusicType().subscribe(response => {
       this.music_types = response['music'];
     });
+    this.getRegionList();
    }
   
   // Code for initialize google login button
@@ -257,6 +263,8 @@ export class RegisterComponent implements OnInit {
     formData.append('gender',this.artist_data['gender']);
     formData.append('music_type',this.artist_data['music_type']);
     formData.append('image', new_file);
+    formData.append('phone_no', this.artist_data['phone_no']);
+    formData.append('state', this.artist_data['state']);
     formData.append('share_url', JSON.stringify(this.artist_data['share_url']));
     
     this.show_spinner = true;
@@ -314,15 +322,19 @@ export class RegisterComponent implements OnInit {
       this.show_spinner = false;
     });
   }
-  public nxt_btn(step_lbl) {
-    console.log(this.artist_step1);
+  public nxt_btn(step_lbl : any, flag : any, index : any) {
+    
     this.step_flag = false;
     console.log(step_lbl, this.artist_cnt);
-    if(step_lbl == 'artist') {
+    if(step_lbl == 'artist' && flag) {
+      this.artist_validation[index] = !flag;
       this.artist_cnt++;
     } else {
-      this.listner_cnt++;
+      this.artist_validation[index] = !flag;
     }
+    if(step_lbl == 'listener' && flag) { 
+      this.listner_cnt++;
+    } 
   }
 
   public back_btn(step_lbl) {
@@ -344,5 +356,17 @@ export class RegisterComponent implements OnInit {
         u8arr[n] = bstr.charCodeAt(n);
     }
     return new File([u8arr], filename, {type:mime});
-}
+  }
+
+  getRegionList() {
+    this.RegisterService.getAllRegion().subscribe((response) => {
+      this.region_list = response['Region'];
+    });
+  }
+
+  getStateByRegion(id : any) {
+    this.RegisterService.getStateByRegion({region : id}).subscribe((response) => {
+      this.state_list = response['state'];
+    });
+  }
 }

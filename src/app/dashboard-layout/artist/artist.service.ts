@@ -38,4 +38,8 @@ export class ArtistService {
   getAllMusicType() {
     return this.http.get(`${this.api_host}/music_type`);
   }
+  // get all state
+  getAllState() {
+    return this.http.get(`${this.api_host}/state`);
+  }
 }

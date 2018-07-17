@@ -15,6 +15,7 @@ export class ArtistComponent implements OnInit {
   show_filter : any = false;
   search_str : any = '';
   adv_filter : any = {};
+  region_filter : any = [];
   artistv1 : any = {
     chart_toppers : [],
     rising_stars : []
@@ -23,10 +24,14 @@ export class ArtistComponent implements OnInit {
   artist_img_url : any = environment.API_URL+environment.ARTIST_IMG;
   track_url : any = environment.API_URL+environment.ARTIST_TRACK;
   audio_ins : any = [];
+  state_list : any = [];
+
   constructor(
     private ArtistService : ArtistService,
     private toastr: ToastrService
-  ) {}
+  ) {
+    this.getAllState();
+  }
 
   ngOnInit() {
     this.getAllData();
@@ -124,12 +129,40 @@ export class ArtistComponent implements OnInit {
       this.getAllArtistV1Data(data);
     }
   }
+  // Add region for filtering
+  addRegionForFilter(flag : any, val : any) {
+    if(flag) {
+      this.region_filter.push(val);
+    } else {
+      let index = this.region_filter.indxOf(val);
+      this.region_filter.splice(index, 1);
+    }
+  }
   // advanceFilter
   advanceFilter() {
     let data = {
-      music_type : this.adv_filter.music_type
+      "filter" : []
     };
+    if(this.adv_filter.music_type && this.adv_filter.music_type != "") {
+      data['filter'].push({
+        'field' : 'music_type', value :  this.adv_filter.music_type
+      });
+    }
+    
+    if(this.region_filter.length > 0) {
+      data['filter'].push({
+        'field' : 'state', value :  this.region_filter
+      });
+    }
+    
     this.getAllArtistV1Data(data);
+  }
+
+  // get all state
+  getAllState() {
+    this.ArtistService.getAllState().subscribe((response) => {
+      this.state_list = response['state'];
+    });
   }
   
 }
