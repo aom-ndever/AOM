@@ -23,6 +23,7 @@ var media_helper = require('./../helpers/media_helper');
 var follower_helper = require('./../helpers/follower_helper');
 var comment_helper = require('./../helpers/comment_helper');
 var state_helper = require('./../helpers/state_helper');
+var region_helper = require('./../helpers/region_helper');
 var global_helper = require('./../helpers/global_helper');
 
 /**
@@ -1139,9 +1140,20 @@ router.get("/music_type", async (req, res) => {
 });
 
 
+router.get("/region", async (req, res) => {
+  var resp_data = await region_helper.get_all_region();
+  if (resp_data.status == 0) {
+    logger.error("Error occured while fetching region = ", resp_data);
+    res.status(config.INTERNAL_SERVER_ERROR).json(resp_data);
+  } else {
+    logger.trace("region got successfully = ", resp_data);
+    res.status(config.OK_STATUS).json(resp_data);
+  }
+});
 
-router.get("/state", async (req, res) => {
-  var resp_data = await state_helper.get_all_state();
+router.post("/state", async (req, res) => {
+  region = req.body.region
+  var resp_data = await state_helper.get_all_state(region);
   if (resp_data.status == 0) {
     logger.error("Error occured while fetching State = ", resp_data);
     res.status(config.INTERNAL_SERVER_ERROR).json(resp_data);
