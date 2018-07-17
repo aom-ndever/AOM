@@ -2264,7 +2264,7 @@ var ArtistService = /** @class */ (function () {
     };
     // get all state
     ArtistService.prototype.getAllState = function () {
-        return this.http.get(this.api_host + "/state");
+        return this.http.post(this.api_host + "/state", null);
     };
     ArtistService = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Injectable"])(),

@@ -40,6 +40,6 @@ export class ArtistService {
   }
   // get all state
   getAllState() {
-    return this.http.get(`${this.api_host}/state`);
+    return this.http.post(`${this.api_host}/state`, null);
   }
 }
