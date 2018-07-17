@@ -93,7 +93,7 @@ router.post('/artist_registration', async (req, res) => {
       "last_name": req.body.last_name,
       "zipcode": req.body.zipcode,
       "music_type": req.body.music_type,
-      "location": req.body.location
+      "state": req.body.state
     };
     if (req.body.share_url) {
       reg_obj.social_media = req.body.share_url

@@ -6,7 +6,6 @@ var ObjectId = mongoose.Types.ObjectId;
 
 
 state_helper.get_all_state = async (region) => {
-    console.log('region', region);
 
     try {
 
