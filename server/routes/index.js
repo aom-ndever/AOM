@@ -1151,9 +1151,9 @@ router.get("/region", async (req, res) => {
   }
 });
 
-router.post("/state", async (req, res) => {
+router.post("/state_by_region", async (req, res) => {
   region = req.body.region
-  var resp_data = await state_helper.get_all_state(region);
+  var resp_data = await state_helper.get_all_state_by_region(region);
   if (resp_data.status == 0) {
     logger.error("Error occured while fetching State = ", resp_data);
     res.status(config.INTERNAL_SERVER_ERROR).json(resp_data);
@@ -1163,6 +1163,16 @@ router.post("/state", async (req, res) => {
   }
 });
 
+router.post("/state", async (req, res) => {
+  var resp_data = await state_helper.get_all_state();
+  if (resp_data.status == 0) {
+    logger.error("Error occured while fetching State = ", resp_data);
+    res.status(config.INTERNAL_SERVER_ERROR).json(resp_data);
+  } else {
+    logger.trace("State got successfully = ", resp_data);
+    res.status(config.OK_STATUS).json(resp_data);
+  }
+});
 
 /**
  * @api {post} /whatsnew Artist detail By Filter - Get 
