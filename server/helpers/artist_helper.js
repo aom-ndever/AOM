@@ -158,7 +158,7 @@ artist_helper.get_login_by_email = async (email) => {
  *          status 2 - If artist not found, with appropriate message
  */
 artist_helper.get_all_artist = async (filter = {}) => {
-    console.log('filter', filter);
+
 
     try {
         var artist = await Artist.aggregate([
