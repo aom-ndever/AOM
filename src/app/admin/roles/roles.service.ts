@@ -41,4 +41,16 @@ export class RolesService {
   suspendAdmin(id : any) {
     return this.http.post(`${this.api_host}/admin/suspend/${id}`, null, {headers: this.headers});
   }
+  // Get contest detail
+  getAllRequest(data : any) {
+    return this.http.post(`${this.api_host}/admin/contest_request`, data, {headers : this.headers});
+  }
+  // Contest request accepetd
+  acceptContestRequest(id : any) {
+    return this.http.post(`${this.api_host}/admin/accept/contest_request/${id}`, null, {headers : this.headers});
+  }
+   // Contest request accepetd
+   rejectContestRequest(id : any) {
+    return this.http.post(`${this.api_host}/admin/reject/contest_request/${id}`, null, {headers : this.headers});
+  }
 }

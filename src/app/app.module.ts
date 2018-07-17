@@ -13,6 +13,7 @@ import { AdminLoginModule } from './admin_login/admin_login.module';
 import { EamilVarificationModule } from './email_varification/email_varification.module';
 import { ForgetPasswordModule } from './forget_password/forget_password.module';
 import { AuthService } from './shared/auth.service';
+import { MessageService } from './shared/message.service';
 
 @NgModule({
   declarations: [
@@ -46,7 +47,7 @@ import { AuthService } from './shared/auth.service';
       // }
     ], { useHash: false })
   ],
-  providers: [AuthService],
+  providers: [AuthService, MessageService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

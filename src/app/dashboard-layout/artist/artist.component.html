@@ -4,10 +4,10 @@
       <div class="col-md-12 col-sm-12 col-xs-12">
         <div class="container">
           <div class="row">
-            <div class="col-md-7 col-sm-6 col-xs-5">
+            <div class="col-lg-6 col-md-5 col-sm-6 col-xs-5">
               <div class="head-global artist_header"><h2>Artists</h2></div>
             </div>
-            <div class="col-md-5 col-sm-6 col-xs-7">
+            <div class="col-lg-6 col-md-7 col-sm-6 col-xs-7">
               <div class="new-head">
                 <div class="search-wrap">
                   <form>
@@ -384,7 +384,7 @@
         <div class="highlights-wrap mCustomScrollbar " data-mcs-theme="dark-3">
           <div class="row">
             <div class="alert alert-info col-sm-12" *ngIf="artistv1['rising_stars']['length'] <= 0">No data available.</div>
-            <div class="col-md-3 col-sm-4 col-xs-6" *ngFor="let artist_rising of artistv1.rising_stars; let i = index;">
+            <div class="col-lg-3 col-md-4 col-sm-4 col-xs-6" *ngFor="let artist_rising of artistv1.rising_stars; let i = index;">
                 <div class="final-wrap ">
                   <div class="img-wrap ">
                     <a href="javascript:;" routerLink="/artist_profile/{{artist_rising._id}}">
@@ -417,7 +417,7 @@
         <div class="highlights-wrap mCustomScrollbar " data-mcs-theme="dark-3">
           <div class="row">
               <div class="alert alert-info col-sm-12" *ngIf="artistv1['chart_toppers']['length'] <= 0">No data available.</div>
-              <div class="col-md-3 col-sm-4 col-xs-6" *ngFor="let artist_chart of artistv1.chart_toppers; let i = index;">
+              <div class="col-lg-3 col-md-4 col-sm-4 col-xs-6" *ngFor="let artist_chart of artistv1.chart_toppers; let i = index;">
                   <div class="final-wrap ">
                     <div class="img-wrap ">
                       <a href="javascript:;" routerLink="/artist_profile/{{artist_chart['artist']._id}}">
@@ -449,7 +449,7 @@
       </div>
         <div class="highlights-wrap">
           <div class="row">
-            <div class="col-md-3 col-sm-4 col-xs-6">
+            <div class="col-lg-3 col-md-4 col-sm-4 col-xs-6">
               <div class="final-wrap">
                 <div class="img-wrap">
                   <img src="img/highlight-player.png" alt="Finalists">
@@ -468,7 +468,7 @@
               </div>
             </div>
 
-            <div class="col-md-3 col-sm-4 col-xs-6">
+            <div class="col-lg-3 col-md-4 col-sm-4 col-xs-6">
               <div class="final-wrap">
                 <div class="img-wrap">
                   <img src="img/highlight-player2.png" alt="Finalists">

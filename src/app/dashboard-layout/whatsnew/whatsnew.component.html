@@ -1,13 +1,13 @@
 <section class="whats-new-wrap">
-  <div class="container-fluid">
-    <div class="row">
-      <div class="col-md-12 col-sm-12 col-xs-12">
+  <div>
+    <div>
+      <div>
         <div class="news-header">
           <div class="row">
-            <div class="col-md-7 col-sm-6 col-xs-5">
+            <div class="col-lg-6 col-md-5 col-sm-6 col-xs-5">
               <div class="head-global"><h2>What's New</h2></div>
             </div>
-            <div class="col-md-5 col-sm-6 col-xs-7">
+            <div class="col-lg-6 col-md-7 col-sm-6 col-xs-7">
               <div class="new-head">
                 <div class="search-wrap">
                   <form>
@@ -370,7 +370,7 @@
           </div>
         </div>
       </div>
-      <div class="col-md-12 col-sm-12  col-xs-12">
+      <div>
         <div class="whatsnew-banner">
             <app-carousel-scroll [images]="images" [showFavourit]='true' [carouselType]='"banner"'></app-carousel-scroll>
         </div>
@@ -381,8 +381,8 @@
 
 <section class="artist-highlight">
   <div class="container">
-    <div class="row">
-      <div class="col-md-12">
+    <div>
+      <div>
         <div class="head-global">
           <h2>Artist Highlights</h2>
         </div>
@@ -392,7 +392,7 @@
           <div class="alert alert-info col-sm-12" *ngIf="whatsnewdata['artist'].length == 0">
             No data available.
           </div>
-          <div class="col-md-3 col-sm-4 col-xs-6 " *ngFor="let artist of whatsnewdata['artist']; let i = index;">
+          <div class="col-lg-3 col-md-4 col-sm-4 col-xs-6 " *ngFor="let artist of whatsnewdata['artist']; let i = index;">
             <div class="final-wrap ">
               <div class="img-wrap ">
                 <a href="javascript:;" routerLink="/artist_profile/{{artist._id}}">
@@ -423,7 +423,7 @@
       <div class="col-md-12 ">
         <div class="head-global "><h2>Popular Tracks</h2></div>
       </div>
-      <div class="uploads-container ">
+      <div class="uploads-container col-md-12 ">
         <div class="row">
             <div class="alert alert-info col-sm-12" *ngIf="whatsnewdata['track'].length == 0">
                 No data available.
