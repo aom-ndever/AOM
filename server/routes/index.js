@@ -390,7 +390,8 @@ router.post('/user_registration', async (req, res) => {
       "zipcode": req.body.zipcode,
       "music_type": req.body.music_type,
       "dob": req.body.dob,
-      "gender": req.body.gender
+      "gender": req.body.gender,
+      "state": req.body.state
     };
     if (req.body.share_url) {
       obj.social_media = req.body.share_url

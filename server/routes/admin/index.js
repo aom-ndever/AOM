@@ -219,7 +219,6 @@ router.post("/add_contest", async (req, res) => {
         var resp_music = await artist_helper.get_artist_by_music_id(obj.music_type);
         console.log('resp_music', resp_music);
         if (resp_music.status == 1) {
-          console.log('1', 1);
 
           logger.trace("sending mail");
           let mail_resp = await mail_helper.send("contest", {
@@ -227,7 +226,6 @@ router.post("/add_contest", async (req, res) => {
             "subject": "Contest Creation"
           }, {
               "Note": "new contest has been created named :" + obj.name,
-
             });
         }
         logger.trace(" got successfully = ", resp_data);
@@ -523,8 +521,10 @@ router.post("/get_artist", async (req, res) => {
   if (req.body.location) {
     filter.location = req.body.location;
   }
-  if (req.body.music_type) {
-    filter.music_type = new ObjectId(req.body.music_type);
+  if (req.body.filter) {
+    req.body.filter.forEach(filter_criteria => {
+      filter[filter_criteria.field] = filter_criteria.value;
+    });
   }
   if (req.body.search) {
     var r = new RegExp(req.body.search);
@@ -736,14 +736,14 @@ router.post("/get_user", async (req, res) => {
     sort_by = -1;
   }
   var sort = { no_of_votes: -1, created_at: sort_by }
-  if (req.body.music_type) {
-    filter.music_type = new ObjectId(req.body.music_type);
+
+  if (req.body.filter) {
+    req.body.filter.forEach(filter_criteria => {
+      filter[filter_criteria.field] = filter_criteria.value;
+    });
   }
-  if (req.body.search) {
-    var r = new RegExp(req.body.search);
-    var search = { "$regex": r, "$options": "i" };
-    filter.first_name = search;
-  }
+
+
   var resp_data = await user_helper.get_all_active_and_suspend_user(req.body.start, req.body.length, filter, sort);
   if (resp_data.status == 0) {
     logger.error("Error occured while fetching artist = ", resp_data);

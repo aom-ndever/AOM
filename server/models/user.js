@@ -25,6 +25,7 @@ var UserModelSchema = new Schema({
     email_verified: Boolean,
     refresh_token: { type: String },
     flag: { type: Boolean, default: false },
+    state: { type: mongoose.Schema.Types.ObjectId, ref: 'state' },
     last_login: { type: Date },
     created_at: { type: Date, default: Date.now }
 }, { versionKey: false });
