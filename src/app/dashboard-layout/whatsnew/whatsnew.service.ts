@@ -34,4 +34,8 @@ export class WhatsNewService {
     this.headers = new HttpHeaders({ 'x-access-token' : this.user.token });  
     return this.http.get(`${this.api_host}/user/artist/followers`, {headers : this.headers});
   }
+  // get all state
+  getAllState() {
+    return this.http.post(`${this.api_host}/state`, null);
+  }
 }

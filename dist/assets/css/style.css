@@ -581,26 +581,33 @@ border-radius: 2px; font-family: 'Roboto', sans-serif;}
 }
 .next_form{display: block; opacity: 1;}
 .register-wrap{
-    background: url("../../img/register-bg.png") no-repeat;
-    background-size:cover;
-    height: 100vh;
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-box-pack:center;
-    -ms-flex-pack:center;
-    justify-content:center;
-    -webkit-box-align:center;
-    -ms-flex-align:center;
-    align-items:center;
+        background: url("../../img/register-bg.png") no-repeat;
+        min-height: 100vh;
+       display: -webkit-box;
+       display: -ms-flexbox;
+       display: flex;
+       -webkit-box-pack: center;
+       -ms-flex-pack: center;
+       justify-content: center;
+       -webkit-box-align: center;
+       -ms-flex-align: center;
+       align-items: center;
+       width: 100%;
+       background-size: cover;
+       background-repeat: repeat;
 }
 .vote-wrap .highlights-wrap{
     overflow-y: auto !important;
     overflow-x: hidden !important;
 }
+.news_header_container{
+    position: relative;
+}
 .register-container {
+    position: relative;
     width: 570px;
-    height: 450px;
+    min-height: 450px;
+    padding: 30px 0;
     box-shadow: 0px 2px 10px rgba(0,0,0,0.3);
     background: #fff;
     margin:0 auto;
@@ -619,6 +626,7 @@ border-radius: 2px; font-family: 'Roboto', sans-serif;}
     -ms-flex-wrap: wrap;
     -o-flex-wrap: wrap;
     flex-wrap: wrap;
+    margin: 30px auto;
 }	
 .register-container  .heading h3 {
     font-family: 'Poppins', sans-serif;
@@ -739,8 +747,12 @@ border-radius: 2px; font-family: 'Roboto', sans-serif;}
 .agree label a{
 	color: #9B26B0;
 }
+.agree label a:hover{
+	color: #d554ec;
+}
 .agree{text-align: center; border-top:1px solid #dedede; margin-right: 100px; margin-left: 100px;}
-.agree .checkbox{margin:20px auto;}
+.agree .checkbox{margin:20px auto 0 auto;}
+.terms_error_msg span{display: block;font-size: 13px;    margin-left: 25px;}
 .back-btn{
     font-family: 'Poppins', sans-serif;
     font-size: 18px;
@@ -748,6 +760,9 @@ border-radius: 2px; font-family: 'Roboto', sans-serif;}
     text-align: center;
     color: rgba(26,26,26,0.5);
     margin-bottom: 0;
+}
+.terms_btn{
+    margin-top:30px;
 }
 .steps .heading h3{margin-bottom: 20px;}
 .steps .email-form,.for-artist .steps .type-music,.for-artist .steps .social-acc,#listner-register .social-login,.for-listner .steps .type-music{padding-left: 100px; padding-right: 100px;}
@@ -2686,6 +2701,7 @@ span.inner-text span{
     text-align: center;
     color: #ffffff;
     display: block;
+    margin:0 auto;
 }
 .track-price a{
     opacity: 0.5;
@@ -2718,6 +2734,10 @@ font-family: Poppins;
   text-align: center;
   color: #1a1a1a;
 }
+.add-track-modal h3{
+    margin-bottom: 30px;
+}
+
 .tr-name {width: 70%; padding-right: 15px; float: left; margin-bottom: 40px;}
 .tr-price{width: 30%; padding-left: 15px; float: right;}
 .edit-track-modal .upload-cover,
@@ -2793,8 +2813,8 @@ font-family: Poppins;
     display: block;
 }
 .track-menu  p a img{margin-right: 5px;}
-.add-track-modal .tr-name{clear: both; margin-top: 40px; margin-bottom:0; }
-.add-track-modal  .tr-price{margin-top: 40px;}
+.add-track-modal .tr-name{clear: both; margin-top: 20px; margin-bottom:0;margin-bottom: 30px; }
+.add-track-modal  .tr-price{margin-top: 20px;margin-bottom: 30px; }
 .media-upload-btn.song-photo {
     width: 25%;
     height: 85px;
@@ -3152,6 +3172,9 @@ button.close{    background: transparent;
     width: 280px;
     margin-right:15px;
 }
+.track-menu p a:focus{
+    outline:none;
+}
 /*MEDIA START*/
 @media screen and (min-width: 768px){
     .news-header,.content-block{width: 750px;}
@@ -3260,7 +3283,13 @@ button.close{    background: transparent;
     .vote-wrap .track-table table thead tr td{
         vertical-align: top;
     }
-
+    .textarea-upload .form-group {
+        margin-left: auto;
+        width: 100%;
+    }
+    .track-menu p a{
+        margin-top: 24px;
+    }
 }
 @media screen and (max-width: 767px){
 	/*Homepage*/
@@ -3487,6 +3516,42 @@ button.close{    background: transparent;
     position: relative;
     background-color: #fff;
 }
+.mymusic-wrap .track-table table{
+    width: 700px;
+    min-width: 700px;
+}
+.add-track-popup .modal-content{
+    padding: 40px 20px 30px;
+}
+.add-track-modal .media-upload-btn span{
+    font-size: 12px;
+    padding: 0 2px;
+}
+.media-upload-btn .instrution {
+    white-space: nowrap;
+}
+.add-track-modal .tr-name {
+    width: 100%;
+    padding-right: 0;
+    margin-top: 20px;
+}
+.add-track-modal .tr-price {
+    margin-top: 20px;
+    width: 100%;
+    padding-left: 0;
+    margin-bottom: 30px;
+}
+.add-track-modal h3{
+    margin-bottom: 15px;
+}
+.add-track-modal .button_group{
+    display: block;
+}
+.textarea-upload{
+    display: block;
+    width: 100%;
+    float: left;
+}
 
 }
 @media screen and (max-width: 576px){
@@ -3582,6 +3647,14 @@ button.close{    background: transparent;
     #edittrack .tr-name, #addtrack .tr-name{width: 100%; padding: 0; margin-bottom: 0;}
     #edittrack .tr-price, #addtrack .tr-price{width: 100%; padding: 0; margin-top: 10px;}
     /*my music*/
+    .new-add-track-popup .modal-dialog {
+        width: 90%;
+        padding: 40px 20px 30px 20px;
+    }
+    .contest-wrap h3{
+        margin-bottom: 20px;
+    }
+
 }
 @media screen and (max-width: 580px){
 	.social-login .google-login a i, .social-login .fb-login a i{position: static;}
@@ -4028,10 +4101,10 @@ input#cover_upload1 {
     width: 100%;
 }
 /*10-07-2018*/
-.artist-highlight ::-webkit-scrollbar, .contest-wrapper ::-webkit-scrollbar, .vote-wrap ::-webkit-scrollbar
+/* .artist-highlight ::-webkit-scrollbar, .contest-wrapper ::-webkit-scrollbar, .vote-wrap ::-webkit-scrollbar
 {
-  width: 8px;  /* for vertical scrollbars */
-  height: 12px; /* for horizontal scrollbars */
+  width: 8px;
+  height: 12px;
   border-radius: 12px;
 }
 
@@ -4045,7 +4118,7 @@ input#cover_upload1 {
 {
   background:#9c27b0;
     border-radius: 12px;
-}
+} */
 .artist_header h2{
     font-size: 36px;
     margin-top: 8px;
@@ -4295,4 +4368,13 @@ input#cover_upload1 {
 #playhead
 {
     padding-left: 0 !important;
+}
+.main_step_back{    
+    position:  absolute;
+    top: 40px;
+    left: 40px;
+}
+.new-add-track-popup  .contest-table {
+    height: 300px;
+    overflow: auto;
 }
