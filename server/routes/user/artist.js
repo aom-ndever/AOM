@@ -103,4 +103,16 @@ router.get('/followers', async (req, res) => {
   }
 });
 
+
+router.get('/get_followers', async (req, res) => {
+  user_id = req.userInfo.id
+  var user = await follower_helper.get_all_followers_by_user_id(user_id);
+  if (user.status === 1) {
+    logger.trace("got details successfully");
+    res.status(config.OK_STATUS).json(user);
+  } else {
+    logger.error("Error occured while fetching = ", user);
+    res.status(config.INTERNAL_SERVER_ERROR).json(user);
+  }
+});
 module.exports = router;
