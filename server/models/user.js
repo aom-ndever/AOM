@@ -23,8 +23,10 @@ var UserModelSchema = new Schema({
     no_of_comments: { type: Number, default: 0 },
     status: { type: String, default: "active" },
     email_verified: Boolean,
+    phone_no: Number,
     refresh_token: { type: String },
     flag: { type: Boolean, default: false },
+    state: { type: mongoose.Schema.Types.ObjectId, ref: 'state' },
     last_login: { type: Date },
     created_at: { type: Date, default: Date.now }
 }, { versionKey: false });
