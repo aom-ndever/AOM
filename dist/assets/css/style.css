@@ -1346,12 +1346,12 @@ span.up_text {
    
 }
 .select-payemnt-table .radio{margin-right: 15px;}
-.select-payemnt-table input[type="radio"]:checked + .radio_check:after{top:9px; outline: none; left: 5px;}
+.select-payemnt-table input[type="radio"]:checked + .radio_check:after{top:8px; outline: none; left: 5px;}
 .radio{position: relative;}
 .filter-drop-down ul li label input[type="radio"]:checked,
 .select-payemnt-table input[type="radio"]:checked,
 .contest-table input[type="radio"]:checked { border:2px solid #9C27B0; outline: none;}
-.contest-table input[type="radio"]:checked + .radio_check:after{top:9px; outline: none;}
+.contest-table input[type="radio"]:checked + .radio_check:after{top:8px; outline: none;}
 .filter-drop-down ul li label input[type="checkbox"]:checked{
     background: #9C27B0;
     border:0;
@@ -1681,6 +1681,7 @@ a.play-btn{
 
 /*Edit Profile*/
 .upload-cover {position: relative;height: 130px;}
+.edit-profile-picture .upload-cover{    height: 200px;}
 .upload-cover img {width: 100%; height: 100%; object-fit: cover;}
 .upload-cover span.up_text {
     position: absolute;
@@ -1691,6 +1692,20 @@ a.play-btn{
     font-size: 14px;
     font-weight: bold;
     transform: translateY(-50%);
+}
+.about-you textarea{
+    border: 0;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    border-bottom: 1px solid #DEDEDE;
+    color: #1a1a1a;
+    font-size: 14px;
+    font-weight: 400;
+    border-radius: 0;
+}
+.about-you textarea:focus {
+    border-bottom: 2px solid #9B26B0;
+    box-shadow: none;
 }
 input#cover_upload {
     position: absolute;
@@ -1730,6 +1745,9 @@ input#cover_upload {
     padding: 30px 0 35px 0;
     color: #000;
     font-weight: bold;
+}
+.notify-by-email ul, .notify-by-sms ul, .on-side-alert ul{
+    margin: 0 -15px !important;
 }
 .form-details .form-group {
     width: 50%;
@@ -1797,6 +1815,7 @@ input#cover_upload {
     font-weight: 400;
     font-family: 'Poppins', sans-serif;
     margin-right: 25px;
+    box-shadow: none;
 }
 .edit-cover .button_group button.save-btn {
     font-size: 18px;
@@ -1844,6 +1863,7 @@ a.yes-btn,.update-btn {
     margin-left: 15px;
     display: block;
     border: 0;
+    text-transform: capitalize;
 }
 a.no-btn,.cancel-btn {
     width: 120px;
@@ -2036,11 +2056,7 @@ input:checked + .slider:before {
     margin: 0 15px;
 }
 #payment .nav-tabs>li>a.active,#payment .nav-tabs>li>a.active:focus,#payment .nav-tabs>li>a.active:hover{
-    border:0;
-    font-size: 16px;
-    font-weight: 600;
-    text-align: left;
-   color: #1a1a1a;
+
    border-bottom: 2px solid #9c27b0;
 }
 .profile-tabs-det .nav-tabs,#payment .nav-tabs>li>a{
@@ -2887,6 +2903,7 @@ div#submitcontest {
   text-align: center;
   color: #1a1a1a;
   margin-top: 0;
+  margin-bottom: 10px;
 }
 .contest-wrap .add-btn{width: 100%; margin-right: 0; margin-left: 0;}
 .contest-table{height: 300px;}
@@ -3144,7 +3161,8 @@ button.close{    background: transparent;
     z-index: 10;}
 .modal-body{ padding:0;}
 .textarea-upload{ display:flex; width:100%;}
-.textarea-upload .form-group{ margin-left:auto; width:70%; }
+.textarea-upload .form-group{ margin-left:auto;     width: 70%;
+    margin-left: 20px; }
 .new-add-track-popup .modal-dialog {
     width: 570px;
     padding: 100px 100px 30px 100px;
@@ -3174,6 +3192,9 @@ button.close{    background: transparent;
 }
 .track-menu p a:focus{
     outline:none;
+}
+.edit-cover .button_group{
+    margin-top: 30px;
 }
 /*MEDIA START*/
 @media screen and (min-width: 768px){
@@ -3207,6 +3228,13 @@ button.close{    background: transparent;
     .add-comment .button_group{width: 50%;}
     .filter-list ul li {
         padding: 10px !important;
+    }
+    .edit-profile-picture .upload-cover {
+        height: 130px;
+    }
+    .profile-tabs ul li {
+        width:100%;
+        text-align: center;
     }
 }
 @media screen and (max-width: 991px){
@@ -3290,6 +3318,9 @@ button.close{    background: transparent;
     .track-menu p a{
         margin-top: 24px;
     }
+    .navigation ul li, .update-option li {
+        padding: 0 10px;
+    }
 }
 @media screen and (max-width: 767px){
 	/*Homepage*/
@@ -3318,7 +3349,12 @@ button.close{    background: transparent;
 		border-bottom: 1px solid #e5e5e5;
 	}
 	.navigation ul li:last-child{border:0;}
-	.logged-in-header { margin-right: 35px;}
+    .logged-in-header { margin-right: 91px;}
+    .logout_ul {
+        position: absolute;
+        right: 7px;
+        top: -3px;
+    }
 	/*header*/
 
 	/*banner*/
@@ -3372,14 +3408,16 @@ button.close{    background: transparent;
 	.content-wrap {padding: 10px;}
 	/*Finalist wrap*/
 	.upload .content-wrap{
-		flex: 0 0 90%;
-		-ms-flex:0 0 90%;
-		max-width: 90%;
+        -webkit-box-flex: 0;
+        flex: 0 0 70%;
+        -ms-flex: 0 0 90%;
+        max-width: 70%;
 	}
 	.upload .img-wrap{
-		flex: 0 0 10%;
-		-ms-flex:0 0 10%;
-		max-width: 10%;
+        -webkit-box-flex: 0;
+        flex: 0 0 30%;
+        -ms-flex: 0 0 10%;
+        max-width: 30%;
 	}
 	/*footer*/
 	.social-right{float: none; text-align: center; padding: 20px 0; clear: both;}
@@ -3489,70 +3527,104 @@ button.close{    background: transparent;
         display: none !important;
     }
 
-[_nghost-c7] {
-    padding: 10px 5px !important;
-    width:100% !important;
-}
-.head-global h2 {
-    margin-bottom: 15px !important;
-    font-size: 26px !important;
-    margin-top: 0 !important;
-}
-.filter-wrap .custom_search_wrap{
-    width: 237px !important;
-    float: right !important;
-    max-width: 100%;
-}
-.filter-wrap .custom_search_wrap form{
-    -webkit-box-pack: flex-end;
-    -ms-flex-pack: flex-end;
-    justify-content: flex-end;
-}
+    [_nghost-c7] {
+        padding: 10px 5px !important;
+        width:100% !important;
+    }
+    .head-global h2 {
+        margin-bottom: 15px !important;
+        font-size: 26px !important;
+        margin-top: 0 !important;
+    }
+    .filter-wrap .custom_search_wrap{
+        width: 237px !important;
+        float: right !important;
+        max-width: 100%;
+    }
+    .filter-wrap .custom_search_wrap form{
+        -webkit-box-pack: flex-end;
+        -ms-flex-pack: flex-end;
+        justify-content: flex-end;
+    }
 
-.custom_search_wrap .search-input input {
-    width: 100% !important;
-    float: right;
-    z-index: 999;
-    position: relative;
-    background-color: #fff;
-}
-.mymusic-wrap .track-table table{
-    width: 700px;
-    min-width: 700px;
-}
-.add-track-popup .modal-content{
-    padding: 40px 20px 30px;
-}
-.add-track-modal .media-upload-btn span{
-    font-size: 12px;
-    padding: 0 2px;
-}
-.media-upload-btn .instrution {
-    white-space: nowrap;
-}
-.add-track-modal .tr-name {
-    width: 100%;
-    padding-right: 0;
-    margin-top: 20px;
-}
-.add-track-modal .tr-price {
-    margin-top: 20px;
-    width: 100%;
-    padding-left: 0;
-    margin-bottom: 30px;
-}
-.add-track-modal h3{
-    margin-bottom: 15px;
-}
-.add-track-modal .button_group{
-    display: block;
-}
-.textarea-upload{
-    display: block;
-    width: 100%;
-    float: left;
-}
-
+    .custom_search_wrap .search-input input {
+        width: 100% !important;
+        float: right;
+        z-index: 999;
+        position: relative;
+        background-color: #fff;
+    }
+    .mymusic-wrap .track-table table{
+        width: 700px;
+        min-width: 700px;
+    }
+    .add-track-popup .modal-content{
+        padding: 40px 20px 30px;
+    }
+    .add-track-modal .media-upload-btn span{
+        font-size: 13px;
+        padding: 0 2px;
+    }
+    .song-photo .up_text{
+        padding-bottom: 5px !important;
+    }
+    .media-upload-btn .instrution {
+        white-space: nowrap;
+    }
+    .add-track-modal .tr-name {
+        margin-top: 0;
+        width: 100%;
+        padding-left: 0;
+        margin-bottom: 0;
+    }
+    .add-track-modal .tr-price {
+        margin-top: 20px;
+        width: 100%;
+        padding-left: 0;
+        margin-bottom: 30px;
+    }
+    .add-track-modal h3{
+        margin-bottom: 15px;
+    }
+    .add-track-modal .button_group{
+        display: block;
+    }
+    .textarea-upload{
+        display: block;
+        width: 100%;
+        float: left;
+    }
+    .contest-wrap .button_group {
+        margin-top: 20px;
+    }
+    .up_text{
+        padding-bottom: 10px;
+        font-size: 13px;
+    }
+    .logout_ul{
+        padding-right: 20px;
+        padding-top: 5px;
+    }
+    .edit-cover .social-acc .social-block{
+        flex: 0 0 50%;
+    }
+    .profile-tabs{
+        padding-top: 30px;
+    }
+    .pay-name, .card-num {
+        font-size: 13px;
+    }
+    #payment .nav-tabs>li>a.active,  #payment .nav-tabs>li>a{
+        font-weight: 500;
+    }
+    #payment .nav-tabs>li>a{
+        font-size: 14px;
+    }
+    #payment .nav-tabs{    margin-bottom: 20px;}
+    .pay-method{    margin-bottom: 20px;}
+    .billing-method form {
+        margin: 0;
+    }
 }
 @media screen and (max-width: 576px){
     .custom_header .col-xs-2, .custom_header .col-xs-3 {
@@ -3619,7 +3691,7 @@ button.close{    background: transparent;
         -ms-flex-item-align:center;
         align-self:center;
     }
-    .profile-tabs ul li{padding:5px  10px;}
+    .profile-tabs ul li{padding:5px;}
     .rofile-tab-content{padding-top: 30px;}
     .form-details{padding-top: 10px;}
     .notify-by-email ul li, .notify-by-sms ul li, .on-side-alert ul li{
@@ -3641,7 +3713,8 @@ button.close{    background: transparent;
     .media-upload-btn.song-photo{width: 100%;
         height: auto;
         float: left;
-        margin: 0;}
+        margin: 0;
+        margin-bottom: 15px;}
     .add-track-modal .track-description,.edit-track-modal .edit-profile-picture,.edit-track-modal .track-description{width: 100%; padding: 0; margin-top: 100px;}
     #edittrack, #addtrack{padding: 15px;}
     #edittrack .tr-name, #addtrack .tr-name{width: 100%; padding: 0; margin-bottom: 0;}
@@ -3650,6 +3723,7 @@ button.close{    background: transparent;
     .new-add-track-popup .modal-dialog {
         width: 90%;
         padding: 40px 20px 30px 20px;
+        margin: 30px auto;
     }
     .contest-wrap h3{
         margin-bottom: 20px;
@@ -3657,6 +3731,9 @@ button.close{    background: transparent;
 
 }
 @media screen and (max-width: 580px){
+    .profile-tabs ul li {
+        width: auto;
+    }
 	.social-login .google-login a i, .social-login .fb-login a i{position: static;}
 	.login-btn a{width: 100%;}
     .whats-new-wrap .head-global h2 {
@@ -3680,6 +3757,14 @@ button.close{    background: transparent;
     }
 }
 @media screen and (max-width: 480px){
+
+    .profile-tabs ul li a{    background-color: #f9f6f6;
+        border-radius: 0 !important;}
+    
+    .profile-tabs ul li a.active {
+        background-color: #9C27B0 !important;
+        color: #fff !important;
+    }
 	/*banner*/
 	.banner-content{padding: 30px 0;}
 	.banner-content h2{font-size: 26px;}
@@ -3794,7 +3879,7 @@ button.close{    background: transparent;
         flex: 0 0 50%;
     }
     .edit-head{padding: 20px 0;}
-    .update-email .email-form .form-group, .password-form .form-group, .billing-method .form-group, .form-group.street{width: 100%;}
+    .update-email .email-form .form-group, .password-form .form-group, .billing-method .form-group, .form-group.street{width: 100%;    padding: 0 0;}
     .profile-tabs-det .nav-tabs, .nav-tabs>li>a{padding: 10px;}
     .track-menu ul li{padding: 10px;}
     /*edit profile*/
@@ -3815,6 +3900,7 @@ button.close{    background: transparent;
 }.comment-wrap .cm-date-name, .track-comment-wrap .cm-date-name, .add-comment .form-group {
     width: 88%;
 }
+
 }
 @media screen and (max-width: 380px){
 	/*banner*/

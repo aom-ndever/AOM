@@ -134,7 +134,7 @@ export class ArtistComponent implements OnInit {
     if(flag) {
       this.region_filter.push(val);
     } else {
-      let index = this.region_filter.indxOf(val);
+      let index = this.region_filter.indexOf(val);
       this.region_filter.splice(index, 1);
     }
   }

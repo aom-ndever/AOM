@@ -11,52 +11,16 @@
         <div class="col-lg-10 col-md-9 col-sm-12 col-xs-12">
           <div class="sub-menu-filter">
           <div class="artist_heading">Region</div>
-            <div class="row ">
+          <div class="row">
               <div class="col-lg-2 col-md-4 col-sm-4 col-xs-4">
                 <div class="filter-subhead">Northeast</div>
                 <ul>
-                  <li>
+                  <li *ngFor="let s of state_list;" [style.display]="s['region']['name'] == 'northeast' ? 'block' : 'none'">
                     <div class="checkbox">
                         <label>
-                          <input type="checkbox" value="">
+                          <input type="checkbox" [value]="s._id" (click)="addRegionForFilter($event.target.checked, $event.target.value)">
                           <div class="chk_check"></div>
-                          <span>Marryland</span>
-                        </label>
-                    </div>
-                  </li>
-                  <li>
-                    <div class="checkbox">
-                        <label>
-                          <input type="checkbox" value="">
-                          <div class="chk_check"></div>
-                          <span>New Jersey</span>
-                        </label>
-                    </div>
-                  </li>
-                  <li>
-                    <div class="checkbox">
-                        <label>
-                          <input type="checkbox" value="">
-                          <div class="chk_check"></div>
-                          <span>Pennsylvania</span>
-                        </label>
-                    </div>
-                  </li>
-                  <li>
-                    <div class="checkbox">
-                        <label>
-                          <input checked="" type="checkbox" value="">
-                          <div class="chk_check"></div>
-                          <span>New York</span>
-                        </label>
-                    </div>
-                  </li>
-                  <li>
-                    <div class="checkbox">
-                        <label>
-                          <input type="checkbox" value="">    
-                          <div class="chk_check"></div>
-                          <span>Delaware</span>
+                          <span>{{s.name}}</span>
                         </label>
                     </div>
                   </li>
@@ -65,48 +29,12 @@
               <div class="col-lg-2 col-md-4 col-sm-4 col-xs-4">
                 <div class="filter-subhead">southeast</div>
                 <ul>
-                  <li>
+                  <li *ngFor="let s of state_list;" [style.display]="s['region']['name'] == 'southeast' ? 'block' : 'none'">
                     <div class="checkbox">
                         <label>
-                          <input type="checkbox" value="">
+                          <input type="checkbox" [value]="s._id" (click)="addRegionForFilter($event.target.checked, $event.target.value)">
                           <div class="chk_check"></div>
-                          <span>Marryland</span>
-                        </label>
-                    </div>
-                  </li>
-                  <li>
-                    <div class="checkbox">
-                        <label>
-                          <input type="checkbox" value="">
-                          <div class="chk_check"></div>
-                          <span>New Jersey</span>
-                        </label>
-                    </div>
-                  </li>
-                  <li>
-                    <div class="checkbox">
-                        <label>
-                          <input type="checkbox" value="">
-                          <div class="chk_check"></div>
-                          <span>Pennsylvania</span>
-                        </label>
-                    </div>
-                  </li>
-                  <li>
-                    <div class="checkbox">
-                        <label>
-                          <input checked="" type="checkbox" value=""> 
-                          <div class="chk_check"></div>
-                          <span>New York</span>
-                        </label>
-                    </div>
-                  </li>
-                  <li>
-                    <div class="checkbox">
-                        <label>
-                          <input type="checkbox" value="">    
-                          <div class="chk_check"></div>
-                          <span>Delaware</span>
+                          <span>{{s.name}}</span>
                         </label>
                     </div>
                   </li>
@@ -115,48 +43,12 @@
               <div class="col-lg-2 col-md-4 col-sm-4 col-xs-4">
                 <div class="filter-subhead">Midwest</div>
                 <ul>
-                  <li>
+                  <li *ngFor="let s of state_list;" [style.display]="s['region']['name'] == 'midwest' ? 'block' : 'none'">
                     <div class="checkbox">
                         <label>
-                          <input type="checkbox" value="">
+                          <input type="checkbox" [value]="s._id" (click)="addRegionForFilter($event.target.checked, $event.target.value)">
                           <div class="chk_check"></div>
-                          <span>Marryland</span>
-                        </label>
-                    </div>
-                  </li>
-                  <li>
-                    <div class="checkbox">
-                        <label>
-                          <input type="checkbox" value="">
-                          <div class="chk_check"></div>
-                          <span>New Jersey</span>
-                        </label>
-                    </div>
-                  </li>
-                  <li>
-                    <div class="checkbox">
-                        <label>
-                          <input type="checkbox" value="">
-                          <div class="chk_check"></div>
-                          <span>Pennsylvania</span>
-                        </label>
-                    </div>
-                  </li>
-                  <li>
-                    <div class="checkbox">
-                        <label>
-                          <input checked="" type="checkbox" value=""> 
-                          <div class="chk_check"></div>
-                          <span>New York</span>
-                        </label>
-                    </div>
-                  </li>
-                  <li>
-                    <div class="checkbox">
-                        <label>
-                          <input type="checkbox" value="">    
-                          <div class="chk_check"></div>
-                          <span>Delaware</span>
+                          <span>{{s.name}}</span>
                         </label>
                     </div>
                   </li>
@@ -165,48 +57,12 @@
               <div class="col-lg-2 col-md-4 col-sm-4 col-xs-4">
                 <div class="filter-subhead">Southwest</div>
                 <ul>
-                  <li>
+                  <li *ngFor="let s of state_list;" [style.display]="s['region']['name'] == 'southwest' ? 'block' : 'none'">
                     <div class="checkbox">
                         <label>
-                          <input type="checkbox" value="">
+                          <input type="checkbox" [value]="s._id" (click)="addRegionForFilter($event.target.checked, $event.target.value)">
                           <div class="chk_check"></div>
-                          <span>Marryland</span>
-                        </label>
-                    </div>
-                  </li>
-                  <li>
-                    <div class="checkbox">
-                        <label>
-                          <input type="checkbox" value="">
-                          <div class="chk_check"></div>
-                          <span>New Jersey</span>
-                        </label>
-                    </div>
-                  </li>
-                  <li>
-                    <div class="checkbox">
-                        <label>
-                          <input type="checkbox" value="">
-                          <div class="chk_check"></div>
-                          <span>Pennsylvania</span>
-                        </label>
-                    </div>
-                  </li>
-                  <li>
-                    <div class="checkbox">
-                        <label>
-                          <input checked="" type="checkbox" value=""> 
-                          <div class="chk_check"></div>
-                          <span>New York</span>
-                        </label>
-                    </div>
-                  </li>
-                  <li>
-                    <div class="checkbox">
-                        <label>
-                          <input type="checkbox" value="">    
-                          <div class="chk_check"></div>
-                          <span>Delaware</span>
+                          <span>{{s.name}}</span>
                         </label>
                     </div>
                   </li>
@@ -215,48 +71,12 @@
               <div class="col-lg-2 col-md-4 col-sm-4 col-xs-4">
                 <div class="filter-subhead">West</div>
                 <ul>
-                  <li>
+                  <li *ngFor="let s of state_list;" [style.display]="s['region']['name'] == 'west' ? 'block' : 'none'">
                     <div class="checkbox">
                         <label>
-                          <input type="checkbox" value="">
+                          <input type="checkbox" [value]="s._id" (click)="addRegionForFilter($event.target.checked, $event.target.value)">
                           <div class="chk_check"></div>
-                          <span>Marryland</span>
-                        </label>
-                    </div>
-                  </li>
-                  <li>
-                    <div class="checkbox">
-                        <label>
-                          <input type="checkbox" value="">
-                          <div class="chk_check"></div>
-                          <span>New Jersey</span>
-                        </label>
-                    </div>
-                  </li>
-                  <li>
-                    <div class="checkbox">
-                        <label>
-                          <input type="checkbox" value="">
-                          <div class="chk_check"></div>
-                          <span>Pennsylvania</span>
-                        </label>
-                    </div>
-                  </li>
-                  <li>
-                    <div class="checkbox">
-                        <label>
-                          <input checked="" type="checkbox" value=""> 
-                          <div class="chk_check"></div>
-                          <span>New York</span>
-                        </label>
-                    </div>
-                  </li>
-                  <li>
-                    <div class="checkbox">
-                        <label>
-                          <input type="checkbox" value="">    
-                          <div class="chk_check"></div>
-                          <span>Delaware</span>
+                          <span>{{s.name}}</span>
                         </label>
                     </div>
                   </li>
@@ -265,12 +85,12 @@
               <div class="col-lg-2 col-md-4 col-sm-4 col-xs-4">
                 <div class="filter-subhead">other</div>
                 <ul>
-                  <li>
+                  <li *ngFor="let s of state_list;" [style.display]="s['region']['name'] == 'other' ? 'block' : 'none'">
                     <div class="checkbox">
                         <label>
-                          <input type="checkbox" value="">
+                          <input type="checkbox" [value]="s._id" (click)="addRegionForFilter($event.target.checked, $event.target.value)">
                           <div class="chk_check"></div>
-                          <span>Puerto Rico</span>
+                          <span>{{s.name}}</span>
                         </label>
                     </div>
                   </li>

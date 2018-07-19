@@ -33,4 +33,8 @@ export class UsersService {
   getUserById(data : any) {
     return this.http.post(`${this.api_host}/admin/user`, data, {headers : this.headers});
   }
+  // get all state
+  getAllState() {
+    return this.http.post(`${this.api_host}/state`, null);
+  }
 }

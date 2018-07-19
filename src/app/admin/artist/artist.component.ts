@@ -25,6 +25,8 @@ export class ArtistComponent implements OnInit {
   dtOptions: DataTables.Settings = {};
   artist_data: any = [];
   music_type: any = [];
+  region_filter : any = [];
+  state_list : any = [];
   search_str: any = '';
   music_type_id: any = '';
   artist_id : any = '';
@@ -40,7 +42,7 @@ export class ArtistComponent implements OnInit {
     private modalService: BsModalService
   ) {
     console.log("Admin dashboard component");
-    
+    this.getAllState();
   }
 
   ngOnInit() {  
@@ -62,8 +64,18 @@ export class ArtistComponent implements OnInit {
         setTimeout(() => {
           dataTablesParameters['search'] = that.search_str;
           dataTablesParameters['order'] = '';
-          dataTablesParameters['music_type'] = that.music_type_id;
           dataTablesParameters['sort_by'] = that.sort_by;
+          dataTablesParameters['filter'] = [];
+          if(that.music_type_id) {
+            dataTablesParameters['filter'].push(
+              {'field' : 'music_type', value :  that.music_type_id}
+            );
+          }
+          if(that.region_filter.length) {
+            dataTablesParameters['filter'].push(
+              {'field' : 'state', value :  this.region_filter}
+            );
+          }
           that.ArtistService.getAllArtist(dataTablesParameters).subscribe(response => {
             that.artist_data = response['artist']['artist'];
             callback({
@@ -193,6 +205,25 @@ export class ArtistComponent implements OnInit {
       });
     }, (error) => {
       this.toastr.error(error['error'].message, 'Error!');
+    });
+  }
+
+  // get all state
+  getAllState() {
+    this.ArtistService.getAllState().subscribe((response) => {
+      this.state_list = response['state'];
+    });
+  }
+  // Add region for filtering
+  addRegionForFilter(flag : any, val : any) {
+    if(flag) {
+      this.region_filter.push(val);
+    } else {
+      let index = this.region_filter.indexOf(val);
+      this.region_filter.splice(index, 1);
+    }
+    this.datatableElement.dtInstance.then((dtInstance: DataTables.Api) => {
+      dtInstance.draw();
     });
   }
 }

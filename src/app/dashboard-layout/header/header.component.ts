@@ -15,6 +15,7 @@ export class HeaderComponent implements OnInit, OnDestroy  {
   login_form : FormGroup;
   forget_form : FormGroup;
   show_spinner : boolean = false;
+  login_validation : boolean = false;
   userdata : any = {};
   forget_pwd_data : any = {};
   private modalRef: NgbModalRef;
@@ -64,10 +65,12 @@ export class HeaderComponent implements OnInit, OnDestroy  {
     this.modalRef.close();
     this.modalForgetRef = this.modalService.open(content, { centered: true });
   }
-  login() { 
+  login(flag : boolean) { 
     console.log('login', this.userdata);
-    this.show_spinner = true;
-    if(this.userdata['type'] == 'artist') {
+    
+    if(this.userdata['type'] == 'artist' && flag) {
+      this.show_spinner = true;
+      this.login_validation = !flag;
       this.HeaderService.artist_login(this.userdata).subscribe(response => {
         console.log(response);
         localStorage.setItem('user', JSON.stringify(response));
@@ -88,6 +91,12 @@ export class HeaderComponent implements OnInit, OnDestroy  {
         this.show_spinner = false;
       });
     } else {
+      this.login_validation = !flag;
+    } 
+
+    if (this.userdata['type'] == 'listener' && flag) {
+      this.show_spinner = true;
+      this.login_validation = !flag;
       this.HeaderService.user_login(this.userdata).subscribe(response => {
         console.log(response);
         this.toastr.success('Login Done', 'Success!');
@@ -107,6 +116,8 @@ export class HeaderComponent implements OnInit, OnDestroy  {
       }, () => {
         this.show_spinner = false;
       });
+    } else {
+      this.login_validation = !flag;
     }
   }
 
@@ -140,5 +151,6 @@ export class HeaderComponent implements OnInit, OnDestroy  {
     localStorage.removeItem('user');
     this.user = '';
     this.router.navigate(['']);
+    this.toastr.success('Logged off', 'Success!');
   }
 }

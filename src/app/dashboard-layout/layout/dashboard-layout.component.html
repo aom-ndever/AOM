@@ -26,11 +26,14 @@
                     </span>
                     <div class="audio_time"><span id="running_time">{{running_time}}</span> / <span>{{total_time}}</span></div>
                 </div>  
-                <div class="progress " id="timeline">
+                <div class="progress">
+                    <input type="range" id="song_prog" min="0" (change)="manageProgress($event)">
+                </div>
+                <!-- <div class="progress " id="timeline">
                         <div class="progress-bar" id="playhead" role="progressbar"  aria-valuemax="100" style="width:10%">
                           <span class="sr-only">70% Complete</span>
                         </div>
-                      </div>
+                </div> -->
               </div>
               <div class="music_icons">
                   <img src="img/download.png"/>
