@@ -109,4 +109,9 @@ input[type="range"]:focus{
   .player-wrapper .progress-bar{    background-color: #9b26b0;}
   .cust_err_msg{display: block;font-size: 13px;margin-left: 12px;}
 
+  @media(max-width:580px){
+    #audioplayer{    position: relative;}
+    
+  }
+
 

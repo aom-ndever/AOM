@@ -5,7 +5,10 @@
         <div class="register-container">
           <div class="fle-row">
             <div class="main-step {{step_flag ? 'next_form' : 'previous_form'}}">
-                <a class="back-btn main_step_back" routerLink="" href="javascript:;"><img alt="Previou Arrow" src="img/prev-arrow.png"> Back</a>
+                <a class="back-btn main_step_back" routerLink="" href="javascript:;">
+                  <!-- <img alt="Previou Arrow" src="img/prev-arrow.png"> Back -->
+                  ×
+                </a>
               <div class="heading"><h3>Who are you?</h3></div>
               <div class="select-who">
                 <div class="artist"><a href="javascript:;"><img src="img/artist.png" alt="Artist" (click)="nxt_btn('artist', true)"><h3>Artist</h3></a></div>

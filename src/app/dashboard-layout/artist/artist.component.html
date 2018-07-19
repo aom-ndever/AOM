@@ -228,7 +228,7 @@
       </div>
     </div>
 
-    <div class="my-artists">
+    <div class="my-artists" *ngIf="user && user['user']">
       <div class="row">
         <div class="col-md-12">
           <div class="head-global"><h2>My Artists</h2></div>
@@ -236,35 +236,16 @@
       </div>
         <div class="highlights-wrap">
           <div class="row">
-            <div class="col-lg-3 col-md-4 col-sm-4 col-xs-6">
+            <div class="alert alert-info col-sm-12" *ngIf="my_follower_list['length'] <= 0">No data available.</div>
+            <div class="col-lg-3 col-md-4 col-sm-4 col-xs-6" *ngFor="let my of my_follower_list;let i = index;">
               <div class="final-wrap">
                 <div class="img-wrap">
-                  <img src="img/highlight-player.png" alt="Finalists">
-                  <a href="javascript:void(0)" class="fan"><i class="fa fa-heart" aria-hidden="true"></i></a>
+                  <img src="{{my['artist_id']['image'] ? artist_img_url+my['artist_id']['image'] : 'img/highlight-player.png'}}" alt="Finalists">
                 </div>
                 <div class="content-wrap">
                   <div class="player">
-                    <div class="title"><a href="#">DJ Bond</a></div>
-                    <div class="cat ele">Electronic</div>
-                  </div>
-                  <div class="location">
-                    <p><i class="fa fa-map-marker" aria-hidden="true"></i><span>Brooklyn, New York</span></p>
-                    
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="col-lg-3 col-md-4 col-sm-4 col-xs-6">
-              <div class="final-wrap">
-                <div class="img-wrap">
-                  <img src="img/highlight-player2.png" alt="Finalists">
-                  <a href="javascript:void(0)" class="fan"><i class="fa fa-heart" aria-hidden="true"></i></a>
-                </div>
-                <div class="content-wrap">
-                  <div class="player">
-                    <div class="title"><a href="#">DJ Bond</a></div>
-                    <div class="cat ele">Electronic</div>
+                    <div class="title"><a href="javascript:;" routerLink="/artist_profile/{{my['artist_id']['_id']}}">{{my['artist_id']['first_name']+' '+my['artist_id']['last_name']}}</a></div>
+                    <div class="cat {{my['artist_id']['music_type']['alias']}}">{{my['artist_id']['music_type']['name']}}</div>
                   </div>
                   <div class="location">
                     <p><i class="fa fa-map-marker" aria-hidden="true"></i><span>Brooklyn, New York</span></p>

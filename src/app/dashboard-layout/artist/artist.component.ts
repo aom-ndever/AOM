@@ -13,6 +13,7 @@ export class ArtistComponent implements OnInit {
     artist : []
   };
   show_filter : any = false;
+  user : any = {};
   search_str : any = '';
   adv_filter : any = {};
   region_filter : any = [];
@@ -25,18 +26,22 @@ export class ArtistComponent implements OnInit {
   track_url : any = environment.API_URL+environment.ARTIST_TRACK;
   audio_ins : any = [];
   state_list : any = [];
+  my_follower_list : any = [];
 
   constructor(
     private ArtistService : ArtistService,
     private toastr: ToastrService
   ) {
     this.getAllState();
+    this.user = JSON.parse(localStorage.getItem('user'));
+    console.log(this.user);
   }
 
   ngOnInit() {
     this.getAllData();
     this.getAllArtistV1Data({});
     this.getAllMusicType();
+    this.getMyFollower();
   }
   toggleFilter() {
     this.show_filter = !this.show_filter;
@@ -119,7 +124,12 @@ export class ArtistComponent implements OnInit {
       this.music_list = response['music'];
     });
   }
-
+  // Get my follower
+  getMyFollower() {
+    this.ArtistService.getMyFollower().subscribe((response) => {
+      this.my_follower_list = response['user'];
+    });
+  }
   // filter artistv1
   filterArtistv1(e : any) {
     if(e.keyCode == 13) {
