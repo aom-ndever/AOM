@@ -237,10 +237,6 @@
                 </div>
 
                 <div class="heading">
-                  <h3>Add Your Social Media</h3>
-                  <div class="error">
-                    <div class="error-message"><p>Please add at least one account  </p><i class="fa fa-exclamation-triangle"></i></div>
-                  </div>
                   <div class="cust_err_msg" *ngIf="artist_validation[5]">
                       <span class="text-danger">Avatar is required..</span>
                   </div>
@@ -317,9 +313,9 @@
                       <div class="form-group">
                           <label for="email">Email</label>
                           <input type="email" formControlName="email" [(ngModel)]="listener_data.email" class="form-control" id="email1" placeholder="Email">
-                          <div *ngIf="!listener_step1.controls['email'].valid && listener_step1.controls['email'].dirty">
+                          <div class="cust_err_msg" *ngIf="listener_validation[0] && !listener_step1.controls['email'].valid">
                             <span *ngIf="listener_step1.controls['email'].errors['required']" class="text-danger">Email is required.</span>
-                            <span *ngIf="listener_step1.controls['email'].errors['email']" class="text-danger">Email Mismatched.</span>
+                            <span *ngIf="listener_step1.controls['email'].errors['email'] && listener_step1.controls['email'].dirty" class="text-danger">Email Mismatched.</span>
                           </div>
                       </div>
                       <div [formGroup]="passwordFormGroup">
@@ -327,25 +323,26 @@
                           <label for="pwd">Password</label>
                           <input type="password" class="form-control" formControlName="password" [(ngModel)]="listener_data.password" placeholder="Password">
                           <div class="pwd-icon"><i class="fa fa-eye" aria-hidden="true"></i></div>
-                          <div *ngIf="!passwordFormGroup.controls['password'].valid && passwordFormGroup.controls['password'].dirty">
+                          <div class="cust_err_msg" *ngIf="listener_validation[0] && !passwordFormGroup.controls['password'].valid">
                             <span *ngIf="passwordFormGroup.controls['password'].errors['required']" class="text-danger">Password is required.</span>
-                            <span *ngIf="passwordFormGroup.controls['password'].errors['minlength']" class="text-danger">Must be longer than 6 characters.</span>
+                            <span *ngIf="passwordFormGroup.controls['password'].errors['minlength'] && passwordFormGroup.controls['password'].dirty" class="text-danger">Must be longer than 6 characters.</span>
                           </div>
                         </div>
                         <div class="form-group pwd-grp">
                           <label for="pwd">Confirm Password</label>
                           <input type="password" class="form-control" formControlName="conf"  placeholder="Confirm Password">
                           <div class="pwd-icon"><i class="fa fa-eye" aria-hidden="true"></i></div>
-                          <div *ngIf="!passwordFormGroup.controls['conf'].valid && passwordFormGroup.controls['conf'].dirty">
-                            <span *ngIf="passwordFormGroup.controls['conf'].errors['minlength']" class="text-danger">Must be longer than 6 characters.</span>
-                            <span *ngIf="passwordFormGroup.controls['conf'].errors['mismatch']" class="text-danger">Please enter correct confirm password.</span>
+                          <div class="cust_err_msg" *ngIf="listener_validation[0] && !passwordFormGroup.controls['conf'].valid ">
+                            <span *ngIf="passwordFormGroup.controls['conf'].errors['required']" class="text-danger">Confirm password is required.</span>
+                            <span *ngIf="passwordFormGroup.controls['conf'].errors['minlength'] && passwordFormGroup.controls['conf'].dirty" class="text-danger">Must be longer than 6 characters.</span>
+                            <span *ngIf="passwordFormGroup.controls['conf'].errors['mismatch'] && passwordFormGroup.controls['conf'].dirty" class="text-danger">Please enter correct confirm password.</span>
                           </div>
                         </div>
                       </div>
                   </div>
                   <div class="button_group">
                     <a href="javascript:;" class="back-btn" (click)="back_btn('listener')"><img src="img/prev-arrow.png" alt="Previou Arrow"> Back</a>
-                    <button type="submit" (click)="nxt_btn('listener')" [disabled]="!listener_step1.valid" class="next-btn">Next</button>
+                    <button type="submit" (click)="nxt_btn('listener', listener_step1.valid, 0)" class="next-btn">Next</button>
                   </div>
                 </form>
               </div>
@@ -364,10 +361,13 @@
                           <div class="chk_check"></div>
                         </label>
                     </div>
+                    <div class="terms_error_msg" *ngIf="listener_validation[1] && !listener_step2.controls['terms_condtion'].valid">
+                      <span *ngIf="listener_step2.controls['terms_condtion'].errors['required']" class="text-danger">Please select terms and conditions..</span>
+                    </div>
                   </div>
                   <div class="button_group">
                     <a href="javascript:;" class="back-btn" (click)="back_btn('listener')"><img src="img/prev-arrow.png" alt="Previou Arrow"> Back</a>
-                    <button type="submit" (click)="nxt_btn('listener')" [disabled]="!listener_step2.valid" class="next-btn">Next</button>
+                    <button type="submit" (click)="nxt_btn('listener', listener_step2.valid, 1)" class="next-btn">Next</button>
                   </div>
                 </form>
               </div>
@@ -380,14 +380,14 @@
                     <div class="form-group">
                         <label for="fname">First Name</label>
                         <input type="text" formControlName="fname" name="listener_fname" class="form-control" [(ngModel)]="listener_data.fname" placeholder="First Name">
-                        <div *ngIf="!listener_step3.controls['fname'].valid && listener_step3.controls['fname'].dirty">
+                        <div class="terms_error_msg" *ngIf="listener_validation[2] && !listener_step3.controls['fname'].valid">
                           <span *ngIf="listener_step3.controls['fname'].errors['required']" class="text-danger">First Name is required.</span>
                         </div>
                       </div>
                       <div class="form-group pwd-grp">
                         <label for="lanem">Last Name</label>
                         <input type="text" class="form-control" formControlName="lname" name="listener_lname" [(ngModel)]="listener_data.lname"  placeholder="Last Name">
-                        <div *ngIf="!listener_step3.controls['lname'].valid && listener_step3.controls['lname'].dirty">
+                        <div class="terms_error_msg" *ngIf="listener_validation[2] && !listener_step3.controls['lname'].valid">
                           <span *ngIf="listener_step3.controls['lname'].errors['required']" class="text-danger">Last Name is required.</span>
                         </div>
                       </div>
@@ -398,18 +398,27 @@
                             <option value="">Day</option>
                             <option *ngFor="let d of day" [value]="d">{{d}}</option>
                         </select>
+                        <div class="terms_error_msg" *ngIf="listener_validation[2] && !listener_step3.controls['day'].valid">
+                          <span *ngIf="listener_step3.controls['day'].errors['required']" class="text-danger">Day is required.</span>
+                        </div>
                       </div>
                       <div class="form-group">
                         <select class="form-control" id="month" formControlName="month" name="listener_month" [(ngModel)]="listener_data.month">
                             <option value="">Month</option>
                             <option *ngFor="let m of month" [value]="m">{{m}}</option>
                         </select>
+                        <div class="terms_error_msg" *ngIf="listener_validation[2] && !listener_step3.controls['month'].valid">
+                          <span *ngIf="listener_step3.controls['month'].errors['required']" class="text-danger">Month is required.</span>
+                        </div>
                       </div>
                       <div class="form-group">
                         <select class="form-control" id="year" formControlName="year" name="listener_year" [(ngModel)]="listener_data.year">
                             <option value="">Year</option>
                             <option *ngFor="let y of year" [value]="y">{{y}}</option>
                         </select>
+                        <div class="terms_error_msg" *ngIf="listener_validation[2] && !listener_step3.controls['year'].valid">
+                          <span *ngIf="listener_step3.controls['year'].errors['required']" class="text-danger">Year is required.</span>
+                        </div>
                       </div>
                       </div>
                       <div class="form-group gender-grp">
@@ -418,14 +427,22 @@
                             <option value="male">Male</option>
                             <option value="female">Female</option>
                         </select>
-                        <div *ngIf="!listener_step3.controls['gender'].valid && listener_step3.controls['gender'].dirty">
+                        <div class="terms_error_msg" *ngIf="listener_validation[2] && !listener_step3.controls['gender'].valid">
                           <span *ngIf="listener_step3.controls['gender'].errors['required']" class="text-danger">Gender is required.</span>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="control-label">Phone Number</label>
+                        <input name="listener_phone" class="form-control" formControlName="phone" [(ngModel)]="listener_data.phone_no"/>
+                        <div class="terms_error_msg" *ngIf="listener_validation[2] && !listener_step3.controls['phone'].valid">
+                          <span *ngIf="listener_step3.controls['phone'].errors['required']" class="text-danger">Phone number is required.</span>
+                          <span *ngIf="listener_step3.controls['phone'].errors['maxlength']  && listener_step3.controls['phone'].dirty" class="text-danger">Please enter valid phone number.</span>
                         </div>
                       </div>
                   </div>
                   <div class="button_group">
                     <a href="javascript:;" class="back-btn" (click)="back_btn('listener')"><img src="img/prev-arrow.png" alt="Previou Arrow"> Back</a>
-                    <button type="submit" (click)="nxt_btn('listener')" [disabled]="!listener_step3.valid" class="next-btn">Next</button>
+                    <button type="submit" (click)="nxt_btn('listener', listener_step3.valid, 2)" class="next-btn">Next</button>
                   </div>
                 </form>
               </div>
@@ -443,15 +460,35 @@
                       <div class="form-group">
                         <label for="zipcode">Zip code</label>
                         <input type="text" class="form-control"  formControlName="zipcode" (keyup)="getLocationForListener()"  [(ngModel)]="listener_data.zipcode" name="listener_zipcode"  placeholder="Zip Code">
-                        <div *ngIf="!listener_step4.controls['zipcode'].valid && listener_step4.controls['zipcode'].dirty">
+                        <div class="cust_err_msg" *ngIf="listener_validation[3] && !listener_step4.controls['zipcode'].valid">
                           <span *ngIf="listener_step4.controls['zipcode'].errors['required']" class="text-danger">Zipcode is required.</span>
-                          <span *ngIf="listener_step4.controls['zipcode'].errors['pattern']" class="text-danger">please enter valid zipcode.</span>
+                          <span *ngIf="listener_step4.controls['zipcode'].errors['pattern'] && listener_step4.controls['zipcode'].dirty" class="text-danger">please enter valid zipcode.</span>
                         </div>
                       </div>
+                      <div class="form-group gender-grp">
+                        <label for="region">Region</label>
+                        <select formControlName="region" class="form-control" name="listener_region" [(ngModel)]="listener_data.region" (change)="getStateByRegion(listener_data.region)">
+                          <option value="">Select Region</option>
+                          <option *ngFor="let r of region_list;" [value]="r._id">{{r['name']}}</option>
+                        </select>
+                        <div class="cust_err_msg" *ngIf="listener_validation[3] && !listener_step4.controls['region'].valid">
+                          <span *ngIf="listener_step4.controls['region'].errors['required']" class="text-danger">Region is required.</span>
+                        </div>
+                    </div>
+                    <div class="form-group gender-grp">
+                        <label for="region">State</label>
+                        <select formControlName="state" class="form-control" name="listener_state" [(ngModel)]="listener_data.state" >
+                          <option value="">Select State</option>
+                          <option *ngFor="let s of state_list;" [value]="s._id">{{s['name']}}</option>
+                        </select>
+                        <div class="cust_err_msg" *ngIf="listener_validation[3] && !listener_step4.controls['state'].valid">
+                          <span *ngIf="listener_step4.controls['state'].errors['required']" class="text-danger">State is required.</span>
+                        </div>
+                    </div>
                   </div>
                   <div class="button_group">
                     <a href="javascript:;" class="back-btn" (click)="back_btn('listener')"><img src="img/prev-arrow.png" alt="Previou Arrow"> Back</a>
-                    <button type="submit" (click)="nxt_btn('listener')" [disabled]="!listener_step4.valid" class="next-btn">Next</button>
+                    <button type="submit" (click)="nxt_btn('listener', listener_step4.valid, 3)" class="next-btn">Next</button>
                   </div>
                 </form>
               </div>
@@ -465,35 +502,14 @@
                         <input type="checkbox" name="music" (change)="onChangeForListener(x['_id'], $event.target.checked)">
                         <div class="music-checked chk-{{x['alias']}}"  >{{x.name}}</div>
                     </li>
-                    <!--li>
-                      <input type="checkbox" value="Hip Hop" (change)="onChangeForListener('Hip Hop', $event.target.checked)">
-                       <div class="music-checked">Hip Hop</div>
-                    </li>
-                    <li>
-                      <input type="checkbox" value="Pop" (change)="onChangeForListener('Pop', $event.target.checked)">
-                      <div class="music-checked chk-pop">Pop</div>
-                    </li>
-                    <li>
-                      <input type="checkbox" value="R&B" (change)="onChangeForListener('R&B', $event.target.checked)">
-                      <div class="music-checked chk-rb">R&B</div>
-                    </li>
-                    <li>
-                      <input type="checkbox" value="Electronic" (change)="onChangeForListener('Electronic', $event.target.checked)">
-                      <div class="music-checked chk-ele">Electronic</div>
-                    </li>
-                    <li>
-                      <input type="checkbox" value="Rock" (change)="onChangeForListener('Rock', $event.target.checked)">
-                      <div class="music-checked chk-rock">Rock</div>
-                    </li>
-                    <li>
-                      <input type="checkbox" value="Latin" (change)="onChangeForListener('Latin', $event.target.checked)">
-                      <div class="music-checked chk-latin">Latin</div>
-                    </li -->
                   </ul>
+                  <div class="cust_err_msg" *ngIf="listener_validation[4]">
+                    <span class="text-danger">Please select atleaset one music type.</span>
+                  </div>
                 </div>
                 <div class="button_group">
                   <a href="javascript:;" class="back-btn" (click)="back_btn('listener')"><img src="img/prev-arrow.png" alt="Previou Arrow"> Back</a>
-                  <button (click)="listener_submit()" [disabled]="listener_data.music_type.length <= 0 || show_spinner" class="next-btn">Finish <i *ngIf="show_spinner" class="fa fa-spinner fa-spin"></i></button>
+                  <button (click)="listener_submit()" [disabled]="show_spinner" class="next-btn">Finish <i *ngIf="show_spinner" class="fa fa-spinner fa-spin"></i></button>
                 </div>
               </div>
             </div>

@@ -25,6 +25,8 @@ export class UsersComponent implements OnInit {
   dtOptions: DataTables.Settings = {};
   user_data : any = [];
   search_str : any = '';
+  region_filter : any = [];
+  state_list : any = [];
   sort_by : any = -1;
   user_flag : any = [];
   user_detail : any = [];
@@ -36,6 +38,7 @@ export class UsersComponent implements OnInit {
     private modalService: BsModalService
   ) {
     console.log("Admin dashboard component");
+    this.getAllState();
   }
 
   ngOnInit() {
@@ -55,6 +58,12 @@ export class UsersComponent implements OnInit {
         setTimeout(() => {
           dataTablesParameters['search'] = that.search_str;
           dataTablesParameters['sort_by'] = that.sort_by;
+          dataTablesParameters['filter'] = [];
+          if(that.region_filter.length) {
+            dataTablesParameters['filter'].push(
+              {'field' : 'state', value :  this.region_filter}
+            );
+          }
           that.UsersService.getAllUser(dataTablesParameters).subscribe(response => {
             that.user_data = response['user']['user'];
                 callback({
@@ -114,6 +123,24 @@ export class UsersComponent implements OnInit {
     });
     this.UsersService.getFlagedUser(data).subscribe((response) => {
       this.user_flag = response['user'];
+    });
+  }
+  // get all state
+  getAllState() {
+    this.UsersService.getAllState().subscribe((response) => {
+      this.state_list = response['state'];
+    });
+  }
+  // Add region for filtering
+  addRegionForFilter(flag : any, val : any) {
+    if(flag) {
+      this.region_filter.push(val);
+    } else {
+      let index = this.region_filter.indexOf(val);
+      this.region_filter.splice(index, 1);
+    }
+    this.datatableElement.dtInstance.then((dtInstance: DataTables.Api) => {
+      dtInstance.draw();
     });
   }
 }

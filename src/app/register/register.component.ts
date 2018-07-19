@@ -3,6 +3,7 @@ import { FormGroup, FormBuilder, Validators, FormControl, AbstractControl, NG_VA
 import { ToastrService } from 'ngx-toastr';
 import { RegisterService } from './register.service';
 import { environment } from '../../environments/environment';
+import { Router } from '@angular/router';
 declare const gapi: any;
 
 @Component({
@@ -40,6 +41,7 @@ export class RegisterComponent implements OnInit {
   croppedImage: any = '';
   cropperReady = false;
   artist_validation = [false, false, false, false, false, false, false];
+  listener_validation = [false, false, false, false, false];
   // Artist From Group for validation
   artist_step1 : FormGroup;
   artist_step2 : FormGroup;
@@ -54,7 +56,11 @@ export class RegisterComponent implements OnInit {
   listener_step3 : FormGroup;
   listener_step4 : FormGroup;
 
-  constructor(private fb: FormBuilder, private RegisterService : RegisterService, private toastr: ToastrService) {
+  constructor(private fb: FormBuilder,
+    private RegisterService : RegisterService, 
+    private toastr: ToastrService,
+    private router: Router
+  ) {
     this.artist_cnt = 0;
     this.listner_cnt = 0;
     this.day = [];
@@ -79,8 +85,8 @@ export class RegisterComponent implements OnInit {
       validator : this.passwordMatchValidator
     });
     this.passwordFormGroup = this.fb.group({
-      password: ['', Validators.minLength(6)],
-      conf: ['',  Validators.minLength(6)]
+      password: ['', [Validators.required, Validators.minLength(6)]],
+      conf: ['',  [Validators.required, Validators.minLength(6)]]
     }, {
       validator : this.passwordMatchValidatorListener
     });
@@ -115,11 +121,14 @@ export class RegisterComponent implements OnInit {
       day : ['', [Validators.required]],
       month : ['', [Validators.required]],
       year : ['', [Validators.required]],
-      gender : ['', [Validators.required]]
+      gender : ['', [Validators.required]],
+      phone : ['', [Validators.required, Validators.pattern('[0-9]+'), Validators.minLength(10),Validators.maxLength(10)]]
     });
 
     this.listener_step4 = this.fb.group({
-      zipcode : ['', [Validators.required, Validators.pattern('^[0-9]+$')]]
+      zipcode : ['', [Validators.required, Validators.pattern('^[0-9]+$')]],
+      region : ['', [Validators.required]],
+      state : ['', [Validators.required]]
     });
 
     this.RegisterService.getAllMusicType().subscribe(response => {
@@ -284,6 +293,7 @@ export class RegisterComponent implements OnInit {
       };
       this.toastr.success('Registration done successfully and confirmation email sent to your account please verify to to do login.', 'Success!');
       this.show_spinner = false;
+      this.router.navigate(['']);
     }, error => {
       this.toastr.error(error['error'].message, 'Error!');
       this.show_spinner = false;
@@ -293,34 +303,43 @@ export class RegisterComponent implements OnInit {
   }
   // Handle submit event of listener form
   listener_submit() {
-    let data = {
-      email : this.listener_data['email'],
-      password : this.listener_data['password'],
-      first_name : this.listener_data['fname'],
-      last_name : this.listener_data['lname'],
-      zipcode : this.listener_data['zipcode'],
-      music_type : this.listener_data['music_type'],
-      gender : this.listener_data['gender'],
-      dob : new Date(this.listener_data['year'], this.listener_data['month'], this.listener_data['day'])
-    };
-    console.log('listener', data);
-    this.show_spinner = true;
-    this.RegisterService.listenerRegistration(data).subscribe(response => {
-      console.log('response', response);
-      this.step_flag = true;
-      this.listner_cnt = 0;
-      this.location = '';
-      this.listener_data = {
-        'music_type' : []
+    if(this.listener_data.music_type && this.listener_data.music_type.length <= 0) {
+      this.listener_validation[4] = true;
+    } else {
+      this.listener_validation[4] = false;
+      let data = {
+        email : this.listener_data['email'],
+        password : this.listener_data['password'],
+        first_name : this.listener_data['fname'],
+        last_name : this.listener_data['lname'],
+        zipcode : this.listener_data['zipcode'],
+        music_type : this.listener_data['music_type'],
+        gender : this.listener_data['gender'],
+        phone_no : this.listener_data['phone_no'],
+        state : this.listener_data['state'],
+        dob : new Date(this.listener_data['year'], this.listener_data['month'], this.listener_data['day'])
       };
-      this.toastr.success('Registration done successfully and confirmation email sent to your account please verify to to do login.', 'Success!');
-      this.show_spinner = false;
-    }, error => {
-      this.toastr.error(error['error'].message, 'Error!');
-      this.show_spinner = false;
-    }, () => {
-      this.show_spinner = false;
-    });
+      console.log('listener', data);
+      this.show_spinner = true;
+      this.RegisterService.listenerRegistration(data).subscribe(response => {
+        console.log('response', response);
+        this.step_flag = true;
+        this.listner_cnt = 0;
+        this.location = '';
+        this.listener_data = {
+          'music_type' : []
+        };
+        this.toastr.success('Registration done successfully and confirmation email sent to your account please verify to to do login.', 'Success!');
+        this.show_spinner = false;
+        this.router.navigate(['']);
+      }, error => {
+        this.toastr.error(error['error'].message, 'Error!');
+        this.show_spinner = false;
+      }, () => {
+        this.show_spinner = false;
+      });
+    }
+    
   }
   public nxt_btn(step_lbl : any, flag : any, index : any) {
     
@@ -329,12 +348,15 @@ export class RegisterComponent implements OnInit {
     if(step_lbl == 'artist' && flag) {
       this.artist_validation[index] = !flag;
       this.artist_cnt++;
-    } else {
+    } else if(step_lbl == 'artist') {
       this.artist_validation[index] = !flag;
     }
     if(step_lbl == 'listener' && flag) { 
       this.listner_cnt++;
-    } 
+      this.listener_validation[index] = !flag;
+    } else if(step_lbl == 'listener') {
+      this.listener_validation[index] = !flag;
+    }
   }
 
   public back_btn(step_lbl) {

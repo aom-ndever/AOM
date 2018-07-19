@@ -48,4 +48,8 @@ export class ArtistService {
   markAsFeatured(data : any) {
     return this.http.put(`${this.api_host}/admin/featured_artist`, data, {headers : this.headers});
   }
+  // get all state
+  getAllState() {
+    return this.http.post(`${this.api_host}/state`, null);
+  }
 }

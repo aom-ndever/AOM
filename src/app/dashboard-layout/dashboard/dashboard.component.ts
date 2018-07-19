@@ -1,15 +1,17 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { DashboardService } from './dashboard.service';
 import { ToastrService } from 'ngx-toastr';
 import { environment } from '../../../environments/environment' ;
 import { MessageService } from '../../shared/message.service';
+import { Subscription } from 'rxjs/Subscription';
+import { element } from '../../../../node_modules/protractor';
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css']
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent implements OnInit, OnDestroy {
   images: any = [];
   data : any = {
     finalist : [],
@@ -23,6 +25,7 @@ export class DashboardComponent implements OnInit {
   toggFleilter : boolean = false;
   toggSearch : boolean = false;
   search_str : any = '';
+  subscription: Subscription;
   constructor(
     private DashboardService : DashboardService,
     private toastr: ToastrService,
@@ -30,10 +33,29 @@ export class DashboardComponent implements OnInit {
   ) { 
     this.getAllData({});
     this.getAllMusicType();
+    this.subscription = this.MessageService.getMessage().subscribe((response) => {
+      if(response && response['action'] == 'stop') {
+        this.audio_ins[response['index']] = false;
+      }
+      if(response && response['action'] == 'start') {
+        this.audio_ins[response['index']] = true;
+      }
+      if(response && response['action'] == 'next') {
+        if(response['track_action'] && response['track_action'] == 'pause') {
+          this.audio_ins.forEach((ele, idx) => { this.audio_ins[idx] = false; } );
+          this.audio_ins[response['index']] = true;
+        }
+      }
+    });
   }
 
   ngOnInit() {
       console.log('Dashboard componenet is running');
+  }
+
+  ngOnDestroy() {
+    // unsubscribe to ensure no memory leaks
+      this.subscription.unsubscribe();
   }
 
   onChange(index: any) {
@@ -61,31 +83,31 @@ export class DashboardComponent implements OnInit {
 
   // Get all whatsnew data
   getAllData(data : any) {
+    this.audio_ins = [];
     this.DashboardService.getAllData(data).subscribe(response => {
       this.data = response;
+      response['new_uploads'].forEach((ele) => {
+        this.audio_ins.push(false);
+      });
       this.InitializeSider(this.data['finalist']);
     });
   }
   // Play audio
   playAudio(name : any, index : any, data : any){
-    // let audio = new Audio();
-    // audio.src = this.track_url+name;
-    // audio.load();
-    // audio.play();
-    if(!this.audio_ins.hasOwnProperty(index)) {
-      this.audio_ins[index] = this.track_url+name;
-      // this.audio_ins[index] = audio;
-      this.MessageService.sendMessage({data : data, index : index, action : 'start'});
-    }
+    data.forEach((ele, idx) => {
+      this.audio_ins[idx] = false;
+    });
+    this.audio_ins[index] = true;
+    this.MessageService.sendMessage({data : data, index : index, action : 'start'});
+    
   }
   // Stop audio
   stopAudio(index, data : any) {
-    console.log(this.audio_ins[index]);
-    // this.audio_ins[index].pause();
-    // this.audio_ins[index].currentTime = 0;
-    // this.audio_ins[index].stop();
+    data.forEach((ele, idx) => {
+      this.audio_ins[idx] = false;
+    });
     this.MessageService.sendMessage({data : data, index : index, action : 'stop'});
-    delete this.audio_ins[index];
+    
   }
   // Initialize slider
   InitializeSider(data : any) {
