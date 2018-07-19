@@ -176,6 +176,24 @@ follower_helper.get_all_followers = async (id) => {
     }
 };
 
+
+follower_helper.get_all_follows = async (id, userid) => {
+    try {
+        var user = await Followers
+            .find({ "artist_id": id, "user_id": userid })
+            .populate('user_id')
+            .populate('artist_id')
+            .lean();
+        if (user) {
+            return { "status": 1, "message": "user details found", "user": user };
+        } else {
+            return { "status": 2, "message": "user not found" };
+        }
+    } catch (err) {
+        return { "status": 0, "message": "Error occured while finding user", "error": err }
+    }
+};
+
 follower_helper.get_all_followers_by_user_id = async (id) => {
     try {
         var user = await Followers
