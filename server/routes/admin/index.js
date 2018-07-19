@@ -921,6 +921,18 @@ router.post('/user/artist_follow', async (req, res) => {
 });
 
 
+router.post('/user/get_artist_follow', async (req, res) => {
+  user_id = req.userInfo.id
+  var user = await follower_helper.get_all_followers_by_user_id(user_id);
+  if (user.status === 1) {
+    logger.trace("got details successfully");
+    res.status(config.OK_STATUS).json({ "status": 1, "user": user.user });
+  } else {
+    logger.error("Error occured while fetching = ", user);
+    res.status(config.INTERNAL_SERVER_ERROR).json(user);
+  }
+});
+
 /**
  * @api {post} /admin/get_participants_of_contest  Get participants as per conteset id - post 
  * @apiName Get participants as per conteset id- post

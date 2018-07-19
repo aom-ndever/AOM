@@ -50,30 +50,41 @@ router.post('/follow', async (req, res) => {
       user_id: req.userInfo.id,
       artist_id: req.body.artist_id
     };
-    var resp_data = await follower_helper.follow_artist(obj);
-    if (resp_data.status == 0) {
-      logger.error("Error occured while following = ", resp_data);
-      res.status(config.INTERNAL_SERVER_ERROR).json(resp_data);
-    } else {
-      var resp = await artist_helper.get_artist_by_id(obj.artist_id);
+    var resp_data = await follower_helper.get_all_follows(obj.artist_id, obj.user_id);
+    console.log('resp_data', resp_data);
 
-      no_follow = resp.artist.no_of_followers + 1
-      var resp_data = await track_helper.update_artist_for_followers(obj.artist_id, no_follow);
+    if (resp_data && resp_data.user == 0) {
 
-      var response = await user_helper.get_user_by_id(obj.user_id);
+      var resp_data = await follower_helper.follow_artist(obj);
+      if (resp_data.status == 0) {
+        logger.error("Error occured while following = ", resp_data);
+        res.status(config.INTERNAL_SERVER_ERROR).json(resp_data);
+      } else {
+        var resp = await artist_helper.get_artist_by_id(obj.artist_id);
 
-      no_follow = response.user.no_of_followers + 1
-      var resp_data = await user_helper.update_user_for_followers(obj.user_id, no_follow);
+        no_follow = resp.artist.no_of_followers + 1
+        var resp_data = await track_helper.update_artist_for_followers(obj.artist_id, no_follow);
 
-      let mail_resp = await mail_helper.send("listener_followed", {
-        "to": resp.artist.email,
-        "subject": "Music Social Voting - Email confirmation"
-      })
+        var response = await user_helper.get_user_by_id(obj.user_id);
+
+        no_follow = response.user.no_of_followers + 1
+        var resp_data = await user_helper.update_user_for_followers(obj.user_id, no_follow);
+
+        let mail_resp = await mail_helper.send("listener_followed", {
+          "to": resp.artist.email,
+          "subject": "Music Social Voting - Email confirmation"
+        })
 
 
-      logger.trace("followed successfully = ", resp_data);
-      res.status(config.OK_STATUS).json(resp_data);
+        logger.trace("followed successfully = ", resp_data);
+        res.status(config.OK_STATUS).json(resp_data);
+      }
     }
+    else {
+      logger.trace("Already Followed");
+      res.status(config.OK_STATUS).json({ "message": "Already Followed" });
+    }
+
   } else {
     logger.error("Validation Error = ", errors);
     res.status(config.BAD_REQUEST).json({ message: errors });
@@ -103,4 +114,16 @@ router.get('/followers', async (req, res) => {
   }
 });
 
+
+router.get('/get_followers', async (req, res) => {
+  user_id = req.userInfo.id
+  var user = await follower_helper.get_all_followers_by_user_id(user_id);
+  if (user.status === 1) {
+    logger.trace("got details successfully");
+    res.status(config.OK_STATUS).json(user);
+  } else {
+    logger.error("Error occured while fetching = ", user);
+    res.status(config.INTERNAL_SERVER_ERROR).json(user);
+  }
+});
 module.exports = router;
