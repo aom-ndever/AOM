@@ -34,13 +34,16 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.getAllData({});
     this.getAllMusicType();
     this.subscription = this.MessageService.getMessage().subscribe((response) => {
-      if(response && response['action'] == 'stop') {
+      if(response && response['list'] != 2) {
+        this.audio_ins.forEach((ele, idx) => { this.audio_ins[idx] = false; } );
+      }
+      if(response && response['action'] == 'stop' && response['list'] == 2) {
         this.audio_ins[response['index']] = false;
       }
-      if(response && response['action'] == 'start') {
+      if(response && response['action'] == 'start' && response['list'] == 2) {
         this.audio_ins[response['index']] = true;
       }
-      if(response && response['action'] == 'next') {
+      if(response && response['list'] == 2 && response['action'] == 'next' || response['action'] == 'prev' ) {
         if(response['track_action'] && response['track_action'] == 'pause') {
           this.audio_ins.forEach((ele, idx) => { this.audio_ins[idx] = false; } );
           this.audio_ins[response['index']] = true;
@@ -98,7 +101,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
       this.audio_ins[idx] = false;
     });
     this.audio_ins[index] = true;
-    this.MessageService.sendMessage({data : data, index : index, action : 'start'});
+    this.MessageService.sendMessage({data : data, index : index, action : 'start', list : 2});
     
   }
   // Stop audio
@@ -106,7 +109,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     data.forEach((ele, idx) => {
       this.audio_ins[idx] = false;
     });
-    this.MessageService.sendMessage({data : data, index : index, action : 'stop'});
+    this.MessageService.sendMessage({data : data, index : index, action : 'stop', list : 2});
     
   }
   // Initialize slider

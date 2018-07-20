@@ -30,6 +30,12 @@ export class ArtistService {
     this.headers = new HttpHeaders({ 'x-access-token' : this.user.token });  
     return this.http.get(`${this.api_host}/user/artist/followers`, {headers : this.headers});
   }
+  // Get my followers
+  getMyFollower() {
+    this.user = JSON.parse(localStorage.getItem('user'));
+    this.headers = new HttpHeaders({ 'x-access-token' : this.user.token });  
+    return this.http.get(`${this.api_host}/user/artist/get_followers`, {headers : this.headers});
+  }
   // Get All Atrist [Rising Star, chart topper, My Artist]
   getAllArtistv1(data) {
     return this.http.post(`${this.api_host}/artistv1`, data);

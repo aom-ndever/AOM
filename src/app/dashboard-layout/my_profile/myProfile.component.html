@@ -551,14 +551,15 @@
                                 </div>
                             </div>
                         </div>
-
                         <div class="tab-pane fade {{tab_cnt == 4 ? 'show active' : '' }}" id="media">
                             <div class="media-wrapper">
-                                <div class="col-md-12">
-                                    <div class="edit-head">Your Media</div>
-                                </div>
-                                <div class="col-md-12">
-                                    <a data-fancybox data-animation-duration="700" data-src="#addmedia" (click)="openAddMediaModal(content)" href="javascript:;" class="add-payment"><img src="img/icons8-plus_mathNormal.png" alt="">Add Media</a>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="edit-head">Your Media</div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <a data-fancybox data-animation-duration="700" data-src="#addmedia" (click)="openAddMediaModal(content)" href="javascript:;" class="add-payment"><img src="img/icons8-plus_mathNormal.png" alt="">Add Media</a>
+                                    </div>
                                 </div>
                                 <div class="row">
                                     <div class="alert alert-info col-sm-12" *ngIf="media_list.length == 0">

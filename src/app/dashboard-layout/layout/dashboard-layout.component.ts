@@ -24,6 +24,7 @@ export class DashboardLayoutComponent implements OnInit, AfterViewInit, AfterVie
   duration : any = '';
   song_cnt : any = 0;
   total_time : any = 0;
+  list_no : any = '';
   subscription: Subscription;
   constructor(
     private MessageService : MessageService
@@ -49,12 +50,13 @@ export class DashboardLayoutComponent implements OnInit, AfterViewInit, AfterVie
         });
         
       } 
-      if(this.audio_ins) {
-        this.audio_ins.currentTime = 0;
-        this.audio_ins.pause();
-      }
+      this.list_no = response['list'];
       if(response['action'] == 'start') {
         this.song_cnt = response['index'];
+        if(this.audio_ins) {
+          this.audio_ins.currentTime = 0;
+          this.audio_ins.pause();
+        }
         this.play();
       } else if (response['action'] == 'stop') {
         var pButton = document.getElementById('pButton');
@@ -89,7 +91,7 @@ export class DashboardLayoutComponent implements OnInit, AfterViewInit, AfterVie
       pButton.className = "pause";
     } else {
       this.audio_instance_list[this.song_cnt].pause();
-      this.MessageService.sendMessage({index : this.song_cnt, action : 'stop'});
+      this.MessageService.sendMessage({index : this.song_cnt, action : 'stop', list : this.list_no});
       pButton.className = "";
       pButton.className = "play";
     }
@@ -119,10 +121,11 @@ export class DashboardLayoutComponent implements OnInit, AfterViewInit, AfterVie
       this.song_cnt = cnt;
     else
       this.song_cnt = this.audio_instance_list.length - 1;
-    if(this.pButton.className == 'pause') {
+    var pButton = document.getElementById('pButton');
+    if(pButton.className == 'pause') {
+      this.MessageService.sendMessage({index : this.song_cnt, action : 'next', track_action : 'pause' , list : this.list_no});
       this.play();
     } 
-    
   }
 
   prev() {
@@ -135,7 +138,9 @@ export class DashboardLayoutComponent implements OnInit, AfterViewInit, AfterVie
       this.song_cnt = cnt;
     else
       this.song_cnt = 0;
-    if(this.pButton.className == 'pause') {
+    var pButton = document.getElementById('pButton');
+    if(pButton.className == 'pause') {
+      this.MessageService.sendMessage({index : this.song_cnt, action : 'prev', track_action : 'pause' , list : this.list_no});
       this.play();
     }
   }
@@ -167,6 +172,6 @@ export class DashboardLayoutComponent implements OnInit, AfterViewInit, AfterVie
       nprogres['value'] = e.target.value;
       this.audio_ins['currentTime'] = e.target.value;
       running_time.innerHTML = minutes + ':' +Math.round(seconds);
-    }, 100);
+    }, 500);
   }
 }

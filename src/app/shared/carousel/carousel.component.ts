@@ -1,7 +1,8 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { NgxCarousel } from 'ngx-carousel';
 import { environment } from '../../../environments/environment';
 import { MessageService } from '../message.service';
+import { Subscription } from 'rxjs/Subscription';
 
 @Component({
   moduleId: module.id,
@@ -9,16 +10,35 @@ import { MessageService } from '../message.service';
   templateUrl: './carousel.component.html',
   styleUrls: ['./carousel.component.scss']
 })
-export class CarouselComponent implements OnInit {
+export class CarouselComponent implements OnInit, OnDestroy {
   @Input() images: any[];
   @Input() showFavourit: boolean;
   @Input() carouselType : any;
   public carouselOne: NgxCarousel;
   track_url : any = environment.API_URL+environment.ARTIST_TRACK;
   audio_ins : any = [];
+  subscription: Subscription;
   constructor(
     private MessageService : MessageService
   ) {
+    
+    this.subscription = this.MessageService.getMessage().subscribe((response) => {
+      if(response && response['list'] != 1) {
+        this.audio_ins.forEach((ele, idx) => { this.audio_ins[idx] = false; } );
+      }
+      if(response && response['action'] == 'stop' && response['list'] == 1) {
+        this.audio_ins[response['index']] = false;
+      }
+      if(response && response['action'] == 'start' && response['list'] == 1) {
+        this.audio_ins[response['index']] = true;
+      }
+      if(response && response['list'] == 1 && response['action'] == 'next' || response['action'] == 'prev' ) {
+        if(response['track_action'] && response['track_action'] == 'pause') {
+          this.audio_ins.forEach((ele, idx) => { this.audio_ins[idx] = false; } );
+          this.audio_ins[response['index']] = true;
+        }
+      }
+    });
   }
   onChange(index: any) {
     if (this.images[index]['enable']) {
@@ -57,6 +77,15 @@ export class CarouselComponent implements OnInit {
         },
       };
     }
+
+    this.images.forEach((ele) => {
+      this.audio_ins.push(false);
+    });
+  }
+
+  ngOnDestroy() {
+    // unsubscribe to ensure no memory leaks
+      this.subscription.unsubscribe();
   }
 
   // Play audio
@@ -68,15 +97,14 @@ export class CarouselComponent implements OnInit {
     if(!this.audio_ins.hasOwnProperty(index)) {
       this.audio_ins[index] = this.track_url+name;
       // this.audio_ins[index] = audio;
-      this.MessageService.sendMessage({data : data, index : index, action : 'start'});
+      this.MessageService.sendMessage({data : data, index : index, action : 'start', list : 1});
     }
   }
   // Stop audio
-  stopAudio(index) {
-    console.log(this.audio_ins[index]);
-    this.audio_ins[index].pause();
-    this.audio_ins[index].currentTime = 0;
-    // this.audio_ins[index].stop();
-    delete this.audio_ins[index];
+  stopAudio(index : any, data : any) {
+    data.forEach((ele, idx) => {
+      this.audio_ins[idx] = false;
+    });
+    this.MessageService.sendMessage({data : data, index : index, action : 'stop', list : 1});
   }
 }

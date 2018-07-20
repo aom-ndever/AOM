@@ -16,7 +16,7 @@
             <div class="finalist-name">{{image.name}}</div>
             <div class="action-btn custom-action-btn">
                 <a [style.display]="!audio_ins[i] ? 'block' : 'none'" (click)="playAudio(image.audio, i, images)" class="play_img" ><img src="img/play_icon.png"/></a>
-                <a [style.display]="audio_ins[i] ? 'block' : 'none'" (click)="stopAudio(i)" class="pause_img"><img src="img/pause_icon.png"/></a>
+                <a [style.display]="audio_ins[i] ? 'block' : 'none'" (click)="stopAudio(i, images)" class="pause_img"><img src="img/pause_icon.png"/></a>
             </div>
           </div>
           <div class="location">
