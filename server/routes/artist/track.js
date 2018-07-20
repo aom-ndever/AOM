@@ -336,13 +336,15 @@ router.post("/change_status_of_download", async (req, res) => {
         if (resp.track.is_downloadable == false) {
             var stat = "true"
             var artist_resp = await artist_helper.update_download(artist_id, track_id, stat);
+
+            res.status(config.OK_STATUS).json({ "message": " you have turn on the download option" });
         }
         else {
             var stat = "false"
             var artist_resp = await artist_helper.update_download(artist_id, track_id, stat);
+            res.status(config.OK_STATUS).json({ "message": " you have turn off the download option" });
         }
-        logger.trace("Artist = ", { "artist": artist_resp });
-        res.status(config.OK_STATUS).json({ "artist": artist_resp });
+
     }
 
 });
