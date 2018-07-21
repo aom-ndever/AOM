@@ -13,6 +13,7 @@ export class ArtistComponent implements OnInit {
     artist : []
   };
   show_filter : any = false;
+  toggSearch : boolean = false;
   user : any = {};
   search_str : any = '';
   adv_filter : any = {};
@@ -174,5 +175,7 @@ export class ArtistComponent implements OnInit {
       this.state_list = response['state'];
     });
   }
-  
+  toggleSearch() {
+    this.toggSearch = !this.toggSearch;
+  }
 }

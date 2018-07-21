@@ -6,6 +6,7 @@ import { SlimScroll } from 'angular-io-slimscroll';
 import { HeaderComponent } from './header/header.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { DashboardLayoutComponent } from './layout/dashboard-layout.component';
+import { DashboardLayoutService } from './layout/dashboard-layout.service';
 import { WhatsNewComponent } from './whatsnew/whatsnew.component';
 import { ArtistComponent } from './artist/artist.component';
 import { ConmmentsComponent } from './artist_comments/comments.component';
@@ -108,7 +109,8 @@ import { AuthService } from '../shared/auth.service';
      TrackCommentsService,
      TrackCommentResolve,
      TrackArtistProfileResolve,
-     TrackDetailResolve
+     TrackDetailResolve,
+     DashboardLayoutService
     ]
 })
 export class LayoutModule { }

@@ -238,12 +238,21 @@ export class RegisterComponent implements OnInit {
     }
   }
 
-  fileChangeEvent(event: any): void {
+  fileChangeEvent(event: any){
+    const fileList: FileList = event.target.files;
+    console.log(event.target.files);
+    if(event.target.files.length > 0) {
+      const allow_types = ['image/png', 'image/jpg', 'image/jpeg'];
+      if(allow_types.indexOf(fileList[0].type) == -1) {
+        this.toastr.error('Invalid file format.','Error!');
+        return false;
+      }
       this.imageChangedEvent = event;
       console.log('object', event.target.files);
       if(event.target.files.length <= 0) {
         this.cropperReady = false;
       }
+    } 
   }
   imageCropped(image: string) {
       this.croppedImage = image;

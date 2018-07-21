@@ -9,7 +9,7 @@
       <div class="col-md-12">
         <div class="profile-detail-wrap">
           <div class="row">
-            <div class="col-md-3 col-sm-3 col-xs-4">
+            <div class="col-md-3 col-sm-4 col-xs-4">
               <div class="profile-img">
                 <a href="javascript:;">
                   <img src="{{artistdata['image'] ? artist_img_url +artistdata['image'] : 'img/profile-img.png'}}" alt="Profile Images">
@@ -34,6 +34,12 @@
                     </a>
                   </li>
                   <li>
+                    <a [href]="artistdata.social_media['instagram']">
+                      <i aria-hidden="true" class="fa fa-twitter"></i>
+                    </a>
+                  </li>
+
+                  <li>
                     <a [href]="artistdata.social_media['youtube']">
                       <i class="fa fa-youtube-play" aria-hidden="true"></i>
                     </a>
@@ -50,7 +56,7 @@
                 <span>{{artistfollower.length}}</span>
                 <ul>
                   <li *ngFor="let follower of artistfollower;">
-                    <img src="{{follower.image ? user_img_url+follower.image : 'img/fan1.png'}}" alt="Fan">
+                    <img src="{{follower && follower['user_id'].image ? user_img_url+follower['user_id'].image : 'img/fan1.png'}}" alt="Fan">
                   </li>
                 </ul>
               </div>
@@ -77,7 +83,7 @@
               </div>
 
             </div>
-            <div class="col-md-9 col-sm-9 col-xs-8">
+            <div class="col-md-9 col-sm-8 col-xs-8">
               <div class="artist-name">
                 <h2>
                   <a href="javascript:;">{{artistdata['first_name']+' '+artistdata['last_name']}}</a>

@@ -3,7 +3,7 @@ import {NgbModal, ModalDismissReasons, NgbModalRef} from '@ng-bootstrap/ng-boots
 import { environment } from '../../../environments/environment';
 import { ToastrService } from 'ngx-toastr';
 import { MyMusicService } from './my_music.service';
-declare var swal: any;
+import swal from 'sweetalert2'
 @Component({
   selector: 'app-music',
   templateUrl: './my_music.component.html',
@@ -111,6 +111,10 @@ export class MyMusicComponent implements OnInit {
   // open edit track model
   openEditTrackModal(content : any, obj : any) {
     this.trackdata = obj;
+    console.log(obj);
+    if(!obj.description || obj.description == "undefined") {
+      this.trackdata['description'] = '';
+    }
     if(obj.image) {
       this.edit_image = environment.API_URL+environment.ARTIST_TRACK+obj.image;
     } else {
@@ -126,7 +130,7 @@ export class MyMusicComponent implements OnInit {
   }
   
   addTrack() {
-    if(this.trackdata && this.trackdata.name && this.trackdata.price && this.audio_file && this.image_upload) {
+    if(this.trackdata && this.trackdata.name && this.trackdata.price && this.trackdata.price > 0 && this.audio_file && this.image_upload) {
       let formdata = new FormData();
       formdata.append('name', this.trackdata.name);
       formdata.append('price', this.trackdata.price);
@@ -140,6 +144,7 @@ export class MyMusicComponent implements OnInit {
         this.image_upload = '';
         this.toastr.success(response['message'],'Success!');
         this.getAllTrack();
+        this.modal_ref.close();
       }, error => {
         this.toastr.error(error['error'].message, 'Error!');
         this.show_spinner = false;
@@ -154,6 +159,8 @@ export class MyMusicComponent implements OnInit {
       this.toastr.error('Please select track name', 'Error!');
     } else if(!this.trackdata.price) {
       this.toastr.error('Please select track price', 'Error!');
+    } else if(this.trackdata.price < 0) {
+      this.toastr.error('Track price must be positive value.', 'Error!');
     } else {
       this.toastr.error('Please provide necessary details', 'Error!');
     }
@@ -176,8 +183,8 @@ export class MyMusicComponent implements OnInit {
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
       confirmButtonText: 'Yes, delete it!'
-    }).then(function(flag) {
-      if(flag) {
+    }).then((flag) => {
+      if(flag.value) {
         thi.MyMusicService.deleteTrackById(id).subscribe(response => {
           thi.getAllTrack();
           thi.toastr.success(response['message'], 'Success!');
@@ -191,7 +198,7 @@ export class MyMusicComponent implements OnInit {
   // update track
   updateTrack() {
     this.show_spinner = true;
-      if(this.trackdata && this.trackdata.name && this.trackdata.price && this.trackdata.image) {
+      if(this.trackdata && this.trackdata.name && this.trackdata.price && this.trackdata.price > 0 && this.trackdata.image) {
         let formdata = new FormData();
         formdata.append('name', this.trackdata.name);
         formdata.append('price', this.trackdata.price);
@@ -215,6 +222,8 @@ export class MyMusicComponent implements OnInit {
       this.toastr.error('Please select track name', 'Error!');
     } else if(!this.trackdata.price) {
       this.toastr.error('Please select track price', 'Error!');
+    } else if(this.trackdata.price < 0) {
+      this.toastr.error('Track price must be positive.', 'Error!');
     } else {
       this.toastr.error('Please provide necessary details', 'Error!');
     }
@@ -231,7 +240,7 @@ export class MyMusicComponent implements OnInit {
       cancelButtonColor: '#d33',
       confirmButtonText: 'Yes, delete it!'
     }).then(function(flag) {
-      if(flag) {
+      if(flag.value) {
         thi.MyMusicService.deleteTrackImageById(id).subscribe(response => {
           thi.getAllTrack();
           thi.edit_image = 'img/profile-img.png';

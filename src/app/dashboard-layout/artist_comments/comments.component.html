@@ -21,7 +21,7 @@
               <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="comments">
                   <h3 class="num-cmt">{{artistcomments.length}} Comments</h3>
-                  <div class="login-alert">Please Login to leave your comment</div>
+                  <div class="login-alert" *ngIf="!user">Please Login to leave your comment</div>
                   <div class="comment-block col-md-12 col-sm-12 col-xs-12" *ngFor="let comment of artistcomments;">
                     <div class="s-name" *ngIf="comment.track_id">{{comment.track_id.name}}</div>
                     <div class="pull-right" *ngIf="user && user.user && comment['user_id']['_id'] != user['user']['_id']">

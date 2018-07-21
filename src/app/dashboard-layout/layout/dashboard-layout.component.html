@@ -36,7 +36,7 @@
                 </div> -->
               </div>
               <div class="music_icons">
-                  <img src="img/download.png"/>
+                  <a href="javascript:;" *ngIf="user && audio_list[song_cnt] && audio_list[song_cnt]['is_downloadable']" (click)="downloadTrack()"><img src="img/download.png"/></a>
                   <img src="img/share.png"/>
               </div>
 
