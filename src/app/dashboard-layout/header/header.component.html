@@ -176,7 +176,7 @@
             <h3 class="forget_password_header">Forget Password</h3>
           <div class="col-sm-12">
             <div class="form-group">
-              <label class="control-label custom_form_label">login Type</label>
+              <label class="control-label custom_form_label">Account Type</label>
               <select class="form-control custom_form" formControlName="type" name="type" [(ngModel)]="forget_pwd_data.type" placeholder='Enter login type'>
                 <option value="artist">Artist</option>
                 <option value="user">User</option>
@@ -187,7 +187,7 @@
               <input class="form-control custom_form" name="email" formControlName="email" [(ngModel)]="forget_pwd_data.email" placeholder="Enter Email"/>
               <div *ngIf="!forget_form.controls['email'].valid && forget_form.controls['email'].dirty && forget_form.controls['email'].touched">
                 <span *ngIf="forget_form.controls['email'].errors['required']" class="text-danger">Email is required.</span>
-                <span *ngIf="forget_form.controls['email'].errors['email']" class="text-danger">Enter valid email.</span>
+                <span *ngIf="!forget_form.controls['email'].errors['required'] && forget_form.controls['email'].errors['email']" class="text-danger">Enter valid email.</span>
               </div>
             </div>
             <div class="form-group text-right">

@@ -252,6 +252,7 @@ export class MyProfileComponent implements OnInit {
           console.log('uploaded image', response);
           this.default_profile_img = environment.API_URL+environment.USER_IMG+response['image'];
           this.updateLocalStorage();
+          this.MessageService.sendMessage({updateProfile : true});
         }, error => {
           this.toastr.error(error['error'].message, 'Error!');
         }, () => {

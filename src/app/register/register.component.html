@@ -58,7 +58,7 @@
                             <input type="email" class="form-control" formControlName="email"  [(ngModel)]="artist_data.email" name="artist_email" id="email" placeholder="Email">
                             <div class="cust_err_msg" *ngIf="artist_validation[1] && !artist_step2.controls['email'].valid">
                               <span *ngIf="artist_step2.controls['email'].errors['required']" class="text-danger">Email is required.</span>
-                              <span *ngIf="artist_step2.controls['email'].errors['email'] && artist_step2.controls['email'].dirty" class="text-danger">Email Mismatched.</span>
+                              <span *ngIf="!artist_step2.controls['email'].errors['required'] && artist_step2.controls['email'].errors['email'] && artist_step2.controls['email'].dirty" class="text-danger">Email Mismatched.</span>
                             </div>
                           </div>                          
                           <div [formGroup]="passwordFormGroup1">
@@ -68,7 +68,7 @@
                               <div class="pwd-icon"><i class="fa fa-eye" aria-hidden="true"></i></div>
                               <div class="cust_err_msg" *ngIf="artist_validation[1] && !passwordFormGroup1.controls['artist_password'].valid ">
                                 <span *ngIf="passwordFormGroup1.controls['artist_password'].errors['required']" class="text-danger">Password is required.</span>
-                                <span *ngIf="passwordFormGroup1.controls['artist_password'].errors['minlength']" class="text-danger">Must be longer than 6 characters.</span>
+                                <span *ngIf="!passwordFormGroup1.controls['artist_password'].errors['required'] && passwordFormGroup1.controls['artist_password'].errors['minlength']" class="text-danger">Must be longer than 6 characters.</span>
                               </div>
                             </div>
                             <div class="form-group pwd-grp">
@@ -77,8 +77,8 @@
                               <div class="pwd-icon"><i class="fa fa-eye" aria-hidden="true"></i></div>
                               <div class="cust_err_msg" *ngIf="artist_validation[1] && !passwordFormGroup1.controls['artist_conf'].valid">
                                 <!-- <span *ngIf="passwordFormGroup.controls['conf'].errors['required']" class="text-danger">Confirm Password is required.</span> -->
-                                <span *ngIf="passwordFormGroup1.controls['artist_conf'].errors['minlength']" class="text-danger">Must be longer than 6 characters.</span>
-                                <span *ngIf="passwordFormGroup1.controls['artist_conf'].errors['mismatch']" class="text-danger">Please enter correct confirm password.</span>
+                                <span *ngIf="!passwordFormGroup1.controls['artist_conf'].errors['required'] && passwordFormGroup1.controls['artist_conf'].errors['minlength']" class="text-danger">Must be longer than 6 characters.</span>
+                                <span *ngIf="!passwordFormGroup1.controls['artist_conf'].errors['required'] && passwordFormGroup1.controls['artist_conf'].errors['mismatch']" class="text-danger">Please enter correct confirm password.</span>
                               </div>
                             </div>
                           </div>
@@ -127,7 +127,7 @@
                           <input class="form-control" id="phone" formControlName="phone" name="artist_phone" [(ngModel)]="artist_data.phone_no" />
                           <div class="cust_err_msg" *ngIf="artist_validation[2] && !artist_step3.controls['phone'].valid">
                             <span *ngIf="artist_step3.controls['phone'].errors['required']" class="text-danger">Phone Number is required.</span>
-                            <span *ngIf="artist_step3.controls['phone'].dirty && (artist_step3.controls['phone'].errors['pattern'] || artist_step3.controls['phone'].errors['maxlength'])" class="text-danger">Please enter valid format.</span>
+                            <span *ngIf="artist_step3.controls['phone'].dirty && (artist_step3.controls['phone'].errors['pattern'] || artist_step3.controls['phone'].errors['maxlength'] || artist_step3.controls['phone'].errors['minlength'] )" class="text-danger">Please enter valid format.</span>
                           </div>
                         </div>
                   </div>
@@ -344,7 +344,7 @@
                           <input type="email" formControlName="email" [(ngModel)]="listener_data.email" class="form-control" id="email1" placeholder="Email">
                           <div class="cust_err_msg" *ngIf="listener_validation[0] && !listener_step1.controls['email'].valid">
                             <span *ngIf="listener_step1.controls['email'].errors['required']" class="text-danger">Email is required.</span>
-                            <span *ngIf="listener_step1.controls['email'].errors['email'] && listener_step1.controls['email'].dirty" class="text-danger">Email Mismatched.</span>
+                            <span *ngIf="!listener_step1.controls['email'].errors['required'] && listener_step1.controls['email'].errors['email'] && listener_step1.controls['email'].dirty" class="text-danger">Email Mismatched.</span>
                           </div>
                       </div>
                       <div [formGroup]="passwordFormGroup">
@@ -354,7 +354,7 @@
                           <div class="pwd-icon"><i class="fa fa-eye" aria-hidden="true"></i></div>
                           <div class="cust_err_msg" *ngIf="listener_validation[0] && !passwordFormGroup.controls['password'].valid">
                             <span *ngIf="passwordFormGroup.controls['password'].errors['required']" class="text-danger">Password is required.</span>
-                            <span *ngIf="passwordFormGroup.controls['password'].errors['minlength'] && passwordFormGroup.controls['password'].dirty" class="text-danger">Must be longer than 6 characters.</span>
+                            <span *ngIf="!passwordFormGroup.controls['password'].errors['required'] && passwordFormGroup.controls['password'].errors['minlength'] && passwordFormGroup.controls['password'].dirty" class="text-danger">Must be longer than 6 characters.</span>
                           </div>
                         </div>
                         <div class="form-group pwd-grp">
@@ -363,8 +363,8 @@
                           <div class="pwd-icon"><i class="fa fa-eye" aria-hidden="true"></i></div>
                           <div class="cust_err_msg" *ngIf="listener_validation[0] && !passwordFormGroup.controls['conf'].valid ">
                             <span *ngIf="passwordFormGroup.controls['conf'].errors['required']" class="text-danger">Confirm password is required.</span>
-                            <span *ngIf="passwordFormGroup.controls['conf'].errors['minlength'] && passwordFormGroup.controls['conf'].dirty" class="text-danger">Must be longer than 6 characters.</span>
-                            <span *ngIf="passwordFormGroup.controls['conf'].errors['mismatch'] && passwordFormGroup.controls['conf'].dirty" class="text-danger">Please enter correct confirm password.</span>
+                            <span *ngIf="!passwordFormGroup.controls['conf'].errors['required'] && passwordFormGroup.controls['conf'].errors['minlength'] && passwordFormGroup.controls['conf'].dirty" class="text-danger">Must be longer than 6 characters.</span>
+                            <span *ngIf="passwordFormGroup.controls['conf'].errors['required'] && passwordFormGroup.controls['conf'].errors['mismatch'] && passwordFormGroup.controls['conf'].dirty" class="text-danger">Please enter correct confirm password.</span>
                           </div>
                         </div>
                       </div>
@@ -471,7 +471,7 @@
                         <input name="listener_phone" class="form-control" formControlName="phone" [(ngModel)]="listener_data.phone_no"/>
                         <div class="terms_error_msg" *ngIf="listener_validation[2] && !listener_step3.controls['phone'].valid">
                           <span *ngIf="listener_step3.controls['phone'].errors['required']" class="text-danger">Phone number is required.</span>
-                          <span *ngIf="listener_step3.controls['phone'].errors['maxlength']  && listener_step3.controls['phone'].dirty" class="text-danger">Please enter valid phone number.</span>
+                          <span *ngIf="(listener_step3.controls['phone'].errors['maxlength'] || listener_step3.controls['phone'].errors['minlength'])  && listener_step3.controls['phone'].dirty" class="text-danger">Please enter valid phone number.</span>
                         </div>
                       </div>
                   </div>

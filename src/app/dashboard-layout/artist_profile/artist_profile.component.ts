@@ -1,16 +1,18 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ArtistProfileService } from './artist_profile.service';
 import { ToastrService } from 'ngx-toastr';
 import { environment } from '../../../environments/environment' ;
 import {ActivatedRoute, Router} from "@angular/router";
 import { Lightbox } from 'angular2-lightbox';
+import { MessageService } from '../../shared/message.service';
+import { Subscription } from 'rxjs/Subscription';
 
 @Component({
   selector: 'app-artist_profile',
   templateUrl: './artist_profile.component.html',
   styleUrls: []
 })
-export class ArtistProfileComponent implements OnInit {
+export class ArtistProfileComponent implements OnInit, OnDestroy {
   artistdata : any = {};
   artisttrack : any = {};
   artistmedia : any = {};
@@ -29,14 +31,48 @@ export class ArtistProfileComponent implements OnInit {
   active_tab_index : any = 1;
   media_list : any = [];
   private _albums: any = [];
+  subscription: Subscription;
   constructor(
     private ArtistProfileService : ArtistProfileService,
     private toastr: ToastrService,
     private route: ActivatedRoute,
     private router: Router,
-    private lightbox: Lightbox
+    private lightbox: Lightbox,
+    private MessageService : MessageService
   ) {
     // this.getAllData();
+    this.subscription = this.MessageService.getMessage().subscribe((response) => {
+      if(response && response['list'] != 1) {
+        this.audio_ins.forEach((ele, idx) => { this.audio_ins[idx] = false; } );
+      }
+      if(response && response['list'] != 2) {
+        this.rank_audio_ins.forEach((ele, idx) => { this.rank_audio_ins[idx] = false; } );
+      }
+      if(response && response['action'] == 'stop' && response['list'] == 1) {
+        this.audio_ins[response['index']] = false;
+      }
+      if(response && response['action'] == 'stop' && response['list'] == 2) {
+        this.rank_audio_ins[response['index']] = false;
+      }
+      if(response && response['action'] == 'start' && response['list'] == 1) {
+        this.audio_ins[response['index']] = true;
+      }
+      if(response && response['action'] == 'start' && response['list'] == 2) {
+        this.rank_audio_ins[response['index']] = true;
+      }
+      if(response && response['list'] == 1 && response['action'] == 'next' || response['action'] == 'prev' ) {
+        if(response['track_action'] && response['track_action'] == 'pause') {
+          this.audio_ins.forEach((ele, idx) => { this.audio_ins[idx] = false; } );
+          this.audio_ins[response['index']] = true;
+        }
+      }
+      if(response && response['list'] == 2 && response['action'] == 'next' || response['action'] == 'prev' ) {
+        if(response['track_action'] && response['track_action'] == 'pause') {
+          this.rank_audio_ins.forEach((ele, idx) => { this.rank_audio_ins[idx] = false; } );
+          this.rank_audio_ins[response['index']] = true;
+        }
+      }
+    });
   }
 
   ngOnInit() {
@@ -60,45 +96,68 @@ export class ArtistProfileComponent implements OnInit {
     console.log(this.artistfollower);
   }
 
+  ngOnDestroy() {
+    // unsubscribe to ensure no memory leaks
+      this.subscription.unsubscribe();
+  }
+
   manageTabChange(index : any) {
     this.active_tab_index = index;
   }
 
   // Play audio
-  playAudio(name : any, index : any){
-    let audio = new Audio();
-    audio.src = this.track_url+name;
-    audio.load();
-    audio.play();
-    if(!this.audio_ins.hasOwnProperty(index)) {
-      this.audio_ins[index] = audio;
-    }
+  playAudio(name : any, index : any, data : any){
+    // let audio = new Audio();
+    // audio.src = this.track_url+name;
+    // audio.load();
+    // audio.play();
+    // if(!this.audio_ins.hasOwnProperty(index)) {
+    //   this.audio_ins[index] = audio;
+    // }
+    data.forEach((ele, idx) => {
+      this.audio_ins[idx] = false;
+    });
+    this.audio_ins[index] = true;
+    this.MessageService.sendMessage({data : data, index : index, action : 'start', list : 1});
   }
   // Stop audio
-  stopAudio(index) {
-    console.log(this.audio_ins[index]);
-    this.audio_ins[index].pause();
-    this.audio_ins[index].currentTime = 0;
-    // this.audio_ins[index].stop();
-    delete this.audio_ins[index];
+  stopAudio(index, data : any) {
+    // console.log(this.audio_ins[index]);
+    // this.audio_ins[index].pause();
+    // this.audio_ins[index].currentTime = 0;
+    // // this.audio_ins[index].stop();
+    // delete this.audio_ins[index];
+    data.forEach((ele, idx) => {
+      this.audio_ins[idx] = false;
+    });
+    this.MessageService.sendMessage({data : data, index : index, action : 'stop', list : 1});
   }
   // Play audio
-  playRankAudio(name : any, index : any){
-    let audio = new Audio();
-    audio.src = this.track_url+name;
-    audio.load();
-    audio.play();
-    if(!this.rank_audio_ins.hasOwnProperty(index)) {
-      this.rank_audio_ins[index] = audio;
-    }
+  playRankAudio(name : any, index : any, data : any){
+    // let audio = new Audio();
+    // audio.src = this.track_url+name;
+    // audio.load();
+    // audio.play();
+    // if(!this.rank_audio_ins.hasOwnProperty(index)) {
+    //   this.rank_audio_ins[index] = audio;
+    // }
+    data.forEach((ele, idx) => {
+      this.rank_audio_ins[idx] = false;
+    });
+    this.rank_audio_ins[index] = true;
+    this.MessageService.sendMessage({data : data, index : index, action : 'start', list : 2});
   }
   // Stop audio
-  stopRankAudio(index) {
-    console.log(this.audio_ins[index]);
-    this.rank_audio_ins[index].pause();
-    this.rank_audio_ins[index].currentTime = 0;
-    // this.audio_ins[index].stop();
-    delete this.rank_audio_ins[index];
+  stopRankAudio(index, data : any) {
+    // console.log(this.audio_ins[index]);
+    // this.rank_audio_ins[index].pause();
+    // this.rank_audio_ins[index].currentTime = 0;
+    // // this.audio_ins[index].stop();
+    // delete this.rank_audio_ins[index];
+    data.forEach((ele, idx) => {
+      this.rank_audio_ins[idx] = false;
+    });
+    this.MessageService.sendMessage({data : data, index : index, action : 'stop', list : 2});
   }
   // Follow artist
   followArtist(id : any, index : any) {

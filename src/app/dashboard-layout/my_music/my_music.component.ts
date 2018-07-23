@@ -38,16 +38,16 @@ export class MyMusicComponent implements OnInit, OnDestroy {
   ) {
     this.userinfo = JSON.parse(localStorage.getItem('user'));
     this.subscription = this.MessageService.getMessage().subscribe((response) => {
-      if(response && response['list'] != 2) {
+      if(response && response['list'] != 1) {
         this.audio_ins.forEach((ele, idx) => { this.audio_ins[idx] = false; } );
       }
-      if(response && response['action'] == 'stop' && response['list'] == 2) {
+      if(response && response['action'] == 'stop' && response['list'] == 1) {
         this.audio_ins[response['index']] = false;
       }
-      if(response && response['action'] == 'start' && response['list'] == 2) {
+      if(response && response['action'] == 'start' && response['list'] == 1) {
         this.audio_ins[response['index']] = true;
       }
-      if(response && response['list'] == 2 && response['action'] == 'next' || response['action'] == 'prev' ) {
+      if(response && response['list'] == 1 && response['action'] == 'next' || response['action'] == 'prev' ) {
         if(response['track_action'] && response['track_action'] == 'pause') {
           this.audio_ins.forEach((ele, idx) => { this.audio_ins[idx] = false; } );
           this.audio_ins[response['index']] = true;

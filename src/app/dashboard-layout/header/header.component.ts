@@ -81,7 +81,8 @@ export class HeaderComponent implements OnInit, OnDestroy  {
 
   openForgetPasswordModal(content) {
     this.modalRef.close();
-    this.modalForgetRef = this.modalService.open(content, { centered: true });
+    this.forget_pwd_data = {};
+    this.modalForgetRef = this.modalService.open(content, { centered: true, backdrop : true });
   }
   login(flag : boolean) { 
     console.log('login', this.userdata);
@@ -145,7 +146,11 @@ export class HeaderComponent implements OnInit, OnDestroy  {
       this.HeaderService.artistForgetPassword({email : this.forget_pwd_data.email}).subscribe(response => {
         this.toastr.success(response['message'], 'Success!');
       }, error => {
-        this.toastr.error(error['error'].message, 'Error!');
+        if(error['error'].message[0] && error['error'].message[0]['param'] && error['error'].message[0]['param'] == 'email') {
+          this.toastr.error(error['error'].message[0]['msg'], 'Error!');
+        } else {
+          this.toastr.error(error['error'].message, 'Error!');
+        }
         this.show_spinner = false;
       }, () => {
         this.forget_pwd_data = {};
@@ -156,7 +161,11 @@ export class HeaderComponent implements OnInit, OnDestroy  {
         console.log('user ', response);
         this.toastr.success(response['message'], 'Success!');
       }, error => {
-        this.toastr.error(error['error'].message, 'Error!');
+        if(error['error'].message[0] && error['error'].message[0]['param'] && error['error'].message[0]['param'] == 'email') {
+          this.toastr.error(error['error'].message[0]['msg'], 'Error!');
+        } else {
+          this.toastr.error(error['error'].message, 'Error!');
+        }
         this.show_spinner = false;
       }, () => {
         this.forget_pwd_data = {};
