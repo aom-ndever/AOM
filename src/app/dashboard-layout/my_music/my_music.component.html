@@ -27,10 +27,10 @@
                   <tr *ngFor="let t of tracklist; let i =  index;">
                     <td class="serial-num">{{i+1}}.</td>
                     <td class="play-option">
-                      <a href="javascript:;" (click)="playAudio(t.audio, i)" *ngIf="!audio_ins[i]">
+                      <a href="javascript:;" [style.display]="!audio_ins[i] ? 'block' : 'none'" (click)="playAudio(t.audio, i, tracklist)" >
                         <img src="img/new-play.png" alt="Play" >
                       </a>
-                      <a href="javascript:;" (click)="stopAudio(i)" *ngIf="audio_ins[i]">
+                      <a href="javascript:;" [style.display]="audio_ins[i] ? 'block' : 'none'" (click)="stopAudio(i, tracklist)" >
                         <img src="img/pause.png" alt="Play" >
                       </a>
                     </td>
@@ -88,8 +88,8 @@
                     <td class="serial-num">{{i+1}}.</td>
                     <td class="play-option">
                         <a href="javascript:;" >
-                          <img src="img/play.png " alt="Pause "  [style.display]="!audio_ins[i] ? 'block' : 'none'" (click)="playAudio(t.audio, i)">
-                          <img src="img/pause.png " alt="Pause "  [style.display]="audio_ins[i] ? 'block' : 'none'" (click)="stopAudio(i)">
+                          <img src="img/play.png " alt="Pause "  [style.display]="!audio_ins[i] ? 'block' : 'none'" (click)="playAudio(t.audio, i, tracklist)">
+                          <img src="img/pause.png " alt="Pause "  [style.display]="audio_ins[i] ? 'block' : 'none'" (click)="stopAudio(i, tracklist)">
                         </a>
                     </td>
                     <td class="track-pic"><a href="javascript:;">

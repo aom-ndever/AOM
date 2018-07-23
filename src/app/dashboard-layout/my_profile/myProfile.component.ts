@@ -124,7 +124,8 @@ export class MyProfileComponent implements OnInit {
       }
       let tmp = [];
       this.userdata['music_type'].forEach((ele) => {
-        tmp.push(ele['_id']);
+        if(ele)
+          tmp.push(ele);
       });
       this.userdata['music_type'] = tmp;
     }
@@ -362,7 +363,8 @@ export class MyProfileComponent implements OnInit {
         }
         let tmp = [];
         this.userdata['music_type'].forEach((ele) => {
-          tmp.push(ele['_id']);
+          if(ele)
+            tmp.push(ele);
         });
         this.userdata['music_type'] = tmp;
         localStorage.setItem('user', JSON.stringify(data));
