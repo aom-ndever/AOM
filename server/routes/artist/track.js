@@ -135,9 +135,9 @@ router.post("/", async (req, res) => {
  * @apiSuccess (Success 200) {Array} Track detail as per id
  * @apiError (Error 4xx) {String} message Validation or error message.
  */
-router.get('/', async (req, res) => {
+router.post('/tracks', async (req, res) => {
     artist_id = req.userInfo.id;
-    var track = await track_helper.get_all_track_of_artist(artist_id);
+    var track = await track_helper.get_all_track_of_artist(artist_id, req.body.start, req.body.length);
     if (track.status === 1) {
         logger.trace("got details successfully");
         res.status(config.OK_STATUS).json({ "status": 1, "track": track.music });

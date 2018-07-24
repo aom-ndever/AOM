@@ -655,20 +655,27 @@ router.post('/artist_reset_password', async (req, res) => {
           res.status(config.BAD_REQUEST).json({ "status": 0, "message": "Invalid token sent" });
         }
       } else {
-        if (decoded.artist_id) {
-          var update_resp = await artist_helper.update_artist_by_id(decoded.artist_id, { "password": bcrypt.hashSync(req.body.password, saltRounds) });
-          if (update_resp.status === 0) {
-            logger.trace("Error occured while updating artist : ", update_resp.error);
-            res.status(config.INTERNAL_SERVER_ERROR).json({ "status": 0, "message": "Error occured while verifying artist's email" });
-          } else if (update_resp.status === 2) {
-            logger.trace("artist has not updated");
-            res.status(config.BAD_REQUEST).json({ "status": 0, "message": "Error occured while reseting password of artist" });
-          } else {
+        var reset_resp = await artist_helper.get_artist_by_id(decoded.artist_id);
 
-            logger.trace("Password has been changed for artist - ", decoded.artist_id);
-            res.status(config.OK_STATUS).json({ "status": 1, "message": "Password has been changed" });
+        if (reset_resp.artist.reset == 1) {
+          if (decoded.artist_id) {
+            var update_resp = await artist_helper.update_artist_by_id(decoded.artist_id, { "password": bcrypt.hashSync(req.body.password, saltRounds) });
+            if (update_resp.status === 0) {
+              logger.trace("Error occured while updating artist : ", update_resp.error);
+              res.status(config.INTERNAL_SERVER_ERROR).json({ "status": 0, "message": "Error occured while verifying artist's email" });
+            } else if (update_resp.status === 2) {
+              logger.trace("artist has not updated");
+              res.status(config.BAD_REQUEST).json({ "status": 0, "message": "Error occured while reseting password of artist" });
+            } else {
+
+              logger.trace("Password has been changed for artist - ", decoded.artist_id);
+              res.status(config.OK_STATUS).json({ "status": 1, "message": "Password has been changed" });
+            }
+          } else {
           }
-        } else {
+        }
+        else {
+          res.status(config.BAD_REQUEST).json({ message: "Your link has expired" });
         }
       }
     });
@@ -776,21 +783,28 @@ router.post('/user_reset_password', async (req, res) => {
         }
       } else {
         logger.trace("Valid token. Reseting password for artist");
-        if (decoded.user_id) {
-          var update_resp = await user_helper.update_user_by_id(decoded.user_id, { "password": bcrypt.hashSync(req.body.password, saltRounds) });
-          if (update_resp.status === 0) {
-            logger.trace("Error occured while updating artist : ", update_resp.error);
-            res.status(config.INTERNAL_SERVER_ERROR).json({ "status": 0, "message": "Error occured while verifying user_id's email" });
-          } else if (update_resp.status === 2) {
-            logger.trace("artist has not updated");
-            res.status(config.BAD_REQUEST).json({ "status": 0, "message": "Error occured while reseting password of user" });
-          } else {
-            // Password reset!
-            logger.trace("Password has been changed for artist - ", decoded.user_id);
-            res.status(config.OK_STATUS).json({ "status": 1, "message": "Password has been changed" });
-          }
-        } else {
+        var reset_resp = await user_helper.get_user_by_id(decoded.user_id);
 
+        if (reset_resp.user.reset == 1) {
+          if (decoded.user_id) {
+            var update_resp = await user_helper.update_user_by_id(decoded.user_id, { "password": bcrypt.hashSync(req.body.password, saltRounds) });
+            if (update_resp.status === 0) {
+              logger.trace("Error occured while updating artist : ", update_resp.error);
+              res.status(config.INTERNAL_SERVER_ERROR).json({ "status": 0, "message": "Error occured while verifying user_id's email" });
+            } else if (update_resp.status === 2) {
+              logger.trace("artist has not updated");
+              res.status(config.BAD_REQUEST).json({ "status": 0, "message": "Error occured while reseting password of user" });
+            } else {
+              // Password reset!
+              logger.trace("Password has been changed for artist - ", decoded.user_id);
+              res.status(config.OK_STATUS).json({ "status": 1, "message": "Password has been changed" });
+            }
+          } else {
+
+          }
+        }
+        else {
+          res.status(config.BAD_REQUEST).json({ message: "Your link has expired" });
         }
       }
     });
@@ -798,6 +812,7 @@ router.post('/user_reset_password', async (req, res) => {
     res.status(config.BAD_REQUEST).json({ message: errors });
   }
 });
+
 
 
 
@@ -1091,7 +1106,6 @@ router.post('/admin_reset_password', async (req, res) => {
       } else {
         logger.trace("Valid token. Reseting password for artist");
         var reset_resp = await admin_helper.get_admin_by_id(decoded.admin_id);
-        console.log('fcvgnjmk,ol', reset_resp.admin.reset);
 
         if (reset_resp.admin.reset == 1) {
           if (decoded.admin_id) {
@@ -1112,7 +1126,7 @@ router.post('/admin_reset_password', async (req, res) => {
           }
         }
         else {
-          res.status(config.BAD_REQUEST).json({ message: "You have already used this link.. plz use forget password for another link" });
+          res.status(config.BAD_REQUEST).json({ message: "Your link has expired" });
         }
       }
     });
@@ -1186,8 +1200,7 @@ router.post("/state", async (req, res) => {
  * @apiError (Error 4xx) {String} message Validation or error message.
  */router.post("/whatsnew", async (req, res) => {
   var filter = {};
-  var page_no = {};
-  var page_size = {};
+
 
   var schema = {
     /* "page_no": {
@@ -1219,14 +1232,14 @@ router.post("/state", async (req, res) => {
   var errors = req.validationErrors();
   if (!errors) {
     var artist_ids = [];
-    var resp_artist = await artist_helper.get_artist_by_filter(filter);
+    var resp_artist = await artist_helper.get_artist_by_filter(filter, req.body.start, req.body.length);
 
     if (resp_artist.status == 1) {
       resp_artist.artist.forEach(artist => {
         artist_ids.push(new ObjectId(artist._id));
 
       });
-      var resp_track = await track_helper.get_track_by_filter(artist_ids, filter);
+      var resp_track = await track_helper.get_track_by_filter(artist_ids, filter, req.body.start, req.body.length);
       if (resp_track.status == 0 && resp_artist.status == 0) {
         logger.error("Error occured while fetching users = ", resp_track);
         res.status(config.INTERNAL_SERVER_ERROR).json(resp_track);
@@ -1277,7 +1290,7 @@ router.post("/mainpage", async (req, res) => {
     var artist_ids = [];
     var resp_artist = await track_helper.get_track_main(search, filters);
 
-    var resp_track = await track_helper.get_new_uploads(30);
+    var resp_track = await track_helper.get_new_uploads(30, req.body.start, req.body.length);
     if (resp_track.status == 0 && resp_artist.status == 0) {
       logger.error("Error occured while fetching users = ", resp_track);
       res.status(config.INTERNAL_SERVER_ERROR).json(resp_track);
@@ -1310,7 +1323,6 @@ router.post("/artistv1", async (req, res) => {
       filter[filter_criteria.field] = filter_criteria.value;
     });
   }
-  console.log('filter========>', filter);
   var schema = {};
   if (req.body.music_type) {
     filter_for_risingstar.music_type = {
@@ -1341,7 +1353,7 @@ router.post("/artistv1", async (req, res) => {
     var resp_artist = await artist_helper.get_new_uploads(filter);
 
     //var resp_track = await artist_helper.get_artist_by_id(filter);
-    var resp_chart = await artist_helper.get_all_artist();
+    var resp_chart = await artist_helper.get_all_artist(req.body.start, req.body.length);
 
     if (resp_artist.status == 0 && resp_chart.status == 0) {
       logger.error("Error occured while fetching users = ", resp_artist);

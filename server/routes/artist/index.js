@@ -153,6 +153,12 @@ router.put('/', function (req, res) {
     if (req.body.description) {
         obj.description = req.body.description
     }
+    if (req.body.region) {
+        obj.region = req.body.region
+    }
+    if (req.body.state) {
+        obj.state = req.body.state
+    }
 
 
     var user_resp = artist_helper.update_artist_by_id(req.userInfo.id, obj);

@@ -157,7 +157,10 @@ artist_helper.get_login_by_email = async (email) => {
  *          status 1 - If artist data found, with artist's documents
  *          status 2 - If artist not found, with appropriate message
  */
-artist_helper.get_all_artist = async (filter = {}) => {
+artist_helper.get_all_artist = async (start, length) => {
+
+    console.log('start', start);
+    console.log('length', length);
 
 
     try {
@@ -203,10 +206,17 @@ artist_helper.get_all_artist = async (filter = {}) => {
                 $sort: {
                     total: -1
                 }
-            }
+            },
+            {
+                $skip: start
+
+            },
+            {
+                $limit: length
+            },
 
         ]);
-        console.log('artist', artist);
+
 
         if (artist) {
             return { "status": 1, "message": "artist details found", "artist": artist };
@@ -218,10 +228,13 @@ artist_helper.get_all_artist = async (filter = {}) => {
     }
 };
 
-artist_helper.get_artist_by_filter = async (filter) => {
+artist_helper.get_artist_by_filter = async (filter, start, length) => {
     try {
         var artist = await Artist
             .find(filter)
+            .skip(start)
+            .limit(length)
+
             .populate('music_type')
             .lean();
 
