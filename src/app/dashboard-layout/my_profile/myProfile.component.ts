@@ -8,7 +8,8 @@ import { environment } from '../../../environments/environment';
 import { every } from 'rxjs/operator/every';
 import { Lightbox } from 'angular2-lightbox';
 import { Chart } from 'angular-highcharts';
-declare var swal: any;
+import { MessageService } from '../../shared/message.service';
+import swal from 'sweetalert2';
 @Component({
   selector: 'app-myProfile',
   templateUrl: './myProfile.component.html',
@@ -69,7 +70,8 @@ export class MyProfileComponent implements OnInit {
     private toastr: ToastrService,
     private router: Router,
     private modalService: NgbModal,
-    private lightbox: Lightbox
+    private lightbox: Lightbox,
+    private MessageService : MessageService
   ) {
     let data = JSON.parse(localStorage.getItem('user'));
     this.day = [];
@@ -90,7 +92,7 @@ export class MyProfileComponent implements OnInit {
       if(this.userdata.dob) {
         let dt =  new Date(this.userdata.dob);
         this.userdata['day'] = dt.getDate();
-        this.userdata['month'] = dt.getMonth() + 1;
+        this.userdata['month'] = dt.getMonth();
         this.userdata['year'] = dt.getFullYear();
       }
       if(this.userdata.image) {
@@ -114,12 +116,18 @@ export class MyProfileComponent implements OnInit {
       if(this.userdata.dob) {
         let dt =  new Date(this.userdata.dob);
         this.userdata['day'] = dt.getDate();
-        this.userdata['month'] = dt.getMonth() + 1;
+        this.userdata['month'] = dt.getMonth();
         this.userdata['year'] = dt.getFullYear();
       }
       if(this.userdata.image) {
         this.default_profile_img = environment.API_URL+environment.USER_IMG+this.userdata.image;
       }
+      let tmp = [];
+      this.userdata['music_type'].forEach((ele) => {
+        if(ele)
+          tmp.push(ele);
+      });
+      this.userdata['music_type'] = tmp;
     }
     this.MyProfileService.getAllMusicType().subscribe(response => {
       this.music_types = response['music'];
@@ -192,6 +200,7 @@ export class MyProfileComponent implements OnInit {
         console.log(response);
         this.toastr.success(response['message'], 'Success!');
         this.updateLocalStorage();
+        this.MessageService.sendMessage({updateProfile : true});
       }, error => {
         this.toastr.error(error['error'].message, 'Error!');
         this.show_spinner = false;
@@ -205,6 +214,7 @@ export class MyProfileComponent implements OnInit {
         console.log(response);
         this.toastr.success(response['message'], 'Success!');
         this.updateLocalStorage();
+        this.MessageService.sendMessage({updateProfile : true});
       }, error => {
         this.toastr.error(error['error'].message, 'Error!');
         this.show_spinner = false;
@@ -216,69 +226,85 @@ export class MyProfileComponent implements OnInit {
 
   updateProfileImage(event: any) {
     const fileList: FileList = event.target.files;
-    console.log(fileList);
-    let formData: FormData = new FormData();
-    formData.append('image', fileList[0]);
-    console.log(formData);
-    if(this.userdata.type == 'artist') {
-      this.MyProfileService.updateArtistProfileImage(formData).subscribe(response => {
-        console.log('uploaded image', response);
-        this.default_profile_img = environment.API_URL+environment.ARTIST_IMG+response['image'];
-        this.updateLocalStorage();
-      }, error => {
-        this.toastr.error(error['error'].message, 'Error!');
-      }, () => {
+    if(event.target.files.length > 0) {
+      const allow_types = ['image/png', 'image/jpg', 'image/jpeg'];
+      if(allow_types.indexOf(fileList[0].type) == -1) {
+        this.toastr.error('Invalid file format.','Error!');
+        return false;
+      }
+      console.log(fileList);
+      let formData: FormData = new FormData();
+      formData.append('image', fileList[0]);
+      console.log(formData);
+      if(this.userdata.type == 'artist') {
+        this.MyProfileService.updateArtistProfileImage(formData).subscribe(response => {
+          console.log('uploaded image', response);
+          this.default_profile_img = environment.API_URL+environment.ARTIST_IMG+response['image'];
+          this.updateLocalStorage();
+          this.MessageService.sendMessage({updateProfile : true});
+        }, error => {
+          this.toastr.error(error['error'].message, 'Error!');
+        }, () => {
 
-      });
-    } else {
-      this.MyProfileService.updateUserProfileImage(formData).subscribe(response => {
-        console.log('uploaded image', response);
-        this.default_profile_img = environment.API_URL+environment.USER_IMG+response['image'];
-        this.updateLocalStorage();
-      }, error => {
-        this.toastr.error(error['error'].message, 'Error!');
-      }, () => {
+        });
+      } else {
+        this.MyProfileService.updateUserProfileImage(formData).subscribe(response => {
+          console.log('uploaded image', response);
+          this.default_profile_img = environment.API_URL+environment.USER_IMG+response['image'];
+          this.updateLocalStorage();
+          this.MessageService.sendMessage({updateProfile : true});
+        }, error => {
+          this.toastr.error(error['error'].message, 'Error!');
+        }, () => {
 
-      });
-    }
-    if (fileList.length > 0) {
-      const fileExtention = fileList[0].name.split('.');
-      const file: File = fileList[0];
-        const reader = new FileReader();
-        reader.onload = (e: any) => {
-          const data = {};
-            let imageBuffer = e.target.result;
-            this.default_profile_img = imageBuffer;
-        };
-        reader.readAsDataURL(event.target.files[0]);
+        });
+      }
+      if (fileList.length > 0) {
+        const fileExtention = fileList[0].name.split('.');
+        const file: File = fileList[0];
+          const reader = new FileReader();
+          reader.onload = (e: any) => {
+            const data = {};
+              let imageBuffer = e.target.result;
+              this.default_profile_img = imageBuffer;
+          };
+          reader.readAsDataURL(event.target.files[0]);
+        }
       }
     }
   
   updateCoverImage(event : any) {
     const fileList: FileList = event.target.files;
     console.log(fileList);
-    const formData: FormData = new FormData();
-    formData.append('cover_image', fileList[0], fileList[0]['name']);
-    this.MyProfileService.updateCoverImage(formData).subscribe(response => {
-      console.log('uploaded image', response);
-      this.updateLocalStorage();
-    }, error => {
-      this.toastr.error(error['error'].message, 'Error!');
-    }, () => {
-
-    });
-    if (fileList.length > 0) {
-      const fileExtention = fileList[0].name.split('.');
-      const file: File = fileList[0];
-        const reader = new FileReader();
-        reader.onload = (e: any) => {
-          const data = {};
-            let imageBuffer = e.target.result;
-            this.default_cover_img = imageBuffer;
-        };
-        reader.readAsDataURL(event.target.files[0]);
+    if(event.target.files.length > 0) {
+      const allow_types = ['image/png', 'image/jpg', 'image/jpeg'];
+      if(allow_types.indexOf(fileList[0].type) == -1) {
+        this.toastr.error('Invalid file format.','Error!');
+        return false;
       }
+      const formData: FormData = new FormData();
+      formData.append('cover_image', fileList[0], fileList[0]['name']);
+      this.MyProfileService.updateCoverImage(formData).subscribe(response => {
+        console.log('uploaded image', response);
+        this.updateLocalStorage();
+      }, error => {
+        this.toastr.error(error['error'].message, 'Error!');
+      }, () => {
+
+      });
+      if (fileList.length > 0) {
+        const fileExtention = fileList[0].name.split('.');
+        const file: File = fileList[0];
+          const reader = new FileReader();
+          reader.onload = (e: any) => {
+            const data = {};
+              let imageBuffer = e.target.result;
+              this.default_cover_img = imageBuffer;
+          };
+          reader.readAsDataURL(event.target.files[0]);
+        }
     }
+  }
 
   updateLocalStorage() {
     if(this.userdata.type == 'artist') {
@@ -296,7 +322,7 @@ export class MyProfileComponent implements OnInit {
         if(this.userdata.dob) {
           let dt =  new Date(this.userdata.dob);
           this.userdata['day'] = dt.getDate();
-          this.userdata['month'] = dt.getMonth() + 1;
+          this.userdata['month'] = dt.getMonth();
           this.userdata['year'] = dt.getFullYear();
         }
         if(!this.userdata.social_media) {
@@ -330,12 +356,18 @@ export class MyProfileComponent implements OnInit {
         if(this.userdata.dob) {
           let dt =  new Date(this.userdata.dob);
           this.userdata['day'] = dt.getDate();
-          this.userdata['month'] = dt.getMonth() + 1;
+          this.userdata['month'] = dt.getMonth();
           this.userdata['year'] = dt.getFullYear();
         }
         if(this.userdata.image) {
           this.default_profile_img = environment.API_URL+environment.USER_IMG+this.userdata.image;
         }
+        let tmp = [];
+        this.userdata['music_type'].forEach((ele) => {
+          if(ele)
+            tmp.push(ele);
+        });
+        this.userdata['music_type'] = tmp;
         localStorage.setItem('user', JSON.stringify(data));
       });
     }
@@ -352,7 +384,7 @@ export class MyProfileComponent implements OnInit {
         cancelButtonColor: '#d33',
         confirmButtonText: 'Yes, delete it!'
       }).then(function(flag) {
-        if(flag) {
+        if(flag.value) {
           thi.MyProfileService.deleteArtistImage(thi.userdata._id).subscribe(response => {
             thi.default_profile_img = 'img/profile-img.png';
             thi.updateLocalStorage();
@@ -375,7 +407,7 @@ export class MyProfileComponent implements OnInit {
         cancelButtonColor: '#d33',
         confirmButtonText: 'Yes, delete it!'
       }).then(function(flag) {
-        if(flag) {
+        if(flag.value) {
           thi.MyProfileService.deleteArtistCoverImage(thi.userdata._id).subscribe(response => {
             thi.default_cover_img = 'img/edit-cover.jpg';
             thi.updateLocalStorage();
@@ -398,7 +430,7 @@ export class MyProfileComponent implements OnInit {
         cancelButtonColor: '#d33',
         confirmButtonText: 'Yes, delete it!'
       }).then(function(flag) {
-        if(flag) {
+        if(flag.value) {
           thi.MyProfileService.deleteUserImage(thi.userdata._id).subscribe(response => {
             thi.default_profile_img = 'img/profile-img.png';
             thi.updateLocalStorage();
@@ -565,12 +597,14 @@ export class MyProfileComponent implements OnInit {
         cancelButtonColor: '#d33',
         confirmButtonText: 'Yes, delete it!'
       }).then(function(flag) {
-        thi.MyProfileService.removeMediaById(id).subscribe(response =>{
-          thi.toastr.success(response['message'], 'Success!');
-          thi.getMediaList();
-        }, error => {
-          thi.toastr.error(error['error'].message, 'Error!');
-        });
+        if(flag.value) {
+          thi.MyProfileService.removeMediaById(id).subscribe(response =>{
+            thi.toastr.success(response['message'], 'Success!');
+            thi.getMediaList();
+          }, error => {
+            thi.toastr.error(error['error'].message, 'Error!');
+          });
+        }
       });
   }
 

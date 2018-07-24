@@ -1,15 +1,17 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import {NgbModal, ModalDismissReasons, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
 import { environment } from '../../../environments/environment';
 import { ToastrService } from 'ngx-toastr';
 import { MyMusicService } from './my_music.service';
-declare var swal: any;
+import { MessageService } from '../../shared/message.service';
+import { Subscription } from 'rxjs/Subscription';
+import swal from 'sweetalert2'
 @Component({
   selector: 'app-music',
   templateUrl: './my_music.component.html',
   styleUrls: []
 })
-export class MyMusicComponent implements OnInit {
+export class MyMusicComponent implements OnInit, OnDestroy {
   show_filter : boolean = false;
   tab_cnt : Number = 1;
   modal_ref : NgbModalRef;
@@ -27,18 +29,42 @@ export class MyMusicComponent implements OnInit {
   contest_id : any = '';
   add_track_img : any = '';
   add_track_audio : any = '';
+  subscription: Subscription;
   constructor(
     private modalService: NgbModal,
     private MyMusicService : MyMusicService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private MessageService : MessageService
   ) {
     this.userinfo = JSON.parse(localStorage.getItem('user'));
+    this.subscription = this.MessageService.getMessage().subscribe((response) => {
+      if(response && response['list'] != 1) {
+        this.audio_ins.forEach((ele, idx) => { this.audio_ins[idx] = false; } );
+      }
+      if(response && response['action'] == 'stop' && response['list'] == 1) {
+        this.audio_ins[response['index']] = false;
+      }
+      if(response && response['action'] == 'start' && response['list'] == 1) {
+        this.audio_ins[response['index']] = true;
+      }
+      if(response && response['list'] == 1 && response['action'] == 'next' || response['action'] == 'prev' ) {
+        if(response['track_action'] && response['track_action'] == 'pause') {
+          this.audio_ins.forEach((ele, idx) => { this.audio_ins[idx] = false; } );
+          this.audio_ins[response['index']] = true;
+        }
+      }
+    });
   }
 
   ngOnInit() {
       this.getAllTrack();
       this.getAllMusicType();
       this.getAllContest();
+  }
+
+  ngOnDestroy() {
+    // unsubscribe to ensure no memory leaks
+      this.subscription.unsubscribe();
   }
 
   toggleFilter() {
@@ -111,6 +137,10 @@ export class MyMusicComponent implements OnInit {
   // open edit track model
   openEditTrackModal(content : any, obj : any) {
     this.trackdata = obj;
+    console.log(obj);
+    if(!obj.description || obj.description == "undefined") {
+      this.trackdata['description'] = '';
+    }
     if(obj.image) {
       this.edit_image = environment.API_URL+environment.ARTIST_TRACK+obj.image;
     } else {
@@ -126,7 +156,7 @@ export class MyMusicComponent implements OnInit {
   }
   
   addTrack() {
-    if(this.trackdata && this.trackdata.name && this.trackdata.price && this.audio_file && this.image_upload) {
+    if(this.trackdata && this.trackdata.name && this.trackdata.price && this.trackdata.price > 0 && this.audio_file && this.image_upload) {
       let formdata = new FormData();
       formdata.append('name', this.trackdata.name);
       formdata.append('price', this.trackdata.price);
@@ -140,6 +170,7 @@ export class MyMusicComponent implements OnInit {
         this.image_upload = '';
         this.toastr.success(response['message'],'Success!');
         this.getAllTrack();
+        this.modal_ref.close();
       }, error => {
         this.toastr.error(error['error'].message, 'Error!');
         this.show_spinner = false;
@@ -154,15 +185,18 @@ export class MyMusicComponent implements OnInit {
       this.toastr.error('Please select track name', 'Error!');
     } else if(!this.trackdata.price) {
       this.toastr.error('Please select track price', 'Error!');
+    } else if(this.trackdata.price < 0) {
+      this.toastr.error('Track price must be positive value.', 'Error!');
     } else {
       this.toastr.error('Please provide necessary details', 'Error!');
     }
   }
   // Get all track
   getAllTrack() {
+    this.audio_ins = [];
     this.MyMusicService.getAllTrack().subscribe(response => {
-      console.log(response);
       this.tracklist = response['track'];
+      this.tracklist.forEach((ele) => {this.audio_ins.push(false);});
     });
   }
   // Remove track by id
@@ -176,8 +210,8 @@ export class MyMusicComponent implements OnInit {
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
       confirmButtonText: 'Yes, delete it!'
-    }).then(function(flag) {
-      if(flag) {
+    }).then((flag) => {
+      if(flag.value) {
         thi.MyMusicService.deleteTrackById(id).subscribe(response => {
           thi.getAllTrack();
           thi.toastr.success(response['message'], 'Success!');
@@ -191,7 +225,7 @@ export class MyMusicComponent implements OnInit {
   // update track
   updateTrack() {
     this.show_spinner = true;
-      if(this.trackdata && this.trackdata.name && this.trackdata.price && this.trackdata.image) {
+      if(this.trackdata && this.trackdata.name && this.trackdata.price && this.trackdata.price > 0 && this.trackdata.image) {
         let formdata = new FormData();
         formdata.append('name', this.trackdata.name);
         formdata.append('price', this.trackdata.price);
@@ -215,6 +249,8 @@ export class MyMusicComponent implements OnInit {
       this.toastr.error('Please select track name', 'Error!');
     } else if(!this.trackdata.price) {
       this.toastr.error('Please select track price', 'Error!');
+    } else if(this.trackdata.price < 0) {
+      this.toastr.error('Track price must be positive.', 'Error!');
     } else {
       this.toastr.error('Please provide necessary details', 'Error!');
     }
@@ -231,7 +267,7 @@ export class MyMusicComponent implements OnInit {
       cancelButtonColor: '#d33',
       confirmButtonText: 'Yes, delete it!'
     }).then(function(flag) {
-      if(flag) {
+      if(flag.value) {
         thi.MyMusicService.deleteTrackImageById(id).subscribe(response => {
           thi.getAllTrack();
           thi.edit_image = 'img/profile-img.png';
@@ -244,22 +280,31 @@ export class MyMusicComponent implements OnInit {
     });
   }
   // Play audio
-  playAudio(name : any, index : any){
-    let audio = new Audio();
-    audio.src = this.track_url+name;
-    audio.load();
-    audio.play();
-    if(!this.audio_ins.hasOwnProperty(index)) {
-      this.audio_ins[index] = audio;
-    }
+  playAudio(name : any, index : any, data : any){
+    // let audio = new Audio();
+    // audio.src = this.track_url+name;
+    // audio.load();
+    // audio.play();
+    // if(!this.audio_ins.hasOwnProperty(index)) {
+    //   this.audio_ins[index] = audio;
+    // }
+    data.forEach((ele, idx) => {
+      this.audio_ins[idx] = false;
+    });
+    this.audio_ins[index] = true;
+    this.MessageService.sendMessage({data : data, index : index, action : 'start', list : 1});
   }
   // Stop audio
-  stopAudio(index) {
-    console.log(this.audio_ins[index]);
-    this.audio_ins[index].pause();
-    this.audio_ins[index].currentTime = 0;
-    // this.audio_ins[index].stop();
-    delete this.audio_ins[index];
+  stopAudio(index, data : any) {
+    // console.log(this.audio_ins[index]);
+    // this.audio_ins[index].pause();
+    // this.audio_ins[index].currentTime = 0;
+    // // this.audio_ins[index].stop();
+    // delete this.audio_ins[index];
+    data.forEach((ele, idx) => {
+      this.audio_ins[idx] = false;
+    });
+    this.MessageService.sendMessage({data : data, index : index, action : 'stop', list : 1});
   }
   // Get all music type
   getAllMusicType() {

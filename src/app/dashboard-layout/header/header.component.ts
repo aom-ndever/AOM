@@ -3,8 +3,10 @@ import {NgbModal, ModalDismissReasons, NgbModalRef} from '@ng-bootstrap/ng-boots
 import { FormGroup, FormBuilder, Validators, FormControl, AbstractControl, NG_VALIDATORS, Validator } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { Subscription } from 'rxjs/Subscription';
 import { HeaderService } from './header.service'; 
 import { environment } from '../../../environments/environment';
+import { MessageService } from '../../shared/message.service';
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
@@ -18,13 +20,16 @@ export class HeaderComponent implements OnInit, OnDestroy  {
   login_validation : boolean = false;
   userdata : any = {};
   forget_pwd_data : any = {};
+  subscription: Subscription;
+  toggleMenu : boolean = false;
   private modalRef: NgbModalRef;
   private modalForgetRef: NgbModalRef;
   constructor(private modalService: NgbModal,
      private fb: FormBuilder, 
      private HeaderService : HeaderService, 
      private toastr: ToastrService,
-     private router: Router
+     private router: Router,
+     private MessageService : MessageService
     ) {
     this.user = JSON.parse(localStorage.getItem('user'));
     if(this.user && this.user.artist) {
@@ -32,6 +37,18 @@ export class HeaderComponent implements OnInit, OnDestroy  {
     } else if(this.user && this.user.user) {
       this.user.user['image'] = typeof this.user.user['image'] != 'undefined' ? environment.API_URL+environment.USER_IMG+this.user.user['image'] : '';
     }
+    this.subscription = this.MessageService.getMessage().subscribe((response) => {
+      if(response && response['updateProfile']) {
+        setTimeout(() => {
+          this.user = JSON.parse(localStorage.getItem('user'));
+          if(this.user && this.user.artist) {
+            this.user.artist['image'] = typeof this.user.artist['image'] != 'undefined' ? environment.API_URL+environment.ARTIST_IMG+this.user.artist['image'] : '';
+          } else if(this.user && this.user.user) {
+            this.user.user['image'] = typeof this.user.user['image'] != 'undefined' ? environment.API_URL+environment.USER_IMG+this.user.user['image'] : '';
+          }
+        }, 1000);
+      }
+    });
     this.login_form = this.fb.group({
       email : ['', [Validators.required]],
       password : ['', [Validators.required]],
@@ -54,6 +71,7 @@ export class HeaderComponent implements OnInit, OnDestroy  {
     if(this.modalForgetRef) {
       this.modalForgetRef.close();
     }
+    this.subscription.unsubscribe();
    }
   openVerticallyCentered(content) {
     this.show_spinner = false;
@@ -63,7 +81,8 @@ export class HeaderComponent implements OnInit, OnDestroy  {
 
   openForgetPasswordModal(content) {
     this.modalRef.close();
-    this.modalForgetRef = this.modalService.open(content, { centered: true });
+    this.forget_pwd_data = {};
+    this.modalForgetRef = this.modalService.open(content, { centered: true, backdrop : true });
   }
   login(flag : boolean) { 
     console.log('login', this.userdata);
@@ -127,7 +146,11 @@ export class HeaderComponent implements OnInit, OnDestroy  {
       this.HeaderService.artistForgetPassword({email : this.forget_pwd_data.email}).subscribe(response => {
         this.toastr.success(response['message'], 'Success!');
       }, error => {
-        this.toastr.error(error['error'].message, 'Error!');
+        if(error['error'].message[0] && error['error'].message[0]['param'] && error['error'].message[0]['param'] == 'email') {
+          this.toastr.error(error['error'].message[0]['msg'], 'Error!');
+        } else {
+          this.toastr.error(error['error'].message, 'Error!');
+        }
         this.show_spinner = false;
       }, () => {
         this.forget_pwd_data = {};
@@ -138,7 +161,11 @@ export class HeaderComponent implements OnInit, OnDestroy  {
         console.log('user ', response);
         this.toastr.success(response['message'], 'Success!');
       }, error => {
-        this.toastr.error(error['error'].message, 'Error!');
+        if(error['error'].message[0] && error['error'].message[0]['param'] && error['error'].message[0]['param'] == 'email') {
+          this.toastr.error(error['error'].message[0]['msg'], 'Error!');
+        } else {
+          this.toastr.error(error['error'].message, 'Error!');
+        }
         this.show_spinner = false;
       }, () => {
         this.forget_pwd_data = {};
@@ -152,5 +179,8 @@ export class HeaderComponent implements OnInit, OnDestroy  {
     this.user = '';
     this.router.navigate(['']);
     this.toastr.success('Logged off', 'Success!');
+  }
+  toggleMainMenu() {
+    this.toggleMenu = !this.toggleMenu;
   }
 }

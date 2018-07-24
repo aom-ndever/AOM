@@ -59,7 +59,7 @@
                                                     </div>
                                                     <div class="form-group">
                                                         <div class="date-of-birth">
-                                                            <label for="date">Birthday</label>
+                                                            <label for="date">Birthday Date</label>
                                                             <div class="form-group">
                                                                 <select class="form-control" id="day" name="day" [(ngModel)]="userdata.day">
                                                                     <option value="">Day</option>
@@ -83,13 +83,13 @@
 
                                                     <div class="form-group music-grp">
                                                         <label for="musictype">Music Type</label>
-                                                        <select class="form-control" id="musictype" name="music_type" [(ngModel)]="userdata.music_type">
+                                                        <select class="form-control" id="musictype" name="music_type" [(ngModel)]="userdata.music_type['_id']">
                                                             <option *ngFor="let type of music_types" value="{{type._id}}">{{type.name}}</option>
                                                         </select>
                                                     </div>
-
+                                                    
                                                     <div class="form-group home-grp">
-                                                        <label for="hometown">Zipcode</label>
+                                                        <label for="hometown">Home Town</label>
                                                         <input class="form-control" placeholder="zipcode" name="zipcode" [(ngModel)]="userdata.zipcode" />
                                                     </div>
 
@@ -993,7 +993,6 @@
                                                             <option *ngFor="let type of music_types" value="{{type._id}}">{{type.name}}</option>
                                                         </select>
                                                     </div>
-
                                                     <div class="form-group home-grp">
                                                         <label for="hometown">Zipcode</label>
                                                         <input class="form-control" placeholder="zipcode" name="zipcode" [(ngModel)]="userdata.zipcode" />
@@ -1004,7 +1003,6 @@
                                         </div>
                                     </div>
                                     <div class="button_group">
-                                        <a href="#" class="cancel-btn">Cancel</a>
                                         <button type="submit" (click)="update()" [disabled]="show_spinner" class="save-btn btn btn-primary">Save <i *ngIf="show_spinner" class="fa fa-spinner fa-spin"></i></button>
                                     </div>
                                 </form>

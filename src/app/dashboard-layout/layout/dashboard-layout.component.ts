@@ -2,6 +2,8 @@ import { Component, OnInit, AfterViewInit, AfterViewChecked, OnDestroy } from '@
 import { environment } from '../../../environments/environment' ;
 import { Subscription } from 'rxjs/Subscription';
 import { MessageService } from '../../shared/message.service';
+import { DashboardLayoutService } from './dashboard-layout.service';
+import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-dashboard-layout',
   templateUrl: './dashboard-layout.component.html',
@@ -14,6 +16,7 @@ export class DashboardLayoutComponent implements OnInit, AfterViewInit, AfterVie
     this.track_url+"/audio_152940920498523176.mp4",
     this.track_url+"/audio_152940899013172582.mp4"
   ];
+  user : any = '';
   audio_instance_list : any = [];
   timeline : any = '';
   playhead : any = '';
@@ -26,12 +29,16 @@ export class DashboardLayoutComponent implements OnInit, AfterViewInit, AfterVie
   total_time : any = 0;
   list_no : any = '';
   subscription: Subscription;
+  user_img_url : any = environment.API_URL+environment.USER_IMG;
   constructor(
-    private MessageService : MessageService
+    private MessageService : MessageService,
+    private DashboardLayoutService : DashboardLayoutService,
+    private toastr: ToastrService
   ) {
     console.log("dashboard component");
     this.audio_instance_list = [];
     this.audio_list = [];
+    this.user = JSON.parse(localStorage.getItem('user'));
     this.subscription = this.MessageService.getMessage().subscribe((response) => {
       console.log(response);
       if(response['action'] == 'start') {
@@ -98,6 +105,7 @@ export class DashboardLayoutComponent implements OnInit, AfterViewInit, AfterVie
   }
 
   timeUpdate($event : any) {
+    var pButton = document.getElementById('pButton');
       var nprogres = document.getElementById('song_prog');
       var playPercent =  (100 * $event.target.currentTime / $event.target.duration);
       nprogres['value'] = $event.target.currentTime;
@@ -107,7 +115,9 @@ export class DashboardLayoutComponent implements OnInit, AfterViewInit, AfterVie
       var running_time = document.getElementById('running_time');
       running_time.innerHTML = minutes + ':' +Math.round(seconds);
       if ($event.target.currentTime == $event.target.duration) {
-        this.next();          
+        // this.next();          
+        pButton.className = "";
+        pButton.className = "play";
       }
   }
 
@@ -173,5 +183,17 @@ export class DashboardLayoutComponent implements OnInit, AfterViewInit, AfterVie
       this.audio_ins['currentTime'] = e.target.value;
       running_time.innerHTML = minutes + ':' +Math.round(seconds);
     }, 500);
+  }
+
+  downloadTrack() {
+    console.log(this.audio_list[this.song_cnt]);
+    this.DashboardLayoutService.downloadTrack(this.audio_list[this.song_cnt]['_id']).subscribe((response) => {
+      if(response['message']) {
+        this.toastr.info(response['message'], 'Info!');
+      }
+      if(response['filename']) {
+        window.location.href = this.user_img_url+response['filename'];
+      }
+    });
   }
 }

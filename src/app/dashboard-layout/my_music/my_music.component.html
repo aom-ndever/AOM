@@ -27,10 +27,10 @@
                   <tr *ngFor="let t of tracklist; let i =  index;">
                     <td class="serial-num">{{i+1}}.</td>
                     <td class="play-option">
-                      <a href="javascript:;" (click)="playAudio(t.audio, i)" *ngIf="!audio_ins[i]">
+                      <a href="javascript:;" [style.display]="!audio_ins[i] ? 'block' : 'none'" (click)="playAudio(t.audio, i, tracklist)" >
                         <img src="img/new-play.png" alt="Play" >
                       </a>
-                      <a href="javascript:;" (click)="stopAudio(i)" *ngIf="audio_ins[i]">
+                      <a href="javascript:;" [style.display]="audio_ins[i] ? 'block' : 'none'" (click)="stopAudio(i, tracklist)" >
                         <img src="img/pause.png" alt="Play" >
                       </a>
                     </td>
@@ -88,8 +88,8 @@
                     <td class="serial-num">{{i+1}}.</td>
                     <td class="play-option">
                         <a href="javascript:;" >
-                          <img src="img/play.png " alt="Pause "  [style.display]="!audio_ins[i] ? 'block' : 'none'" (click)="playAudio(t.audio, i)">
-                          <img src="img/pause.png " alt="Pause "  [style.display]="audio_ins[i] ? 'block' : 'none'" (click)="stopAudio(i)">
+                          <img src="img/play.png " alt="Pause "  [style.display]="!audio_ins[i] ? 'block' : 'none'" (click)="playAudio(t.audio, i, tracklist)">
+                          <img src="img/pause.png " alt="Pause "  [style.display]="audio_ins[i] ? 'block' : 'none'" (click)="stopAudio(i, tracklist)">
                         </a>
                     </td>
                     <td class="track-pic"><a href="javascript:;">
@@ -140,12 +140,12 @@
 				<span class="upl-img"><i class="fa fa-cloud-upload" aria-hidden="true"></i></span> 
 				<span class="up_text">Select Music</span> 
 				<input type="file" name="my_doc_upload" id="my_doc_upload" (change)="changeAudio($event)" multiple="false"> 
-				<p class="instrution">AIFF,WAV,FLAC,MP3 or less</p>
+				<p class="instrution">AIFF,WAV,FLAC,MP3 or AAC, 3GB or less</p>
       </div>
       <div class="media-upload-btn" *ngIf="audio_file">
         <span class="track_name">{{audio_file.name}}</span>
         <div class="upload-btn-div">
-          <label for="fileUpload">Upload a Different Photo</label>
+          <label for="fileUpload">Upload a Different Track</label>
           <input type="file" name="my_doc_upload" (change)="changeAudio($event)" id="my_doc_upload" multiple="false"> 
         </div>
       </div>

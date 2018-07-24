@@ -9,10 +9,14 @@
           <div class="col-md-10 col-sm-8 col-xs-6">
             <div class="abt-tr">
               <div class="play-btn">
-                <a href="javascript:;">
+                  <div class="artist-profile-custom-action-btn">       
+                      <a [style.display]="!audio_ins[i] ? 'block' : 'none'" (click)="playAudio(track.audio, 1)" class="play_img" ><img src="img/play_icon.png"/></a>
+                      <a [style.display]="audio_ins[i] ? 'block' : 'none'" (click)="stopAudio(1)" class="pause_img"><img src="img/pause_icon.png"/></a>
+                  </div>
+                <!-- <a href="javascript:;">
                   <img src="img/play.png" alt="" (click)="playAudio(track.audio, 1)" [style.display]="audio_ins.length == 0 && !audio_ins[1] ? 'block' : 'none'">
                   <img src="img/pause.png" alt="" (click)="stopAudio(1)" [style.display]="audio_ins.length > 0 && audio_ins[1] ? 'block' : 'none'">
-                </a>
+                </a> -->
               </div>
               <div class="track-cname"><a href="javascript:;">{{track['name']}}</a></div>
               <div class="artist-name"><h2><a href="javascript:;">{{artistdata.first_name+' '+artistdata.last_name}}</a></h2></div>

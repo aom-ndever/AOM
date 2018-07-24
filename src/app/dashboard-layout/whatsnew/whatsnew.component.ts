@@ -1,14 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { WhatsNewService } from './whatsnew.service';
 import { ToastrService } from 'ngx-toastr';
 import { environment } from '../../../environments/environment' ;
+import { MessageService } from '../../shared/message.service';
+import { Subscription } from 'rxjs/Subscription';
 
 @Component({
   selector: 'app-whatsnew',
   templateUrl: './whatsnew.component.html',
   styleUrls: []
 })
-export class WhatsNewComponent implements OnInit {
+export class WhatsNewComponent implements OnInit, OnDestroy {
   
   images: any = [];
   show_filter : any = false;
@@ -24,7 +26,11 @@ export class WhatsNewComponent implements OnInit {
   advance_filter : any = {};
   audio_ins : any = [];
   music_type_list : any = [];
-  constructor(private WhatsNewService : WhatsNewService, private toastr: ToastrService) {
+  subscription: Subscription;
+  constructor(private WhatsNewService : WhatsNewService,
+     private toastr: ToastrService,
+     private MessageService : MessageService
+    ) {
     this.images =  [
       {
         "source": "img/whats-new-bg.png",
@@ -57,11 +63,33 @@ export class WhatsNewComponent implements OnInit {
         "enable": true
       }];
     this.getAllState();
+    this.subscription = this.MessageService.getMessage().subscribe((response) => {
+      if(response && response['list'] != 1) {
+        this.audio_ins.forEach((ele, idx) => { this.audio_ins[idx] = false; } );
+      }
+      if(response && response['action'] == 'stop' && response['list'] == 1) {
+        this.audio_ins[response['index']] = false;
+      }
+      if(response && response['action'] == 'start' && response['list'] == 1) {
+        this.audio_ins[response['index']] = true;
+      }
+      if(response && response['list'] == 1 && response['action'] == 'next' || response['action'] == 'prev' ) {
+        if(response['track_action'] && response['track_action'] == 'pause') {
+          this.audio_ins.forEach((ele, idx) => { this.audio_ins[idx] = false; } );
+          this.audio_ins[response['index']] = true;
+        }
+      }
+    });
   }
 
   ngOnInit() {
     this.getAllData();
     this.getAllMusicType();
+  }
+
+  ngOnDestroy() {
+    // unsubscribe to ensure no memory leaks
+      this.subscription.unsubscribe();
   }
 
   toggleFilter() {
@@ -71,28 +99,43 @@ export class WhatsNewComponent implements OnInit {
   // Get all whatsnew data
   getAllData() {
     let data = {};
+    this.audio_ins = [];
     this.WhatsNewService.getWhatsnewData(data).subscribe(response => {
       this.whatsnewdata = response;
+      if(this.whatsnewdata['track']) {
+        this.whatsnewdata['track'].forEach((ele) => {
+          this.audio_ins.push(false);
+        });
+      }
       this.getAllFollower();
     });
   }
   // Play audio
-  playAudio(name : any, index : any){
-    let audio = new Audio();
-    audio.src = this.track_url+name;
-    audio.load();
-    audio.play();
-    if(!this.audio_ins.hasOwnProperty(index)) {
-      this.audio_ins[index] = audio;
-    }
+  playAudio(name : any, index : any, data : any){
+    // let audio = new Audio();
+    // audio.src = this.track_url+name;
+    // audio.load();
+    // audio.play();
+    // if(!this.audio_ins.hasOwnProperty(index)) {
+    //   this.audio_ins[index] = audio;
+    // }
+    data.forEach((ele, idx) => {
+      this.audio_ins[idx] = false;
+    });
+    this.audio_ins[index] = true;
+    this.MessageService.sendMessage({data : data, index : index, action : 'start', list : 1});
   }
   // Stop audio
-  stopAudio(index) {
-    console.log(this.audio_ins[index]);
-    this.audio_ins[index].pause();
-    this.audio_ins[index].currentTime = 0;
-    // this.audio_ins[index].stop();
-    delete this.audio_ins[index];
+  stopAudio(index, data : any) {
+    // console.log(this.audio_ins[index]);
+    // this.audio_ins[index].pause();
+    // this.audio_ins[index].currentTime = 0;
+    // // this.audio_ins[index].stop();
+    // delete this.audio_ins[index];
+    data.forEach((ele, idx) => {
+      this.audio_ins[idx] = false;
+    });
+    this.MessageService.sendMessage({data : data, index : index, action : 'stop', list : 1});
   }
   // Filter result
   filter(e : any) {

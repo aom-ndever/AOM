@@ -4,20 +4,20 @@
       <div class="col-md-12 col-sm-12 col-xs-12">
         <div class="container">
           <div class="row">
-            <div class="col-lg-6 col-md-5 col-sm-6 col-xs-5">
+            <div class="col-lg-6 col-md-5 col-sm-6 col-xs-5 plr-0">
               <div class="head-global artist_header"><h2>Artists</h2></div>
             </div>
             <div class="col-lg-6 col-md-7 col-sm-6 col-xs-7">
               <div class="new-head">
                 <div class="search-wrap">
                   <form>
-                    <div class="mobile-search"><i class="fa fa-search" aria-hidden="true"></i></div>
-                    <div class="search-input">
+                    <div class="mobile-search" (click)="toggleSearch()"><i class="fa fa-search" aria-hidden="true"></i></div>
+                    <div class="search-input" [style]="toggSearch ? 'block' : 'none'">
                       <input type="text" placeholder="Search by Artist Name or Song Title" (keyup)="filterArtistv1($event)" name="search" [(ngModel)]="search_str" />
                     </div>
                   </form>
                 </div>
-                <div class="filter-head">
+                <div class="filter-head sdg">
                   <a href="javascript:;" (click)="toggleFilter()">
                     <div class="filter-icon"><img src="img/filter.png" alt="Filter Icon"></div>
                     <span>Filters <i class="fa fa-caret-right"></i></span>

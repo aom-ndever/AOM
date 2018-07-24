@@ -225,8 +225,8 @@
                   <div class="action-btn ">
                     <a href="javascript:; ">
                         <div  class="action-btn custom-action-btn">                
-                            <a  class="play_img" [style.display]="!audio_ins[i] ? 'block' : 'none'" (click)="playAudio(track.audio, i)"><img  src="img/play_icon.png"></a>
-                            <a  class="pause_img" [style.display]="audio_ins[i] ? 'block' : 'none'" (click)="stopAudio(i)"><img  src="img/pause_icon.png"></a>
+                            <a  class="play_img" [style.display]="!audio_ins[i] ? 'block' : 'none'" (click)="playAudio(track.audio, i, whatsnewdata['track'])"><img  src="img/play_icon.png"></a>
+                            <a  class="pause_img" [style.display]="audio_ins[i] ? 'block' : 'none'" (click)="stopAudio(i, whatsnewdata['track'])"><img  src="img/pause_icon.png"></a>
                         </div>
                     <!-- <img src="img/play.png " alt="Pause "  [style.display]="!audio_ins[i] ? 'block' : 'none'" (click)="playAudio(track.audio, i)">
                     <img src="img/pause.png " alt="Pause "  [style.display]="audio_ins[i] ? 'block' : 'none'" (click)="stopAudio(i)"> -->

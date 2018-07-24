@@ -11,13 +11,16 @@
                 </a>
               <div class="heading"><h3>Who are you?</h3></div>
               <div class="select-who">
-                <div class="artist"><a href="javascript:;"><img src="img/artist.png" alt="Artist" (click)="nxt_btn('artist', true)"><h3>Artist</h3></a></div>
-                <div class="listner"><a  href="javascript:;"><img src="img/listiner.png" alt="listner" (click)="nxt_btn('listener', true)"><h3>Listener</h3></a></div>
+                <div class="artist"><a href="javascript:;" (click)="nxt_btn('artist', true)"><img src="img/artist.png" alt="Artist" ><h3>Artist</h3></a></div>
+                <div class="listner"><a  href="javascript:;" (click)="nxt_btn('listener', true)"><img src="img/listiner.png" alt="listner" ><h3>Listener</h3></a></div>
               </div>
             </div>
             <div class="for-artist">
               <div class="steps step1 {{artist_cnt == 1 ? 'next_form' : ''}}" id="artist-step1" >
                 <form [formGroup]="artist_step1">
+                    <a class="back-btn main_step_back" href="javascript:;" routerLink="" >                  
+                      ×
+                    </a>
                   <div class="heading"><h3>Terms of Conditions </h3></div>
                   <div class="progress_bar fill14"></div>
                   <div class="terms_condition_block mCustomScrollbar " data-mcs-theme="dark-3">
@@ -43,7 +46,10 @@
 
               <div class="steps step2 {{artist_cnt == 2 ? 'next_form' : ''}}" id="profile-step2">
                   <form [formGroup]="artist_step2">
-                    <div class="heading"><h3>Create An Artist Pro</h3></div>
+                    <a class="back-btn main_step_back" href="javascript:;" routerLink="" >
+                        ×
+                      </a>
+                    <div class="heading"><h3>Create An Artist Profile</h3></div>
                     <div class="progress_bar fill14"></div>
                     <div class="email-form">
                       
@@ -52,7 +58,7 @@
                             <input type="email" class="form-control" formControlName="email"  [(ngModel)]="artist_data.email" name="artist_email" id="email" placeholder="Email">
                             <div class="cust_err_msg" *ngIf="artist_validation[1] && !artist_step2.controls['email'].valid">
                               <span *ngIf="artist_step2.controls['email'].errors['required']" class="text-danger">Email is required.</span>
-                              <span *ngIf="artist_step2.controls['email'].errors['email'] && artist_step2.controls['email'].dirty" class="text-danger">Email Mismatched.</span>
+                              <span *ngIf="!artist_step2.controls['email'].errors['required'] && artist_step2.controls['email'].errors['email'] && artist_step2.controls['email'].dirty" class="text-danger">Email Mismatched.</span>
                             </div>
                           </div>                          
                           <div [formGroup]="passwordFormGroup1">
@@ -62,7 +68,7 @@
                               <div class="pwd-icon"><i class="fa fa-eye" aria-hidden="true"></i></div>
                               <div class="cust_err_msg" *ngIf="artist_validation[1] && !passwordFormGroup1.controls['artist_password'].valid ">
                                 <span *ngIf="passwordFormGroup1.controls['artist_password'].errors['required']" class="text-danger">Password is required.</span>
-                                <span *ngIf="passwordFormGroup1.controls['artist_password'].errors['minlength']" class="text-danger">Must be longer than 6 characters.</span>
+                                <span *ngIf="!passwordFormGroup1.controls['artist_password'].errors['required'] && passwordFormGroup1.controls['artist_password'].errors['minlength']" class="text-danger">Must be longer than 6 characters.</span>
                               </div>
                             </div>
                             <div class="form-group pwd-grp">
@@ -71,8 +77,8 @@
                               <div class="pwd-icon"><i class="fa fa-eye" aria-hidden="true"></i></div>
                               <div class="cust_err_msg" *ngIf="artist_validation[1] && !passwordFormGroup1.controls['artist_conf'].valid">
                                 <!-- <span *ngIf="passwordFormGroup.controls['conf'].errors['required']" class="text-danger">Confirm Password is required.</span> -->
-                                <span *ngIf="passwordFormGroup1.controls['artist_conf'].errors['minlength']" class="text-danger">Must be longer than 6 characters.</span>
-                                <span *ngIf="passwordFormGroup1.controls['artist_conf'].errors['mismatch']" class="text-danger">Please enter correct confirm password.</span>
+                                <span *ngIf="!passwordFormGroup1.controls['artist_conf'].errors['required'] && passwordFormGroup1.controls['artist_conf'].errors['minlength']" class="text-danger">Must be longer than 6 characters.</span>
+                                <span *ngIf="!passwordFormGroup1.controls['artist_conf'].errors['required'] && passwordFormGroup1.controls['artist_conf'].errors['mismatch']" class="text-danger">Please enter correct confirm password.</span>
                               </div>
                             </div>
                           </div>
@@ -85,6 +91,9 @@
               </div>
 
               <div class="steps step3 {{artist_cnt == 3 ? 'next_form' : ''}}" id="about-step3">
+                <a class="back-btn main_step_back" href="javascript:;" routerLink="" >                  
+                    ×
+                  </a>
                 <div class="heading"><h3>Tell Us About Yourself</h3></div>
                 <div class="progress_bar fill14"></div>
                 <form [formGroup]="artist_step3">
@@ -118,7 +127,7 @@
                           <input class="form-control" id="phone" formControlName="phone" name="artist_phone" [(ngModel)]="artist_data.phone_no" />
                           <div class="cust_err_msg" *ngIf="artist_validation[2] && !artist_step3.controls['phone'].valid">
                             <span *ngIf="artist_step3.controls['phone'].errors['required']" class="text-danger">Phone Number is required.</span>
-                            <span *ngIf="artist_step3.controls['phone'].dirty && (artist_step3.controls['phone'].errors['pattern'] || artist_step3.controls['phone'].errors['maxlength'])" class="text-danger">Please enter valid format.</span>
+                            <span *ngIf="artist_step3.controls['phone'].dirty && (artist_step3.controls['phone'].errors['pattern'] || artist_step3.controls['phone'].errors['maxlength'] || artist_step3.controls['phone'].errors['minlength'] )" class="text-danger">Please enter valid format.</span>
                           </div>
                         </div>
                   </div>
@@ -130,6 +139,9 @@
               </div>
 
               <div class="steps step4 {{artist_cnt == 4 ? 'next_form' : ''}}" id="location-step4">
+                  <a class="back-btn main_step_back" href="javascript:;" routerLink="" > 
+                    ×
+                  </a>
                 <div class="heading"><h3>Where Are You From?</h3></div>
                 <div class="progress_bar fill14"></div>
                 <form [formGroup]="artist_step4">
@@ -176,6 +188,9 @@
               </div>
 
               <div class="steps step5 {{artist_cnt == 5 ? 'next_form' : ''}}" id="music-type-step5">
+                  <a class="back-btn main_step_back" href="javascript:;" routerLink="" >
+                    ×
+                  </a>
                 <div class="heading"><h3>What Type of Music?</h3></div>
                 <div class="progress_bar fill14"></div>
                 <form>
@@ -200,6 +215,9 @@
 
 
               <div class="steps step6 {{artist_cnt == 6 ? 'next_form' : ''}}" id="upload-step6">
+                  <a class="back-btn main_step_back" href="javascript:;" routerLink="" >
+                    ×
+                  </a>
                 <div class="heading"><h3>Upload Profile Photo</h3></div>
                 <div class="progress_bar fill14"></div>
                 <div class="upload-block">
@@ -253,6 +271,11 @@
 
 
               <div class="steps step7 {{artist_cnt == 7 ? 'next_form' : ''}}" id="social-acc-step7">
+                  <a class="back-btn main_step_back" href="javascript:;" routerLink="" >
+                    ×
+                  </a>
+                  <div class="heading"><h3>Add Your Social Media</h3></div>
+
                 <div class="progress_bar fill14"></div>
                 <div class="social-acc">
                   <div class="social-block">
@@ -301,6 +324,9 @@
 
             <div class="for-listner">
               <div class="steps step1 {{listner_cnt == 1 ? 'next_form' : ''}}" id="listner-register">
+                  <a class="back-btn main_step_back" href="javascript:;" routerLink="" >
+                    ×
+                  </a>
                 <div class="social-login">
                   <div class="google-login">
                     <a href="javascript:;" id="googleBtn"><i class="fa fa-google"  aria-hidden="true"></i> <span>Login with Google</span></a>
@@ -318,7 +344,7 @@
                           <input type="email" formControlName="email" [(ngModel)]="listener_data.email" class="form-control" id="email1" placeholder="Email">
                           <div class="cust_err_msg" *ngIf="listener_validation[0] && !listener_step1.controls['email'].valid">
                             <span *ngIf="listener_step1.controls['email'].errors['required']" class="text-danger">Email is required.</span>
-                            <span *ngIf="listener_step1.controls['email'].errors['email'] && listener_step1.controls['email'].dirty" class="text-danger">Email Mismatched.</span>
+                            <span *ngIf="!listener_step1.controls['email'].errors['required'] && listener_step1.controls['email'].errors['email'] && listener_step1.controls['email'].dirty" class="text-danger">Email Mismatched.</span>
                           </div>
                       </div>
                       <div [formGroup]="passwordFormGroup">
@@ -328,7 +354,7 @@
                           <div class="pwd-icon"><i class="fa fa-eye" aria-hidden="true"></i></div>
                           <div class="cust_err_msg" *ngIf="listener_validation[0] && !passwordFormGroup.controls['password'].valid">
                             <span *ngIf="passwordFormGroup.controls['password'].errors['required']" class="text-danger">Password is required.</span>
-                            <span *ngIf="passwordFormGroup.controls['password'].errors['minlength'] && passwordFormGroup.controls['password'].dirty" class="text-danger">Must be longer than 6 characters.</span>
+                            <span *ngIf="!passwordFormGroup.controls['password'].errors['required'] && passwordFormGroup.controls['password'].errors['minlength'] && passwordFormGroup.controls['password'].dirty" class="text-danger">Must be longer than 6 characters.</span>
                           </div>
                         </div>
                         <div class="form-group pwd-grp">
@@ -337,8 +363,8 @@
                           <div class="pwd-icon"><i class="fa fa-eye" aria-hidden="true"></i></div>
                           <div class="cust_err_msg" *ngIf="listener_validation[0] && !passwordFormGroup.controls['conf'].valid ">
                             <span *ngIf="passwordFormGroup.controls['conf'].errors['required']" class="text-danger">Confirm password is required.</span>
-                            <span *ngIf="passwordFormGroup.controls['conf'].errors['minlength'] && passwordFormGroup.controls['conf'].dirty" class="text-danger">Must be longer than 6 characters.</span>
-                            <span *ngIf="passwordFormGroup.controls['conf'].errors['mismatch'] && passwordFormGroup.controls['conf'].dirty" class="text-danger">Please enter correct confirm password.</span>
+                            <span *ngIf="!passwordFormGroup.controls['conf'].errors['required'] && passwordFormGroup.controls['conf'].errors['minlength'] && passwordFormGroup.controls['conf'].dirty" class="text-danger">Must be longer than 6 characters.</span>
+                            <span *ngIf="passwordFormGroup.controls['conf'].errors['required'] && passwordFormGroup.controls['conf'].errors['mismatch'] && passwordFormGroup.controls['conf'].dirty" class="text-danger">Please enter correct confirm password.</span>
                           </div>
                         </div>
                       </div>
@@ -351,6 +377,9 @@
               </div>
 
               <div class="steps step2 {{listner_cnt == 2 ? 'next_form' : ''}}" id="artist-step1">
+                  <a class="back-btn main_step_back" href="javascript:;" routerLink="" >
+                    ×
+                  </a>
                 <div class="heading"><h3>Terms of Conditions </h3></div>
                 <div class="progress_bar fill14"></div>
                 <form [formGroup]="listener_step2">
@@ -376,6 +405,9 @@
               </div>
 
               <div class="steps step3 {{listner_cnt == 3 ? 'next_form' : ''}}" id="user-step2">
+                  <a class="back-btn main_step_back" href="javascript:;" routerLink="" >
+                    ×
+                  </a>
                 <div class="heading"><h3>Create User Name</h3></div>
                 <div class="progress_bar fill14"></div>
                 <form [formGroup]="listener_step3">
@@ -439,7 +471,7 @@
                         <input name="listener_phone" class="form-control" formControlName="phone" [(ngModel)]="listener_data.phone_no"/>
                         <div class="terms_error_msg" *ngIf="listener_validation[2] && !listener_step3.controls['phone'].valid">
                           <span *ngIf="listener_step3.controls['phone'].errors['required']" class="text-danger">Phone number is required.</span>
-                          <span *ngIf="listener_step3.controls['phone'].errors['maxlength']  && listener_step3.controls['phone'].dirty" class="text-danger">Please enter valid phone number.</span>
+                          <span *ngIf="(listener_step3.controls['phone'].errors['maxlength'] || listener_step3.controls['phone'].errors['minlength'])  && listener_step3.controls['phone'].dirty" class="text-danger">Please enter valid phone number.</span>
                         </div>
                       </div>
                   </div>
@@ -451,6 +483,9 @@
               </div>
 
               <div class="steps step4 {{listner_cnt == 4 ? 'next_form' : ''}}" id="location-step4">
+                  <a class="back-btn main_step_back" href="javascript:;" routerLink="" >
+                    ×
+                  </a>
                 <div class="heading"><h3>Where Are You From?</h3></div>
                 <div class="progress_bar fill14"></div>
                 <form [formGroup]="listener_step4">
@@ -497,6 +532,9 @@
               </div>
 
               <div class="steps step5 {{listner_cnt == 5 ? 'next_form' : ''}}" id="music-type-step5">
+                  <a class="back-btn main_step_back" href="javascript:;" routerLink="" >
+                    ×
+                  </a>
                 <div class="heading"><h3>What Type of Music?</h3></div>
                 <div class="progress_bar fill14"></div>
                 <div class="type-music">

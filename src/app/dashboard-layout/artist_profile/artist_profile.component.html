@@ -9,7 +9,7 @@
       <div class="col-md-12">
         <div class="profile-detail-wrap">
           <div class="row">
-            <div class="col-md-3 col-sm-3 col-xs-4">
+            <div class="col-md-3 col-sm-4 col-xs-4">
               <div class="profile-img">
                 <a href="javascript:;">
                   <img src="{{artistdata['image'] ? artist_img_url +artistdata['image'] : 'img/profile-img.png'}}" alt="Profile Images">
@@ -34,6 +34,12 @@
                     </a>
                   </li>
                   <li>
+                    <a [href]="artistdata.social_media['instagram']">
+                      <i aria-hidden="true" class="fa fa-twitter"></i>
+                    </a>
+                  </li>
+
+                  <li>
                     <a [href]="artistdata.social_media['youtube']">
                       <i class="fa fa-youtube-play" aria-hidden="true"></i>
                     </a>
@@ -50,7 +56,7 @@
                 <span>{{artistfollower.length}}</span>
                 <ul>
                   <li *ngFor="let follower of artistfollower;">
-                    <img src="{{follower.image ? user_img_url+follower.image : 'img/fan1.png'}}" alt="Fan">
+                    <img src="{{follower && follower['user_id'].image ? user_img_url+follower['user_id'].image : 'img/fan1.png'}}" alt="Fan">
                   </li>
                 </ul>
               </div>
@@ -77,7 +83,7 @@
               </div>
 
             </div>
-            <div class="col-md-9 col-sm-9 col-xs-8">
+            <div class="col-md-9 col-sm-8 col-xs-8">
               <div class="artist-name">
                 <h2>
                   <a href="javascript:;">{{artistdata['first_name']+' '+artistdata['last_name']}}</a>
@@ -121,11 +127,14 @@
                           <tbody>
                             <tr *ngFor="let artist of artisttrack;let i=index;">
                               <td class="serial-num">{{i+1}}.</td>
-                              <td class="play-option">
-                                <a href="javascript:;">
-                                    <img src="img/play.png " alt="Pause "  [style.display]="!audio_ins[i] ? 'block' : 'none'" (click)="playAudio(artist.audio, i)">
-                                    <img src="img/pause.png " alt="Pause "  [style.display]="audio_ins[i] ? 'block' : 'none'" (click)="stopAudio(i)">
-                                </a>
+                              <td class="">
+                                    <div class="artist-profile-custom-action-btn">
+                                      <a [style.display]="!audio_ins[i] ? 'block' : 'none'" (click)="playAudio(artist.audio, i, artisttrack)" class="play_img" ><img src="img/play_icon.png"/></a>
+                                      <a [style.display]="audio_ins[i] ? 'block' : 'none'" (click)="stopAudio(i, artisttrack)" class="pause_img"><img src="img/pause_icon.png"/></a>
+                                    </div>
+                                    <!-- <img src="img/play.png " alt="Pause "  [style.display]="!audio_ins[i] ? 'block' : 'none'" (click)="playAudio(artist.audio, i, artisttrack)">
+                                    <img src="img/pause.png " alt="Pause "  [style.display]="audio_ins[i] ? 'block' : 'none'" (click)="stopAudio(i, artisttrack)"> -->
+                                
                               </td>
                               <td class="track-pic">
                                 <a href="javascript:;">
@@ -197,10 +206,14 @@
                             <tr *ngFor="let rank of rankingtrack;let i=index;">
                               <td class="serial-num">{{i+1}}.</td>
                               <td class="play-option">
-                                <a href="javascript:;">
-                                    <img src="img/play.png " alt="Pause "  [style.display]="!rank_audio_ins[i] ? 'block' : 'none'" (click)="playAudio(rank.audio, i)">
-                                    <img src="img/pause.png " alt="Pause "  [style.display]="rank_audio_ins[i] ? 'block' : 'none'" (click)="stopAudio(i)">
-                                </a>
+                                  <div class="artist-profile-custom-action-btn">
+                                      <a [style.display]="!audio_ins[i] ? 'block' : 'none'" (click)="playRankAudio(rank.audio, i, rankingtrack)" class="play_img" ><img src="img/play_icon.png"/></a>
+                                      <a [style.display]="audio_ins[i] ? 'block' : 'none'" (click)="stopRankAudio(i, rankingtrack)" class="pause_img"><img src="img/pause_icon.png"/></a>
+                                  </div>
+                                <!-- <a href="javascript:;">
+                                    <img src="img/play.png " alt="Pause "  [style.display]="!rank_audio_ins[i] ? 'block' : 'none'" (click)="playRankAudio(rank.audio, i, rankingtrack)">
+                                    <img src="img/pause.png " alt="Pause "  [style.display]="rank_audio_ins[i] ? 'block' : 'none'" (click)="stopRankAudio(i, rankingtrack)">
+                                </a> -->
                               </td>
                               <td class="track-pic">
                                 <a href="javascript:;">

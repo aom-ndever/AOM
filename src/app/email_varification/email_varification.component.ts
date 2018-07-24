@@ -24,9 +24,10 @@ export class EmailVarificationComponent implements OnInit {
       if(res.type && res.type == 'artist') {
         this.EamilVarificationService.artistEmailVarification(res.id).subscribe(response => {
           console.log('varification done artist', response);
+          this.toastr.success(response['message'], 'Success!');
           this.router.navigate(['']);
         }, error => {
-          toastr.error(error['error'].message, 'Error!');
+          this.toastr.error(error['error'].message, 'Error!');
           console.log('artist error', error.error);
         });
       } else {
@@ -34,7 +35,7 @@ export class EmailVarificationComponent implements OnInit {
           console.log('varification done user', response);
           this.router.navigate(['']);
         }, error => {
-          toastr.error(error['error'].message, 'Error!');
+          this.toastr.error(error['error'].message, 'Error!');
           console.log('user error', error);
         });
       }
