@@ -12,7 +12,9 @@
 </head>
 <body>
   <app-root>
-    Loading 
+      <div id="loader" *ngIf="loading">
+          <i class="fa fa-spinner fa-spin fa-3x" aria-hidden="true"></i>
+      </div>
   </app-root>
 </body>
 </html>

@@ -83,11 +83,11 @@
 
                                                     <div class="form-group music-grp">
                                                         <label for="musictype">Music Type</label>
-                                                        <select class="form-control" id="musictype" name="music_type" [(ngModel)]="userdata.music_type">
+                                                        <select class="form-control" id="musictype" name="music_type" [(ngModel)]="userdata.music_type['_id']">
                                                             <option *ngFor="let type of music_types" value="{{type._id}}">{{type.name}}</option>
                                                         </select>
                                                     </div>
-
+                                                    
                                                     <div class="form-group home-grp">
                                                         <label for="hometown">Home Town</label>
                                                         <input class="form-control" placeholder="zipcode" name="zipcode" [(ngModel)]="userdata.zipcode" />
@@ -993,7 +993,6 @@
                                                             <option *ngFor="let type of music_types" value="{{type._id}}">{{type.name}}</option>
                                                         </select>
                                                     </div>
-
                                                     <div class="form-group home-grp">
                                                         <label for="hometown">Zipcode</label>
                                                         <input class="form-control" placeholder="zipcode" name="zipcode" [(ngModel)]="userdata.zipcode" />
