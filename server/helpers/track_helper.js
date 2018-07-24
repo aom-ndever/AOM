@@ -22,13 +22,14 @@ track_helper.insert_track = async (id, object) => {
 };
 
 
-track_helper.get_all_track_of_artist = async (artist_id, sort_by = {}) => {
+track_helper.get_all_track_of_artist = async (artist_id, start, length) => {
 
     try {
         var music = await Track
             .find({ "artist_id": new ObjectId(artist_id) })
+            .skip(start)
+            .limit(length)
             .populate({ path: 'artist_id', populate: { path: 'music_type' } })
-            .sort(sort_by)
             .lean();
 
         if (music) {
@@ -79,14 +80,14 @@ track_helper.get_all_audio = async (filter, page_no, page_size) => {
 };
 
 
-track_helper.get_track_by_filter = async (id) => {
+track_helper.get_track_by_filter = async (id, start, length) => {
     try {
         var track = await Track
             .find({ "artist_id": { $in: id } })
             .populate({ path: 'artist_id', populate: { path: 'music_type' } })
             .sort({ "no_of_likes": - 1 })
-            .limit(10)
-            .lean();
+            .skip(start)
+            .limit(length)
 
         if (track) {
             return { "status": 1, "message": "user details found", "track": track };
@@ -358,14 +359,15 @@ track_helper.delete_track_image = async (track_id) => {
 };
 
 
-track_helper.get_new_uploads = async (day) => {
+track_helper.get_new_uploads = async (day, start, length) => {
     var to = moment().utcOffset(0);
     var from = moment(to).subtract(day, "days").utcOffset(0);
     try {
         var track = await Track
             .find({ "created_at": { "$gt": new Date(from), "$lt": new Date(to) } })
+            .skip(start)
+            .limit(length)
             .populate({ path: 'artist_id', populate: { path: 'music_type' } })
-            .limit(10)
         if (track) {
             return { "status": 1, "message": "track details found", "results": track };
         } else {
