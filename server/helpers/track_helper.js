@@ -25,15 +25,21 @@ track_helper.insert_track = async (id, object) => {
 track_helper.get_all_track_of_artist = async (artist_id, start, length) => {
 
     try {
+
+
         var music = await Track
+            .find({ "artist_id": new ObjectId(artist_id) })
+        var tot_cnt = music.length;
+
+        var musics = await Track
             .find({ "artist_id": new ObjectId(artist_id) })
             .skip(start)
             .limit(length)
             .populate({ path: 'artist_id', populate: { path: 'music_type' } })
             .lean();
-
+        var filter_cnt = musics.length;
         if (music) {
-            return { "status": 1, "message": "music details found", "music": music };
+            return { "status": 1, "message": "music details found", "music": music, "recordsFiltered": filter_cnt, "recordsTotal": tot_cnt };
         } else {
             return { "status": 2, "message": "music not found" };
         }

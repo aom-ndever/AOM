@@ -140,7 +140,7 @@ router.post('/tracks', async (req, res) => {
     var track = await track_helper.get_all_track_of_artist(artist_id, req.body.start, req.body.length);
     if (track.status === 1) {
         logger.trace("got details successfully");
-        res.status(config.OK_STATUS).json({ "status": 1, "track": track.music });
+        res.status(config.OK_STATUS).json({ "status": 1, "track": track });
     } else {
         logger.error("Error occured while fetching = ", track);
         res.status(config.INTERNAL_SERVER_ERROR).json(track);
