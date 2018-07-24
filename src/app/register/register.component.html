@@ -412,18 +412,30 @@
                 <div class="progress_bar fill14"></div>
                 <form [formGroup]="listener_step3">
                   <div class="email-form">
-                    <div class="form-group">
+                    <div class="row plr15">
+                    <div class="form-group col-md-6">
                         <label for="fname">First Name</label>
                         <input type="text" formControlName="fname" name="listener_fname" class="form-control" [(ngModel)]="listener_data.fname" placeholder="First Name">
                         <div class="terms_error_msg" *ngIf="listener_validation[2] && !listener_step3.controls['fname'].valid">
                           <span *ngIf="listener_step3.controls['fname'].errors['required']" class="text-danger">First Name is required.</span>
                         </div>
                       </div>
-                      <div class="form-group pwd-grp">
+                      <div class="form-group pwd-grp col-md-6 pr0">
                         <label for="lanem">Last Name</label>
                         <input type="text" class="form-control" formControlName="lname" name="listener_lname" [(ngModel)]="listener_data.lname"  placeholder="Last Name">
                         <div class="terms_error_msg" *ngIf="listener_validation[2] && !listener_step3.controls['lname'].valid">
                           <span *ngIf="listener_step3.controls['lname'].errors['required']" class="text-danger">Last Name is required.</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group gender-grp">
+                        <label for="geder">Gender</label>
+                        <select class="form-control" id="listener_gender" formControlName="gender" name="listener_gender" [(ngModel)]="listener_data.gender">
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                        </select>
+                        <div class="terms_error_msg" *ngIf="listener_validation[2] && !listener_step3.controls['gender'].valid">
+                          <span *ngIf="listener_step3.controls['gender'].errors['required']" class="text-danger">Gender is required.</span>
                         </div>
                       </div>
                       <div class="date-of-birth">
@@ -456,16 +468,7 @@
                         </div>
                       </div>
                       </div>
-                      <div class="form-group gender-grp">
-                        <label for="geder">Gender</label>
-                        <select class="form-control" id="listener_gender" formControlName="gender" name="listener_gender" [(ngModel)]="listener_data.gender">
-                            <option value="male">Male</option>
-                            <option value="female">Female</option>
-                        </select>
-                        <div class="terms_error_msg" *ngIf="listener_validation[2] && !listener_step3.controls['gender'].valid">
-                          <span *ngIf="listener_step3.controls['gender'].errors['required']" class="text-danger">Gender is required.</span>
-                        </div>
-                      </div>
+
                       <div class="form-group">
                         <label class="control-label">Phone Number</label>
                         <input name="listener_phone" class="form-control" formControlName="phone" [(ngModel)]="listener_data.phone_no"/>
