@@ -755,7 +755,7 @@ border-radius: 2px; font-family: 'Roboto', sans-serif;}
 }
 .agree{text-align: center; border-top:1px solid #dedede; margin-right: 100px; margin-left: 100px;}
 .agree .checkbox{margin:20px auto 0 auto;}
-.terms_error_msg span{display: block;font-size: 13px;    margin-left: 25px;}
+.terms_error_msg span{display: block;font-size: 13px;    margin-left: 13px;    width: 100%;overflow: hidden;}
 .back-btn{
     font-family: 'Poppins', sans-serif;
     font-size: 18px;
@@ -1114,8 +1114,9 @@ span.up_text {
     flex: 0 0 33.3333%;
     padding: 0 15px;
 }
-.date-of-birth .form-group:nth-child(2){padding-left: 0;}
-.date-of-birth .form-group:nth-child(3){padding-right: 0;}
+.date-of-birth .form-group:nth-child(2){padding-left: 0 !important;}
+.date-of-birth .form-group:nth-child(3){padding-right: 0 !important;}
+.date-of-birth .form-group:last-child {padding-right: 0 !important;}
 
 .date-of-birth .form-group .form-control{padding: 0 15px;}
 /*Register Page*/
@@ -4339,7 +4340,7 @@ input#cover_upload1 {
 .type-music [type="radio"]:checked + label:after,
 .type-music [type="radio"]:not(:checked) + label:after {
     content: '';
-    background: #6739B7;
+    background: #673ab7;
     position: absolute;
     left: 0;
     top: 0;
@@ -4783,3 +4784,10 @@ input#cover_upload1 {
     height: 300px;
     overflow: auto;
 }
+.plr15{
+    padding-left: 15px;
+    padding-right:15px;
+  }
+  .pr0{
+    padding-right:0;
+  }
