@@ -296,21 +296,9 @@ track_helper.get_artist_by_location_vote = async (day) => {
                 "created_at": { "$gt": new Date(from), "$lt": new Date(to) },
             },
         },
-        {
-            $lookup: {
-                from: "user",
-                localField: "user_id",
-                foreignField: "_id",
-                as: "user"
-            }
-        },
-        {
-            $unwind: "$user"
-        },
 
 
     ];
-    console.log('aggregate', aggregate);
 
     let result = await Vote_track.aggregate(aggregate);
     if (result) {
