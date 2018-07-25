@@ -26,20 +26,23 @@ track_helper.get_all_track_of_artist = async (artist_id, start, length) => {
 
     try {
 
-
         var music = await Track
             .find({ "artist_id": new ObjectId(artist_id) })
+
         var tot_cnt = music.length;
+
 
         var musics = await Track
             .find({ "artist_id": new ObjectId(artist_id) })
-            .skip(start)
-            .limit(length)
             .populate({ path: 'artist_id', populate: { path: 'music_type' } })
-            .lean();
+            .skip(start)
+            .limit(length);
+
+
+
         var filter_cnt = musics.length;
         if (music) {
-            return { "status": 1, "message": "music details found", "music": music, "recordsFiltered": filter_cnt, "recordsTotal": tot_cnt };
+            return { "status": 1, "message": "music details found", "music": musics, "recordsFiltered": filter_cnt, "recordsTotal": tot_cnt };
         } else {
             return { "status": 2, "message": "music not found" };
         }
@@ -48,16 +51,25 @@ track_helper.get_all_track_of_artist = async (artist_id, start, length) => {
     }
 };
 
-track_helper.get_all_track_of_artist_by_ranking = async (artist_id, sort_by = {}) => {
+track_helper.get_all_track_of_artist_by_ranking = async (artist_id, sort_by = {}, start, length) => {
     try {
+        var musics = await Track
+            .find({ "artist_id": new ObjectId(artist_id) })
+
+        var tot_cnt = musics.length;
+
+
         var music = await Track
             .find({ "artist_id": new ObjectId(artist_id) })
             .populate({ path: 'artist_id', populate: { path: 'music_type' } })
             .sort(sort_by)
+            .skip(start)
+            .limit(length)
             .lean();
+        var filter_cnt = music.length;
 
         if (music) {
-            return { "status": 1, "message": "music details found", "music": music };
+            return { "status": 1, "message": "music details found", "music": music, "recordsFiltered": filter_cnt, "recordsTotal": tot_cnt };
         } else {
             return { "status": 2, "message": "music not found" };
         }
@@ -272,6 +284,44 @@ track_helper.get_artist_by_day_vote = async (day) => {
         return { "status": 2, "message": "No  available Artist" }
     }
 };
+
+track_helper.get_artist_by_location_vote = async (day) => {
+    var to = moment();
+    var from = moment(to).subtract(day, "days");
+
+    var aggregate = [
+        {
+            "$match":
+            {
+                "created_at": { "$gt": new Date(from), "$lt": new Date(to) },
+            },
+        },
+        {
+            $lookup: {
+                from: "user",
+                localField: "user_id",
+                foreignField: "_id",
+                as: "user"
+            }
+        },
+        {
+            $unwind: "$user"
+        },
+
+
+    ];
+    console.log('aggregate', aggregate);
+
+    let result = await Vote_track.aggregate(aggregate);
+    if (result) {
+        return { "status": 1, "message": "Artist  found", "results": result }
+    } else {
+        return { "status": 2, "message": "No  available Artist" }
+    }
+};
+
+
+
 track_helper.get_artist_by_day_like = async (day) => {
     var to = moment();
     var from = moment(to).subtract(day, "days");

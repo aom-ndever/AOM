@@ -1411,7 +1411,7 @@ router.post('/get_track', async (req, res) => {
   }
 
   var sort = { created_at: sort_by }
-  var track = await track_helper.get_all_track_of_artist(artist_id, sort);
+  var track = await track_helper.get_all_track_of_artist(artist_id, sort, req.body.start, req.body.length);
   if (track.status === 1) {
     logger.trace("got details successfully");
     res.status(config.OK_STATUS).json({ "status": 1, "track": track.music });
@@ -1440,7 +1440,7 @@ router.post('/get_ranking', async (req, res) => {
   }
   var sort = { no_of_votes: -1, created_at: sort_by }
   artist_id = req.body.artist_id
-  var track = await track_helper.get_all_track_of_artist_by_ranking(artist_id, sort);
+  var track = await track_helper.get_all_track_of_artist_by_ranking(artist_id, sort, req.body.start, req.body.length);
   if (track.status === 1) {
     logger.trace("got details successfully");
     res.status(config.OK_STATUS).json({ "status": 1, "track": track.music });
