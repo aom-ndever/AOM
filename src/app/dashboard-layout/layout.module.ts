@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { ChartModule } from 'angular-highcharts';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { DataTablesModule } from 'angular-datatables';
 import { SlimScroll } from 'angular-io-slimscroll';
 import { HeaderComponent } from './header/header.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
@@ -58,6 +59,7 @@ import { AuthService } from '../shared/auth.service';
     ToastrModule.forRoot(),
     ChartModule,
     LightboxModule,
+    DataTablesModule,
     RouterModule.forChild([
       {
         path: '',

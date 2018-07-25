@@ -22,7 +22,7 @@
               <div class="alert alert-info" *ngIf="tracklist.length == 0">
                 No data available.
               </div>
-              <table>
+              <table datatable [dtOptions]="dtOptions">
                 <tbody>
                   <tr *ngFor="let t of tracklist; let i =  index;">
                     <td class="serial-num">{{i+1}}.</td>

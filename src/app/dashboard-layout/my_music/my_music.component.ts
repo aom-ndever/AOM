@@ -1,17 +1,27 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import {NgbModal, ModalDismissReasons, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
 import { environment } from '../../../environments/environment';
 import { ToastrService } from 'ngx-toastr';
 import { MyMusicService } from './my_music.service';
 import { MessageService } from '../../shared/message.service';
 import { Subscription } from 'rxjs/Subscription';
+import { DataTableDirective } from 'angular-datatables';
 import swal from 'sweetalert2'
+class DataTablesResponse {
+  data: any[];
+  draw: number;
+  recordsFiltered: number;
+  recordsTotal: number;
+}
 @Component({
   selector: 'app-music',
   templateUrl: './my_music.component.html',
   styleUrls: []
 })
 export class MyMusicComponent implements OnInit, OnDestroy {
+  @ViewChild(DataTableDirective)
+  datatableElement: DataTableDirective;
+  dtOptions: DataTables.Settings = {};
   show_filter : boolean = false;
   tab_cnt : Number = 1;
   modal_ref : NgbModalRef;
@@ -54,10 +64,62 @@ export class MyMusicComponent implements OnInit, OnDestroy {
         }
       }
     });
+    const that = this;
+    this.dtOptions = {
+        pagingType: 'full_numbers',
+        pageLength: 5,
+        serverSide: true,
+        processing: true,
+        searching: false,
+        ordering: false,
+        lengthChange: false,
+        responsive: true,
+        scrollY :'200px',
+        scrollCollapse: true,
+        ajax: (dataTablesParameters: any, callback) => {
+          console.log(dataTablesParameters);
+          setTimeout(() => {
+            // dataTablesParameters['search'] = that.search_str;
+            // dataTablesParameters['order'] = '';
+            // dataTablesParameters['sort_by'] = that.sort_by;
+            // dataTablesParameters['filter'] = [];
+            // if(that.music_type_id) {
+            //   dataTablesParameters['filter'].push(
+            //     {'field' : 'music_type', value :  that.music_type_id}
+            //   );
+            // }
+            // if(that.region_filter.length) {
+            //   dataTablesParameters['filter'].push(
+            //     {'field' : 'state', value :  this.region_filter}
+            //   );
+            // }
+            that.audio_ins = [];
+            that.MyMusicService.getAllTrack(dataTablesParameters).subscribe(response => {
+              that.tracklist = response['track']['music'];
+              that.tracklist.forEach((ele) => {that.audio_ins.push(false);});
+              callback({
+                recordsTotal: response['track']['recordsTotal'],
+                recordsFiltered: response['track']['recordsTotal'],
+                data: []
+              });
+            });
+          }, 0)
+          
+        },
+        columns: [
+          { data: '' },
+          { data: '' },
+          { data: '' },
+          { data: '' },
+          { data: '' },
+          { data: '' },
+          { data: '' }
+        ]
+      };
   }
 
   ngOnInit() {
-      this.getAllTrack();
+      // this.getAllTrack();
       this.getAllMusicType();
       this.getAllContest();
   }
@@ -169,7 +231,9 @@ export class MyMusicComponent implements OnInit, OnDestroy {
         this.audio_file = '';
         this.image_upload = '';
         this.toastr.success(response['message'],'Success!');
-        this.getAllTrack();
+        this.datatableElement.dtInstance.then((dtInstance: DataTables.Api) => {
+          dtInstance.draw();
+        });
         this.modal_ref.close();
       }, error => {
         this.toastr.error(error['error'].message, 'Error!');
@@ -194,10 +258,10 @@ export class MyMusicComponent implements OnInit, OnDestroy {
   // Get all track
   getAllTrack() {
     this.audio_ins = [];
-    this.MyMusicService.getAllTrack().subscribe(response => {
-      this.tracklist = response['track'];
-      this.tracklist.forEach((ele) => {this.audio_ins.push(false);});
-    });
+    // this.MyMusicService.getAllTrack().subscribe(response => {
+    //   this.tracklist = response['track'];
+    //   this.tracklist.forEach((ele) => {this.audio_ins.push(false);});
+    // });
   }
   // Remove track by id
   removeTrack(id : any) {
