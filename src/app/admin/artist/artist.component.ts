@@ -5,7 +5,7 @@ import { ToastrService } from 'ngx-toastr';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 import { environment } from '../../../environments/environment';
-declare var swal: any;
+import swal from 'sweetalert2';
 class DataTablesResponse {
   data: any[];
   draw: number;
@@ -177,7 +177,7 @@ export class ArtistComponent implements OnInit {
       cancelButtonColor: '#d33',
       confirmButtonText: 'Yes, delete it!'
     }).then(function(flag) {
-      if(flag) {
+      if(flag.value) {
         thi.ArtistService.removeArtistTrack(id).subscribe(response => {
           let data = {artist_id : thi.artist_id};
           thi.ArtistService.getArtistTrack(data).subscribe((response) => {

@@ -181,14 +181,14 @@
             <div class="final-wrap ">
               <div class="img-wrap ">
                 <a href="javascript:;" routerLink="/artist_profile/{{artist._id}}">
-                  <img src="{{artist.image ? artist_img_url+artist.image : 'img/highlight-player.png'}} " alt="Finalists ">
+                  <img src="{{artist && artist.image ? artist_img_url+artist.image : 'img/highlight-player.png'}} " alt="Finalists ">
                 </a>
                 <a href="javascript:void(0) " class="fan " (click)="followArtist(artist._id, i)"><i class="fa {{artist.is_followed ? 'fa-heart' : 'fa-heart-o'}}" aria-hidden="true "></i></a>
               </div>
               <div class="content-wrap ">
                 <div class="player ">
-                  <div class="title "><a href="javascript:;">{{artist.first_name +' '+artist.last_name}}</a></div>
-                  <div class="cat {{artist.music_type.alias}}">{{artist.music_type.name}}</div>
+                  <div class="title "><a href="javascript:;">{{artist && artist.first_name ? artist.first_name : ''  +' '+ artist && artist.last_name ? artist.last_name : '' }}</a></div>
+                  <div class="cat {{artist.music_type.alias}}">{{artist && artist['music_type']['name'] ? artist['music_type']['name'] : '' }}</div>
                 </div>
                 <div class="location ">
                   <p><i class="fa fa-map-marker " aria-hidden="true "></i><span>Brooklyn, New York</span></p>
@@ -210,7 +210,7 @@
       </div>
       <div class="uploads-container col-md-12 ">
         <div class="row">
-            <div class="alert alert-info col-sm-12" *ngIf="whatsnewdata['track'].length == 0">
+            <div class="alert alert-info col-sm-12" *ngIf="whatsnewdata['track'] && whatsnewdata['track'].length == 0">
                 No data available.
             </div>
           <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12 " *ngFor="let track of whatsnewdata['track']; let i = index">

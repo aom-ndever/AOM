@@ -21,8 +21,8 @@ export class MyMusicService {
   }
 
   // Get All track details
-  getAllTrack() {
-    return this.http.get(`${this.api_host}/artist/track`, {headers : this.headers});
+  getAllTrack(data : any) {
+    return this.http.post(`${this.api_host}/artist/track/tracks`,data, {headers : this.headers});
   }
 
   // Remove track by id
