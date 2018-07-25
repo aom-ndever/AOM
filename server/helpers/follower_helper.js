@@ -127,24 +127,58 @@ follower_helper.get_artist_followers_by_age = async (artist_id, day) => {
         {
             $unwind: "$user"
         },
+
+    ]
+    let result = await Followers.aggregate(aggregate);
+    if (result && result.length > 0) {
+        return { "status": 1, "message": "followers  found", "results": result }
+    } else {
+        return { "status": 2, "message": "No  available followers" }
+    }
+};
+
+
+follower_helper.get_artist_followers_by_location = async (artist_id, day) => {
+
+    var to = moment().utcOffset(0);
+    var from = moment(to).subtract(day, "days").utcOffset(0);
+    var aggregate = [
         {
-            "$group": {
-                _id:
-                {
-                    year: { $year: "$user.dob" },
-                    month: { $month: "$user.dob" },
-                    day: { $dayOfMonth: "$user.dob" },
-                },
-                count: { $sum: 1 }
+            "$match":
+            {
+                "created_at": { "$gt": new Date(from), "$lt": new Date(to) },
+                "artist_id": new ObjectId(artist_id)
+            },
+        },
+        {
+            $lookup: {
+                from: "user",
+                localField: "user_id",
+                foreignField: "_id",
+                as: "user"
             }
         },
         {
-            "$project":
-            {
-                _id: 0,
-                age: { $subtract: [{ $year: new Date() }, "$_id.year"] },
-                data: 1,
-                count: 1
+            $unwind: "$user"
+        },
+
+        {
+            $lookup: {
+                from: "state",
+                localField: "user.state",
+                foreignField: "_id",
+                as: "state"
+            }
+        },
+        {
+            $unwind: "$state"
+        },
+        {
+            "$group": {
+                _id: {
+                    _id: "$state.name",
+                },
+                count: { $sum: 1 },
             }
         },
     ];
@@ -156,8 +190,6 @@ follower_helper.get_artist_followers_by_age = async (artist_id, day) => {
         return { "status": 2, "message": "No  available followers" }
     }
 };
-
-
 
 follower_helper.get_all_followers = async (id) => {
     try {

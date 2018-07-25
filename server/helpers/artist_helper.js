@@ -207,13 +207,7 @@ artist_helper.get_all_artist = async (start, length) => {
                     total: -1
                 }
             },
-            {
-                $skip: start
 
-            },
-            {
-                $limit: length
-            },
 
         ]);
 

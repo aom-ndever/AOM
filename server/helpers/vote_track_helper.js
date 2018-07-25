@@ -165,4 +165,60 @@ vote_track_helper.get_artist_vote_by_gender = async (artist_id, day) => {
     }
 
 };
+
+
+vote_track_helper.get_artist_vote_by_location = async (artist_id, day) => {
+
+    var to = moment();
+    var from = moment(to).subtract(day, "days");
+
+    var aggregate = [
+        {
+            "$match":
+            {
+                "created_at": { "$gt": new Date(from), "$lt": new Date(to) },
+                "artist_id": new ObjectId(artist_id)
+            },
+        },
+        {
+            $lookup: {
+                from: "user",
+                localField: "user_id",
+                foreignField: "_id",
+                as: "user"
+            }
+        },
+        {
+            $unwind: "$user"
+        },
+        {
+            $group: {
+                _id: "$user.gender",
+                count: { $sum: 1 }
+            }
+        },
+        {
+            "$group": {
+                "_id": null,
+                "gender": { $push: "$$ROOT" },
+                "total": { $sum: "$count" },
+            }
+        },
+
+    ];
+
+    let result = await Vote.aggregate(aggregate);
+    if (result && result.length > 0) {
+
+        result[0].gender = result[0].gender.map((gender_data) => {
+            gender_data.percentage_value = parseFloat(gender_data.count * 100 / result[0].total).toFixed(2);
+            return gender_data;
+        });
+
+        return { "status": 1, "message": "Track  found", "results": result[0].gender }
+    } else {
+        return { "status": 2, "message": "No  available Track" }
+    }
+
+};
 module.exports = vote_track_helper;
