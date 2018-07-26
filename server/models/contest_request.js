@@ -16,6 +16,8 @@ var ContestRequestModelSchema = new Schema({
     action: { type: String, enum: ["accepted", "rejected"] },
     status: { type: Boolean, default: false },
     no_of_participants: { type: Number, default: 0 },
+    state: { type: mongoose.Schema.Types.ObjectId, ref: 'state' },
+    region: { type: mongoose.Schema.Types.ObjectId, ref: 'region' },
     created_at: { type: Date, default: Date.now }
 }, { versionKey: false });
 

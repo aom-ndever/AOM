@@ -159,9 +159,6 @@ artist_helper.get_login_by_email = async (email) => {
  */
 artist_helper.get_all_artist = async (start, length) => {
 
-    console.log('start', start);
-    console.log('length', length);
-
 
     try {
         var artist = await Artist.aggregate([
@@ -177,20 +174,7 @@ artist_helper.get_all_artist = async (start, length) => {
                 $unwind: "$music_type"
             },
 
-            {
-                $lookup: {
-                    from: "state",
-                    localField: "state",
-                    foreignField: "_id",
-                    as: "state"
-                }
-            },
-            {
-                $unwind: "$state"
-            },
-            {
-                $match: filter
-            },
+
             {
                 $group: {
                     _id: "$_id",

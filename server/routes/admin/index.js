@@ -211,7 +211,7 @@ router.post("/add_contest", async (req, res) => {
       start_date: req.body.start_date,
       end_date: req.body.end_date,
       music_type: req.body.music_type,
-      state: req.body.location,
+      state: req.body.state,
       region: req.body.region
     };
 
@@ -289,7 +289,7 @@ router.post("/add_existing_contest", async (req, res) => {
       start_date: req.body.start_date,
       end_date: req.body.end_date,
       music_type: req.body.music_type,
-      state: req.body.location,
+      state: req.body.state,
       region: req.body.region
     };
 

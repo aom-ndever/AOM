@@ -98,7 +98,7 @@ track_helper.get_all_audio = async (filter, page_no, page_size) => {
 };
 
 
-track_helper.get_track_by_filter = async (id, start, length) => {
+track_helper.get_track_by_filter = async (id, filter, start, length) => {
     try {
         var track = await Track
             .find({ "artist_id": { $in: id } })
