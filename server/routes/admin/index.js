@@ -288,7 +288,7 @@ router.post('/contest', async (req, res) => {
   var contest = await round_helper.get_all_round(req.body.start, req.body.length, sort);
   if (contest.status === 1) {
     logger.trace("got details successfully");
-    res.status(config.OK_STATUS).json({ "status": 1, "contest": contest.participate });
+    res.status(config.OK_STATUS).json({ "status": 1, "contest": contest });
   } else {
     res.status(config.INTERNAL_SERVER_ERROR).json(contest);
   }
