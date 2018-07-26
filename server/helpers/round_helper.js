@@ -58,6 +58,7 @@ round_helper.get_all_round = async (start, length, sort = {}) => {
             .limit(length)
 
         var sorting = _.each(participate, p => {
+            console.log('p', p);
 
         })
         var filter_cnt = participate.length;
