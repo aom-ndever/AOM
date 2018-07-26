@@ -6,7 +6,7 @@ var bcrypt = require('bcrypt');
 var jwt = require('jsonwebtoken');
 var async = require('async');
 var admin_helper = require('../../helpers/admin_helper');
-var contest_helper = require('../../helpers/contest_helper');
+var round_helper = require('../../helpers/round_helper');
 var participate_helper = require('../../helpers/participate_helper');
 var artist_helper = require('../../helpers/artist_helper');
 var user_helper = require('../../helpers/user_helper');
@@ -18,6 +18,8 @@ var flag_user_helper = require('../../helpers/flag_user_helper');
 var follower_helper = require('../../helpers/follower_helper');
 var participate_helper = require('../../helpers/participate_helper');
 var contest_request_helper = require('../../helpers/contest_request_helper');
+var vote_track_helper = require('../../helpers/vote_track_helper');
+var contest_helper = require('../../helpers/contest_helper');
 
 
 var mongoose = require('mongoose');
@@ -179,45 +181,44 @@ router.post("/add_contest", async (req, res) => {
       notEmpty: true,
       errorMessage: "name is required"
     },
-    "start_date": {
-      notEmpty: true,
-      errorMessage: "Start Date is required"
-    },
-    "end_date": {
-      notEmpty: true,
-      errorMessage: "End Date is required"
-    },
+
     "music_type": {
       notEmpty: true,
       errorMessage: "Music Type is required"
     },
-    "location": {
-      notEmpty: true,
-      errorMessage: "Location is required"
-    },
+
   };
+
   req.checkBody(schema);
   var errors = req.validationErrors();
 
   if (!errors) {
-    var obj = {
-      admin_id: req.userInfo.id,
-      name: req.body.name,
-      start_date: req.body.start_date,
-      end_date: req.body.end_date,
-      music_type: req.body.music_type,
-      location: req.body.location
-    };
-
     type = await admin_helper.get_admin_by_id(req.userInfo.id)
     if (type.admin.account_type == "super_admin" || type.admin.account_type == "admin") {
-      var resp_data = await contest_helper.insert_contest(obj);
+      var contest_obj = {
+        admin_id: req.userInfo.id,
+        music_type: req.body.music_type,
+        name: req.body.name,
+      }
+
+      var resp_data = await contest_helper.insert_contest(contest_obj);
+
+      var round_obj = {
+        contest_id: resp_data.contest._id,
+        start_date: req.body.start_date,
+        end_date: req.body.end_date,
+        state: req.body.state,
+        region: req.body.region,
+        round: req.body.round,
+        name: contest_obj.name + " " + "round" + req.body.round
+      };
+      var resp_data = await round_helper.insert_round(round_obj);
+
       if (resp_data.status == 0) {
         logger.error("Error occured while inserting = ", resp_data);
         res.status(config.INTERNAL_SERVER_ERROR).json(resp_data);
       } else {
-        var resp_music = await artist_helper.get_artist_by_music_id(obj.music_type);
-        console.log('resp_music', resp_music);
+        var resp_music = await artist_helper.get_artist_by_music_id(contest_obj.music_type);
         if (resp_music.status == 1) {
 
           logger.trace("sending mail");
@@ -225,7 +226,7 @@ router.post("/add_contest", async (req, res) => {
             "to": resp_music.artist.email,
             "subject": "Contest Creation"
           }, {
-              "Note": "new contest has been created named :" + obj.name,
+              "Note": "new contest has been created named :" + contest_obj.name,
             });
         }
         logger.trace(" got successfully = ", resp_data);
@@ -233,6 +234,16 @@ router.post("/add_contest", async (req, res) => {
       }
     }
     else {
+      var obj = {
+        admin_id: req.userInfo.id,
+        name: req.body.name,
+        start_date: req.body.start_date,
+        end_date: req.body.end_date,
+        music_type: req.body.music_type,
+        state: req.body.state,
+        region: req.body.region,
+        round: req.body.round
+      };
       var resp_data = await contest_request_helper.insert_contest_request(obj);
       if (resp_data.status == 0) {
         logger.error("Error occured while inserting = ", resp_data);
@@ -274,7 +285,7 @@ router.post('/contest', async (req, res) => {
     sort["_id"] = 1;
   }
 
-  var contest = await contest_helper.get_all_contest_and_participant(req.body.start, req.body.length, sort);
+  var contest = await round_helper.get_all_round(req.body.start, req.body.length, sort);
   if (contest.status === 1) {
     logger.trace("got details successfully");
     res.status(config.OK_STATUS).json({ "status": 1, "contest": contest });
@@ -284,6 +295,18 @@ router.post('/contest', async (req, res) => {
 
 });
 
+
+router.get('/get_contest', async (req, res) => {
+
+  var contest = await contest_helper.get_all_contests();
+  if (contest.status === 1) {
+    logger.trace("got details successfully");
+    res.status(config.OK_STATUS).json({ "status": 1, "contest": contest });
+  } else {
+    res.status(config.INTERNAL_SERVER_ERROR).json(contest);
+  }
+
+});
 
 /**
  * @api {delete} /admin/track/:artist_id Delete Artist  
@@ -440,7 +463,7 @@ router.delete('/:user_id', async (req, res) => {
 router.post("/home_vote", async (req, res) => {
   var resp_data = await artist_helper.get_all_artist_by_vote();
   var resp = await track_helper.get_artist_by_day_vote(req.body.day);
-  var resp_location = await track_helper.get_artist_by_location_vote(req.body.day);
+  var resp_location = await vote_track_helper.get_artist_by_location_vote(req.body.day);
   if (resp_data.status == 0 && resp.status == 0 && resp_location.status == 0) {
     logger.error("Error occured while fetching artist = ", resp_data);
     res.status(config.INTERNAL_SERVER_ERROR).json(resp_data);
@@ -463,13 +486,14 @@ router.post("/home_vote", async (req, res) => {
 router.post("/home_likes", async (req, res) => {
   var resp_data = await artist_helper.get_all_artist_by_likes();
   var resp_like = await track_helper.get_artist_by_day_like(req.body.day);
+  var resp_location = await track_helper.get_artist_by_location_like(req.body.day);
   //var resp_comment = await track_helper.get_artist_by_day_comment(req.body.day);
-  if (resp_data.status == 0 && resp_like.status == 0) {
+  if (resp_data.status == 0 && resp_like.status == 0 && resp_location.status == 0) {
     logger.error("Error occured while fetching artist = ", resp_data);
     res.status(config.INTERNAL_SERVER_ERROR).json(resp_data);
   } else {
     logger.trace("artist got successfully = ", { "artist": resp_data, "likes": resp_like });
-    res.status(config.OK_STATUS).json({ "artist": resp_data.artist, "likes": resp_like.results });
+    res.status(config.OK_STATUS).json({ "artist": resp_data.artist, "likes": resp_like.results, "location": resp_location.results });
   }
 });
 
@@ -486,15 +510,17 @@ router.post("/home_likes", async (req, res) => {
 router.post("/home_comment", async (req, res) => {
   var resp_data = await artist_helper.get_all_artist_by_comment();
   var resp_comment = await track_helper.get_artist_by_day_comment(req.body.day);
+  var resp_location = await track_helper.get_artist_by_location_comment(req.body.day);
 
   if (resp_data.status == 0 && resp_comment.status == 0) {
     logger.error("Error occured while fetching artist = ", resp_data);
     res.status(config.INTERNAL_SERVER_ERROR).json(resp_data);
   } else {
     logger.trace("artist got successfully = ", { "artist": resp_data, "comment": resp_comment });
-    res.status(config.OK_STATUS).json({ "artist": resp_data.artist, "comment": resp_comment.results });
+    res.status(config.OK_STATUS).json({ "artist": resp_data.artist, "comment": resp_comment.results, "location": resp_location.results });
   }
 });
+
 
 /**
  * @api {post} /admin/get_artist  Get Artist Details with the day and other filter-Get

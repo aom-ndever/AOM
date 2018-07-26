@@ -157,10 +157,7 @@ artist_helper.get_login_by_email = async (email) => {
  *          status 1 - If artist data found, with artist's documents
  *          status 2 - If artist not found, with appropriate message
  */
-artist_helper.get_all_artist = async (start, length) => {
-
-    console.log('start', start);
-    console.log('length', length);
+artist_helper.get_all_artist = async () => {
 
 
     try {
@@ -177,20 +174,7 @@ artist_helper.get_all_artist = async (start, length) => {
                 $unwind: "$music_type"
             },
 
-            {
-                $lookup: {
-                    from: "state",
-                    localField: "state",
-                    foreignField: "_id",
-                    as: "state"
-                }
-            },
-            {
-                $unwind: "$state"
-            },
-            {
-                $match: filter
-            },
+
             {
                 $group: {
                     _id: "$_id",

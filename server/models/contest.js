@@ -9,11 +9,7 @@ var Schema = mongoose.Schema;
 var ContestModelSchema = new Schema({
     admin_id: { type: mongoose.Schema.Types.ObjectId, ref: 'admin' },
     name: { type: String },
-    start_date: { type: Date, default: Date.now },
-    end_date: { type: Date, default: Date.now },
     music_type: { type: mongoose.Schema.Types.ObjectId, ref: 'music_type' },
-    location: String,
-    no_of_participants: { type: Number, default: 0 },
     created_at: { type: Date, default: Date.now }
 }, { versionKey: false });
 

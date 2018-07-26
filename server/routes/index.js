@@ -17,11 +17,11 @@ var artist_helper = require('./../helpers/artist_helper');
 var user_helper = require('./../helpers/user_helper');
 var track_helper = require('./../helpers/track_helper');
 var music_helper = require('./../helpers/music_helper');
-var contest_helper = require('./../helpers/contest_helper');
+var round_helper = require('../helpers/comment_helper');
 var admin_helper = require('./../helpers/admin_helper');
 var media_helper = require('./../helpers/media_helper');
 var follower_helper = require('./../helpers/follower_helper');
-var comment_helper = require('./../helpers/comment_helper');
+var comment_helper = require('../helpers/comment_helper');
 var state_helper = require('./../helpers/state_helper');
 var region_helper = require('./../helpers/region_helper');
 var global_helper = require('./../helpers/global_helper');
@@ -1353,7 +1353,7 @@ router.post("/artistv1", async (req, res) => {
     var resp_artist = await artist_helper.get_new_uploads(filter);
 
     //var resp_track = await artist_helper.get_artist_by_id(filter);
-    var resp_chart = await artist_helper.get_all_artist(req.body.start, req.body.length);
+    var resp_chart = await artist_helper.get_all_artist();
 
     if (resp_artist.status == 0 && resp_chart.status == 0) {
       logger.error("Error occured while fetching users = ", resp_artist);
@@ -1411,10 +1411,10 @@ router.post('/get_track', async (req, res) => {
   }
 
   var sort = { created_at: sort_by }
-  var track = await track_helper.get_all_track_of_artist(artist_id, sort, req.body.start, req.body.length);
+  var track = await track_helper.get_all_track_of_artist(artist_id, req.body.start, req.body.length);
   if (track.status === 1) {
     logger.trace("got details successfully");
-    res.status(config.OK_STATUS).json({ "status": 1, "track": track.music });
+    res.status(config.OK_STATUS).json({ "status": 1, "track": track });
   } else {
     logger.error("Error occured while fetching = ", track);
     res.status(config.INTERNAL_SERVER_ERROR).json(track);
@@ -1443,7 +1443,7 @@ router.post('/get_ranking', async (req, res) => {
   var track = await track_helper.get_all_track_of_artist_by_ranking(artist_id, sort, req.body.start, req.body.length);
   if (track.status === 1) {
     logger.trace("got details successfully");
-    res.status(config.OK_STATUS).json({ "status": 1, "track": track.music });
+    res.status(config.OK_STATUS).json({ "status": 1, "track": track });
   } else {
     logger.error("Error occured while fetching = ", track);
     res.status(config.INTERNAL_SERVER_ERROR).json(track);
