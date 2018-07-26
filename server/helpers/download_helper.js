@@ -114,5 +114,40 @@ download_helper.get_downloads_by_day = async (artist_id, day) => {
     }
 
 };
+download_helper.get_downloads_by_location = async (artist_id, day) => {
+
+    var to = moment().utcOffset(0);
+    var from = moment(to).subtract(day, "days").utcOffset(0);
+    var aggregate = [
+        {
+            "$match":
+            {
+                "created_at": { "$gt": new Date(from), "$lt": new Date(to) },
+                "artist_id": new ObjectId(artist_id)
+            },
+        },
+        {
+            $lookup: {
+                from: "user",
+                localField: "user_id",
+                foreignField: "_id",
+                as: "user"
+            }
+        },
+        {
+            $unwind: "$user"
+        },
+
+    ];
+    let result = await Download.aggregate(aggregate);
+
+
+    if (result) {
+        return { "status": 1, "message": "Track  found", "results": result }
+    } else {
+        return { "status": 2, "message": "No  available Track" }
+    }
+
+};
 
 module.exports = download_helper;

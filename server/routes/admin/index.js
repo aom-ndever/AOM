@@ -18,6 +18,7 @@ var flag_user_helper = require('../../helpers/flag_user_helper');
 var follower_helper = require('../../helpers/follower_helper');
 var participate_helper = require('../../helpers/participate_helper');
 var contest_request_helper = require('../../helpers/contest_request_helper');
+var vote_track_helper = require('../../helpers/vote_track_helper');
 
 
 var mongoose = require('mongoose');
@@ -534,7 +535,7 @@ router.delete('/:user_id', async (req, res) => {
 router.post("/home_vote", async (req, res) => {
   var resp_data = await artist_helper.get_all_artist_by_vote();
   var resp = await track_helper.get_artist_by_day_vote(req.body.day);
-  var resp_location = await track_helper.get_artist_by_location_vote(req.body.day);
+  var resp_location = await vote_track_helper.get_artist_by_location_vote(req.body.day);
   if (resp_data.status == 0 && resp.status == 0 && resp_location.status == 0) {
     logger.error("Error occured while fetching artist = ", resp_data);
     res.status(config.INTERNAL_SERVER_ERROR).json(resp_data);

@@ -8,6 +8,8 @@ var async = require('async');
 var track_helper = require('../../helpers/track_helper');
 var vote_track_helper = require('../../helpers/vote_track_helper');
 var artist_helper = require('../../helpers/artist_helper');
+var artist_helper = require('../../helpers/artist_helper');
+var vote_track_helper = require('../../helpers/vote_track_helper');
 var download_helper = require('../../helpers/download_helper');
 var path = require('path');
 var moment = require('moment');
@@ -296,7 +298,7 @@ router.post('/analytics/track', async (req, res) => {
     var resp_day = await vote_track_helper.get_artist_vote_by_day(req.userInfo.id, req.body.day);
     var resp_gender = await vote_track_helper.get_artist_vote_by_gender(req.userInfo.id, req.body.day);
     var resp_track = await vote_track_helper.get_artist_vote_by_track(req.userInfo.id, req.body.day);
-    var resp_location = await vote_track_helper.get_artist_vote_by_location(req.userInfo.id, req.body.day);
+    var resp_location = await vote_track_helper.get_artist_by_location_vote(req.userInfo.id, req.body.day);
 
     if (resp_day.status === 0 && resp_gender === 0 && resp_rack === 0 && resp_location === 0) {
         res.status(config.INTERNAL_SERVER_ERROR).json({ "status": 0, "message": "Error occured while finding vote", "error": resp_day.error });
@@ -320,9 +322,10 @@ router.post('/downloaded_track', async (req, res) => {
     artist_id = req.userInfo.id;
     var track = await download_helper.get_all_downloaded_track_by_id(artist_id, req.body.day);
     var resp_day = await download_helper.get_downloads_by_day(req.userInfo.id, req.body.day);
-    if (track.status === 1 && resp_day.status === 1) {
+    var resp_location = await download_helper.get_downloads_by_location(req.userInfo.id, req.body.day);
+    if (track.status === 1 && resp_day.status === 1 && resp_location.status == 1) {
         logger.trace("got details successfully");
-        res.status(config.OK_STATUS).json({ "status": 1, "track": track.track, "day": resp_day.results });
+        res.status(config.OK_STATUS).json({ "status": 1, "track": track.track, "day": resp_day.results, "location": resp_location.results });
     } else {
         logger.error("Error occured while fetching = ", track);
         res.status(config.INTERNAL_SERVER_ERROR).json(track);
