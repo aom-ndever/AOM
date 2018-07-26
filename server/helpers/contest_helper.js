@@ -51,6 +51,8 @@ contest_helper.get_all_contest_and_participant = async (start, length, sort = {}
 
         var participate = await Contest.find()
             .populate('music_type')
+            .populate('region')
+            .populate('state')
             .sort(sort)
             .skip(start)
             .limit(length)
