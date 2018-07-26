@@ -76,6 +76,7 @@ export class HeaderComponent implements OnInit, OnDestroy  {
   openVerticallyCentered(content) {
     this.show_spinner = false;
     this.userdata = {};
+    this.login_validation = false;
     this.modalRef = this.modalService.open(content, { centered: true, windowClass : 'modal-wrapper' });
   }
 

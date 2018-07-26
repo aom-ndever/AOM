@@ -71,7 +71,7 @@ import { AuthService } from '../shared/auth.service';
           {path: 'artist_track_comment/:id', component: ArtistTrackConmmentsComponent, canActivate: [AuthService]},
           {path: 'artist_profile/:artist_id/track/:id/comments', component: TrackConmmentsComponent, resolve : {comment : TrackCommentResolve, artist : TrackArtistProfileResolve, track : TrackDetailResolve}},
           {path: 'artist_profile/:id/comments', component: ConmmentsComponent, resolve: { artist: ArtistProfileResolve, comments : ArtistCommentsResolve}},
-          {path: 'artist_profile/:id', component: ArtistProfileComponent, resolve: { artist: ArtistProfileResolve, track : ArtistTrackResolve, media : ArtistMediaResolve, follower : ArtistFollowerResolve, comments : ArtistCommentsResolve, ranking : ArtistRankingResolve }},
+          {path: 'artist_profile/:id', component: ArtistProfileComponent, resolve: { artist: ArtistProfileResolve, media : ArtistMediaResolve, follower : ArtistFollowerResolve, comments : ArtistCommentsResolve }},
           {path: 'vote', component: VoteComponent},
           {path: 'my-music', component: MyMusicComponent, canActivate: [AuthService]},
           {path: 'my-profile', component: MyProfileComponent, canActivate: [AuthService]}

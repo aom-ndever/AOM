@@ -79,20 +79,6 @@ export class MyMusicComponent implements OnInit, OnDestroy {
         ajax: (dataTablesParameters: any, callback) => {
           console.log(dataTablesParameters);
           setTimeout(() => {
-            // dataTablesParameters['search'] = that.search_str;
-            // dataTablesParameters['order'] = '';
-            // dataTablesParameters['sort_by'] = that.sort_by;
-            // dataTablesParameters['filter'] = [];
-            // if(that.music_type_id) {
-            //   dataTablesParameters['filter'].push(
-            //     {'field' : 'music_type', value :  that.music_type_id}
-            //   );
-            // }
-            // if(that.region_filter.length) {
-            //   dataTablesParameters['filter'].push(
-            //     {'field' : 'state', value :  this.region_filter}
-            //   );
-            // }
             that.audio_ins = [];
             that.MyMusicService.getAllTrack(dataTablesParameters).subscribe(response => {
               that.tracklist = response['track']['music'];

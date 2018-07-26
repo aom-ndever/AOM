@@ -19,8 +19,8 @@
               </div>
               <div class="audio_content">
                 <div class="audio_profile_name">
-                    <h3>Blue State of Mind</h3>
-                    <span>Saven Miller</span>
+                    <h3>{{audio_list[song_cnt] && audio_list[song_cnt]['name'] ? audio_list[song_cnt]['name'] : ''}}</h3>
+                    <span>{{audio_list.length > 0 && audio_list[song_cnt] && audio_list[song_cnt]['artist_id'] && audio_list[song_cnt]['artist_id']['first_name'] ? audio_list[song_cnt]['artist_id']['first_name'] : '' +" "+audio_list.length > 0 && audio_list[song_cnt] && audio_list[song_cnt]['artist_id'] &&  audio_list[song_cnt]['artist_id']['last_name'] ? audio_list[song_cnt]['artist_id']['last_name'] : ''  }}</span>
                 </div> 
                 <div class="volume_section">
                     <img class="volume_btn" src="img/volume.png"/>

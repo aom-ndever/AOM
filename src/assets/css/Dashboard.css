@@ -426,22 +426,22 @@ label {
 
 }
 
-.dataTables_scrollHeadInner table{
+.artists_table  .dataTables_scrollHeadInner table{
   margin-bottom: 0 !important;
 }
-.dataTables_wrapper.no-footer .dataTables_scrollBody{
+.artists_table  .dataTables_wrapper.no-footer .dataTables_scrollBody{
   border-bottom: none !important;
 }
-.dataTables_scrollHead{
+.artists_table  .dataTables_scrollHead{
   background-color: rgba(156, 39, 176, 0.1);
 }
-.dataTables_scrollHead table{
+.artists_table  .dataTables_scrollHead table{
   background-color: transparent;
 }
-.dataTables_wrapper .dataTables_processing{
+.artists_table  .dataTables_wrapper .dataTables_processing{
   z-index: 999;
 }
-.dataTables_wrapper .dataTables_scroll {
+.artists_table  .dataTables_wrapper .dataTables_scroll {
   margin-bottom: 10px;
 }
 .custom_modal .close span{
@@ -1428,10 +1428,10 @@ background-color: transparent;
   }
 }
 @media(min-width:1285px){
-  .dataTables_scrollHeadInner table{
+  .artists_table .dataTables_scrollHeadInner table{
     width: 1288px !important ;
   }
-  .dataTables_scrollBody table{
+  .artists_table .dataTables_scrollBody table{
     width: 1280px !important ;
     margin-bottom: 0 !important;
   }

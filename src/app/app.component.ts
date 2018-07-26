@@ -44,8 +44,7 @@ export class AppComponent {
           // }
         } else if (event instanceof NavigationError) {
           this.loading = false;
-          this.router.navigate(['/home']);
-          console.log("event:", event['error']['error']['error']['message']);
+          this.router.navigate(['']);
         }
       });
     }

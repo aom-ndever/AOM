@@ -430,7 +430,7 @@ border-radius: 2px; font-family: 'Roboto', sans-serif;}
 }
 .social-right{float: right; text-align: right;}
 .foo-top {
-    padding: 30px 0;
+    padding: 30px 0 70px 0;
     border-top: 1px solid #DEDEDE;
     border-bottom: 1px solid #DEDEDE;
     display: inline-block;
@@ -445,7 +445,13 @@ border-radius: 2px; font-family: 'Roboto', sans-serif;}
     height: 100px;
     background-position: left;
 } */
-.player-wrapper{margin-top: 50px;   box-shadow: 0px 0px 10px rgba(0,0,0,0.2);}
+.player-wrapper{margin-top: 50px;   box-shadow: 0px 0px 10px rgba(0,0,0,0.2);display: block;
+position: fixed;
+left: 0;
+right: 0;
+bottom: 0;
+z-index: 999;
+background: #ffff;}
 /*player*/
 /*Homepage*/
 
@@ -1636,7 +1642,7 @@ a.play-btn{
     margin-bottom: 0;
 }
 .track-name{
-     font-size: 16px;
+     font-size: 15px;
     color: #000;
     font-weight: 600;
     margin-bottom: 0;
@@ -1678,7 +1684,7 @@ a.play-btn{
 }
 .cmt-like img, .cmt img, .download img{padding-right: 7px;}
 
-.track-table tr td{padding: 10px 0;}
+.track-table tr td{padding: 10px 0;    border-bottom: 1px solid #ecebeb;}
 .track-select-wrap select{
     background: url("../../img/drop.png") no-repeat;
     border: 0;
@@ -3283,6 +3289,7 @@ button.close{    background: transparent;
     margin-top: 50px;
     margin-bottom: 30px;
 }
+
 /*MEDIA START*/
 @media screen and (min-width: 768px){
     .news-header,.content-block{width: 750px;}
@@ -4791,3 +4798,37 @@ input#cover_upload1 {
   .pr0{
     padding-right:0;
   }
+  .music_vote{    width: 15%;}
+  .music_action{    width: 29%;}
+  .track-table .dataTables_wrapper.no-footer .dataTables_scrollBody,  .track-table table.dataTable thead th{border-bottom: none;}
+  .track-table .dataTables_paginate > span{display: none;}
+  .paginate_button.first, .paginate_button.last {    display: none !important;}
+  .track-table table.dataTable.no-footer {
+    border-bottom: none;
+}
+.track-table .dataTables_wrapper .dataTables_paginate .paginate_button.next, .track-table .dataTables_wrapper .dataTables_paginate .paginate_button.previous{
+    color:#9b26b0 !important;
+}
+.track-table .dataTables_wrapper .dataTables_paginate .paginate_button.next:before,  .track-table .dataTables_wrapper .dataTables_paginate .paginate_button.previous:before {
+    display: inline-block;
+    font: normal normal normal 14px/1 FontAwesome;
+    font-size: inherit;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    content: '';
+    position: absolute;
+    top: 15px;
+    font-size: 11px;
+}
+.track-table .dataTables_wrapper .dataTables_paginate .paginate_button.next:before{    content: "\F054";    right: 0;}
+.track-table .dataTables_wrapper .dataTables_paginate .paginate_button.previous:before{    content: "\F053";left: 0;}
+.track-wrapper .track-table .dataTables_wrapper .dataTables_paginate .paginate_button:hover,.track-table .dataTables_wrapper .dataTables_paginate .paginate_button:focus,.track-table .dataTables_wrapper .dataTables_paginate .paginate_button:active{       color: #9b26b0 !important;
+    background: transparent;
+    box-shadow: none;color:#9b26b0 !important;}
+    .track-wrapper .dataTables_wrapper .dataTables_info {
+        font-size: 14px;
+    }
+
+.track-table .dataTables_wrapper .dataTables_paginate .paginate_button{position: relative;  padding: 0.5em 1em !important;border: none !important;}
+.music_numb, .music_play{width:5%;}

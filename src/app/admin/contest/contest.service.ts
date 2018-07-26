@@ -25,4 +25,20 @@ export class ContestService {
   getAllMusicType() {
     return this.http.get(`${this.api_host}/music_type`);
   }
+  // Get existing contest
+  getExistingContest() {
+    return this.http.get(`${this.api_host}/admin/get_contest`, {headers : this.headers});
+  }
+   // get all region
+   getAllRegion() {
+    return this.http.get(`${this.api_host}/region`);
+  }
+  // Get state based on region
+  getStateByRegion(data : any) {
+    return this.http.post(`${this.api_host}/state_by_region`, data);
+  }
+  // Add new contest
+  addNewContest(data : any) {
+    return this.http.post(`${this.api_host}/admin/add_contest`, data, {headers : this.headers});
+  }
 }
