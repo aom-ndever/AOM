@@ -1,5 +1,4 @@
 var Participate = require("./../models/participate");
-var Contest = require("./../models/contest");
 var participate_helper = {};
 var mongoose = require('mongoose');
 var _ = require('underscore');
