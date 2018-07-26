@@ -297,6 +297,36 @@ track_helper.get_artist_by_location_vote = async (day) => {
             },
         },
 
+        {
+            $lookup: {
+                from: "user",
+                localField: "user_id",
+                foreignField: "_id",
+                as: "user"
+            }
+        },
+        {
+            $unwind: "$user"
+        },
+        {
+            $lookup: {
+                from: "state",
+                localField: "user.state",
+                foreignField: "_id",
+                as: "state"
+            }
+        },
+        {
+            $unwind: "$state"
+        },
+        {
+            "$group": {
+                _id: {
+                    _id: "$state.name",
+                },
+                count: { $sum: 1 },
+            }
+        },
 
     ];
 
@@ -336,6 +366,59 @@ track_helper.get_artist_by_day_like = async (day) => {
 };
 
 
+track_helper.get_artist_by_location_like = async (day) => {
+    var to = moment();
+    var from = moment(to).subtract(day, "days");
+    var aggregate = [
+        {
+            "$match":
+            {
+                "created_at": { "$gt": new Date(from), "$lt": new Date(to) },
+            },
+        },
+
+
+        {
+            $lookup: {
+                from: "user",
+                localField: "user_id",
+                foreignField: "_id",
+                as: "user"
+            }
+        },
+        {
+            $unwind: "$user"
+        },
+        {
+            $lookup: {
+                from: "state",
+                localField: "user.state",
+                foreignField: "_id",
+                as: "state"
+            }
+        },
+        {
+            $unwind: "$state"
+        },
+        {
+            "$group": {
+                _id: {
+                    _id: "$state.name",
+                },
+                count: { $sum: 1 },
+            }
+        },
+
+
+    ];
+    let result = await Like.aggregate(aggregate);
+    if (result) {
+        return { "status": 1, "message": "Artist  found", "results": result }
+    } else {
+        return { "status": 2, "message": "No  available Artist" }
+    }
+};
+
 track_helper.get_artist_by_day_comment = async (day) => {
     var to = moment();
     var from = moment(to).subtract(day, "days");
@@ -360,6 +443,61 @@ track_helper.get_artist_by_day_comment = async (day) => {
         return { "status": 2, "message": "No  available Artist" }
     }
 };
+
+
+
+track_helper.get_artist_by_location_comment = async (day) => {
+    var to = moment();
+    var from = moment(to).subtract(day, "days");
+    var aggregate = [
+        {
+            "$match":
+            {
+                "created_at": { "$gt": new Date(from), "$lt": new Date(to) },
+            },
+        },
+
+
+        {
+            $lookup: {
+                from: "user",
+                localField: "user_id",
+                foreignField: "_id",
+                as: "user"
+            }
+        },
+        {
+            $unwind: "$user"
+        },
+        {
+            $lookup: {
+                from: "state",
+                localField: "user.state",
+                foreignField: "_id",
+                as: "state"
+            }
+        },
+        {
+            $unwind: "$state"
+        },
+        {
+            "$group": {
+                _id: {
+                    _id: "$state.name",
+                },
+                count: { $sum: 1 },
+            }
+        },
+
+    ];
+    let result = await Comment.aggregate(aggregate);
+    if (result) {
+        return { "status": 1, "message": "Artist  found", "results": result }
+    } else {
+        return { "status": 2, "message": "No  available Artist" }
+    }
+};
+
 
 
 track_helper.delete_track_by_id = async (artist_id, track_id) => {
