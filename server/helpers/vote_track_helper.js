@@ -167,7 +167,7 @@ vote_track_helper.get_artist_vote_by_gender = async (artist_id, day) => {
 };
 
 
-vote_track_helper.get_artist_by_location_vote = async (artist_id, day) => {
+vote_track_helper.get_artist_by_location_vote = async (day) => {
 
     var to = moment();
     var from = moment(to).subtract(day, "days");
@@ -177,7 +177,6 @@ vote_track_helper.get_artist_by_location_vote = async (artist_id, day) => {
             "$match":
             {
                 "created_at": { "$gt": new Date(from), "$lt": new Date(to) },
-                "artist_id": new ObjectId(artist_id)
             },
         },
         {
@@ -206,8 +205,10 @@ vote_track_helper.get_artist_by_location_vote = async (artist_id, day) => {
             "$group": {
                 _id: {
                     _id: "$state.name",
+                    name: "$state.short_name"
+
                 },
-                count: { $sum: 1 },
+                value: { $sum: 1 },
             }
         },
     ];
@@ -215,8 +216,6 @@ vote_track_helper.get_artist_by_location_vote = async (artist_id, day) => {
     let result = await Vote.aggregate(aggregate);
     if (result) {
         return { "status": 1, "message": "Track  found", "results": result }
-
-
     }
 
     else {

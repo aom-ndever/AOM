@@ -21,6 +21,7 @@ var contest_request_helper = require('../../helpers/contest_request_helper');
 var vote_track_helper = require('../../helpers/vote_track_helper');
 var contest_helper = require('../../helpers/contest_helper');
 
+var moment = require('moment');
 
 var mongoose = require('mongoose');
 var ObjectId = mongoose.Types.ObjectId;
@@ -205,13 +206,18 @@ router.post("/add_contest", async (req, res) => {
 
       var round_obj = {
         contest_id: resp_data.contest._id,
-        start_date: req.body.start_date,
-        end_date: req.body.end_date,
+        start_date: moment(req.body.start_date).utc(),
         state: req.body.state,
         region: req.body.region,
+        duration: req.body.duration,
+        end_date: moment(req.body.start_date).utc().add((req.body.duration * 7), 'days'),
         round: req.body.round,
-        name: contest_obj.name + " " + "round" + req.body.round
+        round_name: contest_obj.name + " " + "round" + req.body.round
       };
+
+      console.log('round_obj => ', round_obj);
+
+
       var resp_data = await round_helper.insert_round(round_obj);
 
       if (resp_data.status == 0) {
@@ -237,12 +243,15 @@ router.post("/add_contest", async (req, res) => {
       var obj = {
         admin_id: req.userInfo.id,
         name: req.body.name,
-        start_date: req.body.start_date,
-        end_date: req.body.end_date,
+        start_date: moment(req.body.start_date).utc(),
+        duration: req.body.duration,
+        end_date: moment(req.body.start_date).utc().add((req.body.duration * 7), 'days'),
         music_type: req.body.music_type,
         state: req.body.state,
         region: req.body.region,
-        round: req.body.round
+        round: req.body.round,
+        round_name: name + " " + "round" + req.body.round
+
       };
       var resp_data = await contest_request_helper.insert_contest_request(obj);
       if (resp_data.status == 0) {
@@ -261,7 +270,46 @@ router.post("/add_contest", async (req, res) => {
   }
 });
 
+router.post("/add_existing_contest", async (req, res) => {
+  var schema = {
 
+
+  };
+
+  req.checkBody(schema);
+  var errors = req.validationErrors();
+  contest_response = await contest_request_helper.get_contest_by_id(req.body.contest_id)
+  console.log('contest_response', contest_response.contest.name);
+
+  if (!errors) {
+    var round_obj = {
+      contest_id: req.body.contest_id,
+      start_date: moment(req.body.start_date).utc(),
+      duration: req.body.duration,
+      end_date: moment(req.body.start_date).utc().add((req.body.duration * 7), 'days'),
+      music_type: req.body.music_type,
+      state: req.body.state,
+      region: req.body.region,
+      round: req.body.round,
+
+    }
+
+    var resp_data = await round_helper.insert_round(round_obj);
+
+    if (resp_data.status == 0) {
+      logger.error("Error occured while inserting = ", resp_data);
+      res.status(config.INTERNAL_SERVER_ERROR).json(resp_data);
+    }
+    logger.trace(" got successfully = ", resp_data);
+    res.status(config.OK_STATUS).json(resp_data);
+  }
+
+
+  else {
+    logger.error("Validation Error = ", errors);
+    res.status(config.BAD_REQUEST).json({ message: errors });
+  }
+});
 
 /**
  * @api {post} /admin/contest   Contest detail with total participant - Get 
@@ -298,7 +346,7 @@ router.post('/contest', async (req, res) => {
 
 router.get('/get_contest', async (req, res) => {
 
-  var contest = await contest_helper.get_all_contests();
+  var contest = await round_helper.get_all_contests();
   if (contest.status === 1) {
     logger.trace("got details successfully");
     res.status(config.OK_STATUS).json({ "status": 1, "contest": contest });
@@ -627,23 +675,31 @@ router.post("/suspend/artist/:artist_id", async (req, res) => {
 router.post("/accept/contest_request/:contest_id", async (req, res) => {
   admin_id = req.userInfo.id
   contest_resp = await contest_request_helper.get_contest_by_id(req.params.contest_id)
-  console.log('contest_resp', contest_resp);
-  var obj = {
+
+  var contest_obj = {
     name: contest_resp.contest.name,
     _id: contest_resp.contest._id,
-    start_date: contest_resp.contest.start_date,
-    end_date: contest_resp.contest.end_date,
-    end_date: contest_resp.contest.end_date,
-    no_of_participants: contest_resp.contest.no_of_participants,
     admin_id: contest_resp.contest.admin_id,
     created_at: contest_resp.contest.created_at,
-    music_type: contest_resp.contest.music_type,
-    location: contest_resp.contest.location
+    music_type: contest_resp.contest.music_type
+  }
+  round_resp = await contest_request_helper.get_round_by_id(req.params.contest_id)
+
+  var round_obj = {
+    contest_id: contest_obj._id,
+    start_date: moment(req.body.start_date).utc(),
+    duration: req.body.duration,
+    end_date: moment(req.body.start_date).utc().add((req.body.duration * 7), 'days'),
+    music_type: req.body.music_type,
+    state: req.body.state,
+    region: req.body.region,
+    round: req.body.round,
   }
   contest_resp = await admin_helper.get_admin_by_id(admin_id)
   if (contest_resp.admin.account_type == 'super_admin') {
     var action = "accepted"
-    var resp_data = await contest_helper.insert_contest(obj);
+    var resp_data = await contest_helper.insert_contest(contest_obj);
+    var resp_data = await round_helper.insert_round(round_obj);
     var resp_data = await contest_request_helper.insert_action(req.params.contest_id, action);
     logger.trace("Contest Request Accepted");
     res.status(config.OK_STATUS).json({ "message": "Contest Request Accepted" });
