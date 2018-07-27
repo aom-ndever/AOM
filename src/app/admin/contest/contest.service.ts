@@ -41,4 +41,8 @@ export class ContestService {
   addNewContest(data : any) {
     return this.http.post(`${this.api_host}/admin/add_contest`, data, {headers : this.headers});
   }
+  // add existing contest
+  addExistingContest(data : any) {
+    return this.http.post(`${this.api_host}/admin/add_existing_contest`, data, {headers : this.headers});
+  }
 }

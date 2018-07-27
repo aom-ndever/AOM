@@ -127,9 +127,12 @@ export class ArtistComponent implements OnInit {
   }
   // Get my follower
   getMyFollower() {
-    this.ArtistService.getMyFollower().subscribe((response) => {
-      this.my_follower_list = response['user'];
-    });
+    let user = JSON.parse(localStorage.getItem('user'));
+      if(user) {
+      this.ArtistService.getMyFollower().subscribe((response) => {
+        this.my_follower_list = response['user'];
+      });
+    }
   }
   // filter artistv1
   filterArtistv1(e : any) {

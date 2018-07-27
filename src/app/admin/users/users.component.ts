@@ -6,7 +6,7 @@ import { BsModalService } from 'ngx-bootstrap/modal';
 import {NgbModal, ModalDismissReasons, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 import { environment } from '../../../environments/environment';
-
+import swal from 'sweetalert2';
 class DataTablesResponse {
   data: any[];
   draw: number;
@@ -79,14 +79,27 @@ export class UsersComponent implements OnInit {
 
   // suspend user
   suspendUser(id : any) {
-    this.UsersService.suspendUser(id).subscribe((response) => {
-      this.toastr.success(response['message'], 'Success!');
-      this.datatableElement.dtInstance.then((dtInstance: DataTables.Api) => {
-        dtInstance.draw();
-      });
-    }, (error)=> {
-      this.toastr.error(error['error'].message, 'Error!');
+    swal({
+      title: 'Are you sure?',
+      text: "",
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes'
+    }).then((flag) => {
+      if(flag.value) {
+        this.UsersService.suspendUser(id).subscribe((response) => {
+          this.toastr.success(response['message'], 'Success!');
+          this.datatableElement.dtInstance.then((dtInstance: DataTables.Api) => {
+            dtInstance.draw();
+          });
+        }, (error)=> {
+          this.toastr.error(error['error'].message, 'Error!');
+        });
+      }
     });
+    
   }
   // Filter user based on search string
   filterBasedOnSearch(e: any) {

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HomeService } from './home.service';
-import { Chart } from 'angular-highcharts';
-
+import { Chart, MapChart } from 'angular-highcharts';
+import { country_data } from '../../../assets/data/us-all';
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -14,6 +14,7 @@ export class HomeComponent implements OnInit {
   analytics_days : any = 7;
   show_duration_date : any = '';
   artist_chart : any = '';
+  top_location_chart : any = '';
   constructor(private HomeService : HomeService) {
     console.log("Admin dashboard component");
   }
@@ -21,6 +22,7 @@ export class HomeComponent implements OnInit {
   ngOnInit() {
     this.getMaxVoteAritst({day : this.analytics_days});
     this.calculateDateFromDays(this.analytics_days);
+    this.topLocationChart({});
   }
 
   homeTabChange(index : any) {    
@@ -125,5 +127,86 @@ export class HomeComponent implements OnInit {
         }
       ]
     });
+  }
+  // Top location chart
+  topLocationChart(data : any) {
+    let options = {
+      series: [{
+        chart : {
+          map : country_data
+        },
+        title: {
+          text: 'Highmaps basic demo'
+        },
+        mapNavigation: {
+          enabled: true,
+          buttonOptions: {
+            verticalAlign: 'bottom'
+          }
+        },
+        colorAxis: {
+          min: 0
+        },
+        data: [
+          {
+            "value": 438,
+            "code": "nj"
+            },
+            {
+            "value": 387.35,
+            "code": "ri"
+            }
+        ],
+        name: 'Random data',
+        states: {
+            hover: {
+                color: '#BADA55'
+            }
+        },
+        dataLabels: {
+            enabled: true,
+            format: '{point.name}'
+        }
+      }]
+    };
+    this.top_location_chart = new MapChart({ 
+      series: [{
+        chart : {
+          map : country_data
+        },
+        title: {
+          text: 'Highmaps basic demo'
+        },
+        mapNavigation: {
+          enabled: true,
+          buttonOptions: {
+            verticalAlign: 'bottom'
+          }
+        },
+        colorAxis: {
+          min: 0
+        },
+        data: [
+          {
+            "value": 438,
+            "code": "nj"
+            },
+            {
+            "value": 387.35,
+            "code": "ri"
+            }
+        ],
+        name: 'Random data',
+        states: {
+            hover: {
+                color: '#BADA55'
+            }
+        },
+        dataLabels: {
+            enabled: true,
+            format: '{point.name}'
+        }
+      }]
+     });
   }
 }

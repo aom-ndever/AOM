@@ -364,7 +364,7 @@
                           <div class="cust_err_msg" *ngIf="listener_validation[0] && !passwordFormGroup.controls['conf'].valid ">
                             <span *ngIf="passwordFormGroup.controls['conf'].errors['required']" class="text-danger">Confirm password is required.</span>
                             <span *ngIf="!passwordFormGroup.controls['conf'].errors['required'] && passwordFormGroup.controls['conf'].errors['minlength'] && passwordFormGroup.controls['conf'].dirty" class="text-danger">Must be longer than 6 characters.</span>
-                            <span *ngIf="passwordFormGroup.controls['conf'].errors['required'] && passwordFormGroup.controls['conf'].errors['mismatch'] && passwordFormGroup.controls['conf'].dirty" class="text-danger">Please enter correct confirm password.</span>
+                            <span *ngIf="!passwordFormGroup.controls['conf'].errors['required'] && passwordFormGroup.controls['conf'].errors['mismatch'] && passwordFormGroup.controls['conf'].dirty" class="text-danger">Please enter correct confirm password.</span>
                           </div>
                         </div>
                       </div>

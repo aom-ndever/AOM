@@ -94,11 +94,15 @@ export class CarouselComponent implements OnInit, OnDestroy {
     // audio.src = this.track_url+name;
     // audio.load();
     // audio.play();
-    if(!this.audio_ins.hasOwnProperty(index)) {
-      this.audio_ins[index] = this.track_url+name;
+    // if(!this.audio_ins.hasOwnProperty(index)) {
+    //   this.audio_ins[index] = this.track_url+name;
       // this.audio_ins[index] = audio;
+      data.forEach((ele, idx) => {
+        this.audio_ins[idx] = false;
+      });
+      this.audio_ins[index] = true;
       this.MessageService.sendMessage({data : data, index : index, action : 'start', list : 1});
-    }
+    // }
   }
   // Stop audio
   stopAudio(index : any, data : any) {
