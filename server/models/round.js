@@ -8,7 +8,7 @@ var Schema = mongoose.Schema;
 
 var RoundModelSchema = new Schema({
     contest_id: { type: mongoose.Schema.Types.ObjectId, ref: 'contest' },
-    name: String,
+    round_name: String,
     start_date: { type: Date, default: Date.now },
     end_date: { type: Date },
     music_type: { type: mongoose.Schema.Types.ObjectId, ref: 'music_type' },

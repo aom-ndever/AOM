@@ -76,8 +76,11 @@ round_helper.get_all_round = async (start, length, sort = {}) => {
 round_helper.get_all_contests = async () => {
     try {
 
-        var participate = await Round.find({}, { "name": 1, "start_date": 1, "end_date": 1, "music_type": 1, "location": 1, "no_of_participants": 1 })
+        var participate = await Round.find()
             .populate('music_type')
+            .populate('contest_id')
+            .populate('state')
+            .populate('region')
 
         if (participate) {
             return { "status": 1, "message": "contest details found", "contest": participate };
