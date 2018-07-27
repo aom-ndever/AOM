@@ -4,6 +4,7 @@ import { DataTableDirective } from 'angular-datatables';
 import { ToastrService } from 'ngx-toastr';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
+import { FormGroup, FormBuilder, Validators, FormControl, AbstractControl, NG_VALIDATORS, Validator } from '@angular/forms';
 
 @Component({
   selector: 'app-contest',
@@ -16,7 +17,12 @@ export class ContestComponent implements OnInit {
   modalRef: BsModalRef;
   contestModelRef : BsModalRef;
   dtOptions: DataTables.Settings = {};
+  is_new_or_existing : any = 1;
   contest_data : any = [];
+  existing_contest_list : any = [];
+  exist_contest : any = {};
+  region_list : any = [];
+  state_list : any = [];
   search_str : any = '';
   sort : any = -1;
   participant_data : any = [];
@@ -24,11 +30,15 @@ export class ContestComponent implements OnInit {
   month : any = [];
   year : any = [];
   music_type : any = [];
-
+  contest_detail : any = {};
+  show_spinner : boolean = false;
+  contest_validation : FormGroup;
+  is_valid : boolean =  false;
   constructor(
     private ContestService : ContestService,
     private toastr: ToastrService,
-    private modalService: BsModalService
+    private modalService: BsModalService,
+    private fb: FormBuilder
   ) {
     this.day = [];
     this.month = [];
@@ -42,6 +52,20 @@ export class ContestComponent implements OnInit {
     for(let i = 1900; i<= (new Date()).getFullYear(); i++ ) {
       this.year.push(i);
     }
+    this.contest_validation = this.fb.group({
+      type : [],
+      name : ['', [Validators.required]],
+      day : ['', [Validators.required]],
+      month : ['', [Validators.required]],
+      year : ['', [Validators.required]],
+      duration : ['', [Validators.required]],
+      round : ['', [Validators.required]],
+      music_type : ['', [Validators.required]],
+      region : ['', [Validators.required]],
+      state : ['', [Validators.required]],
+      participate : []
+      
+    });
   }
 
   ngOnInit() {
@@ -76,6 +100,8 @@ export class ContestComponent implements OnInit {
       }
     };
     this.getAllMusicTypes();
+    this.getAllExistingContest();
+    this.getAllRegion();
   }
 
   // Get day difference between dates
@@ -99,6 +125,8 @@ export class ContestComponent implements OnInit {
 
   openContestModel(template : any) {
     this.contestModelRef = this.modalService.show(template, {backdrop : 'static'});
+    this.is_valid = false;
+    this.contest_detail = {};
   }
 
   sortArtist() {
@@ -112,5 +140,76 @@ export class ContestComponent implements OnInit {
     this.ContestService.getAllMusicType().subscribe((response) => {
       this.music_type = response['music'];
     });
+  }
+
+  // Get all existing contest
+  getAllExistingContest() {
+    this.ContestService.getExistingContest().subscribe((response) => {
+      this.existing_contest_list = response['contest']['contest'];
+    });
+  }
+
+  // get all region
+  getAllRegion() {
+    this.ContestService.getAllRegion().subscribe((response) => {
+      this.region_list = response['Region'];
+    });
+  }
+
+  // Get state from region
+  getStateFromRegion(id : any) {
+    let data = {
+      region : id
+    };
+    this.ContestService.getStateByRegion(data).subscribe((response) => {
+      this.state_list = response['state'];
+    });
+  }
+
+  // Add new contest 
+  saveContest(flag : boolean) {
+    if(flag) { 
+      this.is_valid = !flag;
+      let stdt = new Date(this.contest_detail['year'], this.contest_detail['month'], this.contest_detail['day']);
+      let enddt = new Date(stdt.getTime() + this.contest_detail['duration'] * 24 * 60 * 60 * 1000);
+      let data = {
+        name : this.contest_detail['name'],
+        music_type : this.contest_detail['music_type'],
+        region : this.contest_detail['region'],
+        state : this.contest_detail['state'],
+        no_of_round : this.contest_detail['no_of_round'],
+        start_date : stdt,
+        end_date : enddt
+      };
+      this.show_spinner = true;
+      this.ContestService.addNewContest(data).subscribe((response) => {
+        this.datatableElement.dtInstance.then((dtInstance: DataTables.Api) => {
+          dtInstance.draw();
+        });
+        this.contest_detail = {};
+        this.contestModelRef.hide();
+        this.toastr.success(response['message'], 'Success!');
+      }, (error) => {
+        this.toastr.error(error['error'].message,  'Error!');
+        this.show_spinner = false;
+      }, () => {
+        this.show_spinner = false;
+      });
+    } else {
+      this.is_valid = !flag;
+    }
+    
+  }
+
+  // Select exisiting contest
+  selectContest(idx : any) {
+    this.contest_detail = this.existing_contest_list[idx];
+    console.log(this.contest_detail);
+    console.log(this.contest_detail['start_date']);
+    let dt = new Date(this.contest_detail['start_date']);
+    console.log(dt);
+    this.contest_detail['day'] = dt.getDay();
+    this.contest_detail['month'] = dt.getMonth();
+    this.contest_detail['year'] = dt.getFullYear();
   }
 }

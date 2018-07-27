@@ -1,7 +1,8 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, QueryList, ViewChildren } from '@angular/core';
 import { ArtistProfileService } from './artist_profile.service';
 import { ToastrService } from 'ngx-toastr';
 import { environment } from '../../../environments/environment' ;
+import { DataTableDirective } from 'angular-datatables';
 import {ActivatedRoute, Router} from "@angular/router";
 import { Lightbox } from 'angular2-lightbox';
 import { MessageService } from '../../shared/message.service';
@@ -13,9 +14,12 @@ import { Subscription } from 'rxjs/Subscription';
   styleUrls: []
 })
 export class ArtistProfileComponent implements OnInit, OnDestroy {
+  @ViewChildren(DataTableDirective) 
+  dtElements: QueryList<DataTableDirective>;
+  dtOptions: DataTables.Settings[] = [];
   artistdata : any = {};
-  artisttrack : any = {};
-  artistmedia : any = {};
+  artisttrack : any = [];
+  artistmedia : any = [];
   rankingtrack : any = [];
   artistfollower : any = {};
   artistcomments : any = [];
@@ -73,15 +77,19 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
         }
       }
     });
+    
+
+    
+    
   }
 
   ngOnInit() {
     this.artistdata = this.route.snapshot.data['artist'].artist;
-    this.artisttrack = this.route.snapshot.data['track'].track;
+    // this.artisttrack = this.route.snapshot.data['track'].track;
     this.artistmedia = this.route.snapshot.data['media'].media;
     this.artistfollower = this.route.snapshot.data['follower'].user;
     this.artistcomments = this.route.snapshot.data['comments'].comment;
-    this.rankingtrack = this.route.snapshot.data['ranking'].track;
+    // this.rankingtrack = this.route.snapshot.data['ranking'].track;
     if(this.artistcomments.length > 3) {
       this.display_comment = this.artistcomments.slice(0,3).map(i => {
         return i;
@@ -94,6 +102,83 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
         this._albums.push({src : this.artist_media_url+this.artistmedia[i].image});
     }
     console.log(this.artistfollower);
+    const that = this;
+    this.route.params.subscribe(params => {
+      this.dtOptions[0] = {
+        pagingType: 'full_numbers',
+        pageLength: 5,
+        serverSide: true,
+        processing: true,
+        searching: false,
+        ordering: false,
+        lengthChange: false,
+        responsive: true,
+        // scrollY :'315px',
+        // scrollCollapse: true,
+        ajax: (dataTablesParameters: any, callback) => {
+          console.log(dataTablesParameters);
+          setTimeout(() => {
+            that.audio_ins = [];
+            dataTablesParameters['artist_id'] = params['id'];
+            that.ArtistProfileService.getAllTrack(dataTablesParameters).subscribe(response => {
+              that.artisttrack = response['track']['music'];
+              that.artisttrack.forEach((ele) => {that.audio_ins.push(false);});
+              callback({
+                recordsTotal: response['track']['recordsTotal'],
+                recordsFiltered: response['track']['recordsTotal'],
+                data: []
+              });
+            });
+          }, 0)
+          
+        },
+        columns: [
+          { data: '' },
+          { data: '' },
+          { data: '' },
+          { data: '' },
+          { data: '' },
+          { data: '' },
+          { data: '' }
+        ]
+      };
+      this.dtOptions[1] = {
+        pagingType: 'full_numbers',
+        pageLength: 5,
+        serverSide: true,
+        processing: true,
+        searching: false,
+        ordering: false,
+        lengthChange: false,
+        responsive: true,
+        ajax: (dataTablesParameters: any, callback) => {
+          console.log(dataTablesParameters);
+          setTimeout(() => {
+            that.audio_ins = [];
+            dataTablesParameters['artist_id'] = params['id'];
+            that.ArtistProfileService.getAllRanking(dataTablesParameters).subscribe(response => {
+              that.rankingtrack = response['track']['music'];
+              that.rankingtrack.forEach((ele) => {that.audio_ins.push(false);});
+              callback({
+                recordsTotal: response['track']['recordsTotal'],
+                recordsFiltered: response['track']['recordsTotal'],
+                data: []
+              });
+            });
+          }, 0)
+          
+        },
+        columns: [
+          { data: '' },
+          { data: '' },
+          { data: '' },
+          { data: '' },
+          { data: '' },
+          { data: '' },
+          { data: '' }
+        ]
+      };
+    });
   }
 
   ngOnDestroy() {

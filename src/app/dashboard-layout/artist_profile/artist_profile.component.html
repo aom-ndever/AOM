@@ -122,12 +122,12 @@
                         </select>
                       </div>
                       <div class="track-table">
-                        <div class="alert alert-info" *ngIf="artisttrack.length <= 0">No data available.</div>
-                        <table>
+                        <div class="alert alert-info" *ngIf="artisttrack && artisttrack.length <= 0">No data available.</div>
+                        <table datatable [dtOptions]="dtOptions[0]">
                           <tbody>
                             <tr *ngFor="let artist of artisttrack;let i=index;">
-                              <td class="serial-num">{{i+1}}.</td>
-                              <td class="">
+                              <td class="serial-num music_numb">{{i+1}}.</td>
+                              <td class="music_play">
                                     <div class="artist-profile-custom-action-btn">
                                       <a [style.display]="!audio_ins[i] ? 'block' : 'none'" (click)="playAudio(artist.audio, i, artisttrack)" class="play_img" ><img src="img/play_icon.png"/></a>
                                       <a [style.display]="audio_ins[i] ? 'block' : 'none'" (click)="stopAudio(i, artisttrack)" class="pause_img"><img src="img/pause_icon.png"/></a>
@@ -145,16 +145,17 @@
                                 <p class="track-name">{{artist.name}}</p>
                                 <p class="track-singer">{{artist.artist_id.name}}</p>
                                 <p class="track-year">{{artist.created_at | date : 'yyyy'}}</p>
+                                <p class="track-date">{{artist.created_at | date : 'MMMM dd,yyyy'}}</p>
                               </td>
-                              <td class="track-date">{{artist.created_at | date : 'MMMM dd,yyyy'}}</td>
-                              <td class="td track-vote">
+                              
+                              <td class="td track-vote music_vote">
                                 <img src="img/start.png" alt="start">
                                 <span>{{artist.no_of_votes}}
                                   <br>
                                   <span>Votes</span>
                                 </span>
                               </td>
-                              <td class="action" colspan="2">
+                              <td class="action music_action" colspan="2">
                                 <div class="cmt-like">
                                   <a href="javascript:;" class="liked" (click)="likeTrack(artist._id, i)">
                                     <img src="img/like-color.jpg" alt="">{{artist.no_of_likes}}</a>
@@ -201,7 +202,7 @@
                       </div>
                       <div class="track-table">
                         <div class="alert alert-info" *ngIf="rankingtrack.length <= 0">No data available.</div>
-                        <table>
+                        <table datatable [dtOptions]="dtOptions[1]">
                           <tbody>
                             <tr *ngFor="let rank of rankingtrack;let i=index;">
                               <td class="serial-num">{{i+1}}.</td>
@@ -224,8 +225,9 @@
                                 <p class="track-name">{{rank.name}}</p>
                                 <p class="track-singer">{{rank.artist_id.first_name+' '+rank.artist_id.last_name}}</p>
                                 <p class="track-year">{{rank.created_at | date  : 'yyyy'}}</p>
+                                <p class="track-date">{{rank.created_at | date  : 'MMMM dd,yyyy'}}</p>
                               </td>
-                              <td class="track-date">{{rank.created_at | date  : 'MMMM dd,yyyy'}}</td>
+                      
                               <td class="td track-vote">
                                 <img src="img/start.png" alt="start">
                                 <span>{{rank.no_of_votes}}
