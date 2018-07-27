@@ -289,7 +289,6 @@ router.post("/add_existing_contest", async (req, res) => {
       round: req.body.round,
     }
 
-
     var resp_data = await round_helper.insert_round(round_obj);
 
     if (resp_data.status == 0) {

@@ -404,8 +404,10 @@ track_helper.get_artist_by_location_like = async (day) => {
             "$group": {
                 _id: {
                     _id: "$state.name",
+                    name: "$state.short_name"
+
                 },
-                count: { $sum: 1 },
+                value: { $sum: 1 },
             }
         },
 
@@ -484,8 +486,10 @@ track_helper.get_artist_by_location_comment = async (day) => {
             "$group": {
                 _id: {
                     _id: "$state.name",
+                    name: "$state.short_name"
+
                 },
-                count: { $sum: 1 },
+                value: { $sum: 1 },
             }
         },
 
