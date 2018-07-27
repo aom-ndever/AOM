@@ -261,7 +261,43 @@ router.post("/add_contest", async (req, res) => {
   }
 });
 
+router.post("/add_existing_contest", async (req, res) => {
+  var schema = {
 
+
+  };
+
+  req.checkBody(schema);
+  var errors = req.validationErrors();
+
+  if (!errors) {
+    var round_obj = {
+      contest_id: req.body.contest_id,
+      start_date: req.body.start_date,
+      music_type: req.body.music_type,
+      end_date: req.body.end_date,
+      state: req.body.state,
+      region: req.body.region,
+      round: req.body.round,
+    }
+
+
+    var resp_data = await round_helper.insert_round(round_obj);
+
+    if (resp_data.status == 0) {
+      logger.error("Error occured while inserting = ", resp_data);
+      res.status(config.INTERNAL_SERVER_ERROR).json(resp_data);
+    }
+    logger.trace(" got successfully = ", resp_data);
+    res.status(config.OK_STATUS).json(resp_data);
+  }
+
+
+  else {
+    logger.error("Validation Error = ", errors);
+    res.status(config.BAD_REQUEST).json({ message: errors });
+  }
+});
 
 /**
  * @api {post} /admin/contest   Contest detail with total participant - Get 
@@ -627,18 +663,12 @@ router.post("/suspend/artist/:artist_id", async (req, res) => {
 router.post("/accept/contest_request/:contest_id", async (req, res) => {
   admin_id = req.userInfo.id
   contest_resp = await contest_request_helper.get_contest_by_id(req.params.contest_id)
-  console.log('contest_resp', contest_resp);
-  var obj = {
+  var contest_obj = {
     name: contest_resp.contest.name,
     _id: contest_resp.contest._id,
-    start_date: contest_resp.contest.start_date,
-    end_date: contest_resp.contest.end_date,
-    end_date: contest_resp.contest.end_date,
-    no_of_participants: contest_resp.contest.no_of_participants,
     admin_id: contest_resp.contest.admin_id,
     created_at: contest_resp.contest.created_at,
-    music_type: contest_resp.contest.music_type,
-    location: contest_resp.contest.location
+    music_type: contest_resp.contest.music_type
   }
   contest_resp = await admin_helper.get_admin_by_id(admin_id)
   if (contest_resp.admin.account_type == 'super_admin') {
