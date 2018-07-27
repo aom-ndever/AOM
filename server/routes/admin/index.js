@@ -21,6 +21,7 @@ var contest_request_helper = require('../../helpers/contest_request_helper');
 var vote_track_helper = require('../../helpers/vote_track_helper');
 var contest_helper = require('../../helpers/contest_helper');
 
+var moment = require('moment');
 
 var mongoose = require('mongoose');
 var ObjectId = mongoose.Types.ObjectId;
@@ -205,13 +206,18 @@ router.post("/add_contest", async (req, res) => {
 
       var round_obj = {
         contest_id: resp_data.contest._id,
-        start_date: req.body.start_date,
-        end_date: req.body.end_date,
+        start_date: moment(req.body.start_date).utc(),
         state: req.body.state,
         region: req.body.region,
+        duration: req.body.duration,
+        end_date: moment(req.body.start_date).utc().add((req.body.duration * 7), 'days'),
         round: req.body.round,
         name: contest_obj.name + " " + "round" + req.body.round
       };
+
+      console.log('round_obj => ', round_obj);
+
+
       var resp_data = await round_helper.insert_round(round_obj);
 
       if (resp_data.status == 0) {
@@ -237,8 +243,9 @@ router.post("/add_contest", async (req, res) => {
       var obj = {
         admin_id: req.userInfo.id,
         name: req.body.name,
-        start_date: req.body.start_date,
-        end_date: req.body.end_date,
+        start_date: moment(req.body.start_date).utc(),
+        duration: req.body.duration,
+        end_date: moment(req.body.start_date).utc().add((req.body.duration * 7), 'days'),
         music_type: req.body.music_type,
         state: req.body.state,
         region: req.body.region,
@@ -273,9 +280,10 @@ router.post("/add_existing_contest", async (req, res) => {
   if (!errors) {
     var round_obj = {
       contest_id: req.body.contest_id,
-      start_date: req.body.start_date,
+      start_date: moment(req.body.start_date).utc(),
+      duration: req.body.duration,
+      end_date: moment(req.body.start_date).utc().add((req.body.duration * 7), 'days'),
       music_type: req.body.music_type,
-      end_date: req.body.end_date,
       state: req.body.state,
       region: req.body.region,
       round: req.body.round,
