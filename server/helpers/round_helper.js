@@ -80,7 +80,7 @@ round_helper.get_all_contests = async () => {
             .populate('music_type')
             .populate('contest_id')
             .populate('state')
-            .populate('region')
+            .populate()
 
         if (participate) {
             return { "status": 1, "message": "contest details found", "contest": participate };
