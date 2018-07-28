@@ -678,6 +678,7 @@ router.post("/suspend/artist/:artist_id", async (req, res) => {
 router.post("/accept/contest_request/:contest_id", async (req, res) => {
   admin_id = req.userInfo.id
   contest_resp = await contest_request_helper.get_contest_by_id(req.params.contest_id)
+  console.log('contest_resp', contest_resp);
 
   var contest_obj = {
     name: contest_resp.contest.name,
@@ -688,23 +689,27 @@ router.post("/accept/contest_request/:contest_id", async (req, res) => {
   }
   round_resp = await contest_request_helper.get_round_by_id(req.params.contest_id)
 
+
+
   var round_obj = {
     contest_id: contest_obj._id,
-    start_date: moment(req.body.start_date).utc(),
-    duration: req.body.duration,
-    end_date: moment(req.body.start_date).utc().add((req.body.duration * 7), 'days'),
-    music_type: req.body.music_type,
-    state: req.body.state,
-    region: req.body.region,
-    round: req.body.round,
-    round_name: contest_obj.name + " " + "round" + round_obj.round
+    start_date: contest_resp.contest.start_date,
+    duration: contest_resp.contest.duration,
+    end_date: contest_resp.contest.end_date,
+    state: contest_resp.contest.state,
+    region: contest_resp.contest.region,
+    round: contest_resp.contest.round,
+    round_name: contest_resp.contest.round_name,
 
   }
   contest_resp = await admin_helper.get_admin_by_id(admin_id)
   if (contest_resp.admin.account_type == 'super_admin') {
     var action = "accepted"
-    var resp_data = await contest_helper.insert_contest(contest_obj);
-    var resp_data = await round_helper.insert_round(round_obj);
+    var resp_data1 = await contest_helper.insert_contest(contest_obj);
+    var resp_data2 = await round_helper.insert_round(round_obj);
+    console.log('resp_data1', resp_data1);
+    console.log('resp_data2', resp_data2);
+
     var resp_data = await contest_request_helper.insert_action(req.params.contest_id, action);
     logger.trace("Contest Request Accepted");
     res.status(config.OK_STATUS).json({ "message": "Contest Request Accepted" });

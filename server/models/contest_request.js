@@ -14,6 +14,7 @@ var ContestRequestModelSchema = new Schema({
     music_type: { type: mongoose.Schema.Types.ObjectId, ref: 'music_type' },
     location: String,
     duration: String,
+    round_name: String,
     action: { type: String, enum: ["accepted", "rejected"] },
     status: { type: Boolean, default: false },
     no_of_participants: { type: Number, default: 0 },
