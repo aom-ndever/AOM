@@ -270,16 +270,18 @@ router.post("/add_contest", async (req, res) => {
   }
 });
 
+
+
+
+
 router.post("/add_existing_contest", async (req, res) => {
   var schema = {
-
-
   };
 
   req.checkBody(schema);
   var errors = req.validationErrors();
-  contest_response = await contest_request_helper.get_contest_by_id(req.body.contest_id)
-  console.log('contest_response', contest_response.contest.name);
+  contest_response = await contest_helper.get_contest_by_id(req.body.contest_id)
+
 
   if (!errors) {
     var round_obj = {
@@ -291,6 +293,7 @@ router.post("/add_existing_contest", async (req, res) => {
       state: req.body.state,
       region: req.body.region,
       round: req.body.round,
+      round_name: contest_response.contest.name + "round" + req.body.round
 
     }
 
