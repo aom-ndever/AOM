@@ -2,7 +2,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { AppComponent } from './app.component';
-import { ChartModule } from 'angular-highcharts';
+// import { ChartModule } from 'angular-highcharts';
+import { ChartModule } from 'angular2-highcharts';
 import { DashboardLayoutComponent } from './dashboard-layout/layout/dashboard-layout.component';
 import { DataTablesModule } from 'angular-datatables';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
@@ -28,7 +29,7 @@ import { MessageService } from './shared/message.service';
     EamilVarificationModule,
     ForgetPasswordModule,
     NgbModule.forRoot(),
-    ChartModule,
+    ChartModule.forRoot(require('highcharts/highmaps')),
     DataTablesModule,
     RouterModule.forRoot([
 

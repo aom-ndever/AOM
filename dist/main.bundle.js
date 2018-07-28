@@ -548,7 +548,7 @@ var ArtistService = /** @class */ (function () {
 /***/ "../../../../../src/app/admin/contest/contest.component.html":
 /***/ (function(module, exports) {
 
-module.exports = " <!-- Page Content -->\n <div id=\"page-content-wrapper\">  \n  <div class=\"text-right\">\n    <button class=\"create_contest_btn btn\" (click)=\"openContestModel(contest)\">Create Contest</button>\n  </div>         \n           <div>\n                <h3 class=\"Audience-Overview\">Contests </h3>\n                <div class=\"dropdown table_dropdown custom_dropdown\">\n                  <select class=\"form-control custom_drop_btn\" id=\"sort\" name=\"sort_by\" [(ngModel)]=\"sort\" (change)=\"sortArtist()\">\n                    <option value=\"-1\">Sort By End Date</option>\n                    <option value=\"1\">Sort By Start Date</option>\n                  </select>\n                </div> \n                <div class=\"artists_table contest_table table-responsive\">\n                  <table class=\"table\" datatable [dtOptions]=\"dtOptions\">\n                        <thead>\n                          <tr>\n                            <th>N<sup>O</sup></th>\n                            <th>Contest Name</th>\n                            <th>Start Date</th>\n                            <th>End Date</th>\n                            <th>Days Remain</th>\n                            <th>Music Genre</th>\n                            <th>Region</th>\n                            <th>Participants</th>\n                          </tr>\n                        </thead>\n                        <tbody>\n                        <tr *ngFor=\"let contest of contest_data; let i = index;\">\n                          <td>{{i+1}}.</td>\n                          <td><a href=\"javascript:;\" (click)=\"openModal(paricipant, contest['_id'])\">{{contest ['round_name']}}</a></td>\n                          <td>{{contest['start_date'] | date : 'MMMM dd, yyyy'}}</td>\n                          <td>{{contest['end_date'] | date : 'MMMM dd, yyyy'}}</td>\n                          <td>{{contest['days']}}</td>\n                          <td>{{contest['contest_id']['music_type']['name']}}</td>\n                          <td>{{contest['state'] && contest['state']['name'] ? contest['state']['name'] : '' }}</td>\n                          <td>{{contest['no_of_participants']}}</td>\n                        </tr>\n                        </tbody>\n                      </table>\n                </div>\n            </div>\n    </div>\n    <!-- /#page-content-wrapper -->\n<ng-template #paricipant>\n  <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"modalRef.hide()\">\n    <span aria-hidden=\"true\">&times;</span>\n  </button>\n  <div class=\"modal-body\">\n    <div class=\"custom_modal\">\n        <div class=\"row\">\n            <div class=\"col-sm-12\">\n                <b class=\"template_modal_name\">Participants</b>\n              </div>\n          <div class=\"artists_table copyright_table table-responsive col-sm-12\">\n            <table class=\"table\">\n                <thead>\n                  <tr>\n                    <th>Rank</th>\n                    <th>Artist Name</th>\n                    <th>Track Name</th>\n                    <th>Votes</th>\n                  </tr>\n                </thead>\n                <tbody>\n                  <tr *ngFor=\"let contest of participant_data; let i = index;\">\n                    <td>{{i+1}}</td>\n                    <td>{{contest['artist_id'] != null && contest['artist_id']['first_name'] != '' ? contest['artist_id']['first_name'] : '' +' '+contest['artist_id'] != null && contest['artist_id']['last_name'] != '' ? contest['artist_id']['last_name'] : ''}}</td>\n                    <td>{{contest['track_id'] != null && contest['track_id']['name'] != '' ? contest['track_id']['name'] : '' }}</td>\n                    <td>{{contest['artist_id'] != null && contest['artist_id']['no_of_votes'] != '' ? contest['artist_id']['no_of_votes'] : '' }}</td>\n                  </tr>\n                  <tr *ngIf=\"participant_data?.length == 0\">\n                    <td colspan=\"4\">No data available.</td>\n                  </tr>\n                </tbody>\n            </table>\n          </div>\n        </div>\n      </div>\n  </div>\n</ng-template>\n<ng-template #contest>\n  <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"contestModelRef.hide()\">\n    <span aria-hidden=\"true\">&times;</span>\n  </button>\n  <form [formGroup]=\"contest_validation\">\n    <div class=\"modal-body\">\n      <div class=\"creat_contest_body\">\n          <div class=\"col-sm-12 text-center\">\n            <h4 class=\"custom_modal_head\">Create Contest</h4>\n          </div>\n          <div class=\"form-group custom_modal_form\">\n            <div >\n                <label class=\"radio-inline\">\n                  <input name=\"type\" formControlName=\"type\" type=\"radio\" checked [(ngModel)]=\"is_new_or_existing\" value=\"1\">New\n                  \n                </label>\n                <label class=\"radio-inline\">\n                  <input name=\"type\" formControlName=\"type\" type=\"radio\" [(ngModel)]=\"is_new_or_existing\" value=\"2\">Existing\n                </label>\n            </div>\n          </div>\n          <div class=\"form-group custom_modal_form\" *ngIf=\"is_new_or_existing == 1\">\n            <label class=\"control-label\">Contest Name</label>\n            <input name=\"name\" formControlName=\"name\" class=\"form-control\" [(ngModel)]=\"contest_detail['name']\" />\n            <div class=\"terms_error_msg\" *ngIf=\"is_valid && !contest_validation.controls['name'].valid\">\n              <span *ngIf=\"contest_validation.controls['name'].errors['required']\" class=\"text-danger\">Contest Name is required.</span>\n            </div>\n          </div>\n          <div class=\"form-group custom_modal_form\" *ngIf=\"is_new_or_existing == 2\">\n            <label class=\"control-label\">Contest Name</label>\n            <select class=\"form-control\" name=\"existing_contest\" formControlName=\"name\"  (change)=\"selectContest($event.target.value)\">\n              <option value=\"\">Select Contest</option>\n              <option *ngFor=\"let c of existing_contest_list; let i = index;\" value=\"{{i}}\">{{c['round_name']}}</option>\n            </select>\n            <div class=\"terms_error_msg\" *ngIf=\"is_valid && !contest_validation.controls['name'].valid\">\n              <span *ngIf=\"contest_validation.controls['name'].errors['required']\" class=\"text-danger\">Contest Name is required.</span>\n            </div>\n          </div>\n          <div class=\"custom_modal_form\">\n              <div class=\"date-of-birth row\">\n                  <label class=\"col-sm-12\" for=\"date\">Start Date</label>\n                  <div class=\"form-group custom_modal_form\">\n                      <select class=\"form-control\" id=\"day\" formControlName=\"day\" name=\"day\" [(ngModel)]=\"contest_detail['day']\">\n                          <option value=\"\">Day</option>\n                          <option *ngFor=\"let d of day\" value=\"{{d}}\">{{d}}</option>\n                      </select>\n                      <div class=\"terms_error_msg\" *ngIf=\"is_valid && !contest_validation.controls['day'].valid\">\n                        <span *ngIf=\"contest_validation.controls['day'].errors['required']\" class=\"text-danger\">Day is required.</span>\n                      </div>\n                  </div>\n                  <div class=\"form-group custom_modal_form\">\n                      <select class=\"form-control\" id=\"month\" name=\"month\" formControlName=\"month\" [(ngModel)]=\"contest_detail['month']\">\n                          <option value=\"\">Month</option>\n                          <option *ngFor=\"let m of month\" value=\"{{m}}\">{{m}}</option>\n                      </select>\n                      <div class=\"terms_error_msg\" *ngIf=\"is_valid && !contest_validation.controls['month'].valid\">\n                        <span *ngIf=\"contest_validation.controls['month'].errors['required']\" class=\"text-danger\">Month is required.</span>\n                      </div>\n                  </div>\n                  <div class=\"form-group custom_modal_form\">\n                      <select class=\"form-control\" id=\"year\" name=\"year\" formControlName=\"year\" [(ngModel)]=\"contest_detail['year']\">\n                          <option value=\"\">Year</option>\n                          <option *ngFor=\"let y of year\" value=\"{{y}}\">{{y}}</option>\n                      </select>\n                      <div class=\"terms_error_msg\" *ngIf=\"is_valid && !contest_validation.controls['year'].valid\">\n                        <span *ngIf=\"contest_validation.controls['year'].errors['required']\" class=\"text-danger\">Year is required.</span>\n                      </div>\n                  </div>\n              </div>\n          </div>\n          <div >\n            <div class=\"row\">\n            <div class=\"col-sm-6\">\n              <div class=\"form-group custom_modal_form\">\n                <label class=\"control-label\">Duration</label>\n                <select class=\"form-control\" name=\"duration\" formControlName=\"duration\" [(ngModel)]=\"contest_detail['duration']\">\n                  <option value=\"\">Select Duration</option>\n                  <option value=\"1\">1 weeks</option>\n                  <option value=\"2\">2 weeks</option>\n                  <option value=\"3\">3 weeks</option>\n                  <option value=\"4\">4 weeks</option>\n                  <option value=\"8\">8 weeks</option>\n                </select>\n                <div class=\"terms_error_msg\" *ngIf=\"is_valid && !contest_validation.controls['duration'].valid\">\n                  <span *ngIf=\"contest_validation.controls['duration'].errors['required']\" class=\"text-danger\">Duration is required.</span>\n                </div>\n            </div>\n            </div>\n            <div class=\"col-sm-6\">\n                <div class=\"form-group custom_modal_form\">\n                  <label class=\"control-label\">Round Number</label>\n                  <input type=\"number\" name=\"rounds\" max=\"8\" min=\"1\" value=\"1\" readonly formControlName=\"round\" [(ngModel)]=\"contest_detail['no_of_round']\" class=\"form-control\" />\n                  <div class=\"terms_error_msg\" *ngIf=\"is_valid && !contest_validation.controls['round'].valid\">\n                    <span *ngIf=\"contest_validation.controls['round'].errors['required']\" class=\"text-danger\">Number of round is required.</span>\n                  </div>\n                </div>\n            </div>\n            </div>\n          </div>\n          <div class=\"form-group\">\n            <div class=\"form-group custom_modal_form\">\n              <label class=\"control-label\">Music Genre</label>\n              <select name=\"music_type\" class=\"form-control\" formControlName=\"music_type\" [(ngModel)]=\"contest_detail['music_type']\">\n                <option value=\"\">Select Music Gener</option>\n                <option *ngFor=\"let music of music_type;\" value=\"{{music['_id']}}\">{{music['name']}}</option>\n              </select>\n              <div class=\"terms_error_msg\" *ngIf=\"is_valid && !contest_validation.controls['music_type'].valid\">\n                <span *ngIf=\"contest_validation.controls['music_type'].errors['required']\" class=\"text-danger\">Music type is required.</span>\n              </div>\n            </div>\n          </div>\n          <div class=\"form-group\">\n            <div class=\"form-group custom_modal_form\">\n              <label class=\"control-label\">Region</label>\n              <select class=\"form-control\" name=\"region\" formControlName=\"region\" [(ngModel)]=\"contest_detail['region']\" (change)=\"getStateFromRegion($event.target.value)\">\n                <option value=\"\">Select Region</option>\n                <option [value]=\"r['_id']\" *ngFor=\"let r of region_list;\">{{r['name']}}</option>\n              </select>\n              <div class=\"terms_error_msg\" *ngIf=\"is_valid && !contest_validation.controls['region'].valid\">\n                <span *ngIf=\"contest_validation.controls['region'].errors['required']\" class=\"text-danger\">Region is required.</span>\n              </div>\n            </div>\n          </div>\n          <div class=\"form-group\">\n            <div class=\"form-group custom_modal_form\">\n              <label class=\"control-label\">State</label>\n              <select class=\"form-control\" name=\"state\" formControlName=\"state\" [(ngModel)]=\"contest_detail['state']\">\n                <option value=\"\">Select State</option>\n                <option [value]=\"s['_id']\" *ngFor=\"let s of state_list;\">{{s['name']}}</option>\n              </select>\n              <div class=\"terms_error_msg\" *ngIf=\"is_valid && !contest_validation.controls['state'].valid\">\n                <span *ngIf=\"contest_validation.controls['state'].errors['required']\" class=\"text-danger\">State is required.</span>\n              </div>\n            </div>\n          </div>\n          <div class=\"form-group\" *ngIf=\"is_new_or_existing == 2\">\n            <div class=\"form-group custom_modal_form\">\n              <label class=\"control-label\">Participants</label>\n              <select class=\"form-control\" name=\"participant\" formControlName=\"participate\">\n                <option value=\"\">Select Participants</option>\n                <option value=\"\">Northeast Hiphop Round 3 Finalist</option>\n                <option value=\"\">Southeast Hiphop Round 3 Finalist</option>\n                <option value=\"\">Midwest Hiphop Round 3 Finalist</option>\n              </select>\n            </div>\n          </div>\n          <div class=\"row modal_btns\">\n            <div class=\"col-sm-6\">\n                <button class=\"custom_cancel_btn btn\" (click)=\"contestModelRef.hide()\">Cancel</button>\n            </div>\n            <div class=\"col-sm-6 text-right\">\n                <button type=\"submit\" class=\"custom_save btn\" (click)=\"saveContest(contest_validation.valid)\" [disabled]=\"show_spinner\">Create <i *ngIf=\"show_spinner\" class=\"fa fa-spinner fa-spin\"></i></button>\n            </div>\n          </div>\n        </div>\n    </div>\n  </form>\n</ng-template>"
+module.exports = " <!-- Page Content -->\n <div id=\"page-content-wrapper\">  \n  <div class=\"text-right\">\n    <button class=\"create_contest_btn btn\" (click)=\"openContestModel(contest)\">Create Contest</button>\n  </div>         \n           <div>\n                <h3 class=\"Audience-Overview\">Contests </h3>\n                <div class=\"dropdown table_dropdown custom_dropdown\">\n                  <select class=\"form-control custom_drop_btn\" id=\"sort\" name=\"sort_by\" [(ngModel)]=\"sort\" (change)=\"sortArtist()\">\n                    <option value=\"-1\">Sort By End Date</option>\n                    <option value=\"1\">Sort By Start Date</option>\n                  </select>\n                </div> \n                <div class=\"artists_table contest_table table-responsive\">\n                  <table class=\"table\" datatable [dtOptions]=\"dtOptions\">\n                        <thead>\n                          <tr>\n                            <th>N<sup>O</sup></th>\n                            <th>Contest Name</th>\n                            <th>Start Date</th>\n                            <th>End Date</th>\n                            <th>Days Remain</th>\n                            <th>Music Genre</th>\n                            <th>Region</th>\n                            <th>Participants</th>\n                          </tr>\n                        </thead>\n                        <tbody>\n                        <tr *ngFor=\"let contest of contest_data; let i = index;\">\n                          <td>{{i+1}}.</td>\n                          <td><a href=\"javascript:;\" (click)=\"openModal(paricipant, contest['_id'])\">{{contest ['round_name']}}</a></td>\n                          <td>{{contest['start_date'] | date : 'MMMM dd, yyyy'}}</td>\n                          <td>{{contest['end_date'] | date : 'MMMM dd, yyyy'}}</td>\n                          <td>{{contest['days']}}</td>\n                          <td>{{contest['contest_id']['music_type']['name']}}</td>\n                          <td>{{contest['state'] && contest['state']['name'] ? contest['state']['name'] : '' }}</td>\n                          <td>{{contest['no_of_participants']}}</td>\n                        </tr>\n                        </tbody>\n                      </table>\n                </div>\n            </div>\n    </div>\n    <!-- /#page-content-wrapper -->\n<ng-template #paricipant>\n  <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"modalRef.hide()\">\n    <span aria-hidden=\"true\">&times;</span>\n  </button>\n  <div class=\"modal-body\">\n    <div class=\"custom_modal\">\n        <div class=\"row\">\n            <div class=\"col-sm-12\">\n                <b class=\"template_modal_name\">Participants</b>\n              </div>\n          <div class=\"artists_table copyright_table table-responsive col-sm-12\">\n            <table class=\"table\">\n                <thead>\n                  <tr>\n                    <th>Rank</th>\n                    <th>Artist Name</th>\n                    <th>Track Name</th>\n                    <th>Votes</th>\n                  </tr>\n                </thead>\n                <tbody>\n                  <tr *ngFor=\"let contest of participant_data; let i = index;\">\n                    <td>{{i+1}}</td>\n                    <td>{{contest['artist_id'] != null && contest['artist_id']['first_name'] != '' ? contest['artist_id']['first_name'] : '' +' '+contest['artist_id'] != null && contest['artist_id']['last_name'] != '' ? contest['artist_id']['last_name'] : ''}}</td>\n                    <td>{{contest['track_id'] != null && contest['track_id']['name'] != '' ? contest['track_id']['name'] : '' }}</td>\n                    <td>{{contest['artist_id'] != null && contest['artist_id']['no_of_votes'] != '' ? contest['artist_id']['no_of_votes'] : '' }}</td>\n                  </tr>\n                  <tr *ngIf=\"participant_data?.length == 0\">\n                    <td colspan=\"4\">No data available.</td>\n                  </tr>\n                </tbody>\n            </table>\n          </div>\n        </div>\n      </div>\n  </div>\n</ng-template>\n<ng-template #contest>\n  <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"contestModelRef.hide()\">\n    <span aria-hidden=\"true\">&times;</span>\n  </button>\n  <form [formGroup]=\"contest_validation\">\n    <div class=\"modal-body\">\n      <div class=\"creat_contest_body\">\n          <div class=\"col-sm-12 text-center\">\n            <h4 class=\"custom_modal_head\">Create Contest</h4>\n          </div>\n          <div class=\"form-group custom_modal_form\">\n            <div >\n                <label class=\"radio-inline\">\n                  <input name=\"type\" formControlName=\"type\" type=\"radio\" checked [(ngModel)]=\"is_new_or_existing\" value=\"1\">New\n                  \n                </label>\n                <label class=\"radio-inline\">\n                  <input name=\"type\" formControlName=\"type\" type=\"radio\" [(ngModel)]=\"is_new_or_existing\" value=\"2\">Existing\n                </label>\n            </div>\n          </div>\n          <div class=\"form-group custom_modal_form\" *ngIf=\"is_new_or_existing == 1\">\n            <label class=\"control-label\">Contest Name</label>\n            <input name=\"name\" formControlName=\"name\" class=\"form-control\" [(ngModel)]=\"contest_detail['name']\" />\n            <div class=\"terms_error_msg\" *ngIf=\"is_valid && !contest_validation.controls['name'].valid\">\n              <span *ngIf=\"contest_validation.controls['name'].errors['required']\" class=\"text-danger\">Contest Name is required.</span>\n            </div>\n          </div>\n          <div class=\"form-group custom_modal_form\" *ngIf=\"is_new_or_existing == 2\">\n            <label class=\"control-label\">Contest Name</label>\n            <select class=\"form-control\" name=\"existing_contest\" formControlName=\"name\"  (change)=\"selectContest($event.target.value)\">\n              <option value=\"\">Select Contest</option>\n              <option *ngFor=\"let c of existing_contest_list; let i = index;\" value=\"{{i}}\">{{c['round_name']}}</option>\n            </select>\n            <div class=\"terms_error_msg\" *ngIf=\"is_valid && !contest_validation.controls['name'].valid\">\n              <span *ngIf=\"contest_validation.controls['name'].errors['required']\" class=\"text-danger\">Contest Name is required.</span>\n            </div>\n          </div>\n          <div class=\"custom_modal_form\">\n              <div class=\"date-of-birth row\">\n                  <label class=\"col-sm-12\" for=\"date\">Start Date</label>\n                  <div class=\"form-group custom_modal_form\">\n                      <select class=\"form-control\" id=\"day\" formControlName=\"day\" name=\"day\" [(ngModel)]=\"contest_detail['day']\">\n                          <option value=\"\">Day</option>\n                          <option *ngFor=\"let d of day\" value=\"{{d}}\">{{d}}</option>\n                      </select>\n                      <div class=\"terms_error_msg\" *ngIf=\"is_valid && !contest_validation.controls['day'].valid\">\n                        <span *ngIf=\"contest_validation.controls['day'].errors['required']\" class=\"text-danger\">Day is required.</span>\n                      </div>\n                  </div>\n                  <div class=\"form-group custom_modal_form\">\n                      <select class=\"form-control\" id=\"month\" name=\"month\" formControlName=\"month\" [(ngModel)]=\"contest_detail['month']\">\n                          <option value=\"\">Month</option>\n                          <option *ngFor=\"let m of month\" value=\"{{m}}\">{{m}}</option>\n                      </select>\n                      <div class=\"terms_error_msg\" *ngIf=\"is_valid && !contest_validation.controls['month'].valid\">\n                        <span *ngIf=\"contest_validation.controls['month'].errors['required']\" class=\"text-danger\">Month is required.</span>\n                      </div>\n                  </div>\n                  <div class=\"form-group custom_modal_form\">\n                      <select class=\"form-control\" id=\"year\" name=\"year\" formControlName=\"year\" [(ngModel)]=\"contest_detail['year']\">\n                          <option value=\"\">Year</option>\n                          <option *ngFor=\"let y of year\" value=\"{{y}}\">{{y}}</option>\n                      </select>\n                      <div class=\"terms_error_msg\" *ngIf=\"is_valid && !contest_validation.controls['year'].valid\">\n                        <span *ngIf=\"contest_validation.controls['year'].errors['required']\" class=\"text-danger\">Year is required.</span>\n                      </div>\n                  </div>\n              </div>\n          </div>\n          <div >\n            <div class=\"row\">\n            <div class=\"col-sm-6\">\n              <div class=\"form-group custom_modal_form\">\n                <label class=\"control-label\">Duration</label>\n                <select class=\"form-control\" name=\"duration\" formControlName=\"duration\" [(ngModel)]=\"contest_detail['duration']\">\n                  <option value=\"\">Select Duration</option>\n                  <option value=\"1\">1 weeks</option>\n                  <option value=\"2\">2 weeks</option>\n                  <option value=\"3\">3 weeks</option>\n                  <option value=\"4\">4 weeks</option>\n                  <option value=\"8\">8 weeks</option>\n                </select>\n                <div class=\"terms_error_msg\" *ngIf=\"is_valid && !contest_validation.controls['duration'].valid\">\n                  <span *ngIf=\"contest_validation.controls['duration'].errors['required']\" class=\"text-danger\">Duration is required.</span>\n                </div>\n            </div>\n            </div>\n            <div class=\"col-sm-6\">\n                <div class=\"form-group custom_modal_form\">\n                  <label class=\"control-label\">Round Number</label>\n                  <input type=\"number\" name=\"rounds\" max=\"8\" min=\"1\" value=\"1\" readonly formControlName=\"round\" [(ngModel)]=\"contest_detail['no_of_round']\" class=\"form-control\" />\n                  <div class=\"terms_error_msg\" *ngIf=\"is_valid && !contest_validation.controls['round'].valid\">\n                    <span *ngIf=\"contest_validation.controls['round'].errors['required']\" class=\"text-danger\">Number of round is required.</span>\n                  </div>\n                </div>\n            </div>\n            </div>\n          </div>\n          <div class=\"form-group\">\n            <div class=\"form-group custom_modal_form\">\n              <label class=\"control-label\">Music Genre</label>\n              <select name=\"music_type\" class=\"form-control\" formControlName=\"music_type\" [(ngModel)]=\"contest_detail['music_type']\" >\n                <option value=\"\">Select Music Gener</option>\n                <option *ngFor=\"let music of music_type;\" value=\"{{music['_id']}}\">{{music['name']}}</option>\n              </select>\n              <div class=\"terms_error_msg\" *ngIf=\"is_valid && !contest_validation.controls['music_type'].valid\">\n                <span *ngIf=\"contest_validation.controls['music_type'].errors['required']\" class=\"text-danger\">Music type is required.</span>\n              </div>\n            </div>\n          </div>\n          <div class=\"form-group\">\n            <div class=\"form-group custom_modal_form\">\n              <label class=\"control-label\">Region</label>\n              <select class=\"form-control\" name=\"region\" formControlName=\"region\" [(ngModel)]=\"contest_detail['region']\" (change)=\"getStateFromRegion($event.target.value)\">\n                <option value=\"\">Select Region</option>\n                <option [value]=\"r['_id']\" *ngFor=\"let r of region_list;\">{{r['name']}}</option>\n              </select>\n              <div class=\"terms_error_msg\" *ngIf=\"is_valid && !contest_validation.controls['region'].valid\">\n                <span *ngIf=\"contest_validation.controls['region'].errors['required']\" class=\"text-danger\">Region is required.</span>\n              </div>\n            </div>\n          </div>\n          <div class=\"form-group\">\n            <div class=\"form-group custom_modal_form\">\n              <label class=\"control-label\">State</label>\n              <select class=\"form-control\" name=\"state\" formControlName=\"state\" [(ngModel)]=\"contest_detail['state']\">\n                <option value=\"\">Select State</option>\n                <option [value]=\"s['_id']\" *ngFor=\"let s of state_list;\">{{s['name']}}</option>\n              </select>\n              <div class=\"terms_error_msg\" *ngIf=\"is_valid && !contest_validation.controls['state'].valid\">\n                <span *ngIf=\"contest_validation.controls['state'].errors['required']\" class=\"text-danger\">State is required.</span>\n              </div>\n            </div>\n          </div>\n          <div class=\"form-group\" *ngIf=\"is_new_or_existing == 2\">\n            <div class=\"form-group custom_modal_form\">\n              <label class=\"control-label\">Participants</label>\n              <select class=\"form-control\" name=\"participant\" formControlName=\"participate\">\n                <option value=\"\">Select Participants</option>\n                <option value=\"\">Northeast Hiphop Round 3 Finalist</option>\n                <option value=\"\">Southeast Hiphop Round 3 Finalist</option>\n                <option value=\"\">Midwest Hiphop Round 3 Finalist</option>\n              </select>\n            </div>\n          </div>\n          <div class=\"row modal_btns\">\n            <div class=\"col-sm-6\">\n                <button class=\"custom_cancel_btn btn\" (click)=\"contestModelRef.hide()\">Cancel</button>\n            </div>\n            <div class=\"col-sm-6 text-right\">\n                <button type=\"submit\" class=\"custom_save btn\" (click)=\"saveContest(contest_validation.valid)\" [disabled]=\"show_spinner\">Create <i *ngIf=\"show_spinner\" class=\"fa fa-spinner fa-spin\"></i></button>\n            </div>\n          </div>\n        </div>\n    </div>\n  </form>\n</ng-template>"
 
 /***/ }),
 
@@ -760,13 +760,13 @@ var ContestComponent = /** @class */ (function () {
                 var stdt = new Date(this.contest_detail['year'], this.contest_detail['month'], this.contest_detail['day']);
                 //let enddt = new Date(stdt.getTime() + this.contest_detail['duration'] * 24 * 60 * 60 * 1000);
                 var data = {
-                    name: this.contest_detail['contest_id']['name'],
-                    music_type: this.contest_detail['music_type'],
+                    contest_id: this.contest_detail['contest_id']['_id'],
+                    // music_type : this.contest_detail['music_type'],
                     region: this.contest_detail['region'],
                     state: this.contest_detail['state'],
                     round: this.contest_detail['no_of_round'],
                     start_date: stdt,
-                    duration: this.contest_detail['duration']
+                    duration: +this.contest_detail['duration']
                 };
                 this.show_spinner = true;
                 this.ContestService.addExistingContest(data).subscribe(function (response) {
@@ -1309,6 +1309,8 @@ module.exports = " <!-- Page Content -->\n<div id=\"page-content-wrapper\">  \n 
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_angular_datatables__ = __webpack_require__("../../../../angular-datatables/index.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_ngx_toastr__ = __webpack_require__("../../../../ngx-toastr/fesm5/ngx-toastr.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_ngx_bootstrap_modal__ = __webpack_require__("../../../../ngx-bootstrap/modal/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_sweetalert2__ = __webpack_require__("../../../../sweetalert2/dist/sweetalert2.all.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_sweetalert2___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_sweetalert2__);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1318,6 +1320,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+
 
 
 
@@ -1444,7 +1447,7 @@ var RolesComponent = /** @class */ (function () {
     // Accept contest request
     RolesComponent.prototype.acceptRequest = function (id, idx) {
         var thi = this;
-        swal({
+        __WEBPACK_IMPORTED_MODULE_6_sweetalert2___default()({
             title: 'Are you sure?',
             text: "You won't be able to revert this!",
             type: 'warning',
@@ -1453,24 +1456,26 @@ var RolesComponent = /** @class */ (function () {
             cancelButtonColor: '#d33',
             confirmButtonText: 'Yes, Accept it!'
         }).then(function (flag) {
-            thi.RolesService.acceptContestRequest(id).subscribe(function (response) {
-                thi.toastr.success(response['message'], 'Success!');
-                thi.dtElements.forEach(function (dtElement, index) {
-                    if (idx == index) {
-                        dtElement.dtInstance.then(function (dtInstance) {
-                            dtInstance.draw();
-                        });
-                    }
+            if (flag.value) {
+                thi.RolesService.acceptContestRequest(id).subscribe(function (response) {
+                    thi.toastr.success(response['message'], 'Success!');
+                    thi.dtElements.forEach(function (dtElement, index) {
+                        if (idx == index) {
+                            dtElement.dtInstance.then(function (dtInstance) {
+                                dtInstance.draw();
+                            });
+                        }
+                    });
+                }, function (error) {
+                    thi.toastr.error(error['error'].message, 'Error!');
                 });
-            }, function (error) {
-                thi.toastr.error(error['error'].message, 'Error!');
-            });
+            }
         });
     };
     // Reject contest request
     RolesComponent.prototype.rejectRequest = function (id, idx) {
         var thi = this;
-        swal({
+        __WEBPACK_IMPORTED_MODULE_6_sweetalert2___default()({
             title: 'Are you sure?',
             text: "You won't be able to revert this!",
             type: 'warning',
@@ -1479,18 +1484,20 @@ var RolesComponent = /** @class */ (function () {
             cancelButtonColor: '#d33',
             confirmButtonText: 'Yes, Reject it!'
         }).then(function (flag) {
-            thi.RolesService.rejectContestRequest(id).subscribe(function (response) {
-                thi.toastr.success(response['message'], 'Success!');
-                thi.dtElements.forEach(function (dtElement, index) {
-                    if (idx == index) {
-                        dtElement.dtInstance.then(function (dtInstance) {
-                            dtInstance.draw();
-                        });
-                    }
+            if (flag.value) {
+                thi.RolesService.rejectContestRequest(id).subscribe(function (response) {
+                    thi.toastr.success(response['message'], 'Success!');
+                    thi.dtElements.forEach(function (dtElement, index) {
+                        if (idx == index) {
+                            dtElement.dtInstance.then(function (dtInstance) {
+                                dtInstance.draw();
+                            });
+                        }
+                    });
+                }, function (error) {
+                    thi.toastr.error(error['error'].message, 'Error!');
                 });
-            }, function (error) {
-                thi.toastr.error(error['error'].message, 'Error!');
-            });
+            }
         });
     };
     // Get all music type
@@ -1524,7 +1531,7 @@ var RolesComponent = /** @class */ (function () {
     // remove admin 
     RolesComponent.prototype.removeAdmin = function (id, idx) {
         var thi = this;
-        swal({
+        __WEBPACK_IMPORTED_MODULE_6_sweetalert2___default()({
             title: 'Are you sure?',
             text: "You won't be able to revert this!",
             type: 'warning',
@@ -1533,24 +1540,26 @@ var RolesComponent = /** @class */ (function () {
             cancelButtonColor: '#d33',
             confirmButtonText: 'Yes, delete it!'
         }).then(function (flag) {
-            thi.RolesService.deleteAdmin(id).subscribe(function (response) {
-                thi.toastr.success(response['message'], 'Success!');
-                thi.dtElements.forEach(function (dtElement, index) {
-                    if (idx == index) {
-                        dtElement.dtInstance.then(function (dtInstance) {
-                            dtInstance.draw();
-                        });
-                    }
+            if (flag.value) {
+                thi.RolesService.deleteAdmin(id).subscribe(function (response) {
+                    thi.toastr.success(response['message'], 'Success!');
+                    thi.dtElements.forEach(function (dtElement, index) {
+                        if (idx == index) {
+                            dtElement.dtInstance.then(function (dtInstance) {
+                                dtInstance.draw();
+                            });
+                        }
+                    });
+                }, function (error) {
+                    thi.toastr.error(error['error'].message, 'Error!');
                 });
-            }, function (error) {
-                thi.toastr.error(error['error'].message, 'Error!');
-            });
+            }
         });
     };
     // suspend admin account
     RolesComponent.prototype.suspendAdmin = function (id, idx) {
         var thi = this;
-        swal({
+        __WEBPACK_IMPORTED_MODULE_6_sweetalert2___default()({
             title: 'Are you sure?',
             text: "You want to suspend this account!",
             type: 'warning',
@@ -1559,18 +1568,20 @@ var RolesComponent = /** @class */ (function () {
             cancelButtonColor: '#d33',
             confirmButtonText: 'Yes, suspend it!'
         }).then(function (flag) {
-            thi.RolesService.suspendAdmin(id).subscribe(function (response) {
-                thi.toastr.success(response['message'], 'Success!');
-                thi.dtElements.forEach(function (dtElement, index) {
-                    if (idx == index) {
-                        dtElement.dtInstance.then(function (dtInstance) {
-                            dtInstance.draw();
-                        });
-                    }
+            if (flag.value) {
+                thi.RolesService.suspendAdmin(id).subscribe(function (response) {
+                    thi.toastr.success(response['message'], 'Success!');
+                    thi.dtElements.forEach(function (dtElement, index) {
+                        if (idx == index) {
+                            dtElement.dtInstance.then(function (dtInstance) {
+                                dtInstance.draw();
+                            });
+                        }
+                    });
+                }, function (error) {
+                    thi.toastr.error(error['error'].message, 'Error!');
                 });
-            }, function (error) {
-                thi.toastr.error(error['error'].message, 'Error!');
-            });
+            }
         });
     };
     __decorate([
@@ -2319,7 +2330,8 @@ var AppComponent = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_router__ = __webpack_require__("../../../router/esm5/router.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__app_component__ = __webpack_require__("../../../../../src/app/app.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_angular_highcharts__ = __webpack_require__("../../../../angular-highcharts/angular-highcharts.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_angular2_highcharts__ = __webpack_require__("../../../../angular2-highcharts/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_angular2_highcharts___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_angular2_highcharts__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_angular_datatables__ = __webpack_require__("../../../../angular-datatables/index.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__ng_bootstrap_ng_bootstrap__ = __webpack_require__("../../../../@ng-bootstrap/ng-bootstrap/index.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__dashboard_layout_layout_module__ = __webpack_require__("../../../../../src/app/dashboard-layout/layout.module.ts");
@@ -2340,6 +2352,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
+// import { ChartModule } from 'angular-highcharts';
 
 
 
@@ -2368,7 +2381,7 @@ var AppModule = /** @class */ (function () {
                 __WEBPACK_IMPORTED_MODULE_11__email_varification_email_varification_module__["a" /* EamilVarificationModule */],
                 __WEBPACK_IMPORTED_MODULE_12__forget_password_forget_password_module__["a" /* ForgetPasswordModule */],
                 __WEBPACK_IMPORTED_MODULE_6__ng_bootstrap_ng_bootstrap__["b" /* NgbModule */].forRoot(),
-                __WEBPACK_IMPORTED_MODULE_4_angular_highcharts__["b" /* ChartModule */],
+                __WEBPACK_IMPORTED_MODULE_4_angular2_highcharts__["ChartModule"].forRoot(__webpack_require__("../../../../highcharts/highmaps.js")),
                 __WEBPACK_IMPORTED_MODULE_5_angular_datatables__["b" /* DataTablesModule */],
                 __WEBPACK_IMPORTED_MODULE_2__angular_router__["g" /* RouterModule */].forRoot([], { useHash: false })
             ],

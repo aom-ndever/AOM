@@ -5,7 +5,7 @@ import { DataTableDirective } from 'angular-datatables';
 import { ToastrService } from 'ngx-toastr';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
-declare var swal: any;
+import swal from 'sweetalert2';
 @Component({
   selector: 'app-roles',
   templateUrl: './roles.component.html',
@@ -153,19 +153,21 @@ export class RolesComponent implements OnInit {
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
       confirmButtonText: 'Yes, Accept it!'
-    }).then(function(flag) {
-      thi.RolesService.acceptContestRequest(id).subscribe(response =>{
-        thi.toastr.success(response['message'], 'Success!');
-        thi.dtElements.forEach((dtElement: DataTableDirective, index: number) => {
-          if(idx == index) {
-            dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
-              dtInstance.draw();
-            });
-          }
+    }).then((flag) =>  {
+      if(flag.value) {
+        thi.RolesService.acceptContestRequest(id).subscribe(response =>{
+          thi.toastr.success(response['message'], 'Success!');
+          thi.dtElements.forEach((dtElement: DataTableDirective, index: number) => {
+            if(idx == index) {
+              dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
+                dtInstance.draw();
+              });
+            }
+          });
+        }, error => {
+          thi.toastr.error(error['error'].message, 'Error!');
         });
-      }, error => {
-        thi.toastr.error(error['error'].message, 'Error!');
-      });
+      }
     });
   }
   // Reject contest request
@@ -179,19 +181,21 @@ export class RolesComponent implements OnInit {
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
       confirmButtonText: 'Yes, Reject it!'
-    }).then(function(flag) {
-      thi.RolesService.rejectContestRequest(id).subscribe(response =>{
-        thi.toastr.success(response['message'], 'Success!');
-        thi.dtElements.forEach((dtElement: DataTableDirective, index: number) => {
-          if(idx == index) {
-            dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
-              dtInstance.draw();
-            });
-          }
+    }).then((flag) =>  {
+      if(flag.value) {
+        thi.RolesService.rejectContestRequest(id).subscribe(response =>{
+          thi.toastr.success(response['message'], 'Success!');
+          thi.dtElements.forEach((dtElement: DataTableDirective, index: number) => {
+            if(idx == index) {
+              dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
+                dtInstance.draw();
+              });
+            }
+          });
+        }, error => {
+          thi.toastr.error(error['error'].message, 'Error!');
         });
-      }, error => {
-        thi.toastr.error(error['error'].message, 'Error!');
-      });
+      }
     });
   }
 
@@ -233,19 +237,22 @@ export class RolesComponent implements OnInit {
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
       confirmButtonText: 'Yes, delete it!'
-    }).then(function(flag) {
-      thi.RolesService.deleteAdmin(id).subscribe(response =>{
-        thi.toastr.success(response['message'], 'Success!');
-        thi.dtElements.forEach((dtElement: DataTableDirective, index: number) => {
-          if(idx == index) {
-            dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
-              dtInstance.draw();
-            });
-          }
+    }).then((flag) => {
+      if(flag.value) {
+        thi.RolesService.deleteAdmin(id).subscribe(response =>{
+          thi.toastr.success(response['message'], 'Success!');
+          thi.dtElements.forEach((dtElement: DataTableDirective, index: number) => {
+            if(idx == index) {
+              dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
+                dtInstance.draw();
+              });
+            }
+          });
+        }, error => {
+          thi.toastr.error(error['error'].message, 'Error!');
         });
-      }, error => {
-        thi.toastr.error(error['error'].message, 'Error!');
-      });
+      }
+      
     });
   }
   // suspend admin account
@@ -259,19 +266,22 @@ export class RolesComponent implements OnInit {
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
       confirmButtonText: 'Yes, suspend it!'
-    }).then(function(flag) {
-      thi.RolesService.suspendAdmin(id).subscribe(response =>{
-        thi.toastr.success(response['message'], 'Success!');
-        thi.dtElements.forEach((dtElement: DataTableDirective, index: number) => {
-          if(idx == index) {
-            dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
-              dtInstance.draw();
-            });
-          }
+    }).then((flag) => {
+      if(flag.value) {
+        thi.RolesService.suspendAdmin(id).subscribe(response =>{
+          thi.toastr.success(response['message'], 'Success!');
+          thi.dtElements.forEach((dtElement: DataTableDirective, index: number) => {
+            if(idx == index) {
+              dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
+                dtInstance.draw();
+              });
+            }
+          });
+        }, error => {
+          thi.toastr.error(error['error'].message, 'Error!');
         });
-      }, error => {
-        thi.toastr.error(error['error'].message, 'Error!');
-      });
+      }
+      
     });
   }
 }
