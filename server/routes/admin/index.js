@@ -250,7 +250,7 @@ router.post("/add_contest", async (req, res) => {
         state: req.body.state,
         region: req.body.region,
         round: req.body.round,
-        round_name: name + " " + "round" + req.body.round
+        round_name: req.body.name + " " + "round" + req.body.round
 
       };
       var resp_data = await contest_request_helper.insert_contest_request(obj);
