@@ -697,7 +697,7 @@ router.post("/accept/contest_request/:contest_id", async (req, res) => {
     state: req.body.state,
     region: req.body.region,
     round: req.body.round,
-    round_name: contest_obj.name + " " + "round" + req.body.round
+    round_name: contest_obj.name + " " + "round" + round_obj.round
 
   }
   contest_resp = await admin_helper.get_admin_by_id(admin_id)
