@@ -26,6 +26,7 @@
     "angular-datatables": "^6.0.0",
     "angular-highcharts": "^5.2.13",
     "angular-io-slimscroll": "^2.3.3",
+    "angular2-highcharts": "^0.5.5",
     "angular2-lightbox": "^1.4.0",
     "bootstrap": "^4.1.1",
     "core-js": "^2.4.1",

@@ -202,13 +202,13 @@ export class ContestComponent implements OnInit {
         let stdt = new Date(this.contest_detail['year'], this.contest_detail['month'], this.contest_detail['day']);
         //let enddt = new Date(stdt.getTime() + this.contest_detail['duration'] * 24 * 60 * 60 * 1000);
         let data = {
-          name : this.contest_detail['contest_id']['name'],
-          music_type : this.contest_detail['music_type'],
+          contest_id : this.contest_detail['contest_id']['_id'],
+          // music_type : this.contest_detail['music_type'],
           region : this.contest_detail['region'],
           state : this.contest_detail['state'],
           round : this.contest_detail['no_of_round'],
           start_date : stdt,
-          duration : this.contest_detail['duration']
+          duration : +this.contest_detail['duration']
         };
         this.show_spinner = true;
         this.ContestService.addExistingContest(data).subscribe((response) => {
