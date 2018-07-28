@@ -689,6 +689,7 @@ router.post("/accept/contest_request/:contest_id", async (req, res) => {
   round_resp = await contest_request_helper.get_round_by_id(req.params.contest_id)
 
   var round_obj = {
+    name: contest_obj.name,
     contest_id: contest_obj._id,
     start_date: moment(req.body.start_date).utc(),
     duration: req.body.duration,
