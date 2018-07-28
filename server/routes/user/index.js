@@ -63,6 +63,9 @@ router.put("/", async (req, res) => {
     if (req.body.gender && req.body.gender != null) {
         obj.gender = req.body.gender;
     }
+    if (req.body.phone_no) {
+        obj.phone_no = req.body.phone_no
+    }
     var resp_data = await user_helper.update_user_by_id(user_id, obj);
     if (resp_data.status == 0) {
         logger.error("Error occured while updating = ", resp_data);

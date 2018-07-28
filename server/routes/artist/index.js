@@ -129,6 +129,9 @@ router.put('/', function (req, res) {
     if (req.body.share_url) {
         obj.social_media = req.body.share_url
     }
+    if (req.body.phone_no) {
+        obj.phone_no = req.body.phone_no
+    }
     if (req.body.email) {
         obj.email = req.body.email;
     }

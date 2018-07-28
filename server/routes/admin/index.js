@@ -215,8 +215,6 @@ router.post("/add_contest", async (req, res) => {
         round_name: contest_obj.name + " " + "round" + req.body.round
       };
 
-      console.log('round_obj => ', round_obj);
-
 
       var resp_data = await round_helper.insert_round(round_obj);
 
@@ -678,7 +676,6 @@ router.post("/suspend/artist/:artist_id", async (req, res) => {
 router.post("/accept/contest_request/:contest_id", async (req, res) => {
   admin_id = req.userInfo.id
   contest_resp = await contest_request_helper.get_contest_by_id(req.params.contest_id)
-  console.log('contest_resp', contest_resp);
 
   var contest_obj = {
     name: contest_resp.contest.name,
@@ -707,8 +704,7 @@ router.post("/accept/contest_request/:contest_id", async (req, res) => {
     var action = "accepted"
     var resp_data1 = await contest_helper.insert_contest(contest_obj);
     var resp_data2 = await round_helper.insert_round(round_obj);
-    console.log('resp_data1', resp_data1);
-    console.log('resp_data2', resp_data2);
+
 
     var resp_data = await contest_request_helper.insert_action(req.params.contest_id, action);
     logger.trace("Contest Request Accepted");
