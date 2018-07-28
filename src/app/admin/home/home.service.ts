@@ -31,4 +31,5 @@ export class HomeService {
     this.headers = new HttpHeaders({ 'x-access-token' : this.user.token });  
     return this.http.post(`${this.api_host}/admin/home_comment`, data, {headers : this.headers});
   }
+  
 }

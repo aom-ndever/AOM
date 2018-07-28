@@ -7,7 +7,9 @@ import { FormsModule, ReactiveFormsModule  } from '@angular/forms';
 import { ToastrModule } from 'ngx-toastr';
 import { LightboxModule } from 'angular2-lightbox';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { ChartModule } from 'angular-highcharts';
+import { ChartModule, HIGHCHARTS_MODULES } from 'angular-highcharts';
+import * as more from 'highcharts/highcharts-more.src';
+import * as exporting from 'highcharts/modules/exporting.src';
 import { BsDropdownModule, ModalModule  } from 'ngx-bootstrap';
 import { DataTablesModule } from 'angular-datatables';
 import { AuthService } from '../shared/auth.service';
@@ -69,7 +71,8 @@ import { RolesService } from './roles/roles.service';
      ArtistService,
      UsersService,
      ContestService,
-     RolesService
+     RolesService,
+     { provide: HIGHCHARTS_MODULES, useFactory: () => [ more, exporting ] }
     ]
 })
 export class AdminLayoutModule { }

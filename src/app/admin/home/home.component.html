@@ -57,8 +57,8 @@
                           <tr *ngFor="let artist of artist_vote['artist'];let i = index;">
                             <td>{{i+1}}.</td>
                             <td>{{artist.first_name + ' '+ artist.last_name}}</td>
-                            <td>New Youk</td>
-                            <td>{{artist.gender}}</td>
+                            <td>New York</td>
+                            <td>{{artist.gender | titlecase}}</td>
                             <td>{{artist['music_type']['name']}}</td>
                             <td>{{artist.no_of_tracks}}</td>
                             <td class="td_img"><img src="img/vote.png"/>{{artist.no_of_votes}}</td>
@@ -75,6 +75,9 @@
                 <div class="location_top">
                     <img src="img/location_img.jpg" />
                 </div>
+                <ng-container *ngIf="top_location_chart">
+                    <div [chart]="top_location_chart"></div>
+                </ng-container>
             </div>
         </div>
     </div>

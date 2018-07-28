@@ -17,7 +17,7 @@
         <nav class="navigation" [style.display]="toggleMenu ? 'block' : 'none'">
           <ul>
             <li routerLinkActive="active">
-              <a href="javascript:;" routerLink="/whats-new">What's new</a>
+              <a href="javascript:;" routerLink="/whats-new">Whats new</a>
             </li>
             <li routerLinkActive="active">
               <a href="javascript:;" routerLink="/artist">Artists</a>
@@ -26,7 +26,7 @@
               <a href="javascript:;" routerLink="/vote">Vote</a>
             </li>
             <li data-fancybox data-animation-duration="700" data-src="javascript:;login">
-              <a href="javascript:;" (click)="openVerticallyCentered(content)">Login</a>
+              <a href="javascript:;" (click)="openVerticallyCentered(content)">Log In</a>
             </li>
             <li class="register-btn">
               <a href="javascript:;" routerLink="/register">Register</a>
@@ -46,7 +46,7 @@
 						<div class="mobile-nav" (click)="toggleMainMenu()"><a href="javascript:;"><i class="fa fa-bars"></i></a></div>
 						<nav class="navigation" [style.display]="toggleMenu ? 'block' : 'none'">
 							<ul>
-								<li routerLinkActive="active"><a href="javascript:;" routerLink="/whats-new">What's new</a></li>
+								<li routerLinkActive="active"><a href="javascript:;" routerLink="/whats-new">Whats new</a></li>
 								<li routerLinkActive="active"><a href="javascript:;" routerLink="/artist">Artists</a></li>
 								<li routerLinkActive="active"><a href="javascript:;" routerLink="/vote">Vote</a></li>
 								<li routerLinkActive="active"><a href="javascript:;" routerLink="/my-music">My Music</a></li>
@@ -86,7 +86,7 @@
 						<div class="mobile-nav" (click)="toggleMainMenu()"><a href="javascript:;"><i class="fa fa-bars"></i></a></div>
 						<nav class="navigation" [style.display]="toggleMenu ? 'block' : 'none'">
 							<ul>
-								<li routerLinkActive="active"><a href="javascript:;" routerLink="/whats-new">What's new</a></li>
+								<li routerLinkActive="active"><a href="javascript:;" routerLink="/whats-new">Whats new</a></li>
 								<li routerLinkActive="active"><a href="javascript:;" routerLink="/artist">Artists</a></li>
 								<li routerLinkActive="active"><a href="javascript:;" routerLink="/vote">Vote</a></li>
 								<li routerLinkActive="active"><a href="javascript:;" routerLink="/my-profile">My Profile</a></li>
@@ -179,7 +179,7 @@
               <label class="control-label custom_form_label">Account Type</label>
               <select class="form-control custom_form" formControlName="type" name="type" [(ngModel)]="forget_pwd_data.type" placeholder='Enter login type'>
                 <option value="artist">Artist</option>
-                <option value="user">User</option>
+                <option value="user">Listener</option>
               </select>
             </div>
             <div class="form-group">

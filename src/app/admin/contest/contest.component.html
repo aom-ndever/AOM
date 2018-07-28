@@ -28,7 +28,7 @@
                         <tbody>
                         <tr *ngFor="let contest of contest_data; let i = index;">
                           <td>{{i+1}}.</td>
-                          <td><a href="javascript:;" (click)="openModal(paricipant, contest['_id'])">{{contest['name']}}</a></td>
+                          <td><a href="javascript:;" (click)="openModal(paricipant, contest['_id'])">{{contest ['round_name']}}</a></td>
                           <td>{{contest['start_date'] | date : 'MMMM dd, yyyy'}}</td>
                           <td>{{contest['end_date'] | date : 'MMMM dd, yyyy'}}</td>
                           <td>{{contest['days']}}</td>
@@ -111,7 +111,7 @@
             <label class="control-label">Contest Name</label>
             <select class="form-control" name="existing_contest" formControlName="name"  (change)="selectContest($event.target.value)">
               <option value="">Select Contest</option>
-              <option *ngFor="let c of existing_contest_list; let i = index;" value="{{i}}">{{c['name']}}</option>
+              <option *ngFor="let c of existing_contest_list; let i = index;" value="{{i}}">{{c['round_name']}}</option>
             </select>
             <div class="terms_error_msg" *ngIf="is_valid && !contest_validation.controls['name'].valid">
               <span *ngIf="contest_validation.controls['name'].errors['required']" class="text-danger">Contest Name is required.</span>
@@ -169,8 +169,8 @@
             </div>
             <div class="col-sm-6">
                 <div class="form-group custom_modal_form">
-                  <label class="control-label">Number of Rounds</label>
-                  <input type="number" name="rounds" max="8" min="1" formControlName="round" [(ngModel)]="contest_detail['no_of_round']" class="form-control" />
+                  <label class="control-label">Round Number</label>
+                  <input type="number" name="rounds" max="8" min="1" value="1" readonly formControlName="round" [(ngModel)]="contest_detail['no_of_round']" class="form-control" />
                   <div class="terms_error_msg" *ngIf="is_valid && !contest_validation.controls['round'].valid">
                     <span *ngIf="contest_validation.controls['round'].errors['required']" class="text-danger">Number of round is required.</span>
                   </div>

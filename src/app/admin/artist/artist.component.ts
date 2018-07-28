@@ -137,14 +137,27 @@ export class ArtistComponent implements OnInit {
   }
   // suspend artist
   suspendArtist(id : any) {
-    this.ArtistService.suspendArtist(id).subscribe((response) => {
-      this.toastr.success(response['message'], 'Success!');
-      this.datatableElement.dtInstance.then((dtInstance: DataTables.Api) => {
-        dtInstance.draw();
-      });
-    }, (error)=> {
-      this.toastr.error(error['error'].message, 'Error!');
+    swal({
+      title: 'Are you sure?',
+      text: "",
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes'
+    }).then((flag) => {
+      if(flag.value) {
+        this.ArtistService.suspendArtist(id).subscribe((response) => {
+          this.toastr.success(response['message'], 'Success!');
+          this.datatableElement.dtInstance.then((dtInstance: DataTables.Api) => {
+            dtInstance.draw();
+          });
+        }, (error)=> {
+          this.toastr.error(error['error'].message, 'Error!');
+        });
+      }
     });
+    
   }
   openModal(template: any, id : any) {
     let data = {
@@ -158,7 +171,7 @@ export class ArtistComponent implements OnInit {
         this.artist_detail['old'] = dt.getFullYear() - dob.getFullYear();
     });
     this.ArtistService.getArtistTrack(data).subscribe((response) => {
-      this.artist_track = response['track'];
+      this.artist_track = response['track']['music'];
     });
     this.ArtistService.getArtistFlagDetails(data).subscribe((response) => {
       this.artist_flag = response['artist'];

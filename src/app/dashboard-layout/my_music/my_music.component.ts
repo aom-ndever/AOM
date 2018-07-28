@@ -74,8 +74,6 @@ export class MyMusicComponent implements OnInit, OnDestroy {
         ordering: false,
         lengthChange: false,
         responsive: true,
-        scrollY :'200px',
-        scrollCollapse: true,
         ajax: (dataTablesParameters: any, callback) => {
           console.log(dataTablesParameters);
           setTimeout(() => {
@@ -184,7 +182,7 @@ export class MyMusicComponent implements OnInit, OnDestroy {
 
   // open edit track model
   openEditTrackModal(content : any, obj : any) {
-    this.trackdata = obj;
+    this.trackdata = {...obj};
     console.log(obj);
     if(!obj.description || obj.description == "undefined") {
       this.trackdata['description'] = '';
@@ -285,8 +283,11 @@ export class MyMusicComponent implements OnInit, OnDestroy {
           if(!response['track']['image']) {
             this.edit_image = 'img/profile-img.png';
           }
-          this.getAllTrack();
+          this.datatableElement.dtInstance.then((dtInstance: DataTables.Api) => {
+            dtInstance.draw();
+          });
           this.toastr.success(response['message'], 'Success!');
+          this.modal_ref.close();
         }, error => {
           this.toastr.error(error['error'].message, 'Error!');
           this.show_spinner = false;
