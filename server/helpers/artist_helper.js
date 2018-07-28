@@ -122,13 +122,16 @@ artist_helper.get_artist_by_music_id = async (id) => {
  */
 artist_helper.update_artist_by_id = async (artist_id, artist_object) => {
     try {
-        console.log('artist_object', artist_object);
 
         let artist = await Artist.findOneAndUpdate({ _id: artist_id }, artist_object, { new: true });
+
         if (!artist) {
-            return { "status": 2, "message": "Record has not updated" };
+
+
+            return { "status": 2, "message": "Profile has not updated" };
         } else {
-            return { "status": 1, "message": "Record has been updated", "artist": artist };
+            let artist_data = await Artist.findOne({ _id: artist_id }).populate('music_type');
+            return { "status": 1, "message": "Profile has been updated", "artist_data": artist_data };
         }
     } catch (err) {
         return { "status": 0, "message": "Error occured while updating artist", "error": err }
@@ -138,7 +141,7 @@ artist_helper.update_artist_by_id = async (artist_id, artist_object) => {
 
 artist_helper.get_login_by_email = async (email) => {
     try {
-        var artist = await Artist.findOne({ "email": email }).lean();
+        var artist = await Artist.findOne({ "email": email }).populate('music_type').lean();
         if (artist) {
             return { "status": 1, "message": "artist details found", "artist": artist };
         } else {

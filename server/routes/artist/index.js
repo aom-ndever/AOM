@@ -121,7 +121,7 @@ router.get('/artist_by_id', async (req, res) => {
  * @apiSuccess (Success 200) {JSON} user User details
  * @apiError (Error 4xx) {String} message Validation or error message.
  */
-router.put('/', function (req, res) {
+router.put('/', async (req, res) => {
     user_id = req.userInfo.id;
     var obj = {
 
@@ -164,11 +164,12 @@ router.put('/', function (req, res) {
     }
 
 
-    var user_resp = artist_helper.update_artist_by_id(req.userInfo.id, obj);
+    var user_resp = await artist_helper.update_artist_by_id(req.userInfo.id, obj);
+
     if (user_resp.status === 0) {
-        res.status(config.INTERNAL_SERVER_ERROR).json({ "error": user_resp.error });
+        res.status(config.INTERNAL_SERVER_ERROR).json(user_resp);
     } else {
-        res.status(config.OK_STATUS).json({ "message": "Profile has been updated successfully" });
+        res.status(config.OK_STATUS).json(user_resp);
     }
 
 });
