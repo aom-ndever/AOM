@@ -47,7 +47,7 @@ participate_helper.get_all_participants = async (ids) => {
         })
 
         participate.reverse();
-        participate._first(1, 1)
+        var limit = _.first(1, 1)
         if (participate) {
             return { "status": 1, "message": "participants details found", "participate": participate };
         } else {

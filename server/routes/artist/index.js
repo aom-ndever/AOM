@@ -615,7 +615,7 @@ router.get('/contest', async (req, res) => {
     var contest = await contest_helper.get_all_contests();
     if (contest.status === 1) {
         logger.trace("got details successfully");
-        res.status(config.OK_STATUS).json({ "status": 1, "contest": contest.participate });
+        res.status(config.OK_STATUS).json({ "status": 1, "contest": contest });
     } else {
         logger.error("Error occured while fetching = ", contest);
         res.status(config.INTERNAL_SERVER_ERROR).json(contest);
