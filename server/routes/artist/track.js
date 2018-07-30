@@ -295,7 +295,7 @@ router.post('/analytics/track', async (req, res) => {
     var resp_day = await vote_track_helper.get_artist_vote_by_day(req.userInfo.id, req.body.day);
     var resp_gender = await vote_track_helper.get_artist_vote_by_gender(req.userInfo.id, req.body.day);
     var resp_track = await vote_track_helper.get_artist_vote_by_track(req.userInfo.id, req.body.day);
-    var resp_location = await vote_track_helper.get_artist_by_location_vote(req.userInfo.id, req.body.day);
+    var resp_location = await vote_track_helper.get_artist_by_location_votes(req.userInfo.id, req.body.day);
 
     if (resp_day.status === 0 && resp_gender === 0 && resp_rack === 0 && resp_location === 0) {
         res.status(config.INTERNAL_SERVER_ERROR).json({ "status": 0, "message": "Error occured while finding vote", "error": resp_day.error });

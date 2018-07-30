@@ -138,6 +138,28 @@ download_helper.get_downloads_by_location = async (artist_id, day) => {
             $unwind: "$user"
         },
 
+        {
+            $lookup: {
+                from: "state",
+                localField: "user.state",
+                foreignField: "_id",
+                as: "state"
+            }
+        },
+        {
+            $unwind: "$state"
+        },
+        {
+            "$group": {
+                _id: {
+                    _id: "$state.name",
+                    name: "$state.short_name"
+
+                },
+                count: { $sum: 1 },
+            }
+        },
+
     ];
     let result = await Download.aggregate(aggregate);
 

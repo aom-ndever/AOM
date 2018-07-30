@@ -407,14 +407,14 @@ router.post('/analytics/overview', async (req, res) => {
     var resp_gender = await follower_helper.get_artist_followers_by_gender(req.userInfo.id, req.body.day);
     var track = await download_helper.get_all_downloaded_track_by_id(req.userInfo.id, req.body.day);
     var resp_day = await vote_track_helper.get_artist_vote_by_day(req.userInfo.id, req.body.day);
-    var resp_location = await vote_track_helper.get_artist_by_location_vote(req.userInfo.id, req.body.day);
+    var resp_location = await vote_track_helper.get_artist_by_location_votes(req.userInfo.id, req.body.day);
 
-    if (resp_gender.status === 0 && resp_day.status === 0 && track.status === 0) {
+    if (resp_gender.status === 0 && resp_day.status === 0 && track.status === 0 && resp_location.status === 0) {
         res.status(config.INTERNAL_SERVER_ERROR).json({ "status": 0, "message": "Error occured while finding artist", "error": resp_gender.error, "error": resp_day.error });
     } else if (resp_gender.status === 2) {
         res.status(config.BAD_REQUEST).json({ "status": 0, "message": "Not available" });
     } else {
-        res.status(config.OK_STATUS).json({ "status": 1, "message": "found", "gender": resp_gender.results, "track": track.track, "vote": resp_day.results });
+        res.status(config.OK_STATUS).json({ "status": 1, "message": "found", "gender": resp_gender.results, "track": track.track, "vote": resp_day.results, "location": resp_location.results });
     }
 });
 
