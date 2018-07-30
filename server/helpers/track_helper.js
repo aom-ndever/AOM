@@ -148,6 +148,20 @@ track_helper.get_all_track_by_track_id = async (track_id) => {
     }
 }
 
+track_helper.get_all_track = async () => {
+    try {
+        var track = await Track
+            .findOne({ "is_submit": true })
+            .populate('artist_id')
+        if (track) {
+            return { "status": 1, "message": "Track details found", "track": track };
+        } else {
+            return { "status": 2, "message": "track not found" };
+        }
+    } catch (err) {
+        return { "status": 0, "message": "Error occured while finding track", "error": err }
+    }
+}
 
 
 track_helper.update_votes = async (track_id, no_votes) => {
@@ -410,7 +424,11 @@ track_helper.get_artist_by_location_like = async (day) => {
                 value: { $sum: 1 },
             }
         },
-
+        {
+            $sort: {
+                value: -1
+            }
+        }
 
     ];
     let result = await Like.aggregate(aggregate);
@@ -492,6 +510,11 @@ track_helper.get_artist_by_location_comment = async (day) => {
                 value: { $sum: 1 },
             }
         },
+        {
+            $sort: {
+                value: -1
+            }
+        }
 
     ];
     let result = await Comment.aggregate(aggregate);

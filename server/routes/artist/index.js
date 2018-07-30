@@ -16,6 +16,7 @@ var round_helper = require('../../helpers/round_helper');
 var user_helper = require('../../helpers/user_helper');
 var download_helper = require('../../helpers/download_helper');
 var vote_track_helper = require('../../helpers/vote_track_helper');
+var contest_helper = require('../../helpers/contest_helper');
 
 var mongoose = require('mongoose');
 var ObjectId = mongoose.Types.ObjectId;
@@ -572,25 +573,26 @@ router.post("/participate", async (req, res) => {
             contest_id: req.body.contest_id,
             track_id: req.body.track_id
         };
-        var contest_data = await round_helper.get_contest_by_id(obj.contest_id);
+        var contest_data = await contest_helper.get_contest_by_id(obj.contest_id);
         contest_music = contest_data.contest.music_type;
 
         var artist_data = await artist_helper.get_artist_by_id(artist_id);
-        artist_music = artist_data.artist.music_type;
+        artist_music = artist_data.artist.music_type._id;
 
         if (contest_music.toString() === artist_music.toString()) {
             var resp_data = await participate_helper.get_participant(obj.artist_id, obj.contest_id, obj.track_id);
             if (resp_data && resp_data.participate == 0) {
-                var resp_data = await participate_helper.insert_participant(obj);
+                var resp_datas = await participate_helper.insert_participant(obj);
                 if (resp_data.status == 0) {
                     logger.error("Error occured while inserting = ", resp_data);
                     res.status(config.INTERNAL_SERVER_ERROR).json(resp_data);
                 } else
-                    var resp_data = await round_helper.get_contest_by_id(obj.contest_id);
+                    var resp_data = await round_helper.get_round_by_id(obj.contest_id);
                 no_paritipant = resp_data.contest.no_of_participants + 1
                 var resp_data = await round_helper.update_participant(obj.contest_id, no_paritipant);
-                logger.trace(" got successfully = ", resp_data);
-                res.status(config.OK_STATUS).json(resp_data);
+                var resp_data = await artist_helper.update_is_submit(obj.track_id, true);
+                logger.trace(" got successfully = ", resp_datas);
+                res.status(config.OK_STATUS).json(resp_datas);
             }
             else {
                 logger.trace("Already participated for this contest");

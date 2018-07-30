@@ -357,6 +357,23 @@ router.get('/get_contest', async (req, res) => {
 
 });
 
+
+router.post('/get_winners_by_contest_id', async (req, res) => {
+  // var track = await track_helper.get_all_track();
+  var participant = await participate_helper.get_all_participants(req.body.contest_id);
+  //console.log('participant', participant.participate[0].track_id.no_of_votes);
+
+
+  if (participant.status === 1) {
+    logger.trace("got details successfully");
+    res.status(config.OK_STATUS).json({ "status": 1, "participant": participant.participate });
+  } else {
+    res.status(config.INTERNAL_SERVER_ERROR).json(contest);
+  }
+
+});
+
+
 /**
  * @api {delete} /admin/track/:artist_id Delete Artist  
  * @apiName Delete Artist  

@@ -58,7 +58,6 @@ contest_helper.get_all_contest_and_participant = async (start, length, sort = {}
             .limit(length)
 
         var sorting = _.each(participate, p => {
-            console.log('p', p);
 
         })
         var filter_cnt = participate.length;

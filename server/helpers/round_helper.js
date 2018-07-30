@@ -30,9 +30,24 @@ round_helper.get_contest_by_id = async (id) => {
     }
 };
 
+
+round_helper.get_round_by_id = async (id) => {
+
+    try {
+        var contest = await Round
+            .findOne({ "contest_id": new ObjectId(id) })
+        if (contest) {
+            return { "status": 1, "message": "contest details found", "contest": contest };
+        } else {
+            return { "status": 2, "message": "contest not found" };
+        }
+    } catch (err) {
+        return { "status": 0, "message": "Error occured while finding contest", "error": err }
+    }
+};
 round_helper.update_participant = async (id, no_participants) => {
     try {
-        var contest = await Round.findOneAndUpdate({ "_id": new ObjectId(id) }, { "no_of_participants": no_participants })
+        var contest = await Round.findOneAndUpdate({ "contest_id": new ObjectId(id) }, { "no_of_participants": no_participants })
         if (contest) {
             return { "status": 1, "message": "contest updated", };
         } else {
@@ -58,8 +73,6 @@ round_helper.get_all_round = async (start, length, sort = {}) => {
             .limit(length)
 
         var sorting = _.each(participate, p => {
-            console.log('p', p);
-
         })
         var filter_cnt = participate.length;
         if (participate) {

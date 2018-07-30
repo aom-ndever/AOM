@@ -51,7 +51,6 @@ router.post('/follow', async (req, res) => {
       artist_id: req.body.artist_id
     };
     var resp_data = await follower_helper.get_all_follows(obj.artist_id, obj.user_id);
-    console.log('resp_data', resp_data);
 
     if (resp_data && resp_data.user == 0) {
 

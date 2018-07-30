@@ -32,6 +32,25 @@ participate_helper.get_participant = async (id, ids, trackid) => {
     }
 };
 
+participate_helper.get_all_participants = async (ids) => {
+    try {
+        var participate = await Participate
+            .find({ "contest_id": new ObjectId(ids) })
+            // .populate({ path: 'artist_id', populate: { path: 'music_type' } })
+            .populate('track_id')
+        //.sort('no_of_votes': -1 )
+
+        if (participate) {
+            return { "status": 1, "message": "participants details found", "participate": participate };
+        } else {
+            return { "status": 2, "message": "participants not found" };
+        }
+    } catch (err) {
+        return { "status": 0, "message": "Error occured while finding participants", "error": err }
+    }
+};
+
+
 participate_helper.get_participated_artist = async (ids) => {
     try {
         var participate = await Participate

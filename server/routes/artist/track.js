@@ -138,10 +138,7 @@ router.post("/", async (req, res) => {
  * @apiError (Error 4xx) {String} message Validation or error message.
  */
 router.post('/tracks', async (req, res) => {
-
     artist_id = req.userInfo.id;
-    console.log("start => ", req.body.start);
-    console.log("start => ", req.body.length);
     var track = await track_helper.get_all_track_of_artist(artist_id, req.body.start, req.body.length);
     if (track.status === 1) {
         logger.trace("got details successfully");
