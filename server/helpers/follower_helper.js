@@ -180,9 +180,12 @@ follower_helper.get_artist_followers_by_location = async (artist_id, day) => {
                     name: "$state.short_name"
 
                 },
-                count: { $sum: 1 },
+                value: { $sum: 1 },
             }
         },
+        {
+            $sort: { value: -1 }
+        }
     ];
 
     let result = await Followers.aggregate(aggregate);

@@ -237,9 +237,12 @@ vote_track_helper.get_artist_by_location_votes = async (id, day) => {
                     name: "$state.short_name"
 
                 },
-                count: { $sum: 1 },
+                value: { $sum: 1 },
             }
         },
+        {
+            $sort: { value: -1 }
+        }
     ];
 
     let result = await Vote.aggregate(aggregate);
