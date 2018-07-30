@@ -18,7 +18,6 @@ participate_helper.insert_participant = async (object) => {
 };
 
 
-
 participate_helper.get_participant = async (id, ids, trackid) => {
     try {
         var participate = await Participate
@@ -47,7 +46,7 @@ participate_helper.get_all_participants = async (ids) => {
         })
 
         participate.reverse();
-        var limit = _.first(1, 1)
+        // var limit = _.first(1, 1)
         if (participate) {
             return { "status": 1, "message": "participants details found", "participate": participate };
         } else {

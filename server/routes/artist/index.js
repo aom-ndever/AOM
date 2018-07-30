@@ -612,10 +612,13 @@ router.post("/participate", async (req, res) => {
 });
 
 router.get('/contest', async (req, res) => {
-    var contest = await contest_helper.get_all_contests();
+    var artist_music = await artist_helper.get_artist_by_id(req.userInfo.id);
+    artist_music = artist_music.artist.music_type._id;
+
+    var contest = await contest_helper.get_all_contests(artist_music);
     if (contest.status === 1) {
         logger.trace("got details successfully");
-        res.status(config.OK_STATUS).json({ "status": 1, "contest": contest });
+        res.status(config.OK_STATUS).json({ "status": 1, "contest": contest.contest });
     } else {
         logger.error("Error occured while fetching = ", contest);
         res.status(config.INTERNAL_SERVER_ERROR).json(contest);

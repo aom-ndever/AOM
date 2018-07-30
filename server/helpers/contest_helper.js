@@ -72,10 +72,10 @@ contest_helper.get_all_contest_and_participant = async (start, length, sort = {}
 }
 
 
-contest_helper.get_all_contests = async () => {
+contest_helper.get_all_contests = async (music) => {
     try {
 
-        var participate = await Contest.find({})
+        var participate = await Contest.find({ "music_type": music })
             .populate('music_type')
 
         if (participate) {
