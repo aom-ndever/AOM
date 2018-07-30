@@ -25,6 +25,7 @@ var comment_helper = require('../helpers/comment_helper');
 var state_helper = require('./../helpers/state_helper');
 var region_helper = require('./../helpers/region_helper');
 var global_helper = require('./../helpers/global_helper');
+var contest_helper = require('./../helpers/contest_helper');
 
 /**
  * @api {post} /artist_registration Artist Registration
