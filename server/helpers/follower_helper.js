@@ -177,6 +177,8 @@ follower_helper.get_artist_followers_by_location = async (artist_id, day) => {
             "$group": {
                 _id: {
                     _id: "$state.name",
+                    name: "$state.short_name"
+
                 },
                 count: { $sum: 1 },
             }
