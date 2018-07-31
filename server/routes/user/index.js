@@ -38,8 +38,8 @@ router.put("/", async (req, res) => {
     user_id = req.userInfo.id;
     var obj = {
     };
-    if (req.body.share_url && req.body.share_url != null) {
-        obj.social_media = req.body.share_url;
+    if (req.body.share_url) {
+        obj.social_media = JSON.parse(req.body.share_url)
     }
     if (req.body.email && req.body.email != null) {
         obj.email = req.body.email;
