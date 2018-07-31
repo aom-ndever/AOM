@@ -232,7 +232,6 @@ artist_helper.get_artist_by_filter = async (filter, start, length) => {
 };
 
 artist_helper.delete_artist_by_admin = async (artist_id) => {
-
     try {
         var artist = await Artist.findOneAndRemove({ "_id": (artist_id) })
         if (artist) {
@@ -387,6 +386,8 @@ artist_helper.get_all_artist_by_comment = async () => {
         return { "status": 0, "message": "Error occured while finding music", "error": err }
     }
 };
+
+
 artist_helper.get_all_active_and_suspend_artist = async (start, length, filter, sort_by = {}) => {
     try {
 

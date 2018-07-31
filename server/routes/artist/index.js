@@ -128,7 +128,7 @@ router.put('/', async (req, res) => {
 
     };
     if (req.body.share_url) {
-        obj.social_media = req.body.share_url
+        obj.social_media = JSON.parse(req.body.share_url)
     }
     if (req.body.phone_no) {
         obj.phone_no = req.body.phone_no

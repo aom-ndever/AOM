@@ -231,13 +231,14 @@ follower_helper.get_all_follows = async (id, userid) => {
     }
 };
 
+
+
 follower_helper.get_all_followers_by_user_id = async (id) => {
     try {
         var user = await Followers
             .find({ "user_id": id })
             .populate({ path: 'user_id', populate: { path: 'music_type' } })
             .populate({ path: 'artist_id', populate: { path: 'music_type' } })
-
             .lean();
         if (user) {
             return { "status": 1, "message": "user details found", "user": user };
@@ -248,4 +249,23 @@ follower_helper.get_all_followers_by_user_id = async (id) => {
         return { "status": 0, "message": "Error occured while finding user", "error": err }
     }
 };
+
+
 module.exports = follower_helper;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
