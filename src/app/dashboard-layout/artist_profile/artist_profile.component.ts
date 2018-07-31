@@ -87,7 +87,7 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
     this.artistdata = this.route.snapshot.data['artist'].artist;
     // this.artisttrack = this.route.snapshot.data['track'].track;
     this.artistmedia = this.route.snapshot.data['media'].media;
-    this.artistfollower = this.route.snapshot.data['follower'].user;
+    this.artistfollower = this.route.snapshot.data['follower'].artist;
     this.artistcomments = this.route.snapshot.data['comments'].comment;
     // this.rankingtrack = this.route.snapshot.data['ranking'].track;
     if(this.artistcomments.length > 3) {

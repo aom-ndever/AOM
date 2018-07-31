@@ -49,7 +49,7 @@ export class ContestComponent implements OnInit {
     for(let i = 1; i<= 12; i++ ) {
       this.month.push(i);
     }
-    for(let i = 1900; i<= (new Date()).getFullYear(); i++ ) {
+    for(let i = (new Date()).getFullYear(); i<= 2100; i++ ) {
       this.year.push(i);
     }
     this.contest_validation = this.fb.group({

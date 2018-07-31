@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import {NgbModal, ModalDismissReasons, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
 import { HttpEventType,  HttpResponse} from '@angular/common/http';
@@ -8,6 +8,7 @@ import { environment } from '../../../environments/environment';
 import { every } from 'rxjs/operator/every';
 import { Lightbox } from 'angular2-lightbox';
 import { Chart } from 'angular-highcharts';
+import { AmChartsService, AmChart } from "@amcharts/amcharts3-angular";
 import { MessageService } from '../../shared/message.service';
 import swal from 'sweetalert2';
 @Component({
@@ -15,7 +16,7 @@ import swal from 'sweetalert2';
   templateUrl: './myProfile.component.html',
   styleUrls: []
 })
-export class MyProfileComponent implements OnInit {
+export class MyProfileComponent implements OnInit, OnDestroy {
   show_spinner : boolean = false;
   tab_cnt : Number = 1;
   userdata : any = {
@@ -44,12 +45,18 @@ export class MyProfileComponent implements OnInit {
   follower_analytic_data : any = {};
   overview_analytic_data : any = {};
   download_analytic_data : any = {};
+  location_flag : boolean = false;
   chart : any = '';
+  location_bar_chart : any = '';
+  follower_location_bar_chart : any = '';
+  track_location_bar_chart : any = '';
   follower_age_chart : any = '';
   follower_gender_chart : any = '';
+  follower_location_chart: AmChart;
   overview_gender_chart : any = '';
   track_gender_chart : any = '';
   track_vote_chart : any = '';
+  track_location_chart : AmChart; 
   track_vote_count : any = 0;
   track_male_per  : any = 0;
   track_female_per : any = 0;
@@ -60,6 +67,7 @@ export class MyProfileComponent implements OnInit {
   follower_female_per : any = 0;
   overview_vote_chart : any = '';
   overview_vote_count : any = 0;
+  overview_location_chart : AmChart;
   overview_male_per : any = 0;
   overview_female_per : any = 0;
   overview_download_total :  any = 0;
@@ -71,7 +79,8 @@ export class MyProfileComponent implements OnInit {
     private router: Router,
     private modalService: NgbModal,
     private lightbox: Lightbox,
-    private MessageService : MessageService
+    private MessageService : MessageService,
+    private AmCharts: AmChartsService
   ) {
     let data = JSON.parse(localStorage.getItem('user'));
     this.day = [];
@@ -146,6 +155,18 @@ export class MyProfileComponent implements OnInit {
     }
   }
 
+  ngOnDestroy() {
+    if (this.follower_location_chart) {
+      this.AmCharts.destroyChart(this.follower_location_chart);
+    }
+    if (this.track_location_chart) {
+      this.AmCharts.destroyChart(this.track_location_chart);
+    }
+    if (this.overview_location_chart) {
+      this.AmCharts.destroyChart(this.overview_location_chart);
+    }
+  }
+
   calculateDateFromDays(days : any) {
     var date = new Date();
     var last = new Date(date.getTime() - (days * 24 * 60 * 60 * 1000));
@@ -179,8 +200,13 @@ export class MyProfileComponent implements OnInit {
     this.tab_cnt = cnt;
   }
 
+  togglelocBarChart(flag : boolean) {
+    this.location_flag = flag;
+  }
+
   changeAnlyticTab(cnt : Number) {
     this.analytic_tab = cnt;
+    this.location_flag = false;
     if(cnt == 1) {
       this.getAllOverviewAnalytic({day : this.analytics_days});
     } else if(cnt == 2) {
@@ -619,6 +645,8 @@ export class MyProfileComponent implements OnInit {
         this.ageChart(response['age']);
         this.genderChart(response['gender']);
         this.followerVoteChart(response['day']);
+        this.followerLocationChart(response['loaction']);
+        this.followerLocationBarChart(response['loaction']);
     });
   }
   // Get all track and contest details
@@ -627,6 +655,8 @@ export class MyProfileComponent implements OnInit {
         this.track_analytic = response;
         this.trackGenderChart(response['gender']);
         this.trackVoteChart(response['day']);
+        this.trackLocationChart(response['location']);
+        this.trackLocationBarChart(response['location']);
     });
   }
   // Get all overview analytics data
@@ -641,6 +671,9 @@ export class MyProfileComponent implements OnInit {
         }
         this.overviewVoteChart(response['vote']);
         this.overviewGenderChart(response['gender']);
+        this.overviewLocationChart(response['location']);
+        this.LocationBarChart(response['location']);
+        
     });
   }
   // Get all download analytics data
@@ -739,6 +772,35 @@ export class MyProfileComponent implements OnInit {
       }]
     });
   }
+  // Followers location chart
+  overviewLocationChart(data : any) {
+    let final_data = [];
+    let min = 0;
+    let max = 0;
+    if(data.length > 0) {
+      max = data[data.length - 1]['value'];
+    }
+    data.forEach((ele) => {
+      final_data.push({id : 'US-'+ele['_id']['name'], value : ele['value']});
+    });
+    this.overview_location_chart = this.AmCharts.makeChart("overviewLoc", {
+      "type": "map",
+      "theme": "light",
+      "dataProvider": {
+        "map": 'usaLow',
+        "colorSteps": 10,
+        "areas": final_data
+        },
+        "areasSettings": {
+          "autoZoom": true
+        },
+        "valueLegend": {
+          "right": 10,
+          "minValue": min,
+          "maxValue": max
+        }
+    });
+  }
   // Followers vote chart
   followerVoteChart(data : any) {
     let result = [0,0,0,0,0,0,0];
@@ -774,6 +836,35 @@ export class MyProfileComponent implements OnInit {
           data: result
         }
       ]
+    });
+  }
+  // Followers location chart
+  followerLocationChart(data : any) {
+    let final_data = [];
+    let min = 0;
+    let max = 0;
+    if(data.length > 0) {
+      max = data[data.length - 1]['value'];
+    }
+    data.forEach((ele) => {
+      final_data.push({id : 'US-'+ele['_id']['name'], value : ele['value']});
+    });
+    this.follower_location_chart = this.AmCharts.makeChart("followLoc", {
+      "type": "map",
+      "theme": "light",
+      "dataProvider": {
+        "map": 'usaLow',         
+        "colorSteps": 10,
+        "areas": final_data
+        },
+        "areasSettings": {
+          "autoZoom": true
+        },
+        "valueLegend": {
+          "right": 10,
+          "minValue": min,
+          "maxValue": max
+        }
     });
   }
   // Overview vote chart
@@ -910,6 +1001,35 @@ export class MyProfileComponent implements OnInit {
       }]
     });
   }
+  // Track location chart
+  trackLocationChart(data : any) {
+    let final_data = [];
+    let min = 0;
+    let max = 0;
+    if(data.length > 0) {
+      max = data[data.length - 1]['value'];
+    }
+    data.forEach((ele) => {
+      final_data.push({id : 'US-'+ele['_id']['name'], value : ele['value']});
+    });
+    this.track_location_chart = this.AmCharts.makeChart("trackLoc", {
+      "type": "map",
+      "theme": "light",
+      "dataProvider": {
+        "map": 'usaLow',
+        "colorSteps": 10,
+        "areas": final_data
+        },
+        "areasSettings": {
+          "autoZoom": true
+        },
+        "valueLegend": {
+          "right": 10,
+          "minValue": min,
+          "maxValue": max
+        }
+    });
+  }
   month_name(dt){
     let mlist = [ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ];
       return mlist[dt.getMonth()];
@@ -966,6 +1086,162 @@ export class MyProfileComponent implements OnInit {
       this.toastr.success(response['message'], 'Success!');
     }, (error) => {
       this.toastr.error(error['error'].message, 'Error!');
+    });
+  }
+  // Top location bar chart
+  LocationBarChart(data : any) {
+    let cat = [];
+    let final_data = [];
+    data.forEach(ele => {
+      cat.push(ele['_id']['_id']);
+      final_data.push(ele['value']);
+    });
+    this.location_bar_chart = new Chart({
+      chart: {
+        type: 'bar',
+        height:300
+      },
+      title: {
+        text: ''
+      },
+      xAxis : {
+        categories : cat,
+        labels: {
+            enabled: true
+        },
+        tickmarkPlacement: 'on',
+        minorTickLength: 0,
+        tickLength: 0,
+        minorGridLineWidth: 0
+      },
+      yAxis : {
+        visible : true,
+        min: 0,
+        labels: {
+            overflow: 'justify'
+        },
+        
+        tickLength: 0
+      },
+      legend: {
+        layout: 'vertical',
+        align: 'right',
+        verticalAlign: 'top',
+        floating: true,
+        borderWidth: 1,
+        shadow: true
+      },
+      series: [
+        {
+          name : 'Top Location',
+          color : '#ba67c8',
+          data: final_data
+        }
+      ]
+    });
+  }
+  // Top location bar chart
+  trackLocationBarChart(data : any) {
+    let cat = [];
+    let final_data = [];
+    data.forEach(ele => {
+      cat.push(ele['_id']['_id']);
+      final_data.push(ele['value']);
+    });
+    this.track_location_bar_chart = new Chart({
+      chart: {
+        type: 'bar',
+        height:300
+      },
+      title: {
+        text: ''
+      },
+      xAxis : {
+        categories : cat,
+        labels: {
+            enabled: true
+        },
+        tickmarkPlacement: 'on',
+        minorTickLength: 0,
+        tickLength: 0,
+        minorGridLineWidth: 0
+      },
+      yAxis : {
+        visible : true,
+        min: 0,
+        labels: {
+            overflow: 'justify'
+        },
+        
+        tickLength: 0
+      },
+      legend: {
+        layout: 'vertical',
+        align: 'right',
+        verticalAlign: 'top',
+        floating: true,
+        borderWidth: 1,
+        shadow: true
+      },
+      series: [
+        {
+          name : 'Top Location',
+          
+          data: final_data
+        }
+      ]
+    });
+  }
+  // Top location bar chart
+  followerLocationBarChart(data : any) {
+    let cat = [];
+    let final_data = [];
+    data.forEach(ele => {
+      cat.push(ele['_id']['_id']);
+      final_data.push(ele['value']);
+    });
+    this.follower_location_bar_chart = new Chart({
+      chart: {
+        type: 'bar',
+        height:300
+      },
+      title: {
+        text: ''
+      },
+      xAxis : {
+        categories : cat,
+        labels: {
+            enabled: true
+        },
+        tickmarkPlacement: 'on',
+        minorTickLength: 0,
+        tickLength: 0,
+        minorGridLineWidth: 0
+      },
+      yAxis : {
+        visible : true,
+        min: 0,
+        labels: {
+            overflow: 'justify'
+        },
+        
+        tickLength: 0
+      },
+      legend: {
+        layout: 'vertical',
+        align: 'right',
+        verticalAlign: 'top',
+        floating: true,
+        borderWidth: 1,
+        shadow: true
+      },
+      series: [
+        {
+          name : 'Top Location',
+          color : '#9b26b0',
+          data: final_data
+        }
+      ]
     });
   }
 }

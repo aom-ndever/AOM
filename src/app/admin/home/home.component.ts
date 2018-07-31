@@ -1,28 +1,71 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { HomeService } from './home.service';
 import { Chart, MapChart } from 'angular-highcharts';
-import { country_data } from '../../../assets/data/us-all';
+import { AmChartsService, AmChart } from "@amcharts/amcharts3-angular";
+import { BsModalService } from 'ngx-bootstrap/modal';
+import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: []
 })
-export class HomeComponent implements OnInit {
-
+export class HomeComponent implements OnInit, OnDestroy {
+  modalRef: BsModalRef;
   artist_vote : any = {};
   home_tab_cnt : any = 1;
   analytics_days : any = 7;
   show_duration_date : any = '';
   artist_chart : any = '';
+  top_location_bar_chart : any = '';
   top_location_chart : any = '';
-  constructor(private HomeService : HomeService) {
+  artist_info : any = [];
+  private chart: AmChart;
+  constructor(
+    private HomeService : HomeService,
+    private AmCharts: AmChartsService,
+    private modalService: BsModalService
+  ) {
     console.log("Admin dashboard component");
   }
 
   ngOnInit() {
     this.getMaxVoteAritst({day : this.analytics_days});
     this.calculateDateFromDays(this.analytics_days);
-    this.topLocationChart({});
+    
+  }
+
+  ngAfterViewInit() {
+    
+  }
+
+  ngOnDestroy() {
+    if (this.chart) {
+      this.AmCharts.destroyChart(this.chart);
+    }
+  }
+
+  openModal(template: any, id : any, type : any) { 
+    let data = {
+      artist_id : id
+    };
+    if(type == 'track') {
+      this.HomeService.getArtistTrackById(data).subscribe((response) => {
+        this.artist_info = response['artist']['track'];
+      });
+    } else if (type == 'follower') {
+      this.HomeService.getArtistFollowerById(data).subscribe((response) => {
+        this.artist_info = response['artist']['artist'];
+      });
+    } else if (type == 'vote') {
+      this.HomeService.getArtistVoteById(data).subscribe((response) => {
+        this.artist_info = response['artist']['vote'];
+      });
+    } else {
+      this.HomeService.getArtistCommentById(data).subscribe((response) => {
+        this.artist_info = response['artist']['comment'];
+      });
+    }
+    this.modalRef = this.modalService.show(template, { backdrop : 'static' });
   }
 
   homeTabChange(index : any) {    
@@ -73,6 +116,8 @@ export class HomeComponent implements OnInit {
     this.HomeService.getMaxVoteArtists(data).subscribe(response => {
       this.artist_vote = response;
       this.artistChart(response['day_vote']);
+      this.topLocationChart(response['location']);
+      this.topLocationBarChart(response['location']);
     });
   }
 
@@ -81,6 +126,8 @@ export class HomeComponent implements OnInit {
     this.HomeService.getMaxLikeArtists(data).subscribe(response => {
       this.artist_vote = response;
       this.artistChart(response['likes']);
+      this.topLocationChart(response['location']);
+      this.topLocationBarChart(response['location']);
     });
   }
 
@@ -89,6 +136,8 @@ export class HomeComponent implements OnInit {
     this.HomeService.getMaxCommentArtists(data).subscribe(response => {
       this.artist_vote = response;
       this.artistChart(response['comment']);
+      this.topLocationChart(response['location']);
+      this.topLocationBarChart(response['location']);
     });
   }
 
@@ -130,83 +179,85 @@ export class HomeComponent implements OnInit {
   }
   // Top location chart
   topLocationChart(data : any) {
-    let options = {
-      series: [{
-        chart : {
-          map : country_data
+    let final_data = [];
+    let min = 0;
+    let max = 0;
+    if(data.length > 0) {
+      max = data[data.length - 1]['value'];
+    }
+    data.forEach((ele) => {
+      final_data.push({id : 'US-'+ele['_id']['name'], value : ele['value']});
+    });
+    this.chart = this.AmCharts.makeChart("chartdiv", {
+      "type": "map",
+      "theme": "light",
+      "dataProvider": {
+        "map": 'usaLow',
+        
+        "colorSteps": 10,
+        "areas": final_data
         },
-        title: {
-          text: 'Highmaps basic demo'
+        "areasSettings": {
+          "autoZoom": true
         },
-        mapNavigation: {
-          enabled: true,
-          buttonOptions: {
-            verticalAlign: 'bottom'
-          }
-        },
-        colorAxis: {
-          min: 0
-        },
-        data: [
-          {
-            "value": 438,
-            "code": "nj"
-            },
-            {
-            "value": 387.35,
-            "code": "ri"
-            }
-        ],
-        name: 'Random data',
-        states: {
-            hover: {
-                color: '#BADA55'
-            }
-        },
-        dataLabels: {
-            enabled: true,
-            format: '{point.name}'
+        "valueLegend": {
+          "right": 10,
+          "minValue": min,
+          "maxValue": max
         }
-      }]
-    };
-    this.top_location_chart = new MapChart({ 
-      series: [{
-        chart : {
-          map : country_data
+    });
+    
+  }
+  // Top location bar chart
+  topLocationBarChart(data : any) {
+    let cat = [];
+    let final_data = [];
+    data.forEach(ele => {
+      cat.push(ele['_id']['_id']);
+      final_data.push(ele['value']);
+    });
+    this.top_location_bar_chart = new Chart({
+      chart: {
+        type: 'bar',
+        height:200
+      },
+      title: {
+        text: ''
+      },
+      xAxis : {
+        categories : cat,
+        labels: {
+            enabled: true
         },
-        title: {
-          text: 'Highmaps basic demo'
+        tickmarkPlacement: 'on',
+        minorTickLength: 0,
+        tickLength: 0,
+        minorGridLineWidth: 0
+      },
+      yAxis : {
+        visible : true,
+        min: 0,
+        labels: {
+            overflow: 'justify'
         },
-        mapNavigation: {
-          enabled: true,
-          buttonOptions: {
-            verticalAlign: 'bottom'
-          }
-        },
-        colorAxis: {
-          min: 0
-        },
-        data: [
-          {
-            "value": 438,
-            "code": "nj"
-            },
-            {
-            "value": 387.35,
-            "code": "ri"
-            }
-        ],
-        name: 'Random data',
-        states: {
-            hover: {
-                color: '#BADA55'
-            }
-        },
-        dataLabels: {
-            enabled: true,
-            format: '{point.name}'
+        
+        tickLength: 0
+      },
+      legend: {
+        layout: 'vertical',
+        align: 'right',
+        verticalAlign: 'top',
+        floating: true,
+        borderWidth: 1,
+        shadow: true
+      },
+      series: [
+        {
+          name : 'Top Location',
+          color : '#9b26b0',
+          data: final_data
         }
-      }]
-     });
+      ]
+    });
   }
 }

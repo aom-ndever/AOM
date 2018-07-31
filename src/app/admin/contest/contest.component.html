@@ -181,7 +181,11 @@
           <div class="form-group">
             <div class="form-group custom_modal_form">
               <label class="control-label">Music Genre</label>
-              <select name="music_type" class="form-control" formControlName="music_type" [(ngModel)]="contest_detail['music_type']" >
+              <select name="music_type" class="form-control" formControlName="music_type" [(ngModel)]="contest_detail['music_type']" *ngIf="is_new_or_existing == 1">
+                <option value="">Select Music Gener</option>
+                <option *ngFor="let music of music_type;" value="{{music['_id']}}">{{music['name']}}</option>
+              </select>
+              <select name="music_type" class="form-control" formControlName="music_type" [(ngModel)]="contest_detail['music_type']" *ngIf="is_new_or_existing == 2" disabled>
                 <option value="">Select Music Gener</option>
                 <option *ngFor="let music of music_type;" value="{{music['_id']}}">{{music['name']}}</option>
               </select>

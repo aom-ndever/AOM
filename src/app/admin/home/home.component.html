@@ -51,6 +51,7 @@
                             <th>Likes</th>
                             <th>Followers</th>
                             <th>Comments</th>
+                            <th></th>
                           </tr>
                         </thead>
                         <tbody>
@@ -64,21 +65,193 @@
                             <td class="td_img"><img src="img/vote.png"/>{{artist.no_of_votes}}</td>
                             <td class="td_img"><img src="img/likes.png"/>{{artist.no_of_likes}}</td>
                             <td class="td_img"><img src="img/followers.png"/>{{artist.no_of_followers}}</td>
-                            <td class="td_img"><img src="img/comments.png"/>{{artist.no_of_comments}}</td>                                
+                            <td class="td_img"><img src="img/comments.png"/>{{artist.no_of_comments}}</td>
+                            <td>
+                                <div dropdown class="menu_container">
+                                    <a href="javascript:;" dropdownToggle><i class="fa fa-ellipsis-v"></i></a>
+                                    <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu" >
+                                        <li role="menuitem"><a class="dropdown-item" href="javascript:;" (click)="openModal(track,artist._id, 'track')">Tracks</a></li>
+                                        <li role="menuitem"><a class="dropdown-item" href="javascript:;" (click)="openModal(follower,artist._id, 'follower')">Followers</a></li>
+                                        <li role="menuitem"><a class="dropdown-item" href="javascript:;" (click)="openModal(vote,artist._id, 'vote')">Votes</a></li>
+                                        <li role="menuitem"><a class="dropdown-item" href="javascript:;" (click)="openModal(comment,artist._id, 'comment')">Comments</a></li>
+                                    </ul>
+                                </div>
+                            </td>                                
                           </tr>
                         </tbody>
                       </table>
                 </div>
             </div>
-            <div>
+            <div class="location_top_container">
                 <h3 class="Audience-Overview">Top Locations </h3>
                 <div class="location_top">
-                    <img src="img/location_img.jpg" />
+                    <!-- <img src="img/location_img.jpg" /> -->
+                    <div class="top_location_graph">
+                        <div class="left_graph">
+                                <div id="chartdiv" [style.height.px]="206" [style.width.%]="50"></div>
+                                <ng-container *ngIf="top_location_chart">
+                                    <!-- <div [chart]="top_location_chart"></div> -->
+                                </ng-container>
+                        </div>
+                        <div class="right_graph">
+                                <div class="download-graph">
+                                    <div [chart]="top_location_bar_chart"></div>
+                                    <!-- <ul>
+                                        <li class="ng-star-inserted">
+                                        <span>New York</span>
+                                        <div class="d-num">
+                                        </div>
+                                        </li><li class="ng-star-inserted">
+                                        <span>New Jersey</span>                                    
+                                        <div class="d-num">
+                                        </div>
+                                        </li><li class="ng-star-inserted"> 
+                                                <span>Califirnia</span>                                   
+                                        <div class="d-num">                                  
+
+                                        </div>
+                                        </li><li class="ng-star-inserted">
+                                                <span>Texas</span>                                   
+                                        <div class="d-num">
+                                        </div>
+                                        </li><li class="ng-star-inserted"> 
+                                                <span>Maryland</span>                                   
+                                        <div class="d-num">
+                                        </div>
+                                        </li>
+                                    </ul> -->
+                                </div>
+                        </div>
+                    </div>
                 </div>
-                <ng-container *ngIf="top_location_chart">
-                    <div [chart]="top_location_chart"></div>
-                </ng-container>
+
             </div>
         </div>
     </div>
     <!-- /#page-content-wrapper -->
+<ng-template #track>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+        <span aria-hidden="true">&times;</span>
+    </button>
+    <div class="modal-body">
+        <div class="custom_modal">
+            <div class="row">
+                <div class="col-sm-12">
+                    <b class="template_modal_name">Tracks</b>
+                </div>
+                <div class="artists_table copyright_table table-responsive col-sm-12">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>N<sup>o</sup></th>
+                                <th>Name</th>
+                                <th>Description</th>
+                                <th>Price</th>
+                                <th>Comments</th>
+                                <th>Likes</th>
+                                <th>Votes</th>
+                                <th>Downloads</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let t of artist_info;let i = index;">
+                                <td>{{i+1}}</td>
+                                <td>{{t.name}}</td>
+                                <td>{{t.description}}</td>
+                                <td>{{t.price}}</td>
+                                <td>{{t.no_of_comments}}</td>
+                                <td>{{t.no_of_likes}}</td>
+                                <td>{{t.no_of_votes}}</td>
+                                <td>{{t.no_of_downloads}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-template>
+<ng-template #follower>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+        <span aria-hidden="true">&times;</span>
+    </button>
+    <div class="modal-body">
+        <div class="custom_modal">
+            <div class="row">
+                <div class="col-sm-12">
+                    <b class="template_modal_name">Tracks</b>
+                </div>
+                <div class="artists_table copyright_table table-responsive col-sm-12">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <td>N<sup>o</sup></td>
+                                <th>Name</th>
+                                <th>Description</th>
+                                <th>Price</th>
+                                <th>Comments</th>
+                                <th>Likes</th>
+                                <th>Votes</th>
+                                <th>Downloads</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let t of artist_info;let i = index;">
+                                <td>{{i+1}}</td>
+                                <td>{{t.name}}</td>
+                                <td>{{t.description}}</td>
+                                <td>{{t.price}}</td>
+                                <td>{{t.no_of_comments}}</td>
+                                <td>{{t.no_of_likes}}</td>
+                                <td>{{t.no_of_votes}}</td>
+                                <td>{{t.no_of_downloads}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-template>
+<ng-template #vote>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+        <span aria-hidden="true">&times;</span>
+    </button>
+    <div class="modal-body">
+        <div class="custom_modal">
+            <div class="row">
+                <div class="col-sm-12">
+                    <b class="template_modal_name">Votes</b>
+                </div>
+                <div class="artists_table copyright_table table-responsive col-sm-12">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <td>N<sup>o</sup></td>
+                                <th>Name</th>
+                                <th>Description</th>
+                                <th>Votes</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let t of artist_info;let i = index;">
+                                <td>{{i+1}}</td>
+                                <td>{{t.track_id.name ? t.track_id.name : '' }}</td>
+                                <td>{{t.track_id.description}}</td>
+                                <td>{{t.track_id.no_of_votes}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-template>
+<ng-template #comment>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+        <span aria-hidden="true">&times;</span>
+    </button>
+    <div class="modal-body">
+        <h3>Comments</h3>
+    </div>
+</ng-template>

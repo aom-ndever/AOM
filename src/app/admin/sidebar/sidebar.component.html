@@ -9,21 +9,12 @@
                 <h3 class="user_name">Rob Gales</h3>
                 <h5 class="user_profession">Admin</h5>
                 <div class="dropdown" dropdown>
-                    <button type="button" dropdownToggle class="btn btn-primary dropdown-toggle drop_icon">
-                    </button>
-                    <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="button-basic">
-                        <li role="menuitem">
-                            <a class="dropdown-item" href="#">Action</a>
-                        </li>
-                        <li role="menuitem">
-                            <a class="dropdown-item" href="#">Another action</a>
-                        </li>
-                        <li role="menuitem">
-                            <a class="dropdown-item" href="#">Something else here</a>
-                        </li>
-                        <li class="divider dropdown-divider"></li>
-                        <li role="menuitem">
-                            <a class="dropdown-item" href="#">Separated link</a>
+                    <a href="javascript:;" id="button-basic" dropdownToggle class="dropdown-toggle drop_icon">
+                            <span class="caret"></span>
+                    </a>
+                    <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu" >
+                        <li role="menuitem" (click)="logout()">
+                            <a class="dropdown-item" href="javascript:;">Logout</a>
                         </li>
                     </ul>
                 </div>

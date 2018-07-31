@@ -102,7 +102,7 @@
                                         </div>
                                     </div>
                                     <div class="additional-details">
-                                        <div class="edit-head">Additional Details</div>
+                                        <div class="edit-head">Additional Information</div>
                                         <div class="about-you">
                                             <label for="fname">Describe Yourself</label>
                                             <textarea class="form-control" name="description" [(ngModel)]="userdata.description" placeholder="Add about yourself..."></textarea>
@@ -663,11 +663,12 @@
                                     <div class="location-downloads">
                                         <div class="edit-head">Top Locations</div>
                                         <div class="loc-icon-group">
-                                            <img src="img/top-location-icon.png" alt="top-location-icon.png">
-                                            <img src="img/infographic-not-active.png" alt="infographic-not-active.png">
+                                            <a href="javascript:;" (click)="togglelocBarChart(false)"><img src="img/top-location-icon.png" alt="top-location-icon.png" ></a>
+                                            <a href="javascript:;" (click)="togglelocBarChart(true)"><img src="img/infographic-not-active.png" alt="infographic-not-active.png" ></a>
                                         </div>
                                         <div class="loc-graph">
-                                            <img src="img/location-map.jpg" alt="Location Graph">
+                                            <div id="overviewLoc" [style.display]="!location_flag ? 'block' : 'none'" [style.height.px]="229.42" [style.width.%]="100"></div>
+                                            <div [style.display]="location_flag ? 'block' : 'none'" [chart]="location_bar_chart"></div>
                                         </div>
                                     </div>
                                 </div>
@@ -712,11 +713,12 @@
                                     <div class="location-downloads">
                                         <div class="edit-head">Top Locations</div>
                                         <div class="loc-icon-group">
-                                            <img src="img/top-location-icon.png" alt="top-location-icon.png">
-                                            <img src="img/infographic-not-active.png" alt="infographic-not-active.png">
+                                            <a href="javascript:;" (click)="togglelocBarChart(false)"><img src="img/top-location-icon.png" alt="top-location-icon.png" ></a>
+                                            <a href="javascript:;" (click)="togglelocBarChart(true)"><img src="img/infographic-not-active.png" alt="infographic-not-active.png" ></a>
                                         </div>
-                                        <div class="loc-graph">
-                                            <img src="img/location-map.jpg" alt="Location Graph">
+                                        <div class="loc-graph" >
+                                            <div id="followLoc" [style.display]="!location_flag ? 'block' : 'none'" [style.height.px]="229.42" [style.width.%]="100"></div>
+                                            <div [style.display]="location_flag ? 'block' : 'none'" [chart]="follower_location_bar_chart"></div>
                                         </div>
                                     </div>
                                 </div>
@@ -864,11 +866,12 @@
                                     <div class="location-downloads">
                                         <div class="edit-head">Top Locations</div>
                                         <div class="loc-icon-group">
-                                            <img src="img/top-location-icon.png" alt="top-location-icon.png">
-                                            <img src="img/infographic-not-active.png" alt="infographic-not-active.png">
+                                            <a href="javascript:;" (click)="togglelocBarChart(false)"><img src="img/top-location-icon.png" alt="top-location-icon.png" ></a>
+                                            <a href="javascript:;" (click)="togglelocBarChart(true)"><img src="img/infographic-not-active.png" alt="infographic-not-active.png" ></a>
                                         </div>
                                         <div class="loc-graph">
-                                            <img src="img/location-map.jpg" alt="Location Graph">
+                                            <div id="trackLoc" [style.display]="!location_flag ? 'block' : 'none'" [style.height.px]="229.42" [style.width.%]="100"></div>
+                                            <div [style.display]="location_flag ? 'block' : 'none'" [chart]="track_location_bar_chart"></div>
                                         </div>
                                     </div>
                                 </div>
@@ -969,7 +972,7 @@
                                                     </div>
                                                     <div class="form-group">
                                                         <div class="date-of-birth">
-                                                            <label for="date">Birthday</label>
+                                                            <label for="date">Birthday Date</label>
                                                             <div class="form-group">
                                                                 <select class="form-control" id="day" name="day" [(ngModel)]="userdata.day">
                                                                     <option value="">Day</option>
@@ -998,7 +1001,7 @@
                                                         </select>
                                                     </div>
                                                     <div class="form-group home-grp">
-                                                        <label for="hometown">Zipcode</label>
+                                                        <label for="hometown">Home Town</label>
                                                         <input class="form-control" placeholder="zipcode" name="zipcode" [(ngModel)]="userdata.zipcode" />
                                                     </div>
                                                     <div class="form-group home-grp">
