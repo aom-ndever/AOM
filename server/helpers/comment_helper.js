@@ -160,8 +160,8 @@ comment_helper.get_all_comment_by_artist_id = async (artist_id) => {
     try {
         var comment = await Comment
             .find({ "artist_id": new ObjectId(artist_id) })
-            .populate('user_id')
-            .populate('artist_id')
+            .populate({ path: 'artist_id', populate: { path: 'music_type' } })
+            .populate({ path: 'user_id', populate: { path: 'music_type' } })
             .populate('track_id')
             .lean()
         if (comment) {

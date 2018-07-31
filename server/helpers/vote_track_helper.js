@@ -33,6 +33,23 @@ vote_track_helper.get_all_voted_artist = async (user_id, track_id) => {
 };
 
 
+vote_track_helper.get_all_voted_artist_by_id = async (artist_id) => {
+    try {
+        var vote = await Vote
+            .find({ "artist_id": new ObjectId(artist_id) })
+            .populate({ path: 'artist_id', populate: { path: 'music_type' } })
+            .populate({ path: 'user_id', populate: { path: 'music_type' } })
+            .populate('track_id')
+        if (vote) {
+            return { "status": 1, "message": "vote details found", "vote": vote };
+        } else {
+            return { "status": 2, "message": "vote not found" };
+        }
+    } catch (err) {
+        return { "status": 0, "message": "Error occured while finding vote", "error": err }
+    }
+};
+
 
 vote_track_helper.get_artist_vote_by_day = async (artist_id, day) => {
     var to = moment().utcOffset(0);

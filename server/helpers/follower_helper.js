@@ -198,18 +198,18 @@ follower_helper.get_artist_followers_by_location = async (artist_id, day) => {
 
 follower_helper.get_all_followers = async (id) => {
     try {
-        var user = await Followers
+        var artist = await Followers
             .find({ "artist_id": id })
-            .populate('user_id')
-            .populate('artist_id')
-            .lean();
-        if (user) {
-            return { "status": 1, "message": "user details found", "user": user };
+            .populate({ path: 'artist_id', populate: { path: 'music_type' } })
+            .populate({ path: ' artist_id', populate: { path: 'music_type' } })
+
+        if (artist) {
+            return { "status": 1, "message": "artist details found", "artist": artist };
         } else {
-            return { "status": 2, "message": "user not found" };
+            return { "status": 2, "message": "artist not found" };
         }
     } catch (err) {
-        return { "status": 0, "message": "Error occured while finding user", "error": err }
+        return { "status": 0, "message": "Error occured while finding artist", "error": err }
     }
 };
 

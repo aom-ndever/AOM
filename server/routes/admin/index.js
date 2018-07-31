@@ -20,6 +20,7 @@ var participate_helper = require('../../helpers/participate_helper');
 var contest_request_helper = require('../../helpers/contest_request_helper');
 var vote_track_helper = require('../../helpers/vote_track_helper');
 var contest_helper = require('../../helpers/contest_helper');
+var comment_helper = require('../../helpers/comment_helper');
 
 var moment = require('moment');
 
@@ -680,7 +681,6 @@ router.post("/suspend/artist/:artist_id", async (req, res) => {
  * 
  * @apiParam {String} contest_id contest Id
  
- 
  * @apiSuccess (Success 200) {JSON} Contest details
  * @apiError (Error 4xx) {String} message Validation or error message.
  */
@@ -748,9 +748,7 @@ router.post("/reject/contest_request/:contest_id", async (req, res) => {
   var action = "rejected"
   contest_resp = await admin_helper.get_admin_by_id(admin_id)
   if (contest_resp.admin.account_type == 'super_admin') {
-
     var resp_data = await contest_request_helper.insert_action(req.params.contest_id, action);
-
     logger.trace("Contest Request Rejected");
     res.status(config.OK_STATUS).json({ "message": "Contest Request Rejected" });
   }
@@ -925,6 +923,61 @@ router.post("/get_flag", async (req, res) => {
   }
 });
 
+router.post("/get_artist_votes", async (req, res) => {
+  artist_id = req.body.artist_id;
+  console.log('artist_id', artist_id);
+
+  var resp_data = await vote_track_helper.get_all_voted_artist_by_id(artist_id);
+  if (resp_data.status == 0) {
+    logger.error("Error occured while fetching artist = ", resp_data);
+    res.status(config.INTERNAL_SERVER_ERROR).json(resp_data);
+  } else {
+    logger.trace("artist got successfully = ", { "artist": resp_data });
+    res.status(config.OK_STATUS).json({ "artist": resp_data });
+  }
+});
+
+
+router.post("/get_artist_followers", async (req, res) => {
+  artist_id = req.body.artist_id;
+
+  var resp_data = await follower_helper.get_all_followers(artist_id);
+  if (resp_data.status == 0) {
+    logger.error("Error occured while fetching artist = ", resp_data);
+    res.status(config.INTERNAL_SERVER_ERROR).json(resp_data);
+  } else {
+    logger.trace("artist got successfully = ", { "artist": resp_data });
+    res.status(config.OK_STATUS).json({ "artist": resp_data });
+  }
+});
+
+
+router.post("/get_artist_comments", async (req, res) => {
+  artist_id = req.body.artist_id;
+
+  var resp_data = await comment_helper.get_all_comment_by_artist_id(artist_id);
+  if (resp_data.status == 0) {
+    logger.error("Error occured while fetching artist = ", resp_data);
+    res.status(config.INTERNAL_SERVER_ERROR).json(resp_data);
+  } else {
+    logger.trace("artist got successfully = ", { "artist": resp_data });
+    res.status(config.OK_STATUS).json({ "artist": resp_data });
+  }
+});
+
+router.post("/get_artist_tracks", async (req, res) => {
+  artist_id = req.body.artist_id;
+
+  var resp_data = await track_helper.get_track_by_artist_id(artist_id);
+  if (resp_data.status == 0) {
+    logger.error("Error occured while fetching artist = ", resp_data);
+    res.status(config.INTERNAL_SERVER_ERROR).json(resp_data);
+  } else {
+    logger.trace("artist got successfully = ", { "artist": resp_data });
+    res.status(config.OK_STATUS).json({ "artist": resp_data });
+  }
+});
+
 /**
  * @api {post} /admin/flag/artist/:artist_id  Flag Artist - post 
  * @apiName S Flag Artist - post
@@ -1089,9 +1142,8 @@ router.put("/featured_artist", async (req, res) => {
 
         var artist_resp = await artist_helper.update_featured_artist(artist_id, feature);
         logger.trace("Artist selected as featured artist = ");
-        res.status(config.OK_STATUS).json({ "message": "Artist selected as featured artist " });
+        res.status(config.OK_STATUS).json({ "message": "Artist selected as featured artist" });
       }
-
       else {
         res.status(config.OK_STATUS).json({ "message": "Already 24 artist selected" });
       }
@@ -1103,7 +1155,6 @@ router.put("/featured_artist", async (req, res) => {
       res.status(config.OK_STATUS).json({ "message": "Artist removed from featured artist" });
     }
   }
-
 });
 
 

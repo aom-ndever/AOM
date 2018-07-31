@@ -118,6 +118,22 @@ track_helper.get_track_by_filter = async (id, filter, start, length) => {
 };
 
 
+track_helper.get_track_by_artist_id = async (id) => {
+    try {
+        var track = await Track
+            .find({ "artist_id": { $in: id } })
+            .populate({ path: 'artist_id', populate: { path: 'music_type' } })
+
+        if (track) {
+            return { "status": 1, "message": "user details found", "track": track };
+        } else {
+            return { "status": 2, "message": "track not found" };
+        }
+    } catch (err) {
+        return { "status": 0, "message": "Error occured while finding track", "error": err }
+    }
+};
+
 track_helper.delete_track_by_admin = async (track_id) => {
 
     try {
