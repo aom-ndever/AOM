@@ -85,6 +85,20 @@ artist_helper.get_artist_by_id = async (artist_id) => {
 };
 
 
+
+artist_helper.get_no_of_featured_artist = async () => {
+    try {
+        var artist = await Artist.find({ "featured": true });
+        if (artist) {
+            return { "status": 1, "message": "Artist details found", "artist": artist };
+        } else {
+            return { "status": 2, "message": "Artist not found" };
+        }
+    } catch (err) {
+        return { "status": 0, "message": "Error occured while finding artist", "error": err }
+    }
+};
+
 /*
  * get_artist_by_music_id is used to fetch artist details by music id
  * 
@@ -122,13 +136,12 @@ artist_helper.get_artist_by_music_id = async (id) => {
  */
 artist_helper.update_artist_by_id = async (artist_id, artist_object) => {
     try {
-        console.log('artist_object', artist_object);
-
         let artist = await Artist.findOneAndUpdate({ _id: artist_id }, artist_object, { new: true });
         if (!artist) {
-            return { "status": 2, "message": "Record has not updated" };
+            return { "status": 2, "message": "Profile has not updated" };
         } else {
-            return { "status": 1, "message": "Record has been updated", "artist": artist };
+            let artist_data = await Artist.findOne({ _id: artist_id }).populate('music_type');
+            return { "status": 1, "message": "Profile has been updated", "artist_data": artist_data };
         }
     } catch (err) {
         return { "status": 0, "message": "Error occured while updating artist", "error": err }
@@ -138,7 +151,7 @@ artist_helper.update_artist_by_id = async (artist_id, artist_object) => {
 
 artist_helper.get_login_by_email = async (email) => {
     try {
-        var artist = await Artist.findOne({ "email": email }).lean();
+        var artist = await Artist.findOne({ "email": email }).populate('music_type').lean();
         if (artist) {
             return { "status": 1, "message": "artist details found", "artist": artist };
         } else {
@@ -158,8 +171,6 @@ artist_helper.get_login_by_email = async (email) => {
  *          status 2 - If artist not found, with appropriate message
  */
 artist_helper.get_all_artist = async () => {
-
-
     try {
         var artist = await Artist.aggregate([
             {
@@ -173,8 +184,6 @@ artist_helper.get_all_artist = async () => {
             {
                 $unwind: "$music_type"
             },
-
-
             {
                 $group: {
                     _id: "$_id",
@@ -191,10 +200,7 @@ artist_helper.get_all_artist = async () => {
                     total: -1
                 }
             },
-
-
         ]);
-
 
         if (artist) {
             return { "status": 1, "message": "artist details found", "artist": artist };
@@ -212,7 +218,6 @@ artist_helper.get_artist_by_filter = async (filter, start, length) => {
             .find(filter)
             .skip(start)
             .limit(length)
-
             .populate('music_type')
             .lean();
 
@@ -227,7 +232,6 @@ artist_helper.get_artist_by_filter = async (filter, start, length) => {
 };
 
 artist_helper.delete_artist_by_admin = async (artist_id) => {
-
     try {
         var artist = await Artist.findOneAndRemove({ "_id": (artist_id) })
         if (artist) {
@@ -255,10 +259,8 @@ artist_helper.update_featured_artist = async (artist_id, feature) => {
 };
 
 artist_helper.update_artist_votes = async (artist_id, no_votes) => {
-
     try {
         var vote = await Artist.findOneAndUpdate({ "_id": new ObjectId(artist_id) }, { "no_of_votes": no_votes })
-
         if (vote) {
             return { "status": 1, "message": "voting updated", };
         } else {
@@ -270,10 +272,8 @@ artist_helper.update_artist_votes = async (artist_id, no_votes) => {
 };
 
 artist_helper.update_artist_comment = async (artist_id, no_votes) => {
-
     try {
         var vote = await Artist.findOneAndUpdate({ "_id": new ObjectId(artist_id) }, { "no_of_comments": no_votes })
-
         if (vote) {
             return { "status": 1, "message": "comment updated", };
         } else {
@@ -288,7 +288,6 @@ artist_helper.update_artist_comment = async (artist_id, no_votes) => {
 artist_helper.update_track_comment = async (id, no_comment) => {
     try {
         var track_data = await Track.findOneAndUpdate({ "_id": new ObjectId(id) }, { "no_of_comments": no_comment })
-
         if (track_data) {
             return { "status": 1, "message": "comment updated", };
         } else {
@@ -298,6 +297,7 @@ artist_helper.update_track_comment = async (id, no_comment) => {
         return { "status": 0, "message": "Error occured while finding comment", "error": err }
     }
 };
+
 artist_helper.get_all_artist_by_vote = async () => {
     try {
         var artist = await Artist
@@ -386,16 +386,13 @@ artist_helper.get_all_artist_by_comment = async () => {
         return { "status": 0, "message": "Error occured while finding music", "error": err }
     }
 };
+
+
 artist_helper.get_all_active_and_suspend_artist = async (start, length, filter, sort_by = {}) => {
     try {
 
-
-        var artists = await Artist
-            .find(filter)
-
-
+        var artists = await Artist.find(filter)
         var tot_cnt = artists.length;
-
 
         var artist = await Artist
             .find(filter)
@@ -415,7 +412,6 @@ artist_helper.get_all_active_and_suspend_artist = async (start, length, filter, 
 };
 
 artist_helper.update_artist_status = async (artist_id, status) => {
-
     try {
         var artist = await Artist.findOneAndUpdate({ "_id": new ObjectId(artist_id) }, { "status": status })
 
@@ -487,8 +483,6 @@ artist_helper.update_artist_password = async (artist_id, password) => {
 
 
 artist_helper.get_new_uploads = async (filter = {}) => {
-    console.log('filter', filter);
-
     try {
         var artist = await Artist
             .find(filter)
@@ -530,6 +524,19 @@ artist_helper.update_artist_flag = async (artist_id, flag) => {
         }
     } catch (err) {
         return { "status": 0, "message": "Error occured while updating user flag", "error": err }
+    }
+};
+
+artist_helper.update_is_submit = async (track_id, flag) => {
+    try {
+        var track = await Track.findOneAndUpdate({ "_id": new ObjectId(track_id) }, { "is_submit": flag });
+        if (track) {
+            return { "status": 1, "message": "track flag updated" };
+        } else {
+            return { "status": 2, "message": "track flag found" };
+        }
+    } catch (err) {
+        return { "status": 0, "message": "Error occured while updating track flag", "error": err }
     }
 };
 

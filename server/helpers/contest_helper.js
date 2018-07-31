@@ -43,9 +43,11 @@ contest_helper.update_participant = async (id, no_participants) => {
     }
 };
 
+
+
+
 contest_helper.get_all_contest_and_participant = async (start, length, sort = {}) => {
     try {
-
         var contests = await Contest.find()
         var tot_cnt = contests.length;
 
@@ -58,8 +60,6 @@ contest_helper.get_all_contest_and_participant = async (start, length, sort = {}
             .limit(length)
 
         var sorting = _.each(participate, p => {
-            console.log('p', p);
-
         })
         var filter_cnt = participate.length;
         if (participate) {
@@ -73,12 +73,10 @@ contest_helper.get_all_contest_and_participant = async (start, length, sort = {}
 }
 
 
-contest_helper.get_all_contests = async () => {
+contest_helper.get_all_contests = async (music) => {
     try {
-
-        var participate = await Contest.find({})
+        var participate = await Contest.find({ "music_type": music })
             .populate('music_type')
-
         if (participate) {
             return { "status": 1, "message": "contest details found", "contest": participate };
         } else {

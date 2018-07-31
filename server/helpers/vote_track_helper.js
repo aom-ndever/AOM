@@ -33,6 +33,23 @@ vote_track_helper.get_all_voted_artist = async (user_id, track_id) => {
 };
 
 
+vote_track_helper.get_all_voted_artist_by_id = async (artist_id) => {
+    try {
+        var vote = await Vote
+            .find({ "artist_id": new ObjectId(artist_id) })
+            .populate({ path: 'artist_id', populate: { path: 'music_type' } })
+            .populate({ path: 'user_id', populate: { path: 'music_type' } })
+            .populate('track_id')
+        if (vote) {
+            return { "status": 1, "message": "vote details found", "vote": vote };
+        } else {
+            return { "status": 2, "message": "vote not found" };
+        }
+    } catch (err) {
+        return { "status": 0, "message": "Error occured while finding vote", "error": err }
+    }
+};
+
 
 vote_track_helper.get_artist_vote_by_day = async (artist_id, day) => {
     var to = moment().utcOffset(0);
@@ -167,7 +184,7 @@ vote_track_helper.get_artist_vote_by_gender = async (artist_id, day) => {
 };
 
 
-vote_track_helper.get_artist_by_location_vote = async (day) => {
+vote_track_helper.get_artist_by_location_vote = async (id, day) => {
 
     var to = moment();
     var from = moment(to).subtract(day, "days");
@@ -177,6 +194,35 @@ vote_track_helper.get_artist_by_location_vote = async (day) => {
             "$match":
             {
                 "created_at": { "$gt": new Date(from), "$lt": new Date(to) },
+            },
+        },
+
+    ];
+
+    let result = await Vote.aggregate(aggregate);
+
+    if (result) {
+        return { "status": 1, "message": "Track  found", "results": result }
+    }
+
+    else {
+        return { "status": 2, "message": "No  available Track" }
+    }
+};
+
+
+
+vote_track_helper.get_artist_by_location_votes = async (id, day) => {
+
+    var to = moment();
+    var from = moment(to).subtract(day, "days");
+
+    var aggregate = [
+        {
+            "$match":
+            {
+                "created_at": { "$gt": new Date(from), "$lt": new Date(to) },
+                "artist_id": new ObjectId(id)
             },
         },
         {
@@ -211,9 +257,13 @@ vote_track_helper.get_artist_by_location_vote = async (day) => {
                 value: { $sum: 1 },
             }
         },
+        {
+            $sort: { value: -1 }
+        }
     ];
 
     let result = await Vote.aggregate(aggregate);
+
     if (result) {
         return { "status": 1, "message": "Track  found", "results": result }
     }

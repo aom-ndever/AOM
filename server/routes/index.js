@@ -25,6 +25,7 @@ var comment_helper = require('../helpers/comment_helper');
 var state_helper = require('./../helpers/state_helper');
 var region_helper = require('./../helpers/region_helper');
 var global_helper = require('./../helpers/global_helper');
+var contest_helper = require('./../helpers/contest_helper');
 
 /**
  * @api {post} /artist_registration Artist Registration
@@ -96,7 +97,7 @@ router.post('/artist_registration', async (req, res) => {
       "state": req.body.state
     };
     if (req.body.share_url) {
-      reg_obj.social_media = req.body.share_url
+      obj.social_media = JSON.parse(req.body.share_url)
     }
     let artist = await artist_helper.get_artist_by_email(req.body.email)
     if (artist.status === 2) {
@@ -396,7 +397,7 @@ router.post('/user_registration', async (req, res) => {
       "phone_no": req.body.phone_no,
     };
     if (req.body.share_url) {
-      obj.social_media = req.body.share_url
+      obj.social_media = JSON.parse(req.body.share_url)
     }
     user = await user_helper.get_user_by_email(req.body.email)
     if (user.status === 2) {

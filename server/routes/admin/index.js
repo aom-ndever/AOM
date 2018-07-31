@@ -20,6 +20,7 @@ var participate_helper = require('../../helpers/participate_helper');
 var contest_request_helper = require('../../helpers/contest_request_helper');
 var vote_track_helper = require('../../helpers/vote_track_helper');
 var contest_helper = require('../../helpers/contest_helper');
+var comment_helper = require('../../helpers/comment_helper');
 
 var moment = require('moment');
 
@@ -215,8 +216,6 @@ router.post("/add_contest", async (req, res) => {
         round_name: contest_obj.name + " " + "round" + req.body.round
       };
 
-      console.log('round_obj => ', round_obj);
-
 
       var resp_data = await round_helper.insert_round(round_obj);
 
@@ -282,7 +281,6 @@ router.post("/add_existing_contest", async (req, res) => {
   var errors = req.validationErrors();
   contest_response = await contest_helper.get_contest_by_id(req.body.contest_id)
 
-
   if (!errors) {
     var round_obj = {
       contest_id: req.body.contest_id,
@@ -306,8 +304,6 @@ router.post("/add_existing_contest", async (req, res) => {
     logger.trace(" got successfully = ", resp_data);
     res.status(config.OK_STATUS).json(resp_data);
   }
-
-
   else {
     logger.error("Validation Error = ", errors);
     res.status(config.BAD_REQUEST).json({ message: errors });
@@ -359,6 +355,19 @@ router.get('/get_contest', async (req, res) => {
 
 });
 
+
+router.post('/get_winners_by_contest_id', async (req, res) => {
+  var participant = await participate_helper.get_all_participants(req.body.contest_id);
+
+  if (participant.status === 1) {
+    logger.trace("got details successfully");
+    res.status(config.OK_STATUS).json({ "status": 1, "participant": participant.participate });
+  } else {
+    res.status(config.INTERNAL_SERVER_ERROR).json(contest);
+  }
+});
+
+
 /**
  * @api {delete} /admin/track/:artist_id Delete Artist  
  * @apiName Delete Artist  
@@ -371,14 +380,12 @@ router.get('/get_contest', async (req, res) => {
  */
 router.delete('/admin/track/:track_id', async (req, res) => {
   track_id = req.params.track_id;
-  let track_resp = await track_helper.get_all_track_by_track_id(track_id);
 
+  let track_resp = await track_helper.get_all_track_by_track_id(track_id);
   type = await admin_helper.get_admin_by_id(req.userInfo.id)
 
   if (type.admin.account_type == "super_admin" || type.admin.account_type == "admin") {
-
     var del_resp = await track_helper.delete_track_by_admin(track_id);
-
     if (del_resp.status === 0) {
       res.status(config.INTERNAL_SERVER_ERROR).json({ "status": 0, "message": "Error occured while deleting track", "error": del_resp.error });
     } else if (del_resp.status === 2) {
@@ -671,7 +678,6 @@ router.post("/suspend/artist/:artist_id", async (req, res) => {
  * 
  * @apiParam {String} contest_id contest Id
  
- 
  * @apiSuccess (Success 200) {JSON} Contest details
  * @apiError (Error 4xx) {String} message Validation or error message.
  */
@@ -688,21 +694,26 @@ router.post("/accept/contest_request/:contest_id", async (req, res) => {
   }
   round_resp = await contest_request_helper.get_round_by_id(req.params.contest_id)
 
+
+
   var round_obj = {
     contest_id: contest_obj._id,
-    start_date: moment(req.body.start_date).utc(),
-    duration: req.body.duration,
-    end_date: moment(req.body.start_date).utc().add((req.body.duration * 7), 'days'),
-    music_type: req.body.music_type,
-    state: req.body.state,
-    region: req.body.region,
-    round: req.body.round,
+    start_date: contest_resp.contest.start_date,
+    duration: contest_resp.contest.duration,
+    end_date: contest_resp.contest.end_date,
+    state: contest_resp.contest.state,
+    region: contest_resp.contest.region,
+    round: contest_resp.contest.round,
+    round_name: contest_resp.contest.round_name,
+
   }
   contest_resp = await admin_helper.get_admin_by_id(admin_id)
   if (contest_resp.admin.account_type == 'super_admin') {
     var action = "accepted"
-    var resp_data = await contest_helper.insert_contest(contest_obj);
-    var resp_data = await round_helper.insert_round(round_obj);
+    var resp_data1 = await contest_helper.insert_contest(contest_obj);
+    var resp_data2 = await round_helper.insert_round(round_obj);
+
+
     var resp_data = await contest_request_helper.insert_action(req.params.contest_id, action);
     logger.trace("Contest Request Accepted");
     res.status(config.OK_STATUS).json({ "message": "Contest Request Accepted" });
@@ -734,9 +745,7 @@ router.post("/reject/contest_request/:contest_id", async (req, res) => {
   var action = "rejected"
   contest_resp = await admin_helper.get_admin_by_id(admin_id)
   if (contest_resp.admin.account_type == 'super_admin') {
-
     var resp_data = await contest_request_helper.insert_action(req.params.contest_id, action);
-
     logger.trace("Contest Request Rejected");
     res.status(config.OK_STATUS).json({ "message": "Contest Request Rejected" });
   }
@@ -911,6 +920,62 @@ router.post("/get_flag", async (req, res) => {
   }
 });
 
+router.post("/get_artist_votes", async (req, res) => {
+  artist_id = req.body.artist_id;
+  console.log('artist_id', artist_id);
+
+  var resp_data = await vote_track_helper.get_all_voted_artist_by_id(artist_id);
+  if (resp_data.status == 0) {
+    logger.error("Error occured while fetching artist = ", resp_data);
+    res.status(config.INTERNAL_SERVER_ERROR).json(resp_data);
+  } else {
+    logger.trace("artist got successfully = ", { "artist": resp_data });
+    res.status(config.OK_STATUS).json({ "artist": resp_data });
+  }
+});
+
+
+router.post("/get_artist_followers", async (req, res) => {
+  artist_id = req.body.artist_id;
+  var resp_data = await follower_helper.get_all_followers(artist_id);
+  if (resp_data.status == 0) {
+    logger.error("Error occured while fetching artist = ", resp_data);
+    res.status(config.INTERNAL_SERVER_ERROR).json(resp_data);
+  } else {
+    logger.trace("artist got successfully = ", { "artist": resp_data });
+    res.status(config.OK_STATUS).json({ "artist": resp_data });
+  }
+});
+
+
+
+router.post("/get_artist_comments", async (req, res) => {
+  artist_id = req.body.artist_id;
+  var resp_data = await comment_helper.get_all_comment_by_artist_id(artist_id);
+  if (resp_data.status == 0) {
+    logger.error("Error occured while fetching artist = ", resp_data);
+    res.status(config.INTERNAL_SERVER_ERROR).json(resp_data);
+  } else {
+    logger.trace("artist got successfully = ", { "artist": resp_data });
+    res.status(config.OK_STATUS).json({ "artist": resp_data });
+  }
+});
+
+
+
+router.post("/get_artist_tracks", async (req, res) => {
+  artist_id = req.body.artist_id;
+  var resp_data = await track_helper.get_track_by_artist_id(artist_id);
+  if (resp_data.status == 0) {
+    logger.error("Error occured while fetching artist = ", resp_data);
+    res.status(config.INTERNAL_SERVER_ERROR).json(resp_data);
+  } else {
+    logger.trace("artist got successfully = ", { "artist": resp_data });
+    res.status(config.OK_STATUS).json({ "artist": resp_data });
+  }
+});
+
+
 /**
  * @api {post} /admin/flag/artist/:artist_id  Flag Artist - post 
  * @apiName S Flag Artist - post
@@ -972,7 +1037,6 @@ router.post("/flag/artist/:artist_id", async (req, res) => {
 router.post('/user', async (req, res) => {
   user_id = req.body.user_id
   var user = await user_helper.get_user_by_id(user_id);
-
   if (user.status === 1) {
     logger.trace("got details successfully");
     res.status(config.OK_STATUS).json({ "status": 1, "user": user.user });
@@ -1007,6 +1071,7 @@ router.post('/user/artist_follow', async (req, res) => {
 });
 
 
+
 router.post('/user/get_artist_follow', async (req, res) => {
   user_id = req.userInfo.id
   var user = await follower_helper.get_all_followers_by_user_id(user_id);
@@ -1018,6 +1083,8 @@ router.post('/user/get_artist_follow', async (req, res) => {
     res.status(config.INTERNAL_SERVER_ERROR).json(user);
   }
 });
+
+
 
 /**
  * @api {post} /admin/get_participants_of_contest  Get participants as per conteset id - post 
@@ -1057,8 +1124,13 @@ router.post('/get_participants_of_contest', async (req, res) => {
  * @apiSuccess (Success 200) {JSON} artist featured details
  * @apiError (Error 4xx) {String} message Validation or error message.
  */
+
+
+
 router.put("/featured_artist", async (req, res) => {
   artist_id = req.body.artist_id
+  var featured_artist = await artist_helper.get_no_of_featured_artist();
+
   var resp = await artist_helper.get_artist_by_id(artist_id);
   if (resp.status == 0) {
     logger.error("Error occured while fetching artist = ", resp);
@@ -1066,9 +1138,15 @@ router.put("/featured_artist", async (req, res) => {
   } else {
     if (resp.artist.featured == false) {
       var feature = true
-      var artist_resp = await artist_helper.update_featured_artist(artist_id, feature);
-      logger.trace("Artist selected as featured artist = ");
-      res.status(config.OK_STATUS).json({ "message": "Artist selected as featured artist " });
+      if (featured_artist.artist.length <= 24) {
+
+        var artist_resp = await artist_helper.update_featured_artist(artist_id, feature);
+        logger.trace("Artist selected as featured artist = ");
+        res.status(config.OK_STATUS).json({ "message": "Artist selected as featured artist" });
+      }
+      else {
+        res.status(config.OK_STATUS).json({ "message": "Already 24 artist selected" });
+      }
     }
     else {
       var feature = false
@@ -1078,5 +1156,7 @@ router.put("/featured_artist", async (req, res) => {
     }
   }
 });
+
+
 
 module.exports = router;

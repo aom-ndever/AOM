@@ -38,8 +38,8 @@ router.put("/", async (req, res) => {
     user_id = req.userInfo.id;
     var obj = {
     };
-    if (req.body.share_url && req.body.share_url != null) {
-        obj.social_media = req.body.share_url;
+    if (req.body.share_url) {
+        obj.social_media = JSON.parse(req.body.share_url)
     }
     if (req.body.email && req.body.email != null) {
         obj.email = req.body.email;
@@ -62,6 +62,9 @@ router.put("/", async (req, res) => {
     }
     if (req.body.gender && req.body.gender != null) {
         obj.gender = req.body.gender;
+    }
+    if (req.body.phone_no) {
+        obj.phone_no = req.body.phone_no
     }
     var resp_data = await user_helper.update_user_by_id(user_id, obj);
     if (resp_data.status == 0) {

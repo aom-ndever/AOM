@@ -1,6 +1,7 @@
 var Participate = require("./../models/participate");
 var participate_helper = {};
 var mongoose = require('mongoose');
+var underscore = require('underscore')
 var _ = require('underscore');
 
 var ObjectId = mongoose.Types.ObjectId;
@@ -17,7 +18,6 @@ participate_helper.insert_participant = async (object) => {
 };
 
 
-
 participate_helper.get_participant = async (id, ids, trackid) => {
     try {
         var participate = await Participate
@@ -31,6 +31,29 @@ participate_helper.get_participant = async (id, ids, trackid) => {
         return { "status": 0, "message": "Error occured while finding artist", "error": err }
     }
 };
+
+participate_helper.get_all_participants = async (ids) => {
+
+    try {
+        var participate = await Participate
+            .find({ "contest_id": new ObjectId(ids) })
+            .populate('track_id')
+
+        var sorting = _.sortBy(participate, function (o) {
+            return o.track_id.no_of_votes
+        })
+        participate.reverse();
+        participate.splice(3)
+        if (participate) {
+            return { "status": 1, "message": "participants details found", "participate": participate };
+        } else {
+            return { "status": 2, "message": "participants not found" };
+        }
+    } catch (err) {
+        return { "status": 0, "message": "Error occured while finding participants", "error": err }
+    }
+};
+
 
 participate_helper.get_participated_artist = async (ids) => {
     try {
