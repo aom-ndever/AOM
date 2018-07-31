@@ -357,7 +357,6 @@ router.get('/get_contest', async (req, res) => {
 
 
 router.post('/get_winners_by_contest_id', async (req, res) => {
-
   var participant = await participate_helper.get_all_participants(req.body.contest_id);
 
   if (participant.status === 1) {
@@ -381,14 +380,12 @@ router.post('/get_winners_by_contest_id', async (req, res) => {
  */
 router.delete('/admin/track/:track_id', async (req, res) => {
   track_id = req.params.track_id;
-  let track_resp = await track_helper.get_all_track_by_track_id(track_id);
 
+  let track_resp = await track_helper.get_all_track_by_track_id(track_id);
   type = await admin_helper.get_admin_by_id(req.userInfo.id)
 
   if (type.admin.account_type == "super_admin" || type.admin.account_type == "admin") {
-
     var del_resp = await track_helper.delete_track_by_admin(track_id);
-
     if (del_resp.status === 0) {
       res.status(config.INTERNAL_SERVER_ERROR).json({ "status": 0, "message": "Error occured while deleting track", "error": del_resp.error });
     } else if (del_resp.status === 2) {
@@ -940,7 +937,6 @@ router.post("/get_artist_votes", async (req, res) => {
 
 router.post("/get_artist_followers", async (req, res) => {
   artist_id = req.body.artist_id;
-
   var resp_data = await follower_helper.get_all_followers(artist_id);
   if (resp_data.status == 0) {
     logger.error("Error occured while fetching artist = ", resp_data);
@@ -952,9 +948,9 @@ router.post("/get_artist_followers", async (req, res) => {
 });
 
 
+
 router.post("/get_artist_comments", async (req, res) => {
   artist_id = req.body.artist_id;
-
   var resp_data = await comment_helper.get_all_comment_by_artist_id(artist_id);
   if (resp_data.status == 0) {
     logger.error("Error occured while fetching artist = ", resp_data);
@@ -965,9 +961,10 @@ router.post("/get_artist_comments", async (req, res) => {
   }
 });
 
+
+
 router.post("/get_artist_tracks", async (req, res) => {
   artist_id = req.body.artist_id;
-
   var resp_data = await track_helper.get_track_by_artist_id(artist_id);
   if (resp_data.status == 0) {
     logger.error("Error occured while fetching artist = ", resp_data);
@@ -977,6 +974,7 @@ router.post("/get_artist_tracks", async (req, res) => {
     res.status(config.OK_STATUS).json({ "artist": resp_data });
   }
 });
+
 
 /**
  * @api {post} /admin/flag/artist/:artist_id  Flag Artist - post 
@@ -1039,7 +1037,6 @@ router.post("/flag/artist/:artist_id", async (req, res) => {
 router.post('/user', async (req, res) => {
   user_id = req.body.user_id
   var user = await user_helper.get_user_by_id(user_id);
-
   if (user.status === 1) {
     logger.trace("got details successfully");
     res.status(config.OK_STATUS).json({ "status": 1, "user": user.user });
@@ -1074,6 +1071,7 @@ router.post('/user/artist_follow', async (req, res) => {
 });
 
 
+
 router.post('/user/get_artist_follow', async (req, res) => {
   user_id = req.userInfo.id
   var user = await follower_helper.get_all_followers_by_user_id(user_id);
@@ -1085,6 +1083,8 @@ router.post('/user/get_artist_follow', async (req, res) => {
     res.status(config.INTERNAL_SERVER_ERROR).json(user);
   }
 });
+
+
 
 /**
  * @api {post} /admin/get_participants_of_contest  Get participants as per conteset id - post 

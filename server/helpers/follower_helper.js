@@ -200,7 +200,7 @@ follower_helper.get_all_followers = async (id) => {
     try {
         var artist = await Followers
             .find({ "artist_id": id })
-            .populate({ path: 'artist_id', populate: { path: 'music_type' } })
+            .populate({ path: 'user_id', populate: { path: 'music_type' } })
             .populate({ path: ' artist_id', populate: { path: 'music_type' } })
 
         if (artist) {
