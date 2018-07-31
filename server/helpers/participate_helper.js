@@ -37,16 +37,13 @@ participate_helper.get_all_participants = async (ids) => {
     try {
         var participate = await Participate
             .find({ "contest_id": new ObjectId(ids) })
-            // .populate({ path: 'artist_id', populate: { path: 'music_type' } })
             .populate('track_id')
 
         var sorting = _.sortBy(participate, function (o) {
             return o.track_id.no_of_votes
-
         })
-
         participate.reverse();
-        // var limit = _.first(1, 1)
+        participate.splice(3)
         if (participate) {
             return { "status": 1, "message": "participants details found", "participate": participate };
         } else {

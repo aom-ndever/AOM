@@ -280,7 +280,6 @@ router.post("/add_existing_contest", async (req, res) => {
   var errors = req.validationErrors();
   contest_response = await contest_helper.get_contest_by_id(req.body.contest_id)
 
-
   if (!errors) {
     var round_obj = {
       contest_id: req.body.contest_id,
@@ -304,8 +303,6 @@ router.post("/add_existing_contest", async (req, res) => {
     logger.trace(" got successfully = ", resp_data);
     res.status(config.OK_STATUS).json(resp_data);
   }
-
-
   else {
     logger.error("Validation Error = ", errors);
     res.status(config.BAD_REQUEST).json({ message: errors });
@@ -359,10 +356,8 @@ router.get('/get_contest', async (req, res) => {
 
 
 router.post('/get_winners_by_contest_id', async (req, res) => {
-  // var track = await track_helper.get_all_track();
-  var participant = await participate_helper.get_all_participants(req.body.contest_id);
-  //console.log('participant', participant.participate[0].track_id.no_of_votes);
 
+  var participant = await participate_helper.get_all_participants(req.body.contest_id);
 
   if (participant.status === 1) {
     logger.trace("got details successfully");
@@ -370,7 +365,6 @@ router.post('/get_winners_by_contest_id', async (req, res) => {
   } else {
     res.status(config.INTERNAL_SERVER_ERROR).json(contest);
   }
-
 });
 
 
@@ -1077,8 +1071,13 @@ router.post('/get_participants_of_contest', async (req, res) => {
  * @apiSuccess (Success 200) {JSON} artist featured details
  * @apiError (Error 4xx) {String} message Validation or error message.
  */
+
+
+
 router.put("/featured_artist", async (req, res) => {
   artist_id = req.body.artist_id
+  var featured_artist = await artist_helper.get_no_of_featured_artist();
+
   var resp = await artist_helper.get_artist_by_id(artist_id);
   if (resp.status == 0) {
     logger.error("Error occured while fetching artist = ", resp);
@@ -1086,9 +1085,16 @@ router.put("/featured_artist", async (req, res) => {
   } else {
     if (resp.artist.featured == false) {
       var feature = true
-      var artist_resp = await artist_helper.update_featured_artist(artist_id, feature);
-      logger.trace("Artist selected as featured artist = ");
-      res.status(config.OK_STATUS).json({ "message": "Artist selected as featured artist " });
+      if (featured_artist.artist.length <= 24) {
+
+        var artist_resp = await artist_helper.update_featured_artist(artist_id, feature);
+        logger.trace("Artist selected as featured artist = ");
+        res.status(config.OK_STATUS).json({ "message": "Artist selected as featured artist " });
+      }
+
+      else {
+        res.status(config.OK_STATUS).json({ "message": "Already 24 artist selected" });
+      }
     }
     else {
       var feature = false
@@ -1097,6 +1103,9 @@ router.put("/featured_artist", async (req, res) => {
       res.status(config.OK_STATUS).json({ "message": "Artist removed from featured artist" });
     }
   }
+
 });
+
+
 
 module.exports = router;

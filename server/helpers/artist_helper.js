@@ -85,6 +85,20 @@ artist_helper.get_artist_by_id = async (artist_id) => {
 };
 
 
+
+artist_helper.get_no_of_featured_artist = async () => {
+    try {
+        var artist = await Artist.find({ "featured": true });
+        if (artist) {
+            return { "status": 1, "message": "Artist details found", "artist": artist };
+        } else {
+            return { "status": 2, "message": "Artist not found" };
+        }
+    } catch (err) {
+        return { "status": 0, "message": "Error occured while finding artist", "error": err }
+    }
+};
+
 /*
  * get_artist_by_music_id is used to fetch artist details by music id
  * 

@@ -262,7 +262,6 @@ router.put('/update_image', function (req, res) {
                             callback({ "status": config.MEDIA_ERROR_STATUS, "resp": { "status": 0, "message": "There was an issue in uploading avatar image" } });
                         } else {
                             logger.trace("Avatar image has uploaded for artist");
-
                             callback(null, filename);
                         }
                     });
@@ -317,7 +316,6 @@ router.put('/update_cover_image', function (req, res) {
                             callback({ "status": config.MEDIA_ERROR_STATUS, "resp": { "status": 0, "message": "There was an issue in uploading avatar image" } });
                         } else {
                             logger.trace("Avatar image has uploaded for artist");
-
                             callback(null, filename);
                         }
                     });
@@ -440,6 +438,9 @@ router.get('/track_likes', async (req, res) => {
         res.status(config.INTERNAL_SERVER_ERROR).json(track);
     }
 });
+
+
+
 
 /**
  * @api {put} /settings/email Update artist email
@@ -574,6 +575,7 @@ router.post("/participate", async (req, res) => {
             contest_id: req.body.contest_id,
             track_id: req.body.track_id
         };
+
         var contest_data = await contest_helper.get_contest_by_id(obj.contest_id);
         contest_music = contest_data.contest.music_type;
 
