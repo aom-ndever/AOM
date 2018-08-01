@@ -8,8 +8,9 @@ import { ToastrModule } from 'ngx-toastr';
 import { LightboxModule } from 'angular2-lightbox';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ChartModule, HIGHCHARTS_MODULES } from 'angular-highcharts';
-import * as more from 'highcharts/highcharts-more.src';
-import * as exporting from 'highcharts/modules/exporting.src';
+import * as highmaps from 'highcharts/modules/map.src';
+// import more from 'highcharts/highcharts-more.src';
+import { AmChartsModule } from "@amcharts/amcharts3-angular";
 import { BsDropdownModule, ModalModule  } from 'ngx-bootstrap';
 import { DataTablesModule } from 'angular-datatables';
 import { AuthService } from '../shared/auth.service';
@@ -41,6 +42,7 @@ import { RolesService } from './roles/roles.service';
     ModalModule.forRoot(),
     LightboxModule,
     ChartModule,
+    AmChartsModule,
     DataTablesModule,
     RouterModule.forChild([
       {
@@ -72,7 +74,7 @@ import { RolesService } from './roles/roles.service';
      UsersService,
      ContestService,
      RolesService,
-     { provide: HIGHCHARTS_MODULES, useFactory: () => [ more, exporting ] }
+     { provide: HIGHCHARTS_MODULES, useFactory: () => [ highmaps ] }
     ]
 })
 export class AdminLayoutModule { }

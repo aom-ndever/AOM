@@ -380,6 +380,9 @@ export class MyMusicComponent implements OnInit, OnDestroy {
       this.MyMusicService.addTrackToContest(data).subscribe(response => {
         this.contest_id = '';
         this.modal_ref.close();
+        this.datatableElement.dtInstance.then((dtInstance: DataTables.Api) => {
+          dtInstance.draw();
+        });
         this.toastr.success(response['message'], 'Success!');
       }, error => {
         this.toastr.error(error['error'].message, 'Error!');

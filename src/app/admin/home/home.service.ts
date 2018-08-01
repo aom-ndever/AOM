@@ -31,5 +31,20 @@ export class HomeService {
     this.headers = new HttpHeaders({ 'x-access-token' : this.user.token });  
     return this.http.post(`${this.api_host}/admin/home_comment`, data, {headers : this.headers});
   }
-  
+  // Get artist track by id
+  getArtistTrackById(data : any) {
+    return this.http.post(`${this.api_host}/admin/get_artist_tracks`, data, {headers : this.headers});
+  }
+  // Get artist follower by id
+  getArtistFollowerById(data : any) {
+    return this.http.post(`${this.api_host}/admin/get_artist_followers`, data, {headers : this.headers});
+  }
+  // Get artist vote by id
+  getArtistVoteById(data : any) {
+    return this.http.post(`${this.api_host}/admin/get_artist_votes`, data, {headers : this.headers});
+  }
+  // Get artist Comment by id
+  getArtistCommentById(data : any) {
+    return this.http.post(`${this.api_host}/admin/get_artist_comments`, data, {headers : this.headers});
+  }
 }

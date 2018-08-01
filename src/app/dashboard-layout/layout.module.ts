@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { ChartModule } from 'angular-highcharts';
+import { AmChartsModule } from "@amcharts/amcharts3-angular";
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { DataTablesModule } from 'angular-datatables';
@@ -58,6 +59,7 @@ import { AuthService } from '../shared/auth.service';
     BrowserAnimationsModule,
     ToastrModule.forRoot(),
     ChartModule,
+    AmChartsModule,
     LightboxModule,
     DataTablesModule,
     RouterModule.forChild([
