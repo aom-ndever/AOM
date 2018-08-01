@@ -175,6 +175,18 @@ artist_helper.get_all_artist = async () => {
         var artist = await Artist.aggregate([
             {
                 $lookup: {
+                    from: "state",
+                    localField: "state",
+                    foreignField: "_id",
+                    as: "state"
+                }
+            },
+            {
+                $unwind: "$state"
+            },
+
+            {
+                $lookup: {
                     from: "music_type",
                     localField: "music_type",
                     foreignField: "_id",
@@ -214,12 +226,14 @@ artist_helper.get_all_artist = async () => {
 
 artist_helper.get_artist_by_filter = async (filter, start, length) => {
     try {
+
         var artist = await Artist
             .find(filter)
+            .populate('music_type')
+            .populate('state')
             .skip(start)
             .limit(length)
-            .populate('music_type')
-            .lean();
+
 
         if (artist) {
             return { "status": 1, "message": "artist details found", "artist": artist };
@@ -487,6 +501,8 @@ artist_helper.get_new_uploads = async (filter = {}) => {
         var artist = await Artist
             .find(filter)
             .populate('music_type')
+            .populate('state')
+            .populate('region')
             .sort({ "no_of_likes": - 1 })
             .limit(24)
         if (artist) {

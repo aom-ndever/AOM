@@ -27,7 +27,6 @@ var ArtistModelSchema = new Schema({
     image: String,
     phone_no: Number,
     cover_image: String,
-    state: String,
     region: String,
     notification_settings: { type: NotificationSettings, default: true },
     flag: { type: Boolean, default: false },
