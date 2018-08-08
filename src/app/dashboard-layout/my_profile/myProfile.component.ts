@@ -220,8 +220,9 @@ export class MyProfileComponent implements OnInit, OnDestroy {
   // Update user profile
   update() {
     if(this.userdata.type == 'artist') {
+      this.show_spinner = true;
       this.userdata['dob'] = new Date(this.userdata['year'], this.userdata['month'] ,this.userdata['day']);
-      this.userdata['share_url'] = this.userdata['social_media'];
+      this.userdata['share_url'] = JSON.stringify(this.userdata['social_media']);
       this.MyProfileService.updateArtistProfile(this.userdata).subscribe(response => {
         console.log(response);
         this.toastr.success(response['message'], 'Success!');

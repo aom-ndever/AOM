@@ -40,10 +40,8 @@
               </div>
               <div class="music_icons">
                   <a href="javascript:;" *ngIf="user && audio_list[song_cnt] && audio_list[song_cnt]['is_downloadable']" (click)="downloadTrack()"><img src="img/download.png"/></a>
-                  <img src="img/share.png"/>
+                  <a href="javascript:;" (click)="openShareTrackModel(shareTrack)"><img src="img/share.png"/></a>
               </div>
-
-
           </div>
         <div class="aom_audio_player">
         </div>
@@ -51,3 +49,71 @@
     </div>
   </div>
 </section>
+<ng-template #shareTrack let-c="close" let-d="dismiss" >
+    <div class="modal_login_wrapper">
+        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <div class="shared_popup">
+            <div class="col-12 text-center shared_popup_header">
+                <h4>Share This Track</h4>
+                <span>You are Sharing the "{{audio_list && audio_list[this.song_cnt] ? audio_list[this.song_cnt]['name'] : '' }}" Track</span>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="col-12">
+                        <button class="btn btn-primary social_button fb_btn" (click)="shareOnFacebook()">
+                            <i class="fa fa-facebook"></i> Facebook
+                        </button>
+                    </div>
+                    <div class="col-12">
+                        <button class="btn btn-success social_button comment_btn">
+                            <i class="fa fa-comment "></i> SMS
+                        </button>
+                    </div>
+                    <div class="col-12">
+                        <button class="btn btn-primary social_button link_btn">
+                            <i class="fa fa-link"></i> Copy Link
+                        </button>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="col-12">
+                        <button class="btn btn-info social_button twitter_btn" (click)="shareOnTwitter()">
+                            <i class="fa fa-twitter"></i> Twitter
+                        </button>
+                    </div>
+                    <div class="col-12">
+                        <button class="btn btn-danger social_button email_btn" (click)="openEmailShareTrackModel(email)">
+                            <i class="fa fa-envelope"></i> Email
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #email let-c="close" let-d="dismiss">
+    <div class="modal-body">
+      <div class="forget_password_modal">
+        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <form [formGroup]="forget_form">
+            <h3 class="forget_password_header">Share through email</h3>
+            <div class="col-sm-12">
+                <div class="form-group">
+                    <label class="control-label custom_form_label">Email Id</label>
+                    <input class="form-control custom_form" name="email"  placeholder="Enter Email"/>
+                </div>
+                <div class="form-group text-right">
+                    <button class="btn forget_btn" >Submit <i *ngIf="show_spinner" class="fa fa-spinner fa-spin"></i></button>
+                </div>
+            </div>
+        </form>
+     </div>
+    </div>
+</ng-template>

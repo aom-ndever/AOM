@@ -60,7 +60,7 @@
                             <td>{{artist.first_name + ' '+ artist.last_name}}</td>
                             <td>New York</td>
                             <td>{{artist.gender | titlecase}}</td>
-                            <td>{{artist['music_type']['name']}}</td>
+                            <td>{{artist['music_type'] ? artist['music_type']['name'] : ''}}</td>
                             <td>{{artist.no_of_tracks}}</td>
                             <td class="td_img"><img src="img/vote.png"/>{{artist.no_of_votes}}</td>
                             <td class="td_img"><img src="img/likes.png"/>{{artist.no_of_likes}}</td>
@@ -164,6 +164,11 @@
                                 <td>{{t.no_of_votes}}</td>
                                 <td>{{t.no_of_downloads}}</td>
                             </tr>
+                            <tr *ngIf="artist_info.length <= 0">
+                                <td colspan="8" >
+                                    No data available.
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
@@ -179,32 +184,29 @@
         <div class="custom_modal">
             <div class="row">
                 <div class="col-sm-12">
-                    <b class="template_modal_name">Tracks</b>
+                    <b class="template_modal_name">Followers</b>
                 </div>
                 <div class="artists_table copyright_table table-responsive col-sm-12">
                     <table class="table">
                         <thead>
                             <tr>
-                                <td>N<sup>o</sup></td>
+                                <th>N<sup>o</sup></th>
                                 <th>Name</th>
-                                <th>Description</th>
-                                <th>Price</th>
-                                <th>Comments</th>
-                                <th>Likes</th>
-                                <th>Votes</th>
-                                <th>Downloads</th>
+                                <th>Gender</th>
+                                <th>Phone Number</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr *ngFor="let t of artist_info;let i = index;">
+                            <tr *ngFor="let f of artist_info;let i = index;">
                                 <td>{{i+1}}</td>
-                                <td>{{t.name}}</td>
-                                <td>{{t.description}}</td>
-                                <td>{{t.price}}</td>
-                                <td>{{t.no_of_comments}}</td>
-                                <td>{{t.no_of_likes}}</td>
-                                <td>{{t.no_of_votes}}</td>
-                                <td>{{t.no_of_downloads}}</td>
+                                <td>{{f.user_id ? f.user_id.first_name+' '+f.user_id.last_name : ''}}</td>
+                                <td>{{f.user_id ? f.user_id.gender : '' | titlecase}}</td>
+                                <td>{{f.user_id ? f.user_id.phone_no : ''}}</td>
+                            </tr>
+                            <tr *ngIf="artist_info.length <= 0">
+                                <td colspan="4" >
+                                    No data available.
+                                </td>
                             </tr>
                         </tbody>
                     </table>
@@ -227,7 +229,7 @@
                     <table class="table">
                         <thead>
                             <tr>
-                                <td>N<sup>o</sup></td>
+                                <th>N<sup>o</sup></th>
                                 <th>Name</th>
                                 <th>Description</th>
                                 <th>Votes</th>
@@ -236,9 +238,14 @@
                         <tbody>
                             <tr *ngFor="let t of artist_info;let i = index;">
                                 <td>{{i+1}}</td>
-                                <td>{{t.track_id.name ? t.track_id.name : '' }}</td>
-                                <td>{{t.track_id.description}}</td>
-                                <td>{{t.track_id.no_of_votes}}</td>
+                                <td>{{t.track_id ? t.track_id.name : '' }}</td>
+                                <td>{{t.track_id ? t.track_id.description : ''}}</td>
+                                <td>{{t.track_id ? t.track_id.no_of_votes : ''}}</td>
+                            </tr>
+                            <tr *ngIf="artist_info.length <= 0">
+                                <td colspan="4" >
+                                    No data available.
+                                </td>
                             </tr>
                         </tbody>
                     </table>
@@ -252,6 +259,39 @@
         <span aria-hidden="true">&times;</span>
     </button>
     <div class="modal-body">
-        <h3>Comments</h3>
+        <div class="custom_modal">
+            <div class="row">
+                <div class="col-sm-12">
+                    <b class="template_modal_name">Comments</b>
+                </div>
+                <div class="artists_table copyright_table table-responsive col-sm-12">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>N<sup>o</sup></th>
+                                <th>Track Name</th>
+                                <th>Description</th>
+                                <th>Listener</th>
+                                <th>Listener email</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let t of artist_info;let i = index;">
+                                <td>{{i+1}}</td>
+                                <td>{{t.track_id ? t.track_id.name : '' }}</td>
+                                <td>{{t.comment ? t.comment : ''}}</td>
+                                <td>{{t.user_id ? t.user_id.first_name+' '+t.user_id.last_name : ''}}</td>
+                                <td>{{t.user_id ? t.user_id.email : ''}}</td>
+                            </tr>
+                            <tr *ngIf="artist_info.length <= 0">
+                                <td colspan="5" >
+                                    No data available.
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
     </div>
 </ng-template>

@@ -6,7 +6,7 @@
   "apps": [
     {
       "root": "src",
-      "outDir": "dist",
+      "outDir": "dist/browser",
       "assets": [
         "assets",
         "favicon.ico",
@@ -22,11 +22,11 @@
       "styles": [
         "styles.css",
         "../node_modules/bootstrap/dist/css/bootstrap.min.css",
-        "../src/assets/css/font-awesome.min.css",
-        "../src/assets/css/jquery.fancybox.min.css",
-        "../src/assets/css/style.css",
-        "../src/assets/css/Dashboard.css",
-        "../src/assets/css/font.googleapi.css",
+        "assets/css/font-awesome.min.css",
+        "assets/css/jquery.fancybox.min.css",
+        "assets/css/style.css",
+        "assets/css/Dashboard.css",
+        "assets/css/font.googleapi.css",
         "../node_modules/ngx-toastr/toastr.css",
         "../node_modules/angular2-lightbox/lightbox.css",
         "../node_modules/datatables.net-dt/css/jquery.dataTables.css"
@@ -36,6 +36,24 @@
         "../node_modules/jquery/dist/jquery.js",
         "../node_modules/datatables.net/js/jquery.dataTables.js"
       ],
+      "environmentSource": "environments/environment.ts",
+      "environments": {
+        "dev": "environments/environment.ts",
+        "prod": "environments/environment.prod.ts"
+      }
+    },
+    {
+      "platform": "server",
+      "root": "src",
+      "outDir": "dist/server",
+      "assets": [],
+      "index": "index.html",
+      "main": "main.server.ts",
+      "test": "test.ts",
+      "tsconfig": "tsconfig.server.json",
+      "testTsconfig": "tsconfig.spec.json",
+      "prefix": "app",
+      "scripts": [],
       "environmentSource": "environments/environment.ts",
       "environments": {
         "dev": "environments/environment.ts",

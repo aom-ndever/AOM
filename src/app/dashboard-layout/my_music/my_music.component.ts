@@ -67,7 +67,7 @@ export class MyMusicComponent implements OnInit, OnDestroy {
     const that = this;
     this.dtOptions = {
         pagingType: 'full_numbers',
-        pageLength: 5,
+        pageLength: 10,
         serverSide: true,
         processing: true,
         searching: false,

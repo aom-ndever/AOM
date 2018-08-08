@@ -7,6 +7,9 @@ import { Subscription } from 'rxjs/Subscription';
 import { HeaderService } from './header.service'; 
 import { environment } from '../../../environments/environment';
 import { MessageService } from '../../shared/message.service';
+import { AuthService,FacebookLoginProvider } from 'angular5-social-login';
+declare var FB : any;
+declare const gapi: any;
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
@@ -20,6 +23,7 @@ export class HeaderComponent implements OnInit, OnDestroy  {
   login_validation : boolean = false;
   userdata : any = {};
   forget_pwd_data : any = {};
+  auth2: any;
   subscription: Subscription;
   toggleMenu : boolean = false;
   private modalRef: NgbModalRef;
@@ -29,7 +33,8 @@ export class HeaderComponent implements OnInit, OnDestroy  {
      private HeaderService : HeaderService, 
      private toastr: ToastrService,
      private router: Router,
-     private MessageService : MessageService
+     private MessageService : MessageService,
+     private socialAuthService: AuthService 
     ) {
     this.user = JSON.parse(localStorage.getItem('user'));
     if(this.user && this.user.artist) {
@@ -60,7 +65,36 @@ export class HeaderComponent implements OnInit, OnDestroy  {
     });
    }
 
+   // Code for initialize google login button
+  public googleInit() {
+    gapi.load('auth2', () => {
+      this.auth2 = gapi.auth2.init({
+        client_id: environment.GOOGLE_CLIENT_ID,
+        cookiepolicy: 'single_host_origin',
+        scope: 'profile email'
+      });
+      this.attachSignin(document.getElementById('googleBtn'));
+    });
+  }
+  // Code for open google signin popup and do login
+  public attachSignin(element) {
+    this.auth2.attachClickHandler(element, {},
+      (googleUser) => {
+
+        let profile = googleUser.getBasicProfile();
+        console.log('Token || ' + googleUser.getAuthResponse().id_token);
+        console.log('ID: ' + profile.getId());
+        console.log('Name: ' + profile.getName());
+        console.log('Image URL: ' + profile.getImageUrl());
+        console.log('Email: ' + profile.getEmail());
+        //YOUR CODE HERE
+
+      }, (error) => {
+        console.log(JSON.stringify(error, undefined, 2));
+      });
+  }
   ngOnInit() {
+    
   }
 
   ngOnDestroy() { 
@@ -77,7 +111,8 @@ export class HeaderComponent implements OnInit, OnDestroy  {
     this.show_spinner = false;
     this.userdata = {};
     this.login_validation = false;
-    this.modalRef = this.modalService.open(content, { centered: true, windowClass : 'modal-wrapper' });
+    this.modalRef = this.modalService.open(content, { centered: true, windowClass : 'modal-wrapper', backdrop : true });
+    this.googleInit();
   }
 
   openForgetPasswordModal(content) {
@@ -184,4 +219,41 @@ export class HeaderComponent implements OnInit, OnDestroy  {
   toggleMainMenu() {
     this.toggleMenu = !this.toggleMenu;
   }
+
+  fbLogin() {
+   let socialPlatformProvider = FacebookLoginProvider.PROVIDER_ID;
+   this.socialAuthService.signIn(socialPlatformProvider).then(
+      (userData) => {
+        console.log(" sign in data : " , userData);
+      }
+    );
+  }
+
+  // statusChangeCallback(response) {
+  //   console.log('statusChangeCallback');
+  //   console.log(response);
+  //   // The response object is returned with a status field that lets the
+  //   // app know the current login status of the person.
+  //   // Full docs on the response object can be found in the documentation
+  //   // for FB.getLoginStatus().
+  //   if (response.status === 'connected') {
+  //     // Logged into your app and Facebook.
+  //     this.testAPI();
+  //   } else {
+  //     // The person is not logged into your app or we are unable to tell.
+  //   }
+  // }
+
+  // checkLoginState() {
+  //   FB.getLoginStatus((response) => {
+  //     this.statusChangeCallback(response);
+  //   });
+  // }
+
+  // testAPI() {
+  //   console.log('Welcome!  Fetching your information.... ');
+  //   FB.api('/me', (response) => {
+  //     console.log('Successful login for: ' + response.name);
+  //   });
+  // }
 }

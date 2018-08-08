@@ -4,6 +4,8 @@ import { Subscription } from 'rxjs/Subscription';
 import { MessageService } from '../../shared/message.service';
 import { DashboardLayoutService } from './dashboard-layout.service';
 import { ToastrService } from 'ngx-toastr';
+import {NgbModal, ModalDismissReasons, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
+declare var FB : any;
 @Component({
   selector: 'app-dashboard-layout',
   templateUrl: './dashboard-layout.component.html',
@@ -30,10 +32,13 @@ export class DashboardLayoutComponent implements OnInit, AfterViewInit, AfterVie
   list_no : any = '';
   subscription: Subscription;
   user_img_url : any = environment.API_URL+environment.USER_IMG;
+  private modalRef: NgbModalRef;
+  private emailmodalRef: NgbModalRef;
   constructor(
     private MessageService : MessageService,
     private DashboardLayoutService : DashboardLayoutService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private modalService: NgbModal
   ) {
     console.log("dashboard component");
     this.audio_instance_list = [];
@@ -91,6 +96,19 @@ export class DashboardLayoutComponent implements OnInit, AfterViewInit, AfterVie
   ngOnDestroy() {
     // unsubscribe to ensure no memory leaks
       this.subscription.unsubscribe();
+      if(this.modalRef) {
+        this.modalRef.close();
+      } 
+      if(this.emailmodalRef) {
+        this.emailmodalRef.close();
+      } 
+  }
+
+  openShareTrackModel(content) {
+    this.modalRef = this.modalService.open(content, { centered: true, windowClass : 'modal-wrapper', backdrop : true });
+  }
+  openEmailShareTrackModel(content) {
+    this.emailmodalRef = this.modalService.open(content, { centered: true, backdrop : true });
   }
 
   play(){
@@ -182,6 +200,7 @@ export class DashboardLayoutComponent implements OnInit, AfterViewInit, AfterVie
     var minutes = Math.floor(e.target.value / 60);
     var seconds = e.target.value - minutes * 60;
     var running_time = document.getElementById('running_time');
+    this.audio_ins['currentTime'] = 0;
     setTimeout(() => {
       nprogres['value'] = e.target.value;
       this.audio_ins['currentTime'] = e.target.value;
@@ -199,5 +218,29 @@ export class DashboardLayoutComponent implements OnInit, AfterViewInit, AfterVie
         window.location.href = this.user_img_url+response['filename'];
       }
     });
+  }
+
+  // share on facebook
+  shareOnFacebook() {
+    let track = this.audio_list[this.song_cnt];
+    console.log(track);
+    let url = 'http://'+window.location.host+'/artist_profile/'+track['artist_id']['_id']+'/track/'+track['_id']+'/comments';
+    let str = "Track Name: "+track.name+"\nArtist: "+track['artist_id']['first_name']+' '+track['artist_id']['last_name']+'\nDescription: '+track.description;
+    // var facebookWindow = window.open('https://www.facebook.com/sharer.php?s=100&p[summary]='+encodeURIComponent(str)+"&p[url]="+encodeURIComponent(url), 'facebook-popup', 'height=350,width=600');
+    // if(facebookWindow.focus) { facebookWindow.focus(); }
+    FB.ui({
+      method: 'feed',
+      link: 'http://clientapp.narola.online/HD/waleed/dist/',
+      caption: str
+    }, function(response){});
+  }
+  // share on twitter
+  shareOnTwitter() {
+    let track = this.audio_list[this.song_cnt];
+    console.log(track);
+    let url = 'http://'+window.location.host+'/artist_profile/'+track['artist_id']['_id']+'/track/'+track['_id']+'/comments';
+    let str = "Track Name: "+track.name+"\nArtist: "+track['artist_id']['first_name']+' '+track['artist_id']['last_name']+'\nDescription: '+track.description;
+    var twitterWindow = window.open('https://twitter.com/share?url=' +encodeURIComponent(url)+'&text='+encodeURIComponent(str), 'twitter-popup', 'height=350,width=600');
+    if(twitterWindow.focus) { twitterWindow.focus(); }
   }
 }

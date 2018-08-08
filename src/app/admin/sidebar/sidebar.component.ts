@@ -8,8 +8,10 @@ import { Router } from '@angular/router';
 })
 export class SidebarComponent implements OnInit {
 
+  user : any = {};
   constructor(private router: Router) {
     console.log("Admin dashboard component");
+    this.user = JSON.parse(localStorage.getItem('user'));
   }
 
   ngOnInit() {
