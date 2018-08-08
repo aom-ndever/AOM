@@ -278,6 +278,8 @@ router.post('/share_track_by_mail', async (req, res) => {
       "track": track_name,
       "url": obj.url
     });
+  console.log('mail_resp', mail_resp);
+
   if (mail_resp.status == 1) {
     res.status(config.OK_STATUS).json({ message: "Track shared successfully" });
   }
