@@ -97,7 +97,7 @@ router.post('/artist_registration', async (req, res) => {
       "state": req.body.state
     };
     if (req.body.share_url) {
-      obj.social_media = JSON.parse(req.body.share_url)
+      reg_obj.social_media = JSON.parse(req.body.share_url)
     }
     let artist = await artist_helper.get_artist_by_email(req.body.email)
     if (artist.status === 2) {
@@ -276,7 +276,6 @@ router.post('/artist_login', async (req, res) => {
         if (bcrypt.compareSync(req.body.password, login_resp.artist.password)) {
 
           if (login_resp.artist.email_verified) {
-
 
             var refreshToken = jwt.sign({ id: login_resp.artist._id }, config.REFRESH_TOKEN_SECRET_KEY, {});
             let update_resp = await artist_helper.update_artist_by_id(login_resp.artist._id, { "refresh_token": refreshToken, "last_login": Date.now() });
@@ -977,23 +976,31 @@ router.post('/admin_login', async (req, res) => {
     } else if (login_resp.status === 1) {
       logger.trace("Admin found. Executing next instruction");
       logger.trace("valid token. Generating token");
-      var refreshToken = jwt.sign({ id: login_resp.admin._id }, config.REFRESH_TOKEN_SECRET_KEY, {});
-      let update_resp = await admin_helper.update_admin_by_id(login_resp.admin._id, { "refresh_token": refreshToken, "last_login_date": Date.now() });
-      var LoginJson = { id: login_resp.admin._id, email: login_resp.email, role: "admin" };
-      var token = jwt.sign(LoginJson, config.ACCESS_TOKEN_SECRET_KEY, {
-        expiresIn: config.ACCESS_TOKEN_EXPIRE_TIME
-      });
+      if (login_resp.admin.status == "active") {
+
+        var refreshToken = jwt.sign({ id: login_resp.admin._id }, config.REFRESH_TOKEN_SECRET_KEY, {});
+        let update_resp = await admin_helper.update_admin_by_id(login_resp.admin._id, { "refresh_token": refreshToken, "last_login_date": Date.now() });
+        var LoginJson = { id: login_resp.admin._id, email: login_resp.email, role: "admin" };
+        var token = jwt.sign(LoginJson, config.ACCESS_TOKEN_SECRET_KEY, {
+          expiresIn: config.ACCESS_TOKEN_EXPIRE_TIME
+        });
 
 
-      delete login_resp.admin.status;
-      delete login_resp.admin.password;
-      delete login_resp.admin.refresh_token;
-      delete login_resp.admin.last_login_date;
-      delete login_resp.admin.created_at;
+        delete login_resp.admin.status;
+        delete login_resp.admin.password;
+        delete login_resp.admin.refresh_token;
+        delete login_resp.admin.last_login_date;
+        delete login_resp.admin.created_at;
 
-      logger.info("Token generated");
-      res.status(config.OK_STATUS).json({ "status": 1, "message": "Logged in successful", "admin": login_resp.admin, "token": token, "refresh_token": refreshToken });
-    } else {
+        logger.info("Token generated");
+        res.status(config.OK_STATUS).json({ "status": 1, "message": "Logged in successful", "admin": login_resp.admin, "token": token, "refresh_token": refreshToken });
+      }
+      else {
+        res.status(config.BAD_REQUEST).json({ "status": 0, "message": "You are flagged by Super Admin" });
+      }
+    }
+
+    else {
       res.status(config.BAD_REQUEST).json({ "status": 0, "message": "Invalid email address or token" });
     }
 

@@ -257,6 +257,61 @@ router.post('/like_track', async (req, res) => {
 
 
 
+router.post('/share_track_by_mail', async (req, res) => {
+
+  var resp_data = await track_helper.get_all_track_by_track_id(req.body.track_id);
+  var track_name = resp_data.track.name;
+  var artist_first_name = resp_data.track.artist_id.first_name;
+  var artist_last_name = resp_data.track.artist_id.last_name;
+
+  var obj = {
+    track_id: req.body.track_id,
+    url: req.body.url,
+    email: req.body.email,
+  };
+
+  let mail_resp = await mail_helper.send("share", {
+    "to": obj.email,
+    "subject": "Track sharing"
+  }, {
+      "artist": artist_first_name + "  " + artist_last_name,
+      "track": track_name,
+      "url": obj.url
+    });
+  res.status(config.OK_STATUS).json({ message: "Track shared successfully" });
+}
+);
+
+
+router.post('/share_track_by_sms', async (req, res) => {
+
+  var resp_data = await track_helper.get_all_track_by_track_id(req.body.track_id);
+  var track_name = resp_data.track.name;
+  var artist_first_name = resp_data.track.artist_id.first_name;
+  var artist_last_name = resp_data.track.artist_id.last_name;
+
+  var obj = {
+    track_id: req.body.track_id,
+    url: req.body.url,
+    phone_no: req.body.phone_no
+
+  };
+  const accountSid = 'AC07190084851dbbe340c260b740a08ced';
+  const authToken = '96ae4c1342bee3f471fc54d471dbbe3f';
+  const client = require('twilio')(accountSid, authToken);
+
+  client.messages
+    .create({
+      body: 'Artist: ' + " " + artist_first_name + artist_last_name + '\n' + 'track:' + track_name + '\n' + 'url:' + obj.url,
+      from: '+12526801944',
+      to: req.body.phone_no
+    })
+    .then(message => console.log(message.sid))
+    .done()
+  res.status(config.OK_STATUS).json({ message: "Track shared successfully" });
+}
+);
+
 
 /**
  * @api {get} /user/track/:track_id/download Download  Artist Track Add
@@ -306,8 +361,8 @@ router.get('/:track_id/download', async (req, res) => {
 
             archive.pipe(output);
             archive.append(fs.createReadStream(__dirname + '/../../uploads/track/' + track_resp.track.audio), { name: track_resp.track.audio });
-            archive.finalize(); +
-              res.status(200).json({ "status": 1, "filename": filename });
+            archive.finalize();
+            res.status(200).json({ "status": 1, "filename": filename });
 
           } else {
             res.status(200).json({ "status": 0, "message": "track not found" });
