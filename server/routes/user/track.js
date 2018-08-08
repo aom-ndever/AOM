@@ -284,9 +284,7 @@ router.post('/share_track_by_mail', async (req, res) => {
   else {
     res.status(config.OK_STATUS).json({ message: "Track sharing failed" });
   }
-
 }
-
 );
 
 
