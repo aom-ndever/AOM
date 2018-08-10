@@ -94,7 +94,8 @@ router.post('/artist_registration', async (req, res) => {
       "last_name": req.body.last_name,
       "zipcode": req.body.zipcode,
       "music_type": req.body.music_type,
-      "state": req.body.state
+      "state": req.body.state,
+      "dob": req.body.dob
     };
     if (req.body.share_url) {
       reg_obj.social_media = JSON.parse(req.body.share_url)
@@ -469,8 +470,6 @@ router.post('/artist_login', async (req, res) => {
             var token = jwt.sign(LoginJson, config.ACCESS_TOKEN_SECRET_KEY, {
               expiresIn: config.ACCESS_TOKEN_EXPIRE_TIME
             });
-
-
             delete login_resp.artist.status;
             delete login_resp.artist.password;
             delete login_resp.artist.refresh_token;
@@ -494,12 +493,12 @@ router.post('/artist_login', async (req, res) => {
 
       }
     } else {
-      logger.error("Validation Error = ", errors);
+
       res.status(config.BAD_REQUEST).json({ message: "invalid email" });
     }
   }
   else {
-    logger.error("Validation Error = ", errors);
+
     res.status(config.BAD_REQUEST).json({ message: "invalid email" });
   }
 });
@@ -1609,7 +1608,7 @@ router.post('/get_track', async (req, res) => {
   }
 
   var sort = { created_at: sort_by }
-  var track = await track_helper.get_all_track_of_artist(artist_id, req.body.start, req.body.length);
+  var track = await track_helper.get_all_track_of_artist(artist_id, req.body.start, req.body.length, sort);
   if (track.status === 1) {
     logger.trace("got details successfully");
     res.status(config.OK_STATUS).json({ "status": 1, "track": track });

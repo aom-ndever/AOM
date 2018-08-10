@@ -22,7 +22,7 @@ track_helper.insert_track = async (id, object) => {
 };
 
 
-track_helper.get_all_track_of_artist = async (artist_id, start, length) => {
+track_helper.get_all_track_of_artist = async (artist_id, start, length, sort) => {
 
     try {
 
@@ -35,6 +35,7 @@ track_helper.get_all_track_of_artist = async (artist_id, start, length) => {
         var musics = await Track
             .find({ "artist_id": new ObjectId(artist_id) })
             .populate({ path: 'artist_id', populate: { path: 'music_type' } })
+            .sort(sort)
             .skip(start)
             .limit(length);
 
