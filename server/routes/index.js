@@ -281,19 +281,23 @@ router.post('/user_registration_facebook', async (req, res) => {
 //gmail registration
 router.post('/user_registration_gmail', async (req, res) => {
   var schema = {
-    "email": {
+    "U3": {
       notEmpty: true,
       errorMessage: "Email is required"
     },
-    "id": {
+    "Eea": {
       notEmpty: true,
       errorMessage: "social id is required"
     },
-    "name": {
+    "ofa": {
       notEmpty: true,
       errorMessage: "first name is required"
     },
-    "gmail_token": {
+    "wea": {
+      notEmpty: true,
+      errorMessage: "last name is required"
+    },
+    "token": {
       notEmpty: true,
       errorMessage: "token is required"
     },
@@ -306,10 +310,13 @@ router.post('/user_registration_gmail', async (req, res) => {
       "social_id": req.body.Eea,
       "first_name": req.body.ofa,
       "last_name": req.body.wea,
-      "gmail_token": req.body.token
+      "gmail_token": req.body.token,
+      "image": req.body.image
     };
 
-    user = await user_helper.get_user_by_email(req.body.email)
+    var user = await user_helper.get_user_by_email(req.body.U3);
+
+
     if (user.status === 2) {
 
       var data = await user_helper.insert_user(obj);
@@ -331,11 +338,12 @@ router.post('/user_registration_gmail', async (req, res) => {
         if (mail_resp.status === 0) {
           res.status(config.INTERNAL_SERVER_ERROR).json({ "status": 0, "message": "Error occured while sending confirmation email", "error": mail_resp.error });
         } else {
-          res.status(config.OK_STATUS).json({ "status": 1, "message": "User login successfully done", "user": data.user });
+          res.status(config.OK_STATUS).json({ "status": 1, "message": "User login successfully done", "user": user });
         }
       }
     } else {
-      let login_resp = await user_helper.get_login_by_email(req.body.email);
+      let login_resp = await user_helper.get_login_by_email(req.body.U3);
+
 
       var refreshToken = jwt.sign({ id: login_resp.user._id }, config.REFRESH_TOKEN_SECRET_KEY, {});
 
