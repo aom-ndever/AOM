@@ -245,6 +245,87 @@ router.post('/user_registration_facebook', async (req, res) => {
         if (mail_resp.status === 0) {
           res.status(config.INTERNAL_SERVER_ERROR).json({ "status": 0, "message": "Error occured while sending confirmation email", "error": mail_resp.error });
         } else {
+          res.status(config.OK_STATUS).json({ "status": 1, "message": "User login successfully done", "user": data.user });
+        }
+      }
+    } else {
+
+      res.status(config.OK_STATUS).json({ "status": 0, "message": "User login successfully done", "user": user.user });
+    }
+  } else {
+    logger.error("Validation Error = ", errors);
+    res.status(config.BAD_REQUEST).json({ message: errors });
+  }
+});
+
+
+
+
+
+//gmail registration
+router.post('/user_registration_gmail', async (req, res) => {
+  var schema = {
+    "email": {
+      notEmpty: true,
+      errorMessage: "Email is required"
+    },
+    "id": {
+      notEmpty: true,
+      errorMessage: "social id is required"
+    },
+    "name": {
+      notEmpty: true,
+      errorMessage: "first name is required"
+    },
+    "provider": {
+      notEmpty: true,
+      errorMessage: "provider is required"
+    },
+    "token": {
+      notEmpty: true,
+      errorMessage: "token is required"
+    }
+
+  };
+  req.checkBody(schema);
+  var errors = req.validationErrors();
+  if (!errors) {
+    var obj = {
+      "email": req.body.U3,
+      "social_id": req.body.Eea,
+      "first_name": req.body.ofa,
+      "last_name": req.body.wea,
+      "provider": req.body.provider,
+      "token": req.body.token,
+      "image": req.body.image
+    };
+    if (req.body.share_url) {
+      reg_obj.social_media = JSON.parse(req.body.share_url)
+    }
+
+
+    user = await user_helper.get_user_by_email(req.body.email)
+    if (user.status === 2) {
+
+      var data = await user_helper.insert_user(obj);
+
+      if (data.status == 0) {
+        logger.trace("Error occured while inserting user - User Signup API");
+        logger.debug("Error = ", data.error);
+        res.status(config.INTERNAL_SERVER_ERROR).json(data);
+      } else {
+        logger.trace("User has been inserted");
+        // Send email confirmation mail to user
+        logger.trace("sending mail");
+        let mail_resp = await mail_helper.send("email_confirmation", {
+          "to": data.user.email,
+          "subject": "Music Social Voting - Email confirmation"
+        }, {
+            "confirm_url": config.website_url + "/email_confirm/user/" + data.user._id
+          });
+        if (mail_resp.status === 0) {
+          res.status(config.INTERNAL_SERVER_ERROR).json({ "status": 0, "message": "Error occured while sending confirmation email", "error": mail_resp.error });
+        } else {
           res.status(config.OK_STATUS).json({ "status": 1, "message": "User registered successfully" });
         }
       }
