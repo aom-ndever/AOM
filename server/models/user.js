@@ -10,7 +10,7 @@ var UserModelSchema = new Schema({
     social_media: { type: String, enum: ["facebook", "instagram", "twitter", "youtube"] },
     email: { type: String, unique: true },
     image: String,
-    token: { type: String },
+    facebook_token: { type: String },
     social_id: String,
     provider: String,
     password: { type: String },

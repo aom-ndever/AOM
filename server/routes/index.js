@@ -215,11 +215,11 @@ router.post('/user_registration_facebook', async (req, res) => {
       "social_id": req.body.id,
       "first_name": req.body.name,
       "provider": req.body.provider,
-      "token": req.body.token,
+      "facebook_token": req.body.token,
       "image": req.body.image
-
     };
 
+    console.log('obj', obj);
 
 
     user = await user_helper.get_user_by_email(req.body.email)
@@ -250,9 +250,29 @@ router.post('/user_registration_facebook', async (req, res) => {
     } else {
       let login_resp = await user_helper.get_login_by_email(req.body.email);
 
-      var refreshToken = jwt.sign({ id: login_resp.user._id }, config.REFRESH_TOKEN_SECRET_KEY, {});
-      let update_resp = await user_helper.update_user_by_id(login_resp.user._id, { "refresh_token": refreshToken, "last_login": Date.now() });
-      res.status(config.OK_STATUS).json({ "status": 0, "message": "User login successfully done", "user": update_resp.user_data });
+      if (login_resp.user.email_verified) {
+        var refreshToken = jwt.sign({ id: login_resp.user._id }, config.REFRESH_TOKEN_SECRET_KEY, {});
+        let update_resp = await user_helper.update_user_by_id(login_resp.user._id, { "refresh_token": refreshToken, "last_login": Date.now() });
+        var LoginJson = { id: login_resp.user._id, email: login_resp.email, role: "user" };
+        var token = jwt.sign(LoginJson, config.ACCESS_TOKEN_SECRET_KEY, {
+          expiresIn: config.ACCESS_TOKEN_EXPIRE_TIME
+        });
+
+
+        delete login_resp.user.status;
+        delete login_resp.user.password;
+        delete login_resp.user.refresh_token;
+
+        delete login_resp.user.last_login_date;
+        delete login_resp.user.created_at;
+
+        logger.info("Token generated");
+        res.status(config.OK_STATUS).json({ "status": 1, "message": "Logged in successful", "user": login_resp.user, "token": token, "refresh_token": refreshToken });
+      }
+      else {
+        res.status(config.BAD_REQUEST).json({ message: "email not verified" });
+
+      }
     }
   } else {
     logger.error("Validation Error = ", errors);
@@ -283,7 +303,7 @@ router.post('/user_registration_gmail', async (req, res) => {
       notEmpty: true,
       errorMessage: "provider is required"
     },
-    "token": {
+    "facebook_token": {
       notEmpty: true,
       errorMessage: "token is required"
     }
@@ -298,7 +318,7 @@ router.post('/user_registration_gmail', async (req, res) => {
       "first_name": req.body.ofa,
       "last_name": req.body.wea,
       "provider": req.body.provider,
-      "token": req.body.token,
+      "facebook_token": req.body.token,
 
     };
 
