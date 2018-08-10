@@ -11,6 +11,7 @@ var UserModelSchema = new Schema({
     email: { type: String, unique: true },
     image: String,
     facebook_token: { type: String },
+    gmail_token: { type: String },
     social_id: String,
     provider: String,
     password: { type: String },

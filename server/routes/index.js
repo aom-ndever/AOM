@@ -219,9 +219,6 @@ router.post('/user_registration_facebook', async (req, res) => {
       "image": req.body.image
     };
 
-    console.log('obj', obj);
-
-
     user = await user_helper.get_user_by_email(req.body.email)
     if (user.status === 2) {
 
@@ -250,14 +247,15 @@ router.post('/user_registration_facebook', async (req, res) => {
     } else {
       let login_resp = await user_helper.get_login_by_email(req.body.email);
 
-
       var refreshToken = jwt.sign({ id: login_resp.user._id }, config.REFRESH_TOKEN_SECRET_KEY, {});
+
       let update_resp = await user_helper.update_user_by_id(login_resp.user._id, { "refresh_token": refreshToken, "last_login": Date.now() });
+
       var LoginJson = { id: login_resp.user._id, email: login_resp.email, role: "user" };
+
       var token = jwt.sign(LoginJson, config.ACCESS_TOKEN_SECRET_KEY, {
         expiresIn: config.ACCESS_TOKEN_EXPIRE_TIME
       });
-
 
       delete login_resp.user.status;
       delete login_resp.user.password;
@@ -294,14 +292,11 @@ router.post('/user_registration_gmail', async (req, res) => {
       notEmpty: true,
       errorMessage: "first name is required"
     },
-    "provider": {
-      notEmpty: true,
-      errorMessage: "provider is required"
-    },
-    "facebook_token": {
+    "gmail_token": {
       notEmpty: true,
       errorMessage: "token is required"
-    }
+    },
+
 
   };
   req.checkBody(schema);
@@ -312,11 +307,8 @@ router.post('/user_registration_gmail', async (req, res) => {
       "social_id": req.body.Eea,
       "first_name": req.body.ofa,
       "last_name": req.body.wea,
-      "provider": req.body.provider,
-      "facebook_token": req.body.token,
-
+      "gmail_token": req.body.token
     };
-
 
     user = await user_helper.get_user_by_email(req.body.email)
     if (user.status === 2) {
@@ -340,21 +332,39 @@ router.post('/user_registration_gmail', async (req, res) => {
         if (mail_resp.status === 0) {
           res.status(config.INTERNAL_SERVER_ERROR).json({ "status": 0, "message": "Error occured while sending confirmation email", "error": mail_resp.error });
         } else {
-          res.status(config.OK_STATUS).json({ "status": 1, "message": "User registered successfully" });
+          res.status(config.OK_STATUS).json({ "status": 1, "message": "User login successfully done", "user": data.user });
         }
       }
     } else {
+      let login_resp = await user_helper.get_login_by_email(req.body.email);
 
+      var refreshToken = jwt.sign({ id: login_resp.user._id }, config.REFRESH_TOKEN_SECRET_KEY, {});
 
+      let update_resp = await user_helper.update_user_by_id(login_resp.user._id, { "refresh_token": refreshToken, "last_login": Date.now() });
 
-      res.status(config.BAD_REQUEST).json({ "status": 0, "message": "User's email already exist" });
+      var LoginJson = { id: login_resp.user._id, email: login_resp.email, role: "user" };
+
+      var token = jwt.sign(LoginJson, config.ACCESS_TOKEN_SECRET_KEY, {
+        expiresIn: config.ACCESS_TOKEN_EXPIRE_TIME
+      });
+
+      delete login_resp.user.status;
+      delete login_resp.user.password;
+      delete login_resp.user.refresh_token;
+
+      delete login_resp.user.last_login_date;
+      delete login_resp.user.created_at;
+
+      logger.info("Token generated");
+      res.status(config.OK_STATUS).json({ "status": 1, "message": "Logged in successful", "user": login_resp.user, "token": token, "refresh_token": refreshToken });
     }
+
+
   } else {
     logger.error("Validation Error = ", errors);
     res.status(config.BAD_REQUEST).json({ message: errors });
   }
 });
-
 
 /**
  * @api {get} /artist_email_verify/:artist_id Artist email verification
