@@ -183,7 +183,7 @@ router.post('/artist_registration', async (req, res) => {
 
 
 //facebook registration
-router.post('/artist_registration_facebook', async (req, res) => {
+router.post('/user_registration_facebook', async (req, res) => {
   var schema = {
     "email": {
       notEmpty: true,
@@ -210,7 +210,7 @@ router.post('/artist_registration_facebook', async (req, res) => {
   req.checkBody(schema);
   var errors = req.validationErrors();
   if (!errors) {
-    var reg_obj = {
+    var obj = {
       "email": req.body.email,
       "social_id": req.body.id,
       "first_name": req.body.name,
@@ -221,41 +221,40 @@ router.post('/artist_registration_facebook', async (req, res) => {
     if (req.body.share_url) {
       reg_obj.social_media = JSON.parse(req.body.share_url)
     }
-    let artist = await artist_helper.get_artist_by_email(req.body.email)
-    if (artist.status === 2) {
 
 
-      var obj = {};
-      //End image upload
 
-      var data = await artist_helper.insert_artist(reg_obj);
-      var datas = await artist_helper.insert_notification(obj);
+    var obj = {};
+
+
+    user = await user_helper.get_user_by_email(req.body.email)
+    if (user.status === 2) {
+
+      var data = await user_helper.insert_user(obj);
 
       if (data.status == 0) {
+        logger.trace("Error occured while inserting user - User Signup API");
         logger.debug("Error = ", data.error);
         res.status(config.INTERNAL_SERVER_ERROR).json(data);
       } else {
-        logger.trace("Artist has been inserted");
-
+        logger.trace("User has been inserted");
+        // Send email confirmation mail to user
         logger.trace("sending mail");
         let mail_resp = await mail_helper.send("email_confirmation", {
-          "to": data.artist.email,
+          "to": data.user.email,
           "subject": "Music Social Voting - Email confirmation"
         }, {
-            "confirm_url": config.website_url + "/email_confirm/artist/" + data.artist._id
+            "confirm_url": config.website_url + "/email_confirm/user/" + data.user._id
           });
-
         if (mail_resp.status === 0) {
           res.status(config.INTERNAL_SERVER_ERROR).json({ "status": 0, "message": "Error occured while sending confirmation email", "error": mail_resp.error });
         } else {
-          res.status(config.OK_STATUS).json({ "status": 1, "message": "Artist registered successfully" });
+          res.status(config.OK_STATUS).json({ "status": 1, "message": "User registered successfully" });
         }
       }
     } else {
-      res.status(config.BAD_REQUEST).json({ "status": 0, "message": "Artist's email already exist" });
+      res.status(config.BAD_REQUEST).json({ "status": 0, "message": "User's email already exist" });
     }
-
-
   } else {
     logger.error("Validation Error = ", errors);
     res.status(config.BAD_REQUEST).json({ message: errors });
