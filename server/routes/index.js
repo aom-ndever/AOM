@@ -297,8 +297,6 @@ router.post('/user_registration_gmail', async (req, res) => {
       notEmpty: true,
       errorMessage: "token is required"
     },
-
-
   };
   req.checkBody(schema);
   var errors = req.validationErrors();
