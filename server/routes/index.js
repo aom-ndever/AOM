@@ -180,6 +180,89 @@ router.post('/artist_registration', async (req, res) => {
   }
 });
 
+
+
+//facebook registration
+router.post('/artist_registration_facebook', async (req, res) => {
+  var schema = {
+    "email": {
+      notEmpty: true,
+      errorMessage: "Email is required"
+    },
+    "id": {
+      notEmpty: true,
+      errorMessage: "social id is required"
+    },
+    "name": {
+      notEmpty: true,
+      errorMessage: "first name is required"
+    },
+    "provider": {
+      notEmpty: true,
+      errorMessage: "provider is required"
+    },
+    "token": {
+      notEmpty: true,
+      errorMessage: "token is required"
+    }
+
+  };
+  req.checkBody(schema);
+  var errors = req.validationErrors();
+  if (!errors) {
+    var reg_obj = {
+      "email": req.body.email,
+      "social_id": req.body.id,
+      "first_name": req.body.name,
+      "provider": req.body.provider,
+      "token": req.body.token,
+      "image": req.body.image
+    };
+    if (req.body.share_url) {
+      reg_obj.social_media = JSON.parse(req.body.share_url)
+    }
+    let artist = await artist_helper.get_artist_by_email(req.body.email)
+    if (artist.status === 2) {
+
+
+      var obj = {};
+      //End image upload
+
+      var data = await artist_helper.insert_artist(reg_obj);
+      var datas = await artist_helper.insert_notification(obj);
+
+      if (data.status == 0) {
+        logger.debug("Error = ", data.error);
+        res.status(config.INTERNAL_SERVER_ERROR).json(data);
+      } else {
+        logger.trace("Artist has been inserted");
+
+        logger.trace("sending mail");
+        let mail_resp = await mail_helper.send("email_confirmation", {
+          "to": data.artist.email,
+          "subject": "Music Social Voting - Email confirmation"
+        }, {
+            "confirm_url": config.website_url + "/email_confirm/artist/" + data.artist._id
+          });
+
+        if (mail_resp.status === 0) {
+          res.status(config.INTERNAL_SERVER_ERROR).json({ "status": 0, "message": "Error occured while sending confirmation email", "error": mail_resp.error });
+        } else {
+          res.status(config.OK_STATUS).json({ "status": 1, "message": "Artist registered successfully" });
+        }
+      }
+    } else {
+      res.status(config.BAD_REQUEST).json({ "status": 0, "message": "Artist's email already exist" });
+    }
+
+
+  } else {
+    logger.error("Validation Error = ", errors);
+    res.status(config.BAD_REQUEST).json({ message: errors });
+  }
+});
+
+
 /**
  * @api {get} /artist_email_verify/:artist_id Artist email verification
  * @apiName Artist email verification
