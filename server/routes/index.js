@@ -495,9 +495,10 @@ router.post('/artist_login', async (req, res) => {
       }
     } else {
       logger.error("Validation Error = ", errors);
-      res.status(config.BAD_REQUEST).json({ message: errors });
+      res.status(config.BAD_REQUEST).json({ message: "invalid email" });
     }
   }
+  else { }
 });
 
 
