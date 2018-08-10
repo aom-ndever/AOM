@@ -223,10 +223,6 @@ router.post('/user_registration_facebook', async (req, res) => {
     }
 
 
-
-    var obj = {};
-
-
     user = await user_helper.get_user_by_email(req.body.email)
     if (user.status === 2) {
 

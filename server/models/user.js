@@ -8,12 +8,12 @@ var Schema = mongoose.Schema;
 
 var UserModelSchema = new Schema({
     social_media: { type: String, enum: ["facebook", "instagram", "twitter", "youtube"] },
-    email: { type: String, required: true, unique: true },
+    email: { type: String, unique: true },
     image: String,
     token: { type: String },
     social_id: String,
     provider: String,
-    password: { type: String, required: true },
+    password: { type: String },
     first_name: { type: String },
     last_name: { type: String },
     music_type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'music_type' }],
