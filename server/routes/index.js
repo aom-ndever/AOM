@@ -216,11 +216,9 @@ router.post('/user_registration_facebook', async (req, res) => {
       "first_name": req.body.name,
       "provider": req.body.provider,
       "token": req.body.token,
-      "image": req.body.image
+
     };
-    if (req.body.share_url) {
-      reg_obj.social_media = JSON.parse(req.body.share_url)
-    }
+
 
 
     user = await user_helper.get_user_by_email(req.body.email)
@@ -249,7 +247,6 @@ router.post('/user_registration_facebook', async (req, res) => {
         }
       }
     } else {
-
       res.status(config.OK_STATUS).json({ "status": 0, "message": "User login successfully done", "user": user.user });
     }
   } else {
@@ -297,11 +294,8 @@ router.post('/user_registration_gmail', async (req, res) => {
       "last_name": req.body.wea,
       "provider": req.body.provider,
       "token": req.body.token,
-      "image": req.body.image
+
     };
-    if (req.body.share_url) {
-      reg_obj.social_media = JSON.parse(req.body.share_url)
-    }
 
 
     user = await user_helper.get_user_by_email(req.body.email)
