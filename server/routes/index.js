@@ -216,6 +216,7 @@ router.post('/user_registration_facebook', async (req, res) => {
       "first_name": req.body.name,
       "provider": req.body.provider,
       "token": req.body.token,
+      "image": req.body.image
 
     };
 
@@ -247,7 +248,11 @@ router.post('/user_registration_facebook', async (req, res) => {
         }
       }
     } else {
-      res.status(config.OK_STATUS).json({ "status": 0, "message": "User login successfully done", "user": user.user });
+      let login_resp = await user_helper.get_login_by_email(req.body.email);
+
+      var refreshToken = jwt.sign({ id: login_resp.user._id }, config.REFRESH_TOKEN_SECRET_KEY, {});
+      let update_resp = await user_helper.update_user_by_id(login_resp.user._id, { "refresh_token": refreshToken, "last_login": Date.now() });
+      res.status(config.OK_STATUS).json({ "status": 0, "message": "User login successfully done", "user": update_resp.user_data });
     }
   } else {
     logger.error("Validation Error = ", errors);
@@ -324,6 +329,8 @@ router.post('/user_registration_gmail', async (req, res) => {
         }
       }
     } else {
+
+
 
       res.status(config.BAD_REQUEST).json({ "status": 0, "message": "User's email already exist" });
     }
