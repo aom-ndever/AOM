@@ -459,7 +459,7 @@ router.post('/artist_login', async (req, res) => {
       logger.trace("Artist found. Executing next instruction");
       logger.trace("valid token. Generating token");
       if (login_resp.artist.flag == false) {
-        if (bcrypt.compareSync(req.body.password, login_resp.artist.password)) {
+        if (bcrypt.compareSync(req.body.password, login_resp.artist.password) && req.body.email == login_resp.artist.email) {
 
           if (login_resp.artist.email_verified) {
 
@@ -498,7 +498,10 @@ router.post('/artist_login', async (req, res) => {
       res.status(config.BAD_REQUEST).json({ message: "invalid email" });
     }
   }
-  else { }
+  else {
+    logger.error("Validation Error = ", errors);
+    res.status(config.BAD_REQUEST).json({ message: "invalid email" });
+  }
 });
 
 
