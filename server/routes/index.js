@@ -95,6 +95,7 @@ router.post('/artist_registration', async (req, res) => {
       "zipcode": req.body.zipcode,
       "music_type": req.body.music_type,
       "state": req.body.state,
+      "gender": req.body.gender,
       "dob": req.body.dob
     };
     if (req.body.share_url) {
