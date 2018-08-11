@@ -25,7 +25,7 @@
                                         <a data-fancybox data-animation-duration="700" data-src="#delete" href="javascript:;" *ngIf="userdata.cover_image" (click)="removeArtistCoverImage()" class="delete"><i class="fa fa-trash"></i></a>
                                     </div>
                                     <div class="edit-details">
-                                        <div class="edit-head">Your Details</div>
+                                        <div class="edit-head" >Your Details</div>
                                         <div class="row">
                                             <div class="col-md-3 col-sm-12 col-xs-12">
                                                 <div class="edit-profile-picture">
@@ -252,7 +252,7 @@
                                                 <p>New Followers</p>
                                                 <div class="f-toggle">
                                                     <label class="switch">
-                                                        <input type="checkbox" (click)="updateNotificationSetting('comment_by_sms', $event.target.checked)" [checked]="userdata['notification_settings']['comment_by_sms']">
+                                                        <input type="checkbox" (click)="updateNotificationSetting('like_by_sms', $event.target.checked)" [checked]="userdata['notification_settings']['like_by_sms']">
                                                         <span class="slider round"></span>
                                                     </label>
                                                 </div>
@@ -938,7 +938,7 @@
                             <div class="edit-cover">
                                 <form>
                                     <div class="edit-details">
-                                        <div class="edit-head">Your Details</div>
+                                        <!-- <div class="edit-head">Your Details</div> -->
                                         <div class="row">
                                             <div class="col-md-3 col-sm-12 col-xs-12">
                                                 <div class="edit-profile-picture">

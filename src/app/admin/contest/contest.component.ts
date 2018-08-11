@@ -160,12 +160,14 @@ export class ContestComponent implements OnInit {
 
   // Get state from region
   getStateFromRegion(id : any) {
-    let data = {
-      region : id
-    };
-    this.ContestService.getStateByRegion(data).subscribe((response) => {
-      this.state_list = response['state'];
-    });
+    if(id && id != '') {
+      let data = {
+        region : id
+      };
+      this.ContestService.getStateByRegion(data).subscribe((response) => {
+        this.state_list = response['state'];
+      });
+    }
   }
 
   // Add new contest 

@@ -122,6 +122,7 @@ export class MyProfileComponent implements OnInit, OnDestroy {
     } else {
       this.userdata = {...data['user']};
       this.userdata['type'] = 'user';
+      delete this.userdata['token'];
       if(this.userdata.dob) {
         let dt =  new Date(this.userdata.dob);
         this.userdata['day'] = dt.getDate();
@@ -129,12 +130,16 @@ export class MyProfileComponent implements OnInit, OnDestroy {
         this.userdata['year'] = dt.getFullYear();
       }
       if(this.userdata.image) {
-        this.default_profile_img = environment.API_URL+environment.USER_IMG+this.userdata.image;
+        if(this.userdata.provider && this.userdata.provider == 'facebook' && this.userdata['image'].includes('graph.facebook.com') || (this.userdata.provider == "gmail" && this.userdata['image'].includes('lh3.googleusercontent.com'))) {
+          this.default_profile_img = this.userdata.image;
+        } else {
+          this.default_profile_img = environment.API_URL+environment.USER_IMG+this.userdata.image;
+        }
       }
       let tmp = [];
       this.userdata['music_type'].forEach((ele) => {
         if(ele)
-          tmp.push(ele);
+          tmp.push(ele['_id']);
       });
       this.userdata['music_type'] = tmp;
     }
@@ -380,6 +385,7 @@ export class MyProfileComponent implements OnInit, OnDestroy {
         data['user'] = res['user'];
         this.userdata = res['user'];
         this.userdata['type'] = 'user';
+        delete this.userdata['token'];
         if(this.userdata.dob) {
           let dt =  new Date(this.userdata.dob);
           this.userdata['day'] = dt.getDate();
@@ -387,12 +393,16 @@ export class MyProfileComponent implements OnInit, OnDestroy {
           this.userdata['year'] = dt.getFullYear();
         }
         if(this.userdata.image) {
-          this.default_profile_img = environment.API_URL+environment.USER_IMG+this.userdata.image;
+          if(this.userdata.provider && this.userdata.provider == 'facebook' && this.userdata['image'].includes('graph.facebook.com') || (this.userdata.provider == "gmail" && this.userdata['image'].includes('lh3.googleusercontent.com'))) {
+            this.default_profile_img = this.userdata.image;
+          } else {
+            this.default_profile_img = environment.API_URL+environment.USER_IMG+this.userdata.image;
+          }
         }
         let tmp = [];
-        this.userdata['music_type'].forEach((ele) => {
+        data['user']['music_type'].forEach((ele) => {
           if(ele)
-            tmp.push(ele);
+            tmp.push(ele['_id']);
         });
         this.userdata['music_type'] = tmp;
         localStorage.setItem('user', JSON.stringify(data));
@@ -572,6 +582,7 @@ export class MyProfileComponent implements OnInit, OnDestroy {
       } else if (event instanceof HttpResponse) {
         console.log('File is completely uploaded!', event['body']);
         this.getMediaList();
+        this.media_modal_ref.close();
         this.toastr.success( event['body']['message'], 'Success!');
       }
     }, error => {
@@ -604,6 +615,7 @@ export class MyProfileComponent implements OnInit, OnDestroy {
           this.video_url = '';
           this.toastr.success( event['body']['message'], 'Success!');
           this.getMediaList();
+          this.media_modal_ref.close();
         }
       }, error => {
         this.toastr.error(error['error'].message, 'Error!');

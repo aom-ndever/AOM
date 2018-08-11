@@ -59,6 +59,7 @@ export class ArtistComponent implements OnInit {
   getAllArtistV1Data(data) {
     this.ArtistService.getAllArtistv1(data).subscribe(response => {
       this.artistv1 = response;
+      this.show_filter = false;
       //this.getAllFollower();
     });
   }
@@ -100,24 +101,24 @@ export class ArtistComponent implements OnInit {
   }
   // get All follower
   getAllFollower() {
-    let user = JSON.parse(localStorage.getItem('user'));
-    if(user) {
-      this.ArtistService.getFollower().subscribe(response => {
-        let flag = false;
-        this.artistdata['artist'].forEach(obj => {
-          response['user'].forEach(data => {
-            if(obj._id == data['artist_id']._id) {
-              flag = true;
-            }
-          });
-          if(flag) {
-            obj['is_followed'] = true;
-          } else {
-            obj['is_followed'] = false;
-          }
-        });
-      });
-    }
+    // let user = JSON.parse(localStorage.getItem('user'));
+    // if(user && user.artsit) {
+    //   this.ArtistService.getFollower().subscribe(response => {
+    //     let flag = false;
+    //     this.artistdata['artist'].forEach(obj => {
+    //       response['user'].forEach(data => {
+    //         if(obj._id == data['artist_id']._id) {
+    //           flag = true;
+    //         }
+    //       });
+    //       if(flag) {
+    //         obj['is_followed'] = true;
+    //       } else {
+    //         obj['is_followed'] = false;
+    //       }
+    //     });
+    //   });
+    // }
   }
   // Get all music list
   getAllMusicType() {

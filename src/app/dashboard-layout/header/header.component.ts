@@ -37,10 +37,17 @@ export class HeaderComponent implements OnInit, OnDestroy  {
      private socialAuthService: AuthService 
     ) {
     this.user = JSON.parse(localStorage.getItem('user'));
+    
     if(this.user && this.user.artist) {
       this.user.artist['image'] = typeof this.user.artist['image'] != 'undefined' ? environment.API_URL+environment.ARTIST_IMG+this.user.artist['image'] : '';
     } else if(this.user && this.user.user) {
-      this.user.user['image'] = typeof this.user.user['image'] != 'undefined' ? environment.API_URL+environment.USER_IMG+this.user.user['image'] : '';
+      let data = JSON.parse(localStorage.getItem('user'));
+      
+      if(!(this.user.user.provider && this.user.user.provider == "facebook" && this.user.user['image'].includes('graph.facebook.com')) || !(this.user.provider == "gmail" && this.user['image'].includes('lh3.googleusercontent.com'))) {
+        this.user.user['image'] = typeof this.user.user['image'] != 'undefined' ? environment.API_URL+environment.USER_IMG+this.user.user['image'] : '';
+      } else {
+        this.user.user['image'] = data['user']['image'];
+      }
     }
     this.subscription = this.MessageService.getMessage().subscribe((response) => {
       if(response && response['updateProfile']) {
@@ -49,8 +56,15 @@ export class HeaderComponent implements OnInit, OnDestroy  {
           if(this.user && this.user.artist) {
             this.user.artist['image'] = typeof this.user.artist['image'] != 'undefined' ? environment.API_URL+environment.ARTIST_IMG+this.user.artist['image'] : '';
           } else if(this.user && this.user.user) {
-            this.user.user['image'] = typeof this.user.user['image'] != 'undefined' ? environment.API_URL+environment.USER_IMG+this.user.user['image'] : '';
+            if(!(this.user.provider && this.user.provider == "facebook" && this.user['image'].includes('graph.facebook.com')) || !(this.user.provider == "gmail" && this.user['image'].includes('lh3.googleusercontent.com'))) {
+              this.user.user['image'] = typeof this.user.user['image'] != 'undefined' ? environment.API_URL+environment.USER_IMG+this.user.user['image'] : '';
+            } 
           }
+        }, 1000);
+      }
+      if(response && response['loggedin_user']) {
+        setTimeout(()=>{
+          this.user = response['loggedin_user'];
         }, 1000);
       }
     });
@@ -88,7 +102,27 @@ export class HeaderComponent implements OnInit, OnDestroy  {
         console.log('Image URL: ' + profile.getImageUrl());
         console.log('Email: ' + profile.getEmail());
         //YOUR CODE HERE
-
+        console.log('token :',googleUser.getAuthResponse().id_token, profile);
+        
+        let data = {
+          U3 : profile.getEmail(),
+          ofa : profile.ofa,
+          wea : profile.wea,
+          provider : 'gmail',
+          Eea : profile.getId(),
+          image : profile.getImageUrl(),
+          token : googleUser.getAuthResponse().id_token
+        };
+        this.HeaderService.userGoogleLogin(data).subscribe((response) => {
+          this.toastr.success(response['message'], 'Success!');
+          localStorage.setItem('user', JSON.stringify(response));
+          this.modalRef.close();
+          this.user = JSON.parse(localStorage.getItem('user'));
+          this.MessageService.sendMessage({'loggedin_user': this.user});
+          this.router.navigate(['']);
+        }, (error) => {
+          this.toastr.error(error['error'].message, 'Error!');
+        });
       }, (error) => {
         console.log(JSON.stringify(error, undefined, 2));
       });
@@ -137,6 +171,7 @@ export class HeaderComponent implements OnInit, OnDestroy  {
         } else if(this.user && this.user.user) {
           this.user.user['image'] = typeof this.user.user['image'] != 'undefined' ? environment.API_URL+environment.USER_IMG+this.user.user['image'] : '';
         }
+        this.MessageService.sendMessage({'loggedin_user': this.user});
         this.router.navigate(['']);
       }, error => {
         console.log(error);
@@ -163,6 +198,7 @@ export class HeaderComponent implements OnInit, OnDestroy  {
         } else if(this.user && this.user.user) {
           this.user.user['image'] = typeof this.user.user['image'] != 'undefined' ? environment.API_URL+environment.USER_IMG+this.user.user['image'] : '';
         }
+        this.MessageService.sendMessage({'loggedin_user': this.user});
         this.router.navigate(['']);
       }, error => {
         console.log(error);
@@ -223,37 +259,19 @@ export class HeaderComponent implements OnInit, OnDestroy  {
   fbLogin() {
    let socialPlatformProvider = FacebookLoginProvider.PROVIDER_ID;
    this.socialAuthService.signIn(socialPlatformProvider).then(
-      (userData) => {
-        console.log(" sign in data : " , userData);
+      (data) => {
+        console.log(" sign in data : " , data);
+        this.HeaderService.userFacebookLogin(data).subscribe((response) => {
+          this.toastr.success(response['message'], 'Success!');
+          localStorage.setItem('user', JSON.stringify(response));
+          this.modalRef.close();
+          this.user = JSON.parse(localStorage.getItem('user'));
+          this.MessageService.sendMessage({'loggedin_user': this.user});
+          this.router.navigate(['']);
+        }, (error) => {
+          this.toastr.error(error['error'].message, 'Error!');
+        });
       }
     );
   }
-
-  // statusChangeCallback(response) {
-  //   console.log('statusChangeCallback');
-  //   console.log(response);
-  //   // The response object is returned with a status field that lets the
-  //   // app know the current login status of the person.
-  //   // Full docs on the response object can be found in the documentation
-  //   // for FB.getLoginStatus().
-  //   if (response.status === 'connected') {
-  //     // Logged into your app and Facebook.
-  //     this.testAPI();
-  //   } else {
-  //     // The person is not logged into your app or we are unable to tell.
-  //   }
-  // }
-
-  // checkLoginState() {
-  //   FB.getLoginStatus((response) => {
-  //     this.statusChangeCallback(response);
-  //   });
-  // }
-
-  // testAPI() {
-  //   console.log('Welcome!  Fetching your information.... ');
-  //   FB.api('/me', (response) => {
-  //     console.log('Successful login for: ' + response.name);
-  //   });
-  // }
 }

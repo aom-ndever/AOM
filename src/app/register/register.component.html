@@ -124,6 +124,36 @@
                               <span *ngIf="artist_step3.controls['gender'].errors['required']" class="text-danger">Gender is required.</span>
                           </div>
                         </div>
+                        <div class="date-of-birth">
+                          <label for="date">Birthday</label>
+                          <div class="form-group">
+                          <select class="form-control"  formControlName="day" name="artist_day" [(ngModel)]="artist_data.day">
+                              <option value="">Day</option>
+                              <option *ngFor="let d of day" [value]="d">{{d}}</option>
+                          </select>
+                          <div class="terms_error_msg" *ngIf="artist_validation[2] && !artist_step3.controls['day'].valid">
+                            <span *ngIf="artist_step3.controls['day'].errors['required']" class="text-danger">Day is required.</span>
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <select class="form-control"  formControlName="month" name="artist_month" [(ngModel)]="artist_data.month">
+                              <option value="">Month</option>
+                              <option *ngFor="let m of month" [value]="m">{{m}}</option>
+                          </select>
+                          <div class="terms_error_msg" *ngIf="artist_validation[2] && !artist_step3.controls['month'].valid">
+                            <span *ngIf="artist_step3.controls['month'].errors['required']" class="text-danger">Month is required.</span>
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <select class="form-control"  formControlName="year" name="artist_year" [(ngModel)]="artist_data.year">
+                              <option value="">Year</option>
+                              <option *ngFor="let y of year" [value]="y">{{y}}</option>
+                          </select>
+                          <div class="terms_error_msg" *ngIf="artist_validation[2] && !artist_step3.controls['year'].valid">
+                            <span *ngIf="artist_step3.controls['year'].errors['required']" class="text-danger">Year is required.</span>
+                          </div>
+                        </div>
+                        </div>
                         <div class="form-group gender-grp">
                           <label for="geder">Phone Number</label>
                           <input class="form-control" id="phone" formControlName="phone" name="artist_phone" [(ngModel)]="artist_data.phone_no" />
@@ -334,7 +364,7 @@
                     <a href="javascript:;" id="googleBtn"><i class="fa fa-google"  aria-hidden="true"></i> <span>Login with Google</span></a>
                   </div>
                   <div class="fb-login">
-                    <a href="javascript:;"><i class="fa fa-facebook" aria-hidden="true"></i> <span>Login with Facebook</span></a>
+                    <a href="javascript:;" (click)="fbLogin()"><i class="fa fa-facebook" aria-hidden="true"></i> <span>Login with Facebook</span></a>
                   </div>
                 </div>
                 <div class="progress_bar fill14"></div>

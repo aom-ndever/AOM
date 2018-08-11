@@ -1,4 +1,5 @@
 import { Component, OnInit, AfterViewInit, AfterViewChecked, OnDestroy } from '@angular/core';
+import { FormGroup, FormBuilder, Validators, FormControl, AbstractControl, NG_VALIDATORS, Validator } from '@angular/forms';
 import { environment } from '../../../environments/environment' ;
 import { Subscription } from 'rxjs/Subscription';
 import { MessageService } from '../../shared/message.service';
@@ -18,6 +19,7 @@ export class DashboardLayoutComponent implements OnInit, AfterViewInit, AfterVie
     this.track_url+"/audio_152940920498523176.mp4",
     this.track_url+"/audio_152940899013172582.mp4"
   ];
+  show_spinner : boolean = false;
   user : any = '';
   audio_instance_list : any = [];
   timeline : any = '';
@@ -34,11 +36,17 @@ export class DashboardLayoutComponent implements OnInit, AfterViewInit, AfterVie
   user_img_url : any = environment.API_URL+environment.USER_IMG;
   private modalRef: NgbModalRef;
   private emailmodalRef: NgbModalRef;
+  private phonemodalRef: NgbModalRef;
+  share_form : FormGroup;
+  share_form_phone : FormGroup;
+  share_form_validation : boolean = false;
+  share_data : any = {};
   constructor(
     private MessageService : MessageService,
     private DashboardLayoutService : DashboardLayoutService,
     private toastr: ToastrService,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private fb: FormBuilder
   ) {
     console.log("dashboard component");
     this.audio_instance_list = [];
@@ -56,7 +64,7 @@ export class DashboardLayoutComponent implements OnInit, AfterViewInit, AfterVie
           audio.addEventListener('timeupdate', this.timeUpdate, false);
           audio.addEventListener("canplaythrough", () => {
               this.duration = audio.duration;
-              this.total_time = this.format_seconds(this.duration);
+              // this.total_time = this.format_seconds(this.duration);
               // this.dur_sec = this.duration - this.dur_min * 60;
           }, false);
         });
@@ -68,6 +76,7 @@ export class DashboardLayoutComponent implements OnInit, AfterViewInit, AfterVie
         if(this.audio_ins) {
           this.audio_ins.currentTime = 0;
           this.audio_ins.pause();
+          this.total_time = "0:0";
         }
         this.play();
       } else if (response['action'] == 'stop') {
@@ -79,6 +88,12 @@ export class DashboardLayoutComponent implements OnInit, AfterViewInit, AfterVie
           this.audio_ins.pause();
         }
       }
+    });
+    this.share_form = this.fb.group({
+      email : ['', [Validators.required, Validators.email]]
+    });
+    this.share_form_phone = this.fb.group({
+      phone : ['', [Validators.required, Validators.maxLength(10), Validators.minLength(10)]]
     });
   }
 
@@ -102,28 +117,49 @@ export class DashboardLayoutComponent implements OnInit, AfterViewInit, AfterVie
       if(this.emailmodalRef) {
         this.emailmodalRef.close();
       } 
+      if(this.phonemodalRef) {
+        this.phonemodalRef.close();
+      } 
   }
 
   openShareTrackModel(content) {
     this.modalRef = this.modalService.open(content, { centered: true, windowClass : 'modal-wrapper', backdrop : true });
   }
   openEmailShareTrackModel(content) {
-    this.emailmodalRef = this.modalService.open(content, { centered: true, backdrop : true });
+    if(this.user) {
+      this.share_data = {};
+      this.emailmodalRef = this.modalService.open(content, { centered: true, backdrop : true });
+    } else {
+      this.toastr.info('Login first to share track via email', 'Information!');
+    }
+  }
+  openPhoneShareTrackModel(content) {
+    if(this.user) {
+      this.share_data = {};
+      this.phonemodalRef = this.modalService.open(content, { centered: true, backdrop : true });
+    } else {
+      this.toastr.info('Login first to share track via sms', 'Information!');
+    }
   }
 
   play(){
-    var pButton = document.getElementById('pButton');
-    this.audio_ins = this.audio_instance_list[this.song_cnt];
-    if(this.audio_instance_list[this.song_cnt] && this.audio_instance_list[this.song_cnt].paused) {
-      this.audio_instance_list[this.song_cnt].play();
-      pButton.className = "";
-      pButton.className = "pause";
-    } else {
-      this.audio_instance_list[this.song_cnt].pause();
-      this.MessageService.sendMessage({index : this.song_cnt, action : 'stop', list : this.list_no});
-      pButton.className = "";
-      pButton.className = "play";
+    try {
+      var pButton = document.getElementById('pButton');
+      this.audio_ins = this.audio_instance_list[this.song_cnt];
+      if(this.audio_instance_list[this.song_cnt] && this.audio_instance_list[this.song_cnt].paused) {
+        this.audio_instance_list[this.song_cnt].play();
+        pButton.className = "";
+        pButton.className = "pause";
+      } else {
+        this.audio_instance_list[this.song_cnt].pause();
+        this.MessageService.sendMessage({index : this.song_cnt, action : 'stop', list : this.list_no});
+        pButton.className = "";
+        pButton.className = "play";
+      }
+    } catch(err) {
+      console.log(err);
     }
+    
   }
 
   timeUpdate($event : any) {
@@ -136,6 +172,13 @@ export class DashboardLayoutComponent implements OnInit, AfterViewInit, AfterVie
       var seconds = $event.target.currentTime - minutes * 60;
       var running_time = document.getElementById('running_time');
       running_time.innerHTML = minutes + ':' +Math.round(seconds);
+      minutes = Math.floor($event.target.duration / 60);
+      seconds = $event.target.duration - minutes * 60;
+      var total_time = document.getElementById('total_time');
+      var str =  ((isNaN(minutes) ? 0 : minutes) + ':' + (isNaN(seconds) ? 0 : Math.round(seconds)));
+      console.log('total_time', str);
+      total_time.innerHTML = str.toString();
+      
       if ($event.target.currentTime == $event.target.duration) {
         // this.next();          
         pButton.className = "";
@@ -200,7 +243,6 @@ export class DashboardLayoutComponent implements OnInit, AfterViewInit, AfterVie
     var minutes = Math.floor(e.target.value / 60);
     var seconds = e.target.value - minutes * 60;
     var running_time = document.getElementById('running_time');
-    this.audio_ins['currentTime'] = 0;
     setTimeout(() => {
       nprogres['value'] = e.target.value;
       this.audio_ins['currentTime'] = e.target.value;
@@ -229,9 +271,15 @@ export class DashboardLayoutComponent implements OnInit, AfterViewInit, AfterVie
     // var facebookWindow = window.open('https://www.facebook.com/sharer.php?s=100&p[summary]='+encodeURIComponent(str)+"&p[url]="+encodeURIComponent(url), 'facebook-popup', 'height=350,width=600');
     // if(facebookWindow.focus) { facebookWindow.focus(); }
     FB.ui({
-      method: 'feed',
-      link: 'http://clientapp.narola.online/HD/waleed/dist/',
-      caption: str
+      method: 'share_open_graph',
+      action_type: 'og.likes',
+      action_properties : JSON.stringify({
+        object : {
+          'og:url' : url,
+          'og:title' : 'AOM',
+          'og:description' : str
+        }
+      })
     }, function(response){});
   }
   // share on twitter
@@ -242,5 +290,69 @@ export class DashboardLayoutComponent implements OnInit, AfterViewInit, AfterVie
     let str = "Track Name: "+track.name+"\nArtist: "+track['artist_id']['first_name']+' '+track['artist_id']['last_name']+'\nDescription: '+track.description;
     var twitterWindow = window.open('https://twitter.com/share?url=' +encodeURIComponent(url)+'&text='+encodeURIComponent(str), 'twitter-popup', 'height=350,width=600');
     if(twitterWindow.focus) { twitterWindow.focus(); }
+  }
+  // share track via email
+  share_via_email(flag : boolean) {
+    if(flag) {
+      this.share_form_validation = !flag;
+      this.show_spinner = true;
+      let track = this.audio_list[this.song_cnt];
+      let url = 'http://'+window.location.host+'/artist_profile/'+track['artist_id']['_id']+'/track/'+track['_id']+'/comments';
+      let data = {
+        email : this.share_data['email'],
+        track_id : track['_id'],
+        url : url
+      };
+      this.DashboardLayoutService.shareTrackViaEmail(data).subscribe((response) => {
+        this.toastr.success(response['message'], 'Success!');
+        this.emailmodalRef.close();
+      }, (error) => {
+        this.toastr.error(error['error'].message, 'Error!');
+        this.show_spinner = false;
+      }, () => {
+        this.show_spinner = false;
+      });
+    } else {
+      this.share_form_validation = !flag;
+    }
+  }
+  // share via sms
+  share_via_sms(flag : boolean) {
+    if(flag) {
+      this.share_form_validation = !flag;
+      this.show_spinner = true;
+      let track = this.audio_list[this.song_cnt];
+      let url = 'http://'+window.location.host+'/artist_profile/'+track['artist_id']['_id']+'/track/'+track['_id']+'/comments';
+      let data = {
+        phone_no : this.share_data['phone_no'],
+        track_id : track['_id'],
+        url : url
+      };
+      this.DashboardLayoutService.shareTrackViaSms(data).subscribe((response) => {
+        this.toastr.success(response['message'], 'Success!');
+        this.emailmodalRef.close();
+        this.share_data = {};
+      }, (error) => {
+        this.toastr.error(error['error'].message, 'Error!');
+        this.show_spinner = false;
+      }, () => {
+        this.show_spinner = false;
+      });
+    } else {
+      this.share_form_validation = !flag;
+    }
+  }
+  // copy share track link
+  copy_link() {
+    let track = this.audio_list[this.song_cnt];
+    console.log(track);
+    let url = 'http://'+window.location.host+'/artist_profile/'+track['artist_id']['_id']+'/track/'+track['_id']+'/comments';
+    var textArea = document.createElement("textarea");
+    textArea.value = url;
+    document.body.appendChild(textArea);
+    textArea.focus();
+    textArea.select();
+    document.execCommand("copy");
+    textArea.remove();
   }
 }

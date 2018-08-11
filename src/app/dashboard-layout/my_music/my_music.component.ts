@@ -6,7 +6,9 @@ import { MyMusicService } from './my_music.service';
 import { MessageService } from '../../shared/message.service';
 import { Subscription } from 'rxjs/Subscription';
 import { DataTableDirective } from 'angular-datatables';
+import { FormGroup, FormBuilder, Validators, FormControl, AbstractControl, NG_VALIDATORS, Validator } from '@angular/forms';
 import swal from 'sweetalert2'
+declare var FB : any;
 class DataTablesResponse {
   data: any[];
   draw: number;
@@ -40,11 +42,21 @@ export class MyMusicComponent implements OnInit, OnDestroy {
   add_track_img : any = '';
   add_track_audio : any = '';
   subscription: Subscription;
+  private modalRef: NgbModalRef;
+  private emailmodalRef: NgbModalRef;
+  private phonemodalRef: NgbModalRef;
+  share_data : any = {};
+  share_form : FormGroup;
+  share_form_phone : FormGroup;
+  share_form_validation : boolean = false;
+  user : any = '';
+  track_data : any = {};
   constructor(
     private modalService: NgbModal,
     private MyMusicService : MyMusicService,
     private toastr: ToastrService,
-    private MessageService : MessageService
+    private MessageService : MessageService,
+    private fb: FormBuilder
   ) {
     this.userinfo = JSON.parse(localStorage.getItem('user'));
     this.subscription = this.MessageService.getMessage().subscribe((response) => {
@@ -100,6 +112,12 @@ export class MyMusicComponent implements OnInit, OnDestroy {
           { data: '' }
         ]
       };
+    this.share_form = this.fb.group({
+      email : ['', [Validators.required, Validators.email]]
+    });
+    this.share_form_phone = this.fb.group({
+      phone : ['', [Validators.required, Validators.maxLength(10), Validators.minLength(10)]]
+    });
   }
 
   ngOnInit() {
@@ -113,6 +131,28 @@ export class MyMusicComponent implements OnInit, OnDestroy {
       this.subscription.unsubscribe();
   }
 
+
+  openShareTrackModel(content, index : any) {
+    this.track_data = this.tracklist[index];
+    this.modalRef = this.modalService.open(content, { centered: true, windowClass : 'modal-wrapper', backdrop : true });
+  }
+  openEmailShareTrackModel(content) {
+    if(this.userinfo) {
+      this.share_data = {};
+      this.emailmodalRef = this.modalService.open(content, { centered: true, backdrop : true });
+    } else {
+      this.toastr.info('Login first to share track via email', 'Information!');
+    }
+  }
+  openPhoneShareTrackModel(content) {
+    if(this.userinfo) {
+      this.share_data = {};
+      this.phonemodalRef = this.modalService.open(content, { centered: true, backdrop : true });
+    } else {
+      this.toastr.info('Login first to share track via sms', 'Information!');
+    }
+  }
+
   toggleFilter() {
     this.show_filter = !this.show_filter;
   }
@@ -124,7 +164,7 @@ export class MyMusicComponent implements OnInit, OnDestroy {
   changeAudio(event : any) {
     const file = event.target.files[0];
     console.log('audio file', file);
-    const allow_types = ['audio/mpeg', 'audio/x-aiff', 'audio/vnd.wav', "audio/mp3"];
+    const allow_types = ['audio/mpeg', 'audio/x-aiff', 'audio/vnd.wav', "audio/mp3", "audio/wav"];
     if(event.target.files.length > 0) {
       if(allow_types.indexOf(file.type) == -1) {
         this.toastr.error('Invalid file format.','Error!');
@@ -261,8 +301,10 @@ export class MyMusicComponent implements OnInit, OnDestroy {
     }).then((flag) => {
       if(flag.value) {
         thi.MyMusicService.deleteTrackById(id).subscribe(response => {
-          thi.getAllTrack();
           thi.toastr.success(response['message'], 'Success!');
+          this.datatableElement.dtInstance.then((dtInstance: DataTables.Api) => {
+            dtInstance.draw();
+          });
         }, error => {
           thi.toastr.error(error['error'].message, 'Error!');
         },);
@@ -398,8 +440,105 @@ export class MyMusicComponent implements OnInit, OnDestroy {
   updateTrackDownLoadStatus(id : any) {
     this.MyMusicService.trackDownload(id).subscribe(response => {
       this.toastr.success(response['message'], 'Success!');
+      this.datatableElement.dtInstance.then((dtInstance: DataTables.Api) => {
+        dtInstance.draw();
+      });
     }, error => {
       this.toastr.error(error['error'].message, 'Error!');
     });
+  }
+
+  // share on facebook
+  shareOnFacebook() {
+    let track = this.track_data;
+    console.log(track);
+    let url = 'http://'+window.location.host+'/artist_profile/'+track['artist_id']['_id']+'/track/'+track['_id']+'/comments';
+    let str = "Track Name: "+track['name']+"\nArtist: "+track['artist_id']['first_name']+' '+track['artist_id']['last_name']+'\nDescription: '+track['description'];
+    // var facebookWindow = window.open('https://www.facebook.com/sharer.php?s=100&p[summary]='+encodeURIComponent(str)+"&p[url]="+encodeURIComponent(url), 'facebook-popup', 'height=350,width=600');
+    // if(facebookWindow.focus) { facebookWindow.focus(); }
+    FB.ui({
+      method: 'share_open_graph',
+      action_type: 'og.likes',
+      action_properties : JSON.stringify({
+        object : {
+          'og:url' : url,
+          'og:title' : 'AOM',
+          'og:description' : str
+        }
+      })
+    }, function(response){});
+  }
+  // share on twitter
+  shareOnTwitter() {
+    let track = this.track_data;
+    console.log(track);
+    let url = 'http://'+window.location.host+'/artist_profile/'+track['artist_id']['_id']+'/track/'+track['_id']+'/comments';
+    let str = "Track Name: "+track['name']+"\nArtist: "+track['artist_id']['first_name']+' '+track['artist_id']['last_name']+'\nDescription: '+track['description'];
+    var twitterWindow = window.open('https://twitter.com/share?url=' +encodeURIComponent(url)+'&text='+encodeURIComponent(str), 'twitter-popup', 'height=350,width=600');
+    if(twitterWindow.focus) { twitterWindow.focus(); }
+  }
+  // share track via email
+  share_via_email(flag : boolean) {
+    if(flag) {
+      this.share_form_validation = !flag;
+      this.show_spinner = true;
+      let track = this.track_data;
+      let url = 'http://'+window.location.host+'/artist_profile/'+track['artist_id']['_id']+'/track/'+track['_id']+'/comments';
+      let data = {
+        email : this.share_data['email'],
+        track_id : track['_id'],
+        url : url
+      };
+      this.MyMusicService.shareTrackViaEmail(data).subscribe((response) => {
+        this.toastr.success(response['message'], 'Success!');
+        this.emailmodalRef.close();
+      }, (error) => {
+        this.toastr.error(error['error'].message, 'Error!');
+        this.show_spinner = false;
+      }, () => {
+        this.show_spinner = false;
+      });
+    } else {
+      this.share_form_validation = !flag;
+    }
+  }
+  // share via sms
+  share_via_sms(flag : boolean) {
+    if(flag) {
+      this.share_form_validation = !flag;
+      this.show_spinner = true;
+      let track = this.track_data;
+      let url = 'http://'+window.location.host+'/artist_profile/'+track['artist_id']['_id']+'/track/'+track['_id']+'/comments';
+      let data = {
+        phone_no : this.share_data['phone_no'],
+        track_id : track['_id'],
+        url : url
+      };
+      this.MyMusicService.shareTrackViaSms(data).subscribe((response) => {
+        this.toastr.success(response['message'], 'Success!');
+        this.emailmodalRef.close();
+        this.share_data = {};
+      }, (error) => {
+        this.toastr.error(error['error'].message, 'Error!');
+        this.show_spinner = false;
+      }, () => {
+        this.show_spinner = false;
+      });
+    } else {
+      this.share_form_validation = !flag;
+    }
+  }
+  // copy share track link
+  copy_link() {
+    let track = this.track_data;
+    console.log(track);
+    let url = 'http://'+window.location.host+'/artist_profile/'+track['artist_id']['_id']+'/track/'+track['_id']+'/comments';
+    var textArea = document.createElement("textarea");
+    textArea.value = url;
+    document.body.appendChild(textArea);
+    textArea.focus();
+    textArea.select();
+    document.execCommand("copy");
+    textArea.remove();
   }
 }

@@ -6,10 +6,8 @@ import { HeaderComponent } from '../header/header.component';
 import { FooterComponent } from '../footer/footer.component';
 import { FormsModule, ReactiveFormsModule  } from '@angular/forms';
 import { environment } from '../../../environments/environment';
-import {AuthServiceConfig,
-  GoogleLoginProvider,
-  FacebookLoginProvider,SocialLoginModule} from "angular5-social-login";
-
+import { TooltipModule } from 'ngx-bootstrap';
+import {AuthServiceConfig,FacebookLoginProvider,SocialLoginModule} from "angular5-social-login";
 // Configs 
 export function getAuthServiceConfigs() {
   let config = new AuthServiceConfig(
@@ -29,13 +27,13 @@ export function getAuthServiceConfigs() {
     CommonModule,
     ReactiveFormsModule,
     SocialLoginModule,
+    TooltipModule.forRoot(),
     RouterModule.forChild([
       //   { path: '', component: DashboardComponent, data: { title: 'Dashboard' } }
     ])
   ],
-  providers : [ {
-    provide: AuthServiceConfig,
-    useFactory: getAuthServiceConfigs}
+  providers : [ 
+    { provide: AuthServiceConfig, useFactory: getAuthServiceConfigs}
   ],
   declarations: [DashboardLayoutComponent,HeaderComponent,FooterComponent],
   exports: [DashboardLayoutComponent]

@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { CarouselComponent } from './carousel.component';
 import { NgxCarouselModule } from 'ngx-carousel';
 import 'hammerjs';
+import { CarouselService } from './carousel.service';
 
 @NgModule({
   imports: [
@@ -10,7 +11,8 @@ import 'hammerjs';
     NgxCarouselModule
   ],
   declarations: [CarouselComponent],
-  exports: [CarouselComponent]
+  exports: [CarouselComponent],
+  providers : [CarouselService]
 })
 export class CarouselModule {
 

@@ -11,6 +11,20 @@ import { ImageCropperModule } from 'ngx-image-cropper';
 import { ToastrModule } from 'ngx-toastr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AuthService } from '../shared/auth.service';
+import { environment } from '../../environments/environment';
+import {AuthServiceConfig,FacebookLoginProvider,SocialLoginModule} from "angular5-social-login";
+// Configs 
+export function getAuthServiceConfigs() {
+  let config = new AuthServiceConfig(
+      [
+        {
+          id: FacebookLoginProvider.PROVIDER_ID,
+	        provider: new FacebookLoginProvider(environment.FB_APPID.toString())
+        }
+      ]
+  );
+  return config;
+}
 
 @NgModule({
   imports: [
@@ -19,6 +33,7 @@ import { AuthService } from '../shared/auth.service';
     HttpModule,
     HttpClientModule, 
     ReactiveFormsModule,
+    SocialLoginModule,
     ImageCropperModule,
     BrowserAnimationsModule,
     ToastrModule.forRoot(),
@@ -27,6 +42,6 @@ import { AuthService } from '../shared/auth.service';
     ])
   ],
   declarations: [RegisterComponent],
-  providers : [RegisterService]
+  providers : [RegisterService, { provide: AuthServiceConfig, useFactory: getAuthServiceConfigs}]
 })
 export class RegisterModule { }

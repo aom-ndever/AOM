@@ -27,7 +27,7 @@
                     <span>
                         <input type="range" id="myRange" min="1" value="100" (change)="mangeVolumn($event)">
                     </span>
-                    <div class="audio_time"><span id="running_time">{{running_time}}</span> / <span>{{total_time}}</span></div>
+                    <div class="audio_time"><span id="running_time"></span> / <span id="total_time"></span></div>
                 </div>  
                 <div class="progress">
                     <input type="range" id="song_prog" min="0" (change)="manageProgress($event)">
@@ -69,12 +69,12 @@
                         </button>
                     </div>
                     <div class="col-12">
-                        <button class="btn btn-success social_button comment_btn">
+                        <button class="btn btn-success social_button comment_btn" (click)="openPhoneShareTrackModel(phoneno)">
                             <i class="fa fa-comment "></i> SMS
                         </button>
                     </div>
                     <div class="col-12">
-                        <button class="btn btn-primary social_button link_btn">
+                        <button class="btn btn-primary social_button link_btn" (click)="copy_link()" tooltip="Link Coppied" triggers="click">
                             <i class="fa fa-link"></i> Copy Link
                         </button>
                     </div>
@@ -99,18 +99,48 @@
 <ng-template #email let-c="close" let-d="dismiss">
     <div class="modal-body">
       <div class="forget_password_modal">
-        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+        <!-- <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
             <span aria-hidden="true">&times;</span>
-        </button>
-        <form [formGroup]="forget_form">
+        </button> -->
+        <form [formGroup]="share_form">
             <h3 class="forget_password_header">Share through email</h3>
             <div class="col-sm-12">
                 <div class="form-group">
                     <label class="control-label custom_form_label">Email Id</label>
-                    <input class="form-control custom_form" name="email"  placeholder="Enter Email"/>
+                    <input type="email" class="form-control custom_form" formControlName="email" name="email" [(ngModel)]="share_data['email']"  placeholder="Enter Email"/>
+                    <div class="cust_err_msg" *ngIf="share_form_validation && !share_form.controls['email'].valid">
+                        <span *ngIf="share_form.controls['email'].errors['required']" class="text-danger">Email is required.</span>
+                        <span *ngIf="!share_form.controls['email'].errors['required'] && share_form.controls['email'].errors['email']" class="text-danger">Enter valid email.</span>
+                    </div>
                 </div>
                 <div class="form-group text-right">
-                    <button class="btn forget_btn" >Submit <i *ngIf="show_spinner" class="fa fa-spinner fa-spin"></i></button>
+                    <button class="btn forget_btn" (click)="share_via_email(share_form.valid)" [disabled]="show_spinner">Submit <i *ngIf="show_spinner" class="fa fa-spinner fa-spin"></i></button>
+                </div>
+            </div>
+        </form>
+     </div>
+    </div>
+</ng-template>
+
+<ng-template #phoneno let-c="close" let-d="dismiss">
+    <div class="modal-body">
+      <div class="forget_password_modal">
+        <!-- <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button> -->
+        <form [formGroup]="share_form_phone">
+            <h3 class="forget_password_header">Share through sms</h3>
+            <div class="col-sm-12">
+                <div class="form-group">
+                    <label class="control-label custom_form_label">Phone Number</label>
+                    <input type="email" class="form-control custom_form" formControlName="phone" name="phone" [(ngModel)]="share_data['phone_no']"  placeholder="Enter Phone Number"/>
+                    <div class="cust_err_msg" *ngIf="share_form_validation && !share_form_phone.controls['phone'].valid">
+                        <span *ngIf="share_form_phone.controls['phone'].errors['required']" class="text-danger">Phone Number is required.</span>
+                        <span *ngIf="!share_form_phone.controls['phone'].errors['required'] && share_form_phone.controls['phone'].errors['minlength'] || share_form_phone.controls['phone'].errors['maxlength'] " class="text-danger">Enter valid phone Number.</span>
+                    </div>
+                </div>
+                <div class="form-group text-right">
+                    <button class="btn forget_btn" (click)="share_via_sms(share_form_phone.valid)" [disabled]="show_spinner">Submit <i *ngIf="show_spinner" class="fa fa-spinner fa-spin"></i></button>
                 </div>
             </div>
         </form>

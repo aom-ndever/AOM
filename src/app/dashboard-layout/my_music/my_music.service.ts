@@ -53,4 +53,16 @@ export class MyMusicService {
   trackDownload(id : any) {
     return this.http.post(`${this.api_host}/artist/track/change_status_of_download`,{track_id : id},  {headers : this.headers});
   }
+  // share track via email
+  shareTrackViaEmail(data : any) {
+      this.user = JSON.parse(localStorage.getItem('user'));
+      this.headers = new HttpHeaders({ 'x-access-token' : this.user.token });
+      return this.http.post(`${this.api_host}/user/track/share_track_by_mail`, data, {headers : this.headers});
+  }
+  // share track via email
+  shareTrackViaSms(data : any) {
+      this.user = JSON.parse(localStorage.getItem('user'));
+      this.headers = new HttpHeaders({ 'x-access-token' : this.user.token });
+      return this.http.post(`${this.api_host}/user/track/share_track_by_sms`, data, {headers : this.headers});
+  }
 }
