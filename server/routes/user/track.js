@@ -109,7 +109,6 @@ router.post('/vote_track', async (req, res) => {
       notEmpty: true,
       errorMessage: "Track Id is required"
     },
-
   };
   req.checkBody(schema);
   var errors = req.validationErrors();

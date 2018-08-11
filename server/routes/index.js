@@ -110,7 +110,7 @@ router.post('/artist_registration', async (req, res) => {
       if (req.files && req.files["image"]) {
         var file = req.files["image"];
         var dir = "./uploads/artist";
-        var mimetype = ["image/png", "image/jpeg", "image/jpg"];
+        var mimetype = ["image/png", "image/jpeg", "image/jpg", "image/gif"];
 
         if (mimetype.indexOf(file.mimetype) != -1) {
           if (!fs.existsSync(dir)) {
@@ -714,7 +714,7 @@ router.post('/user_login', async (req, res) => {
       logger.trace("Artist found. Executing next instruction");
       logger.trace("valid token. Generating token");
       if (login_resp.user.flag == false) {
-        if (bcrypt.compareSync(req.body.password, login_resp.user.password)) {
+        if (bcrypt.compareSync(req.body.password, login_resp.artist.password) && req.body.email == login_resp.artist.email) {
 
           if (login_resp.user.email_verified) {
             var refreshToken = jwt.sign({ id: login_resp.user._id }, config.REFRESH_TOKEN_SECRET_KEY, {});
@@ -748,11 +748,16 @@ router.post('/user_login', async (req, res) => {
 
       }
     } else {
-      logger.error("Validation Error = ", errors);
-      res.status(config.BAD_REQUEST).json({ message: errors });
+
+      res.status(config.BAD_REQUEST).json({ message: "invalid email" });
     }
   }
+  else {
+
+    res.status(config.BAD_REQUEST).json({ message: "invalid email" });
+  }
 });
+
 
 /**
  * @api {post} /artist_forgot_password Artist forgot password
