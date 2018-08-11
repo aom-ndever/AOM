@@ -55,7 +55,7 @@ router.post("/", async (req, res) => {
                 logger.trace("Uploading avatar image");
                 var file = req.files['audio'];
                 var dir = "./uploads/track/";
-                var mimetype = ['audio/aac', 'audio/mp3', 'audio/mpeg'];
+                var mimetype = ['audio/aac', 'audio/mp3', 'audio/mpeg', 'audio/wav'];
 
                 if (mimetype.indexOf(file.mimetype) !== -1) {
                     if (!fs.existsSync(dir)) {

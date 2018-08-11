@@ -109,7 +109,6 @@ router.post('/vote_track', async (req, res) => {
       notEmpty: true,
       errorMessage: "Track Id is required"
     },
-
   };
   req.checkBody(schema);
   var errors = req.validationErrors();
@@ -278,7 +277,14 @@ router.post('/share_track_by_mail', async (req, res) => {
       "track": track_name,
       "url": obj.url
     });
-  res.status(config.OK_STATUS).json({ message: "Track shared successfully" });
+  console.log('mail_resp', mail_resp);
+
+  if (mail_resp.status == 1) {
+    res.status(config.OK_STATUS).json({ message: "Track shared successfully" });
+  }
+  else {
+    res.status(config.OK_STATUS).json({ message: "Track sharing failed" });
+  }
 }
 );
 
@@ -300,15 +306,21 @@ router.post('/share_track_by_sms', async (req, res) => {
   const authToken = '96ae4c1342bee3f471fc54d471dbbe3f';
   const client = require('twilio')(accountSid, authToken);
 
-  client.messages
-    .create({
-      body: 'Artist: ' + " " + artist_first_name + artist_last_name + '\n' + 'track:' + track_name + '\n' + 'url:' + obj.url,
-      from: '+12526801944',
-      to: req.body.phone_no
-    })
-    .then(message => console.log(message.sid))
-    .done()
-  res.status(config.OK_STATUS).json({ message: "Track shared successfully" });
+  try {
+    var msg = await client.messages
+      .create({
+        body: 'Artist: ' + " " + artist_first_name + artist_last_name + '\n' + 'track:' + track_name + '\n' + 'url:' + obj.url,
+        from: '+12526801944',
+        to: req.body.phone_no
+      })
+    if (msg) {
+      res.status(config.OK_STATUS).json({ message: "Track shared successfully" });
+    } else {
+      res.status(config.OK_STATUS).json({ message: "Your number is not registered" });
+    }
+  } catch (error) {
+    res.status(config.OK_STATUS).json({ message: "Your number is not registered" });
+  }
 }
 );
 

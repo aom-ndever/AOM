@@ -165,6 +165,7 @@ router.put('/', async (req, res) => {
     }
 
 
+
     var user_resp = await artist_helper.update_artist_by_id(req.userInfo.id, obj);
 
     if (user_resp.status === 0) {

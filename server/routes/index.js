@@ -94,7 +94,9 @@ router.post('/artist_registration', async (req, res) => {
       "last_name": req.body.last_name,
       "zipcode": req.body.zipcode,
       "music_type": req.body.music_type,
-      "state": req.body.state
+      "state": req.body.state,
+      "gender": req.body.gender,
+      "dob": req.body.dob
     };
     if (req.body.share_url) {
       reg_obj.social_media = JSON.parse(req.body.share_url)
@@ -109,7 +111,7 @@ router.post('/artist_registration', async (req, res) => {
       if (req.files && req.files["image"]) {
         var file = req.files["image"];
         var dir = "./uploads/artist";
-        var mimetype = ["image/png", "image/jpeg", "image/jpg"];
+        var mimetype = ["image/png", "image/jpeg", "image/jpg", "image/gif"];
 
         if (mimetype.indexOf(file.mimetype) != -1) {
           if (!fs.existsSync(dir)) {
@@ -171,6 +173,198 @@ router.post('/artist_registration', async (req, res) => {
       }
     } else {
       res.status(config.BAD_REQUEST).json({ "status": 0, "message": "Artist's email already exist" });
+    }
+
+
+  } else {
+    logger.error("Validation Error = ", errors);
+    res.status(config.BAD_REQUEST).json({ message: errors });
+  }
+});
+
+
+
+//facebook registration
+router.post('/user_registration_facebook', async (req, res) => {
+  var schema = {
+    "email": {
+      notEmpty: true,
+      errorMessage: "Email is required"
+    },
+    "id": {
+      notEmpty: true,
+      errorMessage: "social id is required"
+    },
+    "name": {
+      notEmpty: true,
+      errorMessage: "first name is required"
+    },
+    "provider": {
+      notEmpty: true,
+      errorMessage: "provider is required"
+    },
+    "token": {
+      notEmpty: true,
+      errorMessage: "token is required"
+    }
+
+  };
+  req.checkBody(schema);
+  var errors = req.validationErrors();
+  if (!errors) {
+    var obj = {
+      "email": req.body.email,
+      "social_id": req.body.id,
+      "first_name": req.body.name,
+      "provider": req.body.provider,
+      "facebook_token": req.body.token,
+      "image": req.body.image
+    };
+
+    user = await user_helper.get_user_by_email(req.body.email)
+    if (user.status === 2) {
+
+      var data = await user_helper.insert_user(obj);
+
+      if (data.status == 0) {
+        logger.trace("Error occured while inserting user - User Signup API");
+        logger.debug("Error = ", data.error);
+        res.status(config.INTERNAL_SERVER_ERROR).json(data);
+      } else {
+        logger.trace("User has been inserted");
+        // Send email confirmation mail to user
+        logger.trace("sending mail");
+        let mail_resp = await mail_helper.send("email_confirmation", {
+          "to": data.user.email,
+          "subject": "Music Social Voting - Email confirmation"
+        }, {
+            "confirm_url": config.website_url + "/email_confirm/user/" + data.user._id
+          });
+        if (mail_resp.status === 0) {
+          res.status(config.INTERNAL_SERVER_ERROR).json({ "status": 0, "message": "Error occured while sending confirmation email", "error": mail_resp.error });
+        } else {
+          res.status(config.OK_STATUS).json({ "status": 1, "message": "User login successfully done", "user": data.user });
+        }
+      }
+    } else {
+      let login_resp = await user_helper.get_login_by_email(req.body.email);
+
+      var refreshToken = jwt.sign({ id: login_resp.user._id }, config.REFRESH_TOKEN_SECRET_KEY, {});
+
+      let update_resp = await user_helper.update_user_by_id(login_resp.user._id, { "refresh_token": refreshToken, "last_login": Date.now() });
+
+      var LoginJson = { id: login_resp.user._id, email: login_resp.email, role: "user" };
+
+      var token = jwt.sign(LoginJson, config.ACCESS_TOKEN_SECRET_KEY, {
+        expiresIn: config.ACCESS_TOKEN_EXPIRE_TIME
+      });
+
+      delete login_resp.user.status;
+      delete login_resp.user.password;
+      delete login_resp.user.refresh_token;
+
+      delete login_resp.user.last_login_date;
+      delete login_resp.user.created_at;
+
+      logger.info("Token generated");
+      res.status(config.OK_STATUS).json({ "status": 1, "message": "Logged in successful", "user": login_resp.user, "token": token, "refresh_token": refreshToken });
+    }
+
+
+  } else {
+    logger.error("Validation Error = ", errors);
+    res.status(config.BAD_REQUEST).json({ message: errors });
+  }
+});
+
+
+
+//gmail registration
+router.post('/user_registration_gmail', async (req, res) => {
+  var schema = {
+    "U3": {
+      notEmpty: true,
+      errorMessage: "Email is required"
+    },
+    "Eea": {
+      notEmpty: true,
+      errorMessage: "social id is required"
+    },
+    "ofa": {
+      notEmpty: true,
+      errorMessage: "first name is required"
+    },
+    "wea": {
+      notEmpty: true,
+      errorMessage: "last name is required"
+    },
+    "token": {
+      notEmpty: true,
+      errorMessage: "token is required"
+    },
+  };
+  req.checkBody(schema);
+  var errors = req.validationErrors();
+  if (!errors) {
+    var obj = {
+      "email": req.body.U3,
+      "social_id": req.body.Eea,
+      "first_name": req.body.ofa,
+      "last_name": req.body.wea,
+      "gmail_token": req.body.token,
+      "image": req.body.image
+    };
+
+    var user = await user_helper.get_user_by_email(req.body.U3);
+
+
+    if (user.status === 2) {
+
+      var data = await user_helper.insert_user(obj);
+
+      if (data.status == 0) {
+        logger.trace("Error occured while inserting user - User Signup API");
+        logger.debug("Error = ", data.error);
+        res.status(config.INTERNAL_SERVER_ERROR).json(data);
+      } else {
+        logger.trace("User has been inserted");
+        // Send email confirmation mail to user
+        logger.trace("sending mail");
+        let mail_resp = await mail_helper.send("email_confirmation", {
+          "to": data.user.email,
+          "subject": "Music Social Voting - Email confirmation"
+        }, {
+            "confirm_url": config.website_url + "/email_confirm/user/" + data.user._id
+          });
+        if (mail_resp.status === 0) {
+          res.status(config.INTERNAL_SERVER_ERROR).json({ "status": 0, "message": "Error occured while sending confirmation email", "error": mail_resp.error });
+        } else {
+          res.status(config.OK_STATUS).json({ "status": 1, "message": "User login successfully done", "user": user });
+        }
+      }
+    } else {
+      let login_resp = await user_helper.get_login_by_email(req.body.U3);
+
+
+      var refreshToken = jwt.sign({ id: login_resp.user._id }, config.REFRESH_TOKEN_SECRET_KEY, {});
+
+      let update_resp = await user_helper.update_user_by_id(login_resp.user._id, { "refresh_token": refreshToken, "last_login": Date.now() });
+
+      var LoginJson = { id: login_resp.user._id, email: login_resp.email, role: "user" };
+
+      var token = jwt.sign(LoginJson, config.ACCESS_TOKEN_SECRET_KEY, {
+        expiresIn: config.ACCESS_TOKEN_EXPIRE_TIME
+      });
+
+      delete login_resp.user.status;
+      delete login_resp.user.password;
+      delete login_resp.user.refresh_token;
+
+      delete login_resp.user.last_login_date;
+      delete login_resp.user.created_at;
+
+      logger.info("Token generated");
+      res.status(config.OK_STATUS).json({ "status": 1, "message": "Logged in successful", "user": login_resp.user, "token": token, "refresh_token": refreshToken });
     }
 
 
@@ -273,7 +467,7 @@ router.post('/artist_login', async (req, res) => {
       logger.trace("Artist found. Executing next instruction");
       logger.trace("valid token. Generating token");
       if (login_resp.artist.flag == false) {
-        if (bcrypt.compareSync(req.body.password, login_resp.artist.password)) {
+        if (bcrypt.compareSync(req.body.password, login_resp.artist.password) && req.body.email == login_resp.artist.email) {
 
           if (login_resp.artist.email_verified) {
 
@@ -283,8 +477,6 @@ router.post('/artist_login', async (req, res) => {
             var token = jwt.sign(LoginJson, config.ACCESS_TOKEN_SECRET_KEY, {
               expiresIn: config.ACCESS_TOKEN_EXPIRE_TIME
             });
-
-
             delete login_resp.artist.status;
             delete login_resp.artist.password;
             delete login_resp.artist.refresh_token;
@@ -308,9 +500,13 @@ router.post('/artist_login', async (req, res) => {
 
       }
     } else {
-      logger.error("Validation Error = ", errors);
-      res.status(config.BAD_REQUEST).json({ message: errors });
+
+      res.status(config.BAD_REQUEST).json({ message: "invalid email" });
     }
+  }
+  else {
+
+    res.status(config.BAD_REQUEST).json({ message: "invalid email" });
   }
 });
 
@@ -519,7 +715,7 @@ router.post('/user_login', async (req, res) => {
       logger.trace("Artist found. Executing next instruction");
       logger.trace("valid token. Generating token");
       if (login_resp.user.flag == false) {
-        if (bcrypt.compareSync(req.body.password, login_resp.user.password)) {
+        if (bcrypt.compareSync(req.body.password, login_resp.artist.password) && req.body.email == login_resp.artist.email) {
 
           if (login_resp.user.email_verified) {
             var refreshToken = jwt.sign({ id: login_resp.user._id }, config.REFRESH_TOKEN_SECRET_KEY, {});
@@ -553,11 +749,16 @@ router.post('/user_login', async (req, res) => {
 
       }
     } else {
-      logger.error("Validation Error = ", errors);
-      res.status(config.BAD_REQUEST).json({ message: errors });
+
+      res.status(config.BAD_REQUEST).json({ message: "invalid email" });
     }
   }
+  else {
+
+    res.status(config.BAD_REQUEST).json({ message: "invalid email" });
+  }
 });
+
 
 /**
  * @api {post} /artist_forgot_password Artist forgot password
@@ -1419,7 +1620,7 @@ router.post('/get_track', async (req, res) => {
   }
 
   var sort = { created_at: sort_by }
-  var track = await track_helper.get_all_track_of_artist(artist_id, req.body.start, req.body.length);
+  var track = await track_helper.get_all_track_of_artist(artist_id, req.body.start, req.body.length, sort);
   if (track.status === 1) {
     logger.trace("got details successfully");
     res.status(config.OK_STATUS).json({ "status": 1, "track": track });
