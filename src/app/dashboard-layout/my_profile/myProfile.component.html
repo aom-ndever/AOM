@@ -1051,14 +1051,14 @@
                                                     </div>
                                                     <div class="form-group home-grp">
                                                         <label for="hometown">Home Town</label>
-                                                        <input class="form-control" placeholder="zipcode" formControlName="zipcode" name="zipcode" [(ngModel)]="userdata.zipcode" />
-                                                        <div class="cust_err_msg" *ngIf="listenerProfileValidation && !listener_profile.controls['zipcode'].valid">
+                                                        <input class="form-control" placeholder="zipcode" formControlName="zipcode" name="listener_zipcode" [(ngModel)]="userdata.zipcode" />
+                                                        <div class="cust_err_msg" *ngIf="listenerProfileValidation && !listener_profile.controls['zipcode1'].valid">
                                                             <span *ngIf="listener_profile.controls['zipcode'].errors['required']" class="text-danger">Zipcode is required.</span>
                                                         </div>
                                                     </div>
                                                     <div class="form-group home-grp">
                                                         <label for="hometown">Phone Number</label>
-                                                        <input class="form-control" placeholder="phone number" name="phone" [(ngModel)]="userdata.phone_no" />
+                                                        <input class="form-control" placeholder="phone number"  formControlName="phone" name="phone" [(ngModel)]="userdata.phone_no" />
                                                         <div class="cust_err_msg" *ngIf="listenerProfileValidation && !listener_profile.controls['phone'].valid">
                                                             <span *ngIf="listener_profile.controls['phone'].errors['required']" class="text-danger">Phone Number is required.</span>
                                                             <span *ngIf="(listener_profile.controls['phone'].errors['maxlength'] || listener_profile.controls['phone'].errors['minlength'])  && listener_profile.controls['phone'].dirty" class="text-danger">Please enter valid phone number.</span>

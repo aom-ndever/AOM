@@ -174,6 +174,7 @@ export class MyProfileComponent implements OnInit, OnDestroy {
       share_url_youtube : [''],
       share_url_sound : ['']
     });
+
     this.listener_profile = this.fb.group({
       upload : [''],
       fname : ['', [Validators.required]],
@@ -183,8 +184,8 @@ export class MyProfileComponent implements OnInit, OnDestroy {
       month : ['', [Validators.required]],
       year : ['', [Validators.required]],
       phone : ['', [Validators.required, Validators.pattern('[0-9]+'), Validators.minLength(10),Validators.maxLength(10)]],
-      music_type : [''],
-      zipcode : ['', [Validators.required]]
+      zipcode : ['', [Validators.required]],
+      music_type : ['']
     });
   }
 
