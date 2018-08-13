@@ -239,6 +239,8 @@ follower_helper.get_all_followers_by_user_id = async (id) => {
             .find({ "user_id": id })
             .populate({ path: 'user_id', populate: { path: 'music_type' } })
             .populate({ path: 'artist_id', populate: { path: 'music_type' } })
+            .populate({ path: 'user_id', populate: { path: 'state' } })
+            .populate({ path: 'artist_id', populate: { path: 'state' } })
             .lean();
         if (user) {
             return { "status": 1, "message": "user details found", "user": user };
