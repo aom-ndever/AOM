@@ -215,8 +215,9 @@ export class HeaderComponent implements OnInit, OnDestroy  {
   forgetPassword() {
     this.show_spinner = true;
     if(this.forget_pwd_data && this.forget_pwd_data.type == 'artist') {
-      this.HeaderService.artistForgetPassword({email : this.forget_pwd_data.email}).subscribe(response => {
+      this.HeaderService.artistForgetPassword({email : this.forget_pwd_data.email, type : this.forget_pwd_data.type}).subscribe(response => {
         this.toastr.success(response['message'], 'Success!');
+        this.modalForgetRef.close();
       }, error => {
         if(error['error'].message[0] && error['error'].message[0]['param'] && error['error'].message[0]['param'] == 'email') {
           this.toastr.error(error['error'].message[0]['msg'], 'Error!');
@@ -229,9 +230,10 @@ export class HeaderComponent implements OnInit, OnDestroy  {
         this.show_spinner = false;
       });
     } else {
-      this.HeaderService.userForgetPassword({email : this.forget_pwd_data.email}).subscribe(response => {
+      this.HeaderService.userForgetPassword({email : this.forget_pwd_data.email, type : this.forget_pwd_data.type}).subscribe(response => {
         console.log('user ', response);
         this.toastr.success(response['message'], 'Success!');
+        this.modalForgetRef.close();
       }, error => {
         if(error['error'].message[0] && error['error'].message[0]['param'] && error['error'].message[0]['param'] == 'email') {
           this.toastr.error(error['error'].message[0]['msg'], 'Error!');

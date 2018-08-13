@@ -25,7 +25,7 @@ export class HeaderService {
   }
   // Forget password for user
   userForgetPassword(data : any) {
-    return this.http.post(`${this.api_host}/user_reset_password`, data);
+    return this.http.post(`${this.api_host}/user_forgot_password`, data);
   }
   // Facebook login
   userFacebookLogin(data : any) {

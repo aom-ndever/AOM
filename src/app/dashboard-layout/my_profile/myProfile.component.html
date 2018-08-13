@@ -17,11 +17,11 @@
                     <div class="tab-content">
                         <div class="tab-pane fade {{tab_cnt == 1 ? 'show active' : '' }} " id="profile">
                             <div class="edit-cover">
-                                <form>
+                                <form [formGroup]="artist_profile">
                                     <div class="upload-cover">
                                         <img [src]="default_cover_img" alt="Edit cover Image">
                                         <span class="up_text">Update Photo</span>
-                                        <input type="file" name="my_doc_upload" id="cover_upload1" multiple="false" (change)="updateCoverImage($event)">
+                                        <input type="file" name="my_doc_upload" formControlName="upload" id="cover_upload1" multiple="false" (change)="updateCoverImage($event)">
                                         <a data-fancybox data-animation-duration="700" data-src="#delete" href="javascript:;" *ngIf="userdata.cover_image" (click)="removeArtistCoverImage()" class="delete"><i class="fa fa-trash"></i></a>
                                     </div>
                                     <div class="edit-details">
@@ -32,7 +32,7 @@
                                                     <div class="upload-cover">
                                                         <img [src]="default_profile_img" alt="Edit cover Image">
                                                         <span class="up_text">Update Photo</span>
-                                                        <input type="file" name="upload" id="cover_upload" (change)="updateProfileImage($event)">
+                                                        <input type="file" formControlName="cover" name="upload" id="cover_upload" (change)="updateProfileImage($event)">
                                                         <a data-fancybox data-animation-duration="700" data-src="#delete" *ngIf="userdata.image" href="javascript:;" class="delete" (click)="removeArtistImage()"><i class="fa fa-trash"></i></a>
                                                     </div>
                                                 </div>
@@ -42,60 +42,88 @@
 
                                                     <div class="form-group">
                                                         <label for="fname">First Name</label>
-                                                        <input type="text" class="form-control" id="fname5" name="fname" [(ngModel)]="userdata.first_name" placeholder="First Name">
+                                                        <input type="text" class="form-control" formControlName="fname" id="fname5" name="fname" [(ngModel)]="userdata.first_name" placeholder="First Name">
+                                                        <div class="cust_err_msg" *ngIf="artistProfileValidation && !artist_profile.controls['fname'].valid">
+                                                            <span *ngIf="artist_profile.controls['fname'].errors['required']" class="text-danger">First name is required.</span>
+                                                        </div>
                                                     </div>
 
                                                     <div class="form-group pwd-grp">
                                                         <label for="lanem">Last Name</label>
-                                                        <input type="text" class="form-control" id="lname2" name="lname" [(ngModel)]="userdata.last_name" placeholder="Last Name">
+                                                        <input type="text" class="form-control" id="lname2" formControlName="lname" name="lname" [(ngModel)]="userdata.last_name" placeholder="Last Name">
+                                                        <div class="cust_err_msg" *ngIf="artistProfileValidation && !artist_profile.controls['lname'].valid">
+                                                            <span *ngIf="artist_profile.controls['lname'].errors['required']" class="text-danger">Last name is required.</span>
+                                                        </div>
                                                     </div>
 
                                                     <div class="form-group gender-grp">
                                                         <label for="geder">Gender</label>
-                                                        <select class="form-control" id="gender" name="gender" [(ngModel)]="userdata.gender">
+                                                        <select class="form-control" id="gender" formControlName="gender" name="gender" [(ngModel)]="userdata.gender">
                                                             <option value="male">Male</option>
                                                             <option value="female">Female</option>
                                                         </select>
+                                                        <div class="cust_err_msg" *ngIf="artistProfileValidation && !artist_profile.controls['gender'].valid">
+                                                            <span *ngIf="artist_profile.controls['gender'].errors['required']" class="text-danger">Gender is required.</span>
+                                                        </div>
                                                     </div>
                                                     <div class="form-group">
                                                         <div class="date-of-birth">
                                                             <label for="date">Birthday Date</label>
                                                             <div class="form-group">
-                                                                <select class="form-control" id="day" name="day" [(ngModel)]="userdata.day">
+                                                                <select class="form-control" id="day" formControlName="day" name="day" [(ngModel)]="userdata.day">
                                                                     <option value="">Day</option>
                                                                     <option *ngFor="let d of day" value="{{d}}">{{d}}</option>
                                                                 </select>
+                                                                <div class="cust_err_msg" *ngIf="artistProfileValidation && !artist_profile.controls['day'].valid">
+                                                                    <span *ngIf="artist_profile.controls['day'].errors['required']" class="text-danger">Day is required.</span>
+                                                                </div>
                                                             </div>
                                                             <div class="form-group">
-                                                                <select class="form-control" id="month" name="month" [(ngModel)]="userdata.month">
+                                                                <select class="form-control" id="month" formControlName="month" name="month" [(ngModel)]="userdata.month">
                                                                     <option value="">Month</option>
                                                                     <option *ngFor="let m of month" value="{{m}}">{{m}}</option>
                                                                 </select>
+                                                                <div class="cust_err_msg" *ngIf="artistProfileValidation && !artist_profile.controls['month'].valid">
+                                                                    <span *ngIf="artist_profile.controls['month'].errors['required']" class="text-danger">Month is required.</span>
+                                                                </div>
                                                             </div>
                                                             <div class="form-group">
-                                                                <select class="form-control" id="year" name="year" [(ngModel)]="userdata.year">
+                                                                <select class="form-control" id="year" formControlName="year" name="year" [(ngModel)]="userdata.year">
                                                                     <option value="">Year</option>
                                                                     <option *ngFor="let y of year" value="{{y}}">{{y}}</option>
                                                                 </select>
+                                                                <div class="cust_err_msg" *ngIf="artistProfileValidation && !artist_profile.controls['year'].valid">
+                                                                    <span *ngIf="artist_profile.controls['year'].errors['required']" class="text-danger">Year is required.</span>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
 
                                                     <div class="form-group music-grp">
                                                         <label for="musictype">Music Type</label>
-                                                        <select class="form-control" id="musictype" name="music_type" [(ngModel)]="userdata.music_type['_id']">
+                                                        <select class="form-control" id="musictype" formControlName="music_type" name="music_type" [(ngModel)]="userdata.music_type['_id']">
                                                             <option *ngFor="let type of music_types" value="{{type._id}}">{{type.name}}</option>
                                                         </select>
+                                                        <div class="cust_err_msg" *ngIf="artistProfileValidation && !artist_profile.controls['music_type'].valid">
+                                                            <span *ngIf="artist_profile.controls['music_type'].errors['required']" class="text-danger">Music is required.</span>
+                                                        </div>
                                                     </div>
                                                     
                                                     <div class="form-group home-grp">
                                                         <label for="hometown">Home Town</label>
-                                                        <input class="form-control" placeholder="zipcode" name="zipcode" [(ngModel)]="userdata.zipcode" />
+                                                        <input class="form-control" placeholder="zipcode" formControlName="zipcode" name="zipcode" [(ngModel)]="userdata.zipcode" />
+                                                        <div class="cust_err_msg" *ngIf="artistProfileValidation && !artist_profile.controls['zipcode'].valid">
+                                                            <span *ngIf="artist_profile.controls['zipcode'].errors['required']" class="text-danger">Zipcode is required.</span>
+                                                        </div>
                                                     </div>
 
                                                     <div class="form-group home-grp">
                                                         <label for="hometown">Phone Number</label>
-                                                        <input class="form-control" placeholder="phone number" name="phone" [(ngModel)]="userdata.phone_no" />
+                                                        <input class="form-control" placeholder="phone number" formControlName="phone" name="phone" [(ngModel)]="userdata.phone_no" />
+                                                        <div class="cust_err_msg" *ngIf="artistProfileValidation && !artist_profile.controls['phone'].valid">
+                                                            <span *ngIf="artist_profile.controls['phone'].errors['required']" class="text-danger">Phone Number is required.</span>
+                                                            <span *ngIf="(artist_profile.controls['phone'].errors['maxlength'] || artist_profile.controls['phone'].errors['minlength'])  && artist_profile.controls['phone'].dirty" class="text-danger">Please enter valid phone number.</span>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -105,7 +133,7 @@
                                         <div class="edit-head">Additional Information</div>
                                         <div class="about-you">
                                             <label for="fname">Describe Yourself</label>
-                                            <textarea class="form-control" name="description" [(ngModel)]="userdata.description" placeholder="Add about yourself..."></textarea>
+                                            <textarea class="form-control" name="description" formControlName="description" [(ngModel)]="userdata.description" placeholder="Add about yourself..."></textarea>
                                         </div>
                                     </div>
                                     <div class="social-details">
@@ -114,35 +142,35 @@
                                             <div class="social-block">
                                                 <div class="form-group">
                                                     <label for="facebook">Facebook</label>
-                                                    <input type="text" class="form-control" id="fb" placeholder="Add Account" name="fb" [(ngModel)]="userdata.social_media['facebook']">
+                                                    <input type="text" class="form-control" id="fb" formControlName="share_url_fb" placeholder="Add Account" name="fb" [(ngModel)]="userdata.social_media['facebook']">
                                                     <img src="img/fb.png" alt="Facebook">
                                                 </div>
                                             </div>
                                             <div class="social-block">
                                                 <div class="form-group">
                                                     <label for="inst">Instagram</label>
-                                                    <input type="text" class="form-control" id="fname" placeholder="Add Account" name="insta" [(ngModel)]="userdata.social_media['instagram']">
+                                                    <input type="text" class="form-control" id="fname" formControlName="share_url_insta" placeholder="Add Account" name="insta" [(ngModel)]="userdata.social_media['instagram']">
                                                     <img src="img/inst.png" alt="Facebook">
                                                 </div>
                                             </div>
                                             <div class="social-block">
                                                 <div class="form-group">
                                                     <label for="facebook">Twitter</label>
-                                                    <input type="text" class="form-control" id="fb1" placeholder="Add Account" name="twit" [(ngModel)]="userdata.social_media['twitter']">
+                                                    <input type="text" class="form-control" id="fb1" formControlName="share_url_twit" placeholder="Add Account" name="twit" [(ngModel)]="userdata.social_media['twitter']">
                                                     <img src="img/twitter.png" alt="Facebook">
                                                 </div>
                                             </div>
                                             <div class="social-block">
                                                 <div class="form-group">
                                                     <label for="inst">Youtube</label>
-                                                    <input type="text" class="form-control" id="fname1" placeholder="Add Account" name="youtube" [(ngModel)]="userdata.social_media['youtube']">
+                                                    <input type="text" class="form-control" id="fname1" formControlName="share_url_youtube" placeholder="Add Account" name="youtube" [(ngModel)]="userdata.social_media['youtube']">
                                                     <img src="img/youtube.png" alt="Facebook">
                                                 </div>
                                             </div>
                                             <div class="social-block">
                                                 <div class="form-group">
                                                     <label for="inst">Soundcloud</label>
-                                                    <input type="text" class="form-control" id="fname2" placeholder="Add Account" name="sound" [(ngModel)]="userdata.social_media['sound_cloud']">
+                                                    <input type="text" class="form-control" id="fname2" formControlName="share_url_sound" placeholder="Add Account" name="sound" [(ngModel)]="userdata.social_media['sound_cloud']">
                                                     <img src="img/soundcloud.png" alt="Facebook">
                                                 </div>
                                             </div>
@@ -151,7 +179,7 @@
                                     </div>
                                     <div class="button_group">
                                         <a href="#" class="cancel-btn">Cancel</a>
-                                        <button type="submit" (click)="update()" [disabled]="show_spinner" class="save-btn btn btn-primary">Save <i *ngIf="show_spinner" class="fa fa-spinner fa-spin"></i></button>
+                                        <button type="submit" (click)="update(artist_profile.valid)" [disabled]="show_spinner" class="save-btn btn btn-primary">Save <i *ngIf="show_spinner" class="fa fa-spinner fa-spin"></i></button>
                                     </div>
                                 </form>
                             </div>
@@ -936,7 +964,7 @@
                     <div class="tab-content">
                         <div class="tab-pane fade {{tab_cnt == 1 ? 'show active' : '' }} " id="profile">
                             <div class="edit-cover">
-                                <form>
+                                <form [formGroup]="listener_profile">
                                     <div class="edit-details">
                                         <!-- <div class="edit-head">Your Details</div> -->
                                         <div class="row">
@@ -945,7 +973,7 @@
                                                     <div class="upload-cover">
                                                         <img src="{{default_profile_img}}" alt="Edit cover Image">
                                                         <span class="up_text">Update Photo</span>
-                                                        <input type="file" name="upload" id="cover_upload" (change)="updateProfileImage($event)">
+                                                        <input type="file" name="upload" formControlName="upload" id="cover_upload" (change)="updateProfileImage($event)">
                                                         <a data-fancybox data-animation-duration="700" data-src="#delete" *ngIf="userdata.image" (click)="removeUserImage()" href="javascript:;" class="delete"><i class="fa fa-trash"></i></a>
                                                     </div>
                                                 </div>
@@ -955,65 +983,93 @@
 
                                                     <div class="form-group">
                                                         <label for="fname">First Name</label>
-                                                        <input type="text" class="form-control" id="fname5" name="fname" [(ngModel)]="userdata.first_name" placeholder="First Name">
+                                                        <input type="text" class="form-control" id="fname5" formControlName="fname" name="fname" [(ngModel)]="userdata.first_name" placeholder="First Name">
+                                                        <div class="cust_err_msg" *ngIf="listenerProfileValidation && !listener_profile.controls['fname'].valid">
+                                                            <span *ngIf="listener_profile.controls['fname'].errors['required']" class="text-danger">First name is required.</span>
+                                                        </div>
                                                     </div>
 
                                                     <div class="form-group pwd-grp">
                                                         <label for="lanem">Last Name</label>
-                                                        <input type="text" class="form-control" id="lname2" name="lname" [(ngModel)]="userdata.last_name" placeholder="Last Name">
+                                                        <input type="text" class="form-control" id="lname2" formControlName="lname" name="lname" [(ngModel)]="userdata.last_name" placeholder="Last Name">
+                                                        <div class="cust_err_msg" *ngIf="listenerProfileValidation && !listener_profile.controls['lname'].valid">
+                                                            <span *ngIf="listener_profile.controls['lname'].errors['required']" class="text-danger">Last name is required.</span>
+                                                        </div>
                                                     </div>
 
                                                     <div class="form-group gender-grp">
                                                         <label for="geder">Gender</label>
-                                                        <select class="form-control" id="gender" name="gender" [(ngModel)]="userdata.gender">
+                                                        <select class="form-control" id="gender" name="gender" formControlName="gender" [(ngModel)]="userdata.gender">
                                                             <option value="male">Male</option>
                                                             <option value="female">Female</option>
                                                         </select>
+                                                        <div class="cust_err_msg" *ngIf="listenerProfileValidation && !listener_profile.controls['gender'].valid">
+                                                            <span *ngIf="listener_profile.controls['gender'].errors['required']" class="text-danger">Gender is required.</span>
+                                                        </div>
                                                     </div>
                                                     <div class="form-group">
                                                         <div class="date-of-birth">
                                                             <label for="date">Birthday Date</label>
                                                             <div class="form-group">
-                                                                <select class="form-control" id="day" name="day" [(ngModel)]="userdata.day">
+                                                                <select class="form-control" id="day" formControlName="day" name="day" [(ngModel)]="userdata.day">
                                                                     <option value="">Day</option>
                                                                     <option *ngFor="let d of day" value="{{d}}">{{d}}</option>
                                                                 </select>
+                                                                <div class="cust_err_msg" *ngIf="listenerProfileValidation && !listener_profile.controls['day'].valid">
+                                                                    <span *ngIf="listener_profile.controls['day'].errors['required']" class="text-danger">Day is required.</span>
+                                                                </div>
                                                             </div>
                                                             <div class="form-group">
-                                                                <select class="form-control" id="month" name="month" [(ngModel)]="userdata.month">
+                                                                <select class="form-control" id="month" formControlName="month" name="month" [(ngModel)]="userdata.month">
                                                                     <option value="">Month</option>
                                                                     <option *ngFor="let m of month" value="{{m}}">{{m}}</option>
                                                                 </select>
+                                                                <div class="cust_err_msg" *ngIf="listenerProfileValidation && !listener_profile.controls['month'].valid">
+                                                                    <span *ngIf="listener_profile.controls['month'].errors['required']" class="text-danger">Month is required.</span>
+                                                                </div>
                                                             </div>
                                                             <div class="form-group">
-                                                                <select class="form-control" id="year" name="year" [(ngModel)]="userdata.year">
+                                                                <select class="form-control" id="year" formControlName="year" name="year" [(ngModel)]="userdata.year">
                                                                     <option value="">Year</option>
                                                                     <option *ngFor="let y of year" value="{{y}}">{{y}}</option>
                                                                 </select>
+                                                                <div class="cust_err_msg" *ngIf="listenerProfileValidation && !listener_profile.controls['year'].valid">
+                                                                    <span *ngIf="listener_profile.controls['year'].errors['required']" class="text-danger">Year is required.</span>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
 
                                                     <div class="form-group music-grp">
                                                         <label for="musictype">Music Type</label>
-                                                        <select class="form-control" id="musictype" multiple name="music_type" [(ngModel)]="userdata.music_type">
+                                                        <select class="form-control" id="musictype" formControlName="music_type" multiple name="music_type" [(ngModel)]="userdata.music_type">
                                                             <option *ngFor="let type of music_types" value="{{type._id}}">{{type.name}}</option>
                                                         </select>
+                                                        <div class="cust_err_msg" *ngIf="listenerProfileValidation && !listener_profile.controls['music_type'].valid">
+                                                            <span *ngIf="listener_profile.controls['music_type'].errors['required']" class="text-danger">Music type is required.</span>
+                                                        </div>
                                                     </div>
                                                     <div class="form-group home-grp">
                                                         <label for="hometown">Home Town</label>
-                                                        <input class="form-control" placeholder="zipcode" name="zipcode" [(ngModel)]="userdata.zipcode" />
+                                                        <input class="form-control" placeholder="zipcode" formControlName="zipcode" name="zipcode" [(ngModel)]="userdata.zipcode" />
+                                                        <div class="cust_err_msg" *ngIf="listenerProfileValidation && !listener_profile.controls['zipcode'].valid">
+                                                            <span *ngIf="listener_profile.controls['zipcode'].errors['required']" class="text-danger">Zipcode is required.</span>
+                                                        </div>
                                                     </div>
                                                     <div class="form-group home-grp">
                                                         <label for="hometown">Phone Number</label>
                                                         <input class="form-control" placeholder="phone number" name="phone" [(ngModel)]="userdata.phone_no" />
+                                                        <div class="cust_err_msg" *ngIf="listenerProfileValidation && !listener_profile.controls['phone'].valid">
+                                                            <span *ngIf="listener_profile.controls['phone'].errors['required']" class="text-danger">Phone Number is required.</span>
+                                                            <span *ngIf="(listener_profile.controls['phone'].errors['maxlength'] || listener_profile.controls['phone'].errors['minlength'])  && listener_profile.controls['phone'].dirty" class="text-danger">Please enter valid phone number.</span>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="button_group">
-                                        <button type="submit" (click)="update()" [disabled]="show_spinner" class="save-btn btn btn-primary">Save <i *ngIf="show_spinner" class="fa fa-spinner fa-spin"></i></button>
+                                        <button type="submit" (click)="update(listener_profile.valid)" [disabled]="show_spinner" class="save-btn btn btn-primary">Save <i *ngIf="show_spinner" class="fa fa-spinner fa-spin"></i></button>
                                     </div>
                                 </form>
                             </div>
