@@ -91,6 +91,7 @@ export class ArtistComponent implements OnInit {
       this.artistdata['artist'][index]['is_followed'] = true;
       this.ArtistService.followArtist(data).subscribe(response => {
         this.toastr.success(response['message'], 'Success!');
+        this.getMyFollower();
       }, error => {
         this.artistdata['artist'][index]['is_followed'] = false;
         this.toastr.error(error['error'].message, 'Error!');
