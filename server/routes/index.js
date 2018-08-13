@@ -799,33 +799,43 @@ router.post('/artist_forgot_password', async (req, res) => {
   req.checkBody(schema);
   var errors = req.validationErrors();
   if (!errors) {
-    var resp = await artist_helper.get_artist_by_email(req.body.email);
-    if (resp.status === 0) {
-      res.status(config.INTERNAL_SERVER_ERROR).json({ "status": 0, "message": "Error while finding artist" });
-    } else if (resp.status === 2) {
-      res.status(config.BAD_REQUEST).json({ "status": 0, "message": "email doesn't exist" });
-    } else {
-      // Send mail on user's email address
-      var reset_token = Buffer.from(jwt.sign({ "artist_id": resp.artist._id }, config.ACCESS_TOKEN_SECRET_KEY, {
-        expiresIn: 60 * 60 * 2 // expires in 2 hour
-      })).toString('base64');
+    if (req.body.type == 'artist') {
 
-      let mail_resp = await mail_helper.send("reset_password", {
-        "to": resp.artist.email,
-        "subject": "Music Social Voting"
-      }, {
-          "reset_link": config.website_url + "/forgot_password/artist/" + reset_token
-        });
-
-      if (mail_resp.status === 0) {
-        res.status(config.INTERNAL_SERVER_ERROR).json({ "status": 0, "message": "Error occured while sending mail to artist", "error": mail_resp.error });
+      var resp = await artist_helper.get_artist_by_email(req.body.email);
+      if (resp.status === 0) {
+        res.status(config.INTERNAL_SERVER_ERROR).json({ "status": 0, "message": "Error while finding artist" });
+      } else if (resp.status === 2) {
+        res.status(config.BAD_REQUEST).json({ "status": 0, "message": "email doesn't exist" });
       } else {
-        res.status(config.OK_STATUS).json({ "status": 1, "message": "Reset link has been sent on your email address" });
+        // Send mail on user's email address
+        var reset_token = Buffer.from(jwt.sign({ "artist_id": resp.artist._id }, config.ACCESS_TOKEN_SECRET_KEY, {
+          expiresIn: 60 * 60 * 2 // expires in 2 hour
+        })).toString('base64');
+
+        let mail_resp = await mail_helper.send("reset_password", {
+          "to": resp.artist.email,
+          "subject": "Music Social Voting"
+        }, {
+            "reset_link": config.website_url + "/forgot_password/artist/" + reset_token
+          });
+
+        if (mail_resp.status === 0) {
+          res.status(config.INTERNAL_SERVER_ERROR).json({ "status": 0, "message": "Error occured while sending mail to artist", "error": mail_resp.error });
+        } else {
+          res.status(config.OK_STATUS).json({ "status": 1, "message": "Reset link has been sent on your email address" });
+        }
       }
     }
-  } else {
+    else {
+
+      res.status(config.BAD_REQUEST).json({ message: "You are not of this type" });
+    }
+  }
+  else {
     res.status(config.BAD_REQUEST).json({ message: errors });
   }
+
+
 });
 
 
@@ -925,36 +935,43 @@ router.post('/user_forgot_password', async (req, res) => {
   req.checkBody(schema);
   var errors = req.validationErrors();
   if (!errors) {
-    var resp = await user_helper.get_user_by_email(req.body.email);
-    if (resp.status === 0) {
-      res.status(config.INTERNAL_SERVER_ERROR).json({ "status": 0, "message": "Error while finding user" });
-    } else if (resp.status === 2) {
-      res.status(config.BAD_REQUEST).json({ "status": 0, "message": "No user available with given email" });
-    } else {
-      // Send mail on user's email address
-      var reset_token = Buffer.from(jwt.sign({ "user_id": resp.user._id }, config.ACCESS_TOKEN_SECRET_KEY, {
-        expiresIn: 60 * 60 * 2 // expires in 2 hour
-      })).toString('base64');
+    if (req.body.type == 'listener') {
 
-      let mail_resp = await mail_helper.send("reset_password", {
-        "to": resp.user.email,
-        "subject": "Music Social Voting"
-      }, {
-          "reset_link": config.website_url + "/forgot_password/user/" + reset_token
-        });
-
-      if (mail_resp.status === 0) {
-        res.status(config.INTERNAL_SERVER_ERROR).json({ "status": 0, "message": "Error occured while sending mail to user", "error": mail_resp.error });
+      var resp = await user_helper.get_user_by_email(req.body.email);
+      if (resp.status === 0) {
+        res.status(config.INTERNAL_SERVER_ERROR).json({ "status": 0, "message": "Error while finding user" });
+      } else if (resp.status === 2) {
+        res.status(config.BAD_REQUEST).json({ "status": 0, "message": "No user available with given email" });
       } else {
-        res.status(config.OK_STATUS).json({ "status": 1, "message": "Reset link has been sent on your email address" });
+        // Send mail on user's email address
+        var reset_token = Buffer.from(jwt.sign({ "user_id": resp.user._id }, config.ACCESS_TOKEN_SECRET_KEY, {
+          expiresIn: 60 * 60 * 2 // expires in 2 hour
+        })).toString('base64');
+
+        let mail_resp = await mail_helper.send("reset_password", {
+          "to": resp.user.email,
+          "subject": "Music Social Voting"
+        }, {
+            "reset_link": config.website_url + "/forgot_password/user/" + reset_token
+          });
+
+        if (mail_resp.status === 0) {
+          res.status(config.INTERNAL_SERVER_ERROR).json({ "status": 0, "message": "Error occured while sending mail to user", "error": mail_resp.error });
+        } else {
+          res.status(config.OK_STATUS).json({ "status": 1, "message": "Reset link has been sent on your email address" });
+        }
       }
+    } else {
+
+      res.status(config.BAD_REQUEST).json({ message: "You are not of this type" });
     }
-  } else {
+  }
+  else {
     res.status(config.BAD_REQUEST).json({ message: errors });
   }
+
+
 });
-
-
 
 /**
  * @api {post} /user_reset_password User reset password
