@@ -35,7 +35,7 @@ track_helper.get_all_track_of_artist = async (artist_id, start, length, sort) =>
         var musics = await Track
             .find({ "artist_id": new ObjectId(artist_id) })
             .populate({ path: 'artist_id', populate: { path: 'music_type' } })
-            .sort(sort)
+            .sort({ 'created_at': -1 })
             .skip(start)
             .limit(length);
 
@@ -328,7 +328,6 @@ track_helper.get_artist_by_location_vote = async (day) => {
                 "created_at": { "$gt": new Date(from), "$lt": new Date(to) },
             },
         },
-
         {
             $lookup: {
                 from: "user",
@@ -359,7 +358,6 @@ track_helper.get_artist_by_location_vote = async (day) => {
                 count: { $sum: 1 },
             }
         },
-
     ];
 
     let result = await Vote_track.aggregate(aggregate);
@@ -395,6 +393,7 @@ track_helper.get_artist_by_day_like = async (day) => {
     } else {
         return { "status": 2, "message": "No  available Artist" }
     }
+
 };
 
 
@@ -408,8 +407,6 @@ track_helper.get_artist_by_location_like = async (day) => {
                 "created_at": { "$gt": new Date(from), "$lt": new Date(to) },
             },
         },
-
-
         {
             $lookup: {
                 from: "user",
@@ -494,8 +491,6 @@ track_helper.get_artist_by_location_comment = async (day) => {
                 "created_at": { "$gt": new Date(from), "$lt": new Date(to) },
             },
         },
-
-
         {
             $lookup: {
                 from: "user",
