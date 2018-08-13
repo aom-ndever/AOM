@@ -791,7 +791,7 @@ router.post('/artist_forgot_password', async (req, res) => {
     if (resp.status === 0) {
       res.status(config.INTERNAL_SERVER_ERROR).json({ "status": 0, "message": "Error while finding artist" });
     } else if (resp.status === 2) {
-      res.status(config.BAD_REQUEST).json({ "status": 0, "message": "No artist available with given email" });
+      res.status(config.BAD_REQUEST).json({ "status": 0, "message": "email doesn't exist" });
     } else {
       // Send mail on user's email address
       var reset_token = Buffer.from(jwt.sign({ "artist_id": resp.artist._id }, config.ACCESS_TOKEN_SECRET_KEY, {
