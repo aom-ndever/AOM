@@ -509,7 +509,7 @@ router.put('/settings/password', async (req, res) => {
             }
         }
         else {
-            res.status(config.OK_STATUS).json({ "status": 1, "resp": "Password is wrong" });
+            res.status(config.OK_STATUS).json({ "status": 0, "resp": "Password is wrong" });
         }
     }
     else {
