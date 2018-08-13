@@ -502,7 +502,7 @@ router.post('/artist_login', async (req, res) => {
         }
       } else {
 
-        res.status(config.BAD_REQUEST).json({ message: "You are not of artist type" });
+        res.status(config.BAD_REQUEST).json({ message: "invalid email" });
       }
     }
     else {
@@ -512,7 +512,7 @@ router.post('/artist_login', async (req, res) => {
   }
   else {
 
-    res.status(config.BAD_REQUEST).json({ message: "invalid email" });
+    res.status(config.BAD_REQUEST).json({ message: "You are not of artist type" });
   }
 });
 
