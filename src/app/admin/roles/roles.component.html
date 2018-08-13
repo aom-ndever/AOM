@@ -140,7 +140,7 @@
           <input type="email" name="email" class="form-control" formControlName="email"  [(ngModel)]="user_data.email"/>
           <div *ngIf="!add_admin.controls['email'].valid && add_admin.controls['email'].dirty">
               <span *ngIf="add_admin.controls['email'].errors['required']" class="text-danger">Email is required.</span>
-              <span *ngIf="add_admin.controls['email'].errors['email']" class="text-danger">Email Mismatched.</span>
+              <span *ngIf="!add_admin.controls['email'].errors['required'] && add_admin.controls['email'].errors['email']" class="text-danger">Email Mismatched.</span>
           </div>
         </div>
         <div [formGroup]="passwordFormGroup">

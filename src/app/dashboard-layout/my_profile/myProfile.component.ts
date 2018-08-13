@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import {NgbModal, ModalDismissReasons, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
+import { FormGroup, FormBuilder, Validators, FormControl, AbstractControl, NG_VALIDATORS, Validator } from '@angular/forms';
 import { HttpEventType,  HttpResponse} from '@angular/common/http';
 import { MyProfileService } from './myProfile.service';
 import { ToastrService } from 'ngx-toastr';
@@ -74,13 +75,21 @@ export class MyProfileComponent implements OnInit, OnDestroy {
   download_chart : any = '';
   download_analytic_count : any = 0;
   show_duration_date : any = '';
+
+  // Profile form group
+  artist_profile : FormGroup;
+  artistProfileValidation : boolean = false;
+  listener_profile : FormGroup;
+  listenerProfileValidation : boolean = false;
+
   constructor(private MyProfileService : MyProfileService, 
     private toastr: ToastrService,
     private router: Router,
     private modalService: NgbModal,
     private lightbox: Lightbox,
     private MessageService : MessageService,
-    private AmCharts: AmChartsService
+    private AmCharts: AmChartsService,
+    private fb: FormBuilder
   ) {
     let data = JSON.parse(localStorage.getItem('user'));
     this.day = [];
@@ -146,7 +155,38 @@ export class MyProfileComponent implements OnInit, OnDestroy {
     this.MyProfileService.getAllMusicType().subscribe(response => {
       this.music_types = response['music'];
     });
-    
+    this.artist_profile = this.fb.group({
+      upload : [''],
+      cover : [''],
+      fname : ['', [Validators.required]],
+      lname : ['', [Validators.required]],
+      gender : ['', [Validators.required]] ,
+      day : ['', [Validators.required]],
+      month : ['', [Validators.required]],
+      year : ['', [Validators.required]],
+      phone : ['', [Validators.required, Validators.pattern('[0-9]+'), Validators.minLength(10),Validators.maxLength(10)]],
+      music_type : ['', [Validators.required]],
+      zipcode : ['', [Validators.required]],
+      description : [''],
+      share_url_fb : [''],
+      share_url_insta : [''],
+      share_url_twit : [''],
+      share_url_youtube : [''],
+      share_url_sound : ['']
+    });
+
+    this.listener_profile = this.fb.group({
+      upload : [''],
+      fname : ['', [Validators.required]],
+      lname : ['', [Validators.required]],
+      gender : ['', [Validators.required]] ,
+      day : ['', [Validators.required]],
+      month : ['', [Validators.required]],
+      year : ['', [Validators.required]],
+      phone : ['', [Validators.required, Validators.pattern('[0-9]+'), Validators.minLength(10),Validators.maxLength(10)]],
+      zipcode : ['', [Validators.required]],
+      music_type : ['']
+    });
   }
 
   ngOnInit() {
@@ -223,36 +263,47 @@ export class MyProfileComponent implements OnInit, OnDestroy {
     }
   }
   // Update user profile
-  update() {
+  update(flag : boolean) {
     if(this.userdata.type == 'artist') {
-      this.show_spinner = true;
-      this.userdata['dob'] = new Date(this.userdata['year'], this.userdata['month'] ,this.userdata['day']);
-      this.userdata['share_url'] = JSON.stringify(this.userdata['social_media']);
-      this.MyProfileService.updateArtistProfile(this.userdata).subscribe(response => {
-        console.log(response);
-        this.toastr.success(response['message'], 'Success!');
-        this.updateLocalStorage();
-        this.MessageService.sendMessage({updateProfile : true});
-      }, error => {
-        this.toastr.error(error['error'].message, 'Error!');
-        this.show_spinner = false;
-      }, () => {
-        this.show_spinner = false;
-      });
+      if(flag) {
+        this.artistProfileValidation = !flag;
+        this.show_spinner = true;
+        this.userdata['dob'] = new Date(this.userdata['year'], this.userdata['month'] ,this.userdata['day']);
+        this.userdata['share_url'] = JSON.stringify(this.userdata['social_media']);
+        this.MyProfileService.updateArtistProfile(this.userdata).subscribe(response => {
+          console.log(response);
+          this.toastr.success(response['message'], 'Success!');
+          this.updateLocalStorage();
+          this.MessageService.sendMessage({updateProfile : true});
+        }, error => {
+          this.toastr.error(error['error'].message, 'Error!');
+          this.show_spinner = false;
+        }, () => {
+          this.show_spinner = false;
+        });
+      } else {
+        this.artistProfileValidation = !flag;
+      }
+      
     } else {
-      this.show_spinner = true;
-      this.userdata['dob'] = new Date(this.userdata['year'], this.userdata['month'] ,this.userdata['day']);
-      this.MyProfileService.updateUserProfile(this.userdata).subscribe(response => {
-        console.log(response);
-        this.toastr.success(response['message'], 'Success!');
-        this.updateLocalStorage();
-        this.MessageService.sendMessage({updateProfile : true});
-      }, error => {
-        this.toastr.error(error['error'].message, 'Error!');
-        this.show_spinner = false;
-      }, () => {
-        this.show_spinner = false;
-      });
+      if(flag) {
+        this.listenerProfileValidation = !flag;
+        this.show_spinner = true;
+        this.userdata['dob'] = new Date(this.userdata['year'], this.userdata['month'] ,this.userdata['day']);
+        this.MyProfileService.updateUserProfile(this.userdata).subscribe(response => {
+          console.log(response);
+          this.toastr.success(response['message'], 'Success!');
+          this.updateLocalStorage();
+          this.MessageService.sendMessage({updateProfile : true});
+        }, error => {
+          this.toastr.error(error['error'].message, 'Error!');
+          this.show_spinner = false;
+        }, () => {
+          this.show_spinner = false;
+        });
+      } else {
+        this.listenerProfileValidation = !flag;
+      }
     }
   }
 
