@@ -33,6 +33,7 @@ export class EmailVarificationComponent implements OnInit {
       } else {
         this.EamilVarificationService.userEmailVarification(res.id).subscribe(response => {
           console.log('varification done user', response);
+          this.toastr.success(response['message'], 'Success!');
           this.router.navigate(['']);
         }, error => {
           this.toastr.error(error['error'].message, 'Error!');

@@ -70,4 +70,16 @@ export class ArtistProfileService {
     this.headers = new HttpHeaders({ 'x-access-token' : this.user.token });
     return this.http.get(`${this.api_host}/user/track/${id}/download`, {headers : this.headers});
   }
+  // share track via email
+  shareTrackViaEmail(data : any) {
+      this.user = JSON.parse(localStorage.getItem('user'));
+      this.headers = new HttpHeaders({ 'x-access-token' : this.user.token });
+      return this.http.post(`${this.api_host}/user/track/share_track_by_mail`, data, {headers : this.headers});
+  }
+  // share track via email
+  shareTrackViaSms(data : any) {
+      this.user = JSON.parse(localStorage.getItem('user'));
+      this.headers = new HttpHeaders({ 'x-access-token' : this.user.token });
+      return this.http.post(`${this.api_host}/user/track/share_track_by_sms`, data, {headers : this.headers});
+  }
 }

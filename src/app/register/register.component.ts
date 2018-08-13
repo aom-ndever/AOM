@@ -4,6 +4,8 @@ import { ToastrService } from 'ngx-toastr';
 import { RegisterService } from './register.service';
 import { environment } from '../../environments/environment';
 import { Router } from '@angular/router';
+import { AuthService,FacebookLoginProvider } from 'angular5-social-login';
+import { MessageService } from '../shared/message.service';
 declare const gapi: any;
 
 @Component({
@@ -12,6 +14,7 @@ declare const gapi: any;
   styleUrls: []
 })
 export class RegisterComponent implements OnInit {
+  user : any = '';
   public artist_cnt : any = 0;
   public listner_cnt : any = 0;
   public step_flag : boolean = true;
@@ -59,7 +62,9 @@ export class RegisterComponent implements OnInit {
   constructor(private fb: FormBuilder,
     private RegisterService : RegisterService, 
     private toastr: ToastrService,
-    private router: Router
+    private router: Router,
+    private socialAuthService: AuthService,
+    private MessageService : MessageService
   ) {
     this.artist_cnt = 0;
     this.listner_cnt = 0;
@@ -98,6 +103,9 @@ export class RegisterComponent implements OnInit {
       fname : ['', [Validators.required]],
       lname : ['', [Validators.required]],
       gender : ['', [Validators.required]] ,
+      day : ['', [Validators.required]],
+      month : ['', [Validators.required]],
+      year : ['', [Validators.required]],
       phone : ['', [Validators.required, Validators.pattern('[0-9]+'), Validators.minLength(10),Validators.maxLength(10)]]
     });
     this.artist_step4 = this.fb.group({
@@ -155,13 +163,27 @@ export class RegisterComponent implements OnInit {
       (googleUser) => {
 
         let profile = googleUser.getBasicProfile();
-        console.log('Token || ' + googleUser.getAuthResponse().id_token);
-        console.log('ID: ' + profile.getId());
-        console.log('Name: ' + profile.getName());
-        console.log('Image URL: ' + profile.getImageUrl());
-        console.log('Email: ' + profile.getEmail());
+        
+        console.log(profile, googleUser.getAuthResponse().id_token);
         //YOUR CODE HERE
-
+        let data = {
+          U3 : profile.getEmail(),
+          ofa : profile.ofa,
+          wea : profile.wea,
+          provider : 'gmail',
+          Eea : profile.getId(),
+          image : profile.getImageUrl(),
+          token : googleUser.getAuthResponse().id_token
+        };
+        this.RegisterService.userGoogleLogin(data).subscribe((response) => {
+          this.toastr.success(response['message'], 'Success!');
+          localStorage.setItem('user', JSON.stringify(response));
+          this.user = JSON.parse(localStorage.getItem('user'));
+          this.MessageService.sendMessage({'loggedin_user': this.user});
+          this.router.navigate(['']);
+        }, (error) => {
+          this.toastr.error(error['error'].message, 'Error!');
+        });
       }, (error) => {
         alert(JSON.stringify(error, undefined, 2));
       });
@@ -284,6 +306,7 @@ export class RegisterComponent implements OnInit {
     formData.append('phone_no', this.artist_data['phone_no']);
     formData.append('state', this.artist_data['state']);
     formData.append('share_url', JSON.stringify(this.artist_data['share_url']));
+    formData.append('dob', (new Date(this.artist_data['year'], this.artist_data['month'], this.artist_data['day']).toString()));
     
     this.show_spinner = true;
     this.RegisterService.artistRegistration(formData).subscribe(response => {
@@ -396,8 +419,27 @@ export class RegisterComponent implements OnInit {
   }
 
   getStateByRegion(id : any) {
-    this.RegisterService.getStateByRegion({region : id}).subscribe((response) => {
-      this.state_list = response['state'];
-    });
+    if(id && id != "") {
+      this.RegisterService.getStateByRegion({region : id}).subscribe((response) => {
+        this.state_list = response['state'];
+      });
+    }
   }
+  // Login or registration with facebook
+  fbLogin() {
+    let socialPlatformProvider = FacebookLoginProvider.PROVIDER_ID;
+    this.socialAuthService.signIn(socialPlatformProvider).then(
+       (data) => {
+        this.RegisterService.userFacebookLogin(data).subscribe((response) => {
+          this.toastr.success(response['message'], 'Success!');
+          localStorage.setItem('user', JSON.stringify(response));
+          this.user = JSON.parse(localStorage.getItem('user'));
+          this.MessageService.sendMessage({'loggedin_user': this.user});
+          this.router.navigate(['']);
+        }, (error) => {
+          this.toastr.error(error['error'].message, 'Error!');
+        });
+       }
+     );
+   }
 }

@@ -27,4 +27,12 @@ export class HeaderService {
   userForgetPassword(data : any) {
     return this.http.post(`${this.api_host}/user_reset_password`, data);
   }
+  // Facebook login
+  userFacebookLogin(data : any) {
+    return this.http.post(`${this.api_host}/user_registration_facebook`, data);
+  }
+  // Google login
+  userGoogleLogin(data : any) {
+    return this.http.post(`${this.api_host}/user_registration_gmail`, data);
+  }
 }

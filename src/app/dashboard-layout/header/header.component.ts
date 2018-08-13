@@ -7,6 +7,9 @@ import { Subscription } from 'rxjs/Subscription';
 import { HeaderService } from './header.service'; 
 import { environment } from '../../../environments/environment';
 import { MessageService } from '../../shared/message.service';
+import { AuthService,FacebookLoginProvider } from 'angular5-social-login';
+declare var FB : any;
+declare const gapi: any;
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
@@ -20,6 +23,7 @@ export class HeaderComponent implements OnInit, OnDestroy  {
   login_validation : boolean = false;
   userdata : any = {};
   forget_pwd_data : any = {};
+  auth2: any;
   subscription: Subscription;
   toggleMenu : boolean = false;
   private modalRef: NgbModalRef;
@@ -29,13 +33,21 @@ export class HeaderComponent implements OnInit, OnDestroy  {
      private HeaderService : HeaderService, 
      private toastr: ToastrService,
      private router: Router,
-     private MessageService : MessageService
+     private MessageService : MessageService,
+     private socialAuthService: AuthService 
     ) {
     this.user = JSON.parse(localStorage.getItem('user'));
+    
     if(this.user && this.user.artist) {
       this.user.artist['image'] = typeof this.user.artist['image'] != 'undefined' ? environment.API_URL+environment.ARTIST_IMG+this.user.artist['image'] : '';
     } else if(this.user && this.user.user) {
-      this.user.user['image'] = typeof this.user.user['image'] != 'undefined' ? environment.API_URL+environment.USER_IMG+this.user.user['image'] : '';
+      let data = JSON.parse(localStorage.getItem('user'));
+      
+      if(!(this.user.user.provider && this.user.user.provider == "facebook" && this.user.user['image'].includes('graph.facebook.com')) || !(this.user.provider == "gmail" && this.user['image'].includes('lh3.googleusercontent.com'))) {
+        this.user.user['image'] = typeof this.user.user['image'] != 'undefined' ? environment.API_URL+environment.USER_IMG+this.user.user['image'] : '';
+      } else {
+        this.user.user['image'] = data['user']['image'];
+      }
     }
     this.subscription = this.MessageService.getMessage().subscribe((response) => {
       if(response && response['updateProfile']) {
@@ -44,8 +56,15 @@ export class HeaderComponent implements OnInit, OnDestroy  {
           if(this.user && this.user.artist) {
             this.user.artist['image'] = typeof this.user.artist['image'] != 'undefined' ? environment.API_URL+environment.ARTIST_IMG+this.user.artist['image'] : '';
           } else if(this.user && this.user.user) {
-            this.user.user['image'] = typeof this.user.user['image'] != 'undefined' ? environment.API_URL+environment.USER_IMG+this.user.user['image'] : '';
+            if(!(this.user.provider && this.user.provider == "facebook" && this.user['image'].includes('graph.facebook.com')) || !(this.user.provider == "gmail" && this.user['image'].includes('lh3.googleusercontent.com'))) {
+              this.user.user['image'] = typeof this.user.user['image'] != 'undefined' ? environment.API_URL+environment.USER_IMG+this.user.user['image'] : '';
+            } 
           }
+        }, 1000);
+      }
+      if(response && response['loggedin_user']) {
+        setTimeout(()=>{
+          this.user = response['loggedin_user'];
         }, 1000);
       }
     });
@@ -60,7 +79,56 @@ export class HeaderComponent implements OnInit, OnDestroy  {
     });
    }
 
+   // Code for initialize google login button
+  public googleInit() {
+    gapi.load('auth2', () => {
+      this.auth2 = gapi.auth2.init({
+        client_id: environment.GOOGLE_CLIENT_ID,
+        cookiepolicy: 'single_host_origin',
+        scope: 'profile email'
+      });
+      this.attachSignin(document.getElementById('googleBtn'));
+    });
+  }
+  // Code for open google signin popup and do login
+  public attachSignin(element) {
+    this.auth2.attachClickHandler(element, {},
+      (googleUser) => {
+
+        let profile = googleUser.getBasicProfile();
+        console.log('Token || ' + googleUser.getAuthResponse().id_token);
+        console.log('ID: ' + profile.getId());
+        console.log('Name: ' + profile.getName());
+        console.log('Image URL: ' + profile.getImageUrl());
+        console.log('Email: ' + profile.getEmail());
+        //YOUR CODE HERE
+        console.log('token :',googleUser.getAuthResponse().id_token, profile);
+        
+        let data = {
+          U3 : profile.getEmail(),
+          ofa : profile.ofa,
+          wea : profile.wea,
+          provider : 'gmail',
+          Eea : profile.getId(),
+          image : profile.getImageUrl(),
+          token : googleUser.getAuthResponse().id_token
+        };
+        this.HeaderService.userGoogleLogin(data).subscribe((response) => {
+          this.toastr.success(response['message'], 'Success!');
+          localStorage.setItem('user', JSON.stringify(response));
+          this.modalRef.close();
+          this.user = JSON.parse(localStorage.getItem('user'));
+          this.MessageService.sendMessage({'loggedin_user': this.user});
+          this.router.navigate(['']);
+        }, (error) => {
+          this.toastr.error(error['error'].message, 'Error!');
+        });
+      }, (error) => {
+        console.log(JSON.stringify(error, undefined, 2));
+      });
+  }
   ngOnInit() {
+    
   }
 
   ngOnDestroy() { 
@@ -77,7 +145,8 @@ export class HeaderComponent implements OnInit, OnDestroy  {
     this.show_spinner = false;
     this.userdata = {};
     this.login_validation = false;
-    this.modalRef = this.modalService.open(content, { centered: true, windowClass : 'modal-wrapper' });
+    this.modalRef = this.modalService.open(content, { centered: true, windowClass : 'modal-wrapper', backdrop : true });
+    this.googleInit();
   }
 
   openForgetPasswordModal(content) {
@@ -102,6 +171,7 @@ export class HeaderComponent implements OnInit, OnDestroy  {
         } else if(this.user && this.user.user) {
           this.user.user['image'] = typeof this.user.user['image'] != 'undefined' ? environment.API_URL+environment.USER_IMG+this.user.user['image'] : '';
         }
+        this.MessageService.sendMessage({'loggedin_user': this.user});
         this.router.navigate(['']);
       }, error => {
         console.log(error);
@@ -128,6 +198,7 @@ export class HeaderComponent implements OnInit, OnDestroy  {
         } else if(this.user && this.user.user) {
           this.user.user['image'] = typeof this.user.user['image'] != 'undefined' ? environment.API_URL+environment.USER_IMG+this.user.user['image'] : '';
         }
+        this.MessageService.sendMessage({'loggedin_user': this.user});
         this.router.navigate(['']);
       }, error => {
         console.log(error);
@@ -183,5 +254,24 @@ export class HeaderComponent implements OnInit, OnDestroy  {
   }
   toggleMainMenu() {
     this.toggleMenu = !this.toggleMenu;
+  }
+
+  fbLogin() {
+   let socialPlatformProvider = FacebookLoginProvider.PROVIDER_ID;
+   this.socialAuthService.signIn(socialPlatformProvider).then(
+      (data) => {
+        console.log(" sign in data : " , data);
+        this.HeaderService.userFacebookLogin(data).subscribe((response) => {
+          this.toastr.success(response['message'], 'Success!');
+          localStorage.setItem('user', JSON.stringify(response));
+          this.modalRef.close();
+          this.user = JSON.parse(localStorage.getItem('user'));
+          this.MessageService.sendMessage({'loggedin_user': this.user});
+          this.router.navigate(['']);
+        }, (error) => {
+          this.toastr.error(error['error'].message, 'Error!');
+        });
+      }
+    );
   }
 }

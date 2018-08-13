@@ -7,14 +7,14 @@
 .dataTables_empty {display: none;}
 
 
-#pButton{ box-shadow: 0px 2px 10px rgba(0,0,0,0.3);  background-color: #9b26b0;border-radius: 50% !important;width: 60px;height: 60px;color: #fff;margin: -3px 10px;border: none;background-size: 21px;background-repeat: no-repeat;background-position: center;float: left;outline: none;}
-.play{background: url('img/play_icon.png');    background-position: left 22px top 18px !important;}
+#pButton{ box-shadow: 0px 2px 10px rgba(0,0,0,0.3);  background-color: #9b26b0;border-radius: 50% !important;width: 50px;height: 50px;color: #fff;margin: 0 10px;border: none;background-size: 21px;background-repeat: no-repeat;background-position: center;float: left;outline: none;}
+.play{background: url('img/play_icon.png');    background-position: left 18px top 14px !important;}
 .pause{background: url('img/pause_icon.png') ;    background-size: 15px !important;}
  .audio_content{width: 61.5%;margin-top: 3px;float: left;}
  #timeline{width: 100%;height: 4px;float: left;border-radius: 15px;background: rgb(215, 215, 215);}
  #playhead{    width: 18px;height: 4px;border-radius: 12px;margin-top: 0;background: rgb(155, 38, 176);}
 .prev_icon img{transform: rotate(180deg);}
-.prev_icon,  .next_icon{ margin-top: 12px; box-shadow: 0px 2px 10px rgba(0,0,0,0.3);  background-color: #9b26b0;border-radius: 50% !important;width: 30px;height: 30px;padding: 8px 7px !important;float: left;}
+.prev_icon,  .next_icon{ margin-top: 11px; box-shadow: 0px 2px 10px rgba(0,0,0,0.3);  background-color: #9b26b0;border-radius: 50% !important;width: 30px;height: 30px;padding: 8px 7px !important;float: left;}
 .prev_icon img,  .next_icon img {    width: 100%;vertical-align: top;}
 .audio_profile{width: 50px;height: 49px;float: left;margin-left: 49px;margin-right: 17px;}
 .audio_profile img{width:100%}
@@ -26,14 +26,14 @@
 .volume_section img{width: 14px;height: auto;display: inline-block;}
 .volume_section > span{        margin-top: -6px;width: 49%;height: 2px;display: inline-block;margin-left: 7px;margin-right: 24px;border-radius: 10px;}
 .audio_time{    display: inline-block;opacity: 0.5;font-family: Helvetica;font-size: 10px;text-align: right;color: #1a1a1a;}
-.audio_container{    margin: 35px 0;}
+.audio_container{    margin: 11px 0;}
 #pButton:hover ,.prev_icon:hover,  .next_icon:hover{cursor: pointer;    background-color: #ba44d0;    box-shadow: 0px 5px 10px rgba(0,0,0,0.4);}
 input[type="range"] { 
   margin: auto;
   -webkit-appearance: none;
   position: relative;
   overflow: hidden;
-  height: 5px;
+  height: 3px;
   width: 100%;
   cursor: pointer;
   border-radius: 0; /* iOS */

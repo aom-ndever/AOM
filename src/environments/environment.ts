@@ -12,5 +12,6 @@ export const environment = {
   ARTIST_IMG : '/uploads/artist/',
   USER_IMG : '/uploads/user/',
   ARTIST_MEDIA : '/uploads/media/',
-  ARTIST_TRACK : '/uploads/track/'
+  ARTIST_TRACK : '/uploads/track/',
+  FB_APPID : 1924632120949205
 };

@@ -1,10 +1,9 @@
 <ngx-carousel [inputs]="carouselOne" *ngIf="carouselType == 'normal'">
   <ngx-tile NgxCarouselItem *ngFor="let image of images; let i = index">
-    
       <div class="final-wrap">
         <div class="img-wrap">
           <img src="{{image.source}}" alt="Finalists">
-          <a href="javascript:void(0)" class="fan">
+          <a href="javascript:void(0)" class="fan" (click)="followArtist(image['artist_id'])">
             <i class="fa fa-heart-o" aria-hidden="true"></i>
           </a>
         </div>

@@ -7,6 +7,10 @@ import {ActivatedRoute, Router} from "@angular/router";
 import { Lightbox } from 'angular2-lightbox';
 import { MessageService } from '../../shared/message.service';
 import { Subscription } from 'rxjs/Subscription';
+import {NgbModal, ModalDismissReasons, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
+import { FormGroup, FormBuilder, Validators, FormControl, AbstractControl, NG_VALIDATORS, Validator } from '@angular/forms';
+import { text } from '../../../../node_modules/@angular/core/src/render3/instructions';
+declare var FB : any;
 
 @Component({
   selector: 'app-artist_profile',
@@ -36,14 +40,28 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
   media_list : any = [];
   private _albums: any = [];
   subscription: Subscription;
+  sort_by : any = '';
+  private modalRef: NgbModalRef;
+  private emailmodalRef: NgbModalRef;
+  private phonemodalRef: NgbModalRef;
+  share_data : any = {};
+  share_form : FormGroup;
+  share_form_phone : FormGroup;
+  share_form_validation : boolean = false;
+  user : any = '';
+  show_spinner : boolean = false;
+  track_data : any = {};
   constructor(
     private ArtistProfileService : ArtistProfileService,
     private toastr: ToastrService,
     private route: ActivatedRoute,
     private router: Router,
     private lightbox: Lightbox,
-    private MessageService : MessageService
+    private MessageService : MessageService,
+    private modalService: NgbModal,
+    private fb: FormBuilder
   ) {
+    this.user = JSON.parse(localStorage.getItem('user'));
     // this.getAllData();
     this.subscription = this.MessageService.getMessage().subscribe((response) => {
       if(response && response['list'] != 1) {
@@ -77,10 +95,12 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
         }
       }
     });
-    
-
-    
-    
+    this.share_form = this.fb.group({
+      email : ['', [Validators.required, Validators.email]]
+    });
+    this.share_form_phone = this.fb.group({
+      phone : ['', [Validators.required, Validators.maxLength(10), Validators.minLength(10)]]
+    });
   }
 
   ngOnInit() {
@@ -120,9 +140,12 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
           setTimeout(() => {
             that.audio_ins = [];
             dataTablesParameters['artist_id'] = params['id'];
+            dataTablesParameters['sort'] = this.sort_by;
             that.ArtistProfileService.getAllTrack(dataTablesParameters).subscribe(response => {
               that.artisttrack = response['track']['music'];
-              that.artisttrack.forEach((ele) => {that.audio_ins.push(false);});
+              if(that.artisttrack.length > 0) {
+                that.artisttrack.forEach((ele) => {that.audio_ins.push(false);});
+              }
               callback({
                 recordsTotal: response['track']['recordsTotal'],
                 recordsFiltered: response['track']['recordsTotal'],
@@ -186,6 +209,31 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
       this.subscription.unsubscribe();
   }
 
+  openShareTrackModel(content, index : any, type : any) {
+    if(type == 'track') {
+      this.track_data = this.artisttrack[index];
+    } else {
+      this.track_data = this.rankingtrack[index];
+    }
+    this.modalRef = this.modalService.open(content, { centered: true, windowClass : 'modal-wrapper', backdrop : true });
+  }
+  openEmailShareTrackModel(content) {
+    if(this.user) {
+      this.share_data = {};
+      this.emailmodalRef = this.modalService.open(content, { centered: true, backdrop : true });
+    } else {
+      this.toastr.info('Login first to share track via email', 'Information!');
+    }
+  }
+  openPhoneShareTrackModel(content) {
+    if(this.user) {
+      this.share_data = {};
+      this.phonemodalRef = this.modalService.open(content, { centered: true, backdrop : true });
+    } else {
+      this.toastr.info('Login first to share track via sms', 'Information!');
+    }
+  }
+
   manageTabChange(index : any) {
     this.active_tab_index = index;
   }
@@ -247,7 +295,7 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
   // Follow artist
   followArtist(id : any, index : any) {
     let data = JSON.parse(localStorage.getItem('user'));
-    if(data && data.user) {
+    if(data) {
       let data = {
         artist_id : id
       };
@@ -317,24 +365,40 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
     this.router.navigate(['artist_profile/'+artist_id+'/track/'+id+'/comments']);
   }
   // sortArtistTrack
-  sortArtistTrack(artist_id : any, sortBy : any) {
-    let data = {
-      "artist_id": artist_id,
-	    "sort_by" : sortBy
-    };
-    this.ArtistProfileService.getAllTrack(data).subscribe(response => {
-      this.artisttrack = response['track'];
+  sortArtistTrack(idx : any, sortBy : any) {
+    // let data = {
+    //   "artist_id": artist_id,
+	  //   "sort_by" : sortBy
+    // };
+    // this.ArtistProfileService.getAllTrack(data).subscribe(response => {
+    //   this.artisttrack = response['track'];
+    // });
+    this.sort_by = sortBy;
+    this.dtElements.forEach((dtElement: DataTableDirective, index: number) => {
+      if(idx == index) {
+        dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
+          dtInstance.draw();
+        });
+      }
     });
   }
 
   // sortRankingTrack
-  sortRankingTrack(artist_id : any, sortBy : any) {
-    let data = {
-      "artist_id": artist_id,
-	    "sort_by" : sortBy
-    };
-    this.ArtistProfileService.getAllRanking(data).subscribe(response => {
-      this.rankingtrack = response['track'];
+  sortRankingTrack(idx : any, sortBy : any) {
+    // let data = {
+    //   "artist_id": artist_id,
+	  //   "sort_by" : sortBy
+    // };
+    // this.ArtistProfileService.getAllRanking(data).subscribe(response => {
+    //   this.rankingtrack = response['track'];
+    // });
+    this.sort_by = sortBy;
+    this.dtElements.forEach((dtElement: DataTableDirective, index: number) => {
+      if(idx == index) {
+        dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
+          dtInstance.draw();
+        });
+      }
     });
   }
   // Download track
@@ -354,4 +418,98 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
       this.toastr.info('Please login to download this track.', 'Info!');
     }
   }
+
+    // share on facebook
+    shareOnFacebook() {
+      let track = this.track_data;
+      console.log(track);
+      let url = 'http://'+window.location.host+'/artist_profile/'+track['artist_id']['_id']+'/track/'+track['_id']+'/comments';
+      let str = "Track Name: "+track['name']+"\nArtist: "+track['artist_id']['first_name']+' '+track['artist_id']['last_name']+'\nDescription: '+track['description'];
+      // var facebookWindow = window.open('https://www.facebook.com/sharer.php?s=100&p[summary]='+encodeURIComponent(str)+"&p[url]="+encodeURIComponent(url), 'facebook-popup', 'height=350,width=600');
+      // if(facebookWindow.focus) { facebookWindow.focus(); }
+      FB.ui({
+        method: 'share_open_graph',
+        action_type: 'og.likes',
+        action_properties : JSON.stringify({
+          object : {
+            'og:url' : url,
+            'og:title' : 'AOM',
+            'og:description' : str
+          }
+        })
+      }, function(response){});
+    }
+    // share on twitter
+    shareOnTwitter() {
+      let track = this.track_data;
+      console.log(track);
+      let url = 'http://'+window.location.host+'/artist_profile/'+track['artist_id']['_id']+'/track/'+track['_id']+'/comments';
+      let str = "Track Name: "+track['name']+"\nArtist: "+track['artist_id']['first_name']+' '+track['artist_id']['last_name']+'\nDescription: '+track['description'];
+      var twitterWindow = window.open('https://twitter.com/share?url=' +encodeURIComponent(url)+'&text='+encodeURIComponent(str), 'twitter-popup', 'height=350,width=600');
+      if(twitterWindow.focus) { twitterWindow.focus(); }
+    }
+    // share track via email
+    share_via_email(flag : boolean) {
+      if(flag) {
+        this.share_form_validation = !flag;
+        this.show_spinner = true;
+        let track = this.track_data;
+        let url = 'http://'+window.location.host+'/artist_profile/'+track['artist_id']['_id']+'/track/'+track['_id']+'/comments';
+        let data = {
+          email : this.share_data['email'],
+          track_id : track['_id'],
+          url : url
+        };
+        this.ArtistProfileService.shareTrackViaEmail(data).subscribe((response) => {
+          this.toastr.success(response['message'], 'Success!');
+          this.emailmodalRef.close();
+        }, (error) => {
+          this.toastr.error(error['error'].message, 'Error!');
+          this.show_spinner = false;
+        }, () => {
+          this.show_spinner = false;
+        });
+      } else {
+        this.share_form_validation = !flag;
+      }
+    }
+    // share via sms
+    share_via_sms(flag : boolean) {
+      if(flag) {
+        this.share_form_validation = !flag;
+        this.show_spinner = true;
+        let track = this.track_data;
+        let url = 'http://'+window.location.host+'/artist_profile/'+track['artist_id']['_id']+'/track/'+track['_id']+'/comments';
+        let data = {
+          phone_no : this.share_data['phone_no'],
+          track_id : track['_id'],
+          url : url
+        };
+        this.ArtistProfileService.shareTrackViaSms(data).subscribe((response) => {
+          this.toastr.success(response['message'], 'Success!');
+          this.emailmodalRef.close();
+          this.share_data = {};
+        }, (error) => {
+          this.toastr.error(error['error'].message, 'Error!');
+          this.show_spinner = false;
+        }, () => {
+          this.show_spinner = false;
+        });
+      } else {
+        this.share_form_validation = !flag;
+      }
+    }
+    // copy share track link
+    copy_link() {
+      let track = this.track_data;
+      console.log(track);
+      let url = 'http://'+window.location.host+'/artist_profile/'+track['artist_id']['_id']+'/track/'+track['_id']+'/comments';
+      var textArea = document.createElement("textarea");
+      textArea.value = url;
+      document.body.appendChild(textArea);
+      textArea.focus();
+      textArea.select();
+      document.execCommand("copy");
+      textArea.remove();
+    }
 }

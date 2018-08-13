@@ -154,7 +154,7 @@ export class WhatsNewComponent implements OnInit, OnDestroy {
     if(flag) {
       this.region_filter.push(val);
     } else {
-      let index = this.region_filter.indxOf(val);
+      let index = this.region_filter.indexOf(val);
       this.region_filter.splice(index, 1);
     }
   }
@@ -177,6 +177,7 @@ export class WhatsNewComponent implements OnInit, OnDestroy {
     this.WhatsNewService.getWhatsnewData(data).subscribe(response => {
       this.whatsnewdata = response;
       this.getAllFollower();
+      this.show_filter = false;
       if(response['artist'].length <= 0)
         this.toastr.success('No result found.', 'Success!');
     }, error => {
@@ -196,7 +197,7 @@ export class WhatsNewComponent implements OnInit, OnDestroy {
       let data = {
         artist_id : id
       };
-      this.whatsnewdata['artist'][index]['is_followed'] = true;
+      this.whatsnewdata['artist'][index]['is_followed'] = false;
       this.WhatsNewService.followArtist(data).subscribe(response => {
         this.toastr.success(response['message'], 'Success!');
       }, error => {
@@ -209,24 +210,24 @@ export class WhatsNewComponent implements OnInit, OnDestroy {
   }
   // get All follower
   getAllFollower() {
-    let user = JSON.parse(localStorage.getItem('user'));
-    if(user) {
-      this.WhatsNewService.getFollower().subscribe(response => {
-        let flag = false;
-        this.whatsnewdata['artist'].forEach(obj => {
-          response['user'].forEach(data => {
-            if(obj._id == data['artist_id']._id) {
-              flag = true;
-            }
-          });
-          if(flag) {
-            obj['is_followed'] = true;
-          } else {
-            obj['is_followed'] = false;
-          }
-        });
-      });
-    }
+    // let user = JSON.parse(localStorage.getItem('user'));
+    // if(user) {
+    //   this.WhatsNewService.getFollower().subscribe(response => {
+    //     let flag = false;
+    //     this.whatsnewdata['artist'].forEach(obj => {
+    //       response['user'].forEach(data => {
+    //         if(obj._id == data['artist_id']._id) {
+    //           flag = true;
+    //         }
+    //       });
+    //       if(flag) {
+    //         obj['is_followed'] = true;
+    //       } else {
+    //         obj['is_followed'] = false;
+    //       }
+    //     });
+    //   });
+    // }
   }
   // get all state
   getAllState() {

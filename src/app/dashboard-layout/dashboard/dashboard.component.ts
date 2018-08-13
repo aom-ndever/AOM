@@ -125,7 +125,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
         "type": ele.music_type['name'],
         "alias" : ele.music_type['alias'],
         "audio" : ele.audio,
-        "enable": true
+        "enable": true,
+        "artist_id" : ele['artist_id'] ? ele['artist_id']['_id'] : null
       });
     });
   }

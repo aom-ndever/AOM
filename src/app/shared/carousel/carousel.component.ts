@@ -3,6 +3,8 @@ import { NgxCarousel } from 'ngx-carousel';
 import { environment } from '../../../environments/environment';
 import { MessageService } from '../message.service';
 import { Subscription } from 'rxjs/Subscription';
+import { CarouselService } from './carousel.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   moduleId: module.id,
@@ -19,9 +21,10 @@ export class CarouselComponent implements OnInit, OnDestroy {
   audio_ins : any = [];
   subscription: Subscription;
   constructor(
-    private MessageService : MessageService
+    private MessageService : MessageService,
+    private CarouselService : CarouselService,
+    private toastr: ToastrService
   ) {
-    
     this.subscription = this.MessageService.getMessage().subscribe((response) => {
       if(response && response['list'] != 1) {
         this.audio_ins.forEach((ele, idx) => { this.audio_ins[idx] = false; } );
@@ -110,5 +113,22 @@ export class CarouselComponent implements OnInit, OnDestroy {
       this.audio_ins[idx] = false;
     });
     this.MessageService.sendMessage({data : data, index : index, action : 'stop', list : 1});
+  }
+  // Follow artist
+  followArtist(id : any) {
+    let user = JSON.parse(localStorage.getItem('user'));
+    if(user && user['user']) {
+      let data = {
+        'artist_id' : id
+      };
+      this.CarouselService.followArtist(data).subscribe((response) => {
+        this.toastr.success(response['message'], 'Success!');
+      },(error) => {
+        this.toastr.error(error['error'].message, 'Error!');
+      });
+    } else {
+      this.toastr.info('Please login first to follow the artist', 'Information!');
+    }
+    
   }
 }

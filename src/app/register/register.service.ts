@@ -37,4 +37,12 @@ export class RegisterService {
   getStateByRegion(data : any) {
     return this.http.post(`${this.api_host}/state_by_region`, data);
   }
+  // Facebook login
+  userFacebookLogin(data : any) {
+    return this.http.post(`${this.api_host}/user_registration_facebook`, data);
+  }
+  // Google login
+  userGoogleLogin(data : any) {
+    return this.http.post(`${this.api_host}/user_registration_gmail`, data);
+  }
 }
