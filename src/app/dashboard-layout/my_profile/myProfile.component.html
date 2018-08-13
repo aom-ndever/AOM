@@ -1047,20 +1047,6 @@
                                                         <select class="form-control" id="musictype" formControlName="music_type" multiple name="music_type" [(ngModel)]="userdata.music_type">
                                                             <option *ngFor="let type of music_types" value="{{type._id}}">{{type.name}}</option>
                                                         </select>
-                                                        <ng-select
-                                                            [items]="music_types"
-                                                            [multiple]="true"
-                                                            bindLabel="name"
-                                                            formControlName="music_type"
-                                                            [selectableGroup]="true"
-                                                            [closeOnSelect]="false"
-                                                            bindValue="_id"
-                                                            [(ngModel)]="selectedPeople">
-                                                            <ng-template ng-option-tmp let-item="item" let-item$="item$" let-index="index">
-                                                                <input id="item-{{index}}" type="checkbox" [ngModel]="item$.selected" /> {{item.name}}
-                                                            </ng-template>
-                                                        </ng-select>
-
                                                         <div class="cust_err_msg" *ngIf="listenerProfileValidation && !listener_profile.controls['music_type'].valid">
                                                             <span *ngIf="listener_profile.controls['music_type'].errors['required']" class="text-danger">Music type is required.</span>
                                                         </div>
