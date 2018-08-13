@@ -878,27 +878,27 @@ router.post('/artist_reset_password', async (req, res) => {
       } else {
         var reset_resp = await artist_helper.get_artist_by_id(decoded.artist_id);
 
-        if (reset_resp.artist.reset == 1) {
-          if (decoded.artist_id) {
-            var update_resp = await artist_helper.update_artist_by_id(decoded.artist_id, { "password": bcrypt.hashSync(req.body.password, saltRounds) });
-            if (update_resp.status === 0) {
-              logger.trace("Error occured while updating artist : ", update_resp.error);
-              res.status(config.INTERNAL_SERVER_ERROR).json({ "status": 0, "message": "Error occured while verifying artist's email" });
-            } else if (update_resp.status === 2) {
-              logger.trace("artist has not updated");
-              res.status(config.BAD_REQUEST).json({ "status": 0, "message": "Error occured while reseting password of artist" });
-            } else {
-
-              logger.trace("Password has been changed for artist - ", decoded.artist_id);
-              res.status(config.OK_STATUS).json({ "status": 1, "message": "Password has been changed" });
-            }
+        // if (reset_resp.artist.reset == 1) {
+        if (decoded.artist_id) {
+          var update_resp = await artist_helper.update_artist_by_id(decoded.artist_id, { "password": bcrypt.hashSync(req.body.password, saltRounds) });
+          if (update_resp.status === 0) {
+            logger.trace("Error occured while updating artist : ", update_resp.error);
+            res.status(config.INTERNAL_SERVER_ERROR).json({ "status": 0, "message": "Error occured while verifying artist's email" });
+          } else if (update_resp.status === 2) {
+            logger.trace("artist has not updated");
+            res.status(config.BAD_REQUEST).json({ "status": 0, "message": "Error occured while reseting password of artist" });
           } else {
+
+            logger.trace("Password has been changed for artist - ", decoded.artist_id);
+            res.status(config.OK_STATUS).json({ "status": 1, "message": "Password has been changed" });
           }
-        }
-        else {
-          res.status(config.BAD_REQUEST).json({ message: "Your link has expired" });
+        } else {
         }
       }
+      //   else {
+      //     res.status(config.BAD_REQUEST).json({ message: "Your link has expired" });
+      //   }
+      // }
     });
   } else {
     res.status(config.BAD_REQUEST).json({ message: errors });
@@ -1009,28 +1009,28 @@ router.post('/user_reset_password', async (req, res) => {
         logger.trace("Valid token. Reseting password for artist");
         var reset_resp = await user_helper.get_user_by_id(decoded.user_id);
 
-        if (reset_resp.user.reset == 1) {
-          if (decoded.user_id) {
-            var update_resp = await user_helper.update_user_by_id(decoded.user_id, { "password": bcrypt.hashSync(req.body.password, saltRounds) });
-            if (update_resp.status === 0) {
-              logger.trace("Error occured while updating artist : ", update_resp.error);
-              res.status(config.INTERNAL_SERVER_ERROR).json({ "status": 0, "message": "Error occured while verifying user_id's email" });
-            } else if (update_resp.status === 2) {
-              logger.trace("artist has not updated");
-              res.status(config.BAD_REQUEST).json({ "status": 0, "message": "Error occured while reseting password of user" });
-            } else {
-              // Password reset!
-              logger.trace("Password has been changed for artist - ", decoded.user_id);
-              res.status(config.OK_STATUS).json({ "status": 1, "message": "Password has been changed" });
-            }
+        // if (reset_resp.user.reset == 1) {
+        if (decoded.user_id) {
+          var update_resp = await user_helper.update_user_by_id(decoded.user_id, { "password": bcrypt.hashSync(req.body.password, saltRounds) });
+          if (update_resp.status === 0) {
+            logger.trace("Error occured while updating artist : ", update_resp.error);
+            res.status(config.INTERNAL_SERVER_ERROR).json({ "status": 0, "message": "Error occured while verifying user_id's email" });
+          } else if (update_resp.status === 2) {
+            logger.trace("artist has not updated");
+            res.status(config.BAD_REQUEST).json({ "status": 0, "message": "Error occured while reseting password of user" });
           } else {
-
+            // Password reset!
+            logger.trace("Password has been changed for artist - ", decoded.user_id);
+            res.status(config.OK_STATUS).json({ "status": 1, "message": "Password has been changed" });
           }
-        }
-        else {
-          res.status(config.BAD_REQUEST).json({ message: "Your link has expired" });
+        } else {
+
         }
       }
+      //   else {
+      //     res.status(config.BAD_REQUEST).json({ message: "Your link has expired" });
+      //   }
+      // }
     });
   } else {
     res.status(config.BAD_REQUEST).json({ message: errors });
