@@ -710,54 +710,60 @@ router.post('/user_login', async (req, res) => {
   req.checkBody(schema);
   var errors = req.validationErrors();
   if (!errors) {
+    if (req.body.type == 'listener') {
 
-    let login_resp = await user_helper.get_login_by_email(req.body.email);
+      let login_resp = await user_helper.get_login_by_email(req.body.email);
 
-    logger.trace("Login checked resp = ", login_resp);
-    if (login_resp.status === 0) {
       logger.trace("Login checked resp = ", login_resp);
-      logger.error("Error in finding by email in login API. Err = ", login_resp.err);
+      if (login_resp.status === 0) {
+        logger.trace("Login checked resp = ", login_resp);
+        logger.error("Error in finding by email in login API. Err = ", login_resp.err);
 
-      res.status(config.INTERNAL_SERVER_ERROR).json({ "status": 0, "message": "Something went wrong while finding user", "error": login_resp.error });
-    } else if (login_resp.status === 1) {
-      logger.trace("Artist found. Executing next instruction");
-      logger.trace("valid token. Generating token");
-      if (login_resp.user.flag == false) {
-        if (bcrypt.compareSync(req.body.password, login_resp.user.password) && req.body.email == login_resp.user.email) {
+        res.status(config.INTERNAL_SERVER_ERROR).json({ "status": 0, "message": "Something went wrong while finding user", "error": login_resp.error });
+      } else if (login_resp.status === 1) {
+        logger.trace("Artist found. Executing next instruction");
+        logger.trace("valid token. Generating token");
+        if (login_resp.user.flag == false) {
+          if (bcrypt.compareSync(req.body.password, login_resp.user.password) && req.body.email == login_resp.user.email) {
 
-          if (login_resp.user.email_verified) {
+            if (login_resp.user.email_verified) {
 
-            var refreshToken = jwt.sign({ id: login_resp.user._id }, config.REFRESH_TOKEN_SECRET_KEY, {});
-            let update_resp = await user_helper.update_user_by_id(login_resp.user._id, { "refresh_token": refreshToken, "last_login": Date.now() });
-            var LoginJson = { id: login_resp.user._id, email: login_resp.email, role: "user" };
-            var token = jwt.sign(LoginJson, config.ACCESS_TOKEN_SECRET_KEY, {
-              expiresIn: config.ACCESS_TOKEN_EXPIRE_TIME
-            });
-            delete login_resp.user.status;
-            delete login_resp.user.password;
-            delete login_resp.user.refresh_token;
-            delete login_resp.user.last_login_date;
-            delete login_resp.user.created_at;
+              var refreshToken = jwt.sign({ id: login_resp.user._id }, config.REFRESH_TOKEN_SECRET_KEY, {});
+              let update_resp = await user_helper.update_user_by_id(login_resp.user._id, { "refresh_token": refreshToken, "last_login": Date.now() });
+              var LoginJson = { id: login_resp.user._id, email: login_resp.email, role: "user" };
+              var token = jwt.sign(LoginJson, config.ACCESS_TOKEN_SECRET_KEY, {
+                expiresIn: config.ACCESS_TOKEN_EXPIRE_TIME
+              });
+              delete login_resp.user.status;
+              delete login_resp.user.password;
+              delete login_resp.user.refresh_token;
+              delete login_resp.user.last_login_date;
+              delete login_resp.user.created_at;
 
-            logger.info("Token generated");
-            res.status(config.OK_STATUS).json({ "status": 1, "message": "Logged in successful", "user": login_resp.user, "token": token, "refresh_token": refreshToken });
+              logger.info("Token generated");
+              res.status(config.OK_STATUS).json({ "status": 1, "message": "Logged in successful", "user": login_resp.user, "token": token, "refresh_token": refreshToken });
+            }
+            else {
+              res.status(config.BAD_REQUEST).json({ "status": 0, "message": "Email not verified" });
+            }
           }
           else {
-            res.status(config.BAD_REQUEST).json({ "status": 0, "message": "Email not verified" });
+            res.status(config.BAD_REQUEST).json({ "status": 0, "message": "Invalid email address or password" });
           }
-        }
-        else {
-          res.status(config.BAD_REQUEST).json({ "status": 0, "message": "Invalid email address or password" });
-        }
 
 
+        } else {
+          res.status(config.BAD_REQUEST).json({ message: "You Are Flagged By Admin" });
+
+        }
       } else {
-        res.status(config.BAD_REQUEST).json({ message: "You Are Flagged By Admin" });
 
+        res.status(config.BAD_REQUEST).json({ message: "You are not of this type" });
       }
-    } else {
+    }
+    else {
 
-      res.status(config.BAD_REQUEST).json({ message: "invalid email" });
+      res.status(config.BAD_REQUEST).json({ message: "You are not of this type" });
     }
   }
   else {
