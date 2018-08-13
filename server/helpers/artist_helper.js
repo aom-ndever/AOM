@@ -74,7 +74,8 @@ artist_helper.get_artist_by_email = async (email) => {
 artist_helper.get_artist_by_id = async (artist_id) => {
     try {
 
-        var artist = await Artist.findOne({ "_id": { "$eq": artist_id } }).populate('music_type').populate('state');
+        var artist = await Artist.findOne({ "_id": { "$eq": artist_id } }).populate('music_type').populate({ path: 'state', populate: { path: 'region' } })
+            ;
         if (artist) {
             return { "status": 1, "message": "Artist details found", "artist": artist };
         } else {
