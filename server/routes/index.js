@@ -218,7 +218,8 @@ router.post('/user_registration_facebook', async (req, res) => {
       "first_name": req.body.name,
       "provider": req.body.provider,
       "facebook_token": req.body.token,
-      "image": req.body.image
+      "image": req.body.image,
+    
     };
 
     user = await user_helper.get_user_by_email(req.body.email)
@@ -1178,6 +1179,7 @@ router.post("/musics", async (req, res) => {
  * @apiError (Error 4xx) {String} message Validation or error message.
  */
 router.post('/admin_login', async (req, res) => {
+
   var schema = {
     'email': {
       notEmpty: true,
@@ -1465,6 +1467,14 @@ router.post("/state", async (req, res) => {
   if (!errors) {
     var artist_ids = [];
     var resp_artist = await artist_helper.get_artist_by_filter(filter, req.body.start, req.body.length);
+    if (resp_artist.artist.status) {
+      console.log('gijnf');
+
+    } else {
+      console.log('its wrong');
+
+    }
+
 
     if (resp_artist.status == 1) {
       resp_artist.artist.forEach(artist => {
