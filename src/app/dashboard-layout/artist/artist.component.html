@@ -247,7 +247,7 @@
                     <div class="cat {{my['artist_id']['music_type']['alias']}}">{{my['artist_id']['music_type']['name']}}</div>
                   </div>
                   <div class="location">
-                    <p><i class="fa fa-map-marker" aria-hidden="true"></i><span>{{my && my.state ? my.state.name : ''}}</span></p>
+                    <p><i class="fa fa-map-marker" aria-hidden="true"></i><span>{{my && my['artist_id'] &&  my['artist_id'].state ? my['artist_id'].state.name : ''}}</span></p>
                     
                   </div>
                 </div>
