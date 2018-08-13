@@ -704,7 +704,9 @@ router.post('/user_login', async (req, res) => {
   req.checkBody(schema);
   var errors = req.validationErrors();
   if (!errors) {
+
     let login_resp = await user_helper.get_login_by_email(req.body.email);
+
     logger.trace("Login checked resp = ", login_resp);
     if (login_resp.status === 0) {
       logger.trace("Login checked resp = ", login_resp);
@@ -715,21 +717,19 @@ router.post('/user_login', async (req, res) => {
       logger.trace("Artist found. Executing next instruction");
       logger.trace("valid token. Generating token");
       if (login_resp.user.flag == false) {
-        if (bcrypt.compareSync(req.body.password, login_resp.artist.password) && req.body.email == login_resp.artist.email) {
+        if (bcrypt.compareSync(req.body.password, login_resp.user.password) && req.body.email == login_resp.user.email) {
 
           if (login_resp.user.email_verified) {
+
             var refreshToken = jwt.sign({ id: login_resp.user._id }, config.REFRESH_TOKEN_SECRET_KEY, {});
             let update_resp = await user_helper.update_user_by_id(login_resp.user._id, { "refresh_token": refreshToken, "last_login": Date.now() });
             var LoginJson = { id: login_resp.user._id, email: login_resp.email, role: "user" };
             var token = jwt.sign(LoginJson, config.ACCESS_TOKEN_SECRET_KEY, {
               expiresIn: config.ACCESS_TOKEN_EXPIRE_TIME
             });
-
-
             delete login_resp.user.status;
             delete login_resp.user.password;
             delete login_resp.user.refresh_token;
-
             delete login_resp.user.last_login_date;
             delete login_resp.user.created_at;
 
@@ -743,6 +743,7 @@ router.post('/user_login', async (req, res) => {
         else {
           res.status(config.BAD_REQUEST).json({ "status": 0, "message": "Invalid email address or password" });
         }
+
 
       } else {
         res.status(config.BAD_REQUEST).json({ message: "You Are Flagged By Admin" });
@@ -758,6 +759,7 @@ router.post('/user_login', async (req, res) => {
     res.status(config.BAD_REQUEST).json({ message: "invalid email" });
   }
 });
+
 
 
 /**
@@ -923,7 +925,7 @@ router.post('/user_forgot_password', async (req, res) => {
       })).toString('base64');
 
       let mail_resp = await mail_helper.send("reset_password", {
-        "to": resp.artist.email,
+        "to": resp.user.email,
         "subject": "Music Social Voting"
       }, {
           "reset_link": config.website_url + "/forgot_password/user/" + reset_token
