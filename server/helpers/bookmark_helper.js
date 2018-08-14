@@ -48,6 +48,14 @@ bookmark_helper.delete_bookmark = async (bookmark_id) => {
 
 bookmark_helper.get_all_bookmarked_tracks = async (user_id, start, length) => {
     try {
+
+        var bookmarks = await Bookmark
+            .find({ "user_id": new ObjectId(user_id) })
+            .populate({ path: 'track_id', populate: { path: 'artist_id' } })
+            .populate({ path: 'user_id', populate: { path: 'music_type' } })
+
+        var tot_cnt = bookmarks.length;
+
         var bookmark = await Bookmark
             .find({ "user_id": new ObjectId(user_id) })
             .populate({ path: 'track_id', populate: { path: 'artist_id' } })
@@ -55,9 +63,9 @@ bookmark_helper.get_all_bookmarked_tracks = async (user_id, start, length) => {
             .skip(start)
             .limit(length)
 
-
+        var filter_cnt = bookmark.length;
         if (bookmark) {
-            return { "status": 1, "message": "bookmark details found", "bookmark": bookmark };
+            return { "status": 1, "message": "bookmark details found", "bookmark": bookmark, "recordsFiltered": filter_cnt, "recordsTotal": tot_cnt };
         } else {
             return { "status": 2, "message": "bookmark not found" };
         }
