@@ -66,4 +66,22 @@ bookmark_helper.get_all_bookmarked_tracks = async (user_id, start, length) => {
         return { "status": 0, "message": "Error occured while finding bookmark", "error": err }
     }
 };
+
+
+bookmark_helper.get_all_bookmarked = async (user_id) => {
+    try {
+        var bookmark = await Bookmark
+            .find({ "user_id": new ObjectId(user_id) })
+            .populate({ path: 'track_id', populate: { path: 'artist_id' } })
+            .populate({ path: 'user_id', populate: { path: 'music_type' } })
+
+        if (bookmark) {
+            return { "status": 1, "message": "bookmark details found", "bookmark": bookmark };
+        } else {
+            return { "status": 2, "message": "bookmark not found" };
+        }
+    } catch (err) {
+        return { "status": 0, "message": "Error occured while finding bookmark", "error": err }
+    }
+};
 module.exports = bookmark_helper;
