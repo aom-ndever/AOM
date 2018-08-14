@@ -47,7 +47,6 @@ router.post('/add', async (req, res) => {
       track_id: req.body.track_id
     };
     var resp_get = await bookmark_helper.get_all_bookmarked_track(obj.user_id, obj.track_id);
-    console.log('resp_get', resp_get);
 
     if (resp_get.status == 2) {
       var resp_data = await bookmark_helper.insert_book_mark_track(obj);
@@ -62,7 +61,6 @@ router.post('/add', async (req, res) => {
     else {
       user_id = req.userInfo.id;
       bookmark_id = resp_get.bookmark._id
-      console.log('bookmark_id', bookmark_id);
 
       var del_resp = await bookmark_helper.delete_bookmark(bookmark_id);
       if (resp_get.status === 0) {

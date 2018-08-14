@@ -8,7 +8,7 @@ bookmark_helper.insert_book_mark_track = async (object) => {
     let bookmark = new Bookmark(object)
     try {
         let data = await bookmark.save();
-        return { "status": 1, "message": "Record inserted", "bookmark": data };
+        return { "status": 1, "message": "Track Bookmarked", "bookmark": data };
     } catch (err) {
         return { "status": 0, "message": "Error occured while inserting bookmark", "error": err };
     }
@@ -38,7 +38,7 @@ bookmark_helper.delete_bookmark = async (bookmark_id) => {
         if (!user) {
             return { status: 2, message: "Record has not Deleted" };
         } else {
-            return { status: 1, message: "Record has been Deleted" };
+            return { status: 1, message: "Bookmark has been Deleted" };
         }
     } catch (err) {
         return { status: 0, message: "Error occured while deleting user", error: err };
@@ -54,7 +54,6 @@ bookmark_helper.get_all_bookmarked_tracks = async (user_id, start, length) => {
             .populate({ path: 'user_id', populate: { path: 'music_type' } })
             .skip(start)
             .limit(length)
-
 
 
         if (bookmark) {
