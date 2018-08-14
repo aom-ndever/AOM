@@ -103,10 +103,8 @@ router.post('/', async (req, res) => {
             .then(message => console.log(message.sid))
             .done();
         }
-        console.log('resp', resp);
 
         no_comment = resp.artist.no_of_comments + 1
-        console.log('no_comment', no_comment);
 
         var resp_data = await track_helper.update_artist_for_comments(obj.artist_id, no_comment);
 
