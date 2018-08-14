@@ -103,7 +103,11 @@ router.post('/', async (req, res) => {
             .then(message => console.log(message.sid))
             .done();
         }
+        console.log('resp', resp);
+
         no_comment = resp.artist.no_of_comments + 1
+        console.log('no_comment', no_comment);
+
         var resp_data = await track_helper.update_artist_for_comments(obj.artist_id, no_comment);
 
         var resp_datas = await comment_helper.get_all_track_by_track_id(obj.track_id);
@@ -117,7 +121,7 @@ router.post('/', async (req, res) => {
         var resp_data = await user_helper.update_user_for_comments(obj.user_id, no_comment);
 
         logger.trace("music got successfully = ", resp_data);
-        res.status(config.OK_STATUS).json(resp_data);
+        res.status(config.OK_STATUS).json({ "message": "successfully commented" });
       }
     }
   }
@@ -269,6 +273,10 @@ router.post('/upvote', async (req, res) => {
       else if (data.vote.status == "downvote") {
         no_vote = resp_data.comment[0].no_of_votes + 2;
         var resp_data = await comment_helper.update_votes(obj.comment_id, no_vote);
+
+        var status = "upvote";
+        var resp_data = await vote_comment_helper.update_status(obj.user_id, obj.comment_id, status);
+
         res.status(config.OK_STATUS).json({ message: "Upvoting done" });
       }
     }
@@ -303,7 +311,7 @@ router.post('/downvote', async (req, res) => {
       var resp_data = await vote_comment_helper.upvote_or_down_vote(user_id, obj);
       var resp_data = await comment_helper.get_all_comment_by_comment_id(obj.comment_id);
 
-      no_vote = resp_data.comment[0].no_of_votes + 1;
+      no_vote = resp_data.comment[0].no_of_votes - 1;
       var resp_data = await comment_helper.update_votes(obj.comment_id, no_vote);
 
       if (resp_data.status === 0) {
@@ -311,7 +319,7 @@ router.post('/downvote', async (req, res) => {
       } else if (resp_data.status === 2) {
         res.status(config.BAD_REQUEST).json({ "status": 0, "message": "Can't upvote" });
       } else {
-        res.status(config.OK_STATUS).json({ "status": 1, "message": "Upvoting done" });
+        res.status(config.OK_STATUS).json({ "status": 1, "message": "downvoting done" });
       }
     }
     else {
@@ -324,6 +332,8 @@ router.post('/downvote', async (req, res) => {
 
         no_vote = resp_data.comment[0].no_of_votes - 2;
         var resp_data = await comment_helper.update_votes(obj.comment_id, no_vote);
+        var status = "downvote";
+        var resp_data = await vote_comment_helper.update_status(obj.user_id, obj.comment_id, status);
         res.status(config.OK_STATUS).json({ message: "Downvoting done" });
       }
     }

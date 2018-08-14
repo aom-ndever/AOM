@@ -34,12 +34,12 @@ playlist_helper.get_playlist_by_user_id = async (user_id) => {
 }
 
 
-playlist_helper.update_playlist = async (user_id, playlist_id,obj) => {
+playlist_helper.update_playlist = async (user_id, playlist_id, obj) => {
 
     try {
-        var playlist = await Playlist.findOneAndUpdate({ "user_id": new ObjectId(user_id), "_id": new ObjectId(playlist_id) },obj)
-        if (playlist ) {
-            return { "status": 1, "message": "playlist details found", "playlist":  playlist };
+        var playlist = await Playlist.findOneAndUpdate({ "user_id": new ObjectId(user_id), "_id": new ObjectId(playlist_id) }, obj)
+        if (playlist) {
+            return { "status": 1, "message": "playlist details found", "playlist": playlist };
         } else {
             return { "status": 2, "message": "playlist not found" };
         }
@@ -53,8 +53,8 @@ playlist_helper.delete_playlist = async (user_id, playlist_id) => {
 
     try {
         var playlist = await Playlist.findOneAndRemove({ "user_id": new ObjectId(user_id), "_id": new ObjectId(playlist_id) })
-        if (playlist ) {
-            return { "status": 1, "message": "playlist details found", "playlist":  playlist };
+        if (playlist) {
+            return { "status": 1, "message": "playlist details found", "playlist": playlist };
         } else {
             return { "status": 2, "message": "playlist not found" };
         }
