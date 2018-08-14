@@ -156,20 +156,84 @@ router.get("/", async (req, res) => {
 
 
 // vote on comment
-router.post('/vote_comment', async (req, res) => {
+// router.post('/vote_comment', async (req, res) => {
+//   user_id = req.userInfo.id;
+//   var schema = {
+//     "comment_id": {
+//       notEmpty: true,
+//       errorMessage: "Comment Id is required"
+//     },
+//     "status": {
+//       notEmpty: true,
+//       errorMessage: "status is required"
+//     },
+//   };
+//   req.checkBody(schema);
+//   var errors = req.validationErrors();
+//   if (!errors) {
+//     var obj = {
+//       user_id: req.userInfo.id,
+//       artist_id: req.body.artist_id,
+//       comment_id: req.body.comment_id,
+//       status: req.body.status
+//     };
+//     var data = await vote_comment_helper.upvote_or_down_vote(user_id, obj);
+//     if (data && data.vote == 0) {
+//       // insert vote
+//       var resp_data = await vote_comment_helper.upvote_or_down_vote(user_id, obj);
+
+//       if (resp_data.status == 0) {
+//         logger.error("Error occured while voting = ", resp_data);
+//         res.status(config.INTERNAL_SERVER_ERROR).json(resp_data);
+//       } else {
+//         var resp_data = await comment_helper.get_all_comment_by_comment_id(obj.comment_id);
+//         if (obj.status == "upvote") {
+//           no_vote = resp_data.comment[0].no_of_votes + 1;
+//           var resp_data = await comment_helper.update_votes(obj.comment_id, no_vote);
+//         }
+//         else {
+//           no_vote = resp_data.comment[0].no_of_votes - 1;
+//           var resp_data = await comment_helper.update_votes(obj.comment_id, no_vote);
+//         }
+//         logger.trace("voting done successfully = ", resp_data);
+//         res.status(config.OK_STATUS).json(resp_data);
+//       }
+//     }
+//     else {
+//       // Update vote
+//       var resp_data = await vote_comment_helper.update_vote_status(user_id, obj.comment_id, obj.status);
+//       if (resp_data.status == 0) {
+//         logger.error("Error occured while voting = ", resp_data);
+//         res.status(config.INTERNAL_SERVER_ERROR).json(resp_data);
+//       } else {
+//         var resp_data = await comment_helper.get_all_comment_by_comment_id(obj.comment_id);
+//         if (obj.status == "upvote") {
+//           no_vote = resp_data.comment[0].no_of_votes + 2;
+//           var resp_data = await comment_helper.update_votes(obj.comment_id, no_vote);
+//         }
+//         else {
+//           no_vote = resp_data.comment[0].no_of_votes - 2;
+//           var resp_data = await comment_helper.update_votes(obj.comment_id, no_vote);
+//         }
+//         logger.trace("voting done successfully = ", resp_data);
+
+//         res.status(config.OK_STATUS).json(resp_data);
+//       }
+//     }
+//   }
+//   else {
+//     logger.error("Validation Error = ", errors);
+//     res.status(config.BAD_REQUEST).json({ message: errors });
+//   }
+// });
+
+
+router.post('/upvote', async (req, res) => {
   user_id = req.userInfo.id;
   var schema = {
-    "artist_id": {
-      notEmpty: true,
-      errorMessage: "Artist Id is required"
-    },
     "comment_id": {
       notEmpty: true,
       errorMessage: "Comment Id is required"
-    },
-    "status": {
-      notEmpty: true,
-      errorMessage: "status is required"
     },
   };
   req.checkBody(schema);
@@ -177,51 +241,35 @@ router.post('/vote_comment', async (req, res) => {
   if (!errors) {
     var obj = {
       user_id: req.userInfo.id,
-      artist_id: req.body.artist_id,
       comment_id: req.body.comment_id,
-      status: req.body.status
+      status: "upvote"
     };
-    var data = await vote_comment_helper.upvote_or_down_vote(user_id, obj);
-    if (data && data.vote == 0) {
-      // insert vote
-      var resp_data = await vote_comment_helper.upvote_or_down_vote(user_id, obj);
+    var data = await vote_comment_helper.get_all_voted_user(user_id, obj.comment_id);
 
-      if (resp_data.status == 0) {
-        logger.error("Error occured while voting = ", resp_data);
-        res.status(config.INTERNAL_SERVER_ERROR).json(resp_data);
+    if (data.status == 2) {
+
+      var resp_data = await vote_comment_helper.upvote_or_down_vote(user_id, obj);
+      var resp_data = await comment_helper.get_all_comment_by_comment_id(obj.comment_id);
+
+      no_vote = resp_data.comment[0].no_of_votes + 1;
+      var resp_data = await comment_helper.update_votes(obj.comment_id, no_vote);
+
+      if (resp_data.status === 0) {
+        res.status(config.INTERNAL_SERVER_ERROR).json({ "status": 0, "message": "Error occured while upvoting", "error": resp_data.error });
+      } else if (resp_data.status === 2) {
+        res.status(config.BAD_REQUEST).json({ "status": 0, "message": "Can't upvote" });
       } else {
-        var resp_data = await comment_helper.get_all_comment_by_comment_id(obj.comment_id);
-        if (obj.status == "upvote") {
-          no_vote = resp_data.comment[0].no_of_votes + 1;
-          var resp_data = await comment_helper.update_votes(obj.comment_id, no_vote);
-        }
-        else {
-          no_vote = resp_data.comment[0].no_of_votes - 1;
-          var resp_data = await comment_helper.update_votes(obj.comment_id, no_vote);
-        }
-        logger.trace("voting done successfully = ", resp_data);
-        res.status(config.OK_STATUS).json(resp_data);
+        res.status(config.OK_STATUS).json({ "status": 1, "message": "Upvoting done" });
       }
     }
     else {
-      // Update vote
-      var resp_data = await vote_comment_helper.update_vote_status(user_id, obj.comment_id, obj.status);
-      if (resp_data.status == 0) {
-        logger.error("Error occured while voting = ", resp_data);
-        res.status(config.INTERNAL_SERVER_ERROR).json(resp_data);
-      } else {
-        var resp_data = await comment_helper.get_all_comment_by_comment_id(obj.comment_id);
-        if (obj.status == "upvote") {
-          no_vote = resp_data.comment[0].no_of_votes + 2;
-          var resp_data = await comment_helper.update_votes(obj.comment_id, no_vote);
-        }
-        else {
-          no_vote = resp_data.comment[0].no_of_votes - 2;
-          var resp_data = await comment_helper.update_votes(obj.comment_id, no_vote);
-        }
-        logger.trace("voting done successfully = ", resp_data);
-
-        res.status(config.OK_STATUS).json(resp_data);
+      if (data.vote.status == "upvote") {
+        res.status(config.OK_STATUS).json({ message: "Already upvoted" });
+      }
+      else if (data.vote.status == "downvote") {
+        no_vote = resp_data.comment[0].no_of_votes + 2;
+        var resp_data = await comment_helper.update_votes(obj.comment_id, no_vote);
+        res.status(config.OK_STATUS).json({ message: "Upvoting done" });
       }
     }
   }
@@ -232,7 +280,59 @@ router.post('/vote_comment', async (req, res) => {
 });
 
 
+router.post('/downvote', async (req, res) => {
+  user_id = req.userInfo.id;
+  var schema = {
+    "comment_id": {
+      notEmpty: true,
+      errorMessage: "Comment Id is required"
+    },
+  };
+  req.checkBody(schema);
+  var errors = req.validationErrors();
+  if (!errors) {
+    var obj = {
+      user_id: req.userInfo.id,
+      comment_id: req.body.comment_id,
+      status: "downvote"
+    };
+    var data = await vote_comment_helper.get_all_voted_user(user_id, obj.comment_id);
 
+    if (data.status == 2) {
+
+      var resp_data = await vote_comment_helper.upvote_or_down_vote(user_id, obj);
+      var resp_data = await comment_helper.get_all_comment_by_comment_id(obj.comment_id);
+
+      no_vote = resp_data.comment[0].no_of_votes + 1;
+      var resp_data = await comment_helper.update_votes(obj.comment_id, no_vote);
+
+      if (resp_data.status === 0) {
+        res.status(config.INTERNAL_SERVER_ERROR).json({ "status": 0, "message": "Error occured while upvoting", "error": resp_data.error });
+      } else if (resp_data.status === 2) {
+        res.status(config.BAD_REQUEST).json({ "status": 0, "message": "Can't upvote" });
+      } else {
+        res.status(config.OK_STATUS).json({ "status": 1, "message": "Upvoting done" });
+      }
+    }
+    else {
+      if (data.vote.status == "downvote") {
+        res.status(config.OK_STATUS).json({ message: "Already downvoted" });
+      }
+      else if (data.vote.status == "upvote") {
+
+        var resp_data = await comment_helper.get_all_comment_by_comment_id(obj.comment_id);
+
+        no_vote = resp_data.comment[0].no_of_votes - 2;
+        var resp_data = await comment_helper.update_votes(obj.comment_id, no_vote);
+        res.status(config.OK_STATUS).json({ message: "Downvoting done" });
+      }
+    }
+  }
+  else {
+    logger.error("Validation Error = ", errors);
+    res.status(config.BAD_REQUEST).json({ message: errors });
+  }
+});
 
 /**
  * @api {delete} /user/comment/:comment_id Delete Comment  
