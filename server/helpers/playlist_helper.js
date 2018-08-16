@@ -73,7 +73,15 @@ playlist_helper.get_playlists = async (user_id, playlist_id, start, length) => {
                 "$unwind": "$track"
             },
             {
-                "$replaceRoot": { newRoot: "$track" }
+                "$lookup": {
+                    "from": "artist",
+                    "foreignField": "_id",
+                    "localField": "track.artist_id",
+                    "as": "artist"
+                }
+            },
+            {
+                "$unwind": "$artist"
             },
 
         ]);
@@ -101,7 +109,15 @@ playlist_helper.get_playlists = async (user_id, playlist_id, start, length) => {
                 "$unwind": "$track"
             },
             {
-                "$replaceRoot": { newRoot: "$track" }
+                "$lookup": {
+                    "from": "artist",
+                    "foreignField": "_id",
+                    "localField": "track.artist_id",
+                    "as": "artist"
+                }
+            },
+            {
+                "$unwind": "$artist"
             },
             {
                 "$skip": start
