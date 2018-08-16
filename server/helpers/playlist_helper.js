@@ -46,6 +46,38 @@ playlist_helper.get_playlist_by_user_id = async (user_id, start, length) => {
     }
 }
 
+
+playlist_helper.get_playlists = async (user_id, playlist_id, start, length) => {
+    try {
+
+        var playlists = await Playlist
+            .find({ "_id": new ObjectId(playlist_id), "user_id": user_id })
+            .populate({ path: 'track_id', populate: { path: 'artist_id' } })
+            .populate({ path: 'user_id', populate: { path: 'music_type' } })
+
+
+        var tot_cnt = playlists.length;
+
+
+        var playlist = await Playlist
+            .find({ "_id": new ObjectId(playlist_id), "user_id": user_id })
+            .populate({ path: 'track_id', populate: { path: 'artist_id' } })
+            .populate({ path: 'user_id', populate: { path: 'music_type' } })
+            .skip(start)
+            .limit(length)
+
+
+        var filter_cnt = playlist.length;
+        if (playlist) {
+            return { "status": 1, "message": "Track details found", "playlist": playlist, "recordsFiltered": filter_cnt, "recordsTotal": tot_cnt };
+        } else {
+            return { "status": 2, "message": "playlist not found" };
+        }
+    } catch (err) {
+        return { "status": 0, "message": "Error occured while finding playlist", "error": err }
+    }
+}
+
 playlist_helper.update_playlist = async (user_id, playlist_id, obj) => {
 
     try {
@@ -75,5 +107,17 @@ playlist_helper.delete_playlist = async (user_id, playlist_id) => {
     }
 };
 
+playlist_helper.delete_track_playlist = async (user_id, playlist_id, track_id) => {
 
+    try {
+        var playlist = await Playlist.findOneAndRemove({ "user_id": new ObjectId(user_id), "_id": new ObjectId(playlist_id) })
+        if (playlist) {
+            return { "status": 1, "message": "playlist details found", "playlist": playlist };
+        } else {
+            return { "status": 2, "message": "playlist not found" };
+        }
+    } catch (err) {
+        return { "status": 0, "message": "Error occured while finding playlist", "error": err }
+    }
+};
 module.exports = playlist_helper;
