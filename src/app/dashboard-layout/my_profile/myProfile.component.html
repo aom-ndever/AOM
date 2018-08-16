@@ -958,6 +958,7 @@
                     <ul class="nav nav-tabs" id="myTab">
                         <li class="nav-item"><a class="nav-link {{tab_cnt == 1 ? 'active' : '' }}" (click)="tabChange(1)" data-toggle="tab" href="javascript:;">Profile</a></li>
                         <li class="nav-item"><a class="nav-link {{tab_cnt == 2 ? 'active' : '' }}" data-toggle="tab" (click)="tabChange(2)" href="javascript:;">Settings</a></li>
+                        <li class="nav-item"><a class="nav-link {{tab_cnt == 3 ? 'active' : '' }}" data-toggle="tab" (click)="tabChange(3)" href="javascript:;">Bookmarked</a></li>
                     </ul>
                 </div>
             </div>
@@ -1230,7 +1231,46 @@
 										</div>
 									</div>
 								</div>
-						</div>
+                        </div>
+                        <div class="tab-pane fade {{tab_cnt == 3 ? 'show active' : ''}}" id="bookmarked_track">
+                            <div class="row">
+                                <div class="col-sm-12 col-md-12 col-12">
+                                    <h3>Bookmarked track</h3>
+                                    <div class="track-table">
+                                        <table datatable [dtOptions]="dtOptions[0]">
+                                            <tbody>
+                                                <tr *ngFor="let val of bookmark_list; let i = index;">
+                                                    <td class="music_play">
+                                                        <div class="artist-profile-custom-action-btn">
+                                                            <a [style.display]="!audio_ins[i] ? 'block' : 'none'" (click)="playAudio(val['track_id'].audio, i, bookmark_list)" class="play_img" ><img src="img/play_icon.png"/></a>
+                                                            <a [style.display]="audio_ins[i] ? 'block' : 'none'" (click)="stopAudio(i, bookmark_list)" class="pause_img"><img src="img/pause_icon.png"/></a>
+                                                        </div>
+                                                    </td>
+                                                    <td class="track-pic">
+                                                        <a href="javascript:;">
+                                                            <img src="{{val['track_id'].image ? track_url+val['track_id'].image : 'img/track-img.png'}}" style="height:50px;width:50px;" alt="Track Image">
+                                                        </a>
+                                                    </td>
+                                                    <td class="track-det" colspan="2">
+                                                        <p class="track-name">{{val['track_id'].name}}</p>
+                                                        <p class="track-singer">{{val['track_id'].artist_id.first_name+' '+val['track_id'].artist_id.last_name }}</p>
+                                                        <p class="track-year">{{val['track_id'].created_at | date : 'yyyy'}}</p>
+                                                        <p class="track-date">{{val['track_id'].created_at | date : 'MMMM dd,yyyy'}}</p>
+                                                    </td>
+                                                    <td class="td track-vote music_vote">
+                                                        <img src="img/start.png" alt="start">
+                                                        <span>{{val['track_id'].no_of_votes}}
+                                                            <br>
+                                                            <span>Votes</span>
+                                                        </span>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

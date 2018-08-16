@@ -36,6 +36,7 @@
             </div>
           </div>
       </div>
+      <div class="row">
       <div class="col-md-12">
         <div class="profile-detail-wrap">
           <div class="row">
@@ -59,7 +60,18 @@
                   <div class="s-name">{{comment['track_id']['name']}}</div>
                   <div class="pull-right" *ngIf="user && user.user && comment['user_id']['_id'] != user['user']['_id']">
                       <a href="javascript:;"  (click)="flagUser(comment['user_id']['_id'])"><i class="fa fa-flag"></i></a>
+                  </div>
+                  <div class="pull-left up_down_container">
+                    <div>
+                      <a href="javascript:;" (click)="upVoteComment(comment['_id'])"><i class="chevron-up"></i></a>
                     </div>
+                    <div>
+                      <span>{{comment['no_of_votes']}}</span>
+                    </div>
+                    <div>
+                      <a href="javascript:;" (click)="downVoteComment(comment['_id'])"><i class="chevron-down"></i></a>
+                    </div>
+                  </div>
                   <div class="s-img"><img src="{{comment['user_id']['image'] ? user_img_url+comment['user_id']['image'] : 'img/fan1.png'}}" alt="img"></div>
                   <div class="cm-date-name">
                     <h6>{{comment['user_id']['first_name']+' '+comment['user_id']['last_name']}}.</h6>
@@ -68,13 +80,110 @@
                       <p>{{comment['comment']}}</p>
                     </div>
                   </div>
-                  
-
                 </div>
               </div>
             </div>
         </div>
       </div>
     </div>
+</div>
   </div>
 </div>
+<ng-template #shareTrack let-c="close" let-d="dismiss" >
+  <div class="modal_login_wrapper">
+      <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+          <span aria-hidden="true">&times;</span>
+      </button>
+  </div>
+  <div class="modal-body">
+      <div class="shared_popup">
+          <div class="col-12 text-center shared_popup_header">
+              <h4>Share This Track</h4>
+              <span>You are Sharing the "{{track_data && track_data['name'] ? track_data['name'] : '' }}" Track</span>
+          </div>
+          <div class="row">
+              <div class="col-sm-6">
+                  <div class="col-12">
+                      <button class="btn btn-primary social_button fb_btn" (click)="shareOnFacebook()">
+                          <i class="fa fa-facebook"></i> Facebook
+                      </button>
+                  </div>
+                  <div class="col-12">
+                      <button class="btn btn-success social_button comment_btn" (click)="openPhoneShareTrackModel(phoneno)">
+                          <i class="fa fa-comment "></i> SMS
+                      </button>
+                  </div>
+                  <div class="col-12">
+                      <button class="btn btn-primary social_button link_btn" (click)="copy_link()" tooltip="Link Coppied" triggers="click">
+                          <i class="fa fa-link"></i> Copy Link
+                      </button>
+                  </div>
+              </div>
+              <div class="col-sm-6">
+                  <div class="col-12">
+                      <button class="btn btn-info social_button twitter_btn" (click)="shareOnTwitter()">
+                          <i class="fa fa-twitter"></i> Twitter
+                      </button>
+                  </div>
+                  <div class="col-12">
+                      <button class="btn btn-danger social_button email_btn" (click)="openEmailShareTrackModel(email)">
+                          <i class="fa fa-envelope"></i> Email
+                      </button>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+</ng-template>
+
+<ng-template #email let-c="close" let-d="dismiss">
+<div class="modal-body">
+  <div class="forget_password_modal">
+    <!-- <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+        <span aria-hidden="true">&times;</span>
+    </button> -->
+    <form [formGroup]="share_form">
+        <h3 class="forget_password_header">Share through email</h3>
+        <div class="col-sm-12">
+            <div class="form-group">
+                <label class="control-label custom_form_label">Email Id</label>
+                <input type="email" class="form-control custom_form" formControlName="email" name="email" [(ngModel)]="share_data['email']"  placeholder="Enter Email"/>
+                <div class="cust_err_msg" *ngIf="share_form_validation && !share_form.controls['email'].valid">
+                    <span *ngIf="share_form.controls['email'].errors['required']" class="text-danger">Email is required.</span>
+                    <span *ngIf="!share_form.controls['email'].errors['required'] && share_form.controls['email'].errors['email']" class="text-danger">Enter valid email.</span>
+                </div>
+            </div>
+            <div class="form-group text-right">
+                <button class="btn forget_btn" (click)="share_via_email(share_form.valid)" [disabled]="show_spinner">Submit <i *ngIf="show_spinner" class="fa fa-spinner fa-spin"></i></button>
+            </div>
+        </div>
+    </form>
+ </div>
+</div>
+</ng-template>
+
+<ng-template #phoneno let-c="close" let-d="dismiss">
+<div class="modal-body">
+  <div class="forget_password_modal">
+    <!-- <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+        <span aria-hidden="true">&times;</span>
+    </button> -->
+    <form [formGroup]="share_form_phone">
+        <h3 class="forget_password_header">Share through sms</h3>
+        <div class="col-sm-12">
+            <div class="form-group">
+                <label class="control-label custom_form_label">Phone Number</label>
+                <input type="email" class="form-control custom_form" formControlName="phone" name="phone" [(ngModel)]="share_data['phone_no']"  placeholder="Enter Phone Number"/>
+                <div class="cust_err_msg" *ngIf="share_form_validation && !share_form_phone.controls['phone'].valid">
+                    <span *ngIf="share_form_phone.controls['phone'].errors['required']" class="text-danger">Phone Number is required.</span>
+                    <span *ngIf="!share_form_phone.controls['phone'].errors['required'] && share_form_phone.controls['phone'].errors['minlength'] || share_form_phone.controls['phone'].errors['maxlength'] " class="text-danger">Enter valid phone Number.</span>
+                </div>
+            </div>
+            <div class="form-group text-right">
+                <button class="btn forget_btn" (click)="share_via_sms(share_form_phone.valid)" [disabled]="show_spinner">Submit <i *ngIf="show_spinner" class="fa fa-spinner fa-spin"></i></button>
+            </div>
+        </div>
+    </form>
+ </div>
+</div>
+</ng-template>

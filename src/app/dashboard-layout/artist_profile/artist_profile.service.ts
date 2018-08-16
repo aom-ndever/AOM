@@ -82,4 +82,16 @@ export class ArtistProfileService {
       this.headers = new HttpHeaders({ 'x-access-token' : this.user.token });
       return this.http.post(`${this.api_host}/user/track/share_track_by_sms`, data, {headers : this.headers});
   }
+  // user bookmarked track list
+  getBookmarkedTrackList() {
+    this.user = JSON.parse(localStorage.getItem('user'));
+    this.headers = new HttpHeaders({ 'x-access-token' : this.user.token });
+    return this.http.get(`${this.api_host}/user/bookmark`, {headers : this.headers});
+  }
+  // bookmark any track
+  bookmarkTrack(data : any) {
+    this.user = JSON.parse(localStorage.getItem('user'));
+    this.headers = new HttpHeaders({ 'x-access-token' : this.user.token });
+    return this.http.post(`${this.api_host}/user/bookmark/add`, data, {headers : this.headers});
+  }
 }

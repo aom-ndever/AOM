@@ -46,4 +46,18 @@ export class TrackCommentsService {
     this.headers = new HttpHeaders({ 'x-access-token' : this.user.token });
     return this.http.post(`${this.api_host}/user/flag/user/${id}`, {}, {headers : this.headers});
   }
+
+  // upvote comment
+  upVoteComment(data : any) {
+    this.user = JSON.parse(localStorage.getItem('user'));
+    this.headers = new HttpHeaders({ 'x-access-token' : this.user.token });
+    return this.http.post(`${this.api_host}/user/comment/upvote`, data, {headers : this.headers});
+  }
+  // Downvote comment
+  downVoteComment(data : any) {
+    this.user = JSON.parse(localStorage.getItem('user'));
+    this.headers = new HttpHeaders({ 'x-access-token' : this.user.token });
+    return this.http.post(`${this.api_host}/user/comment/downvote`, data, {headers : this.headers});
+  }
+
 }

@@ -29,5 +29,47 @@ export class ConmmentsComponent implements OnInit {
   ngOnInit() {
     
   }
+
+  // Get all artist comment
+  getAllArtistComment() {
+    let data = {
+      artist_id : this.artistdata['_id']
+    };
+    this.CommentsService.getAllCommentsByArtist(data).subscribe((response) => {
+      this.artistcomments = response['comment'];
+    });
+  }
+  // upvote commnet
+  upVoteComment(id : any) {
+    if(this.user && this.user['user']) {
+      let data = {
+        comment_id : id
+      }
+      this.CommentsService.upVoteComment(data).subscribe((response) => {
+        this.getAllArtistComment();
+        this.toastr.success(response['message'], 'Success!');
+      }, (error) => {
+        this.toastr.error(error['error'].message, 'Error!');
+      });
+    } else {
+      this.toastr.info('Please signin as listener to upnvote comment.', 'Information!');
+    }
+  }
+  // downvote commnet
+  downVoteComment(id : any) {
+    if(this.user && this.user['user']) {
+      let data = {
+        comment_id : id
+      }
+      this.CommentsService.downVoteComment(data).subscribe((response) => {
+        this.getAllArtistComment();
+        this.toastr.success(response['message'], 'Success!');
+      }, (error) => {
+        this.toastr.error(error['error'].message, 'Error!');
+      });
+    } else {
+      this.toastr.info('Please signin as listener to downvote comment.', 'Information!');
+    }
+  }
   
 }

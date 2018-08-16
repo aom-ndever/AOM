@@ -97,6 +97,9 @@ background-color: #9c27b0;
   color: #999999;
   opacity: 1;
   padding: 0;
+  float: left;
+  width: 100%;
+  display: block;
 }
 
 .sidebar-nav>.sidebar-brand a:hover {
@@ -126,6 +129,8 @@ background-color: #9c27b0;
     border-right: 5px solid transparent;
     border-left: 5px solid transparent;
     box-shadow: none !important;
+    padding-top: 0;
+    margin-top: -3px;
 }
 .show>.btn-primary.dropdown-toggle.custom_drop_btn, .custom_drop_btn:hover, .custom_drop_btn:focus{
       color: #9c27b0;
@@ -213,6 +218,24 @@ background-color: #9c27b0;
   position: absolute;
   left: 10px;
   top: 19px;
+}
+.artist_view_modal .td_img a{
+  position: relative;
+    padding-left: 26px;
+}
+.artists_table table tbody tr td:last-child a{
+  background-color: transparent !important;
+}
+.artist_view_modal .table tbody td.td_img {
+
+  padding-left: 0;
+}
+.artist_view_modal .td_img img, .artist_view_modal .td_img i{ 
+  width: 12px;
+  margin-right: 7px;
+  position: absolute;
+  left: 10px;
+  top: 1px !important;
 }
 .td_img.actions{
   position: relative !important;
@@ -389,7 +412,10 @@ label {
 .artists_table table tbody tr td:last-child a:hover, .artists_table table tbody tr td:last-child a:focus, .artists_table table tbody tr td:last-child a:active{
   color: #9c27b0;
   outline:none;
-  background-color: #f8f9fa !important;
+  background-color: transparent !important;
+}
+.artists_table table tbody tr td:last-child a:hover i{
+  color: #999898 !important;
 }
 .artists_table .table tbody tr td:last-child .dropdown-menu{
   max-height: 146px;
@@ -671,8 +697,19 @@ ul.gray_font{
   text-align: left;
   color: #1a1a1a;
   font-weight: 500;
-  opacity: 0.5;
   margin-bottom: 0;
+  opacity: 0.5;
+}
+.radio label{
+  text-align: left;
+  margin-bottom: 0;
+  font-size: 14px;
+  color: #000;
+  line-height: 16px;
+  font-weight: 400;
+  position: relative;
+  opacity: 1;
+  margin-right: 5px;
 }
 .date-of-birth .custom_modal_form{
   padding-left: 15px !important;
@@ -794,7 +831,7 @@ ul.gray_font{
 .profile_name .dropdown .dropdown-menu {
   right: 15px !important;
   left: auto !important;
-  top: -13px !important;
+  top: 12px !important;
   padding: 0;
 }
 .profile_name .dropdown .dropdown-menu li{
@@ -887,7 +924,7 @@ ul.gray_font{
     height: 50px;
     display: inline-block;
     position: absolute;
-    top: -2px;
+    top: -12px;
     left: 15px;
 }
 h3.user_name {
@@ -918,7 +955,7 @@ h3.user_name {
 }
 .profile_name .drop_icon{
      position: absolute;
-    top: -24px;
+    top: 1px;
     right: 15px;
     color: #fff;
     font-size: 15px;
@@ -1121,6 +1158,29 @@ background-color: transparent;
 }
 .flex_content div:first-child{
   margin-right:12px;
+}
+label input[type="radio"], input[type="radio"]{
+  width: 20px;
+  height: 20px !important;
+  border: 2px solid rgba(26,26,26,0.5) !important;
+  border-radius: 50%;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  vertical-align: middle;
+  margin-top: -5px;
+  margin-right: 5px;
+  outline:none;
+}
+ label input[type="radio"]:checked + .radio_check:after,  input[type="radio"]:checked + .radio_check:after,  input[type="radio"]:checked + .radio_check:after {
+  content: "";
+  position: absolute;
+  top: 2px;
+  left: 5px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #9C27B0;
 }
 
 .artist_content ul li label input[type="radio"], .select-payemnt-table input[type="radio"] {
@@ -1380,12 +1440,20 @@ background-color: transparent;
   .graph_container {
       margin-bottom: 30px;
   }
-  .profile_container li {
+  .profile_container > li {
       padding-top: 5px;
       padding-bottom: 6px;
       width: 190px;
       z-index:9999;
+      min-height: 50px;
   }
+  .profile_name .dropdown .dropdown-menu {
+    right: 15px !important;
+    left: auto !important;
+    top:20px !important;
+    padding: 0;
+    width: 158px;
+}
   .user_profile {
       width: 38px;
       height: 40px;
@@ -1481,6 +1549,10 @@ background-color: transparent;
   }
   .sign_up{
     display: block;
+  }
+  .profile_name .drop_icon {
+    position: absolute;
+    top: 9px;
   }
 }
 @media(min-width:1285px){
