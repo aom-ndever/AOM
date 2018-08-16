@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { DataTablesModule } from 'angular-datatables';
 import { SlimScroll } from 'angular-io-slimscroll';
+import {AutoCompleteModule} from 'primeng/primeng';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { DashboardLayoutComponent } from './layout/dashboard-layout.component';
 import { DashboardLayoutService } from './layout/dashboard-layout.service';
@@ -61,6 +62,7 @@ import { AuthService } from '../shared/auth.service';
     AmChartsModule,
     LightboxModule,
     DataTablesModule,
+    AutoCompleteModule,
     RouterModule.forChild([
       {
         path: '',
