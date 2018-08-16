@@ -1181,15 +1181,15 @@ router.post("/musics", async (req, res) => {
 router.post('/admin_login', async (req, res) => {
 
   var schema = {
-    // 'email': {
-    //   notEmpty: true,
-    //   errorMessage: "Email is required.",
+    'email': {
+      notEmpty: true,
+      errorMessage: "Email is required.",
 
-    // },
-    // 'password': {
-    //   notEmpty: true,
-    //   errorMessage: "password is required."
-    // },
+    },
+    'password': {
+      notEmpty: true,
+      errorMessage: "password is required."
+    },
 
   };
   req.checkBody(schema);
@@ -1232,7 +1232,7 @@ router.post('/admin_login', async (req, res) => {
 
   } else {
     logger.error("Validation Error = ", errors);
-    res.status(config.BAD_REQUEST).json({ message: errors });
+    res.status(config.BAD_REQUEST).json({ message: "Please enter email and password" });
   }
 });
 
