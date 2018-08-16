@@ -1253,14 +1253,14 @@
                                                         </a>
                                                     </td>
                                                     <td class="track-det" colspan="2">
-                                                        <p class="track-name">{{val['track_id'].name}}</p>
-                                                        <p class="track-singer">{{val['track_id'].artist_id.first_name+' '+val['track_id'].artist_id.last_name }}</p>
-                                                        <p class="track-year">{{val['track_id'].created_at | date : 'yyyy'}}</p>
-                                                        <p class="track-date">{{val['track_id'].created_at | date : 'MMMM dd,yyyy'}}</p>
+                                                        <p class="track-name">{{val['track_id'] &&  val['track_id'].name ? val['track_id'].name : '' }}</p>
+                                                        <p class="track-singer">{{(val['track_id'] && val['track_id']['artist_id'] && val['track_id']['artist_id'].first_name )? val['track_id'].artist_id.first_name : '' + ' '+ val && val['track_id'] && val['track_id']['artist_id'] && val['track_id']['artist_id']['last_name'] ? val['track_id']['artist_id']['last_name'] : ''}}</p>
+                                                        <p class="track-year">{{val['track_id'] && val['track_id'].created_at ? (val['track_id'].created_at | date : 'yyyy' ): ''}}</p>
+                                                        <p class="track-date">{{val['track_id'] && val['track_id'].created_at ? (val['track_id'].created_at  | date : 'MMMM dd,yyyy') : ''}}</p>
                                                     </td>
                                                     <td class="td track-vote music_vote">
                                                         <img src="img/start.png" alt="start">
-                                                        <span>{{val['track_id'].no_of_votes}}
+                                                        <span>{{val['track_id'] && val['track_id'].no_of_votes ? val['track_id'].no_of_votes : '' }}
                                                             <br>
                                                             <span>Votes</span>
                                                         </span>
