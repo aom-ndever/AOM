@@ -15,13 +15,14 @@ playlist_helper.insert_playlist = async (object) => {
     }
 };
 
-playlist_helper.get_playlist_by_user_id = async (user_id) => {
+playlist_helper.get_playlist_by_user_id = async (user_id, start, length) => {
     try {
         var playlist = await Playlist
             .find({ "user_id": user_id })
             .populate({ path: 'track_id', populate: { path: 'artist_id' } })
             .populate({ path: 'user_id', populate: { path: 'music_type' } })
-
+            .skip(start)
+            .limit(length)
         if (playlist) {
             return { "status": 1, "message": "Track details found", "playlist": playlist };
         } else {
@@ -35,7 +36,7 @@ playlist_helper.get_playlist_by_user_id = async (user_id) => {
 playlist_helper.update_playlist = async (user_id, playlist_id, obj) => {
 
     try {
-        var playlist = await Playlist.findOneAndUpdate({ "user_id": new ObjectId(user_id), "_id": new ObjectId(playlist_id) }, obj)
+        var playlist = await Playlist.findOneAndUpdate({ "user_id": new ObjectId(user_id), "_id": new ObjectId(playlist_id) }, obj, { new: true })
         if (playlist) {
             return { "status": 1, "message": "playlist details found", "playlist": playlist };
         } else {
