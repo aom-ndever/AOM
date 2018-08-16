@@ -86,7 +86,7 @@
                   </a></div> -->
                 </div>
                 <div class="location">
-                  <p><i class="fa fa-map-marker" aria-hidden="true"></i><span>New York</span></p>
+                  <p><i class="fa fa-map-marker" aria-hidden="true"></i><span>{{nupload && nupload.artist_id && nupload.artist_id['state'] ? nupload.artist_id['state']['name'] : '' }}</span></p>
                   <div class="cat {{nupload.artist_id && nupload.artist_id.music_type['alias'] ? nupload.artist_id.music_type['alias'] : '' }}">{{nupload.artist_id && nupload.artist_id.music_type['name'] ? nupload.artist_id.music_type['name'] : ''}}</div>
                 </div>
               </div>

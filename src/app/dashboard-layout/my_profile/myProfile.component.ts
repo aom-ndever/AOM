@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, QueryList, ViewChildren } from '@angular/core';
 import { Router } from '@angular/router';
 import {NgbModal, ModalDismissReasons, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
 import { FormGroup, FormBuilder, Validators, FormControl, AbstractControl, NG_VALIDATORS, Validator } from '@angular/forms';
@@ -6,11 +6,12 @@ import { HttpEventType,  HttpResponse} from '@angular/common/http';
 import { MyProfileService } from './myProfile.service';
 import { ToastrService } from 'ngx-toastr';
 import { environment } from '../../../environments/environment';
-import { every } from 'rxjs/operator/every';
 import { Lightbox } from 'angular2-lightbox';
 import { Chart } from 'angular-highcharts';
 import { AmChartsService, AmChart } from "@amcharts/amcharts3-angular";
 import { MessageService } from '../../shared/message.service';
+import { Subscription } from 'rxjs/Subscription';
+import { DataTableDirective } from 'angular-datatables';
 import swal from 'sweetalert2';
 @Component({
   selector: 'app-myProfile',
@@ -18,6 +19,10 @@ import swal from 'sweetalert2';
   styleUrls: []
 })
 export class MyProfileComponent implements OnInit, OnDestroy {
+  @ViewChildren(DataTableDirective) 
+  dtElements: QueryList<DataTableDirective>;
+  dtOptions: DataTables.Settings[] = [];
+  subscription: Subscription;
   show_spinner : boolean = false;
   tab_cnt : Number = 1;
   userdata : any = {
@@ -76,6 +81,10 @@ export class MyProfileComponent implements OnInit, OnDestroy {
   download_analytic_count : any = 0;
   show_duration_date : any = '';
 
+  // bookmark track
+  bookmark_list : any = [];
+  audio_ins : any = [];
+  bookmark_track_list : any = [];
   // Profile form group
   artist_profile : FormGroup;
   artistProfileValidation : boolean = false;
@@ -187,6 +196,29 @@ export class MyProfileComponent implements OnInit, OnDestroy {
       zipcode : ['', [Validators.required]],
       music_type : ['']
     });
+
+     // this.getAllData();
+     this.subscription = this.MessageService.getMessage().subscribe((response) => {
+      if(response && response['list'] != 1) {
+        this.audio_ins.forEach((ele, idx) => { this.audio_ins[idx] = false; } );
+      }
+      
+      if(response && response['action'] == 'stop' && response['list'] == 1) {
+        this.audio_ins[response['index']] = false;
+      }
+      
+      if(response && response['action'] == 'start' && response['list'] == 1) {
+        this.audio_ins[response['index']] = true;
+      }
+      
+      if(response && response['list'] == 1 && response['action'] == 'next' || response['action'] == 'prev' ) {
+        if(response['track_action'] && response['track_action'] == 'pause') {
+          this.audio_ins.forEach((ele, idx) => { this.audio_ins[idx] = false; } );
+          this.audio_ins[response['index']] = true;
+        }
+      }
+      
+    });
   }
 
   ngOnInit() {
@@ -197,7 +229,47 @@ export class MyProfileComponent implements OnInit, OnDestroy {
       //this.getAllTrackAnalytic({day : this.analytics_days});
       this.getAllOverviewAnalytic({day : 14});
       this.getAllDownloadAnalytic({day : this.analytics_days});
+      
+    } else {
+      const that = this;
+      this.dtOptions[0] = {
+        pagingType: 'full_numbers',
+        pageLength: 10,
+        serverSide: true,
+        processing: true,
+        searching: false,
+        ordering: false,
+        lengthChange: false,
+        responsive: true,
+        ajax: (dataTablesParameters: any, callback) => {
+          console.log(dataTablesParameters);
+          that.audio_ins = [];
+          that.MyProfileService.getBookmarkedTrack(dataTablesParameters).subscribe((response) => {
+            
+            that.bookmark_list = response['bookmark'];
+            if(that.bookmark_list.length > 0) { 
+              this.audio_ins = [];
+              this.bookmark_track_list = [];
+              this.bookmark_list.forEach((ele) => {this.audio_ins.push(false)});
+              this.bookmark_list.forEach((ele) => {this.bookmark_track_list.push(ele['track_id'])});
+            }
+            callback({
+              recordsTotal: response['recordsTotal'],
+              recordsFiltered: response['recordsFiltered'],
+              data: []
+            });
+          });
+          
+        },
+        columns: [
+          { data: '' },
+          { data: '' },
+          { data: '' },
+          { data: '' }
+        ]
+      };
     }
+
   }
 
   ngOnDestroy() {
@@ -210,6 +282,7 @@ export class MyProfileComponent implements OnInit, OnDestroy {
     if (this.overview_location_chart) {
       this.AmCharts.destroyChart(this.overview_location_chart);
     }
+    this.subscription.unsubscribe();
   }
 
   calculateDateFromDays(days : any) {
@@ -1307,5 +1380,35 @@ export class MyProfileComponent implements OnInit, OnDestroy {
         }
       ]
     });
+  }
+
+   // Play audio
+   playAudio(name : any, index : any, data : any){
+    // let audio = new Audio();
+    // audio.src = this.track_url+name;
+    // audio.load();
+    // audio.play();
+    // if(!this.audio_ins.hasOwnProperty(index)) {
+    //   this.audio_ins[index] = audio;
+    // }
+    data = this.bookmark_track_list;
+    data.forEach((ele, idx) => {
+      this.audio_ins[idx] = false;
+    });
+    this.audio_ins[index] = true;
+    this.MessageService.sendMessage({data : data, index : index, action : 'start', list : 1});
+  }
+  // Stop audio
+  stopAudio(index, data : any) {
+    // console.log(this.audio_ins[index]);
+    // this.audio_ins[index].pause();
+    // this.audio_ins[index].currentTime = 0;
+    // // this.audio_ins[index].stop();
+    // delete this.audio_ins[index];
+    data = this.bookmark_track_list;
+    data.forEach((ele, idx) => {
+      this.audio_ins[idx] = false;
+    });
+    this.MessageService.sendMessage({data : data, index : index, action : 'stop', list : 1});
   }
 }

@@ -3,6 +3,9 @@ import { TrackCommentsService } from './track_comments.service';
 import { ToastrService } from 'ngx-toastr';
 import { environment } from '../../../environments/environment' ;
 import {ActivatedRoute} from "@angular/router";
+import {NgbModal, ModalDismissReasons, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
+import { FormGroup, FormBuilder, Validators, FormControl, AbstractControl, NG_VALIDATORS, Validator } from '@angular/forms';
+declare var FB : any;
 
 @Component({
   selector: 'app-track-comments',
@@ -56,13 +59,14 @@ export class TrackConmmentsComponent implements OnInit {
   }
   // Post comment
   postComment() {
-    if(this.comment_txt) {
+    if(this.comment_txt && this.comment_txt != null) {
       this.show_spinner = true;
       let data = {
         "track_id": this.track._id,
 	      "artist_id": this.artistdata._id,
         "comment" : this.comment_txt
       };
+      console.log(data);
       this.TrackCommentsService.addCommentToTrack(data).subscribe(response => {
         this.comment_txt = '';
         this.getAllTrackComment();
@@ -94,5 +98,38 @@ export class TrackConmmentsComponent implements OnInit {
     }, (error) => {
       this.toastr.error(error['error'].message, 'Error!');
     });
+  }
+
+  // upvote commnet
+  upVoteComment(id : any) {
+    if(this.user && this.user['user']) {
+      let data = {
+        comment_id : id
+      }
+      this.TrackCommentsService.upVoteComment(data).subscribe((response) => {
+        this.getAllTrackComment();
+        this.toastr.success(response['message'], 'Success!');
+      }, (error) => {
+        this.toastr.error(error['error'].message, 'Error!');
+      });
+    } else {
+      this.toastr.info('Please signin as listener to upnvote comment.', 'Information!');
+    }
+  }
+  // downvote commnet
+  downVoteComment(id : any) {
+    if(this.user && this.user['user']) {
+      let data = {
+        comment_id : id
+      }
+      this.TrackCommentsService.downVoteComment(data).subscribe((response) => {
+        this.getAllTrackComment();
+        this.toastr.success(response['message'], 'Success!');
+      }, (error) => {
+        this.toastr.error(error['error'].message, 'Error!');
+      });
+    } else {
+      this.toastr.info('Please signin as listener to downvote comment.', 'Information!');
+    }
   }
 }

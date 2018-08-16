@@ -125,4 +125,8 @@ export class MyProfileService {
     return this.http.put(`${this.api_host}/artist/notification_settings`, data, {headers : this.headers});
   }
 
+  // get bookmarked track
+  getBookmarkedTrack(data : any) {
+   return this.http.post(`${this.api_host}/user/bookmark`, data, {headers : this.headers});
+  }
 }

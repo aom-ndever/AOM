@@ -30,4 +30,22 @@ export class CommentsService {
     this.headers = new HttpHeaders({ 'x-access-token' : this.user.token });  
     return this.http.get(`${this.api_host}/user/artist/followers`, {headers : this.headers});
   }
+
+  // Get all comments by artist id
+  getAllCommentsByArtist(data : any) {
+    return this.http.post(`${this.api_host}/comment`, data);
+  }
+
+  // upvote comment
+  upVoteComment(data : any) {
+    this.user = JSON.parse(localStorage.getItem('user'));
+    this.headers = new HttpHeaders({ 'x-access-token' : this.user.token });
+    return this.http.post(`${this.api_host}/user/comment/upvote`, data, {headers : this.headers});
+  }
+  // Downvote comment
+  downVoteComment(data : any) {
+    this.user = JSON.parse(localStorage.getItem('user'));
+    this.headers = new HttpHeaders({ 'x-access-token' : this.user.token });
+    return this.http.post(`${this.api_host}/user/comment/downvote`, data, {headers : this.headers});
+  }
 }

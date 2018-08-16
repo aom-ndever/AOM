@@ -9,7 +9,6 @@ import { MessageService } from '../../shared/message.service';
 import { Subscription } from 'rxjs/Subscription';
 import {NgbModal, ModalDismissReasons, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
 import { FormGroup, FormBuilder, Validators, FormControl, AbstractControl, NG_VALIDATORS, Validator } from '@angular/forms';
-import { text } from '../../../../node_modules/@angular/core/src/render3/instructions';
 declare var FB : any;
 
 @Component({
@@ -145,6 +144,24 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
               that.artisttrack = response['track']['music'];
               if(that.artisttrack.length > 0) {
                 that.artisttrack.forEach((ele) => {that.audio_ins.push(false);});
+                // that.artisttrack.forEach((ele) => {ele['is_bookmarked'] = false;});
+                if(that.user && that.user['user']) {
+                  that.ArtistProfileService.getBookmarkedTrackList().subscribe((response) => {
+                    console.log('bookmarked', response);
+                    let bookmark_list = response['bookmark'];
+                    that.artisttrack.forEach((ele) => {
+                      let flag = false;
+                      bookmark_list.forEach((bookmark) => {
+                        if(bookmark['track_id']['_id'] == ele['_id']) {
+                          flag = true;
+                          return;
+                        }
+                      });
+                      ele['is_bookmarked'] = flag;
+                    });
+                  });
+                }
+                
               }
               callback({
                 recordsTotal: response['track']['recordsTotal'],
@@ -182,6 +199,24 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
             that.ArtistProfileService.getAllRanking(dataTablesParameters).subscribe(response => {
               that.rankingtrack = response['track']['music'];
               that.rankingtrack.forEach((ele) => {that.audio_ins.push(false);});
+              // that.rankingtrack.forEach((ele) => {ele['is_bookmarked'] = false;});
+              if(that.user && that.user['user']) {
+                that.ArtistProfileService.getBookmarkedTrackList().subscribe((response) => {
+                  console.log('bookmarked', response);
+                  let bookmark_list = response['bookmark'];
+                  that.rankingtrack.forEach((ele) => {
+                    let flag = false;
+                    bookmark_list.forEach((bookmark) => {
+                      if(bookmark['track_id']['_id'] == ele['_id']) {
+                        flag = true;
+                        return;
+                      }
+                    });
+                    ele['is_bookmarked'] = flag;
+                  });
+                });
+              }
+              
               callback({
                 recordsTotal: response['track']['recordsTotal'],
                 recordsFiltered: response['track']['recordsTotal'],
@@ -416,6 +451,38 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
     } 
     else {
       this.toastr.info('Please login to download this track.', 'Info!');
+    }
+  }
+
+  // Bookmark particular track
+  bookMarkTrack(id : any, index : any, type : any) {
+    if(this.user && this.user['user']) {
+      if(type == 'track') {
+        this.artisttrack[index]['is_bookmarked'] = !this.artisttrack[index]['is_bookmarked'];
+        let data = {
+          track_id : id
+        };
+        this.ArtistProfileService.bookmarkTrack(data).subscribe((response) => {
+          this.toastr.success(response['message'],'Success!');
+        }, (error) => {
+          this.artisttrack[index]['is_bookmarked'] = !this.artisttrack[index]['is_bookmarked'];
+          this.toastr.error(error['error'].message,'Error!');
+        });
+        
+      } else {
+        this.rankingtrack[index]['is_bookmarked'] = !this.rankingtrack[index]['is_bookmarked'];
+        let data = {
+          track_id : id
+        };
+        this.ArtistProfileService.bookmarkTrack(data).subscribe((response) => {
+          this.toastr.success(response['message'],'Success!');
+        }, (error) => {
+          this.rankingtrack[index]['is_bookmarked'] = !this.rankingtrack[index]['is_bookmarked'];
+          this.toastr.error(error['error'].message,'Error!');
+        });
+      }
+    } else {
+      this.toastr.info('Please signin as listener to bookmark the track.', 'Information!');
     }
   }
 

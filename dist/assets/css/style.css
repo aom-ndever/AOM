@@ -1453,7 +1453,31 @@ span.up_text {
     text-align: left;
     color: #1a1a1a;
     margin-bottom: 10px;
+    margin-left: 40px;
 }
+.chevron-up:after {
+    content: '';
+    border-bottom: 10px solid #afaaaa;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    top: 0;
+    position: absolute;
+}
+i.chevron-down:after {
+    content: '';
+    border-top: 10px solid #afaaaa;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    bottom: -29px;
+    position: absolute;
+}
+.up_down_container > div{
+    position: relative;
+}
+.up_down_container > div span{margin-top: 27px;
+    display: inline-block;
+    width: 20px;
+    padding-left: 16px;}
 .comment-block .s-img,.cm-date-name{
     display: inline-block;
     vertical-align: top;
@@ -1634,7 +1658,7 @@ a.play-btn{
     margin-bottom: 50px;
     position: relative;
 }
-.track-table table{width: 100%;}
+.track-table table{width: 100% !important;}
 .serial-num {
     font-size: 14px;
     color: #000;
@@ -1649,12 +1673,10 @@ a.play-btn{
     line-height: 20px;
     padding-left: 5px;
 }
-.cmt-like a img{width: 33%;  -webkit-filter: grayscale(100%); /* Safari 6.0 - 9.0 */
+.cmt-like a img{-webkit-filter: grayscale(100%); /* Safari 6.0 - 9.0 */
     filter: grayscale(100%); opacity: 0.5;}
 .cmt-like a.liked img{
-    width: 33%;  
-    -webkit-filter: grayscale(0%); /* Safari 6.0 - 9.0 */
-    filter: grayscale(0%); 
+    width: 19px;
     opacity: 1;
 }
 .track-singer,.track-year,.track-date{
@@ -1674,6 +1696,10 @@ a.play-btn{
 .download, .share, .cmt-like, .cmt {
     display: inline-block;
     padding: 0 5px;
+    text-align: center;
+}
+.track-comment-wrap .download,.track-comment-wrap .share,.track-comment-wrap .cmt-like,.track-comment-wrap .cmt{
+    padding: 0 10px;
 }
 .cmt-like a,.cmt a,.download a{
     font-family: Helvetica;
@@ -1747,6 +1773,9 @@ input#cover_upload {
     top: 15px;
 }
 .rofile-tab-content,.profile-tabs {padding: 50px 0;}
+.rofile-tab-content{
+    padding-top:55px;
+}
 .delete i {color: #fff;}
 .profile-tabs ul {
     list-style-type: none;
@@ -1769,6 +1798,9 @@ input#cover_upload {
     padding: 30px 0 35px 0;
     color: #000;
     font-weight: bold;
+}
+.profile-tabs ul li:first-child {
+    padding-top: 0;
 }
 .notify-by-email ul, .notify-by-sms ul, .on-side-alert ul{
     margin: 0 -15px !important;
@@ -3017,8 +3049,9 @@ div#submitcontest {
 .comment-wrap .s-img,.track-comment-wrap .s-img{       width: 35px;
     float: left;
     padding-right: 0px;}
-.comment-wrap .cm-date-name,.track-comment-wrap .cm-date-name,.add-comment .form-group{width: 96%; float: left;}
-.s-img img{width: 30px;}
+.comment-wrap .cm-date-name,.track-comment-wrap .cm-date-name,.add-comment .form-group{width: 94%; float: left;}
+.s-img img{width: 30px;    border-radius: 50%;
+    height: 30px;}
 .comment-wrap  .comment-block,.track-comment-wrap  .comment-block{display: inline-block;     padding-bottom: 15px;
     margin-bottom: 10px;}
 .comment-wrap  .comment-block:last-child,.track-comment-wrap  .comment-block:last-child{border-bottom: 0;}
@@ -3035,11 +3068,11 @@ div#submitcontest {
     margin-bottom: 20px;
 }
 .cm-date-name{position: relative;}
-.comment-wrap .comment-block .cm-date-name > h6{       margin-bottom: 10px;
+.comment-block .cm-date-name > h6{       margin-bottom: 10px;
     font-size: 14px;
     text-transform: capitalize;
     margin-top: 8px;}
-.comment-wrap .comment-block .cm-date-name > p,
+ .comment-block .cm-date-name > p,
 .track-comment-wrap .comment-block .cm-date-name > p{
 
     opacity: 0.5;
@@ -3071,6 +3104,7 @@ div#submitcontest {
   letter-spacing: normal;
   text-align: center;
   color: #ffffff;
+  padding: 2px 0;
 }
 .add-comment .button_group{clear: both; width: 20%; float: right; margin: 0;}
 .add-comment {
@@ -3872,7 +3906,7 @@ input#cover_upload1 {
     padding-right:0;
   }
   .music_vote{    width: 15%;}
-  .music_action{    width: 29%;}
+  .music_action{    width: 31%;}
   .track-table .dataTables_wrapper.no-footer .dataTables_scrollBody,  .track-table table.dataTable thead th{border-bottom: none;}
   .track-table .dataTables_paginate > span{display: none;}
   .paginate_button.first, .paginate_button.last {    display: none !important;}
@@ -4023,9 +4057,23 @@ svg g rect{
     background-color: #d62d20;
 }
 .shared_popup{    padding-bottom: 40px;}
+.download {
+    min-width: 40px;
+}
+.up_down_container{
+    padding-right: 21px;
+    margin-top: -10px;
+}
+.up_down_container > div {
+    line-height: normal;
+    text-align: center;
+}
+.up_down_container > div a{
+    color: #ccc6c6;
+}
 /*MEDIA START*/
 @media screen and (min-width: 768px){
-    .news-header,.content-block{width: 750px;}
+    .content-block{width: 750px;}
     .search-input, .filter-list{
         display: block !important;
     }
@@ -4035,10 +4083,11 @@ svg g rect{
 
 }
 @media screen and (min-width: 992px){
-    .news-header,.content-block{width: 970px;}
+  .content-block{width: 970px;}
 }
 @media screen and (min-width: 1200px){
-    .news-header,.content-block{width: 1170px;}
+   .content-block{width: 1170px;}
+
 
 
 }
@@ -4126,7 +4175,7 @@ svg g rect{
     /*comment*/
     .track-comment-wrap .track-cname a{font-size:20px; }
     .comment-wrap .cm-date-name, .track-comment-wrap .cm-date-name, .add-comment .form-group {
-    width: 95%;}
+    width: 94% !important;}
     .comment-wrap .s-img, .track-comment-wrap .s-img {
     width: 5%;}
     /*comment*/

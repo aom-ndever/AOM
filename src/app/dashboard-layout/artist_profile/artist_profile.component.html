@@ -156,6 +156,11 @@
                                 </span>
                               </td>
                               <td class="action music_action" colspan="2">
+                                <div class="cmt">
+                                    <a href="javascript:;" class="liked" (click)="bookMarkTrack(artist._id, i, 'track')">
+                                        <i class="fa {{artist['is_bookmarked'] ? 'fa-heart' : 'fa-heart-o'}}"></i>
+                                    </a>
+                                </div>
                                 <div class="cmt-like">
                                   <a href="javascript:;" class="liked" (click)="likeTrack(artist._id, i)">
                                     <img src="img/like-color.jpg" alt="">{{artist.no_of_likes}}</a>
@@ -236,6 +241,11 @@
                                 </span>
                               </td>
                               <td class="action" colspan="2">
+                                  <div class="cmt">
+                                      <a href="javascript:;" class="liked" (click)="bookMarkTrack(rank._id, i, 'rank')">
+                                          <i class="fa {{rank['is_bookmarked'] ? 'fa-heart' : 'fa-heart-o'}}"></i>
+                                      </a>
+                                  </div>
                                 <div class="cmt-like">
                                   <a href="javascript:;" (click)="likeRankTrack(rank._id, i)">
                                     <img src="img/like-color.jpg" alt="">{{rank.no_of_likes}}</a>
@@ -269,7 +279,7 @@
     </div>
   </div>
   </div>
-  <ng-template #shareTrack let-c="close" let-d="dismiss" >
+<ng-template #shareTrack let-c="close" let-d="dismiss" >
     <div class="modal_login_wrapper">
         <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
             <span aria-hidden="true">&times;</span>
@@ -279,7 +289,7 @@
         <div class="shared_popup">
             <div class="col-12 text-center shared_popup_header">
                 <h4>Share This Track</h4>
-                <span>You are Sharing the "{{audio_list && audio_list[this.song_cnt] ? audio_list[this.song_cnt]['name'] : '' }}" Track</span>
+                <span>You are Sharing the "{{track_data && track_data['name'] ? track_data['name'] : '' }}" Track</span>
             </div>
             <div class="row">
                 <div class="col-sm-6">

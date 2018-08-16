@@ -176,7 +176,7 @@
     <span aria-hidden="true">&times;</span>
   </button>
   <div class="modal-body">
-    <div class="custom_modal">
+    <div class="custom_modal artist_view_modal">
       <div class="row" style="padding: 5px;" >
         <div class="col-sm-4 artist_img">
           <img src="{{artist_detail['image'] ? artist_img_url+artist_detail['image'] : 'img/profile-img.png'}}" />
@@ -230,8 +230,8 @@
                   <td>3:10</td>
                   <td class="td_img">
                     <a href="javascript:;" (click)="removeTrack(track['_id'])"><i class="fa fa-trash"></i> Delete</a>&nbsp;
-                    <img src="img/suspend.png">
-                    <a href="javascript:;"> Suspend</a>
+                    
+                    <a href="javascript:;"> <img src="img/suspend.png">Suspend</a>
                   </td>
                 </tr>
                 <tr *ngIf="artist_track?.length == 0">
