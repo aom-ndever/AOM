@@ -959,6 +959,7 @@
                         <li class="nav-item"><a class="nav-link {{tab_cnt == 1 ? 'active' : '' }}" (click)="tabChange(1)" data-toggle="tab" href="javascript:;">Profile</a></li>
                         <li class="nav-item"><a class="nav-link {{tab_cnt == 2 ? 'active' : '' }}" data-toggle="tab" (click)="tabChange(2)" href="javascript:;">Settings</a></li>
                         <li class="nav-item"><a class="nav-link {{tab_cnt == 3 ? 'active' : '' }}" data-toggle="tab" (click)="tabChange(3)" href="javascript:;">Bookmarked</a></li>
+                        <li class="nav-item"><a class="nav-link {{tab_cnt == 4 ? 'active' : '' }}" data-toggle="tab" (click)="tabChange(4)" href="javascript:;">Playlist</a></li>
                     </ul>
                 </div>
             </div>
@@ -1268,6 +1269,13 @@
                                             </tbody>
                                         </table>
                                     </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pan fade {{tab_cnt == 4 ? 'show active' : ''}}" id="playlist">
+                            <div class="row">
+                                <div class="col-sm-12 col-md-12 col-12">
+                                    <h3>Playlist</h3>
                                 </div>
                             </div>
                         </div>

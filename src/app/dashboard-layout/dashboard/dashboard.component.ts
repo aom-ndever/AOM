@@ -116,12 +116,13 @@ export class DashboardComponent implements OnInit, OnDestroy {
   InitializeSider(data : any) {
     this.images = [];
     data.forEach(ele => {
+      
       this.images.push({
         "source": ele.image ? this.track_url+ele.image : 'img/finalist1.png',
         "alt": "",
         "title": ele.name,
         "name": ele.artist_id['first_name']+' '+ele.artist_id['last_name'],
-        "location": "Title 1",
+        "location": ele && ele['state']['name'] ? ele['state']['name'] : '',
         "type": ele.music_type['name'],
         "alias" : ele.music_type['alias'],
         "audio" : ele.audio,

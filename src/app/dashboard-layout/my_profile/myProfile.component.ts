@@ -91,6 +91,9 @@ export class MyProfileComponent implements OnInit, OnDestroy {
   listener_profile : FormGroup;
   listenerProfileValidation : boolean = false;
 
+  // playlist
+  playlist : any = [];
+
   constructor(private MyProfileService : MyProfileService, 
     private toastr: ToastrService,
     private router: Router,
@@ -217,6 +220,58 @@ export class MyProfileComponent implements OnInit, OnDestroy {
           this.audio_ins[response['index']] = true;
         }
       }
+
+      if(response && response['loggedin_user']) {
+        data = response['loggedin_user'];
+        if(data && data.artist) {
+          this.userdata = {...data['artist']};
+          this.userdata['type'] = 'artist';
+          if(this.userdata.dob) {
+            let dt =  new Date(this.userdata.dob);
+            this.userdata['day'] = dt.getDate();
+            this.userdata['month'] = dt.getMonth();
+            this.userdata['year'] = dt.getFullYear();
+          }
+          if(this.userdata.image) {
+            this.default_profile_img = environment.API_URL+environment.ARTIST_IMG+this.userdata.image;
+          }
+          if(this.userdata.cover_image) {
+            this.default_cover_img = environment.API_URL+environment.ARTIST_IMG+this.userdata.cover_image;
+          }
+          if(!this.userdata.social_media) {
+            this.userdata['social_media'] = {
+              'facebook' : '',
+              'instagram' : '',
+              'twitter' : '',
+              'youtube' : '',
+              'sound_cloud' : ''
+            };
+          }
+        } else {
+          this.userdata = {...data['user']};
+          this.userdata['type'] = 'user';
+          delete this.userdata['token'];
+          if(this.userdata.dob) {
+            let dt =  new Date(this.userdata.dob);
+            this.userdata['day'] = dt.getDate();
+            this.userdata['month'] = dt.getMonth();
+            this.userdata['year'] = dt.getFullYear();
+          }
+          if(this.userdata.image) {
+            if(this.userdata.provider && this.userdata.provider == 'facebook' && this.userdata['image'].includes('graph.facebook.com') || (this.userdata.provider == "gmail" && this.userdata['image'].includes('lh3.googleusercontent.com'))) {
+              this.default_profile_img = this.userdata.image;
+            } else {
+              this.default_profile_img = environment.API_URL+environment.USER_IMG+this.userdata.image;
+            }
+          }
+          let tmp = [];
+          this.userdata['music_type'].forEach((ele) => {
+            if(ele)
+              tmp.push(ele['_id']);
+          });
+          this.userdata['music_type'] = tmp;
+        }
+      }
       
     });
   }
@@ -253,6 +308,37 @@ export class MyProfileComponent implements OnInit, OnDestroy {
               this.bookmark_list.forEach((ele) => {this.audio_ins.push(false)});
               this.bookmark_list.forEach((ele) => {this.bookmark_track_list.push(ele['track_id'])});
             }
+            callback({
+              recordsTotal: response['recordsTotal'],
+              recordsFiltered: response['recordsFiltered'],
+              data: []
+            });
+          });
+          
+        },
+        columns: [
+          { data: '' },
+          { data: '' },
+          { data: '' },
+          { data: '' }
+        ]
+      };
+      this.dtOptions[1] = {
+        pagingType: 'full_numbers',
+        pageLength: 10,
+        serverSide: true,
+        processing: true,
+        searching: false,
+        ordering: false,
+        lengthChange: false,
+        responsive: true,
+        ajax: (dataTablesParameters: any, callback) => {
+          console.log(dataTablesParameters);
+          that.audio_ins = [];
+          that.MyProfileService.getAllListenerPlaylist(dataTablesParameters).subscribe((response) => {
+            
+            that.playlist = response['playlist'];
+            
             callback({
               recordsTotal: response['recordsTotal'],
               recordsFiltered: response['recordsFiltered'],
@@ -1384,13 +1470,7 @@ export class MyProfileComponent implements OnInit, OnDestroy {
 
    // Play audio
    playAudio(name : any, index : any, data : any){
-    // let audio = new Audio();
-    // audio.src = this.track_url+name;
-    // audio.load();
-    // audio.play();
-    // if(!this.audio_ins.hasOwnProperty(index)) {
-    //   this.audio_ins[index] = audio;
-    // }
+    
     data = this.bookmark_track_list;
     data.forEach((ele, idx) => {
       this.audio_ins[idx] = false;
@@ -1400,11 +1480,6 @@ export class MyProfileComponent implements OnInit, OnDestroy {
   }
   // Stop audio
   stopAudio(index, data : any) {
-    // console.log(this.audio_ins[index]);
-    // this.audio_ins[index].pause();
-    // this.audio_ins[index].currentTime = 0;
-    // // this.audio_ins[index].stop();
-    // delete this.audio_ins[index];
     data = this.bookmark_track_list;
     data.forEach((ele, idx) => {
       this.audio_ins[idx] = false;
