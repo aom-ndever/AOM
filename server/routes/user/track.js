@@ -226,7 +226,8 @@ router.post('/like_track', async (req, res) => {
           "subject": "like from user"
         }, {
             "username": resp.artist.first_name + '\t' + response.user.last_name,
-            "user": response.user.first_name + '\t' + resp.artist.last_name
+            "user": response.user.first_name + '\t' + resp.artist.last_name,
+            // "link": "http://34.204.127.137/artist_profile/" + response.user._id
           });
       }
       if (responses.artist.notification_settings.like_by_sms == true) {

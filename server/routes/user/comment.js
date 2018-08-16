@@ -83,9 +83,11 @@ router.post('/', async (req, res) => {
             "to": resp.artist.email,
             "subject": "Comment from user"
           }, {
-              "user": response.user.first_name + response.user.last_name,
-              "comment": obj.comment
+              "username": resp.artist.first_name + '\t' + response.user.last_name,
+              "user": response.user.first_name + '\t' + resp.artist.last_name,
+              "link": "http://34.204.127.137/artist_profile/" + response.user._id + "/comments"
             });
+
         }
 
         if (resp.artist.notification_settings.comment_by_sms == true) {
