@@ -17,14 +17,27 @@ playlist_helper.insert_playlist = async (object) => {
 
 playlist_helper.get_playlist_by_user_id = async (user_id, start, length) => {
     try {
+
+        var playlists = await Playlist
+            .find({ "user_id": user_id })
+            .populate({ path: 'track_id', populate: { path: 'artist_id' } })
+            .populate({ path: 'user_id', populate: { path: 'music_type' } })
+
+
+        var tot_cnt = playlists.length;
+
+
         var playlist = await Playlist
             .find({ "user_id": user_id })
             .populate({ path: 'track_id', populate: { path: 'artist_id' } })
             .populate({ path: 'user_id', populate: { path: 'music_type' } })
             .skip(start)
             .limit(length)
+
+
+        var filter_cnt = playlist.length;
         if (playlist) {
-            return { "status": 1, "message": "Track details found", "playlist": playlist };
+            return { "status": 1, "message": "Track details found", "playlist": playlist, "recordsFiltered": filter_cnt, "recordsTotal": tot_cnt };
         } else {
             return { "status": 2, "message": "playlist not found" };
         }
