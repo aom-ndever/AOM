@@ -339,7 +339,7 @@ router.put("/add_track/:playlist_id", async (req, res) => {
  * @apiSuccess (Success 200) {String} success message
  * @apiError (Error 4xx) {String} message Validation or error message.
  */
-router.delete('/track', async (req, res) => {
+router.put('/track', async (req, res) => {
   user_id = req.userInfo.id;
   playlist_id = req.body.playlist_id;
   track_id = req.body.track_id;
