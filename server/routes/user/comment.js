@@ -77,15 +77,18 @@ router.post('/', async (req, res) => {
 
         var resp = await artist_helper.get_artist_by_id(obj.artist_id);
         if (resp.artist.notification_settings.comment_by_email == true) {
+          console.log('resp.artist._id', resp.artist._id);
 
 
           let mail_resp = await mail_helper.send("notification_comment", {
             "to": resp.artist.email,
             "subject": "Comment from user"
           }, {
-              "user": response.user.first_name + response.user.last_name,
-              "comment": obj.comment
+              "username": resp.artist.first_name + '\t' + response.user.last_name,
+              "user": response.user.first_name + '\t' + resp.artist.last_name,
+              "link": "http://34.204.127.137/artist_profile/" + resp.artist._id + "/comments"
             });
+
         }
 
         if (resp.artist.notification_settings.comment_by_sms == true) {

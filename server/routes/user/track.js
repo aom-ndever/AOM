@@ -214,6 +214,8 @@ router.post('/like_track', async (req, res) => {
 
       //sending mail to artist for like
       var resp = await artist_helper.get_artist_by_id(obj.artist_id);
+      console.log('resp.artist.firstname', resp.artist.first_name);
+      console.log('resp.artist.lastname', resp.artist.last_name);
 
       var response = await user_helper.get_user_by_id(user_id);
       if (responses.artist.notification_settings.like_by_email == true) {
@@ -223,7 +225,9 @@ router.post('/like_track', async (req, res) => {
           "to": resp.artist.email,
           "subject": "like from user"
         }, {
-            "user": response.user.first_name + response.user.last_name
+            "username": resp.artist.first_name + '\t' + response.user.last_name,
+            "user": response.user.first_name + '\t' + resp.artist.last_name,
+            // "link": "http://34.204.127.137/artist_profile/" + response.user._id
           });
       }
       if (responses.artist.notification_settings.like_by_sms == true) {

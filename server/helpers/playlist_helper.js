@@ -51,24 +51,84 @@ playlist_helper.get_playlist_by_user_id = async (user_id, start, length) => {
 playlist_helper.get_playlists = async (user_id, playlist_id, start, length) => {
     try {
 
-        var playlists = await Playlist
-            .findOne({ "_id": new ObjectId(playlist_id), "user_id": user_id })
-            .populate({ path: 'track_id', populate: { path: 'artist_id' } })
-            .populate({ path: 'user_id', populate: { path: 'music_type' } })
+        var playlists = await Playlist.aggregate([
+            {
+                "$match": {
 
+                    "_id": ObjectId(playlist_id)
+                }
+            },
+            {
+                "$unwind": "$track_id"
+            },
+            {
+                "$lookup": {
+                    "from": "track",
+                    "foreignField": "_id",
+                    "localField": "track_id",
+                    "as": "track"
+                }
+            },
+            {
+                "$unwind": "$track"
+            },
+            {
+                "$lookup": {
+                    "from": "artist",
+                    "foreignField": "_id",
+                    "localField": "track.artist_id",
+                    "as": "artist"
+                }
+            },
+            {
+                "$unwind": "$artist"
+            },
 
-        var tot_cnt = playlists.length;
+        ]);
+        var tot_cnt = playlists.length
 
+        var playlist = await Playlist.aggregate([
+            {
+                "$match": {
 
-        var playlist = await Playlist
-            .findOne({ "_id": new ObjectId(playlist_id), "user_id": user_id })
-            .populate({ path: 'track_id', populate: { path: 'artist_id' } })
-            .populate({ path: 'user_id', populate: { path: 'music_type' } })
-            .skip(start)
-            .limit(length)
+                    "_id": ObjectId(playlist_id)
+                }
+            },
+            {
+                "$unwind": "$track_id"
+            },
+            {
+                "$lookup": {
+                    "from": "track",
+                    "foreignField": "_id",
+                    "localField": "track_id",
+                    "as": "track"
+                }
+            },
+            {
+                "$unwind": "$track"
+            },
+            {
+                "$lookup": {
+                    "from": "artist",
+                    "foreignField": "_id",
+                    "localField": "track.artist_id",
+                    "as": "artist"
+                }
+            },
+            {
+                "$unwind": "$artist"
+            },
+            {
+                "$skip": start
+            },
+            {
+                "$limit": length
+            }
 
+        ]);
+        var filter_cnt = playlist.length
 
-        var filter_cnt = playlist.length;
         if (playlist) {
             return { "status": 1, "message": "Track details found", "playlist": playlist, "recordsFiltered": filter_cnt, "recordsTotal": tot_cnt };
         } else {
@@ -130,12 +190,8 @@ playlist_helper.delete_playlist = async (user_id, playlist_id) => {
 
 playlist_helper.delete_track_playlist = async (user_id, playlist_id, newData) => {
 
-    console.log('newData', newData);
-
-
     try {
         var playlist = await Playlist.findByIdAndUpdate({ "user_id": new ObjectId(user_id), "_id": new ObjectId(playlist_id) }, { "track_id": newData })
-        console.log('playlist', playlist);
 
 
         if (playlist) {

@@ -1227,12 +1227,12 @@ router.post('/admin_login', async (req, res) => {
     }
 
     else {
-      res.status(config.BAD_REQUEST).json({ "status": 0, "message": "Invalid email address or token" });
+      res.status(config.BAD_REQUEST).json({ "status": 0, "message": "Invalid email address or password" });
     }
 
   } else {
     logger.error("Validation Error = ", errors);
-    res.status(config.BAD_REQUEST).json({ message: errors });
+    res.status(config.BAD_REQUEST).json({ message: "Please enter email and password" });
   }
 });
 
