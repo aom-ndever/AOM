@@ -144,6 +144,6 @@ export class MyProfileService {
   }
   // Delete user playlist by id
   deleteListenerPlaylistById(id) {
-    return this.http.delete(`${this.api_host}/user/playlist/{id}`, {headers : this.headers});
+    return this.http.delete(`${this.api_host}/user/playlist/${id}`, {headers : this.headers});
   }
 }

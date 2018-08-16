@@ -1249,7 +1249,7 @@
                                                     </td>
                                                     <td class="track-pic">
                                                         <a href="javascript:;">
-                                                            <img src="{{val['track_id'].image ? track_url+val['track_id'].image : 'img/track-img.png'}}" style="height:50px;width:50px;" alt="Track Image">
+                                                            <img src="{{val['track_id'] && val['track_id'].image ? track_url+val['track_id'].image : 'img/track-img.png'}}" style="height:50px;width:50px;" alt="Track Image">
                                                         </a>
                                                     </td>
                                                     <td class="track-det" colspan="2">
@@ -1276,6 +1276,26 @@
                             <div class="row">
                                 <div class="col-sm-12 col-md-12 col-12">
                                     <h3>Playlist</h3>
+                                    <a href="javascript:;" class="btn btn-primary" (click)="openAddPlaylistModel(addplaylist)">Add <i class="fa fa-plus"></i></a>
+                                    <div class="track-table">
+                                        <table datatable [dtOptions]="dtOptions[1]">
+                                            <thead>
+                                                <tr>
+                                                    <th>Name</th>
+                                                    <th>Actions</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr *ngFor="let val of playlist;let i = index;">
+                                                    <td>{{val['name']}}</td>
+                                                    <td>
+                                                        <a href="javascript:;" (click)="openEditPlaylistModel(editplaylist, i)"><i class="fa fa-pencil"></i></a>
+                                                        <a href="javascript:;" (click)="removePlaylist(val['_id'])"><i class="fa fa-trash"></i></a>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -1322,3 +1342,43 @@
 		</div>
 	</div>
 </ng-template>
+
+<ng-template #addplaylist let-c="close" let-d="dismiss">
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+        <span aria-hidden="true">&times;</span>
+    </button>
+    <div class="modal-body">
+        <form>
+            <div class="media-modal">
+                <h3>Add New Playlist</h3>
+                <div class="form-group">
+                    <label for="vlink">Name</label>
+                    <input type="text" class="form-control" placeholder="Playlist name" name="playlist" [(ngModel)]="playlist_data.name">
+                </div>
+            </div>
+            <div class="button_group">
+                <button type="submit" class="add-btn" (click)="addNewPlaylist()" [disabled]="show_spinner">Add Playlist <i *ngIf="show_spinner" class="fa fa-spinner fa-spin"></i></button>
+            </div>
+        </form>
+    </div>
+</ng-template>
+
+<ng-template #editplaylist let-c="close" let-d="dismiss">
+        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <div class="modal-body">
+            <form>
+                <div class="media-modal">
+                    <h3>Edit New Playlist</h3>
+                    <div class="form-group">
+                        <label for="vlink">Name</label>
+                        <input type="text" class="form-control" placeholder="Playlist name" name="playlist" [(ngModel)]="playlist_data.name">
+                    </div>
+                </div>
+                <div class="button_group">
+                    <button type="submit" class="add-btn" (click)="editPlaylist()" [disabled]="show_spinner">Save <i *ngIf="show_spinner" class="fa fa-spinner fa-spin"></i></button>
+                </div>
+            </form>
+        </div>
+    </ng-template>

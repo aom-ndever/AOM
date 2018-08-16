@@ -93,6 +93,7 @@ export class MyProfileComponent implements OnInit, OnDestroy {
 
   // playlist
   playlist : any = [];
+  playlist_data : any = {};
 
   constructor(private MyProfileService : MyProfileService, 
     private toastr: ToastrService,
@@ -336,9 +337,7 @@ export class MyProfileComponent implements OnInit, OnDestroy {
           console.log(dataTablesParameters);
           that.audio_ins = [];
           that.MyProfileService.getAllListenerPlaylist(dataTablesParameters).subscribe((response) => {
-            
             that.playlist = response['playlist'];
-            
             callback({
               recordsTotal: response['recordsTotal'],
               recordsFiltered: response['recordsFiltered'],
@@ -348,8 +347,6 @@ export class MyProfileComponent implements OnInit, OnDestroy {
           
         },
         columns: [
-          { data: '' },
-          { data: '' },
           { data: '' },
           { data: '' }
         ]
@@ -1485,5 +1482,90 @@ export class MyProfileComponent implements OnInit, OnDestroy {
       this.audio_ins[idx] = false;
     });
     this.MessageService.sendMessage({data : data, index : index, action : 'stop', list : 1});
+  }
+
+  // playlist related code start here
+  // Open add new playlist model
+  openAddPlaylistModel(content) {
+    this.playlist_data = {};
+    this.media_modal_ref = this.modalService.open(content, { centered: true });
+  }
+  // open edit playlist model
+  openEditPlaylistModel(content, index : any) {
+    this.playlist_data = this.playlist[index];
+    this.media_modal_ref = this.modalService.open(content, { centered: true });
+  }
+  // add new playlist to db
+  addNewPlaylist() {
+    if(this.userdata && this.userdata['type'] == 'user') {
+      if(this.playlist_data && this.playlist_data['name'] && this.playlist_data['name'] != null) {
+        this.show_spinner = true;
+        this.MyProfileService.addNewListenerPlaylist(this.playlist_data).subscribe((response) => {
+          this.dtElements.forEach((dtElement: DataTableDirective, index: number) => {
+              dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
+                dtInstance.draw();
+              });
+          });
+          this.media_modal_ref.close();
+          this.toastr.success(response['message'], 'Success!');
+        }, (error) => {
+          this.show_spinner = false;
+          this.toastr.error(error['error'].message, 'Error!');
+        }, () => {
+          this.show_spinner = false;
+        });
+      } else {
+        this.toastr.error('Playlist name is required', 'Error!');
+      }
+    }
+  }
+  // edit existing playlist
+  editPlaylist() {
+    if(this.userdata && this.userdata['type'] == 'user') {
+      if(this.playlist_data && this.playlist_data['name'] && this.playlist_data['name'] != null) {
+        this.show_spinner = true;
+        this.MyProfileService.updateListenerPlaylist(this.playlist_data, this.playlist_data['_id']).subscribe((response) => {
+          this.dtElements.forEach((dtElement: DataTableDirective, index: number) => {
+              dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
+                dtInstance.draw();
+              });
+          });
+          this.media_modal_ref.close();
+          this.toastr.success(response['message'], 'Success!');
+        }, (error) => {
+          this.show_spinner = false;
+          this.toastr.error(error['error'].message, 'Error!');
+        }, () => {
+          this.show_spinner = false;
+        });
+      } else {
+        this.toastr.error('Playlist name is required', 'Error!');
+      }
+    }
+  }
+  // Remove existing playlist
+  removePlaylist(id : any) {
+    swal({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    }).then((flag) => {
+      if(flag.value) {
+        if(this.userdata && this.userdata['type'] == 'user') {
+          this.MyProfileService.deleteListenerPlaylistById(id).subscribe((response) => {
+            this.toastr.success(response['message'], 'Success!');
+            this.dtElements.forEach((dtElement: DataTableDirective, index: number) => {
+                dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
+                  dtInstance.draw();
+                });
+            });
+          });
+        }
+      }
+    });
   }
 }
