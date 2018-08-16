@@ -641,6 +641,13 @@ track_helper.get_track_main = async (filter, filters) => {
             $unwind: "$state"
         },
         {
+            $project: {
+                "artist_id.music_type": 0,
+                "artist_id.state": 0,
+
+            }
+        },
+        {
             "$match": filters
         }
     ];
