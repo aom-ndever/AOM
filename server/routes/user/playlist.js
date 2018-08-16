@@ -185,11 +185,14 @@ router.post("/", async (req, res) => {
 
 router.post("/:playlist_id", async (req, res) => {
   user_id = req.userInfo.id;
+
   var resp_data = await playlist_helper.get_playlists(user_id, req.params.playlist_id, req.body.start, req.body.length);
+
   if (resp_data.status == 0) {
     logger.error("Error occured while fetching Track = ", resp_data);
     res.status(config.INTERNAL_SERVER_ERROR).json(resp_data);
   } else {
+
     logger.trace("Artist got successfully = ", resp_data);
     res.status(config.OK_STATUS).json(resp_data);
   }
