@@ -14,6 +14,37 @@ var ObjectId = mongoose.Types.ObjectId;
 var fs = require('fs');
 
 
+router.post('/add', async (req, res) => {
+
+  var schema = {
+
+    "name": {
+      notEmpty: true,
+      errorMessage: "Name is required"
+    },
+  };
+  req.checkBody(schema);
+  var errors = req.validationErrors();
+  if (!errors) {
+
+    var obj = {
+      user_id: req.userInfo.id,
+      name: req.body.name
+    };
+    var resp_data = await playlist_helper.insert_playlist(obj);
+
+    if (resp_data.status === 0) {
+      res.status(config.INTERNAL_SERVER_ERROR).json({ "status": 0, "message": "Error occured while adding playlist", "error": resp_data.error });
+    } else if (resp_data.status === 2) {
+      res.status(config.BAD_REQUEST).json({ "status": 0, "message": "Can't add playlist" });
+    } else {
+      res.status(config.OK_STATUS).json({ "status": 1, "message": "playlist has been Added" });
+    }
+  }
+});
+
+
+
 /**
  * @api {post} /user/playlist Playlist  Add
  * @apiName Playlist - Add
@@ -32,103 +63,103 @@ var fs = require('fs');
 
 
 
-router.post('/', function (req, res) {
-  var schema = {
-    "name": {
-      notEmpty: true,
-      errorMessage: "Artist Id is required"
-    },
+// router.post('/', function (req, res) {
+//   var schema = {
+//     "name": {
+//       notEmpty: true,
+//       errorMessage: "Name is required"
+//     },
 
-  };
-  req.checkBody(schema);
-  var errors = req.validationErrors();
-  if (!errors) {
-    var obj = {
-      user_id: req.userInfo.id,
-      name: req.body.name,
+//   };
+//   req.checkBody(schema);
+//   var errors = req.validationErrors();
+//   if (!errors) {
+//     var obj = {
+//       user_id: req.userInfo.id,
+//       name: req.body.name,
 
-    };
-    if (req.body.description && req.body.description != null) {
-      obj.description = req.body.description
-    }
-    async.waterfall(
-      [
-        function (callback) {
-          //image upload
-          if (req.files && req.files["audio"]) {
-            var file_path_array = [];
-            // var files = req.files['images'];
-            var files = [].concat(req.files.audio);
-            var dir = "./uploads/track";
-            var mimetype = ['audio/aac', 'audio/mp3', 'audio/mpeg'];
+//     };
+//     if (req.body.description && req.body.description != null) {
+//       obj.description = req.body.description
+//     }
+//     async.waterfall(
+//       [
+//         function (callback) {
+//           //image upload
+//           if (req.files && req.files["audio"]) {
+//             var file_path_array = [];
+//             // var files = req.files['images'];
+//             var files = [].concat(req.files.audio);
+//             var dir = "./uploads/track";
+//             var mimetype = ['audio/aac', 'audio/mp3', 'audio/mpeg', 'audio/wav', 'audio/AlFF', 'audio/FLAC'];
 
-            // assuming openFiles is an array of file names
-            async.eachSeries(
-              files,
-              function (file, loop_callback) {
-                var mimetype = ['audio/aac', 'audio/mp3', 'audio/mpeg'];
-                if (mimetype.indexOf(file.mimetype) != -1) {
-                  if (!fs.existsSync(dir)) {
-                    fs.mkdirSync(dir);
-                  }
-                  extention = ".mp4";
-                  filename = "audio_" + new Date().getTime() + extention;
-                  file.mv(dir + "/" + filename, function (err) {
-                    if (err) {
-                      logger.error("There was an issue in uploading audio");
-                      loop_callback({
-                        status: config.MEDIA_ERROR_STATUS,
-                        err: "There was an issue in uploading audio"
-                      });
-                    } else {
-                      logger.trace(
-                        "image has been uploaded. Image name = ",
-                        filename
-                      );
-                      location = filename;
-                      file_path_array.push(location);
-                      loop_callback();
-                    }
-                  });
-                } else {
-                  logger.error(" format is invalid");
-                  loop_callback({
-                    status: config.VALIDATION_FAILURE_STATUS,
-                    err: " format is invalid"
-                  });
-                }
-              },
-              function (err) {
-                // if any of the file processing produced an error, err would equal that error
-                if (err) {
-                  res.status(err.status).json(err);
-                } else {
-                  callback(null, file_path_array);
-                }
-              }
-            );
-          } else {
-            logger.info(
-              "Image not available to upload. Executing next instruction"
-            );
-            callback(null, []);
-          }
-        }
-      ],
-      async (err, file_path_array) => {
-        //End image upload
-        obj.audio = file_path_array;
-        let data = await playlist_helper.insert_playlist(obj);
-        if (data.status === 0) {
-          logger.error("Error while inserting exercise data = ", data);
-          return res.status(config.BAD_REQUEST).json({ data });
-        } else {
-          return res.status(config.OK_STATUS).json(data);
-        }
-      }
-    );
-  }
-});
+//             // assuming openFiles is an array of file names
+//             async.eachSeries(
+//               files,
+//               function (file, loop_callback) {
+//                 var mimetype = ['audio/aac', 'audio/mp3', 'audio/mpeg'];
+//                 if (mimetype.indexOf(file.mimetype) != -1) {
+//                   if (!fs.existsSync(dir)) {
+//                     fs.mkdirSync(dir);
+//                   }
+//                   extention = ".mp4";
+//                   filename = "audio_" + new Date().getTime() + extention;
+//                   file.mv(dir + "/" + filename, function (err) {
+//                     if (err) {
+//                       logger.error("There was an issue in uploading audio");
+//                       loop_callback({
+//                         status: config.MEDIA_ERROR_STATUS,
+//                         err: "There was an issue in uploading audio"
+//                       });
+//                     } else {
+//                       logger.trace(
+//                         "image has been uploaded. Image name = ",
+//                         filename
+//                       );
+//                       location = filename;
+//                       file_path_array.push(location);
+//                       loop_callback();
+//                     }
+//                   });
+//                 } else {
+//                   logger.error(" format is invalid");
+//                   loop_callback({
+//                     status: config.VALIDATION_FAILURE_STATUS,
+//                     err: " format is invalid"
+//                   });
+//                 }
+//               },
+//               function (err) {
+//                 // if any of the file processing produced an error, err would equal that error
+//                 if (err) {
+//                   res.status(err.status).json(err);
+//                 } else {
+//                   callback(null, file_path_array);
+//                 }
+//               }
+//             );
+//           } else {
+//             logger.info(
+//               "Image not available to upload. Executing next instruction"
+//             );
+//             callback(null, []);
+//           }
+//         }
+//       ],
+//       async (err, file_path_array) => {
+//         //End image upload
+//         obj.audio = file_path_array;
+//         let data = await playlist_helper.insert_playlist(obj);
+//         if (data.status === 0) {
+//           logger.error("Error while inserting exercise data = ", data);
+//           return res.status(config.BAD_REQUEST).json({ data });
+//         } else {
+//           return res.status(config.OK_STATUS).json(data);
+//         }
+//       }
+//     );
+//   }
+// });
 
 /**
  * @api {get} /user/playlist  Playlist - Get by id
@@ -139,9 +170,9 @@ router.post('/', function (req, res) {
  * @apiSuccess (Success 200) {Array} playlist  of playlist document
  * @apiError (Error 4xx) {String} message Validation or error message.
  */
-router.get("/", async (req, res) => {
+router.post("/", async (req, res) => {
   user_id = req.userInfo.id;
-  var resp_data = await playlist_helper.get_playlist_by_user_id(user_id);
+  var resp_data = await playlist_helper.get_playlist_by_user_id(user_id, req.body.start, req.body.length);
   if (resp_data.status == 0) {
     logger.error("Error occured while fetching Track = ", resp_data);
     res.status(config.INTERNAL_SERVER_ERROR).json(resp_data);
@@ -184,9 +215,7 @@ router.put('/:playlist_id', function (req, res) {
     if (req.body.name && req.body.name != null) {
       obj.name = req.body.name;
     }
-    if (req.body.description && req.body.description != null) {
-      obj.description = req.body.description;
-    }
+
     async.waterfall(
       [
         function (callback) {
@@ -267,6 +296,23 @@ router.put('/:playlist_id', function (req, res) {
 
 });
 
+router.put("/add_track/:playlist_id", async (req, res) => {
+  user_id = req.userInfo.id;
+  var obj = {
+
+    track_id: req.body.track_id
+  };
+
+  var resp_data = await playlist_helper.update_playlist(user_id, req.params.playlist_id, obj);
+  if (resp_data.status == 0) {
+    logger.error("Error occured while updating = ", resp_data);
+    res.status(config.INTERNAL_SERVER_ERROR).json(resp_data);
+  } else {
+    logger.trace("Updated successfully  = ", resp_data);
+    res.status(config.OK_STATUS).json(resp_data);
+  }
+});
+
 
 /**
  * @api {delete} /user/playlist/:playlist_id Delete Playlist  
@@ -290,6 +336,9 @@ router.delete('/:playlist_id', async (req, res) => {
     res.status(config.OK_STATUS).json({ "status": 1, "message": "playlist has been removed" });
   }
 });
+
+
+
 
 module.exports = router;
 

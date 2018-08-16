@@ -22,9 +22,9 @@ vote_helper.upvote_or_down_vote = async (user_id, obj) => {
 
 vote_helper.get_all_voted_user = async (user_id, comment_id) => {
     try {
-        var vote = await Vote.find({ "user_id": new ObjectId(user_id), "comment_id": new ObjectId(comment_id)})
+        var vote = await Vote.findOne({ "user_id": new ObjectId(user_id), "comment_id": new ObjectId(comment_id) })
         if (vote) {
-            return { "status": 1, "message": "vote details found", "vote":  vote.length };
+            return { "status": 1, "message": "vote details found", "vote": vote };
         } else {
             return { "status": 2, "message": "vote not found" };
         }
@@ -33,12 +33,25 @@ vote_helper.get_all_voted_user = async (user_id, comment_id) => {
     }
 };
 
-vote_helper.update_vote_status = async (user_id, comment_id,status) => {
+vote_helper.update_status = async (user_id, comment_id, status) => {
+    try {
+        var vote = await Vote.updateOne({ "user_id": new ObjectId(user_id), "comment_id": new ObjectId(comment_id) }, { status: status })
+        if (vote) {
+            return { "status": 1, "message": "vote details found", "vote": vote };
+        } else {
+            return { "status": 2, "message": "vote not found" };
+        }
+    } catch (err) {
+        return { "status": 0, "message": "Error occured while finding vote", "error": err }
+    }
+};
+
+vote_helper.update_vote_status = async (user_id, comment_id, status) => {
 
     try {
-        var vote = await Vote.findOneAndUpdate({ "user_id": new ObjectId(user_id), "comment_id": new ObjectId(comment_id) },{"status":status})
-        if (vote ) {
-            return { "status": 1, "message": "vote details found", "vote":  vote };
+        var vote = await Vote.findOneAndUpdate({ "user_id": new ObjectId(user_id), "comment_id": new ObjectId(comment_id) }, { "status": status })
+        if (vote) {
+            return { "status": 1, "message": "vote details found", "vote": vote };
         } else {
             return { "status": 2, "message": "vote not found" };
         }

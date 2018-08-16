@@ -110,7 +110,7 @@ comment_helper.update_votes = async (comment_id, no_votes) => {
     try {
         var vote = await Comment.findOneAndUpdate({ "_id": new ObjectId(comment_id) }, { "no_of_votes": no_votes })
         if (vote) {
-            return { "status": 1, "message": "voting updated", };
+            return { "status": 1, "message": "voting done", };
         } else {
             return { "status": 2, "message": "vote not found" };
         }

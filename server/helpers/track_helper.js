@@ -581,6 +581,8 @@ track_helper.delete_track_image = async (track_id) => {
 };
 
 
+
+
 track_helper.get_new_uploads = async (day, start, length) => {
     var to = moment().utcOffset(0);
     var from = moment(to).subtract(day, "days").utcOffset(0);
@@ -590,6 +592,7 @@ track_helper.get_new_uploads = async (day, start, length) => {
             .skip(start)
             .limit(length)
             .populate({ path: 'artist_id', populate: { path: 'music_type' } })
+            .populate({ path: 'artist_id', populate: { path: 'state' } })
         if (track) {
             return { "status": 1, "message": "track details found", "results": track };
         } else {

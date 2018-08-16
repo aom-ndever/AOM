@@ -7,10 +7,9 @@ var SALT_WORK_FACTOR = 10;
 var Schema = mongoose.Schema;
 
 var PlaylistModelSchema = new Schema({
-    name : String,
-    user_id :{ type: mongoose.Schema.Types.ObjectId, ref: 'user' }, // 7
-    audio :[String],
-    description : String,
+    name: String,
+    user_id: { type: mongoose.Schema.Types.ObjectId, ref: 'user' },
+    track_id: [{ type: mongoose.Schema.Types.ObjectId, ref: 'track' }],
     created_at: { type: Date, default: Date.now }
 }, { versionKey: false });
 

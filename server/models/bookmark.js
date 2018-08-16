@@ -7,8 +7,8 @@ var SALT_WORK_FACTOR = 10;
 var Schema = mongoose.Schema;
 
 var BookmarkModelSchema = new Schema({
-    artist_id :{ type: mongoose.Schema.Types.ObjectId, ref: 'artist' }, 
-    user_id :{ type: mongoose.Schema.Types.ObjectId, ref: 'user' }, 
+    track_id: { type: mongoose.Schema.Types.ObjectId, ref: 'track' },
+    user_id: { type: mongoose.Schema.Types.ObjectId, ref: 'user' },
 
     created_at: { type: Date, default: Date.now }
 }, { versionKey: false });

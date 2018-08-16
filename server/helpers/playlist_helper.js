@@ -15,31 +15,30 @@ playlist_helper.insert_playlist = async (object) => {
     }
 };
 
-playlist_helper.get_playlist_by_user_id = async (user_id) => {
+playlist_helper.get_playlist_by_user_id = async (user_id, start, length) => {
     try {
-        var aggregate = [{
-            "$match": {
-                "user_id": new ObjectId(user_id)
-            }
-        }];
-        var playlist = await Playlist.aggregate(aggregate);
-        if (playlist && playlist.length > 0) {
-            return { "status": 1, "message": "playlist found", "playlist": playlist };
+        var playlist = await Playlist
+            .find({ "user_id": user_id })
+            .populate({ path: 'track_id', populate: { path: 'artist_id' } })
+            .populate({ path: 'user_id', populate: { path: 'music_type' } })
+            .skip(start)
+            .limit(length)
+        if (playlist) {
+            return { "status": 1, "message": "Track details found", "playlist": playlist };
         } else {
-            return { "status": 2, "message": "No playlist available" };
+            return { "status": 2, "message": "playlist not found" };
         }
     } catch (err) {
         return { "status": 0, "message": "Error occured while finding playlist", "error": err }
     }
 }
 
-
-playlist_helper.update_playlist = async (user_id, playlist_id,obj) => {
+playlist_helper.update_playlist = async (user_id, playlist_id, obj) => {
 
     try {
-        var playlist = await Playlist.findOneAndUpdate({ "user_id": new ObjectId(user_id), "_id": new ObjectId(playlist_id) },obj)
-        if (playlist ) {
-            return { "status": 1, "message": "playlist details found", "playlist":  playlist };
+        var playlist = await Playlist.findOneAndUpdate({ "user_id": new ObjectId(user_id), "_id": new ObjectId(playlist_id) }, obj, { new: true })
+        if (playlist) {
+            return { "status": 1, "message": "playlist details found", "playlist": playlist };
         } else {
             return { "status": 2, "message": "playlist not found" };
         }
@@ -53,8 +52,8 @@ playlist_helper.delete_playlist = async (user_id, playlist_id) => {
 
     try {
         var playlist = await Playlist.findOneAndRemove({ "user_id": new ObjectId(user_id), "_id": new ObjectId(playlist_id) })
-        if (playlist ) {
-            return { "status": 1, "message": "playlist details found", "playlist":  playlist };
+        if (playlist) {
+            return { "status": 1, "message": "playlist details found", "playlist": playlist };
         } else {
             return { "status": 2, "message": "playlist not found" };
         }

@@ -788,14 +788,14 @@ router.post("/flag/user/:user_id", async (req, res) => {
         var user_response = await flag_user_helper.insert_flag(obj);
         var user_resp = await user_helper.update_user_flag(req.params.user_id, stat);
         logger.trace("user flagged");
-        res.status(config.OK_STATUS).json({ "message": "user flagged", "user": user_response.flag });
+        res.status(config.OK_STATUS).json({ "message": "User Suspended", "user": user_response.flag });
       }
       else {
         var stat = false
         var user_resp = await user_helper.update_user_flag(req.params.user_id, stat);
         var user_resp = await flag_user_helper.delete_flag(obj.from, obj.to);
         logger.trace("flag deleted");
-        res.status(config.OK_STATUS).json({ "message": "flag deleted" });
+        res.status(config.OK_STATUS).json({ "message": "User Activated" });
       }
     }
   }
@@ -1005,14 +1005,14 @@ router.post("/flag/artist/:artist_id", async (req, res) => {
         var artist_response = await flag_artist_helper.insert_flag(obj);
         var artist_resp = await artist_helper.update_artist_flag(req.params.artist_id, stat);
         logger.trace("artist flagged");
-        res.status(config.OK_STATUS).json({ "message": "artist flagged", "artist": artist_response.flag });
+        res.status(config.OK_STATUS).json({ "message": "Artist Suspended", "artist": artist_response.flag });
       }
       else {
         var stat = false
         var artist_resp = await artist_helper.update_artist_flag(req.params.artist_id, stat);
         var artist_resp = await flag_artist_helper.delete_flag(obj.from, obj.to);
         logger.trace("flag deleted");
-        res.status(config.OK_STATUS).json({ "message": "flag deleted" });
+        res.status(config.OK_STATUS).json({ "message": "Artist Activated" });
       }
     }
   }
