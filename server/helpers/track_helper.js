@@ -288,6 +288,18 @@ track_helper.update_artist_for_followers = async (id, no_follow) => {
         return { "status": 0, "message": "Error occured while finding contest", "error": err }
     }
 };
+track_helper.get_all_track_for_playlist = async (filter = {}) => {
+    try {
+        var track = await Track.find(filter);
+        if (track) {
+            return { "status": 1, "message": "track found", "track": track };
+        } else {
+            return { "status": 2, "message": "track not found" };
+        }
+    } catch (err) {
+        return { "status": 0, "message": "Error occured while finding track", "error": err }
+    }
+};
 
 
 track_helper.get_artist_by_day_vote = async (day) => {

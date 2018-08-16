@@ -219,7 +219,7 @@ router.post('/user_registration_facebook', async (req, res) => {
       "provider": req.body.provider,
       "facebook_token": req.body.token,
       "image": req.body.image,
-    
+
     };
 
     user = await user_helper.get_user_by_email(req.body.email)
@@ -1657,6 +1657,28 @@ router.post('/get_track', async (req, res) => {
   if (track.status === 1) {
     logger.trace("got details successfully");
     res.status(config.OK_STATUS).json({ "status": 1, "track": track });
+  } else {
+    logger.error("Error occured while fetching = ", track);
+    res.status(config.INTERNAL_SERVER_ERROR).json(track);
+  }
+});
+
+
+
+router.post('/get_track_for_playlist', async (req, res) => {
+  artist_id = req.body.artist_id
+  var filter = {};
+
+  if (req.body.search) {
+    var r = new RegExp(req.body.search);
+    var search = { "$regex": r, "$options": "i" };
+    filter.name = search;
+
+  }
+  var track = await track_helper.get_all_track_for_playlist(filter);
+  if (track.status === 1) {
+    logger.trace("got details successfully");
+    res.status(config.OK_STATUS).json({ "status": 1, "track": track.track });
   } else {
     logger.error("Error occured while fetching = ", track);
     res.status(config.INTERNAL_SERVER_ERROR).json(track);
