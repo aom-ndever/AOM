@@ -129,4 +129,21 @@ export class MyProfileService {
   getBookmarkedTrack(data : any) {
    return this.http.post(`${this.api_host}/user/bookmark`, data, {headers : this.headers});
   }
+
+  // get all playlist of user
+  getAllListenerPlaylist(data) {
+    return this.http.post(`${this.api_host}/user/playlist`, data, {headers : this.headers});
+  }
+  // Create new user playlist
+  addNewListenerPlaylist(data) {
+    return this.http.post(`${this.api_host}/user/playlist/add`, data, {headers : this.headers});
+  }
+  // update user playlist by id
+  updateListenerPlaylist(data, id) {
+    return this.http.put(`${this.api_host}/user/playlist/${id}`, data, {headers : this.headers});
+  }
+  // Delete user playlist by id
+  deleteListenerPlaylistById(id) {
+    return this.http.delete(`${this.api_host}/user/playlist/${id}`, {headers : this.headers});
+  }
 }
