@@ -9,7 +9,7 @@ var Schema = mongoose.Schema;
 var PlaylistModelSchema = new Schema({
     name: String,
     user_id: { type: mongoose.Schema.Types.ObjectId, ref: 'user' },
-
+    track_id: [{ type: mongoose.Schema.Types.ObjectId, ref: 'track' }],
     created_at: { type: Date, default: Date.now }
 }, { versionKey: false });
 

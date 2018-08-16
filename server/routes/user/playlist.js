@@ -43,6 +43,8 @@ router.post('/add', async (req, res) => {
   }
 });
 
+
+
 /**
  * @api {post} /user/playlist Playlist  Add
  * @apiName Playlist - Add
@@ -213,9 +215,7 @@ router.put('/:playlist_id', function (req, res) {
     if (req.body.name && req.body.name != null) {
       obj.name = req.body.name;
     }
-    if (req.body.description && req.body.description != null) {
-      obj.description = req.body.description;
-    }
+
     async.waterfall(
       [
         function (callback) {
@@ -294,6 +294,23 @@ router.put('/:playlist_id', function (req, res) {
 
   }
 
+});
+
+router.put("/add_track/:playlist_id", async (req, res) => {
+  user_id = req.userInfo.id;
+  var obj = {
+
+    track_id: req.body.track_id
+  };
+
+  var resp_data = await playlist_helper.update_playlist(user_id, req.params.playlist_id, obj);
+  if (resp_data.status == 0) {
+    logger.error("Error occured while updating = ", resp_data);
+    res.status(config.INTERNAL_SERVER_ERROR).json(resp_data);
+  } else {
+    logger.trace("Updated successfully  = ", resp_data);
+    res.status(config.OK_STATUS).json(resp_data);
+  }
 });
 
 

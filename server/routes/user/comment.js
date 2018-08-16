@@ -88,7 +88,6 @@ router.post('/', async (req, res) => {
             });
         }
 
-
         if (resp.artist.notification_settings.comment_by_sms == true) {
           const accountSid = 'AC07190084851dbbe340c260b740a08ced';
           const authToken = '96ae4c1342bee3f471fc54d471dbbe3f';
@@ -96,7 +95,7 @@ router.post('/', async (req, res) => {
 
           client.messages
             .create({
-              body: 'you got comment from' + '\t' + response.user.first_name + response.user.last_name,
+              body: 'you got comment from' + '\t' + response.user.first_name + '\t' + response.user.last_name,
               from: '+12526801944',
               to: '+917405843252'
             })
