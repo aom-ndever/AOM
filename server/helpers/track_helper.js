@@ -630,6 +630,24 @@ track_helper.get_track_main = async (filter, filters) => {
             $unwind: "$music_type"
         },
         {
+            $lookup: {
+                from: "state",
+                localField: "artist_id.state",
+                foreignField: "_id",
+                as: "state"
+            }
+        },
+        {
+            $unwind: "$state"
+        },
+        {
+            $project: {
+                "artist_id.music_type": 0,
+                "artist_id.state": 0,
+
+            }
+        },
+        {
             "$match": filters
         }
     ];

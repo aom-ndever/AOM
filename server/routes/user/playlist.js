@@ -182,6 +182,17 @@ router.post("/", async (req, res) => {
   }
 });
 
+router.post("/:playlist_id", async (req, res) => {
+  user_id = req.userInfo.id;
+  var resp_data = await playlist_helper.get_playlists(user_id, req.params.playlist_id, req.body.start, req.body.length);
+  if (resp_data.status == 0) {
+    logger.error("Error occured while fetching Track = ", resp_data);
+    res.status(config.INTERNAL_SERVER_ERROR).json(resp_data);
+  } else {
+    logger.trace("Artist got successfully = ", resp_data);
+    res.status(config.OK_STATUS).json(resp_data);
+  }
+});
 
 /**
  * @api {put} /user/playlist/:playlist_id Update playlist 
@@ -324,6 +335,27 @@ router.put("/add_track/:playlist_id", async (req, res) => {
  * @apiSuccess (Success 200) {String} success message
  * @apiError (Error 4xx) {String} message Validation or error message.
  */
+router.delete('/track', async (req, res) => {
+  user_id = req.userInfo.id;
+  playlist_id = req.body.playlist_id;
+  track_id = req.body.track_id;
+
+
+  var resp_data = await playlist_helper.get_playlists(user_id, playlist_id, req.body.start, req.body.length);
+  console.log('resp_data', resp_data.playlist);
+
+  die;
+  var del_resp = await playlist_helper.delete_track_playlist(user_id, playlist_id, track_id);
+  if (del_resp.status === 0) {
+    res.status(config.INTERNAL_SERVER_ERROR).json({ "status": 0, "message": "Error occured while deleting playlist", "error": del_resp.error });
+  } else if (del_resp.status === 2) {
+    res.status(config.BAD_REQUEST).json({ "status": 0, "message": "Can't remove playlist" });
+  } else {
+    res.status(config.OK_STATUS).json({ "status": 1, "message": "playlist has been removed" });
+  }
+});
+
+
 router.delete('/:playlist_id', async (req, res) => {
   user_id = req.userInfo.id;
   playlist_id = req.params.playlist_id;
@@ -336,7 +368,6 @@ router.delete('/:playlist_id', async (req, res) => {
     res.status(config.OK_STATUS).json({ "status": 1, "message": "playlist has been removed" });
   }
 });
-
 
 
 
