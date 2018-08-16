@@ -5,6 +5,7 @@ var logger = config.logger;
 var bcrypt = require('bcrypt');
 var jwt = require('jsonwebtoken');
 var async = require('async');
+var _ = require('underscore');
 
 
 var playlist_helper = require('../../helpers/playlist_helper');
@@ -341,11 +342,20 @@ router.delete('/track', async (req, res) => {
   track_id = req.body.track_id;
 
 
-  var resp_data = await playlist_helper.get_playlists(user_id, playlist_id, req.body.start, req.body.length);
-  console.log('resp_data', resp_data.playlist);
+  var resp_data = await playlist_helper.get_playlists_for_delete(user_id, playlist_id);
 
-  die;
-  var del_resp = await playlist_helper.delete_track_playlist(user_id, playlist_id, track_id);
+  var playlistIds = resp_data.playlist.track_id;
+  var arry = [];
+  playlistIds.forEach(id => {
+    if (id.toString() != track_id.toString()) {
+      arry.push(id);
+    }
+  });
+
+  console.log('arry', arry);
+
+
+  var del_resp = await playlist_helper.delete_track_playlist(user_id, playlist_id, arry);
   if (del_resp.status === 0) {
     res.status(config.INTERNAL_SERVER_ERROR).json({ "status": 0, "message": "Error occured while deleting playlist", "error": del_resp.error });
   } else if (del_resp.status === 2) {
