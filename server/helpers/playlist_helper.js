@@ -190,12 +190,8 @@ playlist_helper.delete_playlist = async (user_id, playlist_id) => {
 
 playlist_helper.delete_track_playlist = async (user_id, playlist_id, newData) => {
 
-    console.log('newData', newData);
-
-
     try {
         var playlist = await Playlist.findByIdAndUpdate({ "user_id": new ObjectId(user_id), "_id": new ObjectId(playlist_id) }, { "track_id": newData })
-        console.log('playlist', playlist);
 
 
         if (playlist) {
