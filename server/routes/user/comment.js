@@ -86,7 +86,7 @@ router.post('/', async (req, res) => {
           }, {
               "username": resp.artist.first_name + '\t' + response.user.last_name,
               "user": response.user.first_name + '\t' + resp.artist.last_name,
-              "link": "http://34.204.127.137/" + resp.artist._id + "/artist_profile/comments"
+              "link": "http://34.204.127.137/artist_profile/" + resp.artist._id + "/comments"
             });
 
         }
