@@ -1730,7 +1730,16 @@ router.post('/get_artist', async (req, res) => {
   }
 });
 
-
+router.get('/get_featured_artists', async (req, res) => {
+  var artist = await artist_helper.get_artists();
+  if (artist.status === 1) {
+    logger.trace("got details successfully");
+    res.status(config.OK_STATUS).json({ "status": 1, "artist": artist.artist });
+  } else {
+    logger.error("Error occured while fetching = ", artist);
+    res.status(config.INTERNAL_SERVER_ERROR).json(artist);
+  }
+});
 /**
  * @api {post} /followers Followers detail by Artist id- Get 
  * @apiName Followers detail by Artist id- Get

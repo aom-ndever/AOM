@@ -10,6 +10,7 @@ const saltRounds = 10;
 var user_helper = require('../../helpers/user_helper');
 var participate_helper = require('../../helpers/participate_helper');
 var flag_helper = require('../../helpers/flag_helper');
+var artist_helper = require('../../helpers/artist_helper');
 
 var mongoose = require('mongoose');
 var ObjectId = mongoose.Types.ObjectId;
@@ -171,7 +172,48 @@ router.get("/", async (req, res) => {
     }
 });
 
+router.post("/upgrade_to_artist", async (req, res) => {
+    user_id = req.userInfo.id;
+    var resp_data = await user_helper.get_users_by_id(user_id);
 
+    console.log('resp_data', resp_data.user);
+    var obj = {
+        "email": resp_data.user.email,
+        "phone_no": resp_data.user.phone_no,
+        "password": resp_data.user.password,
+        "first_name": resp_data.user.first_name,
+        "last_name": resp_data.user.last_name,
+        "zipcode": resp_data.user.zipcode,
+        "music_type": resp_data.user.music_type,
+        "state": resp_data.user.state,
+        "gender": resp_data.user.gender,
+        "dob": resp_data.user.dob,
+        "no_of_votes": 0,
+        "no_of_followers": 0,
+        "no_of_likes": 0,
+        "no_of_comments": 0,
+        "no_of_tracks": 0,
+        "status": resp_data.user.status,
+        "flag": resp_data.user.flag,
+        "id": resp_data.user._id,
+        "email_verified": true,
+        "featured": true,
+        "last_login": resp_data.user.last_login,
+        "refresh_token": resp_data.user.refresh_token,
+
+
+    };
+    var resp_data = await artist_helper.insert_artist(obj);
+    var resp_data = await user_helper.delete_user_by_admin(user_id);
+
+    if (resp_data.status == 0) {
+        logger.error("Error occured while fetching User = ", resp_data);
+        res.status(config.INTERNAL_SERVER_ERROR).json(resp_data);
+    } else {
+        logger.trace("User got successfully = ", resp_data);
+        res.status(config.OK_STATUS).json({ message: "User Upgraded To Artist" });
+    }
+});
 
 /**
  * @api {delete} /user/image/:user_id Delete image  
