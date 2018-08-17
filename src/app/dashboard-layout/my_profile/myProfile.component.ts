@@ -94,6 +94,10 @@ export class MyProfileComponent implements OnInit, OnDestroy {
   // playlist
   playlist : any = [];
   playlist_data : any = {};
+  playlist_track : any = [];
+  serach_track_list : any = [];
+  search_track : any = '';
+  track_flag : boolean = false;
 
   constructor(private MyProfileService : MyProfileService, 
     private toastr: ToastrService,
@@ -399,6 +403,7 @@ export class MyProfileComponent implements OnInit, OnDestroy {
 
   tabChange(cnt : Number) {
     this.tab_cnt = cnt;
+    this.track_flag = false;
   }
 
   togglelocBarChart(flag : boolean) {
@@ -1495,6 +1500,10 @@ export class MyProfileComponent implements OnInit, OnDestroy {
     this.playlist_data = this.playlist[index];
     this.media_modal_ref = this.modalService.open(content, { centered: true });
   }
+  // open edit playlist model
+  openPlaylistTrackModel(content) {
+    this.media_modal_ref = this.modalService.open(content, { centered: true });
+  }
   // add new playlist to db
   addNewPlaylist() {
     if(this.userdata && this.userdata['type'] == 'user') {
@@ -1557,6 +1566,107 @@ export class MyProfileComponent implements OnInit, OnDestroy {
       if(flag.value) {
         if(this.userdata && this.userdata['type'] == 'user') {
           this.MyProfileService.deleteListenerPlaylistById(id).subscribe((response) => {
+            this.toastr.success(response['message'], 'Success!');
+            this.dtElements.forEach((dtElement: DataTableDirective, index: number) => {
+                dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
+                  dtInstance.draw();
+                });
+            });
+          });
+        }
+      }
+    });
+  }
+  // Playlist track
+  getPlaylistTrack(id, index) {
+    const that = this;
+    this.track_flag = true;
+    this.playlist_data = this.playlist[index];
+    this.dtOptions[2] = {
+      pagingType: 'full_numbers',
+      pageLength: 10,
+      serverSide: true,
+      processing: true,
+      searching: false,
+      ordering: false,
+      lengthChange: false,
+      responsive: true,
+      ajax: (dataTablesParameters: any, callback) => {
+        console.log(dataTablesParameters);
+        that.audio_ins = [];
+        that.MyProfileService.getPlaylistTrack(dataTablesParameters, id).subscribe((response) => {
+          that.playlist_track = response['playlist'];
+          callback({
+            recordsTotal: response['recordsTotal'],
+            recordsFiltered: response['recordsFiltered'],
+            data: []
+          });
+        });
+        
+      },
+      columns: [
+        { data: '' },
+        { data: '' }
+      ]
+    };
+  }
+  // get track based on search string
+  search(event) {
+    console.log(event.query);
+    let data = {
+      search : event.query
+    };
+    this.MyProfileService.getTrackForPlaylist(data).subscribe((response) => {
+      this.serach_track_list = response['track'];
+    });
+  }
+  // Add track to playlist
+  addTrackPlaylist() {
+    if(this.userdata && this.userdata['type'] == 'user') {
+      console.log(this.search_track);
+      if(this.search_track) {
+        let data = {
+         track_id : [] 
+        }
+        this.search_track.forEach((ele) => { data['track_id'].push(ele['_id']) });
+        this.show_spinner = true;
+        this.MyProfileService.addTrackListenerPlaylist(data, this.playlist_data['_id']).subscribe((response) => {
+          this.dtElements.forEach((dtElement: DataTableDirective, index: number) => {
+              dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
+                dtInstance.draw();
+              });
+          });
+          this.media_modal_ref.close();
+          this.toastr.success(response['message'], 'Success!');
+        }, (error) => {
+          this.show_spinner = false;
+          this.toastr.error(error['error'].message, 'Error!');
+        }, () => {
+          this.show_spinner = false;
+        });
+      } else {
+        this.toastr.error('Track name is required.', 'Error!');
+      }
+    }
+  }
+  // Remove track from playlist for listener
+  removeTrackFromPlaylist(id) {
+    swal({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    }).then((flag) => {
+      if(flag.value) {
+        if(this.userdata && this.userdata['type'] == 'user') {
+          let data = {
+            track_id : id,
+            playlist_id : this.playlist_data['_id']
+          };
+          this.MyProfileService.removeTrackListenerPlaylist(data).subscribe((response) => {
             this.toastr.success(response['message'], 'Success!');
             this.dtElements.forEach((dtElement: DataTableDirective, index: number) => {
                 dtElement.dtInstance.then((dtInstance: DataTables.Api) => {

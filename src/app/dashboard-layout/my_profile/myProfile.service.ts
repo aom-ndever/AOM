@@ -146,4 +146,20 @@ export class MyProfileService {
   deleteListenerPlaylistById(id) {
     return this.http.delete(`${this.api_host}/user/playlist/${id}`, {headers : this.headers});
   }
+  // Get track for playlist
+  getPlaylistTrack(data, id) {
+    return this.http.post(`${this.api_host}/user/playlist/${id}`, data, {headers:this.headers});
+  }
+  // Get track list based on search string
+  getTrackForPlaylist(data) {
+    return this.http.post(`${this.api_host}/get_track_for_playlist`, data);
+  }
+  // Add listener song to playlist
+  addTrackListenerPlaylist(data, id) {
+    return this.http.put(`${this.api_host}/user/playlist/add_track/${id}`, data, {headers : this.headers});
+  }
+  // Remove track from listener playlist
+  removeTrackListenerPlaylist(data) {
+    return this.http.put(`${this.api_host}/user/playlist/track`, data, {headers:this.headers});
+  }
 }
