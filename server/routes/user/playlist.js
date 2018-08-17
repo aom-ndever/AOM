@@ -365,8 +365,6 @@ router.put("/add_track/:playlist_id", async (req, res) => {
 });
 
 
-
-
 router.delete('/:playlist_id', async (req, res) => {
   user_id = req.userInfo.id;
   playlist_id = req.params.playlist_id;
