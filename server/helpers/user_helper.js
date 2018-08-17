@@ -77,7 +77,18 @@ user_helper.get_user_by_id = async (user_id) => {
     }
 };
 
-
+user_helper.get_users_by_id = async (user_id) => {
+    try {
+        var user = await User.findOne({ "_id": { "$eq": user_id } })
+        if (user) {
+            return { "status": 1, "message": "user details found", "user": user };
+        } else {
+            return { "status": 2, "message": "user not found" };
+        }
+    } catch (err) {
+        return { "status": 0, "message": "Error occured while finding user", "error": err }
+    }
+};
 
 /*
  * update_user_by_id is used to update user data based on user_id

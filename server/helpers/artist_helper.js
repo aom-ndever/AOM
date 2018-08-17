@@ -19,7 +19,11 @@ var moment = require('moment');
  * 
  */
 artist_helper.insert_artist = async (object) => {
+    console.log('object--------------->', object);
+
     let art = new Artist(object)
+    console.log('art', art);
+
     try {
         let data = await art.save();
 
@@ -28,6 +32,8 @@ artist_helper.insert_artist = async (object) => {
         return { "status": 0, "message": "Error occured while inserting artist", "error": err };
     }
 };
+
+
 
 artist_helper.insert_notification = async (object) => {
     let art = new Notification(object)
@@ -114,6 +120,19 @@ artist_helper.get_artist_by_music_id = async (id) => {
     try {
 
         var artist = await Artist.findOne({ "music_type": new ObjectId(id) });
+        if (artist) {
+            return { "status": 1, "message": "Artist details found", "artist": artist };
+        } else {
+            return { "status": 2, "message": "Artist not found" };
+        }
+    } catch (err) {
+        return { "status": 0, "message": "Error occured while finding artist", "error": err }
+    }
+};
+artist_helper.get_artists = async () => {
+    try {
+
+        var artist = await Artist.find({ "featured": true });
         if (artist) {
             return { "status": 1, "message": "Artist details found", "artist": artist };
         } else {

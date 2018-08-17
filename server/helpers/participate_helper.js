@@ -37,7 +37,7 @@ participate_helper.get_all_participants = async (ids) => {
     try {
         var participate = await Participate
             .find({ "contest_id": new ObjectId(ids) })
-            .populate('track_id')
+            .populate({ path: 'track_id', populate: { path: 'artist_id' } })
 
         var sorting = _.sortBy(participate, function (o) {
             return o.track_id.no_of_votes

@@ -21,6 +21,8 @@ var contest_request_helper = require('../../helpers/contest_request_helper');
 var vote_track_helper = require('../../helpers/vote_track_helper');
 var contest_helper = require('../../helpers/contest_helper');
 var comment_helper = require('../../helpers/comment_helper');
+var winner_helper = require('../../helpers/winner_helper');
+var _ = require('underscore');
 
 var moment = require('moment');
 
@@ -356,14 +358,25 @@ router.get('/get_contest', async (req, res) => {
 });
 
 
-router.post('/get_winners_by_contest_id', async (req, res) => {
+router.post('/shortlisted', async (req, res) => {
   var participant = await participate_helper.get_all_participants(req.body.contest_id);
+
+
+  var winner_obj = participant.participate.map((p) => {
+    return obj = {
+      "artist_id": p.artist_id,
+      "track_id": p.track_id._id,
+      "round": 1
+    }
+  });
+
+  var participant = await winner_helper.insert_winner(winner_obj);
 
   if (participant.status === 1) {
     logger.trace("got details successfully");
-    res.status(config.OK_STATUS).json({ "status": 1, "participant": participant.participate });
+    res.status(config.OK_STATUS).json({ "status": 1, "message": participant });
   } else {
-    res.status(config.INTERNAL_SERVER_ERROR).json(contest);
+    res.status(config.INTERNAL_SERVER_ERROR).json();
   }
 });
 

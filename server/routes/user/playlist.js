@@ -39,7 +39,7 @@ router.post('/add', async (req, res) => {
     } else if (resp_data.status === 2) {
       res.status(config.BAD_REQUEST).json({ "status": 0, "message": "Can't add playlist" });
     } else {
-      res.status(config.OK_STATUS).json({ "status": 1, "message": "playlist has been Added" });
+      res.status(config.OK_STATUS).json({ "status": 1, "message": "Playlist Created Successfully" });
     }
   }
 });
@@ -363,8 +363,6 @@ router.put("/add_track/:playlist_id", async (req, res) => {
     res.status(config.OK_STATUS).json(resp_data);
   }
 });
-
-
 
 
 router.delete('/:playlist_id', async (req, res) => {
