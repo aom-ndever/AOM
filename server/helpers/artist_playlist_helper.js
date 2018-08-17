@@ -10,7 +10,7 @@ artist_playlist_helper.insert_playlist = async (object) => {
     let playlist = new Playlist(object)
     try {
         let data = await playlist.save();
-        return { "status": 1, "message": "Record inserted", "playlist": data };
+        return { "status": 1, "message": "Playlist Created Successfully", "playlist": data };
     } catch (err) {
         return { "status": 0, "message": "Error occured while inserting playlist", "error": err };
     }
