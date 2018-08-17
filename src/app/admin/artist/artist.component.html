@@ -152,7 +152,7 @@
                       <tr *ngFor="let artist of artist_data; let i = index;">
                         <td>{{i+1}}.</td>
                         <td><a href="javascript:;" (click)="openModal(template, artist['_id'])">{{artist['first_name']+' '+artist['last_name']}}</a></td>
-                        <td class="status {{artist['flag'] ? 'active_status' : 'suspended_status' }}"><span>{{artist['flag'] ? 'Active' : 'suspend'}}</span></td>                               
+                        <td class="status {{artist['flag'] ? 'active_status' : 'suspended_status' }}"><span>{{artist['flag'] ? 'Un-suspend' : 'suspend'}}</span></td>                               
                         <td class="td_img"><img src="img/vote.png"/>{{artist['no_of_votes']}}</td>
                         <td class="td_img"><img src="img/likes.png"/>{{artist['no_of_likes']}}</td>
                         <td class="td_img"><img src="img/followers.png"/>{{artist['no_of_followers']}}</td>

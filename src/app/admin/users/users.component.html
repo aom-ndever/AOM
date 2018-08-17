@@ -128,7 +128,7 @@
                     <tr *ngFor="let user of user_data; let i = index;">
                       <td>{{i+1}}.</td>
                       <td><a href="javascript:;" (click)="openModal(template, user['_id'])">{{user['first_name']+' '+user['last_name']}}</a></td>
-                      <td class="status {{user['status'] == 'active' ? 'active_status' : user['status'] == 'Suspended' ? 'suspended_status' : ''}}"><span>{{user['status']}}</span></td>  
+                      <td class="status {{user['status'] == 'active' ? 'active_status' : user['status'] == 'Suspended' ? 'suspended_status' : ''}}"><span>{{user['flag'] ? 'Un-suspend' : 'Suspend'}}</span></td>  
                       <td class="td_img"><img src="img/followers.png"/>{{user['no_of_followers']}}</td>                             
                       <td class="td_img"><img src="img/vote.png"/>{{user['no_of_votes']}}</td>
                       <td class="td_img"><img src="img/likes.png"/>{{user['no_of_likes']}}</td>

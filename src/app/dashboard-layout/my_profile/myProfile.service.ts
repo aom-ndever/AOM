@@ -162,4 +162,12 @@ export class MyProfileService {
   removeTrackListenerPlaylist(data) {
     return this.http.put(`${this.api_host}/user/playlist/track`, data, {headers:this.headers});
   }
+  // Get artist playlist
+  getArtistPlaylist(data) {
+    return this.http.post(`${this.api_host}/artist/playlist`, data, {headers : this.headers});
+  }
+  // get artist playlist track
+  getArtistPlaylistTrack(data, id) {
+    return this.http.post(`${this.api_host}/artist/playlist/${id}`, data, {headers:this.headers});
+  }
 }
