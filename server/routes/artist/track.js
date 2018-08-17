@@ -11,6 +11,9 @@ var artist_helper = require('../../helpers/artist_helper');
 var artist_helper = require('../../helpers/artist_helper');
 var vote_track_helper = require('../../helpers/vote_track_helper');
 var download_helper = require('../../helpers/download_helper');
+var bookmark_helper = require('../../helpers/bookmark_helper');
+var like_helper = require('../../helpers/like_helper');
+var comment_helper = require('../../helpers/comment_helper');
 var path = require('path');
 var moment = require('moment');
 var mongoose = require('mongoose');
@@ -119,7 +122,6 @@ router.post("/", async (req, res) => {
         } else {
             var resp = await artist_helper.get_artist_by_id(artist_id);
             no_track = resp.artist.no_of_tracks + 1
-            var resp_data = await track_helper.update_artist_for_track(artist_id, no_track);
             res.status(config.OK_STATUS).json({ "message": "Inserted successfully" });
         }
     });
@@ -255,6 +257,23 @@ router.delete('/:track_id', async (req, res) => {
         var resp = await artist_helper.get_artist_by_id(artist_id);
         no_track = resp.artist.no_of_tracks - 1
         var resp_data = await track_helper.update_artist_for_track(artist_id, no_track);
+        // var resp_data = await bookmark_helper.get_all_bookmarked(track_id);
+
+        var bookmark_del = await bookmark_helper.delete_bookmark_by_track_id(track_id);
+        // var resp_data = await playlist_helper.get_playlists_for_delete(track_id);
+
+        // var playlistIds = resp_data.playlist.track_id;
+        // var arry = [];
+        // playlistIds.forEach(id => {
+        //     if (id.toString() != track_id.toString()) {
+        //         arry.push(id);
+        //     }
+        // });
+
+        // var del_resp = await playlist_helper.delete_track_playlist(artist_id, playlist_id, arry);
+        //var comment_del = await track_helper.delete_bookmark_by_track_id(track_id);
+        //var like_del = await track_helper.delete_bookmark_by_track_id(track_id);
+
         res.status(config.OK_STATUS).json({ "status": 1, "message": "track  has been deleted" });
     }
 });
