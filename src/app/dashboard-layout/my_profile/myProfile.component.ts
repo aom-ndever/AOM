@@ -98,6 +98,7 @@ export class MyProfileComponent implements OnInit, OnDestroy {
   serach_track_list : any = [];
   search_track : any = '';
   track_flag : boolean = false;
+  playlist_track_list : any = [];
 
   constructor(private MyProfileService : MyProfileService, 
     private toastr: ToastrService,
@@ -1473,7 +1474,6 @@ export class MyProfileComponent implements OnInit, OnDestroy {
    // Play audio
    playAudio(name : any, index : any, data : any){
     
-    data = this.bookmark_track_list;
     data.forEach((ele, idx) => {
       this.audio_ins[idx] = false;
     });
@@ -1482,7 +1482,7 @@ export class MyProfileComponent implements OnInit, OnDestroy {
   }
   // Stop audio
   stopAudio(index, data : any) {
-    data = this.bookmark_track_list;
+    
     data.forEach((ele, idx) => {
       this.audio_ins[idx] = false;
     });
@@ -1596,6 +1596,12 @@ export class MyProfileComponent implements OnInit, OnDestroy {
         that.audio_ins = [];
         that.MyProfileService.getPlaylistTrack(dataTablesParameters, id).subscribe((response) => {
           that.playlist_track = response['playlist'];
+          if(that.playlist_track.length > 0) { 
+            this.audio_ins = [];
+            this.playlist_track_list = [];
+            this.playlist_track.forEach((ele) => {this.audio_ins.push(false)});
+            this.playlist_track.forEach((ele) => {this.playlist_track_list.push(ele['track'])});
+          }
           callback({
             recordsTotal: response['recordsTotal'],
             recordsFiltered: response['recordsFiltered'],
@@ -1605,6 +1611,9 @@ export class MyProfileComponent implements OnInit, OnDestroy {
         
       },
       columns: [
+        { data: '' },
+        { data: '' },
+        { data: '' },
         { data: '' },
         { data: '' }
       ]

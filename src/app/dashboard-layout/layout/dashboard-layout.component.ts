@@ -166,8 +166,10 @@ export class DashboardLayoutComponent implements OnInit, AfterViewInit, AfterVie
     var pButton = document.getElementById('pButton');
       var nprogres = document.getElementById('song_prog');
       var playPercent =  (100 * $event.target.currentTime / $event.target.duration);
-      nprogres['value'] = $event.target.currentTime;
-      nprogres['max'] = $event.target.duration;
+      nprogres.setAttribute('value', $event.target.currentTime);
+      // nprogres['value'] = $event.target.currentTime;
+      nprogres.setAttribute('max', $event.target.duration);
+      // nprogres['max'] = $event.target.duration;
       var minutes = Math.floor($event.target.currentTime / 60);
       var seconds = $event.target.currentTime - minutes * 60;
       var running_time = document.getElementById('running_time');

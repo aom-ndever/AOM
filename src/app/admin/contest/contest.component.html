@@ -28,7 +28,7 @@
                         <tbody>
                         <tr *ngFor="let contest of contest_data; let i = index;">
                           <td>{{i+1}}.</td>
-                          <td><a href="javascript:;" (click)="openModal(paricipant, contest['_id'])">{{contest ['round_name']}}</a></td>
+                          <td><a href="javascript:;" (click)="openModal(paricipant, contest['contest_id']['_id'])">{{contest ['round_name']}}</a></td>
                           <td>{{contest['start_date'] | date : 'MMMM dd, yyyy'}}</td>
                           <td>{{contest['end_date'] | date : 'MMMM dd, yyyy'}}</td>
                           <td>{{contest['days']}}</td>
