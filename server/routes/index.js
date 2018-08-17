@@ -498,7 +498,7 @@ router.post('/artist_login', async (req, res) => {
 
 
         } else {
-          res.status(config.BAD_REQUEST).json({ message: "You Are Flagged By Admin" });
+          res.status(config.BAD_REQUEST).json({ message: "You Are Account is Suspended by Admin" });
 
         }
       } else {
@@ -754,7 +754,7 @@ router.post('/user_login', async (req, res) => {
 
 
         } else {
-          res.status(config.BAD_REQUEST).json({ message: "You Are Flagged By Admin" });
+          res.status(config.BAD_REQUEST).json({ message: "You Are Account is Suspended by Admin" });
 
         }
       } else {
@@ -1222,7 +1222,7 @@ router.post('/admin_login', async (req, res) => {
         res.status(config.OK_STATUS).json({ "status": 1, "message": "Logged in successful", "admin": login_resp.admin, "token": token, "refresh_token": refreshToken });
       }
       else {
-        res.status(config.BAD_REQUEST).json({ "status": 0, "message": "You are flagged by Super Admin" });
+        res.status(config.BAD_REQUEST).json({ "status": 0, "message": "You Are Account is Suspended Super Admin" });
       }
     }
 
@@ -1467,13 +1467,7 @@ router.post("/state", async (req, res) => {
   if (!errors) {
     var artist_ids = [];
     var resp_artist = await artist_helper.get_artist_by_filter(filter, req.body.start, req.body.length);
-    if (resp_artist.artist.status) {
-      console.log('gijnf');
 
-    } else {
-      console.log('its wrong');
-
-    }
 
 
     if (resp_artist.status == 1) {

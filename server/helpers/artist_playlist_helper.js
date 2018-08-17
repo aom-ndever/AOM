@@ -1,12 +1,12 @@
-var Playlist = require("./../models/playlist");
-var playlist_helper = {};
+var Playlist = require("./../models/artist_playlist");
+var artist_playlist_helper = {};
 var vote_comment_helper = {};
 var mongoose = require('mongoose');
 var _ = require('underscore');
 var ObjectId = mongoose.Types.ObjectId;
 
 
-playlist_helper.insert_playlist = async (object) => {
+artist_playlist_helper.insert_playlist = async (object) => {
     let playlist = new Playlist(object)
     try {
         let data = await playlist.save();
@@ -16,11 +16,11 @@ playlist_helper.insert_playlist = async (object) => {
     }
 };
 
-playlist_helper.get_playlist_by_user_id = async (user_id, start, length) => {
+artist_playlist_helper.get_playlist_by_artist_id = async (artist_id, start, length) => {
     try {
 
         var playlists = await Playlist
-            .find({ "user_id": user_id })
+            .find({ "artist_id": artist_id })
             .populate({ path: 'track_id', populate: { path: 'artist_id' } })
             .populate({ path: 'user_id', populate: { path: 'music_type' } })
 
@@ -29,7 +29,7 @@ playlist_helper.get_playlist_by_user_id = async (user_id, start, length) => {
 
 
         var playlist = await Playlist
-            .find({ "user_id": user_id })
+            .find({ "artist_id": artist_id })
             .populate({ path: 'track_id', populate: { path: 'artist_id' } })
             .populate({ path: 'user_id', populate: { path: 'music_type' } })
             .skip(start)
@@ -48,7 +48,7 @@ playlist_helper.get_playlist_by_user_id = async (user_id, start, length) => {
 }
 
 
-playlist_helper.get_playlists = async (user_id, playlist_id, start, length) => {
+artist_playlist_helper.get_playlists = async (artist_id, playlist_id, start, length) => {
     try {
 
         var playlists = await Playlist.aggregate([
@@ -140,11 +140,11 @@ playlist_helper.get_playlists = async (user_id, playlist_id, start, length) => {
 }
 
 
-playlist_helper.get_playlists_for_delete = async (user_id, playlist_id) => {
+artist_playlist_helper.get_playlists_for_delete = async (artist_id, playlist_id) => {
     try {
 
         var playlist = await Playlist
-            .findOne({ "_id": new ObjectId(playlist_id), "user_id": user_id })
+            .findOne({ "_id": new ObjectId(playlist_id), "artist_id": artist_id })
 
         if (playlist) {
             return { "status": 1, "message": "Track details found", "playlist": playlist };
@@ -156,10 +156,10 @@ playlist_helper.get_playlists_for_delete = async (user_id, playlist_id) => {
     }
 }
 
-playlist_helper.update_playlist = async (user_id, playlist_id, obj) => {
+artist_playlist_helper.update_playlist = async (artist_id, playlist_id, obj) => {
 
     try {
-        var playlist = await Playlist.findOneAndUpdate({ "user_id": new ObjectId(user_id), "_id": new ObjectId(playlist_id) }, obj, { new: true })
+        var playlist = await Playlist.findOneAndUpdate({ "artist_id": new ObjectId(artist_id), "_id": new ObjectId(playlist_id) }, obj, { new: true })
         if (playlist) {
             return { "status": 1, "message": "playlist details found", "playlist": playlist };
         } else {
@@ -171,10 +171,10 @@ playlist_helper.update_playlist = async (user_id, playlist_id, obj) => {
 };
 
 
-playlist_helper.delete_playlist = async (user_id, playlist_id) => {
+artist_playlist_helper.delete_playlist = async (artist_id, playlist_id) => {
 
     try {
-        var playlist = await Playlist.findOneAndRemove({ "user_id": new ObjectId(user_id), "_id": new ObjectId(playlist_id) })
+        var playlist = await Playlist.findOneAndRemove({ "artist_id": new ObjectId(artist_id), "_id": new ObjectId(playlist_id) })
 
         if (playlist) {
             return { "status": 1, "message": "playlist details found", "playlist": playlist };
@@ -186,10 +186,10 @@ playlist_helper.delete_playlist = async (user_id, playlist_id) => {
     }
 };
 
-playlist_helper.delete_track_playlist = async (user_id, playlist_id, newData) => {
+artist_playlist_helper.delete_track_playlist = async (artist_id, playlist_id, newData) => {
 
     try {
-        var playlist = await Playlist.findByIdAndUpdate({ "user_id": new ObjectId(user_id), "_id": new ObjectId(playlist_id) }, { "track_id": newData })
+        var playlist = await Playlist.findByIdAndUpdate({ "artist_id": new ObjectId(artist_id), "_id": new ObjectId(playlist_id) }, { "track_id": newData })
 
 
         if (playlist) {
@@ -201,4 +201,4 @@ playlist_helper.delete_track_playlist = async (user_id, playlist_id, newData) =>
         return { "status": 0, "message": "Error occured while finding playlist", "error": err }
     }
 };
-module.exports = playlist_helper;
+module.exports = artist_playlist_helper;

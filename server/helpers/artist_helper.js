@@ -230,12 +230,11 @@ artist_helper.get_artist_by_filter = async (filter, start, length) => {
     try {
 
         var artist = await Artist
-            .find(filter)
+            .find({ "flag": false }, filter)
             .populate('music_type')
             .populate('state')
             .skip(start)
             .limit(length)
-
 
 
         if (artist) {
