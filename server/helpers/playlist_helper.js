@@ -161,7 +161,7 @@ playlist_helper.update_playlist = async (user_id, playlist_id, obj) => {
     try {
         var playlist = await Playlist.findOneAndUpdate({ "user_id": new ObjectId(user_id), "_id": new ObjectId(playlist_id) }, obj, { new: true })
         if (playlist) {
-            return { "status": 1, "message": "playlist details found", "playlist": playlist };
+            return { "status": 1, "message": "Track Added Successfully", "playlist": playlist };
         } else {
             return { "status": 2, "message": "playlist not found" };
         }
