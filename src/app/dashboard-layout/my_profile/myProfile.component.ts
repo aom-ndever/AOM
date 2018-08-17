@@ -290,7 +290,34 @@ export class MyProfileComponent implements OnInit, OnDestroy {
       //this.getAllTrackAnalytic({day : this.analytics_days});
       this.getAllOverviewAnalytic({day : 14});
       this.getAllDownloadAnalytic({day : this.analytics_days});
-      
+      const that = this;
+      this.dtOptions[0] = {
+        pagingType: 'full_numbers',
+        pageLength: 10,
+        serverSide: true,
+        processing: true,
+        searching: false,
+        ordering: false,
+        lengthChange: false,
+        responsive: true,
+        ajax: (dataTablesParameters: any, callback) => {
+          console.log(dataTablesParameters);
+          that.audio_ins = [];
+          that.MyProfileService.getArtistPlaylist(dataTablesParameters).subscribe((response) => {
+            that.playlist = response['playlist'];
+            callback({
+              recordsTotal: response['recordsTotal'],
+              recordsFiltered: response['recordsFiltered'],
+              data: []
+            });
+          });
+          
+        },
+        columns: [
+          { data: '' },
+          { data: '' }
+        ]
+      };
     } else {
       const that = this;
       this.dtOptions[0] = {
@@ -1526,6 +1553,26 @@ export class MyProfileComponent implements OnInit, OnDestroy {
       } else {
         this.toastr.error('Playlist name is required', 'Error!');
       }
+    } else {
+      if(this.playlist_data && this.playlist_data['name'] && this.playlist_data['name'] != null) {
+        this.show_spinner = true;
+        this.MyProfileService.createArtistPlaylist(this.playlist_data).subscribe((response) => {
+          this.dtElements.forEach((dtElement: DataTableDirective, index: number) => {
+              dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
+                dtInstance.draw();
+              });
+          });
+          this.media_modal_ref.close();
+          this.toastr.success(response['message'], 'Success!');
+        }, (error) => {
+          this.show_spinner = false;
+          this.toastr.error(error['error'].message, 'Error!');
+        }, () => {
+          this.show_spinner = false;
+        });
+      } else {
+        this.toastr.error('Playlist name is required', 'Error!');
+      }
     }
   }
   // edit existing playlist
@@ -1534,6 +1581,26 @@ export class MyProfileComponent implements OnInit, OnDestroy {
       if(this.playlist_data && this.playlist_data['name'] && this.playlist_data['name'] != null) {
         this.show_spinner = true;
         this.MyProfileService.updateListenerPlaylist(this.playlist_data, this.playlist_data['_id']).subscribe((response) => {
+          this.dtElements.forEach((dtElement: DataTableDirective, index: number) => {
+              dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
+                dtInstance.draw();
+              });
+          });
+          this.media_modal_ref.close();
+          this.toastr.success(response['message'], 'Success!');
+        }, (error) => {
+          this.show_spinner = false;
+          this.toastr.error(error['error'].message, 'Error!');
+        }, () => {
+          this.show_spinner = false;
+        });
+      } else {
+        this.toastr.error('Playlist name is required', 'Error!');
+      }
+    } else {
+      if(this.playlist_data && this.playlist_data['name'] && this.playlist_data['name'] != null) {
+        this.show_spinner = true;
+        this.MyProfileService.updateArtistPlaylist(this.playlist_data, this.playlist_data['_id']).subscribe((response) => {
           this.dtElements.forEach((dtElement: DataTableDirective, index: number) => {
               dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
                 dtInstance.draw();
@@ -1573,6 +1640,15 @@ export class MyProfileComponent implements OnInit, OnDestroy {
                 });
             });
           });
+        } else {
+          this.MyProfileService.removeArtistPlaylist(id).subscribe((response) => {
+            this.toastr.success(response['message'], 'Success!');
+            this.dtElements.forEach((dtElement: DataTableDirective, index: number) => {
+                dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
+                  dtInstance.draw();
+                });
+            });
+          });
         }
       }
     });
@@ -1582,42 +1658,82 @@ export class MyProfileComponent implements OnInit, OnDestroy {
     const that = this;
     this.track_flag = true;
     this.playlist_data = this.playlist[index];
-    this.dtOptions[2] = {
-      pagingType: 'full_numbers',
-      pageLength: 10,
-      serverSide: true,
-      processing: true,
-      searching: false,
-      ordering: false,
-      lengthChange: false,
-      responsive: true,
-      ajax: (dataTablesParameters: any, callback) => {
-        console.log(dataTablesParameters);
-        that.audio_ins = [];
-        that.MyProfileService.getPlaylistTrack(dataTablesParameters, id).subscribe((response) => {
-          that.playlist_track = response['playlist'];
-          if(that.playlist_track.length > 0) { 
-            this.audio_ins = [];
-            this.playlist_track_list = [];
-            this.playlist_track.forEach((ele) => {this.audio_ins.push(false)});
-            this.playlist_track.forEach((ele) => {this.playlist_track_list.push(ele['track'])});
-          }
-          callback({
-            recordsTotal: response['recordsTotal'],
-            recordsFiltered: response['recordsFiltered'],
-            data: []
+    if(this.userdata && this.userdata['type'] == 'user') {
+      this.dtOptions[2] = {
+        pagingType: 'full_numbers',
+        pageLength: 10,
+        serverSide: true,
+        processing: true,
+        searching: false,
+        ordering: false,
+        lengthChange: false,
+        responsive: true,
+        ajax: (dataTablesParameters: any, callback) => {
+          console.log(dataTablesParameters);
+          that.audio_ins = [];
+          that.MyProfileService.getPlaylistTrack(dataTablesParameters, id).subscribe((response) => {
+            that.playlist_track = response['playlist'];
+            if(that.playlist_track.length > 0) { 
+              this.audio_ins = [];
+              this.playlist_track_list = [];
+              this.playlist_track.forEach((ele) => {this.audio_ins.push(false)});
+              this.playlist_track.forEach((ele) => {this.playlist_track_list.push(ele['track'])});
+            }
+            callback({
+              recordsTotal: response['recordsTotal'],
+              recordsFiltered: response['recordsFiltered'],
+              data: []
+            });
           });
-        });
-        
-      },
-      columns: [
-        { data: '' },
-        { data: '' },
-        { data: '' },
-        { data: '' },
-        { data: '' }
-      ]
-    };
+          
+        },
+        columns: [
+          { data: '' },
+          { data: '' },
+          { data: '' },
+          { data: '' },
+          { data: '' }
+        ]
+      };
+    } else {
+      this.dtOptions[1] = {
+        pagingType: 'full_numbers',
+        pageLength: 10,
+        serverSide: true,
+        processing: true,
+        searching: false,
+        ordering: false,
+        lengthChange: false,
+        responsive: true,
+        ajax: (dataTablesParameters: any, callback) => {
+          console.log(dataTablesParameters);
+          that.audio_ins = [];
+          that.MyProfileService.getArtistPlaylistTrack(dataTablesParameters, id).subscribe((response) => {
+            that.playlist_track = response['playlist'];
+            if(that.playlist_track.length > 0) { 
+              this.audio_ins = [];
+              this.playlist_track_list = [];
+              this.playlist_track.forEach((ele) => {this.audio_ins.push(false)});
+              this.playlist_track.forEach((ele) => {this.playlist_track_list.push(ele['track'])});
+            }
+            callback({
+              recordsTotal: response['recordsTotal'],
+              recordsFiltered: response['recordsFiltered'],
+              data: []
+            });
+          });
+          
+        },
+        columns: [
+          { data: '' },
+          { data: '' },
+          { data: '' },
+          { data: '' },
+          { data: '' }
+        ]
+      };
+    }
+    
   }
   // get track based on search string
   search(event) {
@@ -1656,6 +1772,30 @@ export class MyProfileComponent implements OnInit, OnDestroy {
       } else {
         this.toastr.error('Track name is required.', 'Error!');
       }
+    } else {
+      if(this.search_track) {
+        let data = {
+         track_id : [] 
+        }
+        this.search_track.forEach((ele) => { data['track_id'].push(ele['_id']) });
+        this.show_spinner = true;
+        this.MyProfileService.addTrackToArtistPlaylist(data, this.playlist_data['_id']).subscribe((response) => {
+          this.dtElements.forEach((dtElement: DataTableDirective, index: number) => {
+              dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
+                dtInstance.draw();
+              });
+          });
+          this.media_modal_ref.close();
+          this.toastr.success(response['message'], 'Success!');
+        }, (error) => {
+          this.show_spinner = false;
+          this.toastr.error(error['error'].message, 'Error!');
+        }, () => {
+          this.show_spinner = false;
+        });
+      } else {
+        this.toastr.error('Track name is required.', 'Error!');
+      }
     }
   }
   // Remove track from playlist for listener
@@ -1676,6 +1816,19 @@ export class MyProfileComponent implements OnInit, OnDestroy {
             playlist_id : this.playlist_data['_id']
           };
           this.MyProfileService.removeTrackListenerPlaylist(data).subscribe((response) => {
+            this.toastr.success(response['message'], 'Success!');
+            this.dtElements.forEach((dtElement: DataTableDirective, index: number) => {
+                dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
+                  dtInstance.draw();
+                });
+            });
+          });
+        } else {
+          let data = {
+            track_id : id,
+            playlist_id : this.playlist_data['_id']
+          };
+          this.MyProfileService.removeTrackFromArtistPlaylist(data).subscribe((response) => {
             this.toastr.success(response['message'], 'Success!');
             this.dtElements.forEach((dtElement: DataTableDirective, index: number) => {
                 dtElement.dtInstance.then((dtInstance: DataTables.Api) => {

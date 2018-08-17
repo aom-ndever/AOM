@@ -1,5 +1,17 @@
 body{overflow-x: hidden;   }
 a,a:hover,a:active,a:focus{text-decoration: none;}
+@font-face {
+    font-family:'Helvetica';
+    src: url('../fonts/Helvetica Bold.eot');
+	src: url('../fonts/Helvetica Bold.eot?#iefix') format('embedded-opentype'),
+		url('../fonts/Helvetica Bold.woff2') format('woff2'),
+		url('../fonts/Helvetica Bold.woff') format('woff'),
+		url('../fonts/Helvetica Bold.svg#Helvetica Bold') format('svg');
+    font-weight: 700;
+    font-style: normal;
+    font-stretch: normal;
+    unicode-range: U+0020-02DC;
+}
 
 
 /*header*/
@@ -1457,27 +1469,99 @@ span.up_text {
 }
 .chevron-up:after {
     content: '';
-    border-bottom: 10px solid #afaaaa;
+    border-bottom: 10px solid #d6d5d5;
     border-left: 10px solid transparent;
     border-right: 10px solid transparent;
     top: 0;
     position: absolute;
+    left: 50%;
+    transform: translate(-50%,0);
 }
 i.chevron-down:after {
     content: '';
-    border-top: 10px solid #afaaaa;
+    border-top: 10px solid #d6d5d5;
     border-left: 10px solid transparent;
     border-right: 10px solid transparent;
-    bottom: -29px;
+    bottom: -7px;
     position: absolute;
+    left: 50%;
+    transform: translate(-50%,0);
 }
+.play-btn  .artist-profile-custom-action-btn > a:focus .chevron-up:after {
+    border-bottom: 10px solid #9c27b0;
+}
+.play-btn  .artist-profile-custom-action-btn > a{    display: block;
+    width: 50px;
+    height: 50px;
+    line-height: 48px;}
+    .play-btn  .artist-profile-custom-action-btn > a > img {
+        width: 20px;
+    }
+.profile-detail-wrap .add-comment form{    position: relative; }
+.profile-detail-wrap .add-comment form .form-group{    padding-left: 41px;}
 .up_down_container > div{
     position: relative;
 }
-.up_down_container > div span{margin-top: 27px;
+.comment_box{padding-left: 43px;}
+.profile-detail-wrap .comment-block .s-name{    font-size: 14px;
+font-weight: bold;
+text-align: left;
+color: #1a1a1a;
+margin-bottom: 0px;
+margin-left: 0;
+padding-left: 46px;}
+
+.profile-detail-wrap .s-img{position: absolute;
+top: 14px;}
+.profile-detail-wrap .cm-date-name{
+padding-left: 41px;
+width: 100%;
+}
+.profile-detail-wrap  .comment-block .cm-date-name > h6 {
+    margin-bottom: 5px;
+    font-size: 13px;
+    text-transform: capitalize;
+    margin-top: -1px;
+    color: #a0a0a0;
+}
+.profile-detail-wrap   .s-img img {
+width: 35px;
+border-radius: 50%;
+height: 35px;
+}
+.profile-detail-wrap .comment-block .cm-date-name > h6 {
+    margin-bottom: 5px;
+}
+.profile-detail-wrap .comment-block .cm-date-name p {
+    font-size: 12px;
+    font-weight: 500;
+}
+.up_down_container > div span{
+    margin-top: 10px;
     display: inline-block;
-    width: 20px;
-    padding-left: 16px;}
+    width: 42px;
+    text-align: center;
+}
+.like_active{
+    display: none;
+}
+.liked:hover .like_active{
+    display: block;
+}
+.liked:hover .like_bw{
+    display: none;
+    
+}
+.track-comment-wrap{
+    padding-bottom: 0 !important;
+}
+.track-comment-wrap .comment-block {
+    display: inline-block;
+    padding-bottom: 38px !important ;
+}
+.add-comment .form-group{
+    width:100% !important;
+}
 .comment-block .s-img,.cm-date-name{
     display: inline-block;
     vertical-align: top;
@@ -1538,6 +1622,7 @@ i.chevron-down:after {
     padding-bottom: 0;
     padding-top: 10px;
     border-bottom: 1px solid #dedede;
+    position: relative;
 }
 .profile-detail-wrap {
     display: block;
@@ -1570,8 +1655,12 @@ i.chevron-down:after {
     -ms-flex: 0 0 20%;
     -o-flex: 0 0 20%;
     flex: 0 0 20%;
-    padding: 5px;
+    padding: 3px;
 }
+.artist-name .cat{        top: 53px;
+    padding: 3px 5px;
+    height: auto;
+    font-size: 12px;}
 .follower ul li img{width: 100%;}
 .social ul li a {
     color: #9B9B9B;
@@ -1586,6 +1675,15 @@ i.chevron-down:after {
     font-weight: 400;
     color:#000;
     line-height: 45px;
+}
+.artist-name h2 a:hover{
+    color:#000;
+}
+.profile-detail-wrap .follower ul{    justify-content: start;}
+.profile-detail-wrap .follower ul li img {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
 }
 .artist-name .tag {
     width: 70px;
@@ -1605,7 +1703,7 @@ i.chevron-down:after {
 }
 .profile-description p {
     font-size: 14px;
-    color: #000;
+    color: #1a1a1a;
     line-height: 17px;
 }
 
@@ -1621,11 +1719,12 @@ i.chevron-down:after {
 .profile-tabs-det .nav-tabs>li>a:hover,.nav>li>a:focus, .nav>li>a:hover{background: transparent; border: 0; outline: none;}
 .profile-tabs-det .nav-tabs>li{padding-bottom:30px;}
 .profile-tabs-det .nav-tabs>li>a{
-    font-size: 16px;
+    font-size: 15px;
     color: #000;
+    font-weight: 400;
 }
 .profile-tabs-det .nav-tabs li a.active{
-     font-size: 16px;
+
     color: #000;
     border:0;
     border-bottom: 2px solid #9b26b0;
@@ -1673,11 +1772,12 @@ a.play-btn{
     line-height: 20px;
     padding-left: 5px;
 }
-.cmt-like a img{-webkit-filter: grayscale(100%); /* Safari 6.0 - 9.0 */
-    filter: grayscale(100%); opacity: 0.5;}
+
 .cmt-like a.liked img{
     width: 19px;
     opacity: 1;
+    float: left;
+    margin-top: 7px;
 }
 .track-singer,.track-year,.track-date{
      font-size: 14px;
@@ -3106,7 +3206,7 @@ div#submitcontest {
   color: #ffffff;
   padding: 2px 0;
 }
-.add-comment .button_group{clear: both; width: 20%; float: right; margin: 0;}
+.add-comment .button_group{clear: both; width: 12%; float: right; margin: 0;}
 .add-comment {
     display: inline-block;
     width: 100%;
@@ -4061,8 +4161,10 @@ svg g rect{
     min-width: 40px;
 }
 .up_down_container{
-    padding-right: 21px;
+    padding-right: 0;
     margin-top: -10px;
+    position: absolute;
+    top: 20px;
 }
 .up_down_container > div {
     line-height: normal;
@@ -4070,6 +4172,35 @@ svg g rect{
 }
 .up_down_container > div a{
     color: #ccc6c6;
+    display: block;
+    width: 40px;
+    height: 12px;
+}
+.up_down_container > div a:focus .chevron-up:after, .up_down_container > div a:active .chevron-up:after {
+    border-bottom: 10px solid #9c27b0;
+    opacity: 0.9;
+}
+.up_down_container > div a:focus .chevron-down:after, .up_down_container > div a:active .chevron-down:after {
+    border-top: 10px solid #9c27b0;
+    opacity: 0.9;
+}
+.profile_comments .comment-block .s-name{padding-left:0;    margin-bottom: 5px;}
+.profile_comments .comment-block .cm-date-name > h6 {
+    color: #616161;
+    margin-bottom: 0;
+}
+.profile_comments .s-img {
+    top: 39px;
+}
+.profile_comments  .comment-block .profile-description{
+    margin-top: 10px;
+}
+.profile_comments  .comment-block .cm-date-name p {
+    font-size: 11px;
+    font-weight: 500;
+    display: block;
+    float: left;
+    position: relative;
 }
 /*MEDIA START*/
 @media screen and (min-width: 768px){

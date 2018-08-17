@@ -170,4 +170,24 @@ export class MyProfileService {
   getArtistPlaylistTrack(data, id) {
     return this.http.post(`${this.api_host}/artist/playlist/${id}`, data, {headers:this.headers});
   }
+  // Create artist playlist
+  createArtistPlaylist(data) {
+    return this.http.post(`${this.api_host}/artist/playlist/add`, data, {headers:this.headers});
+  }
+  // update artist playlist
+  updateArtistPlaylist(data, id) {
+    return this.http.post(`${this.api_host}/artist/playlist/${id}`, data, {headers : this.headers});
+  }
+  // Remove artist playlist
+  removeArtistPlaylist(id) {
+    return this.http.delete(`${this.api_host}/artist/playlist/${id}`, {headers:this.headers});
+  }
+  // Add track in artist playlist
+  addTrackToArtistPlaylist(data, id) {
+    return this.http.put(`${this.api_host}/artist/playlist/add_track/${id}`, data, {headers:this.headers});
+  }
+  // Remove track from artist playlist
+  removeTrackFromArtistPlaylist(data) {
+    return this.http.put(`${this.api_host}/artist/playlist/track`, data, {headers:this.headers});
+  }
 }
