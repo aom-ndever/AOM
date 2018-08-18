@@ -199,9 +199,14 @@ router.post('/like_track', async (req, res) => {
         res.status(config.INTERNAL_SERVER_ERROR).json(data);
 
       } else
-        var resp_data = await like_helper.get_all_track_by_track_id(obj.track_id);
-      no_vote = resp_data.like.no_of_likes + 1;
-      var resp_data = await like_helper.update_likes(obj.track_id, no_vote);
+        var resp_data = await track_helper.get_all_track_by_track_id(obj.track_id);
+      console.log('resp_data', resp_data);
+
+
+      no_vote = resp_data.track.no_of_likes + 1;
+      console.log('no_vote', no_vote);
+
+      var resp_data = await track_helper.update_track_for_likes(obj.track_id, no_vote);
 
       var responses = await artist_helper.get_artist_by_id(obj.artist_id);
 
@@ -212,10 +217,9 @@ router.post('/like_track', async (req, res) => {
       no_like = resp.user.no_of_likes + 1
       var resp_data = await user_helper.update_user_for_likes(obj.user_id, no_like);
 
-      //sending mail to artist for like
+
       var resp = await artist_helper.get_artist_by_id(obj.artist_id);
-      console.log('resp.artist.firstname', resp.artist.first_name);
-      console.log('resp.artist.lastname', resp.artist.last_name);
+
 
       var response = await user_helper.get_user_by_id(user_id);
       if (responses.artist.notification_settings.like_by_email == true) {

@@ -14,6 +14,7 @@ var download_helper = require('../../helpers/download_helper');
 var bookmark_helper = require('../../helpers/bookmark_helper');
 var like_helper = require('../../helpers/like_helper');
 var comment_helper = require('../../helpers/comment_helper');
+var playlist_helper = require('../../helpers/playlist_helper');
 var path = require('path');
 var moment = require('moment');
 var mongoose = require('mongoose');
@@ -248,31 +249,30 @@ router.put("/:track_id", async (req, res) => {
 router.delete('/:track_id', async (req, res) => {
     track_id = req.params.track_id;
     artist_id = req.userInfo.id
+
+
+
+    var resp = await artist_helper.get_artist_by_id(artist_id);
+    no_track = resp.artist.no_of_tracks - 1
+    var resp_data = await track_helper.update_artist_for_track(artist_id, no_track);
+
+    var resp = await artist_helper.get_artist_by_id(artist_id);
+    no_track = resp.artist.no_of_likes - 1
+    var resp_data = await track_helper.update_artist_for_likes(artist_id, no_track);
+
+    var bookmark_del = await bookmark_helper.delete_bookmark_by_track_id(track_id);
+
+    var like_del = await like_helper.delete_like(track_id);
+    var comment_del = await comment_helper.delete_comment_by_track(track_id);
+    var playlist_del = await playlist_helper.delete_playlist_by_track(track_id);
+
     var del_resp = await track_helper.delete_track_by_id(artist_id, track_id);
     if (del_resp.status === 0) {
         res.status(config.INTERNAL_SERVER_ERROR).json({ "status": 0, "message": "Error occured while deleting track ", "error": del_resp.error });
     } else if (del_resp.status === 2) {
         res.status(config.BAD_REQUEST).json({ "status": 0, "message": "Can't delete track " });
     } else {
-        var resp = await artist_helper.get_artist_by_id(artist_id);
-        no_track = resp.artist.no_of_tracks - 1
-        var resp_data = await track_helper.update_artist_for_track(artist_id, no_track);
-        // var resp_data = await bookmark_helper.get_all_bookmarked(track_id);
 
-        var bookmark_del = await bookmark_helper.delete_bookmark_by_track_id(track_id);
-        // var resp_data = await playlist_helper.get_playlists_for_delete(track_id);
-
-        // var playlistIds = resp_data.playlist.track_id;
-        // var arry = [];
-        // playlistIds.forEach(id => {
-        //     if (id.toString() != track_id.toString()) {
-        //         arry.push(id);
-        //     }
-        // });
-
-        // var del_resp = await playlist_helper.delete_track_playlist(artist_id, playlist_id, arry);
-        //var comment_del = await track_helper.delete_bookmark_by_track_id(track_id);
-        //var like_del = await track_helper.delete_bookmark_by_track_id(track_id);
 
         res.status(config.OK_STATUS).json({ "status": 1, "message": "track  has been deleted" });
     }

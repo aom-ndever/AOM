@@ -22,6 +22,10 @@ var vote_track_helper = require('../../helpers/vote_track_helper');
 var contest_helper = require('../../helpers/contest_helper');
 var comment_helper = require('../../helpers/comment_helper');
 var winner_helper = require('../../helpers/winner_helper');
+var bookmark_helper = require('../../helpers/bookmark_helper');
+var like_helper = require('../../helpers/like_helper');
+var playlist_helper = require('../../helpers/playlist_helper');
+
 var _ = require('underscore');
 
 var moment = require('moment');
@@ -364,20 +368,66 @@ router.post('/shortlisted', async (req, res) => {
 
   var winner_obj = participant.participate.map((p) => {
     return obj = {
+
       "artist_id": p.artist_id,
       "track_id": p.track_id._id,
-      "round": 1
+      "contest_id": p.contest_id,
+      "round": 0
     }
   });
 
-  var participant = await winner_helper.insert_winner(winner_obj);
+  var shortlist = await winner_helper.get_all_shortlisted(0);
 
-  if (participant.status === 1) {
-    logger.trace("got details successfully");
-    res.status(config.OK_STATUS).json({ "status": 1, "message": participant });
-  } else {
-    res.status(config.INTERNAL_SERVER_ERROR).json();
+  if (shortlist.status === 1) {
+    res.status(config.OK_STATUS).json({ "message": shortlist });
   }
+  else if (shortlist.status === 2) {
+    var participant = await winner_helper.insert_winner(winner_obj);
+    var shortlist = await winner_helper.get_all_shortlisted(0);
+
+    if (participant.status === 1) {
+      logger.trace("got details successfully");
+      res.status(config.OK_STATUS).json({ "message": shortlist });
+    } else {
+      res.status(config.INTERNAL_SERVER_ERROR).json();
+    }
+  }
+
+});
+
+
+router.post('/get_winners_round1', async (req, res) => {
+
+  var shortlists = await winner_helper.get_all_shortlisted(0);
+
+  var winner_obj = shortlists.winner.map((p) => {
+    return obj = {
+
+      "artist_id": p.artist_id._id,
+      "track_id": p.track_id._id,
+      "contest_id": p.contest_id._id,
+      "round": 1
+    }
+
+  })
+
+  var shortlist = await winner_helper.get_all_shortlisted(1);
+
+  if (shortlist.status === 1) {
+    res.status(config.OK_STATUS).json({ "message": shortlist });
+  }
+  else if (shortlist.status === 2) {
+    var participant = await winner_helper.insert_winner(winner_obj);
+    var shortlist = await winner_helper.get_all_shortlisted(1);
+
+    if (participant.status === 1) {
+      logger.trace("got details successfully");
+      res.status(config.OK_STATUS).json({ "message": shortlist });
+    } else {
+      res.status(config.INTERNAL_SERVER_ERROR).json();
+    }
+  }
+
 });
 
 
@@ -398,18 +448,28 @@ router.delete('/admin/track/:track_id', async (req, res) => {
   type = await admin_helper.get_admin_by_id(req.userInfo.id)
 
   if (type.admin.account_type == "super_admin" || type.admin.account_type == "admin") {
+
+
     var del_resp = await track_helper.delete_track_by_admin(track_id);
     if (del_resp.status === 0) {
       res.status(config.INTERNAL_SERVER_ERROR).json({ "status": 0, "message": "Error occured while deleting track", "error": del_resp.error });
     } else if (del_resp.status === 2) {
       res.status(config.BAD_REQUEST).json({ "status": 0, "message": "Can't delete track" });
     } else {
-
-      artist_id = track_resp.track.artist_id._id
       var resp = await artist_helper.get_artist_by_id(artist_id);
-
       no_track = resp.artist.no_of_tracks - 1
       var resp_data = await track_helper.update_artist_for_track(artist_id, no_track);
+
+      var resp = await artist_helper.get_artist_by_id(artist_id);
+      no_track = resp.artist.no_of_likes - 1
+      var resp_data = await track_helper.update_artist_for_likes(artist_id, no_track);
+
+      var bookmark_del = await bookmark_helper.delete_bookmark_by_track_id(track_id);
+
+      var like_del = await like_helper.delete_like(track_id);
+      var comment_del = await comment_helper.delete_comment_by_track(track_id);
+      var playlist_del = await playlist_helper.delete_playlist_by_track(track_id);
+
       res.status(config.OK_STATUS).json({ "status": 1, "message": "track has been deleted" });
     }
   }
