@@ -20,6 +20,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
   track_url : any = environment.API_URL+environment.ARTIST_TRACK;
   audio_ins : any = [];
   subscription: Subscription;
+  flag : boolean = false;
   constructor(
     private MessageService : MessageService,
     private CarouselService : CarouselService,
@@ -40,6 +41,10 @@ export class CarouselComponent implements OnInit, OnDestroy {
           this.audio_ins.forEach((ele, idx) => { this.audio_ins[idx] = false; } );
           this.audio_ins[response['index']] = true;
         }
+      }
+      if(response && response['music_flag']) {
+        console.log('carousel =>', response['music_flag']);
+        this.flag = response['music_flag'] == 'yes' ? true : false;
       }
     });
   }

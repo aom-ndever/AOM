@@ -4056,6 +4056,7 @@ var DashboardComponent = /** @class */ (function () {
     DashboardComponent.prototype.getAllData = function (data) {
         var _this = this;
         this.audio_ins = [];
+        this.MessageService.sendMessage({ 'music_flag': 'yes' });
         this.DashboardService.getAllData(data).subscribe(function (response) {
             _this.data = response;
             response['new_uploads'].forEach(function (ele) {
@@ -4099,6 +4100,7 @@ var DashboardComponent = /** @class */ (function () {
                 "artist_id": ele['artist_id'] ? ele['artist_id']['_id'] : null
             });
         });
+        this.MessageService.sendMessage({ 'music_flag': 'no' });
     };
     // Get All music type
     DashboardComponent.prototype.getAllMusicType = function () {
@@ -10315,7 +10317,7 @@ var AuthService = /** @class */ (function () {
 /***/ "../../../../../src/app/shared/carousel/carousel.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<ngx-carousel [inputs]=\"carouselOne\" *ngIf=\"carouselType == 'normal'\">\r\n  <ngx-tile NgxCarouselItem *ngFor=\"let image of images; let i = index\">\r\n      <div class=\"final-wrap\">\r\n        <div class=\"img-wrap\">\r\n          <img src=\"{{image.source}}\" alt=\"Finalists\">\r\n          <a href=\"javascript:void(0)\" class=\"fan\" (click)=\"followArtist(image['artist_id'])\">\r\n            <i class=\"fa fa-heart-o\" aria-hidden=\"true\"></i>\r\n          </a>\r\n        </div>\r\n        <div class=\"content-wrap\">\r\n          <div class=\"player\">\r\n            <div class=\"title\">\r\n              <a href=\"#\">{{ image.title }}</a>\r\n            </div>\r\n            <div class=\"finalist-name\">{{image.name}}</div>\r\n            <div class=\"action-btn custom-action-btn\">\r\n                <a [style.display]=\"!audio_ins[i] ? 'block' : 'none'\" (click)=\"playAudio(image.audio, i, images)\" class=\"play_img\" ><img src=\"img/play_icon.png\"/></a>\r\n                <a [style.display]=\"audio_ins[i] ? 'block' : 'none'\" (click)=\"stopAudio(i, images)\" class=\"pause_img\"><img src=\"img/pause_icon.png\"/></a>\r\n            </div>\r\n          </div>\r\n          <div class=\"location\">\r\n            <p>\r\n              <i class=\"fa fa-map-marker\" aria-hidden=\"true\"></i>\r\n              <span>{{image.location}}</span>\r\n            </p>\r\n            <div class=\"cat {{image.alias}}\">{{image.type}}</div>\r\n          </div>\r\n        </div>\r\n    </div>\r\n  </ngx-tile>\r\n  <i class=\"material-icons leftRs\" NgxCarouselPrev></i>\r\n  <i class=\"material-icons rightRs\" NgxCarouselNext></i>\r\n</ngx-carousel>\r\n<ngx-carousel [inputs]=\"carouselOne\" *ngIf=\"carouselType == 'banner'\">\r\n  <ngx-tile NgxCarouselItem *ngFor=\"let image of images; let i = index\">\r\n      <div class=\"newslider slider1\">\r\n          <div class=\"banner-img\">\r\n            <img src=\"{{image.source}}\" alt=\"Banner image\">\r\n          </div>\r\n          <div class=\"content-block\">\r\n            <div class=\"what-bg-content\">\r\n              <h3>{{ image.title }}</h3>\r\n              <p>{{image.description}} </p>\r\n              <div class=\"vote-btn\"><a href=\"javascript:;\">Vote Now</a></div>\r\n            </div>\r\n          </div>\r\n        </div>\r\n  </ngx-tile>\r\n  <i class=\"material-icons leftRs\" NgxCarouselPrev></i>\r\n  <i class=\"material-icons rightRs\" NgxCarouselNext></i>\r\n</ngx-carousel>"
+module.exports = "<div class=\"text-center\" *ngIf=\"flag\">\r\n  <i class=\"fa fa-spinner fa-spin fa-3x\" aria-hidden=\"true\"></i>\r\n</div>\r\n<ngx-carousel [inputs]=\"carouselOne\" *ngIf=\"carouselType == 'normal' && !flag\">\r\n  <ngx-tile NgxCarouselItem *ngFor=\"let image of images; let i = index\">\r\n      <div class=\"final-wrap\">\r\n        <div class=\"img-wrap\">\r\n          <img src=\"{{image.source}}\" alt=\"Finalists\">\r\n          <a href=\"javascript:void(0)\" class=\"fan\" (click)=\"followArtist(image['artist_id'])\">\r\n            <i class=\"fa fa-heart-o\" aria-hidden=\"true\"></i>\r\n          </a>\r\n        </div>\r\n        <div class=\"content-wrap\">\r\n          <div class=\"player\">\r\n            <div class=\"title\">\r\n              <a href=\"#\">{{ image.title }}</a>\r\n            </div>\r\n            <div class=\"finalist-name\">{{image.name}}</div>\r\n            <div class=\"action-btn custom-action-btn\">\r\n                <a [style.display]=\"!audio_ins[i] ? 'block' : 'none'\" (click)=\"playAudio(image.audio, i, images)\" class=\"play_img\" ><img src=\"img/play_icon.png\"/></a>\r\n                <a [style.display]=\"audio_ins[i] ? 'block' : 'none'\" (click)=\"stopAudio(i, images)\" class=\"pause_img\"><img src=\"img/pause_icon.png\"/></a>\r\n            </div>\r\n          </div>\r\n          <div class=\"location\">\r\n            <p>\r\n              <i class=\"fa fa-map-marker\" aria-hidden=\"true\"></i>\r\n              <span>{{image.location}}</span>\r\n            </p>\r\n            <div class=\"cat {{image.alias}}\">{{image.type}}</div>\r\n          </div>\r\n        </div>\r\n    </div>\r\n  </ngx-tile>\r\n  <i class=\"material-icons leftRs\" NgxCarouselPrev></i>\r\n  <i class=\"material-icons rightRs\" NgxCarouselNext></i>\r\n</ngx-carousel>\r\n<ngx-carousel [inputs]=\"carouselOne\" *ngIf=\"carouselType == 'banner'\">\r\n  <ngx-tile NgxCarouselItem *ngFor=\"let image of images; let i = index\">\r\n      <div class=\"newslider slider1\">\r\n          <div class=\"banner-img\">\r\n            <img src=\"{{image.source}}\" alt=\"Banner image\">\r\n          </div>\r\n          <div class=\"content-block\">\r\n            <div class=\"what-bg-content\">\r\n              <h3>{{ image.title }}</h3>\r\n              <p>{{image.description}} </p>\r\n              <div class=\"vote-btn\"><a href=\"javascript:;\">Vote Now</a></div>\r\n            </div>\r\n          </div>\r\n        </div>\r\n  </ngx-tile>\r\n  <i class=\"material-icons leftRs\" NgxCarouselPrev></i>\r\n  <i class=\"material-icons rightRs\" NgxCarouselNext></i>\r\n</ngx-carousel>"
 
 /***/ }),
 
@@ -10369,6 +10371,7 @@ var CarouselComponent = /** @class */ (function () {
         this.toastr = toastr;
         this.track_url = __WEBPACK_IMPORTED_MODULE_1__environments_environment__["a" /* environment */].API_URL + __WEBPACK_IMPORTED_MODULE_1__environments_environment__["a" /* environment */].ARTIST_TRACK;
         this.audio_ins = [];
+        this.flag = false;
         this.subscription = this.MessageService.getMessage().subscribe(function (response) {
             if (response && response['list'] != 1) {
                 _this.audio_ins.forEach(function (ele, idx) { _this.audio_ins[idx] = false; });
@@ -10384,6 +10387,10 @@ var CarouselComponent = /** @class */ (function () {
                     _this.audio_ins.forEach(function (ele, idx) { _this.audio_ins[idx] = false; });
                     _this.audio_ins[response['index']] = true;
                 }
+            }
+            if (response && response['music_flag']) {
+                console.log('carousel =>', response['music_flag']);
+                _this.flag = response['music_flag'] == 'yes' ? true : false;
             }
         });
     }
