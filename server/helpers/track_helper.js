@@ -630,50 +630,52 @@ track_helper.get_new_uploads = async (day, start, length) => {
 
 track_helper.get_track_main = async (filter, filters) => {
     var aggregate = [
-
         {
             $lookup: {
-                from: "artist",
-                localField: "artist_id",
-                foreignField: "_id",
-                as: "artist_id"
+                from: 'artist',
+                localField: 'artist_id',
+                foreignField: '_id',
+                as: 'artist_id'
             }
         },
         {
             $unwind: "$artist_id"
         },
         {
-            $lookup: {
-                from: "music_type",
-                localField: "artist_id.music_type",
-                foreignField: "_id",
-                as: "music_type"
+            $match: {
+                "artist_id.flag": false
             }
         },
         {
-            $unwind: "$music_type"
-        },
-        {
-            $lookup: {
-                from: "state",
-                localField: "artist_id.state",
-                foreignField: "_id",
-                as: "state"
+            '$lookup': {
+                from: 'music_type',
+                localField: 'artist_id.music_type',
+                foreignField: '_id',
+                as: 'music_type'
             }
         },
         {
-            $unwind: "$state"
+            '$unwind': '$music_type'
         },
         {
-            $project: {
-                "artist_id.music_type": 0,
-                "artist_id.state": 0,
+            '$lookup': {
+                from: 'state',
+                localField: 'artist_id.state',
+                foreignField: '_id',
+                as: 'state'
+            }
+        },
+        {
+            '$unwind': '$state'
+        },
+        {
+            '$project': {
+                'artist_id.music_type': 0,
+                'artist_id.state': 0
+            }
+        },
 
-            }
-        },
-        {
-            "$match": filters
-        }
+
     ];
 
     if (filter) {
@@ -683,7 +685,9 @@ track_helper.get_track_main = async (filter, filters) => {
                 { $or: [{ "artist_id.first_name": filter }, { "artist_id.last_name": filter }, { "name": filter }] }
         });
     }
+
     let result = await Track.aggregate(aggregate);
+
     if (result) {
         return { "status": 1, "message": "Artist  found", "results": result }
     } else {

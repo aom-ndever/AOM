@@ -503,12 +503,12 @@ router.post('/artist_login', async (req, res) => {
         }
       } else {
 
-        res.status(config.BAD_REQUEST).json({ message: "You are not of this type" });
+        res.status(config.BAD_REQUEST).json({ message: "Your email is not registered with this type" });
       }
     }
     else {
 
-      res.status(config.BAD_REQUEST).json({ message: "You are not of this type" });
+      res.status(config.BAD_REQUEST).json({ message: "Your email is not registered with this type" });
     }
   }
   else {
@@ -759,12 +759,12 @@ router.post('/user_login', async (req, res) => {
         }
       } else {
 
-        res.status(config.BAD_REQUEST).json({ message: "You are not of this type" });
+        res.status(config.BAD_REQUEST).json({ message: "Your email is not registered with this type" });
       }
     }
     else {
 
-      res.status(config.BAD_REQUEST).json({ message: "You are not of this type" });
+      res.status(config.BAD_REQUEST).json({ message: "Your email is not registered with this type" });
     }
   }
   else {
