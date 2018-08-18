@@ -612,66 +612,12 @@ track_helper.get_new_uploads = async (day, start, length) => {
     var from = moment(to).subtract(day, "days").utcOffset(0);
     try {
 
-        var aggregate = [
-            {
-                $match: { "created_at": { "$gt": new Date(from), "$lt": new Date(to) } }
-            },
-            {
-                $lookup: {
-                    from: 'artist',
-                    localField: 'artist_id',
-                    foreignField: '_id',
-                    as: 'artist_id'
-                }
-            },
-            {
-                $unwind: "$artist_id"
-            },
-            {
-                $match: {
-                    "artist_id.flag": false
-                }
-            },
-            {
-                '$lookup': {
-                    from: 'music_type',
-                    localField: 'artist_id.music_type',
-                    foreignField: '_id',
-                    as: 'music_type'
-                }
-            },
-            {
-                '$unwind': '$music_type'
-            },
-            {
-                '$lookup': {
-                    from: 'state',
-                    localField: 'artist_id.state',
-                    foreignField: '_id',
-                    as: 'state'
-                }
-            },
-            {
-                '$unwind': '$state'
-            },
-            {
-                '$project': {
-                    'artist_id.music_type': 0,
-                    'artist_id.state': 0
-                }
-            },
-
-
-        ];
-        // if (filter) {
-        //     aggregate.push({
-        //         "$match":
-
-        //             { $or: [{ "artist_id.first_name": filter }, { "artist_id.last_name": filter }, { "name": filter }] }
-        //     });
-        // }
-
-        let track = await Track.aggregate(aggregate);
+        var track = await Track
+            .find({ "created_at": { "$gt": new Date(from), "$lt": new Date(to) } })
+            .populate({ path: 'artist_id', populate: { path: 'music_type' } })
+            .populate({ path: 'artist_id', populate: { path: 'state' } })
+            .skip(start)
+            .limit(length)
 
         if (track) {
             return { "status": 1, "message": "track details found", "results": track };
