@@ -25,8 +25,8 @@ export class ForgetPasswordComponent implements OnInit {
      private router: Router
     ) {
     this.passwordFormGroup = this.fb.group({
-      password : ['', [Validators.required, Validators.maxLength(6)]],
-      conf : ['', [Validators.required, Validators.maxLength(6)]]
+      password : ['', [Validators.required, Validators.minLength(6)]],
+      conf : ['', [Validators.required, Validators.minLength(6)]]
     }, {
       validator : this.passwordMatchValidator
     });

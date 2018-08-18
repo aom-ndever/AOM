@@ -516,8 +516,6 @@ export class MyProfileComponent implements OnInit, OnDestroy {
           this.MessageService.sendMessage({updateProfile : true});
         }, error => {
           this.toastr.error(error['error'].message, 'Error!');
-        }, () => {
-
         });
       } else {
         this.MyProfileService.updateUserProfileImage(formData).subscribe(response => {
@@ -527,8 +525,6 @@ export class MyProfileComponent implements OnInit, OnDestroy {
           this.MessageService.sendMessage({updateProfile : true});
         }, error => {
           this.toastr.error(error['error'].message, 'Error!');
-        }, () => {
-
         });
       }
       if (fileList.length > 0) {
