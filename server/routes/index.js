@@ -503,12 +503,12 @@ router.post('/artist_login', async (req, res) => {
         }
       } else {
 
-        res.status(config.BAD_REQUEST).json({ message: "You are not of this type" });
+        res.status(config.BAD_REQUEST).json({ message: "Your email is not registered with this type" });
       }
     }
     else {
 
-      res.status(config.BAD_REQUEST).json({ message: "You are not of this type" });
+      res.status(config.BAD_REQUEST).json({ message: "Your email is not registered with this type" });
     }
   }
   else {
@@ -759,12 +759,12 @@ router.post('/user_login', async (req, res) => {
         }
       } else {
 
-        res.status(config.BAD_REQUEST).json({ message: "You are not of this type" });
+        res.status(config.BAD_REQUEST).json({ message: "Your email is not registered with this type" });
       }
     }
     else {
 
-      res.status(config.BAD_REQUEST).json({ message: "You are not of this type" });
+      res.status(config.BAD_REQUEST).json({ message: "Your email is not registered with this type" });
     }
   }
   else {
@@ -1527,6 +1527,8 @@ router.post("/mainpage", async (req, res) => {
     var resp_artist = await track_helper.get_track_main(search, filters);
 
     var resp_track = await track_helper.get_new_uploads(30, req.body.start, req.body.length);
+
+
     if (resp_track.status == 0 && resp_artist.status == 0) {
       logger.error("Error occured while fetching users = ", resp_track);
       res.status(config.INTERNAL_SERVER_ERROR).json(resp_track);
