@@ -15,6 +15,7 @@ var bookmark_helper = require('../../helpers/bookmark_helper');
 var like_helper = require('../../helpers/like_helper');
 var comment_helper = require('../../helpers/comment_helper');
 var playlist_helper = require('../../helpers/playlist_helper');
+var artist_playlist_helper = require('../../helpers/artist_playlist_helper');
 var path = require('path');
 var moment = require('moment');
 var mongoose = require('mongoose');
@@ -265,6 +266,7 @@ router.delete('/:track_id', async (req, res) => {
     var like_del = await like_helper.delete_like(track_id);
     var comment_del = await comment_helper.delete_comment_by_track(track_id);
     var playlist_del = await playlist_helper.delete_playlist_by_track(track_id);
+    var artist_playlist_del = await artist_playlist_helper.delete_playlist_by_track(track_id);
 
     var del_resp = await track_helper.delete_track_by_id(artist_id, track_id);
     if (del_resp.status === 0) {

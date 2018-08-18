@@ -201,4 +201,23 @@ artist_playlist_helper.delete_track_playlist = async (artist_id, playlist_id, ne
         return { "status": 0, "message": "Error occured while finding playlist", "error": err }
     }
 };
+
+artist_playlist_helper.delete_playlist_by_track = async (track_id) => {
+
+    try {
+        var playlist = await Playlist.update(
+            {},
+            { $pull: { track_id: ObjectId(track_id) } },
+            { multi: true }
+        )
+
+        if (playlist) {
+            return { "status": 1, "message": "playlist details found", "playlist": playlist };
+        } else {
+            return { "status": 2, "message": "playlist not found" };
+        }
+    } catch (err) {
+        return { "status": 0, "message": "Error occured while finding playlist", "error": err }
+    }
+};
 module.exports = artist_playlist_helper;
