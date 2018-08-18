@@ -37,6 +37,7 @@ export class HeaderComponent implements OnInit, OnDestroy  {
      private socialAuthService: AuthService 
     ) {
     this.user = JSON.parse(localStorage.getItem('user'));
+    this.MessageService.sendMessage({loggedin_user : this.user});
     
     if(this.user && this.user.artist) {
       this.user.artist['image'] = typeof this.user.artist['image'] != 'undefined' ? environment.API_URL+environment.ARTIST_IMG+this.user.artist['image'] : '';
