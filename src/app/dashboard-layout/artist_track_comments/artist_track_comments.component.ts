@@ -3,7 +3,7 @@ import { ArtistTrackCommentsService } from './artist_track_comments.service';
 import { ToastrService } from 'ngx-toastr';
 import { environment } from '../../../environments/environment' ;
 import {ActivatedRoute} from "@angular/router";
-declare var swal: any;
+import swal from 'sweetalert2';
 @Component({
   selector: 'app-track-comments',
   templateUrl: './artist_track_comments.component.html',
@@ -73,11 +73,11 @@ export class ArtistTrackConmmentsComponent implements OnInit {
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
       confirmButtonText: 'Yes, delete it!'
-    }).then(function(flag) {
-      if(flag) {
+    }).then((flag) => {
+      if(flag.value) {
         thi.ArtistTrackCommentsService.removeTrackComment(id).subscribe(response => {
           thi.toastr.success(response['message'], 'Success!');
-          thi.getAllTrackComment(thi.track_id);
+          thi.getAllTrackComment({track_id : thi.track_id});
         }, error => {
           thi.toastr.error(error['error'].message, 'Error!');
         });

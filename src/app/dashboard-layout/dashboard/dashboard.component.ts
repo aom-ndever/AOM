@@ -87,12 +87,14 @@ export class DashboardComponent implements OnInit, OnDestroy {
   // Get all whatsnew data
   getAllData(data : any) {
     this.audio_ins = [];
+    this.MessageService.sendMessage({'music_flag' : 'yes'});
     this.DashboardService.getAllData(data).subscribe(response => {
       this.data = response;
       response['new_uploads'].forEach((ele) => {
         this.audio_ins.push(false);
       });
       this.InitializeSider(this.data['finalist']);
+      
     });
   }
   // Play audio
@@ -115,6 +117,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   // Initialize slider
   InitializeSider(data : any) {
     this.images = [];
+    
     data.forEach(ele => {
       
       this.images.push({
@@ -130,6 +133,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
         "artist_id" : ele['artist_id'] ? ele['artist_id']['_id'] : null
       });
     });
+    this.MessageService.sendMessage({'music_flag' : 'no'});
   }
   // Get All music type
   getAllMusicType() {
