@@ -32,11 +32,12 @@ like_helper.get_like = async (user_id, track_id) => {
     }
 };
 
-like_helper.update_likes = async (track_id,no_likes) => {
+like_helper.update_likes = async (track_id, no_likes) => {
+    console.log('track_id', track_id);
 
     try {
-        var vote = await Track.findOneAndUpdate({"_id": new ObjectId(track_id) },{"no_of_likes":no_likes})
-        if (vote ) {
+        var vote = await Track.findOneAndUpdate({ "_id": new ObjectId(track_id) }, { "no_of_likes": no_likes })
+        if (vote) {
             return { "status": 1, "message": "voting updated", };
         } else {
             return { "status": 2, "message": "vote not found" };
@@ -47,11 +48,12 @@ like_helper.update_likes = async (track_id,no_likes) => {
 };
 
 
-like_helper.get_all_track_by_track_id = async (track_id ) => {
+like_helper.get_all_track_by_track_id = async (track_id) => {
     try {
         var like = await Track
-            .find({ "_id": new ObjectId(track_id) })
-        if (like) {
+            .findOne({ "_id": new ObjectId(track_id) })
+
+        if (like && like.length > 0) {
             return { "status": 1, "message": "Track details found", "like": like };
         } else {
             return { "status": 2, "message": "track not found" };
@@ -61,5 +63,19 @@ like_helper.get_all_track_by_track_id = async (track_id ) => {
     }
 }
 
+like_helper.delete_like = async (track_id) => {
 
+    try {
+        var user = await Like.deleteMany({ "track_id": track_id })
+        console.log('user', user);
+
+        if (user) {
+            return { "status": 1, "message": "flag deleted", "user": user };
+        } else {
+            return { "status": 2, "message": "user not found" };
+        }
+    } catch (err) {
+        return { "status": 0, "message": "Error occured while finding user", "error": err }
+    }
+};
 module.exports = like_helper;

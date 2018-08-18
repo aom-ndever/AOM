@@ -11,6 +11,7 @@ var WinnerModelSchema = new Schema({
     round: Number,
     artist_id: { type: mongoose.Schema.Types.ObjectId, ref: 'artist' },
     track_id: { type: mongoose.Schema.Types.ObjectId, ref: 'track' },
+    contest_id: { type: mongoose.Schema.Types.ObjectId, ref: 'contest' },
     created_at: { type: Date, default: Date.now }
 }, { versionKey: false });
 

@@ -105,6 +105,18 @@ comment_helper.delete_comment_by_artist = async (artist_id, comment_id) => {
     }
 };
 
+comment_helper.delete_comment_by_track = async (track_id) => {
+    try {
+        let comment = await Comment.deleteMany({ track_id: new ObjectId(track_id) });
+        if (!comment) {
+            return { status: 2, message: "Record has not Deleted" };
+        } else {
+            return { status: 1, message: "Record has been Deleted" };
+        }
+    } catch (err) {
+        return { status: 0, message: "Error occured while deleting comment", error: err };
+    }
+};
 
 comment_helper.update_votes = async (comment_id, no_votes) => {
     try {

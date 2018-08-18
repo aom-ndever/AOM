@@ -43,7 +43,7 @@ participate_helper.get_all_participants = async (ids) => {
             return o.track_id.no_of_votes
         })
         participate.reverse();
-        participate.splice(3)
+        participate.splice(16000)
         if (participate) {
             return { "status": 1, "message": "participants details found", "participate": participate };
         } else {
@@ -53,6 +53,7 @@ participate_helper.get_all_participants = async (ids) => {
         return { "status": 0, "message": "Error occured while finding participants", "error": err }
     }
 };
+
 
 
 participate_helper.get_participated_artist = async (ids) => {

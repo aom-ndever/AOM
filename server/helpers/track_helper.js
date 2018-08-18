@@ -248,6 +248,18 @@ track_helper.update_artist_for_likes = async (id, no_like) => {
         return { "status": 0, "message": "Error occured while finding contest", "error": err }
     }
 };
+track_helper.update_track_for_likes = async (id, no_like) => {
+    try {
+        var contest = await Track.findOneAndUpdate({ "_id": new ObjectId(id) }, { "no_of_likes": no_like })
+        if (contest) {
+            return { "status": 1, "message": "contest updated", };
+        } else {
+            return { "status": 2, "message": "contest not found" };
+        }
+    } catch (err) {
+        return { "status": 0, "message": "Error occured while finding contest", "error": err }
+    }
+};
 track_helper.update_artist_for_votes = async (id, no_vote) => {
     try {
         var contest = await Artist.findOneAndUpdate({ "_id": new ObjectId(id) }, { "no_of_votes": no_vote })
