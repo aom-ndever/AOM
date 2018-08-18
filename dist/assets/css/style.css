@@ -101,6 +101,9 @@ li.notification span.new-up {
     font-weight: 400;
     text-decoration: none;
 }
+.navigation ul li a:focus,.update-option li a:focus{
+    outline:none !important;
+}
 .register-btn{padding-right: 0 !important;}
 header.custom_header{box-shadow: 0px 0px 10px rgba(0,0,0,0.2); position: relative;}
 .logo-wrap{
@@ -380,7 +383,7 @@ border-radius: 2px; font-family: 'Roboto', sans-serif;}
 .finalists-container .content-wrap {
     padding: 34px 20px;
 }
-.finalists-container{clear: both;    margin: 0 -15px;}
+.finalists-container{clear: both;    margin: 0 -30px;}
 .finalist-carousel .owl-nav{display: none;}
 .owl-theme .owl-dots .owl-dot.active span, .owl-theme .owl-dots .owl-dot:hover span {
     background: #9B26B0;
@@ -978,7 +981,7 @@ background: #ffff;}
 }
 .social-acc .form-group img{
     position: absolute;
-    top: 31px;
+    top: 34px;
     left: 25px;
 }
 .error-message p ,.error-message i{
@@ -1180,9 +1183,8 @@ span.up_text {
     flex: 0 0 100%;
     max-width: 100%;
 }
-[_nghost-c7]{
-    padding:10px 15px !important;
-}
+
+
 .filter-head{
     margin-right: 18px;
 }
@@ -1368,7 +1370,7 @@ span.up_text {
    
 }
 .select-payemnt-table .radio{margin-right: 15px;}
-.select-payemnt-table input[type="radio"]:checked + .radio_check:after{top:8px; outline: none; left: 5px;}
+/* .select-payemnt-table input[type="radio"]:checked + .radio_check:after{top:8px; outline: none; left: 5px;} */
 .radio{position: relative;}
 .filter-drop-down ul li label input[type="radio"]:checked,
 .select-payemnt-table input[type="radio"]:checked,
@@ -1433,7 +1435,8 @@ span.up_text {
 .cover-img > img {
     max-height: 200px;
 }
-.profile-img{text-align: center; margin-top: -80px; width: 100%;}
+.profile-location{    margin-bottom: 15px;}
+.profile-img{text-align: center; margin-top: -96px; width: 100%;}
 .follow-btn a {
     display: block;
     width: 100%;
@@ -1448,6 +1451,7 @@ span.up_text {
     font-family: 'Poppins', sans-serif;
     font-size: 18px;
 }
+.follow-btn a:hover {color:#fff;}
 .follow-btn a i{color: #fff; padding-right: 20px;}
 .social h3,.follower h3,.comments h3{
     font-size: 16px;
@@ -2867,7 +2871,7 @@ span.inner-text span{
 /*My Music*/
 .mymusic-wrap{padding: 50px 0; }
 .mymusic-wrap  .track-table{margin:0 auto;}
-.mymusic-wrap .action>div{padding: 0 10px; display: inline-block;}
+.mymusic-wrap .action>div{padding: 0 6px; display: inline-block;}
 .contest-btn a {
     width: 160px;
     height: 30px;
@@ -3084,9 +3088,13 @@ div#submitcontest {
 
 .comment-wrap,.track-comment-wrap{padding: 50px 0;}
 .comment-wrap .profile-img,.track-comment-wrap .profile-img{margin-top: 0;}
-.comment-wrap  .artist-name h2,.track-comment-wrap .track-cname {
+.track-comment-wrap .track-cname {
     margin: 0px 0 20px 0;
 }
+.comment-wrap  .artist-name h2{
+    margin: 0px 0 33px 0;
+}
+.comment-wrap  .artist-name .tag{    margin-top: -30px;}
 .abt-tr {
     float: left;
     width: 50%;
@@ -3349,9 +3357,8 @@ button.close{    background: transparent;
 .track-table.mCustomScrollbar {
     padding-right: 10px;
 }
-[_nghost-c6] {
-    padding: 10px 0 !important;
-}
+
+
 .rightRs[_ngcontent-c4], .leftRs{
     display: none !important;
 }
@@ -4202,6 +4209,43 @@ svg g rect{
     float: left;
     position: relative;
 }
+
+[_nghost-c6], [_nghost-c7]{
+    padding: 0 !important; 
+}
+.finalist-wrap [_nghost-c6] , .uploads-container [_nghost-c6] {
+    padding: 10px 15px  !important;
+}
+.finalist-wrap [_nghost-c7] , .uploads-container [_nghost-c7]{
+    padding: 10px 15px  !important;
+
+}
+.filter-drop-down .radio label{    margin-bottom: .5rem;}
+.whatsnew-banner .ngxcarouselPointDefault[_ngcontent-c5] .ngxcarouselPoint[_ngcontent-c5] li.active[_ngcontent-c5] {
+    background: #9c27b0;
+    transform: scale(1);
+}
+.whatsnew-banner .ngxcarouselPointDefault[_ngcontent-c5] .ngxcarouselPoint[_ngcontent-c5] li[_ngcontent-c5]{
+    background: #dedede;
+    width:10px;
+    height:10px;
+}
+.artist-highlight .img-wrap {
+    width: 100%;
+    height: 150px;
+}
+.artist-highlight .final-wrap img {
+    width: 100%;
+    max-height: unset;
+    width: 100%;
+    height: 100%;
+    -o-object-fit: cover;
+    object-fit: cover;
+}
+.logo-wrap{    margin-left: -5px;}
+.cust_err_msg{
+    margin-top:5px;
+}
 /*MEDIA START*/
 @media screen and (min-width: 768px){
     .content-block{width: 750px;}
@@ -4315,11 +4359,7 @@ svg g rect{
         clear: both;
         margin: 0;
     }
-    [_nghost-c7] {
-        padding: 10px 5px !important;
-        width: 33.3333% !important;
-
-    }
+  
     .filter-head {
         margin-right: 0;
     }
@@ -4623,10 +4663,6 @@ svg g rect{
         display: none !important;
     }
 
-    [_nghost-c7] {
-        padding: 10px 5px !important;
-        width:100% !important;
-    }
     .head-global h2 {
         margin-bottom: 15px !important;
         font-size: 26px !important;
@@ -4652,7 +4688,7 @@ svg g rect{
     }
     .mymusic-wrap .track-table table{
         width: 700px;
-        min-width: 700px;
+        min-width: 757px;
     }
     .add-track-popup .modal-content{
         padding: 40px 20px 30px;
@@ -4736,6 +4772,10 @@ svg g rect{
         width: 172px;
         margin-left: 10px;
         border: 4px solid #fff;}
+        .finalist-wrap [_nghost-c7] , .uploads-container [_nghost-c7] {
+            padding: 10px 5px !important;
+            width:100% !important;
+        }
 }
 @media screen and (max-width: 576px){
     .custom_header .col-xs-2, .custom_header .col-xs-3 {
