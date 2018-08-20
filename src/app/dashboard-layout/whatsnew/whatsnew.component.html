@@ -209,10 +209,11 @@
         <div class="head-global "><h2>Popular Tracks</h2></div>
       </div>
       <div class="uploads-container col-md-12 ">
-        <div class="row">
-            <div class="alert alert-info col-sm-12" *ngIf="whatsnewdata['track'] && whatsnewdata['track'].length == 0">
+       
+            <div class="alert alert-info" *ngIf="whatsnewdata['track'] && whatsnewdata['track'].length == 0">
                 No data available.
             </div>
+            <div class="row">
           <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12 " *ngFor="let track of whatsnewdata['track']; let i = index">
             <div class="upload ">
               <div class="img-wrap ">

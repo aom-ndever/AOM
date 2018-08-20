@@ -611,12 +611,14 @@ track_helper.get_new_uploads = async (day, start, length) => {
     var to = moment().utcOffset(0);
     var from = moment(to).subtract(day, "days").utcOffset(0);
     try {
+
         var track = await Track
             .find({ "created_at": { "$gt": new Date(from), "$lt": new Date(to) } })
-            .skip(start)
-            .limit(length)
             .populate({ path: 'artist_id', populate: { path: 'music_type' } })
             .populate({ path: 'artist_id', populate: { path: 'state' } })
+            .skip(start)
+            .limit(length)
+
         if (track) {
             return { "status": 1, "message": "track details found", "results": track };
         } else {
