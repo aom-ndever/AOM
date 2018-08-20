@@ -681,11 +681,12 @@ track_helper.get_track_main = async (filter, filters) => {
     ];
     if (filters) {
         aggregate.push({
-            $match: {
+            "$match": {
                 "artist_id.music_type": filters
             }
         })
     }
+
     if (filter) {
         aggregate.push({
             "$match":

@@ -1513,7 +1513,7 @@ router.post("/mainpage", async (req, res) => {
 
   var schema = {};
   if (req.body.music_type) {
-    filters["music_type._id"] = new ObjectId(req.body.music_type);
+    filters["music_type"] = new ObjectId(req.body.music_type);
   }
 
   if (req.body.search) {
