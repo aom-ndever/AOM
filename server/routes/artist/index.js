@@ -188,7 +188,7 @@ router.post('/add_payment_method', async (req, res) => {
         "artist_id": artist_id,
     };
 
-    var card_resp = await artist_helper.insert_card(req.userInfo.id, obj);
+    var card_resp = await artist_helper.insert_card(obj);
 
     if (card_resp.status === 0) {
         res.status(config.INTERNAL_SERVER_ERROR).json(card_resp);
