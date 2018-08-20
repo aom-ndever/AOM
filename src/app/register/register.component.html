@@ -287,13 +287,14 @@
                       <img [src]="croppedImage" style="height: 167px;width: 155px;"/>
                     </div>
                   </div>
-                </div>
-
+                  
                 <div class="heading">
-                  <div class="cust_err_msg" *ngIf="artist_validation[5]">
-                      <span class="text-danger">Avatar is required..</span>
+                    <div class="cust_err_msg" *ngIf="artist_validation[5]">
+                        <span class="text-danger">Avatar is required..</span>
+                    </div>
                   </div>
                 </div>
+
                 
                 <div class="button_group">
                   <a href="javascript:;" class="back-btn" (click)="back_btn('artist')"><img src="img/prev-arrow.png" alt="Previou Arrow"> Back</a>
