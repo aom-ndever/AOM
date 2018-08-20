@@ -57,7 +57,7 @@
                             <label for="email">Email</label>
                             <input type="email" class="form-control" formControlName="email"  [(ngModel)]="artist_data.email" name="artist_email" id="email" placeholder="Email">
                             <div class="cust_err_msg" *ngIf="artist_validation[1] && !artist_step2.controls['email'].valid">
-                              <span *ngIf="artist_step2.controls['email'].errors['required']" class="text-danger">Email is required.</span>
+                              <span *ngIf="artist_step2.controls['email'].errors['required']" class="text-danger">Email is required</span>
                               <span *ngIf="!artist_step2.controls['email'].errors['required'] && artist_step2.controls['email'].errors['email'] && artist_step2.controls['email'].dirty" class="text-danger">Email Mismatched.</span>
                             </div>
                           </div>                          
@@ -67,7 +67,7 @@
                               <input type="password" class="form-control" formControlName="artist_password" placeholder="Password"  required [(ngModel)]="artist_data.password" name="password">
                               <div class="pwd-icon"><i class="fa fa-eye" aria-hidden="true"></i></div>
                               <div class="cust_err_msg" *ngIf="artist_validation[1] && !passwordFormGroup1.controls['artist_password'].valid ">
-                                <span *ngIf="passwordFormGroup1.controls['artist_password'].errors['required']" class="text-danger">Password is required.</span>
+                                <span *ngIf="passwordFormGroup1.controls['artist_password'].errors['required']" class="text-danger">Password is required</span>
                                 <span *ngIf="!passwordFormGroup1.controls['artist_password'].errors['required'] && passwordFormGroup1.controls['artist_password'].errors['minlength']" class="text-danger">Must be longer than 6 characters.</span>
                               </div>
                             </div>
@@ -103,14 +103,14 @@
                           <label for="fname">First Name</label>
                           <input type="text" class="form-control" formControlName="fname"  name="artist_fname" [(ngModel)]="artist_data.fname"  placeholder="First Name">
                           <div class="cust_err_msg" *ngIf="artist_validation[2] && !artist_step3.controls['fname'].valid">
-                            <span *ngIf="artist_step3.controls['fname'].errors['required']" class="text-danger">First name is required.</span>
+                            <span *ngIf="artist_step3.controls['fname'].errors['required']" class="text-danger">First name is required</span>
                           </div>
                         </div>
                         <div class="form-group col-md-6 pwd-grp">
                           <label for="lanem">Last Name</label>
                           <input type="text" class="form-control"  formControlName="lname" [(ngModel)]="artist_data.lname"  name="artist_lname" placeholder="Last Name">
                           <div class="cust_err_msg" *ngIf="artist_validation[2] && !artist_step3.controls['lname'].valid">
-                            <span *ngIf="artist_step3.controls['lname'].errors['required']" class="text-danger">First name is required.</span>
+                            <span *ngIf="artist_step3.controls['lname'].errors['required']" class="text-danger">First name is required</span>
                           </div>
                         </div>
                       </div>
@@ -121,7 +121,7 @@
                               <option value="female">Female</option>
                           </select>
                           <div class="cust_err_msg" *ngIf="artist_validation[2] && !artist_step3.controls['lname'].valid">
-                              <span *ngIf="artist_step3.controls['gender'].errors['required']" class="text-danger">Gender is required.</span>
+                              <span *ngIf="artist_step3.controls['gender'].errors['required']" class="text-danger">Gender is required</span>
                           </div>
                         </div>
                         <div class="date-of-birth">
@@ -132,7 +132,7 @@
                               <option *ngFor="let d of day" [value]="d">{{d}}</option>
                           </select>
                           <div class="terms_error_msg" *ngIf="artist_validation[2] && !artist_step3.controls['day'].valid">
-                            <span *ngIf="artist_step3.controls['day'].errors['required']" class="text-danger">Day is required.</span>
+                            <span *ngIf="artist_step3.controls['day'].errors['required']" class="text-danger">Day required</span>
                           </div>
                         </div>
                         <div class="form-group">
@@ -141,7 +141,7 @@
                               <option *ngFor="let m of month" [value]="m">{{m}}</option>
                           </select>
                           <div class="terms_error_msg" *ngIf="artist_validation[2] && !artist_step3.controls['month'].valid">
-                            <span *ngIf="artist_step3.controls['month'].errors['required']" class="text-danger">Month is required.</span>
+                            <span *ngIf="artist_step3.controls['month'].errors['required']" class="text-danger">Month required</span>
                           </div>
                         </div>
                         <div class="form-group">
@@ -150,7 +150,7 @@
                               <option *ngFor="let y of year" [value]="y">{{y}}</option>
                           </select>
                           <div class="terms_error_msg" *ngIf="artist_validation[2] && !artist_step3.controls['year'].valid">
-                            <span *ngIf="artist_step3.controls['year'].errors['required']" class="text-danger">Year is required.</span>
+                            <span *ngIf="artist_step3.controls['year'].errors['required']" class="text-danger">Year required</span>
                           </div>
                         </div>
                         </div>
@@ -158,7 +158,7 @@
                           <label for="geder">Phone Number</label>
                           <input class="form-control" id="phone" formControlName="phone" name="artist_phone" [(ngModel)]="artist_data.phone_no" />
                           <div class="cust_err_msg" *ngIf="artist_validation[2] && !artist_step3.controls['phone'].valid">
-                            <span *ngIf="artist_step3.controls['phone'].errors['required']" class="text-danger">Phone Number is required.</span>
+                            <span *ngIf="artist_step3.controls['phone'].errors['required']" class="text-danger">Phone Number is required</span>
                             <span *ngIf="artist_step3.controls['phone'].dirty && (artist_step3.controls['phone'].errors['pattern'] || artist_step3.controls['phone'].errors['maxlength'] || artist_step3.controls['phone'].errors['minlength'] )" class="text-danger">Please enter valid format.</span>
                           </div>
                         </div>
@@ -187,7 +187,7 @@
                         <label for="zipcode">Zip code</label>
                         <input type="text" class="form-control" formControlName="zipcode" (keyup)="getLocation()"  [(ngModel)]="artist_data.zipcode" name="artist_zipcode" placeholder="Zip Code">
                         <div class="cust_err_msg" *ngIf="artist_validation[3] && !artist_step4.controls['zipcode'].valid">
-                          <span *ngIf="artist_step4.controls['zipcode'].errors['required']" class="text-danger">Zipcode is required.</span>
+                          <span *ngIf="artist_step4.controls['zipcode'].errors['required']" class="text-danger">Zipcode is required</span>
                           <span *ngIf="artist_step4.controls['zipcode'].errors['pattern'] && artist_step4.controls['zipcode'].dirty" class="text-danger">please enter valid zipcode.</span>
                         </div>
                       </div>
@@ -198,7 +198,7 @@
                             <option *ngFor="let r of region_list;" [value]="r._id">{{r['name']}}</option>
                           </select>
                           <div class="cust_err_msg" *ngIf="artist_validation[3] && !artist_step4.controls['region'].valid">
-                            <span *ngIf="artist_step4.controls['region'].errors['required']" class="text-danger">Region is required.</span>
+                            <span *ngIf="artist_step4.controls['region'].errors['required']" class="text-danger">Region is required</span>
                           </div>
                       </div>
                       <div class="form-group gender-grp">
@@ -208,7 +208,8 @@
                             <option *ngFor="let s of state_list;" [value]="s._id">{{s['name']}}</option>
                           </select>
                           <div class="cust_err_msg" *ngIf="artist_validation[3] && !artist_step4.controls['state'].valid">
-                            <span *ngIf="artist_step4.controls['state'].errors['required']" class="text-danger">State is required.</span>
+                            <span *ngIf="artist_step4.controls['state'].errors['required']" class="text-danger">State is required
+                            </span>
                           </div>
                       </div>
                   </div>
@@ -235,7 +236,7 @@
                       </li>
                     </ul>
                     <div class="cust_err_msg" *ngIf="artist_validation[4]">
-                        <span class="text-danger">Music Type is required.</span>
+                        <span class="text-danger">Music Type is required</span>
                     </div>
                   </div>
                   <div class="button_group">
@@ -290,7 +291,7 @@
                   
                 <div class="heading">
                     <div class="cust_err_msg" *ngIf="artist_validation[5]">
-                        <span class="text-danger">Avatar is required..</span>
+                        <span class="text-danger">Avatar is required</span>
                     </div>
                   </div>
                 </div>
@@ -376,7 +377,7 @@
                           <label for="email">Email</label>
                           <input type="email" formControlName="email" [(ngModel)]="listener_data.email" class="form-control" id="email1" placeholder="Email">
                           <div class="cust_err_msg" *ngIf="listener_validation[0] && !listener_step1.controls['email'].valid">
-                            <span *ngIf="listener_step1.controls['email'].errors['required']" class="text-danger">Email is required.</span>
+                            <span *ngIf="listener_step1.controls['email'].errors['required']" class="text-danger">Email is required</span>
                             <span *ngIf="!listener_step1.controls['email'].errors['required'] && listener_step1.controls['email'].errors['email'] && listener_step1.controls['email'].dirty" class="text-danger">Email Mismatched.</span>
                           </div>
                       </div>
@@ -386,7 +387,7 @@
                           <input type="password" class="form-control" formControlName="password" [(ngModel)]="listener_data.password" placeholder="Password">
                           <div class="pwd-icon"><i class="fa fa-eye" aria-hidden="true"></i></div>
                           <div class="cust_err_msg" *ngIf="listener_validation[0] && !passwordFormGroup.controls['password'].valid">
-                            <span *ngIf="passwordFormGroup.controls['password'].errors['required']" class="text-danger">Password is required.</span>
+                            <span *ngIf="passwordFormGroup.controls['password'].errors['required']" class="text-danger">Password is required</span>
                             <span *ngIf="!passwordFormGroup.controls['password'].errors['required'] && passwordFormGroup.controls['password'].errors['minlength'] && passwordFormGroup.controls['password'].dirty" class="text-danger">Must be longer than 6 characters.</span>
                           </div>
                         </div>
@@ -395,7 +396,7 @@
                           <input type="password" class="form-control" formControlName="conf"  placeholder="Confirm Password">
                           <div class="pwd-icon"><i class="fa fa-eye" aria-hidden="true"></i></div>
                           <div class="cust_err_msg" *ngIf="listener_validation[0] && !passwordFormGroup.controls['conf'].valid ">
-                            <span *ngIf="passwordFormGroup.controls['conf'].errors['required']" class="text-danger">Confirm password is required.</span>
+                            <span *ngIf="passwordFormGroup.controls['conf'].errors['required']" class="text-danger">Confirm password is required</span>
                             <span *ngIf="!passwordFormGroup.controls['conf'].errors['required'] && passwordFormGroup.controls['conf'].errors['minlength'] && passwordFormGroup.controls['conf'].dirty" class="text-danger">Must be longer than 6 characters.</span>
                             <span *ngIf="!passwordFormGroup.controls['conf'].errors['required'] && passwordFormGroup.controls['conf'].errors['mismatch'] && passwordFormGroup.controls['conf'].dirty" class="text-danger">Please enter correct confirm password.</span>
                           </div>
@@ -450,14 +451,14 @@
                         <label for="fname">First Name</label>
                         <input type="text" formControlName="fname" name="listener_fname" class="form-control" [(ngModel)]="listener_data.fname" placeholder="First Name">
                         <div class="terms_error_msg" *ngIf="listener_validation[2] && !listener_step3.controls['fname'].valid">
-                          <span *ngIf="listener_step3.controls['fname'].errors['required']" class="text-danger">First Name is required.</span>
+                          <span *ngIf="listener_step3.controls['fname'].errors['required']" class="text-danger">First Name is required</span>
                         </div>
                       </div>
                       <div class="form-group pwd-grp col-md-6 pr0">
                         <label for="lanem">Last Name</label>
                         <input type="text" class="form-control" formControlName="lname" name="listener_lname" [(ngModel)]="listener_data.lname"  placeholder="Last Name">
                         <div class="terms_error_msg" *ngIf="listener_validation[2] && !listener_step3.controls['lname'].valid">
-                          <span *ngIf="listener_step3.controls['lname'].errors['required']" class="text-danger">Last Name is required.</span>
+                          <span *ngIf="listener_step3.controls['lname'].errors['required']" class="text-danger">Last Name is required</span>
                         </div>
                       </div>
                     </div>
@@ -468,7 +469,7 @@
                             <option value="female">Female</option>
                         </select>
                         <div class="terms_error_msg" *ngIf="listener_validation[2] && !listener_step3.controls['gender'].valid">
-                          <span *ngIf="listener_step3.controls['gender'].errors['required']" class="text-danger">Gender is required.</span>
+                          <span *ngIf="listener_step3.controls['gender'].errors['required']" class="text-danger">Gender is required</span>
                         </div>
                       </div>
                       <div class="date-of-birth">
@@ -479,7 +480,7 @@
                             <option *ngFor="let d of day" [value]="d">{{d}}</option>
                         </select>
                         <div class="terms_error_msg" *ngIf="listener_validation[2] && !listener_step3.controls['day'].valid">
-                          <span *ngIf="listener_step3.controls['day'].errors['required']" class="text-danger">Day is required.</span>
+                          <span *ngIf="listener_step3.controls['day'].errors['required']" class="text-danger">Day required</span>
                         </div>
                       </div>
                       <div class="form-group">
@@ -488,7 +489,7 @@
                             <option *ngFor="let m of month" [value]="m">{{m}}</option>
                         </select>
                         <div class="terms_error_msg" *ngIf="listener_validation[2] && !listener_step3.controls['month'].valid">
-                          <span *ngIf="listener_step3.controls['month'].errors['required']" class="text-danger">Month is required.</span>
+                          <span *ngIf="listener_step3.controls['month'].errors['required']" class="text-danger">Month required</span>
                         </div>
                       </div>
                       <div class="form-group">
@@ -497,7 +498,7 @@
                             <option *ngFor="let y of year" [value]="y">{{y}}</option>
                         </select>
                         <div class="terms_error_msg" *ngIf="listener_validation[2] && !listener_step3.controls['year'].valid">
-                          <span *ngIf="listener_step3.controls['year'].errors['required']" class="text-danger">Year is required.</span>
+                          <span *ngIf="listener_step3.controls['year'].errors['required']" class="text-danger">Year required</span>
                         </div>
                       </div>
                       </div>
@@ -506,7 +507,7 @@
                         <label class="control-label">Phone Number</label>
                         <input name="listener_phone" class="form-control" formControlName="phone" [(ngModel)]="listener_data.phone_no"/>
                         <div class="terms_error_msg" *ngIf="listener_validation[2] && !listener_step3.controls['phone'].valid">
-                          <span *ngIf="listener_step3.controls['phone'].errors['required']" class="text-danger">Phone number is required.</span>
+                          <span *ngIf="listener_step3.controls['phone'].errors['required']" class="text-danger">Phone number is required</span>
                           <span *ngIf="(listener_step3.controls['phone'].errors['maxlength'] || listener_step3.controls['phone'].errors['minlength'])  && listener_step3.controls['phone'].dirty" class="text-danger">Please enter valid phone number.</span>
                         </div>
                       </div>
@@ -535,7 +536,7 @@
                         <label for="zipcode">Zip code</label>
                         <input type="text" class="form-control"  formControlName="zipcode" (keyup)="getLocationForListener()"  [(ngModel)]="listener_data.zipcode" name="listener_zipcode"  placeholder="Zip Code">
                         <div class="cust_err_msg" *ngIf="listener_validation[3] && !listener_step4.controls['zipcode'].valid">
-                          <span *ngIf="listener_step4.controls['zipcode'].errors['required']" class="text-danger">Zipcode is required.</span>
+                          <span *ngIf="listener_step4.controls['zipcode'].errors['required']" class="text-danger">Zipcode is required</span>
                           <span *ngIf="listener_step4.controls['zipcode'].errors['pattern'] && listener_step4.controls['zipcode'].dirty" class="text-danger">please enter valid zipcode.</span>
                         </div>
                       </div>
@@ -546,7 +547,7 @@
                           <option *ngFor="let r of region_list;" [value]="r._id">{{r['name']}}</option>
                         </select>
                         <div class="cust_err_msg" *ngIf="listener_validation[3] && !listener_step4.controls['region'].valid">
-                          <span *ngIf="listener_step4.controls['region'].errors['required']" class="text-danger">Region is required.</span>
+                          <span *ngIf="listener_step4.controls['region'].errors['required']" class="text-danger">Region is required</span>
                         </div>
                     </div>
                     <div class="form-group gender-grp">
@@ -556,7 +557,7 @@
                           <option *ngFor="let s of state_list;" [value]="s._id">{{s['name']}}</option>
                         </select>
                         <div class="cust_err_msg" *ngIf="listener_validation[3] && !listener_step4.controls['state'].valid">
-                          <span *ngIf="listener_step4.controls['state'].errors['required']" class="text-danger">State is required.</span>
+                          <span *ngIf="listener_step4.controls['state'].errors['required']" class="text-danger">State is required</span>
                         </div>
                     </div>
                   </div>
