@@ -176,6 +176,28 @@ router.put('/', async (req, res) => {
 
 });
 
+
+router.post('/add_payment_method', async (req, res) => {
+    user_id = req.userInfo.id;
+    var obj = {
+        "first_name": req.body.first_name,
+        "last_name": req.body.last_name,
+        "card_number": req.body.card_number,
+        "security_code": req.body.security_code,
+        "expires_on": req.body.expires_on,
+        "artist_id": req.body.artist_id,
+    };
+
+    var user_resp = await artist_helper.insert_card(req.userInfo.id, obj);
+
+    if (user_resp.status === 0) {
+        res.status(config.INTERNAL_SERVER_ERROR).json(user_resp);
+    } else {
+        res.status(config.OK_STATUS).json(user_resp);
+    }
+
+});
+
 /**
  * @api {put} /artist/notification_settings Update notification
  * @apiName Update notification

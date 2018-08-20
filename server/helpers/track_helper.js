@@ -684,7 +684,7 @@ track_helper.get_track_main = async (filter, filters) => {
         aggregate.push({
             "$match":
 
-                { $or: [{ "artist_id.first_name": filter }, { "artist_id.last_name": filter }, { "name": filter }] }
+                { $or: [{ "artist_id.first_name": filter }, { "artist_id.last_name": filter }, { "name": filter }, { "artist_id.music_type": filter }] }
         });
     }
 
