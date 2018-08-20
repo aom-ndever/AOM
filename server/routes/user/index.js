@@ -220,7 +220,7 @@ router.post("/upgrade_to_artist", async (req, res) => {
             "state": req.body.state,
             "gender": req.body.gender,
             "dob": req.body.dob,
-            "email_verified": resp_data.user.resp_data.user.email,
+            "email_verified": resp_data.email,
         };
         if (req.body.share_url) {
             reg_obj.social_media = JSON.parse(req.body.share_url)
