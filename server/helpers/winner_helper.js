@@ -26,7 +26,7 @@ winner_helper.get_all_shortlisted = async (round) => {
     try {
 
         var winner = await Winner
-            .find({ "round": round })
+            .find()
             .populate({ path: 'artist_id', populate: { path: 'music_type' } })
             .populate('track_id')
             .populate('contest_id')
