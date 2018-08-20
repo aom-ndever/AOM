@@ -52,16 +52,16 @@ var ArtistModelSchema = new Schema({
 
 ArtistModelSchema.pre('save', function (next) {
     var user = this;
-    console.log('user', user);
-    console.log('user.flag', user.flag);
+
     if (user && (typeof user.flag === 'undefined' || user.flag)) {
-        console.log('i am here now');
         if (!user.isModified('password')) return next();
         bcrypt.genSalt(SALT_WORK_FACTOR, function (err, salt) {
             if (err) return next(err);
             bcrypt.hash(user.password, salt, function (err, hash) {
                 if (err) return next(err);
                 user.password = hash;
+                next();
+
             });
         });
     }
