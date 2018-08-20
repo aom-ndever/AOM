@@ -631,6 +631,8 @@ track_helper.get_new_uploads = async (day, start, length) => {
 
 
 track_helper.get_track_main = async (filter, filters) => {
+
+
     var aggregate = [
         {
             $lookup: {
@@ -679,11 +681,11 @@ track_helper.get_track_main = async (filter, filters) => {
 
 
     ];
+    console.log('filters', filters);
+
     if (filters) {
         aggregate.push({
-            "$match": {
-                "artist_id.music_type": filters
-            }
+            "$match": filters
         })
     }
 

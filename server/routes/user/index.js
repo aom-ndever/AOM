@@ -177,9 +177,9 @@ router.post("/upgrade_to_artist", async (req, res) => {
     var resp_data = await user_helper.get_users_by_id(user_id);
 
     var obj = {
-        "email": req.body.email,
+        "email": resp_data.user.email,
         "phone_no": req.body.phone_no,
-        "password": req.body.password,
+        "password": resp_data.user.password,
         "first_name": req.body.first_name,
         "last_name": req.body.last_name,
         "zipcode": req.body.zipcode,
