@@ -32,6 +32,20 @@ participate_helper.get_participant = async (id, ids, trackid) => {
     }
 };
 
+participate_helper.get_participant_by_track_id = async (id) => {
+    try {
+        var participate = await Participate
+            .find({ "track_id": new ObjectId(trackid) })
+        if (participate) {
+            return { "status": 1, "message": "comment details found", "participate": participate };
+        } else {
+            return { "status": 2, "message": "comment not found" };
+        }
+    } catch (err) {
+        return { "status": 0, "message": "Error occured while finding artist", "error": err }
+    }
+};
+
 participate_helper.get_all_participants = async (ids) => {
 
     try {
@@ -44,6 +58,8 @@ participate_helper.get_all_participants = async (ids) => {
         })
         participate.reverse();
         participate.splice(16000)
+        console.log('participate', participate);
+
         if (participate) {
             return { "status": 1, "message": "participants details found", "participate": participate };
         } else {

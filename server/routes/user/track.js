@@ -13,6 +13,8 @@ var download_helper = require('../../helpers/download_helper');
 var artist_helper = require('../../helpers/artist_helper');
 var user_helper = require('../../helpers/user_helper');
 var mail_helper = require('../../helpers/mail_helper');
+var winner_helper = require('../../helpers/winner_helper');
+var winner_helper = require('../../helpers/winner_helper');
 var mongoose = require('mongoose');
 var ObjectId = mongoose.Types.ObjectId;
 var fs = require('fs');
@@ -128,8 +130,9 @@ router.post('/vote_track', async (req, res) => {
         logger.error("Error occured while voting = ", data);
         res.status(config.INTERNAL_SERVER_ERROR).json(data);
       } else
+        var resp_data = await winner(obj.track_id);
 
-        var resp_data = await track_helper.get_all_track_by_track_id(obj.track_id);
+      var resp_data = await track_helper.get_all_track_by_track_id(obj.track_id);
       no_vote = resp_data.track.no_of_votes + 1;
 
 
