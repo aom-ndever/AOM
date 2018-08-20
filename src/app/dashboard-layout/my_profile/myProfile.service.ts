@@ -198,4 +198,16 @@ export class MyProfileService {
   removeTrackFromArtistPlaylist(data) {
     return this.http.put(`${this.api_host}/artist/playlist/track`, data, {headers:this.headers});
   }
+  // get all region
+  getAllRegion() {
+    return this.http.get(`${this.api_host}/region`);
+  }
+  // Get state based on region
+  getStateByRegion(data : any) {
+    return this.http.post(`${this.api_host}/state_by_region`, data);
+  }
+  // upgrade to artist
+  upgradeToArtist(data : any) {
+    return this.http.post(`${this.api_host}/user/upgrade_to_artist`, data, {headers:this.headers});
+  }
 }

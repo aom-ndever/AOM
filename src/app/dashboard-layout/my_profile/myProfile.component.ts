@@ -91,6 +91,14 @@ export class MyProfileComponent implements OnInit, OnDestroy {
   listener_profile : FormGroup;
   listenerProfileValidation : boolean = false;
 
+  // upgrade to artist form group
+  upgrade_artist : FormGroup;
+  upgrade_artist_validation : boolean = false;
+  upgrade_artist_data : any = {};
+  region_list : any = [];
+  state_list : any = [];
+  upgrade_artist_img : any = '';
+
   // playlist
   playlist : any = [];
   playlist_data : any = {};
@@ -149,12 +157,27 @@ export class MyProfileComponent implements OnInit, OnDestroy {
     } else {
       this.userdata = {...data['user']};
       this.userdata['type'] = 'user';
+      let share_url = {
+        'share_url' : {
+          'facebook' : '',
+          'instagram' : '',
+          'twitter' : '',
+          'youtube' : '',
+          'sound_cloud' : ''
+        }
+      };
+      this.upgrade_artist_data = {...this.userdata, share_url};
+      this.upgrade_artist_data['music_type'] = '';
+      delete this.userdata['token'];
       delete this.userdata['token'];
       if(this.userdata.dob) {
         let dt =  new Date(this.userdata.dob);
         this.userdata['day'] = dt.getDate();
         this.userdata['month'] = dt.getMonth();
         this.userdata['year'] = dt.getFullYear();
+        this.upgrade_artist_data['day'] = dt.getDate();
+        this.upgrade_artist_data['month'] = dt.getMonth();
+        this.upgrade_artist_data['year'] = dt.getFullYear();
       }
       if(this.userdata.image) {
         if(this.userdata.provider && this.userdata.provider == 'facebook' && this.userdata['image'].includes('graph.facebook.com') || (this.userdata.provider == "gmail" && this.userdata['image'].includes('lh3.googleusercontent.com'))) {
@@ -185,6 +208,27 @@ export class MyProfileComponent implements OnInit, OnDestroy {
       phone : ['', [Validators.required, Validators.pattern('[0-9]+'), Validators.minLength(10),Validators.maxLength(10)]],
       music_type : ['', [Validators.required]],
       zipcode : ['', [Validators.required]],
+      description : [''],
+      share_url_fb : [''],
+      share_url_insta : [''],
+      share_url_twit : [''],
+      share_url_youtube : [''],
+      share_url_sound : ['']
+    });
+
+    this.upgrade_artist = this.fb.group({
+      upload : [''],
+      fname : ['', [Validators.required]],
+      lname : ['', [Validators.required]],
+      gender : ['', [Validators.required]],
+      day : ['', [Validators.required]],
+      month : ['', [Validators.required]],
+      year : ['', [Validators.required]],
+      phone : ['', [Validators.required, Validators.pattern('[0-9]+'), Validators.minLength(10),Validators.maxLength(10)]],
+      music_type : ['', [Validators.required]],
+      zipcode : ['', [Validators.required]],
+      region : ['', [Validators.required]],
+      state : ['', [Validators.required]],
       description : [''],
       share_url_fb : [''],
       share_url_insta : [''],
@@ -319,6 +363,7 @@ export class MyProfileComponent implements OnInit, OnDestroy {
         ]
       };
     } else {
+      this.getRegionList();
       const that = this;
       this.dtOptions[0] = {
         pagingType: 'full_numbers',
@@ -539,8 +584,35 @@ export class MyProfileComponent implements OnInit, OnDestroy {
           reader.readAsDataURL(event.target.files[0]);
         }
       }
-    }
+  }
   
+  changeUpgradeArtistImage(event : any) {
+    const fileList: FileList = event.target.files;
+    if(event.target.files.length > 0) {
+      const allow_types = ['image/png', 'image/jpg', 'image/jpeg'];
+      if(allow_types.indexOf(fileList[0].type) == -1) {
+        this.toastr.error('Invalid file format.','Error!');
+        return false;
+      }
+      console.log(fileList);
+      let formData: FormData = new FormData();
+      this.upgrade_artist_img = fileList[0]; 
+      formData.append('image', fileList[0]);
+      if (fileList.length > 0) {
+        const fileExtention = fileList[0].name.split('.');
+        const file: File = fileList[0];
+          const reader = new FileReader();
+          reader.onload = (e: any) => {
+            const data = {};
+              let imageBuffer = e.target.result;
+              this.default_profile_img = imageBuffer;
+          };
+          reader.readAsDataURL(event.target.files[0]);
+        }
+      }
+  }
+  
+
   updateCoverImage(event : any) {
     const fileList: FileList = event.target.files;
     console.log(fileList);
@@ -1835,5 +1907,40 @@ export class MyProfileComponent implements OnInit, OnDestroy {
         }
       }
     });
+  }
+
+  getRegionList() {
+    this.MyProfileService.getAllRegion().subscribe((response) => {
+      this.region_list = response['Region'];
+    });
+  }
+
+  getStateByRegion(id : any) {
+    if(id && id != "") {
+      this.MyProfileService.getStateByRegion({region : id}).subscribe((response) => {
+        this.state_list = response['state'];
+      });
+    }
+  }
+  // upgrade to artist
+  upgradeToArtist(flag, profile_img) {
+    if(flag && profile_img != '') {
+      this.upgrade_artist_validation = !flag;
+      swal({
+        title: 'Upgrade to Artist',
+        html: "<strong>Your user profile and saved data has been removed.</strong><br>Do you want to continue?",
+        type: 'info',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, upgrade it!'
+      }).then((result) => {
+        if (result.value) {
+          console.log('upgrade');
+        }
+      })
+    } else {
+      this.upgrade_artist_validation = !flag;
+    }
   }
 }

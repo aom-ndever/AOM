@@ -1031,6 +1031,7 @@
                         <li class="nav-item"><a class="nav-link {{tab_cnt == 2 ? 'active' : '' }}" data-toggle="tab" (click)="tabChange(2)" href="javascript:;">Settings</a></li>
                         <li class="nav-item"><a class="nav-link {{tab_cnt == 3 ? 'active' : '' }}" data-toggle="tab" (click)="tabChange(3)" href="javascript:;">Bookmarked</a></li>
                         <li class="nav-item"><a class="nav-link {{tab_cnt == 4 ? 'active' : '' }}" data-toggle="tab" (click)="tabChange(4)" href="javascript:;">Playlist</a></li>
+                        <li class="nav-item"><a class="nav-link {{tab_cnt == 5 ? 'active' : '' }}" data-toggle="tab" (click)="tabChange(5)" href="javascript:;">Upgrade to Artist</a></li>
                     </ul>
                 </div>
             </div>
@@ -1410,6 +1411,190 @@
                                         </table>
                                     </div>
                                 </div>
+                            </div>
+                        </div>
+                        <div class="tab-pan fade {{tab_cnt == 5 ? 'show active' : ''}}" id="upgrade_to_artist">
+                            <div class="edit-cover">
+                                <form [formGroup]="upgrade_artist">
+                                    <div class="edit-details">
+                                        <div class="edit-head" >Your Details</div>
+                                        <div class="row">
+                                            <div class="col-md-3 col-sm-12 col-xs-12">
+                                                <div class="edit-profile-picture">
+                                                    <div class="upload-cover">
+                                                        <img [src]="default_profile_img" alt="Edit cover Image">
+                                                        <span class="up_text">Update Photo</span>
+                                                        <input type="file" formControlName="upload" name="upload" id="cover_upload" (change)="changeUpgradeArtistImage($event)">
+                                                        <a data-fancybox data-animation-duration="700" data-src="#delete" *ngIf="userdata.image" href="javascript:;" class="delete" (click)="removeArtistImage()"><i class="fa fa-trash"></i></a>
+                                                    </div>
+                                                    <div class="cust_err_msg" *ngIf="upgrade_artist_validation && upgrade_artist_img == ''">
+                                                        <span  class="text-danger">Profile image is required is required.</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-9 col-sm-12 col-xs-12">
+                                                <div class="form-details">
+
+                                                    <div class="form-group">
+                                                        <label for="fname">First Name</label>
+                                                        <input type="text" class="form-control" formControlName="fname" id="fname5" name="fname" [(ngModel)]="upgrade_artist_data.first_name" placeholder="First Name">
+                                                        <div class="cust_err_msg" *ngIf="upgrade_artist_validation && !upgrade_artist.controls['fname'].valid">
+                                                            <span *ngIf="upgrade_artist.controls['fname'].errors['required']" class="text-danger">First name is required.</span>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group pwd-grp">
+                                                        <label for="lanem">Last Name</label>
+                                                        <input type="text" class="form-control" id="lname2" formControlName="lname" name="lname" [(ngModel)]="upgrade_artist_data.last_name" placeholder="Last Name">
+                                                        <div class="cust_err_msg" *ngIf="upgrade_artist_validation && !upgrade_artist.controls['lname'].valid">
+                                                            <span *ngIf="upgrade_artist.controls['lname'].errors['required']" class="text-danger">Last name is required.</span>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group gender-grp">
+                                                        <label for="geder">Gender</label>
+                                                        <select class="form-control" id="gender" formControlName="gender" name="gender" [(ngModel)]="upgrade_artist_data.gender">
+                                                            <option value="male">Male</option>
+                                                            <option value="female">Female</option>
+                                                        </select>
+                                                        <div class="cust_err_msg" *ngIf="upgrade_artist_validation && !upgrade_artist.controls['gender'].valid">
+                                                            <span *ngIf="upgrade_artist.controls['gender'].errors['required']" class="text-danger">Gender is required.</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <div class="date-of-birth">
+                                                            <label for="date">Birthday Date</label>
+                                                            <div class="form-group">
+                                                                <select class="form-control" id="day" formControlName="day" name="day" [(ngModel)]="upgrade_artist_data.day">
+                                                                    <option value="">Day</option>
+                                                                    <option *ngFor="let d of day" value="{{d}}">{{d}}</option>
+                                                                </select>
+                                                                <div class="cust_err_msg" *ngIf="upgrade_artist_validation && !upgrade_artist.controls['day'].valid">
+                                                                    <span *ngIf="upgrade_artist.controls['day'].errors['required']" class="text-danger">Day is required.</span>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <select class="form-control" id="month" formControlName="month" name="month" [(ngModel)]="upgrade_artist_data.month">
+                                                                    <option value="">Month</option>
+                                                                    <option *ngFor="let m of month" value="{{m}}">{{m}}</option>
+                                                                </select>
+                                                                <div class="cust_err_msg" *ngIf="upgrade_artist_validation && !upgrade_artist.controls['month'].valid">
+                                                                    <span *ngIf="upgrade_artist.controls['month'].errors['required']" class="text-danger">Month is required.</span>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <select class="form-control" id="year" formControlName="year" name="year" [(ngModel)]="upgrade_artist_data.year">
+                                                                    <option value="">Year</option>
+                                                                    <option *ngFor="let y of year" value="{{y}}">{{y}}</option>
+                                                                </select>
+                                                                <div class="cust_err_msg" *ngIf="upgrade_artist_validation && !upgrade_artist.controls['year'].valid">
+                                                                    <span *ngIf="upgrade_artist.controls['year'].errors['required']" class="text-danger">Year is required.</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group music-grp">
+                                                        <label for="musictype">Music Type</label>
+                                                        <select class="form-control" id="musictype" formControlName="music_type" name="music_type" [(ngModel)]="upgrade_artist_data.music_type">
+                                                            <option *ngFor="let type of music_types" value="{{type._id}}">{{type.name}}</option>
+                                                        </select>
+                                                        <div class="cust_err_msg" *ngIf="upgrade_artist_validation && !upgrade_artist.controls['music_type'].valid">
+                                                            <span *ngIf="upgrade_artist.controls['music_type'].errors['required']" class="text-danger">Music is required.</span>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <div class="form-group home-grp">
+                                                        <label for="hometown">Home Town</label>
+                                                        <input class="form-control" placeholder="zipcode" formControlName="zipcode" name="zipcode" [(ngModel)]="upgrade_artist_data.zipcode" />
+                                                        <div class="cust_err_msg" *ngIf="upgrade_artist_validation && !upgrade_artist.controls['zipcode'].valid">
+                                                            <span *ngIf="upgrade_artist.controls['zipcode'].errors['required']" class="text-danger">Zipcode is required.</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label>Region</label>
+                                                        <select class="form-control" id="year" formControlName="region" name="region" [(ngModel)]="upgrade_artist_data.region" (change)="getStateByRegion(upgrade_artist_data.region)">
+                                                            <option value="">Select Region</option>
+                                                            <option *ngFor="let r of region_list" value="{{r._id}}">{{r.name}}</option>
+                                                        </select>
+                                                        <div class="cust_err_msg" *ngIf="upgrade_artist_validation && !upgrade_artist.controls['region'].valid">
+                                                            <span *ngIf="upgrade_artist.controls['region'].errors['required']" class="text-danger">Region is required.</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label>State</label>
+                                                        <select class="form-control" id="region" formControlName="state" name="state" [(ngModel)]="upgrade_artist_data.state" >
+                                                            <option value="">Select Region</option>
+                                                            <option *ngFor="let s of state_list" value="{{s._id}}">{{s.name}}</option>
+                                                        </select>
+                                                        <div class="cust_err_msg" *ngIf="upgrade_artist_validation && !upgrade_artist.controls['state'].valid">
+                                                            <span *ngIf="upgrade_artist.controls['state'].errors['required']" class="text-danger">State is required.</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group home-grp">
+                                                        <label for="hometown">Phone Number</label>
+                                                        <input class="form-control" placeholder="phone number" formControlName="phone" name="phone" [(ngModel)]="upgrade_artist_data.phone_no" />
+                                                        <div class="cust_err_msg" *ngIf="upgrade_artist_validation && !upgrade_artist.controls['phone'].valid">
+                                                            <span *ngIf="upgrade_artist.controls['phone'].errors['required']" class="text-danger">Phone Number is required.</span>
+                                                            <span *ngIf="(upgrade_artist.controls['phone'].errors['maxlength'] || upgrade_artist.controls['phone'].errors['minlength'])  && upgrade_artist.controls['phone'].dirty" class="text-danger">Please enter valid phone number.</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="additional-details">
+                                        <div class="edit-head">Additional Information</div>
+                                        <div class="about-you">
+                                            <label for="fname">Describe Yourself</label>
+                                            <textarea class="form-control" name="description" formControlName="description" [(ngModel)]="upgrade_artist_data.description" placeholder="Add about yourself..."></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="social-details">
+                                        <div class="edit-head">Social Media</div>
+                                        <div class="social-acc">
+                                            <div class="social-block">
+                                                <div class="form-group">
+                                                    <label for="facebook">Facebook</label>
+                                                    <input type="text" class="form-control" id="fb" formControlName="share_url_fb" placeholder="Add Account" name="fb" [(ngModel)]="upgrade_artist_data.share_url['facebook']">
+                                                    <img src="img/fb.png" alt="Facebook">
+                                                </div>
+                                            </div>
+                                            <div class="social-block">
+                                                <div class="form-group">
+                                                    <label for="inst">Instagram</label>
+                                                    <input type="text" class="form-control" id="fname" formControlName="share_url_insta" placeholder="Add Account" name="insta" [(ngModel)]="upgrade_artist_data.share_url['instagram']">
+                                                    <img src="img/inst.png" alt="Facebook">
+                                                </div>
+                                            </div>
+                                            <div class="social-block">
+                                                <div class="form-group">
+                                                    <label for="facebook">Twitter</label>
+                                                    <input type="text" class="form-control" id="fb1" formControlName="share_url_twit" placeholder="Add Account" name="twit" [(ngModel)]="upgrade_artist_data.share_url['twitter']">
+                                                    <img src="img/twitter.png" alt="Facebook">
+                                                </div>
+                                            </div>
+                                            <div class="social-block">
+                                                <div class="form-group">
+                                                    <label for="inst">Youtube</label>
+                                                    <input type="text" class="form-control" id="fname1" formControlName="share_url_youtube" placeholder="Add Account" name="youtube" [(ngModel)]="upgrade_artist_data.share_url['youtube']">
+                                                    <img src="img/youtube.png" alt="Facebook">
+                                                </div>
+                                            </div>
+                                            <div class="social-block">
+                                                <div class="form-group">
+                                                    <label for="inst">Soundcloud</label>
+                                                    <input type="text" class="form-control" id="fname2" formControlName="share_url_sound" placeholder="Add Account" name="sound" [(ngModel)]="upgrade_artist_data.share_url['sound_cloud']">
+                                                    <img src="img/soundcloud.png" alt="Facebook">
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <div class="button_group">
+                                        <button type="submit" (click)="upgradeToArtist(upgrade_artist.valid, upgrade_artist_img)" [disabled]="show_spinner" class="save-btn btn btn-primary">Save <i *ngIf="show_spinner" class="fa fa-spinner fa-spin"></i></button>
+                                    </div>
+                                </form>
                             </div>
                         </div>
                     </div>
