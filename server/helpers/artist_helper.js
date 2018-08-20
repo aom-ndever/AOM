@@ -4,6 +4,7 @@ var Artist = require("./../models/artist");
 var User = require("./../models/user");
 var Track = require("./../models/track");
 var Notification = require("./../models/notification");
+var Payment = require("./../models/payment");
 const saltRounds = 10;
 var artist_helper = {};
 var mongoose = require('mongoose');
@@ -19,10 +20,8 @@ var moment = require('moment');
  * 
  */
 artist_helper.insert_artist = async (object) => {
-    console.log('object--------------->', object);
 
     let art = new Artist(object)
-    console.log('art', art);
 
     try {
         let data = await art.save();
@@ -33,7 +32,18 @@ artist_helper.insert_artist = async (object) => {
     }
 };
 
+artist_helper.insert_card = async (object) => {
 
+    let payment = new Payment(object)
+
+    try {
+        let data = await payment.save();
+
+        return { "status": 1, "message": "Record inserted", "card": data };
+    } catch (err) {
+        return { "status": 0, "message": "Error occured while inserting artist", "error": err };
+    }
+};
 
 artist_helper.insert_notification = async (object) => {
     let art = new Notification(object)

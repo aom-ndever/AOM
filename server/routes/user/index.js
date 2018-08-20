@@ -5,6 +5,8 @@ var logger = config.logger;
 var bcrypt = require('bcrypt');
 var jwt = require('jsonwebtoken');
 var async = require('async');
+var path = require('path');
+
 const saltRounds = 10;
 
 var user_helper = require('../../helpers/user_helper');
@@ -177,34 +179,27 @@ router.post("/upgrade_to_artist", async (req, res) => {
     var resp_data = await user_helper.get_users_by_id(user_id);
 
     var schema = {
-        // "music_type": {
-        //     notEmpty: true,
-        //     errorMessage: "Music Type is required"
-        // },
-        // "email": {
-        //     notEmpty: true,
-        //     errorMessage: "Email is required"
-        // },
-        // "password": {
-        //     notEmpty: true,
-        //     errorMessage: "password is required"
-        // },
-        // "last_name": {
-        //     notEmpty: true,
-        //     errorMessage: "last name is required"
-        // },
-        // "first_name": {
-        //     notEmpty: true,
-        //     errorMessage: "first name is required"
-        // },
-        // "zipcode": {
-        //     notEmpty: true,
-        //     errorMessage: "zipcode is required"
-        // },
-        // "phone_no": {
-        //     notEmpty: true,
-        //     errorMessage: "Phone Number is required"
-        // }
+        "music_type": {
+            notEmpty: true,
+            errorMessage: "Music Type is required"
+        },
+
+        "last_name": {
+            notEmpty: true,
+            errorMessage: "last name is required"
+        },
+        "first_name": {
+            notEmpty: true,
+            errorMessage: "first name is required"
+        },
+        "zipcode": {
+            notEmpty: true,
+            errorMessage: "zipcode is required"
+        },
+        "phone_no": {
+            notEmpty: true,
+            errorMessage: "Phone Number is required"
+        }
 
     };
     user_id = req.userInfo.id;
@@ -284,6 +279,7 @@ router.post("/upgrade_to_artist", async (req, res) => {
                 res.status(config.INTERNAL_SERVER_ERROR).json(data);
             } else {
                 logger.trace("Artist has been inserted");
+                var resp_data = await user_helper.delete_user_by_admin(user_id);
                 res.status(config.BAD_REQUEST).json({ "status": 0, "message": "You have been Upgraded to Artist" })
             }
         } else {
