@@ -65,7 +65,10 @@ ArtistModelSchema.pre('save', function (next) {
             });
         });
     }
-    next();
+    else {
+        next();
+    }
+
 });
 // Compile model from schema
 var Artist = mongoose.model('artist', ArtistModelSchema, 'artist');
