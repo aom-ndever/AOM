@@ -176,74 +176,127 @@ router.post("/upgrade_to_artist", async (req, res) => {
     user_id = req.userInfo.id;
     var resp_data = await user_helper.get_users_by_id(user_id);
 
-    var obj = {
-        "email": resp_data.user.email,
-        "phone_no": req.body.phone_no,
-        "password": resp_data.user.password,
-        "first_name": req.body.first_name,
-        "last_name": req.body.last_name,
-        "zipcode": req.body.zipcode,
-        "music_type": req.body.music_type,
-        "state": req.body.state,
-        "gender": req.body.gender,
-        "dob": req.body.dob
+    var schema = {
+        // "music_type": {
+        //     notEmpty: true,
+        //     errorMessage: "Music Type is required"
+        // },
+        // "email": {
+        //     notEmpty: true,
+        //     errorMessage: "Email is required"
+        // },
+        // "password": {
+        //     notEmpty: true,
+        //     errorMessage: "password is required"
+        // },
+        // "last_name": {
+        //     notEmpty: true,
+        //     errorMessage: "last name is required"
+        // },
+        // "first_name": {
+        //     notEmpty: true,
+        //     errorMessage: "first name is required"
+        // },
+        // "zipcode": {
+        //     notEmpty: true,
+        //     errorMessage: "zipcode is required"
+        // },
+        // "phone_no": {
+        //     notEmpty: true,
+        //     errorMessage: "Phone Number is required"
+        // }
 
     };
-    if (req.body.share_url) {
-        obj.social_media = JSON.parse(req.body.share_url)
-    }
+    user_id = req.userInfo.id;
+    var resp_data = await user_helper.get_users_by_id(user_id);
+    console.log('resp_data', resp_data.user);
 
-    //image upload
-    var filename;
-    if (req.files && req.files["image"]) {
-        var file = req.files["image"];
-        var dir = "./uploads/artist";
-        var mimetype = ["image/png", "image/jpeg", "image/jpg", "image/gif"];
+    req.checkBody(schema);
+    var errors = req.validationErrors();
+    if (!errors) {
+        var reg_obj = {
+            "email": resp_data.user.email,
+            "phone_no": req.body.phone_no,
+            "password": resp_data.user.password,
+            "first_name": req.body.first_name,
+            "last_name": req.body.last_name,
+            "zipcode": req.body.zipcode,
+            "music_type": req.body.music_type,
+            "state": req.body.state,
+            "gender": req.body.gender,
+            "dob": req.body.dob
+        };
+        if (req.body.share_url) {
+            reg_obj.social_media = JSON.parse(req.body.share_url)
+        }
+        let artist = await artist_helper.get_artist_by_email(req.body.email)
+        if (artist.status === 2) {
 
-        if (mimetype.indexOf(file.mimetype) != -1) {
-            if (!fs.existsSync(dir)) {
-                fs.mkdirSync(dir);
-            }
-            extention = path.extname(file.name);
-            filename = "artist_" + new Date().getTime() + extention;
-            file.mv(dir + "/" + filename, function (err) {
-                if (err) {
-                    logger.error("There was an issue in uploading image");
-                    res.send({
-                        status: config.MEDIA_ERROR_STATUS,
-                        err: "There was an issue in uploading image"
+
+            var obj = {}
+            //image upload
+            var filename;
+            if (req.files && req.files["image"]) {
+                var file = req.files["image"];
+                var dir = "./uploads/artist";
+                var mimetype = ["image/png", "image/jpeg", "image/jpg", "image/gif"];
+
+                if (mimetype.indexOf(file.mimetype) != -1) {
+                    if (!fs.existsSync(dir)) {
+                        fs.mkdirSync(dir);
+                    }
+                    extention = path.extname(file.name);
+                    filename = "artist_" + new Date().getTime() + extention;
+                    file.mv(dir + "/" + filename, function (err) {
+                        if (err) {
+                            logger.error("There was an issue in uploading image");
+                            res.send({
+                                status: config.MEDIA_ERROR_STATUS,
+                                err: "There was an issue in uploading image"
+                            });
+                        } else {
+                            logger.trace("image has been uploaded. Image name = ", filename);
+                            //return res.send(200, "null");
+                        }
                     });
                 } else {
-                    logger.trace("image has been uploaded. Image name = ", filename);
-                    //return res.send(200, "null");
+                    logger.error("Image format is invalid");
+                    res.send({
+                        status: config.VALIDATION_FAILURE_STATUS,
+                        err: "Image format is invalid"
+                    });
                 }
-            });
+            } else {
+                logger.info("Image not available to upload. Executing next instruction");
+                //res.send(config.MEDIA_ERROR_STATUS, "No image submitted");
+            }
+            if (filename) {
+                reg_obj.image = filename;
+            }
+
+            //End image upload
+
+            var data = await artist_helper.insert_artist(reg_obj);
+            var datas = await artist_helper.insert_notification(obj);
+
+            if (data.status == 0) {
+                logger.debug("Error = ", data.error);
+                res.status(config.INTERNAL_SERVER_ERROR).json(data);
+            } else {
+                logger.trace("Artist has been inserted");
+                res.status(config.BAD_REQUEST).json({ "status": 0, "message": "You have been Upgraded to Artist" })
+            }
         } else {
-            logger.error("Image format is invalid");
-            res.send({
-                status: config.VALIDATION_FAILURE_STATUS,
-                err: "Image format is invalid"
-            });
+            res.status(config.BAD_REQUEST).json({ "status": 0, "message": "Artist's email already exist" });
         }
-    } else {
-        logger.info("Image not available to upload. Executing next instruction");
-        //res.send(config.MEDIA_ERROR_STATUS, "No image submitted");
-    }
-    if (filename) {
-        obj.image = filename;
-    }
 
-    var resp_data = await artist_helper.insert_artist(obj);
-    var resp_data = await user_helper.delete_user_by_admin(user_id);
 
-    if (resp_data.status == 0) {
-        logger.error("Error occured while fetching User = ", resp_data);
-        res.status(config.INTERNAL_SERVER_ERROR).json(resp_data);
     } else {
-        logger.trace("User got successfully = ", resp_data);
-        res.status(config.OK_STATUS).json({ message: "User Upgraded To Artist" });
+        logger.error("Validation Error = ", errors);
+        res.status(config.BAD_REQUEST).json({ message: errors });
     }
 });
+
 
 /**
  * @api {delete} /user/image/:user_id Delete image  
