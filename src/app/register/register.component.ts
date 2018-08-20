@@ -30,10 +30,16 @@ export class RegisterComponent implements OnInit {
       'twitter' : '',
       'youtube' : '',
       'sound_cloud' : ''
-    }
+    },
+    day : '',
+    month : '',
+    year : ''
   };
   public listener_data : any = {
-    'music_type' : []
+    'music_type' : [],
+    day : '',
+    month : '',
+    year : ''
   };
   public user_data : any = {};
   public location : any = '';
@@ -321,7 +327,10 @@ export class RegisterComponent implements OnInit {
           'twitter' : '',
           'youtube' : '',
           'sound_cloud' : ''
-        }
+        },
+        day : '',
+        month : '',
+        year : ''
       };
       this.toastr.success('Registration done successfully and confirmation email sent to your account please verify to to do login.', 'Success!');
       this.show_spinner = false;
@@ -359,7 +368,10 @@ export class RegisterComponent implements OnInit {
         this.listner_cnt = 0;
         this.location = '';
         this.listener_data = {
-          'music_type' : []
+          'music_type' : [],
+          day : '',
+          month : '',
+          year : ''
         };
         this.toastr.success('Registration done successfully and confirmation email sent to your account please verify to to do login.', 'Success!');
         this.show_spinner = false;

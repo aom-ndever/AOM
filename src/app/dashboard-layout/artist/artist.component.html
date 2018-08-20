@@ -170,7 +170,10 @@
       </div>
         <div class="highlights-wrap mCustomScrollbar " data-mcs-theme="dark-3">
           <div class="row">
-            <div class="alert alert-info col-sm-12" *ngIf="artistv1['rising_stars'] && artistv1['rising_stars']['length'] <= 0">No data available.</div>
+            <div *ngIf="show_loader" class="text-center col-12">
+              <i class="fa fa-spinner fa-spin fa-3x" aria-hidden="true"></i>
+            </div>
+            <div class="alert alert-info col-sm-12" *ngIf="!show_loader && artistv1['rising_stars'] && artistv1['rising_stars']['length'] <= 0">No data available.</div>
             <div class="col-lg-3 col-md-4 col-sm-4 col-xs-6" *ngFor="let artist_rising of artistv1.rising_stars; let i = index;">
                 <div class="final-wrap ">
                   <div class="img-wrap ">
@@ -202,7 +205,10 @@
         </div>
         <div class="highlights-wrap mCustomScrollbar " data-mcs-theme="dark-3">
           <div class="row">
-              <div class="alert alert-info col-sm-12" *ngIf="artistv1['chart_toppers'] && artistv1['chart_toppers']['length'] <= 0">No data available.</div>
+              <div *ngIf="show_loader" class="text-center col-12">
+                  <i class="fa fa-spinner fa-spin fa-3x" aria-hidden="true"></i>
+              </div>
+              <div class="alert alert-info col-sm-12" *ngIf="!show_loader && artistv1['chart_toppers'] && artistv1['chart_toppers']['length'] <= 0">No data available.</div>
               <div class="col-lg-3 col-md-4 col-sm-4 col-xs-6" *ngFor="let artist_chart of artistv1.chart_toppers; let i = index;">
                   <div class="final-wrap ">
                     <div class="img-wrap ">

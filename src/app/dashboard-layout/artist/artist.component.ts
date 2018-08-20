@@ -14,6 +14,7 @@ export class ArtistComponent implements OnInit {
   };
   show_filter : any = false;
   toggSearch : boolean = false;
+  show_loader : boolean = false;
   user : any = {};
   search_str : any = '';
   adv_filter : any = {};
@@ -57,9 +58,11 @@ export class ArtistComponent implements OnInit {
   }
   // Get all artistv1 data
   getAllArtistV1Data(data) {
+    this.show_loader = true;
     this.ArtistService.getAllArtistv1(data).subscribe(response => {
       this.artistv1 = response;
       this.show_filter = false;
+      this.show_loader = false;
       //this.getAllFollower();
     });
   }
@@ -170,7 +173,7 @@ export class ArtistComponent implements OnInit {
         'field' : 'state', value :  this.region_filter
       });
     }
-    
+    this.show_filter = false;
     this.getAllArtistV1Data(data);
   }
 

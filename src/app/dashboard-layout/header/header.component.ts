@@ -64,9 +64,10 @@ export class HeaderComponent implements OnInit, OnDestroy  {
         }, 1000);
       }
       if(response && response['loggedin_user']) {
-        setTimeout(()=>{
           this.user = response['loggedin_user'];
-        }, 1000);
+      }
+      if(response && response['upgrade_artist']) {
+        this.user = '';
       }
     });
     this.login_form = this.fb.group({

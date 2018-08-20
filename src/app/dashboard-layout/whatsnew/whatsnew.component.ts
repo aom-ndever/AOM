@@ -20,6 +20,8 @@ export class WhatsNewComponent implements OnInit, OnDestroy {
   };
   state_list : any = [];
   region_filter : any = [];
+  show_loader : boolean = false;
+  feature_loader : boolean = false;
   artist_img_url : any = environment.API_URL+environment.ARTIST_IMG;
   track_url : any = environment.API_URL+environment.ARTIST_TRACK;
   search_str : any = '';
@@ -27,6 +29,7 @@ export class WhatsNewComponent implements OnInit, OnDestroy {
   audio_ins : any = [];
   music_type_list : any = [];
   subscription: Subscription;
+  featured_artist : any = [];
   constructor(private WhatsNewService : WhatsNewService,
      private toastr: ToastrService,
      private MessageService : MessageService
@@ -85,6 +88,7 @@ export class WhatsNewComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.getAllData();
     this.getAllMusicType();
+    this.getAllFeaturedArtist();
   }
 
   ngOnDestroy() {
@@ -100,14 +104,25 @@ export class WhatsNewComponent implements OnInit, OnDestroy {
   getAllData() {
     let data = {};
     this.audio_ins = [];
+    this.show_loader = true;
     this.WhatsNewService.getWhatsnewData(data).subscribe(response => {
       this.whatsnewdata = response;
+      this.show_loader = false;
       if(this.whatsnewdata['track']) {
         this.whatsnewdata['track'].forEach((ele) => {
           this.audio_ins.push(false);
         });
       }
       this.getAllFollower();
+    });
+  }
+  // Get all featured artist
+  getAllFeaturedArtist() {
+    this.feature_loader = true;
+    this.WhatsNewService.getAllFeaturedArtist().subscribe((response) => {
+      this.featured_artist = response['artist'];
+      console.log(this.featured_artist);
+      this.feature_loader = false;
     });
   }
   // Play audio
@@ -174,10 +189,12 @@ export class WhatsNewComponent implements OnInit, OnDestroy {
         'field' : 'state', value :  this.region_filter
       });
     }
+    this.show_filter = false;
+    this.show_loader = true;
     this.WhatsNewService.getWhatsnewData(data).subscribe(response => {
       this.whatsnewdata = response;
       this.getAllFollower();
-      this.show_filter = false;
+      this.show_loader = false;
       if(response['artist'].length <= 0)
         this.toastr.success('No result found.', 'Success!');
     }, error => {
