@@ -280,7 +280,7 @@ router.post("/upgrade_to_artist", async (req, res) => {
             } else {
                 logger.trace("Artist has been inserted");
                 var resp_data = await user_helper.delete_user_by_admin(user_id);
-                res.status(config.BAD_REQUEST).json({ "status": 0, "message": "You have been Upgraded to Artist" })
+                res.status(config.OK_STATUS).json({ "status": 0, "message": "You have been Upgraded to Artist" })
             }
         } else {
             res.status(config.BAD_REQUEST).json({ "status": 0, "message": "Artist's email already exist" });
