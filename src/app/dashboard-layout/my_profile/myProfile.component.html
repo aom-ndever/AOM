@@ -1140,13 +1140,14 @@
                                                             <span *ngIf="(listener_profile.controls['phone'].errors['maxlength'] || listener_profile.controls['phone'].errors['minlength'])  && listener_profile.controls['phone'].dirty" class="text-danger">Please enter valid phone number.</span>
                                                         </div>
                                                     </div>
+                                                                                        <div class="button_group edit_save_btn">
+                                        <button type="submit" (click)="update(listener_profile.valid)" [disabled]="show_spinner" class="save-btn btn btn-primary">Save <i *ngIf="show_spinner" class="fa fa-spinner fa-spin"></i></button>
+                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="button_group">
-                                        <button type="submit" (click)="update(listener_profile.valid)" [disabled]="show_spinner" class="save-btn btn btn-primary">Save <i *ngIf="show_spinner" class="fa fa-spinner fa-spin"></i></button>
-                                    </div>
+
                                 </form>
                             </div>
                         </div>
@@ -1319,21 +1320,23 @@
                                                             <a [style.display]="audio_ins[i] ? 'block' : 'none'" (click)="stopAudio(i, bookmark_track_list)" class="pause_img"><img src="img/pause_icon.png"/></a>
                                                         </div>
                                                     </td>
-                                                    <td class="track-pic">
+                                                    <td class="track-det" colspan="2">
+                                                     <div class="track-pic">
                                                         <a href="javascript:;">
                                                             <img src="{{val['track_id'] && val['track_id'].image ? track_url+val['track_id'].image : 'img/track-img.png'}}" style="height:50px;width:50px;" alt="Track Image">
                                                         </a>
-                                                    </td>
-                                                    <td class="track-det" colspan="2">
+                                                    </div>
+                                                    <div class="track_title">
                                                         <p class="track-name">{{val['track_id'] &&  val['track_id'].name ? val['track_id'].name : '' }}</p>
                                                         <p class="track-singer">{{(val['track_id'] && val['track_id']['artist_id'] && val['track_id']['artist_id'].first_name )? val['track_id'].artist_id.first_name : '' + ' '+ val && val['track_id'] && val['track_id']['artist_id'] && val['track_id']['artist_id']['last_name'] ? val['track_id']['artist_id']['last_name'] : ''}}</p>
                                                         <p class="track-year">{{val['track_id'] && val['track_id'].created_at ? (val['track_id'].created_at | date : 'yyyy' ): ''}}</p>
                                                         <p class="track-date">{{val['track_id'] && val['track_id'].created_at ? (val['track_id'].created_at  | date : 'MMMM dd,yyyy') : ''}}</p>
+                                                    </div>
                                                     </td>
                                                     <td class="td track-vote music_vote">
                                                         <img src="img/start.png" alt="start">
                                                         <span>{{val['track_id'] && val['track_id'].no_of_votes ? val['track_id'].no_of_votes : '' }}
-                                                            <br>
+                                                           
                                                             <span>Votes</span>
                                                         </span>
                                                     </td>

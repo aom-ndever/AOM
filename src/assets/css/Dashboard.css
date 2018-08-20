@@ -465,7 +465,9 @@ label {
 }
 .artists_table  .dataTables_wrapper.no-footer .dataTables_scrollBody{
   border-bottom: none !important;
+      overflow-x: hidden !important;
 }
+.artists_table  table.dataTable{    margin-bottom: 0 !important;}
 .artists_table  .dataTables_scrollHead{
   background-color: rgba(156, 39, 176, 0.1);
 }
@@ -864,8 +866,8 @@ ul.gray_font{
 }
 .my_track_table tbody tr td.serial-num{width: 2%;}
 .my_track_table tbody tr td.track-det{    width: 25%;position: relative;}
-.my_track_table tbody tr td.track-det .track-pic{    position: absolute;
-  left: 0;}
+.my_track_table tbody tr td.track-det .track-pic{    position: absolute;left: 0;}
+  .mymusic-wrap .my_track_table tbody tr td.track-det .track-pic{    width: 50px;height: 50px;}
 .my_track_table tbody tr td.track-det .track_title{    padding-left: 45px;}
 .my_track_table tbody tr td .action{width: 34%;}
 .my_track_table tbody tr td.play-option {    width: 10%;}
@@ -1000,8 +1002,9 @@ h3.user_name {
       background-image: url("/img/roles.png");
 }
 .sidebar-nav li a:hover ,.sidebar-nav li a:focus , .sidebar-nav li.active a {
-    color: #9c27b0;
-      border-left: 4px solid #9c27b0;
+    color: #000000;
+    border-left: 4px solid #9c27b0;
+    font-weight: 600;
 }
 .sidebar-nav li.active.home a i:after {
       background-image: url("/img/home_color.png");
@@ -1334,6 +1337,10 @@ label input[type="radio"], input[type="radio"]{
 .admin_name_th{
   width:170px !important;
 }
+#profile .edit-details label{
+  vertical-align: top;
+}
+
 
 @media(max-width:1024px){
   .sidebar-nav li a{   
@@ -1353,6 +1360,16 @@ label input[type="radio"], input[type="radio"]{
   .artist_content .filter-subhead{
     margin-top: 10px;
   }
+      .artists_table .dataTables_wrapper.no-footer .dataTables_scrollBody {
+        overflow-x: visible !important;
+    }
+    .artists_table .dataTables_wrapper.no-footer .dataTables_scrollBody, .artists_table .dataTables_scrollHead{
+          width: 1200px!important;
+    }
+    .dataTables_scroll{
+          overflow: auto;
+    width: 100%;
+    }
 }
 @media(max-width:767px){
   #menu-toggle{

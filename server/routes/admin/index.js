@@ -276,6 +276,91 @@ router.post("/add_contest", async (req, res) => {
 });
 
 
+router.post("/upgrade_to_super_admin", async (req, res) => {
+  var schema = {
+  };
+
+  req.checkBody(schema);
+  var errors = req.validationErrors();
+  admin_id = req.userInfo.id
+
+  if (!errors) {
+
+    response = await admin_helper.get_admin_by_id(admin_id)
+
+    var obj = {
+      "admin_id": response.admin._id,
+      "first_name": response.admin.first_name,
+      "last_name": response.admin.last_name,
+      "created_at": response.admin.created_at,
+    }
+    if (response.admin.account_type == "admin") {
+      var resp_data = await admin_helper.get_admin_request_by_id(admin_id);
+
+      if (resp_data.status == 2) {
+        var resp_data = await admin_helper.insert_admin_request(obj);
+
+        if (resp_data.status == 0) {
+          logger.error("Error occured while inserting = ", resp_data);
+          res.status(config.INTERNAL_SERVER_ERROR).json(resp_data);
+        }
+      }
+      else if (resp_data.status == 1) {
+        res.status(config.BAD_REQUEST).json({ message: "Already requested once" });
+      }
+    }
+
+    else {
+      res.status(config.BAD_REQUEST).json({ message: "You are not eligible to become Admin" });
+
+    }
+    logger.trace(" got successfully = ", resp_data);
+    res.status(config.OK_STATUS).json(resp_data);
+  }
+  else {
+    logger.error("Validation Error = ", errors);
+    res.status(config.BAD_REQUEST).json({ message: errors });
+  }
+});
+
+
+router.put("/accept/upgrade_artist/:admin_id", async (req, res) => {
+  //contest_resp = await contest_request_helper.get__by_id(req.params.admin_id)
+  admin_id = req.userInfo.id
+  var action = "accepted"
+  var account_type = "super_admin"
+  contest_resp = await admin_helper.get_admin_by_id(admin_id)
+  if (contest_resp.admin.account_type == 'super_admin') {
+
+    var resp_data = await admin_helper.update_admin_request_by_adminid(req.params.admin_id, action);
+    var resp_data = await admin_helper.update_admin_request_by_id(req.params.admin_id, account_type);
+    logger.trace("Request Accepted");
+    res.status(config.OK_STATUS).json({ "message": "Request Accepted" });
+  }
+  else {
+    logger.trace("You don't have permission to reject the request");
+    res.status(config.OK_STATUS).json({ "message": "You don't have permission to accept the request" });
+  }
+});
+
+router.put("/reject/upgrade_artist/:admin_id", async (req, res) => {
+  //contest_resp = await contest_request_helper.get__by_id(req.params.admin_id)
+  admin_id = req.userInfo.id
+  var action = "rejected"
+  var account_type = "super_admin"
+  contest_resp = await admin_helper.get_admin_by_id(admin_id)
+  if (contest_resp.admin.account_type == 'super_admin') {
+
+    var resp_data = await admin_helper.update_admin_request_by_adminid(req.params.admin_id, action);
+    var resp_data = await admin_helper.update_admin_request_by_id(req.params.admin_id, account_type);
+    logger.trace("Request Rejected");
+    res.status(config.OK_STATUS).json({ "message": "Request AcceptRejecteded" });
+  }
+  else {
+    logger.trace("You don't have permission to reject the request");
+    res.status(config.OK_STATUS).json({ "message": "You don't have permission to reject the request" });
+  }
+});
 
 
 
@@ -360,11 +445,34 @@ router.get('/get_contest', async (req, res) => {
   }
 
 });
+router.post('/get_admin_flagged', async (req, res) => {
+
+  var contest = await admin_helper.get_all_admin_suspended(req.body.start, req.body.length);
+  if (contest.status === 1) {
+    logger.trace("got details successfully");
+    res.status(config.OK_STATUS).json({ "status": 1, "contest": contest });
+  } else {
+    res.status(config.INTERNAL_SERVER_ERROR).json(contest);
+  }
+
+});
+router.post('/get_admin_request', async (req, res) => {
+
+  var contest = await admin_helper.get_all_admin_request(req.body.start, req.body.length);
+  if (contest.status === 1) {
+    logger.trace("got details successfully");
+    res.status(config.OK_STATUS).json({ "status": 1, "contest": contest });
+  } else {
+    res.status(config.INTERNAL_SERVER_ERROR).json(contest);
+  }
+
+});
 
 
 router.post('/shortlisted', async (req, res) => {
   var participant = await participate_helper.get_all_participants(req.body.contest_id);
 
+  console.log('participant', participant);
 
   var winner_obj = participant.participate.map((p) => {
     return obj = {
@@ -372,9 +480,11 @@ router.post('/shortlisted', async (req, res) => {
       "artist_id": p.artist_id,
       "track_id": p.track_id._id,
       "contest_id": p.contest_id,
+      "no_of_votes": p.track_id.no_of_votes,
       "round": 0
     }
   });
+  console.log('winner_obj', winner_obj);
 
   var shortlist = await winner_helper.get_all_shortlisted(0);
 
