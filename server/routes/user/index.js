@@ -175,8 +175,6 @@ router.get("/", async (req, res) => {
 });
 
 router.post("/upgrade_to_artist", async (req, res) => {
-    user_id = req.userInfo.id;
-    var resp_data = await user_helper.get_users_by_id(user_id);
 
     var schema = {
         "music_type": {
@@ -200,15 +198,17 @@ router.post("/upgrade_to_artist", async (req, res) => {
             notEmpty: true,
             errorMessage: "Phone Number is required"
         }
-
     };
-    user_id = req.userInfo.id;
-    var resp_data = await user_helper.get_users_by_id(user_id);
-    console.log('resp_data', resp_data.user);
+
 
     req.checkBody(schema);
     var errors = req.validationErrors();
     if (!errors) {
+
+        var user_id = req.userInfo.id;
+        var resp_data = await user_helper.get_users_by_id(user_id);
+
+
         var reg_obj = {
             "email": resp_data.user.email,
             "phone_no": req.body.phone_no,
@@ -220,8 +220,10 @@ router.post("/upgrade_to_artist", async (req, res) => {
             "state": req.body.state,
             "gender": req.body.gender,
             "dob": req.body.dob,
-            "email_verified": resp_data.email,
+            "email_verified": resp_data.user.email_verified,
+            "flag": false
         };
+
         if (req.body.share_url) {
             reg_obj.social_media = JSON.parse(req.body.share_url)
         }
