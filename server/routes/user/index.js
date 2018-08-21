@@ -221,7 +221,6 @@ router.post("/upgrade_to_artist", async (req, res) => {
             "gender": req.body.gender,
             "dob": req.body.dob,
             "email_verified": resp_data.user.email_verified,
-            "flag": false
         };
 
         if (req.body.share_url) {
@@ -274,7 +273,7 @@ router.post("/upgrade_to_artist", async (req, res) => {
 
             //End image upload
 
-            var data = await artist_helper.insert_artist(reg_obj);
+            var data = await artist_helper.insert_user_to_artists(reg_obj);
             var datas = await artist_helper.insert_notification(obj);
 
             if (data.status == 0) {
