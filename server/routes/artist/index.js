@@ -132,7 +132,7 @@ router.put('/', async (req, res) => {
         obj.social_media = JSON.parse(req.body.share_url)
     }
     if (req.body.phone_no && req.body.phone_no != null) {
-        obj.phone_no = (req.body.phone_no).trim();
+        obj.phone_no = req.body.phone_no;
     }
     if (req.body.email && req.body.email != null) {
         obj.email = (req.body.email).trim();
