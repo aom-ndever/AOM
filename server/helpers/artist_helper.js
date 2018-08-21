@@ -20,13 +20,9 @@ var moment = require('moment');
  * 
  */
 artist_helper.insert_artist = async (object) => {
-
     let art = new Artist(object)
-
     try {
-
         let data = await art.save();
-
         return { "status": 1, "message": "Record inserted", "artist": data };
     } catch (err) {
         return { "status": 0, "message": "Error occured while inserting artist", "error": err };
