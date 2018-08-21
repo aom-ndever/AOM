@@ -366,7 +366,7 @@ router.put('/change/email', async (req, res) => {
         }
     }
     else {
-        res.status(config.BAD_REQUEST).json({ message: "Enter Valid" });
+        res.status(config.BAD_REQUEST).json({ message: "Enter Valid Email" });
     }
 });
 
