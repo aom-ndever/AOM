@@ -127,34 +127,34 @@ router.put('/', async (req, res) => {
     var obj = {
 
     };
-    if (req.body.share_url) {
+    if (req.body.share_url && req.body.share_url != null) {
         obj.social_media = JSON.parse(req.body.share_url)
     }
-    if (req.body.phone_no) {
+    if (req.body.phone_no && req.body.phone_no != null) {
         obj.phone_no = req.body.phone_no
     }
-    if (req.body.email) {
+    if (req.body.email && req.body.email != null) {
         obj.email = req.body.email;
     }
-    if (req.body.gender) {
+    if (req.body.gender && req.body.gender != null) {
         obj.gender = req.body.gender;
     }
-    if (req.body.dob) {
+    if (req.body.dob && req.body.dob != null) {
         obj.dob = req.body.dob;
     }
-    if (req.body.first_name) {
+    if (req.body.first_name && req.body.first_name != null) {
         obj.first_name = req.body.first_name;
     }
-    if (req.body.last_name) {
+    if (req.body.last_name && req.body.last_name != null) {
         obj.last_name = req.body.last_name;
     }
-    if (req.body.zipcode) {
+    if (req.body.zipcode && req.body.zipcode != null) {
         obj.zipcode = req.body.zipcode;
     }
     if (req.body.music_type) {
         obj.music_type = req.body.music_type;
     }
-    if (req.body.description) {
+    if (req.body.description && req.body.description != null) {
         obj.description = req.body.description
     }
     if (req.body.region) {
