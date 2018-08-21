@@ -174,7 +174,38 @@ router.put('/', async (req, res) => {
 
 });
 
+router.put('/card/:card_id', async (req, res) => {
+    user_id = req.userInfo.id;
+    var obj = {
 
+    };
+
+    if (req.body.first_name && req.body.first_name != null) {
+        obj.first_name = req.body.first_name;
+    }
+    if (req.body.last_name && req.body.last_name != null) {
+        obj.last_name = req.body.last_name;
+    }
+    if (req.body.card_number && req.body.card_number != null) {
+        obj.card_number = req.body.card_number;
+    }
+    if (req.body.security_code && req.body.security_code != null) {
+        obj.security_code = req.body.security_code;
+    }
+    if (req.body.expires_on && req.body.expires_on != null) {
+        obj.expires_on = req.body.expires_on;
+    }
+
+    var user_resp = await artist_helper.update_card(req.userInfo.id, req.params.card_id, obj);
+    console.log('user_resp', user_resp);
+
+    if (user_resp.status === 0) {
+        res.status(config.INTERNAL_SERVER_ERROR).json(user_resp);
+    } else {
+        res.status(config.OK_STATUS).json(user_resp);
+    }
+
+});
 router.post('/add_payment_method', async (req, res) => {
     artist_id = req.userInfo.id;
     var obj = {
@@ -242,6 +273,18 @@ router.put('/notification_settings', function (req, res) {
         res.status(config.OK_STATUS).json({ "message": "Notification has been updated successfully" });
     }
 
+});
+
+router.delete('/card/:card_id', async (req, res) => {
+    artist_id = req.userInfo.id;
+    var del_resp = await artist_helper.delete_card(req.params.card_id, artist_id);
+    if (del_resp.status === 0) {
+        res.status(config.INTERNAL_SERVER_ERROR).json({ "status": 0, "message": "Error occured while deleting artist image", "error": del_resp.error });
+    } else if (del_resp.status === 2) {
+        res.status(config.BAD_REQUEST).json({ "status": 0, "message": "Can't delete artist card" });
+    } else {
+        res.status(config.OK_STATUS).json({ "status": 1, "message": "artist card has been deleted" });
+    }
 });
 
 

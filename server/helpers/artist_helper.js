@@ -41,9 +41,10 @@ artist_helper.insert_user_to_artists = async (object) => {
 
 
 
-artist_helper.delete_card = async (card_id) => {
+artist_helper.delete_card = async (card_id, artist_id) => {
     try {
-        var artist = await Artist.findOneAndRemove({ "_id": (artist_id) })
+
+        var artist = await Card.findOneAndRemove({ "_id": new ObjectId(card_id), "artist_id": new ObjectId(artist_id) })
         if (artist) {
             return { "status": 1, "message": "artist details found", "artist": artist };
         } else {
@@ -53,10 +54,26 @@ artist_helper.delete_card = async (card_id) => {
         return { "status": 0, "message": "Error occured while finding artist", "error": err }
     }
 };
+
+
+
+artist_helper.update_card = async (artist_id, card_id, obj) => {
+    try {
+
+        let card = await Card.findOneAndUpdate({ "_id": new ObjectId(card_id), "artist_id": new ObjectId(artist_id) }, obj, { new: true });
+        if (!card) {
+            return { "status": 2, "message": "Card has not updated" };
+        } else {
+
+            return { "status": 1, "message": "card has been updated", "card": card };
+        }
+    } catch (err) {
+        return { "status": 0, "message": "Error occured while updating card", "error": err }
+    }
+};
+
 artist_helper.insert_card = async (object) => {
-
     let payment = new Card(object)
-
     try {
         let data = await payment.save();
 
