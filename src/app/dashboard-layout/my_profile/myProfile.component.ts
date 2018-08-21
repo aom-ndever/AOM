@@ -448,9 +448,11 @@ export class MyProfileComponent implements OnInit, OnDestroy {
   }
 
   noWhitespaceValidator(control: FormControl) {
-      let isWhitespace = (control.value || '').trim().length === 0;
-      let isValid = !isWhitespace;
-      return isValid ? null : { 'whitespace': true }
+      if(typeof (control.value || '') === 'string' || (control.value || '') instanceof String) {
+        let isWhitespace = (control.value || '').trim().length === 0;
+        let isValid = !isWhitespace;
+        return isValid ? null : { 'whitespace': true }
+      }
   }
   calculateDateFromDays(days : any) {
     var date = new Date();

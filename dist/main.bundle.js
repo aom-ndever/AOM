@@ -6527,9 +6527,11 @@ var MyProfileComponent = /** @class */ (function () {
         this.subscription.unsubscribe();
     };
     MyProfileComponent.prototype.noWhitespaceValidator = function (control) {
-        var isWhitespace = (control.value || '').trim().length === 0;
-        var isValid = !isWhitespace;
-        return isValid ? null : { 'whitespace': true };
+        if (typeof (control.value || '') === 'string' || (control.value || '') instanceof String) {
+            var isWhitespace = (control.value || '').trim().length === 0;
+            var isValid = !isWhitespace;
+            return isValid ? null : { 'whitespace': true };
+        }
     };
     MyProfileComponent.prototype.calculateDateFromDays = function (days) {
         var date = new Date();
