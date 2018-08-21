@@ -210,4 +210,16 @@ export class MyProfileService {
   upgradeToArtist(data : any) {
     return this.http.post(`${this.api_host}/user/upgrade_to_artist`, data, {headers:this.headers});
   }
+  // Get All Card by artist
+  getAllCard() {
+    return this.http.get(`${this.api_host}/artist/card`, {headers:this.headers});
+  }
+  // Add new payment method
+  addNewPaymentMethod(data) {
+    return this.http.post(`${this.api_host}/artist/add_payment_method`, data, {headers : this.headers});
+  }
+  // Remove existing card
+  removeCard(id) {
+    return this.http.delete(`${this.api_host}/artist/card/${id}`, {headers:this.headers});
+  }
 }
