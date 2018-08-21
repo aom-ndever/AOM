@@ -127,45 +127,43 @@ router.put('/', async (req, res) => {
     var obj = {
 
     };
+
     if (req.body.share_url && req.body.share_url != null) {
         obj.social_media = JSON.parse(req.body.share_url)
     }
     if (req.body.phone_no && req.body.phone_no != null) {
-        obj.phone_no = req.body.phone_no
+        obj.phone_no = req.body.phone_no;
     }
     if (req.body.email && req.body.email != null) {
-        obj.email = req.body.email;
+        obj.email = (req.body.email).trim();
     }
     if (req.body.gender && req.body.gender != null) {
-        obj.gender = req.body.gender;
+        obj.gender = (req.body.gender).trim();
     }
     if (req.body.dob && req.body.dob != null) {
-        obj.dob = req.body.dob;
+        obj.dob = (req.body.dob).trim();
     }
     if (req.body.first_name && req.body.first_name != null) {
-        obj.first_name = req.body.first_name;
+        obj.first_name = (req.body.first_name).trim();
     }
     if (req.body.last_name && req.body.last_name != null) {
-        obj.last_name = req.body.last_name;
+        obj.last_name = (req.body.last_name).trim();
     }
     if (req.body.zipcode && req.body.zipcode != null) {
-        obj.zipcode = req.body.zipcode;
+        obj.zipcode = (req.body.zipcode);
     }
     if (req.body.music_type) {
         obj.music_type = req.body.music_type;
     }
     if (req.body.description && req.body.description != null) {
-        obj.description = req.body.description
+        obj.description = req.body.description;
     }
     if (req.body.region) {
-        obj.region = req.body.region
+        obj.region = req.body.region;
     }
     if (req.body.state) {
-        obj.state = req.body.state
+        obj.state = req.body.state;
     }
-
-
-
     var user_resp = await artist_helper.update_artist_by_id(req.userInfo.id, obj);
 
     if (user_resp.status === 0) {
@@ -176,7 +174,38 @@ router.put('/', async (req, res) => {
 
 });
 
+router.put('/card/:card_id', async (req, res) => {
+    user_id = req.userInfo.id;
+    var obj = {
 
+    };
+
+    if (req.body.first_name && req.body.first_name != null) {
+        obj.first_name = req.body.first_name;
+    }
+    if (req.body.last_name && req.body.last_name != null) {
+        obj.last_name = req.body.last_name;
+    }
+    if (req.body.card_number && req.body.card_number != null) {
+        obj.card_number = req.body.card_number;
+    }
+    if (req.body.security_code && req.body.security_code != null) {
+        obj.security_code = req.body.security_code;
+    }
+    if (req.body.expires_on && req.body.expires_on != null) {
+        obj.expires_on = req.body.expires_on;
+    }
+
+    var user_resp = await artist_helper.update_card(req.userInfo.id, req.params.card_id, obj);
+    console.log('user_resp', user_resp);
+
+    if (user_resp.status === 0) {
+        res.status(config.INTERNAL_SERVER_ERROR).json(user_resp);
+    } else {
+        res.status(config.OK_STATUS).json(user_resp);
+    }
+
+});
 router.post('/add_payment_method', async (req, res) => {
     artist_id = req.userInfo.id;
     var obj = {
@@ -244,6 +273,18 @@ router.put('/notification_settings', function (req, res) {
         res.status(config.OK_STATUS).json({ "message": "Notification has been updated successfully" });
     }
 
+});
+
+router.delete('/card/:card_id', async (req, res) => {
+    artist_id = req.userInfo.id;
+    var del_resp = await artist_helper.delete_card(req.params.card_id, artist_id);
+    if (del_resp.status === 0) {
+        res.status(config.INTERNAL_SERVER_ERROR).json({ "status": 0, "message": "Error occured while deleting artist image", "error": del_resp.error });
+    } else if (del_resp.status === 2) {
+        res.status(config.BAD_REQUEST).json({ "status": 0, "message": "Can't delete artist card" });
+    } else {
+        res.status(config.OK_STATUS).json({ "status": 1, "message": "artist card has been deleted" });
+    }
 });
 
 
@@ -479,26 +520,41 @@ router.get('/track_likes', async (req, res) => {
  * @apiSuccess (Success 200) {JSON} Update artist email
  * @apiError (Error 4xx) {String} message Validation or error message.
  */
+
 router.put('/settings/email', async (req, res) => {
     artist_id = req.userInfo.id;
+    var schema = {
+        'new_email': {
+            notEmpty: true,
+            errorMessage: "Email is required.",
+            isEmail: { errorMessage: "Please enter valid email address" }
+        }
+    };
+    req.checkBody(schema);
+    var errors = req.validationErrors();
+    if (!errors) {
 
-    var resp = await artist_helper.get_artist_by_id(artist_id);
-    if (resp.status === 1) {
-        if (resp.artist.email == req.body.email) {
-            if (req.body.new_email) {
-                var resp = await artist_helper.update_artist_email(artist_id, req.body.new_email);
-                res.status(config.OK_STATUS).json({ "status": 1, "resp": "Email changed" });
+        var resp = await artist_helper.get_artist_by_id(artist_id);
+        if (resp.status === 1) {
+            if (resp.artist.email == req.body.email) {
+                if (req.body.new_email) {
+                    var resp = await artist_helper.update_artist_email(artist_id, req.body.new_email);
+                    res.status(config.OK_STATUS).json({ "status": 1, "resp": "Email changed" });
+                }
+                else {
+                    res.status(config.OK_STATUS).json({ "status": 1, "resp": "Please Enter New Email" });
+                }
             }
             else {
-                res.status(config.OK_STATUS).json({ "status": 1, "resp": "Please Enter New Email" });
+                res.status(config.OK_STATUS).json({ "status": 1, "resp": "You cannot change the email" });
             }
+        } else {
+            logger.error("Error occured while fetching = ", resp);
+            res.status(config.INTERNAL_SERVER_ERROR).json(resp);
         }
-        else {
-            res.status(config.OK_STATUS).json({ "status": 1, "resp": "You cannot change the email" });
-        }
-    } else {
-        logger.error("Error occured while fetching = ", resp);
-        res.status(config.INTERNAL_SERVER_ERROR).json(resp);
+    }
+    else {
+        res.status(config.BAD_REQUEST).json({ message: "Enter Valid Email" });
     }
 });
 
