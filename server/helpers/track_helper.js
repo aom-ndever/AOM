@@ -669,12 +669,12 @@ track_helper.get_new_uploads = async (day, start, length) => {
                 'artist_id.state': 0
             }
         },
-        {
-            '$skip': start
-        },
-        {
-            '$limit': length
-        }
+        // {
+        //     '$skip': start
+        // },
+        // {
+        //     '$limit': length
+        // }
 
     ];
     let track = await Track.aggregate(aggregate);
