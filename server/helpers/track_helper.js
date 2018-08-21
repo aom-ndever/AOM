@@ -610,14 +610,6 @@ track_helper.delete_track_image = async (track_id) => {
 track_helper.get_new_uploads = async (day, start, length) => {
     var to = moment().utcOffset(0);
     var from = moment(to).subtract(day, "days").utcOffset(0);
-
-
-    // var track = await Track
-    //     .find({ "created_at": { "$gt": new Date(from), "$lt": new Date(to) } })
-    //     .populate({ path: 'artist_id', populate: { path: 'music_type' } })
-    //     .populate({ path: 'artist_id', populate: { path: 'state' } })
-    //     .skip(start)
-    //     .limit(length)
     var aggregate = [
         {
             "$match": {
@@ -669,12 +661,10 @@ track_helper.get_new_uploads = async (day, start, length) => {
                 'artist_id.state': 0
             }
         },
-        // {
-        //     '$skip': start
-        // },
-        // {
-        //     '$limit': length
-        // }
+
+        {
+            '$limit': 24
+        }
 
     ];
     let track = await Track.aggregate(aggregate);
