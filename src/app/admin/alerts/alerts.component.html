@@ -2,7 +2,7 @@
 <div id="page-content-wrapper">
            
     <div class="container-fluid">
-        <div>
+        <!-- <div>
             <h3 class="Audience-Overview">Copyright Notices </h3>
             <div class="artists_table copyright_table table-responsive">
                 <table class="table">
@@ -61,43 +61,28 @@
                     </tbody>
                   </table>
             </div>
-        </div>
+        </div> -->
         <div>
-            <h3 class="Audience-Overview">Commuinity Notices</h3>
+            <h3 class="Audience-Overview">Flagged Messages</h3>
             <div class="artists_table community_tabel table-responsive">
-                <table class="table">
+                <table class="table" datatable [dtOptions]="dtOptions[0]">
                     <thead>
                       <tr>
                         <th>N<sup>O</sup></th>
                         <th>Artist Name</th>
                         <th>Date</th>
                         <th>Message</th>
-                        <th>Actions</th>
                       </tr>
                     </thead>
                     <tbody>
-                    <tr>
-                        <td>1.</td>
-                        <td>Shavn Miller</td>
-                        <td>May 12, 2018</td>
-                        <td class="td_img"><img src="img/vote.png"/>Lorem ipsum dolor sit amet, adipiscing...</td>
-                        <td class="td_img actions">
-                            <div><img src="img/likes.png"/>Remove</div>
-                            <div><img src="img/likes.png"/>Suspend</div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>2.</td>
-                        <td>Anna Bill</td>
-                        <td>May 11, 2018</td>
-                        <td class="td_img"><img src="img/vote.png"/>Lorem ipsum dolor sit amet, adipiscing...</td>
-                        <td class="td_img actions">
-                            <div><img src="img/likes.png"/>Remove</div>
-                            <div><img src="img/likes.png"/>Suspend</div>
-                        </td>
-                    </tr>
-
-
+                        <tr *ngFor="let val of flagged_list; let i = index;">
+                            <td>{{i+1}}</td>
+                            <td>{{val['first_name']+' '+val['last_name']}}</td>
+                            <td>{{val['created_at'] | date:'M d, yyyy'}}May 12, 2018</td>
+                            <td class="td_img">
+                                {{val['account_type']}} has been {{val['status']}}.
+                            </td>
+                        </tr>
                     </tbody>
                   </table>
             </div>

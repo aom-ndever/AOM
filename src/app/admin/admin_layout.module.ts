@@ -27,6 +27,7 @@ import { ArtistService } from './artist/artist.service';
 import { UsersService } from './users/users.service';
 import { ContestService } from './contest/contest.service';
 import { RolesService } from './roles/roles.service';
+import { AlertService } from './alerts/alerts.service';
 
 @NgModule({
   imports: [
@@ -74,6 +75,7 @@ import { RolesService } from './roles/roles.service';
      UsersService,
      ContestService,
      RolesService,
+     AlertService,
      { provide: HIGHCHARTS_MODULES, useFactory: () => [ highmaps ] }
     ]
 })
