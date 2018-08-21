@@ -333,10 +333,10 @@ router.delete('/image/:user_id', async (req, res) => {
  * @apiSuccess (Success 200) {JSON} user email details
  * @apiError (Error 4xx) {String} message Validation or error message.
  */
-router.put('/settings/email', async (req, res) => {
+router.put('/change/email', async (req, res) => {
     user_id = req.userInfo.id;
     var schema = {
-        'new_email': {
+        'email': {
             notEmpty: true,
             errorMessage: "Email is required.",
             isEmail: { errorMessage: "Please enter valid email address" }
@@ -366,7 +366,7 @@ router.put('/settings/email', async (req, res) => {
         }
     }
     else {
-        res.status(config.BAD_REQUEST).json({ message: "Enter Valid Email" });
+        res.status(config.BAD_REQUEST).json({ message: "Enter Valid" });
     }
 });
 

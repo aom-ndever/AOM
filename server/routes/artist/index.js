@@ -478,7 +478,7 @@ router.get('/track_likes', async (req, res) => {
  * @apiError (Error 4xx) {String} message Validation or error message.
  */
 
-router.put('/change/email', async (req, res) => {
+router.put('/settings/email', async (req, res) => {
     artist_id = req.userInfo.id;
     var schema = {
         'new_email': {
