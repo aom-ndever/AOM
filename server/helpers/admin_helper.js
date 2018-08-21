@@ -103,7 +103,7 @@ admin_helper.get_all_admin = async (start, length, sort = {}) => {
 
 admin_helper.get_all_admin_suspended = async (start, length, sort = {}) => {
     try {
-        var admins = await Admin.find()
+        var admins = await Admin.find({ "status": "suspended" })
 
         var tot_cnt = admins.length;
 
