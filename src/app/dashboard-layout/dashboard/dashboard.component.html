@@ -86,7 +86,7 @@
                   </a></div> -->
                 </div>
                 <div class="location">
-                  <p><i class="fa fa-map-marker" aria-hidden="true"></i><span>{{nupload && nupload.artist_id && nupload.artist_id['state'] ? nupload.artist_id['state']['name'] : '' }}</span></p>
+                  <p><i class="fa fa-map-marker" aria-hidden="true"></i><span>{{nupload && nupload.state && nupload['state']['name'] ? nupload['state']['name'] : '' }}</span></p>
                   <div class="cat {{nupload && nupload.music_type && nupload.music_type['alias'] ? nupload.music_type['alias'] : '' }}">{{nupload && nupload.music_type && nupload.music_type['name'] ? nupload.music_type['name'] : ''}}</div>
                 </div>
               </div>

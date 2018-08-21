@@ -574,11 +574,12 @@
                   </a>
                 <div class="heading"><h3>What Type of Music?</h3></div>
                 <div class="progress_bar fill14"></div>
-                <div class="type-music">
+                                   
+                <div class="type-music">                      
                   <ul>
                     <li *ngFor="let x of music_types">
-                        <input type="checkbox" name="music" (change)="onChangeForListener(x['_id'], $event.target.checked)">
-                        <div class="music-checked chk-{{x['alias']}}"  >{{x.name}}</div>
+                        <input type="radio" name="music" (change)="onChangeForListener(x['_id'], $event.target.checked)">
+                        <label class="music-checked chk-{{x['alias']}}"  >{{x.name}}</label>
                     </li>
                   </ul>
                   <div class="cust_err_msg" *ngIf="listener_validation[4]">

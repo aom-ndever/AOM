@@ -360,59 +360,33 @@
                                         <div class="edit-head">Your Payment Method</div>
                                         <div class="select-payemnt-table">
                                             <table>
-                                                <tr>
+                                                <tr *ngFor="let card of card_list;">
                                                     <td>
                                                         <div class="radio">
                                                             <label>
-                                                                <input type="radio" value="" name="musicgenre" checked>
+                                                                <input type="radio" value="" name="musicgenre" >
                                                                 <div class="radio_check"></div>
                                                             </label>
                                                         </div>
                                                     </td>
                                                     <td>
-                                                        <img src="img/visa.png" alt="Visa Card">
+                                                        <img src="img/visa.png" *ngIf="card['card_type'] == 'visa'" alt="Visa Card">
+                                                        <img src="img/images.jpg" *ngIf="card['card_type'] == 'american express'" alt="Visa card" class="check-img">
+                                                        <img src="img/Master-Card-Blue-icon.jpg" *ngIf="card['card_type'] == 'mastercard'" alt="Visa card" class="check-img">
+                                                        <img src="img/discover.jpg" alt="Visa card"  *ngIf="card['card_type'] == 'discover'" class="check-img">
                                                     </td>
                                                     <td>
-                                                        <p class="pay-name">Visa</p>
+                                                        <p class="pay-name">{{card['card_type']}}</p>
                                                     </td>
                                                     <td>
-                                                        <p class="card-num">XXXXXXXXXXX0000</p>
-                                                    </td>
-                                                    <td>
-                                                        <p class="pay-name">01/2020</p>
-                                                    </td>
-                                                    <td>
-                                                        <div class="pay-delete">
-                                                            <i class="fa fa-trash" aria-hidden="true"></i>
-                                                            <span>Delete</span>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-
-                                                <tr>
-                                                    <td>
-                                                        <div class="radio">
-                                                            <label>
-                                                                <input type="radio" value="" name="musicgenre">
-                                                                <div class="radio_check"></div>
-                                                            </label>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <img src="img/paypal.png" alt="Visa Card">
-                                                    </td>
-                                                    <td>
-                                                        <p class="pay-name">Paypal</p>
-                                                    </td>
-                                                    <td>
-                                                        <p class="card-num">shavnmiller@gmail.com</p>
-                                                    </td>
-                                                    <td>
+                                                        <p class="card-num">{{card['fname']+' '+card['lname']}}</p>
                                                     </td>
                                                     <td>
                                                         <div class="pay-delete">
-                                                            <i class="fa fa-trash" aria-hidden="true"></i>
-                                                            <span>Delete</span>
+                                                            <a href="javascript:;" (click)="removeCard(card['_id'])">
+                                                                <i class="fa fa-trash" aria-hidden="true"></i>
+                                                                <span>Delete</span>
+                                                            </a>
                                                         </div>
                                                     </td>
                                                 </tr>
@@ -422,47 +396,7 @@
                                             </a>
                                         </div>
                                     </div>
-                                    <div class="billing-method">
-                                        <div class="edit-head">Billing Method</div>
-                                        <form>
-                                            <div class="form-group">
-                                                <label for="fname">First Name</label>
-                                                <input type="text" class="form-control" id="fname4" placeholder="First Name">
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="lname">Last Name</label>
-                                                <input type="text" class="form-control" id="lname1" placeholder="Last Name">
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="area">Area Code</label>
-                                                <input type="text" class="form-control" id="area" placeholder="Area Code">
-                                            </div>
-                                            <div class="form-group street">
-                                                <label for="street">Street</label>
-                                                <input type="text" class="form-control" id="street" placeholder="Street Name">
-                                            </div>
-                                            <div class="form-group appartment-suit">
-                                                <label for="appt">Apartment, Suite, Building</label>
-                                                <input type="text" class="form-control" id="appt" placeholder="Apartment, Suite, Building">
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="city">City</label>
-                                                <input type="text" class="form-control" id="city" placeholder="City">
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="state">State</label>
-                                                <input type="text" class="form-control" id="state" placeholder="State">
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="zip">Zip</label>
-                                                <input type="text" class="form-control" id="zip" placeholder="State">
-                                            </div>
-                                            <div class="button_group">
-                                                <a href="#" class="cancel-btn">Cancel</a>
-                                                <a href="#" class="update-btn">update</a>
-                                            </div>
-                                        </form>
-                                    </div>
+                                    
                                 </div>
                                 <div id="proceeds" class="tab-pane fade">
                                     <div class="pay-meth">
@@ -1729,8 +1663,12 @@
             <h3>Add New Card</h3>
             <form id="payment-form">
                 <div class="form-group">
-                    <label class="label-control">Name</label>
-                    <input class="form-control"  id="name" required/>
+                    <label class="label-control">First Name</label>
+                    <input class="form-control"  id="fname" />
+                </div>
+                <div class="form-group">
+                    <label class="label-control">Last Name</label>
+                    <input class="form-control"  id="lname" />
                 </div>
                 <div class="form-group">
                     <label for="card-element">
@@ -1743,7 +1681,7 @@
                     <div id="card-errors" role="alert"></div>
                 </div>
                 <div class="form-group">
-                    <button class="btn btn-success btn-sm">Add Card</button>
+                    <button class="btn btn-success btn-sm" [disabled]="show_spinner">Add Card <i *ngIf="show_spinner" class="fa fa-spinner fa-spin"></i></button>
                 </div>
             </form>
         </div>

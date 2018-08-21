@@ -335,7 +335,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
     if(this.userdata['type'] == 'artist') {
       this.getMediaList();
       this.calculateDateFromDays(this.analytics_days);
-      
+      this.getAllCard();
       //this.getAllTrackAnalytic({day : this.analytics_days});
       this.getAllOverviewAnalytic({day : 14});
       this.getAllDownloadAnalytic({day : this.analytics_days});
@@ -2016,7 +2016,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
     var elements = stripe.elements();
     var card = elements.create('card', { style: this.style });
     card.mount('#card-element');
-    this.registerElements([card], 'ex');
+    // this.registerElements([card], 'ex');
     card.addEventListener('change', function (event) {
       var displayError = document.getElementById('card-errors');
       if (event.error) {
@@ -2027,10 +2027,10 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
     });
 
     var form = document.getElementById('payment-form');
+    
     form.addEventListener('submit', (event) => {
       event.preventDefault();
-      console.log('card =>', card);
-      card['name'] = 'sis';
+      this.show_spinner = true;
       stripe.createToken(card).then((result) => {
         if (result.error) {
           // Inform the customer that there was an error.
@@ -2039,12 +2039,56 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
         } else {
           // Send the token to your server.
           console.log(result.token);
+          let data = {
+            "fname": form['elements'][0].value,
+            "lname": form['elements'][1].value,
+            "card_id" : result.token['id'],
+            "card_type" : result.token['card']['brand'].toLowerCase()
+          };
+          
+          this.MyProfileService.addNewPaymentMethod(data).subscribe((response) => {
+            this.toastr.success(response['message'], 'Success!');
+            this.media_modal_ref.close();
+            this.getAllCard();
+          }, (error) => {
+            this.toastr.error(error['error'].message, 'Error!');
+            this.show_spinner = false;
+          }, () => {
+            this.show_spinner = false;
+          });
           //this.stripeTokenHandler(result.token);
         }
       });
     });
   }
-
+  
+  // get all card
+  card_list : any = [];
+  getAllCard() {
+    this.MyProfileService.getAllCard().subscribe((response) => {
+      this.card_list = response['card'];
+    });
+  }
+  // remove card
+  removeCard(id : any) {
+    swal({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    }).then((flag) => {
+      if(flag.value) {
+        this.MyProfileService.removeCard(id).subscribe((response)=>{
+          this.toastr.success(response['message'], 'Success!');
+          this.getAllCard();
+        });
+      }
+    });
+    
+  }
   registerElements(elements, exampleName) {
     var stripe = Stripe(environment.STRIPE_PUB_KEY);
     var formClass = '.' + exampleName;
