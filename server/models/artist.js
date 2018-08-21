@@ -53,18 +53,15 @@ var ArtistModelSchema = new Schema({
 ArtistModelSchema.pre('save', function (next) {
     var user = this;
     if (!user.isModified('password')) return next();
-    if (user && typeof user.flag !== 'undefined' && user.flag) {
-        next();
-    } else {
-        bcrypt.genSalt(SALT_WORK_FACTOR, function (err, salt) {
+    bcrypt.genSalt(SALT_WORK_FACTOR, function (err, salt) {
+        if (err) return next(err);
+        bcrypt.hash(user.password, salt, function (err, hash) {
             if (err) return next(err);
-            bcrypt.hash(user.password, salt, function (err, hash) {
-                if (err) return next(err);
-                user.password = hash;
-                next();
-            });
+            user.password = hash;
+            next();
         });
-    }
+    });
+
 });
 // Compile model from schema
 var Artist = mongoose.model('artist', ArtistModelSchema, 'artist');
