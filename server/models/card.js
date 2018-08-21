@@ -13,6 +13,7 @@ var CardModelSchema = new Schema({
     security_code: Number,
     first_name: String,
     last_name: String,
+    card_id: String,
     created_at: { type: Date, default: Date.now }
 }, { versionKey: false });
 

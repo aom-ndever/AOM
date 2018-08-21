@@ -214,6 +214,7 @@ router.post('/add_payment_method', async (req, res) => {
         "card_number": req.body.card_number,
         "security_code": req.body.security_code,
         "expires_on": req.body.expires_on,
+        "card_id": req.body.card_id,
         "artist_id": artist_id,
     };
 
@@ -436,6 +437,17 @@ router.delete('/cover_image/:artist_id', async (req, res) => {
     }
 });
 
+router.get('/card', async (req, res) => {
+    artist_id = req.userInfo.id;
+    var card = await artist_helper.get_all_card_by_artist_id(artist_id);
+    if (card.status === 1) {
+        logger.trace("got details successfully");
+        res.status(config.OK_STATUS).json({ "status": 1, "card": card.card });
+    } else {
+        logger.error("Error occured while fetching = ", card);
+        res.status(config.INTERNAL_SERVER_ERROR).json(card);
+    }
+});
 
 
 
