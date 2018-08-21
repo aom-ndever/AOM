@@ -336,7 +336,7 @@ router.delete('/image/:user_id', async (req, res) => {
 router.put('/change/email', async (req, res) => {
     user_id = req.userInfo.id;
     var schema = {
-        'email': {
+        'new_email': {
             notEmpty: true,
             errorMessage: "Email is required.",
             isEmail: { errorMessage: "Please enter valid email address" }

@@ -493,7 +493,7 @@ router.put('/settings/email', async (req, res) => {
 
         var resp = await artist_helper.get_artist_by_id(artist_id);
         if (resp.status === 1) {
-            if (resp.user.email == req.body.email) {
+            if (resp.artist.email == req.body.email) {
                 if (req.body.new_email) {
                     var resp = await artist_helper.update_artist_email(artist_id, req.body.new_email);
                     res.status(config.OK_STATUS).json({ "status": 1, "resp": "Email changed" });
