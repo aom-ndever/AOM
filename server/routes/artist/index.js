@@ -477,28 +477,7 @@ router.get('/track_likes', async (req, res) => {
  * @apiSuccess (Success 200) {JSON} Update artist email
  * @apiError (Error 4xx) {String} message Validation or error message.
  */
-router.put('/settings/email', async (req, res) => {
-    artist_id = req.userInfo.id;
 
-    var resp = await artist_helper.get_artist_by_id(artist_id);
-    if (resp.status === 1) {
-        if (resp.artist.email == req.body.email) {
-            if (req.body.new_email) {
-                var resp = await artist_helper.update_artist_email(artist_id, req.body.new_email);
-                res.status(config.OK_STATUS).json({ "status": 1, "resp": "Email changed" });
-            }
-            else {
-                res.status(config.OK_STATUS).json({ "status": 1, "resp": "Please Enter New Email" });
-            }
-        }
-        else {
-            res.status(config.OK_STATUS).json({ "status": 1, "resp": "You cannot change the email" });
-        }
-    } else {
-        logger.error("Error occured while fetching = ", resp);
-        res.status(config.INTERNAL_SERVER_ERROR).json(resp);
-    }
-});
 
 
 /**

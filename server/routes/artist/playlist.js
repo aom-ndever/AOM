@@ -30,8 +30,11 @@ router.post('/add', async (req, res) => {
 
     var obj = {
       artist_id: req.userInfo.id,
-      name: req.body.name
+
     };
+    if (req.body.name && req.body.name != null) {
+      obj.name = (req.body.name)
+    }
     var resp_data = await playlist_helper.insert_playlist(obj);
 
     if (resp_data.status === 0) {
