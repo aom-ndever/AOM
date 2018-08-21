@@ -8,11 +8,10 @@ var Schema = mongoose.Schema;
 
 var CardModelSchema = new Schema({
     artist_id: { type: mongoose.Schema.Types.ObjectId, ref: 'artist' },
-    card_number: Number,
-    expires_on: Date,
-    security_code: Number,
-    first_name: String,
-    last_name: String,
+    card_type: String,
+    fname: String,
+    lname: String,
+    card_id: String,
     created_at: { type: Date, default: Date.now }
 }, { versionKey: false });
 

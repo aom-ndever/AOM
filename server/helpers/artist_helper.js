@@ -493,6 +493,21 @@ artist_helper.get_all_active_and_suspend_artist = async (start, length, filter, 
         return { "status": 0, "message": "Error occured while finding artist", "error": err }
     }
 };
+artist_helper.get_all_card_by_artist_id = async (artist_id) => {
+    try {
+
+        var card = await Card
+            .find({ "artist_id": new ObjectId(artist_id) })
+
+        if (card) {
+            return { "status": 1, "message": "card details found", "card": card };
+        } else {
+            return { "status": 2, "message": "card not found" };
+        }
+    } catch (err) {
+        return { "status": 0, "message": "Error occured while finding card", "error": err }
+    }
+};
 
 artist_helper.update_artist_status = async (artist_id, status) => {
     try {
