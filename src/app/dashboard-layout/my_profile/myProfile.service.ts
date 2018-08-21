@@ -222,4 +222,8 @@ export class MyProfileService {
   removeCard(id) {
     return this.http.delete(`${this.api_host}/artist/card/${id}`, {headers:this.headers});
   }
+  // Mark payment method as default
+  markAsDefault(id) {
+    return this.http.put(`${this.api_host}/artist/card/${id}`,{}, {headers:this.headers});
+  }
 }

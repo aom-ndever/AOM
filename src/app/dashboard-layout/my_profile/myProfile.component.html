@@ -364,7 +364,7 @@
                                                     <td>
                                                         <div class="radio">
                                                             <label>
-                                                                <input type="radio" value="" name="musicgenre" >
+                                                                <input type="radio" value="" name="musicgenre" [checked]="card['status']" (click)="markAsDefault(card['_id'])">
                                                                 <div class="radio_check"></div>
                                                             </label>
                                                         </div>
@@ -906,6 +906,9 @@
                                                             <a href="javascript:;" (click)="getPlaylistTrack(val['_id'], i)">Track</a>
                                                         </td>
                                                     </tr>
+                                                    <tr *ngIf="playlist.length == 0">
+                                                        <td colspan="2">No Data available.</td>
+                                                    </tr>
                                                 </tbody>
                                             </table>
                                         </div>
@@ -1313,6 +1316,9 @@
                                                         <a href="javascript:;" (click)="removePlaylist(val['_id'])"><i class="fa fa-trash"></i></a>
                                                         <a href="javascript:;" (click)="getPlaylistTrack(val['_id'], i)">Track</a>
                                                     </td>
+                                                </tr>
+                                                <tr *ngIf="playlist.length == 0">
+                                                    <td colspan="2">No data available.</td>
                                                 </tr>
                                             </tbody>
                                         </table>
