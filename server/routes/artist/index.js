@@ -177,26 +177,8 @@ router.put('/', async (req, res) => {
 router.put('/card/:card_id', async (req, res) => {
     user_id = req.userInfo.id;
     var obj = {
-
     };
-
-    if (req.body.first_name && req.body.first_name != null) {
-        obj.first_name = req.body.first_name;
-    }
-    if (req.body.last_name && req.body.last_name != null) {
-        obj.last_name = req.body.last_name;
-    }
-    if (req.body.card_number && req.body.card_number != null) {
-        obj.card_number = req.body.card_number;
-    }
-    if (req.body.security_code && req.body.security_code != null) {
-        obj.security_code = req.body.security_code;
-    }
-    if (req.body.expires_on && req.body.expires_on != null) {
-        obj.expires_on = req.body.expires_on;
-    }
-
-    var user_resp = await artist_helper.update_card(req.userInfo.id, req.params.card_id, obj);
+    var user_resp = await artist_helper.update_card(req.userInfo.id, req.params.card_id);
     console.log('user_resp', user_resp);
 
     if (user_resp.status === 0) {
@@ -217,7 +199,6 @@ router.post('/add_payment_method', async (req, res) => {
     };
 
     var card_resp = await artist_helper.insert_card(obj);
-
     if (card_resp.status === 0) {
         res.status(config.INTERNAL_SERVER_ERROR).json(card_resp);
     } else {

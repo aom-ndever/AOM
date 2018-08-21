@@ -57,10 +57,11 @@ artist_helper.delete_card = async (card_id, artist_id) => {
 
 
 
-artist_helper.update_card = async (artist_id, card_id, obj) => {
+artist_helper.update_card = async (artist_id, card_id) => {
     try {
 
-        let card = await Card.findOneAndUpdate({ "_id": new ObjectId(card_id), "artist_id": new ObjectId(artist_id) }, obj, { new: true });
+        let card = await Card.findOneAndUpdate({ "_id": new ObjectId(card_id), "artist_id": new ObjectId(artist_id) }, { "status": true }, { new: true });
+        let cards = await Card.updateMany({ "_id": { $ne: new ObjectId(card_id) }, "artist_id": new ObjectId(artist_id) }, { "status": false }, { new: true });
         if (!card) {
             return { "status": 2, "message": "Card has not updated" };
         } else {
