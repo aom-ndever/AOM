@@ -131,48 +131,49 @@ router.put('/', async (req, res) => {
         obj.social_media = JSON.parse(req.body.share_url)
     }
     if (req.body.phone_no && req.body.phone_no != null) {
-        obj.phone_no = (req.body.phone_no).trim();
+        obj.phone_no = req.body.phone_no
     }
     if (req.body.email && req.body.email != null) {
-        obj.email = (req.body.email).trim();
+        obj.email = req.body.email;
     }
     if (req.body.gender && req.body.gender != null) {
-        obj.gender = (req.body.gender).trim();
+        obj.gender = req.body.gender;
     }
     if (req.body.dob && req.body.dob != null) {
-        obj.dob = (req.body.dob).trim();
+        obj.dob = req.body.dob;
     }
     if (req.body.first_name && req.body.first_name != null) {
-        obj.first_name = (req.body.first_name).trim();
+        obj.first_name = req.body.first_name;
     }
     if (req.body.last_name && req.body.last_name != null) {
-        obj.last_name = (req.body.last_name).trim();
+        obj.last_name = req.body.last_name;
     }
     if (req.body.zipcode && req.body.zipcode != null) {
-        obj.zipcode = (req.body.zipcode).trim();
+        obj.zipcode = req.body.zipcode;
     }
     if (req.body.music_type) {
         obj.music_type = req.body.music_type;
     }
     if (req.body.description && req.body.description != null) {
-        obj.description = req.body.description;
-    }
-    if (req.body.region) {
-        obj.region = req.body.region;
-    }
-    if (req.body.state) {
-        obj.state = req.body.state;
-    }
+        obj.description = req.body.description
+        if (req.body.region) {
+            obj.region = req.body.region
+        }
+        if (req.body.state) {
+            obj.state = req.body.state
+        }
 
-    var user_resp = await artist_helper.update_artist_by_id(req.userInfo.id, obj);
 
-    if (user_resp.status === 0) {
-        res.status(config.INTERNAL_SERVER_ERROR).json(user_resp);
-    } else {
-        res.status(config.OK_STATUS).json(user_resp);
-    }
 
-});
+        var user_resp = await artist_helper.update_artist_by_id(req.userInfo.id, obj);
+
+        if (user_resp.status === 0) {
+            res.status(config.INTERNAL_SERVER_ERROR).json(user_resp);
+        } else {
+            res.status(config.OK_STATUS).json(user_resp);
+        }
+
+    });
 
 
 router.post('/add_payment_method', async (req, res) => {
