@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, QueryList, ViewChildren } from '@angular/core';
+import { Component, OnInit, OnDestroy, QueryList, ViewChildren, AfterViewInit } from '@angular/core';
 import { Router } from '@angular/router';
 import {NgbModal, ModalDismissReasons, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
 import { FormGroup, FormBuilder, Validators, FormControl, AbstractControl, NG_VALIDATORS, Validator } from '@angular/forms';
@@ -13,12 +13,13 @@ import { MessageService } from '../../shared/message.service';
 import { Subscription } from 'rxjs/Subscription';
 import { DataTableDirective } from 'angular-datatables';
 import swal from 'sweetalert2';
+declare let Stripe: any;
 @Component({
   selector: 'app-myProfile',
   templateUrl: './myProfile.component.html',
   styleUrls: []
 })
-export class MyProfileComponent implements OnInit, OnDestroy {
+export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChildren(DataTableDirective) 
   dtElements: QueryList<DataTableDirective>;
   dtOptions: DataTables.Settings[] = [];
@@ -326,6 +327,8 @@ export class MyProfileComponent implements OnInit, OnDestroy {
       }
       
     });
+
+    
   }
 
   ngOnInit() {
@@ -445,6 +448,11 @@ export class MyProfileComponent implements OnInit, OnDestroy {
       this.AmCharts.destroyChart(this.overview_location_chart);
     }
     this.subscription.unsubscribe();
+  }
+
+  ngAfterViewInit() {
+    // stripe card implementation
+    // this.setupStripeFrom();
   }
 
   noWhitespaceValidator(control: FormControl) {
@@ -1977,4 +1985,170 @@ export class MyProfileComponent implements OnInit, OnDestroy {
       this.upgrade_artist_validation = !flag;
     }
   }
+
+  // Stripe Credit-Card implementation
+  openCardModel(content) {
+    setTimeout(()=>{
+      this.setupStripeFrom();
+    },500);
+    this.media_modal_ref = this.modalService.open(content, { centered: true, backdrop : true });
+  }
+
+  style = {
+    base: {
+      color: '#32325d',
+      lineHeight: '18px',
+      fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
+      fontSmoothing: 'antialiased',
+      fontSize: '16px',
+      '::placeholder': {
+        color: '#aab7c4'
+      }
+    },
+    invalid: {
+      color: '#fa755a',
+      iconColor: '#fa755a'
+    }
+  };
+
+  setupStripeFrom() {
+    var stripe = Stripe(environment.STRIPE_PUB_KEY);
+    var elements = stripe.elements();
+    var card = elements.create('card', { style: this.style });
+    card.mount('#card-element');
+    this.registerElements([card], 'ex');
+    card.addEventListener('change', function (event) {
+      var displayError = document.getElementById('card-errors');
+      if (event.error) {
+        displayError.textContent = event.error.message;
+      } else {
+        displayError.textContent = '';
+      }
+    });
+
+    var form = document.getElementById('payment-form');
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      console.log('card =>', card);
+      card['name'] = 'sis';
+      stripe.createToken(card).then((result) => {
+        if (result.error) {
+          // Inform the customer that there was an error.
+          var errorElement = document.getElementById('card-errors');
+          errorElement.textContent = result.error.message;
+        } else {
+          // Send the token to your server.
+          console.log(result.token);
+          //this.stripeTokenHandler(result.token);
+        }
+      });
+    });
+  }
+
+  registerElements(elements, exampleName) {
+    var stripe = Stripe(environment.STRIPE_PUB_KEY);
+    var formClass = '.' + exampleName;
+    var example = document.querySelector(formClass);
+  
+    var form = example.querySelector('form');
+    var resetButton = example.querySelector('a.reset');
+    var error = form.querySelector('.error');
+    var errorMessage = error.querySelector('.message');
+  
+    function enableInputs() {
+      Array.prototype.forEach.call(
+        form.querySelectorAll(
+          "input[type='text'], input[type='email'], input[type='tel']"
+        ),
+        function(input) {
+          input.removeAttribute('disabled');
+        }
+      );
+    }
+  
+    function disableInputs() {
+      Array.prototype.forEach.call(
+        form.querySelectorAll(
+          "input[type='text'], input[type='email'], input[type='tel']"
+        ),
+        function(input) {
+          input.setAttribute('disabled', 'true');
+        }
+      );
+    }
+  
+    // Listen for errors from each Element, and show error messages in the UI.
+    elements.forEach(function(element) {
+      element.on('change', function(event) {
+        if (event.error) {
+          error.classList.add('visible');
+          errorMessage['innerText'] = event.error.message;
+        } else {
+          error.classList.remove('visible');
+        }
+      });
+    });
+  
+    // Listen on the form's 'submit' handler...
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+  
+      // Show a loading screen...
+      example.classList.add('submitting');
+  
+      // Disable all inputs.
+      disableInputs();
+  
+      // Gather additional customer data we may have collected in our form.
+      var name = form.querySelector('#' + exampleName + '-name');
+      var address1 = form.querySelector('#' + exampleName + '-address');
+      var city = form.querySelector('#' + exampleName + '-city');
+      var state = form.querySelector('#' + exampleName + '-state');
+      var zip = form.querySelector('#' + exampleName + '-zip');
+      var additionalData = {
+        name: name ? name['value'] : undefined,
+        address_line1: address1 ? address1['value'] : undefined,
+        address_city: city ? city['value'] : undefined,
+        address_state: state ? state['value'] : undefined,
+        address_zip: zip ? zip['value'] : undefined,
+      };
+  
+      // Use Stripe.js to create a token. We only need to pass in one Element
+      // from the Element group in order to create a token. We can also pass
+      // in the additional customer data we collected in our form.
+      stripe.createToken(elements[0], additionalData).then(function(result) {
+        // Stop loading!
+        example.classList.remove('submitting');
+  
+        if (result.token) {
+          // If we received a token, show the token ID.
+          example.querySelector('.token')['innerText'] = result.token.id;
+          example.classList.add('submitted');
+        } else {
+          // Otherwise, un-disable inputs.
+          enableInputs();
+        }
+      });
+    });
+  
+    resetButton.addEventListener('click', function(e) {
+      e.preventDefault();
+      // Resetting the form (instead of setting the value to `''` for each input)
+      // helps us clear webkit autofill styles.
+      form.reset();
+  
+      // Clear each Element.
+      elements.forEach(function(element) {
+        element.clear();
+      });
+  
+      // Reset error state as well.
+      error.classList.remove('visible');
+  
+      // Resetting the form does not un-disable inputs, so we need to do it separately:
+      enableInputs();
+      example.classList.remove('submitted');
+    });
+  }
+
 }
