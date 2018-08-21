@@ -150,7 +150,7 @@ router.put('/', async (req, res) => {
         obj.last_name = (req.body.last_name).trim();
     }
     if (req.body.zipcode && req.body.zipcode != null) {
-        obj.zipcode = (req.body.zipcode).trim();
+        obj.zipcode = (req.body.zipcode);
     }
     if (req.body.music_type) {
         obj.music_type = req.body.music_type;
