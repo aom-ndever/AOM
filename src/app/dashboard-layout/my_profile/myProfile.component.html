@@ -1134,7 +1134,7 @@
                                                     <div class="form-group home-grp">
                                                         <label for="hometown">Home Town</label>
                                                         <input class="form-control" placeholder="zipcode" formControlName="zipcode" name="listener_zipcode" [(ngModel)]="userdata.zipcode" />
-                                                        <div class="cust_err_msg" *ngIf="listenerProfileValidation && !listener_profile.controls['zipcode1'].valid">
+                                                        <div class="cust_err_msg" *ngIf="listenerProfileValidation && !listener_profile.controls['zipcode'].valid">
                                                             <span *ngIf="listener_profile.controls['zipcode'].errors['required']" class="text-danger">Zipcode is required.</span>
                                                             <span *ngIf="!listener_profile.controls['zipcode'].errors['required'] && listener_profile.controls['zipcode'].errors['whitespace']" class="text-danger">Please enter valid data.</span>
                                                         </div>
@@ -1148,9 +1148,9 @@
                                                             <span *ngIf="(listener_profile.controls['phone'].errors['maxlength'] || listener_profile.controls['phone'].errors['minlength'])  && listener_profile.controls['phone'].dirty" class="text-danger">Please enter valid phone number.</span>
                                                         </div>
                                                     </div>
-                                                                                        <div class="button_group edit_save_btn">
-                                        <button type="submit" (click)="update(listener_profile.valid)" [disabled]="show_spinner" class="save-btn btn btn-primary">Save <i *ngIf="show_spinner" class="fa fa-spinner fa-spin"></i></button>
-                                    </div>
+                                                    <div class="button_group edit_save_btn">
+                                                        <button type="submit" (click)="update(listener_profile.valid)" [disabled]="show_spinner" class="save-btn btn btn-primary">Save <i *ngIf="show_spinner" class="fa fa-spinner fa-spin"></i></button>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>

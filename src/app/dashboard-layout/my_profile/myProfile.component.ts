@@ -454,6 +454,7 @@ export class MyProfileComponent implements OnInit, OnDestroy {
         return isValid ? null : { 'whitespace': true }
       }
   }
+  
   calculateDateFromDays(days : any) {
     var date = new Date();
     var last = new Date(date.getTime() - (days * 24 * 60 * 60 * 1000));
