@@ -131,25 +131,25 @@ router.put('/', async (req, res) => {
         obj.social_media = JSON.parse(req.body.share_url)
     }
     if (req.body.phone_no && req.body.phone_no != null) {
-        obj.phone_no = req.body.phone_no.trim();
+        obj.phone_no = (req.body.phone_no).trim();
     }
     if (req.body.email && req.body.email != null) {
-        obj.email = req.body.email.trim();
+        obj.email = (req.body.email).trim();
     }
     if (req.body.gender && req.body.gender != null) {
-        obj.gender = req.body.gender.trim();
+        obj.gender = (req.body.gender).trim();
     }
     if (req.body.dob && req.body.dob != null) {
-        obj.dob = req.body.dob.trim();
+        obj.dob = (req.body.dob).trim();
     }
     if (req.body.first_name && req.body.first_name != null) {
-        obj.first_name = req.body.first_name.trim();
+        obj.first_name = (req.body.first_name).trim();
     }
     if (req.body.last_name && req.body.last_name != null) {
-        obj.last_name = req.body.last_name.trim();
+        obj.last_name = (req.body.last_name).trim();
     }
     if (req.body.zipcode && req.body.zipcode != null) {
-        obj.zipcode = req.body.zipcode.trim();
+        obj.zipcode = (req.body.zipcode).trim();
     }
     if (req.body.music_type) {
         obj.music_type = req.body.music_type;
