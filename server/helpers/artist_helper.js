@@ -4,7 +4,7 @@ var Artist = require("./../models/artist");
 var User = require("./../models/user");
 var Track = require("./../models/track");
 var Notification = require("./../models/notification");
-var Payment = require("./../models/payment");
+var Card = require("../models/card");
 const saltRounds = 10;
 var artist_helper = {};
 var mongoose = require('mongoose');
@@ -31,22 +31,31 @@ artist_helper.insert_artist = async (object) => {
 
 artist_helper.insert_user_to_artists = async (object) => {
 
-    // let art = new Artist(object)
-
     try {
-
         let data = await Artist.insertMany([object]);
-        // let data = await art.save();
-
         return { "status": 1, "message": "Record inserted", "artist": data };
     } catch (err) {
         return { "status": 0, "message": "Error occured while inserting artist", "error": err };
     }
 };
 
+
+
+artist_helper.delete_card = async (card_id) => {
+    try {
+        var artist = await Artist.findOneAndRemove({ "_id": (artist_id) })
+        if (artist) {
+            return { "status": 1, "message": "artist details found", "artist": artist };
+        } else {
+            return { "status": 2, "message": "artist not found" };
+        }
+    } catch (err) {
+        return { "status": 0, "message": "Error occured while finding artist", "error": err }
+    }
+};
 artist_helper.insert_card = async (object) => {
 
-    let payment = new Payment(object)
+    let payment = new Card(object)
 
     try {
         let data = await payment.save();

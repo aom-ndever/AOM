@@ -335,24 +335,38 @@ router.delete('/image/:user_id', async (req, res) => {
  */
 router.put('/change/email', async (req, res) => {
     user_id = req.userInfo.id;
+    var schema = {
+        'email': {
+            notEmpty: true,
+            errorMessage: "Email is required.",
+            isEmail: { errorMessage: "Please enter valid email address" }
+        }
+    };
+    req.checkBody(schema);
+    var errors = req.validationErrors();
+    if (!errors) {
 
-    var resp = await user_helper.get_user_by_id(user_id);
-    if (resp.status === 1) {
-        if (resp.user.email == req.body.email) {
-            if (req.body.new_email) {
-                var resp = await user_helper.update_user_email(user_id, req.body.new_email);
-                res.status(config.OK_STATUS).json({ "status": 1, "resp": "Email changed" });
+        var resp = await user_helper.get_user_by_id(user_id);
+        if (resp.status === 1) {
+            if (resp.user.email == req.body.email) {
+                if (req.body.new_email) {
+                    var resp = await user_helper.update_user_email(user_id, req.body.new_email);
+                    res.status(config.OK_STATUS).json({ "status": 1, "resp": "Email changed" });
+                }
+                else {
+                    res.status(config.OK_STATUS).json({ "status": 1, "resp": "Please Enter New Email" });
+                }
             }
             else {
-                res.status(config.OK_STATUS).json({ "status": 1, "resp": "Please Enter New Email" });
+                res.status(config.OK_STATUS).json({ "status": 1, "resp": "You cannot change the email" });
             }
+        } else {
+            logger.error("Error occured while fetching = ", resp);
+            res.status(config.INTERNAL_SERVER_ERROR).json(resp);
         }
-        else {
-            res.status(config.OK_STATUS).json({ "status": 1, "resp": "You cannot change the email" });
-        }
-    } else {
-        logger.error("Error occured while fetching = ", resp);
-        res.status(config.INTERNAL_SERVER_ERROR).json(resp);
+    }
+    else {
+        res.status(config.BAD_REQUEST).json({ message: "Enter Valid Email" });
     }
 });
 
