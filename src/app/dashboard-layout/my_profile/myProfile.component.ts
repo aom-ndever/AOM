@@ -182,9 +182,11 @@ export class MyProfileComponent implements OnInit, OnDestroy {
       if(this.userdata.image) {
         if(this.userdata.provider && this.userdata.provider == 'facebook' && this.userdata['image'].includes('graph.facebook.com') || (this.userdata.provider == "gmail" && this.userdata['image'].includes('lh3.googleusercontent.com'))) {
           this.default_profile_img = this.userdata.image;
+          
         } else {
           this.default_profile_img = environment.API_URL+environment.USER_IMG+this.userdata.image;
         }
+        this.upgrade_artist_img = this.userdata.image;
       }
       let tmp = [];
       this.userdata['music_type'].forEach((ele) => {
@@ -199,15 +201,15 @@ export class MyProfileComponent implements OnInit, OnDestroy {
     this.artist_profile = this.fb.group({
       upload : [''],
       cover : [''],
-      fname : ['', [Validators.required]],
-      lname : ['', [Validators.required]],
+      fname : ['', [Validators.required, this.noWhitespaceValidator]],
+      lname : ['', [Validators.required, this.noWhitespaceValidator]],
       gender : ['', [Validators.required]] ,
       day : ['', [Validators.required]],
       month : ['', [Validators.required]],
       year : ['', [Validators.required]],
-      phone : ['', [Validators.required, Validators.pattern('[0-9]+'), Validators.minLength(10),Validators.maxLength(10)]],
+      phone : ['', [Validators.required, Validators.pattern('[0-9]+'), Validators.minLength(10),Validators.maxLength(10), , this.noWhitespaceValidator]],
       music_type : ['', [Validators.required]],
-      zipcode : ['', [Validators.required]],
+      zipcode : ['', [Validators.required, this.noWhitespaceValidator]],
       description : [''],
       share_url_fb : [''],
       share_url_insta : [''],
@@ -218,15 +220,15 @@ export class MyProfileComponent implements OnInit, OnDestroy {
 
     this.upgrade_artist = this.fb.group({
       upload : [''],
-      fname : ['', [Validators.required]],
-      lname : ['', [Validators.required]],
+      fname : ['', [Validators.required, this.noWhitespaceValidator]],
+      lname : ['', [Validators.required, this.noWhitespaceValidator]],
       gender : ['', [Validators.required]],
       day : ['', [Validators.required]],
       month : ['', [Validators.required]],
       year : ['', [Validators.required]],
-      phone : ['', [Validators.required, Validators.pattern('[0-9]+'), Validators.minLength(10),Validators.maxLength(10)]],
+      phone : ['', [Validators.required, Validators.pattern('[0-9]+'), Validators.minLength(10),Validators.maxLength(10), this.noWhitespaceValidator]],
       music_type : ['', [Validators.required]],
-      zipcode : ['', [Validators.required]],
+      zipcode : ['', [Validators.required, this.noWhitespaceValidator]],
       region : ['', [Validators.required]],
       state : ['', [Validators.required]],
       description : [''],
@@ -239,14 +241,14 @@ export class MyProfileComponent implements OnInit, OnDestroy {
 
     this.listener_profile = this.fb.group({
       upload : [''],
-      fname : ['', [Validators.required]],
-      lname : ['', [Validators.required]],
+      fname : ['', [Validators.required, this.noWhitespaceValidator]],
+      lname : ['', [Validators.required, this.noWhitespaceValidator]],
       gender : ['', [Validators.required]] ,
       day : ['', [Validators.required]],
       month : ['', [Validators.required]],
       year : ['', [Validators.required]],
-      phone : ['', [Validators.required, Validators.pattern('[0-9]+'), Validators.minLength(10),Validators.maxLength(10)]],
-      zipcode : ['', [Validators.required]],
+      phone : ['', [Validators.required, Validators.pattern('[0-9]+'), Validators.minLength(10),Validators.maxLength(10), this.noWhitespaceValidator]],
+      zipcode : ['', [Validators.required, this.noWhitespaceValidator]],
       music_type : ['']
     });
 
@@ -445,6 +447,11 @@ export class MyProfileComponent implements OnInit, OnDestroy {
     this.subscription.unsubscribe();
   }
 
+  noWhitespaceValidator(control: FormControl) {
+      let isWhitespace = (control.value || '').trim().length === 0;
+      let isValid = !isWhitespace;
+      return isValid ? null : { 'whitespace': true }
+  }
   calculateDateFromDays(days : any) {
     var date = new Date();
     var last = new Date(date.getTime() - (days * 24 * 60 * 60 * 1000));
@@ -1936,7 +1943,31 @@ export class MyProfileComponent implements OnInit, OnDestroy {
         confirmButtonText: 'Yes, upgrade it!'
       }).then((result) => {
         if (result.value) {
-          console.log('upgrade');
+          this.show_spinner = true;
+          let formData: FormData = new FormData();
+          // formData.append('email', this.upgrade_artist_data['email']);
+          // formData.append('password',this.upgrade_artist_data['password']);
+          formData.append('first_name',this.upgrade_artist_data['first_name']);
+          formData.append('last_name',this.upgrade_artist_data['last_name']);
+          formData.append('zipcode',this.upgrade_artist_data['zipcode']);
+          formData.append('gender',this.upgrade_artist_data['gender']);
+          formData.append('music_type',this.upgrade_artist_data['music_type']);
+          formData.append('image', profile_img);
+          formData.append('phone_no', this.upgrade_artist_data['phone_no']);
+          formData.append('state', this.upgrade_artist_data['state']);
+          formData.append('share_url', JSON.stringify(this.upgrade_artist_data['share_url']));
+          formData.append('dob', (new Date(this.upgrade_artist_data['year'], this.upgrade_artist_data['month'], this.upgrade_artist_data['day']).toString()));
+          this.MyProfileService.upgradeToArtist(formData).subscribe((response) => {
+            this.toastr.success(response['message'], 'Success!');
+            localStorage.removeItem('user');
+            this.MessageService.sendMessage({upgrade_artist : true});
+            this.router.navigate(['']);
+          }, (error) => {
+            this.show_spinner = false;
+            this.toastr.error(error['error'].message, 'Error!');
+          }, () => {
+            this.show_spinner = false;
+          });
         }
       })
     } else {

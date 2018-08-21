@@ -174,7 +174,10 @@
       </div>
       <div class="highlights-wrap mCustomScrollbar "  data-mcs-theme="dark-3" >
         <div class="row">
-          <div class="alert alert-info col-sm-12" *ngIf="whatsnewdata['artist'].length == 0">
+            <div *ngIf="show_loader" class="text-center col-12">
+              <i class="fa fa-spinner fa-spin fa-3x" aria-hidden="true"></i>
+            </div>
+          <div class="alert alert-info col-sm-12" *ngIf="!show_loader && whatsnewdata['artist'].length == 0">
             No data available.
           </div>
           <div class="col-lg-3 col-md-4 col-sm-6 col-xs-6 " *ngFor="let artist of whatsnewdata['artist']; let i = index;">
@@ -200,6 +203,38 @@
         </div>
       </div>
     </div>
+    <div class="head-global">
+        <h2>Featured Artist</h2>
+    </div>
+    <div class="highlights-wrap mCustomScrollbar "  data-mcs-theme="dark-3" >
+        <div class="row">
+            <div *ngIf="feature_loader" class="text-center col-12">
+              <i class="fa fa-spinner fa-spin fa-3x" aria-hidden="true"></i>
+            </div>
+          <div class="alert alert-info col-sm-12" *ngIf="!feature_loader && featured_artist.length == 0">
+            No data available.
+          </div>
+          <div class="col-lg-3 col-md-4 col-sm-6 col-xs-6 " *ngFor="let artist of featured_artist; let i = index;">
+            <div class="final-wrap ">
+              <div class="img-wrap ">
+                <a href="javascript:;" routerLink="/artist_profile/{{artist._id}}">
+                  <img src="{{artist && artist.image ? artist_img_url+artist.image : 'img/highlight-player.png'}} " alt="Finalists ">
+                </a>
+                <a href="javascript:void(0) " class="fan " (click)="followArtist(artist._id, i)"><i class="fa {{artist.is_followed ? 'fa-heart' : 'fa-heart-o'}}" aria-hidden="true "></i></a>
+              </div>
+              <div class="content-wrap ">
+                <div class="player ">
+                  <div class="title "><a href="javascript:;">{{artist && artist.first_name ? artist.first_name : ''  +' '+ artist && artist.last_name ? artist.last_name : '' }}</a></div>
+                  <div class="cat {{artist && artist['music_type'] ? artist.music_type.alias : ''}}">{{artist && artist['music_type'] ? artist['music_type']['name'] : '' }}</div>
+                </div>
+                <div class="location ">
+                  <p><i class="fa fa-map-marker " aria-hidden="true "></i><span>{{artist && artist['state'] ? artist.state.name : ''}}</span></p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
   </div>
 </section>
 <section class="newuploads-wrap">
@@ -209,8 +244,10 @@
         <div class="head-global "><h2>Popular Tracks</h2></div>
       </div>
       <div class="uploads-container col-md-12 ">
-       
-            <div class="alert alert-info" *ngIf="whatsnewdata['track'] && whatsnewdata['track'].length == 0">
+          <div *ngIf="show_loader" class="text-center col-12">
+              <i class="fa fa-spinner fa-spin fa-3x" aria-hidden="true"></i>
+            </div>
+            <div class="alert alert-info" *ngIf="!show_loader && whatsnewdata['track'] && whatsnewdata['track'].length == 0">
                 No data available.
             </div>
             <div class="row">
