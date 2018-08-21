@@ -12,6 +12,7 @@ var CardModelSchema = new Schema({
     fname: String,
     lname: String,
     card_id: String,
+    status: { type: Boolean, default: false },
     created_at: { type: Date, default: Date.now }
 }, { versionKey: false });
 
