@@ -209,11 +209,9 @@ router.put('/card/:card_id', async (req, res) => {
 router.post('/add_payment_method', async (req, res) => {
     artist_id = req.userInfo.id;
     var obj = {
-        "first_name": req.body.first_name,
-        "last_name": req.body.last_name,
-        "card_number": req.body.card_number,
-        "security_code": req.body.security_code,
-        "expires_on": req.body.expires_on,
+        "fname": req.body.fname,
+        "lname": req.body.lname,
+        "card_type": req.body.card_type,
         "card_id": req.body.card_id,
         "artist_id": artist_id,
     };
