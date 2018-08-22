@@ -3437,7 +3437,7 @@ var ArtistProfileComponent = /** @class */ (function () {
             });
         }
         else {
-            this.toastr.info('Please login first to follow the artist.', 'Information!');
+            this.toastr.info('Please signin as listener follow the artist.', 'Info!');
         }
     };
     // Open artist media in lightbox
