@@ -197,24 +197,61 @@ router.post('/add_bank_details', async (req, res) => {
         "account_number": req.body.account_number,
         "bsb": req.body.bsb,
         "artist_id": artist_id,
+
     };
+    var artist_data = await artist_helper.get_artist_by_id(artist_id);
 
     var card_resp = await artist_helper.insert_bank(obj);
     if (card_resp.status === 0) {
         res.status(config.INTERNAL_SERVER_ERROR).json(card_resp);
     } else {
+        try {
+
+            let bank_account_token = await stripe.tokens.create({
+                bank_account: {
+                    account_number: obj.account_number,
+                    country: 'US',
+                    currency: 'usd',
+                    account_holder_name: obj.holder_name,
+                    account_holder_type: 'individual',
+                    routing_number: obj.bsb
+                }
+            });
+
+            console.log("bank_account_token => ", bank_account_token);
+            var card_resp = await artist_helper.get_account_by_artist_id(artist_id);
+
+            console.log("card resp => ", card_resp);
+
+            if (card_resp && card_resp.status != 1) {
+
+                var account = await stripe.accounts.create({
+                    type: 'custom',
+                    country: 'US',
+                    email: artist_data.artist.email
+
+                });
+                var account_obj = {
+                    "artist_id": artist_id,
+                    "account_id": account.id
+                }
+                var card_resp = await artist_helper.insert_account(account_obj);
+
+            }
+
+            await stripe.accounts.createExternalAccount(
+                card_resp.account.account_id,
+                { external_account: bank_account_token.id }
+            );
+
+            res.status(config.OK_STATUS).json({ "message": "Account created" });
+
+        } catch (error) {
+            console.log(error)
+        }
 
 
-        var account = await stripe.accounts.create({
-            type: 'custom',
-            country: 'US',
-            email: 'mm@narola.email'
-        });
-        console.log('account', account);
-
-        res.status(config.OK_STATUS).json(card_resp);
     }
-
 });
 
 /**

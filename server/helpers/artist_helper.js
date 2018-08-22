@@ -5,6 +5,7 @@ var User = require("./../models/user");
 var Track = require("./../models/track");
 var Notification = require("./../models/notification");
 var Bank = require("../models/bank");
+var Account = require("../models/account");
 const saltRounds = 10;
 var artist_helper = {};
 var mongoose = require('mongoose');
@@ -27,6 +28,31 @@ artist_helper.insert_artist = async (object) => {
         return { "status": 1, "message": "Record inserted", "artist": data };
     } catch (err) {
         return { "status": 0, "message": "Error occured while inserting artist", "error": err };
+    }
+};
+
+artist_helper.insert_account = async (object) => {
+    console.log('object', object);
+
+    let art = new Account(object)
+    try {
+        let data = await art.save();
+        return { "status": 1, "message": "Record inserted", "account": data };
+    } catch (err) {
+        return { "status": 0, "message": "Error occured while inserting artist", "error": err };
+    }
+};
+
+artist_helper.get_account_by_artist_id = async (artist_id) => {
+    try {
+        var account = await Account.findOne({ "artist_id": ObjectId(artist_id) }).lean();
+        if (account) {
+            return { "status": 1, "message": "account details found", "account": account };
+        } else {
+            return { "status": 2, "message": "account not found" };
+        }
+    } catch (err) {
+        return { "status": 0, "message": "Error occured while finding account", "error": err }
     }
 };
 

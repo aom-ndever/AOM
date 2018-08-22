@@ -218,7 +218,7 @@ purchase_helper.get_purchased_track = async (user_id, start, length) => {
         ];
         var track = await Purchase.aggregate(aggregate);
         var filter_cnt = track.length;
-        if (track && track.length > 0) {
+        if (track) {
             return { "status": 1, "message": "Purchased Track found", "track": track, "recordsFiltered": filter_cnt, "recordsTotal": tot_cnt };
         } else {
             return { "status": 2, "message": "No track available" };
