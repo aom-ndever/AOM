@@ -95,10 +95,10 @@ router.post('/purchase', async (req, res) => {
  * @apiSuccess (Success 200) {Array} track  of track document
  * @apiError (Error 4xx) {String} message Validation or error message.
  */
-router.get("/purchased", async (req, res) => {
+router.post("/purchased", async (req, res) => {
   user_id = req.userInfo.id;
   logger.trace("Get all Artist API called");
-  var resp_data = await purchase_helper.get_purchased_track(user_id);
+  var resp_data = await purchase_helper.get_purchased_track(user_id, req.body.start, req.body.length);
   if (resp_data.status == 0) {
     logger.error("Error occured while fetching Track = ", resp_data);
     res.status(config.INTERNAL_SERVER_ERROR).json(resp_data);
