@@ -180,8 +180,9 @@ artist_helper.get_artist_by_music_id = async (id) => {
 };
 artist_helper.get_artists = async () => {
     try {
-
-        var artist = await Artist.find({ "featured": true });
+        var artist = await Artist.find({ "featured": true })
+            .populate('state')
+            .populate('music_type');
         if (artist) {
             return { "status": 1, "message": "Artist details found", "artist": artist };
         } else {
