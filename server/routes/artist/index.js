@@ -174,11 +174,11 @@ router.put('/', async (req, res) => {
 
 });
 
-router.put('/card/:card_id', async (req, res) => {
+router.put('/bank/:bank_id', async (req, res) => {
     user_id = req.userInfo.id;
     var obj = {
     };
-    var user_resp = await artist_helper.update_card(req.userInfo.id, req.params.card_id);
+    var user_resp = await artist_helper.update_bank(req.userInfo.id, req.params.bank_id);
     console.log('user_resp', user_resp);
 
     if (user_resp.status === 0) {
@@ -188,17 +188,17 @@ router.put('/card/:card_id', async (req, res) => {
     }
 
 });
-router.post('/add_payment_method', async (req, res) => {
+router.post('/add_bank_details', async (req, res) => {
     artist_id = req.userInfo.id;
     var obj = {
-        "fname": req.body.fname,
-        "lname": req.body.lname,
-        "card_type": req.body.card_type,
-        "card_id": req.body.card_id,
+        "card_number": req.body.card_number,
+        "holder_name": req.body.holder_name,
+        "expiry_date": req.body.expiry_date,
+        "cvv": req.body.cvv,
         "artist_id": artist_id,
     };
 
-    var card_resp = await artist_helper.insert_card(obj);
+    var card_resp = await artist_helper.insert_bank(obj);
     if (card_resp.status === 0) {
         res.status(config.INTERNAL_SERVER_ERROR).json(card_resp);
     } else {
@@ -255,15 +255,15 @@ router.put('/notification_settings', function (req, res) {
 
 });
 
-router.delete('/card/:card_id', async (req, res) => {
+router.delete('/bank/:bank_id', async (req, res) => {
     artist_id = req.userInfo.id;
-    var del_resp = await artist_helper.delete_card(req.params.card_id, artist_id);
+    var del_resp = await artist_helper.delete_bank(req.params.bank_id, artist_id);
     if (del_resp.status === 0) {
-        res.status(config.INTERNAL_SERVER_ERROR).json({ "status": 0, "message": "Error occured while deleting artist image", "error": del_resp.error });
+        res.status(config.INTERNAL_SERVER_ERROR).json({ "status": 0, "message": "Error occured while deleting artist bank", "error": del_resp.error });
     } else if (del_resp.status === 2) {
-        res.status(config.BAD_REQUEST).json({ "status": 0, "message": "Can't delete artist card" });
+        res.status(config.BAD_REQUEST).json({ "status": 0, "message": "Can't delete artist bank" });
     } else {
-        res.status(config.OK_STATUS).json({ "status": 1, "message": "artist card has been deleted" });
+        res.status(config.OK_STATUS).json({ "status": 1, "message": "artist bank has been deleted" });
     }
 });
 
@@ -416,12 +416,12 @@ router.delete('/cover_image/:artist_id', async (req, res) => {
     }
 });
 
-router.get('/card', async (req, res) => {
+router.get('/bank', async (req, res) => {
     artist_id = req.userInfo.id;
-    var card = await artist_helper.get_all_card_by_artist_id(artist_id);
+    var card = await artist_helper.get_all_bank_by_artist_id(artist_id);
     if (card.status === 1) {
         logger.trace("got details successfully");
-        res.status(config.OK_STATUS).json({ "status": 1, "card": card.card });
+        res.status(config.OK_STATUS).json({ "status": 1, "card": card.bank });
     } else {
         logger.error("Error occured while fetching = ", card);
         res.status(config.INTERNAL_SERVER_ERROR).json(card);
