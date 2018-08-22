@@ -2194,5 +2194,10 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
       example.classList.remove('submitted');
     });
   }
-
+  // Make payment method default
+  markAsDefault(id) {
+    this.MyProfileService.markAsDefault(id).subscribe((response) => {
+      this.toastr.success(response['message'], 'Success!');
+    });
+  }
 }

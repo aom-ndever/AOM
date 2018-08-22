@@ -4366,10 +4366,31 @@ justify-content: space-around !important;
 }
 #bookmarked_track .track-det .track-singer{    font-size: 13px;}
 .edit_save_btn{
-        clear: both;
-    float: left;
-    margin-top: 20px !important;
-    margin-left: 15px !important;
+    float: right;
+    margin-top: 20px!important;
+    margin-right: 15px !important;
+}
+.mCustomScrollbar::-webkit-scrollbar
+{
+  width: 8px;  /* for vertical scrollbars */
+  height: 12px; /* for horizontal scrollbars */
+  border-radius: 12px;
+}
+
+.mCustomScrollbar::-webkit-scrollbar-track
+{
+  background: #dedede;
+    border-radius: 12px;
+}
+
+.mCustomScrollbar::-webkit-scrollbar-thumb
+{
+  background:#9c27b0;
+    border-radius: 12px;
+}
+.rofile-tab-content .tab-content>.tab-pan{    display: none;}
+.rofile-tab-content .tab-content>.active {
+    display: block !important;
 }
 /*MEDIA START*/
 @media screen and (min-width: 768px){
@@ -4415,6 +4436,9 @@ justify-content: space-around !important;
         width:100%;
         text-align: center;
     }
+   .profile-tabs ul li a {
+    font-size: 14px !important;
+}
 }
 @media screen and (max-width: 1024px){
     .audio_content {
@@ -4423,6 +4447,7 @@ justify-content: space-around !important;
     .mymusic-wrap > .container{
         padding: 0 15px;
 }
+
 }
 @media screen and (max-width: 991px){
 	/*banner*/
@@ -4545,6 +4570,9 @@ justify-content: space-around !important;
         width: 100% !important;
     }
     .right_graph{ width: 100%;}
+    .Bookmarked_table table{
+            min-width: unset !important;
+    }
 }
 @media screen and (max-width: 767px){
 	/*Homepage*/
