@@ -56,28 +56,32 @@ router.post('/purchase', async (req, res) => {
     };
 
     var track_response = await track_helper.get_all_track_by_track_id(obj.track_id);
+    try {
+      var charge = await stripe.charges.create({
+        amount: track_response.track.price * 100,
+        currency: "usd",
+        source: "tok_1D1rvyByKlzX7uR6uARha3Px",
+        description: "Charge for jenny.rosen@example.com"
 
-    var charge = await stripe.charges.create({
-      amount: track_response.track.price * 100,
-      currency: "usd",
-      source: "tok_1D1s3cByKlzX7uR6msux7LRg",
-      description: "Charge for jenny.rosen@example.com"
-    });
+      });
+      var resp_data = await purchase_helper.purchase_track(obj);
+      if (resp_data.status == 0) {
+        logger.error("Error occured while fetching music = ", resp_data);
+        res.status(config.INTERNAL_SERVER_ERROR).json(resp_data);
+      } else {
+        logger.trace("purchased successfully = ", resp_data);
+        res.status(config.OK_STATUS).json(resp_data);
+      }
 
-    console.log("Charge ==> ", charge);
-
-    var resp_data = await purchase_helper.purchase_track(obj);
-    if (resp_data.status == 0) {
-      logger.error("Error occured while fetching music = ", resp_data);
-      res.status(config.INTERNAL_SERVER_ERROR).json(resp_data);
-    } else {
-      logger.trace("purchased successfully = ", resp_data);
-      res.status(config.OK_STATUS).json(resp_data);
+    } catch (error) {
+      res.status(config.INTERNAL_SERVER_ERROR).json({ "message": "invalid token" });
     }
-  } else {
+  }
+  else {
     logger.error("Validation Error = ", errors);
     res.status(config.BAD_REQUEST).json({ message: errors });
   }
+
 });
 
 

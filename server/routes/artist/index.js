@@ -205,13 +205,13 @@ router.post('/add_bank_details', async (req, res) => {
     } else {
 
 
-        // stripe.accounts.create({
-        //     type: 'custom',
-        //     country: 'US',
-        //     email: 'mm@narola.email'
-        // }, function (err, account) {
+        var account = await stripe.accounts.create({
+            type: 'custom',
+            country: 'US',
+            email: 'mm@narola.email'
+        });
+        console.log('account', account);
 
-        // });
         res.status(config.OK_STATUS).json(card_resp);
     }
 
