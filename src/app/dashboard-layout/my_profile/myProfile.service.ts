@@ -210,20 +210,24 @@ export class MyProfileService {
   upgradeToArtist(data : any) {
     return this.http.post(`${this.api_host}/user/upgrade_to_artist`, data, {headers:this.headers});
   }
-  // Get All Card by artist
-  getAllCard() {
-    return this.http.get(`${this.api_host}/artist/card`, {headers:this.headers});
+  // Get All bank by artist
+  getAllBank() {
+    return this.http.get(`${this.api_host}/artist/bank`, {headers:this.headers});
   }
   // Add new payment method
   addNewPaymentMethod(data) {
-    return this.http.post(`${this.api_host}/artist/add_payment_method`, data, {headers : this.headers});
+    return this.http.post(`${this.api_host}/artist/add_bank_details`, data, {headers : this.headers});
   }
   // Remove existing card
-  removeCard(id) {
-    return this.http.delete(`${this.api_host}/artist/card/${id}`, {headers:this.headers});
+  removeBank(id) {
+    return this.http.delete(`${this.api_host}/artist/bank/${id}`, {headers:this.headers});
   }
   // Mark payment method as default
   markAsDefault(id) {
-    return this.http.put(`${this.api_host}/artist/card/${id}`,{}, {headers:this.headers});
+    return this.http.put(`${this.api_host}/artist/bank/${id}`,{}, {headers:this.headers});
+  }
+  // purchased track
+  getAllPurchasedTrack(data) {
+    return this.http.post(`${this.api_host}/user/track/purchased`, data, {headers : this.headers});
   }
 }

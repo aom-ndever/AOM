@@ -109,6 +109,14 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
   track_flag : boolean = false;
   playlist_track_list : any = [];
 
+  // Bank
+  bank_fg :  FormGroup;
+  bank_validation : boolean = false;
+
+  // Purchased track
+  purchased_track : any = [];
+  purchased_track_list : any = [];
+
   constructor(private MyProfileService : MyProfileService, 
     private toastr: ToastrService,
     private router: Router,
@@ -251,6 +259,13 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
       phone : ['', [Validators.required, Validators.pattern('[0-9]+'), Validators.minLength(10),Validators.maxLength(10), this.noWhitespaceValidator]],
       zipcode : ['', [Validators.required, this.noWhitespaceValidator]],
       music_type : ['']
+    });
+
+    this.bank_fg = this.fb.group({
+      bname : ['', [Validators.required, this.noWhitespaceValidator]],
+      hname : ['', [Validators.required, this.noWhitespaceValidator]],
+      acno : ['', [Validators.required, Validators.minLength(16), Validators.maxLength(16) , this.noWhitespaceValidator]],
+      rno : ['', [Validators.required, this.noWhitespaceValidator]]
     });
 
      // this.getAllData();
@@ -432,6 +447,40 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
           { data: '' }
         ]
       };
+      this.dtOptions[2] = {
+        pagingType: 'full_numbers',
+        pageLength: 10,
+        serverSide: true,
+        processing: true,
+        searching: false,
+        ordering: false,
+        lengthChange: false,
+        responsive: true,
+        ajax: (dataTablesParameters: any, callback) => {
+          console.log(dataTablesParameters);
+          that.audio_ins = [];
+          that.MyProfileService.getAllPurchasedTrack(dataTablesParameters).subscribe((response) => {
+            that.purchased_track = response['track'];
+            this.audio_ins = [];
+            this.purchased_track_list = [];
+            that.purchased_track.forEach((ele) => {this.audio_ins.push(false)});
+            that.purchased_track.forEach((ele) => {this.purchased_track_list.push(ele['track'])});
+            callback({
+              recordsTotal: response['recordsTotal'],
+              recordsFiltered: response['recordsFiltered'],
+              data: []
+            });
+          });
+          
+        },
+        columns: [
+          { data: '' },
+          { data: '' },
+          { data: '' },
+          { data: '' }
+        ]
+      };
+
     }
 
   }
@@ -1986,86 +2035,36 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   // Stripe Credit-Card implementation
+  bank_data : any = {};
   openCardModel(content) {
-    setTimeout(()=>{
-      this.setupStripeFrom();
-    },500);
+    this.bank_data = {};
     this.media_modal_ref = this.modalService.open(content, { centered: true, backdrop : true });
   }
-
-  style = {
-    base: {
-      color: '#32325d',
-      lineHeight: '18px',
-      fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
-      fontSmoothing: 'antialiased',
-      fontSize: '16px',
-      '::placeholder': {
-        color: '#aab7c4'
-      }
-    },
-    invalid: {
-      color: '#fa755a',
-      iconColor: '#fa755a'
-    }
-  };
-
-  setupStripeFrom() {
-    var stripe = Stripe(environment.STRIPE_PUB_KEY);
-    var elements = stripe.elements();
-    var card = elements.create('card', { style: this.style });
-    card.mount('#card-element');
-    // this.registerElements([card], 'ex');
-    card.addEventListener('change', function (event) {
-      var displayError = document.getElementById('card-errors');
-      if (event.error) {
-        displayError.textContent = event.error.message;
-      } else {
-        displayError.textContent = '';
-      }
-    });
-
-    var form = document.getElementById('payment-form');
-    
-    form.addEventListener('submit', (event) => {
-      event.preventDefault();
+  // Add new bank
+  addBank(flag) {
+    if(flag) {
       this.show_spinner = true;
-      stripe.createToken(card).then((result) => {
-        if (result.error) {
-          // Inform the customer that there was an error.
-          var errorElement = document.getElementById('card-errors');
-          errorElement.textContent = result.error.message;
-        } else {
-          // Send the token to your server.
-          console.log(result.token);
-          let data = {
-            "fname": form['elements'][0].value,
-            "lname": form['elements'][1].value,
-            "card_id" : result.token['card']['id'],
-            "card_type" : result.token['card']['brand'].toLowerCase()
-          };
-          
-          this.MyProfileService.addNewPaymentMethod(data).subscribe((response) => {
-            this.toastr.success(response['message'], 'Success!');
-            this.media_modal_ref.close();
-            this.getAllCard();
-          }, (error) => {
-            this.toastr.error(error['error'].message, 'Error!');
-            this.show_spinner = false;
-          }, () => {
-            this.show_spinner = false;
-          });
-          //this.stripeTokenHandler(result.token);
-        }
+      this.MyProfileService.addNewPaymentMethod(this.bank_data).subscribe((response) => {
+        this.toastr.success(response['message'], 'Success!');
+        this.getAllCard();
+        this.media_modal_ref.close();
+      }, (error) => {
+        this.toastr.error(error['error'].message, 'Error!');
+        this.show_spinner = false;
+      }, () => {
+        this.show_spinner = false;
       });
-    });
+    } 
+    this.bank_validation = !flag;
   }
-  
   // get all card
   card_list : any = [];
   getAllCard() {
-    this.MyProfileService.getAllCard().subscribe((response) => {
-      this.card_list = response['card'];
+    this.MyProfileService.getAllBank().subscribe((response) => {
+      this.card_list = response['bank'];
+      this.card_list.forEach((ele) => {
+        ele['account_number'] = ele['account_number'].toString().replace(/.(?=.{4})/g, 'X');
+      });
     });
   }
   // remove card
@@ -2080,7 +2079,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
       confirmButtonText: 'Yes, delete it!'
     }).then((flag) => {
       if(flag.value) {
-        this.MyProfileService.removeCard(id).subscribe((response)=>{
+        this.MyProfileService.removeBank(id).subscribe((response)=>{
           this.toastr.success(response['message'], 'Success!');
           this.getAllCard();
         });
@@ -2088,111 +2087,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
     });
     
   }
-  registerElements(elements, exampleName) {
-    var stripe = Stripe(environment.STRIPE_PUB_KEY);
-    var formClass = '.' + exampleName;
-    var example = document.querySelector(formClass);
   
-    var form = example.querySelector('form');
-    var resetButton = example.querySelector('a.reset');
-    var error = form.querySelector('.error');
-    var errorMessage = error.querySelector('.message');
-  
-    function enableInputs() {
-      Array.prototype.forEach.call(
-        form.querySelectorAll(
-          "input[type='text'], input[type='email'], input[type='tel']"
-        ),
-        function(input) {
-          input.removeAttribute('disabled');
-        }
-      );
-    }
-  
-    function disableInputs() {
-      Array.prototype.forEach.call(
-        form.querySelectorAll(
-          "input[type='text'], input[type='email'], input[type='tel']"
-        ),
-        function(input) {
-          input.setAttribute('disabled', 'true');
-        }
-      );
-    }
-  
-    // Listen for errors from each Element, and show error messages in the UI.
-    elements.forEach(function(element) {
-      element.on('change', function(event) {
-        if (event.error) {
-          error.classList.add('visible');
-          errorMessage['innerText'] = event.error.message;
-        } else {
-          error.classList.remove('visible');
-        }
-      });
-    });
-  
-    // Listen on the form's 'submit' handler...
-    form.addEventListener('submit', function(e) {
-      e.preventDefault();
-  
-      // Show a loading screen...
-      example.classList.add('submitting');
-  
-      // Disable all inputs.
-      disableInputs();
-  
-      // Gather additional customer data we may have collected in our form.
-      var name = form.querySelector('#' + exampleName + '-name');
-      var address1 = form.querySelector('#' + exampleName + '-address');
-      var city = form.querySelector('#' + exampleName + '-city');
-      var state = form.querySelector('#' + exampleName + '-state');
-      var zip = form.querySelector('#' + exampleName + '-zip');
-      var additionalData = {
-        name: name ? name['value'] : undefined,
-        address_line1: address1 ? address1['value'] : undefined,
-        address_city: city ? city['value'] : undefined,
-        address_state: state ? state['value'] : undefined,
-        address_zip: zip ? zip['value'] : undefined,
-      };
-  
-      // Use Stripe.js to create a token. We only need to pass in one Element
-      // from the Element group in order to create a token. We can also pass
-      // in the additional customer data we collected in our form.
-      stripe.createToken(elements[0], additionalData).then(function(result) {
-        // Stop loading!
-        example.classList.remove('submitting');
-  
-        if (result.token) {
-          // If we received a token, show the token ID.
-          example.querySelector('.token')['innerText'] = result.token.id;
-          example.classList.add('submitted');
-        } else {
-          // Otherwise, un-disable inputs.
-          enableInputs();
-        }
-      });
-    });
-  
-    resetButton.addEventListener('click', function(e) {
-      e.preventDefault();
-      // Resetting the form (instead of setting the value to `''` for each input)
-      // helps us clear webkit autofill styles.
-      form.reset();
-  
-      // Clear each Element.
-      elements.forEach(function(element) {
-        element.clear();
-      });
-  
-      // Reset error state as well.
-      error.classList.remove('visible');
-  
-      // Resetting the form does not un-disable inputs, so we need to do it separately:
-      enableInputs();
-      example.classList.remove('submitted');
-    });
-  }
   // Make payment method default
   markAsDefault(id) {
     this.MyProfileService.markAsDefault(id).subscribe((response) => {

@@ -357,12 +357,12 @@
                             <div class="tab-content">
                                 <div id="paymentmethod" class="tab-pane fade show active">
                                     <div class="pay-method">
-                                        <div class="edit-head">Your Payment Method</div>
+                                        <div class="edit-head">Your Bank Info</div>
                                         <div class="select-payemnt-table">
                                             <table>
                                                 <tr *ngFor="let card of card_list;">
                                                     <td>
-                                                        <div class="radio">
+                                                        <div class="radio" style="margin-right:0px;">
                                                             <label>
                                                                 <input type="radio" value="" name="musicgenre" [checked]="card['status']" (click)="markAsDefault(card['_id'])">
                                                                 <div class="radio_check"></div>
@@ -370,16 +370,13 @@
                                                         </div>
                                                     </td>
                                                     <td>
-                                                        <img src="img/visa.png" *ngIf="card['card_type'] == 'visa'" alt="Visa Card">
-                                                        <img src="img/images.jpg" *ngIf="card['card_type'] == 'american express'" alt="Visa card" class="check-img">
-                                                        <img src="img/Master-Card-Blue-icon.jpg" *ngIf="card['card_type'] == 'mastercard'" alt="Visa card" class="check-img">
-                                                        <img src="img/discover.jpg" alt="Visa card"  *ngIf="card['card_type'] == 'discover'" class="check-img">
+                                                        {{card['name']}}
                                                     </td>
                                                     <td>
-                                                        <p class="pay-name">{{card['card_type']}}</p>
+                                                        <p class="pay-name">{{card['account_number']}}</p>
                                                     </td>
                                                     <td>
-                                                        <p class="card-num">{{card['fname']+' '+card['lname']}}</p>
+                                                        <p class="card-num">{{card['holder_name']}}</p>
                                                     </td>
                                                     <td>
                                                         <div class="pay-delete">
@@ -390,9 +387,12 @@
                                                         </div>
                                                     </td>
                                                 </tr>
+                                                <tr *ngIf="card_list.length == 0">
+                                                    <td colspan="5">No data available.</td>
+                                                </tr>
                                             </table>
                                             <a data-fancybox data-animation-duration="700" data-src="#addpayment" (click)="openCardModel(addCard)" href="javascript:;" class="add-payment">
-                                                <img src="img/icons8-plus_mathNormal.png" alt=""> Add Payment Method
+                                                <img src="img/icons8-plus_mathNormal.png" alt=""> Add Bank
                                             </a>
                                         </div>
                                     </div>
@@ -973,6 +973,7 @@
                         <li class="nav-item"><a class="nav-link {{tab_cnt == 3 ? 'active' : '' }}" data-toggle="tab" (click)="tabChange(3)" href="javascript:;">Bookmarked</a></li>
                         <li class="nav-item"><a class="nav-link {{tab_cnt == 4 ? 'active' : '' }}" data-toggle="tab" (click)="tabChange(4)" href="javascript:;">Playlist</a></li>
                         <li class="nav-item"><a class="nav-link {{tab_cnt == 5 ? 'active' : '' }}" data-toggle="tab" (click)="tabChange(5)" href="javascript:;">Upgrade to Artist</a></li>
+                        <li class="nav-item"><a class="nav-link {{tab_cnt == 6 ? 'active' : '' }}" data-toggle="tab" (click)="tabChange(6)" href="javascript:;">Purchase Track</a></li>
                     </ul>
                 </div>
             </div>
@@ -1555,6 +1556,52 @@
                                 </form>
                             </div>
                         </div>
+                        <div class="tab-pan fade {{tab_cnt == 6 ? 'show active' : ''}}" id="purchased_track">
+                            <div class="row">
+                                <div class="col-sm-12 col-md-12 col-12">
+                                    <h3>Purchased track</h3>
+                                    <div class="track-table Bookmarked_table">
+                                        <table datatable [dtOptions]="dtOptions[2]">
+                                            <tbody>
+                                                <tr *ngFor="let val of purchased_track; let i = index;">
+                                                    <td class="music_play">
+                                                        <div class="artist-profile-custom-action-btn">
+                                                            <a [style.display]="!audio_ins[i] ? 'block' : 'none'" (click)="playAudio(val['track'].audio, i, purchased_track_list)" class="play_img" ><img src="img/play_icon.png"/></a>
+                                                            <a [style.display]="audio_ins[i] ? 'block' : 'none'" (click)="stopAudio(i, purchased_track_list)" class="pause_img"><img src="img/pause_icon.png"/></a>
+                                                        </div>
+                                                    </td>
+                                                    <td class="track-det" colspan="2">
+                                                     <div class="track-pic">
+                                                        <a href="javascript:;">
+                                                            <img src="{{val['track'] && val['track'].image ? track_url+val['track'].image : 'img/track-img.png'}}" style="height:50px;width:50px;" alt="Track Image">
+                                                        </a>
+                                                    </div>
+                                                    <div class="track_title">
+                                                        <p class="track-name">{{val['track'] &&  val['track'].name ? val['track'].name : '' }}</p>
+                                                        <p class="track-singer">{{(val && val['artist'] && val['artist'].first_name )? val.artist.first_name : '' + ' '+ val && val['artist'] && val['artist']['last_name'] ? val['artist']['last_name'] : ''}}</p>
+                                                        <p class="track-year">{{val['track'] && val['track'].created_at ? (val['track'].created_at | date : 'yyyy' ): ''}}</p>
+                                                        <p class="track-date">{{val['track'] && val['track'].created_at ? (val['track'].created_at  | date : 'MMMM dd,yyyy') : ''}}</p>
+                                                    </div>
+                                                    </td>
+                                                    <td>
+                                                        ${{val && val['track'] && val['track']['price'] ? val['track']['price'] : '0' }}
+                                                    </td>
+                                                    <td class="td track-vote music_vote">
+                                                        <img src="img/start.png" alt="start">
+                                                        <span>{{val['track'] && val['track'].no_of_votes ? val['track'].no_of_votes : '' }}
+                                                            <span>Votes</span>
+                                                        </span>
+                                                    </td>
+                                                </tr>
+                                                <tr *ngIf="purchased_track.length == 0">
+                                                    <td colspan="4">No data available.</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1665,29 +1712,44 @@
         <span aria-hidden="true">&times;</span>
     </button>
     <div class="modal-body">
-        <div class="media-modal">
-            <h3>Add New Card</h3>
-            <form id="payment-form">
+        <div class="forget_password_modal">
+            <h3>Add New Bank</h3>
+            <form [formGroup]="bank_fg">
                 <div class="form-group">
-                    <label class="label-control">First Name</label>
-                    <input class="form-control"  id="fname" />
-                </div>
-                <div class="form-group">
-                    <label class="label-control">Last Name</label>
-                    <input class="form-control"  id="lname" />
-                </div>
-                <div class="form-group">
-                    <label for="card-element">
-                        Credit or debit card
-                    </label>
-                    <div id="card-element">
-                    <!-- A Stripe Element will be inserted here. -->
+                    <label class="label-control">Bank Name</label>
+                    <input class="form-control" formControlName="bname" id="bname" [(ngModel)]="bank_data.name" />
+                    <div class="cust_err_msg" *ngIf="bank_validation && !bank_fg.controls['bname'].valid">
+                        <span *ngIf="bank_fg.controls['bname'].errors['required']" class="text-danger">Bank name is required.</span>
+                        <span *ngIf="!bank_fg.controls['bname'].errors['required'] && bank_fg.controls['bname'].errors['whitespace'] " class="text-danger">Enter valid data.</span>
                     </div>
-                    <!-- Used to display form errors. -->
-                    <div id="card-errors" class="text-danger" role="alert"></div>
                 </div>
                 <div class="form-group">
-                    <button class="btn btn-success btn-sm" [disabled]="show_spinner">Add Card <i *ngIf="show_spinner" class="fa fa-spinner fa-spin"></i></button>
+                    <label class="label-control">Account holder Name</label>
+                    <input class="form-control" formControlName="hname" id="ahname" [(ngModel)]="bank_data.holder_name"/>
+                    <div class="cust_err_msg" *ngIf="bank_validation && !bank_fg.controls['hname'].valid">
+                        <span *ngIf="bank_fg.controls['hname'].errors['required']" class="text-danger">Account holder name is required.</span>
+                        <span *ngIf="!bank_fg.controls['hname'].errors['required'] && bank_fg.controls['hname'].errors['whitespace']" class="text-danger">Enter valid data.</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="label-control">Account Number</label>
+                    <input class="form-control" formControlName="acno" id="acnumber" [(ngModel)]="bank_data.account_number"/>
+                    <div class="cust_err_msg" *ngIf="bank_validation && !bank_fg.controls['acno'].valid">
+                        <span *ngIf="bank_fg.controls['acno'].errors['required']" class="text-danger">Account Number is required.</span>
+                        <span *ngIf="!bank_fg.controls['acno'].errors['required'] && bank_fg.controls['acno'].errors['whitespace']" class="text-danger">Enter valid data.</span>
+                        <span *ngIf="!bank_fg.controls['acno'].errors['required'] && bank_fg.controls['acno'].errors['minlength'] || bank_fg.controls['acno'].errors['maxlength'] " class="text-danger">Enter valid Account Number.</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="label-control">Routin Number</label>
+                    <input class="form-control"formControlName="rno"  id="routinnumber" [(ngModel)]="bank_data.bsb"/>
+                    <div class="cust_err_msg" *ngIf="bank_validation && !bank_fg.controls['rno'].valid">
+                        <span *ngIf="bank_fg.controls['rno'].errors['required']" class="text-danger">Routin Number is required.</span>
+                        <span *ngIf="!bank_fg.controls['rno'].errors['required'] && bank_fg.controls['rno'].errors['whitespace']" class="text-danger">Enter valid data.</span>
+                    </div>
+                </div>
+                <div class="form-group text-right">
+                    <button class="btn forget_btn" (click)="addBank(bank_fg.valid)" [disabled]="show_spinner">Save <i *ngIf="show_spinner" class="fa fa-spinner fa-spin"></i></button>
                 </div>
             </form>
         </div>
