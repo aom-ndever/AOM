@@ -19,6 +19,8 @@ var mongoose = require('mongoose');
 var ObjectId = mongoose.Types.ObjectId;
 var fs = require('fs');
 var archiver = require('archiver');
+var stripe = require("stripe")("sk_test_FUsMHGCLfkGJmKEbW0aiRATb");
+
 
 
 
@@ -52,12 +54,27 @@ router.post('/purchase', async (req, res) => {
       user_id: req.userInfo.id,
       track_id: req.body.track_id
     };
+
+    var track_response = await track_helper.get_all_track_by_track_id(obj.track_id);
+
+
     var resp_data = await purchase_helper.purchase_track(obj);
     if (resp_data.status == 0) {
       logger.error("Error occured while fetching music = ", resp_data);
       res.status(config.INTERNAL_SERVER_ERROR).json(resp_data);
     } else {
       logger.trace("music got successfully = ", resp_data);
+      var charge_id = await stripe.charges.create({
+        amount: track_response.track.price * 100,
+        currency: "usd",
+        source: req.body.card_id,
+        description: "Charge for jenny.rosen@example.com"
+      }, function (err, charge) {
+
+        stripe.charges.capture(charge.id, function (errr, charges) {
+
+        });
+      });
       res.status(config.OK_STATUS).json(resp_data);
     }
   } else {
