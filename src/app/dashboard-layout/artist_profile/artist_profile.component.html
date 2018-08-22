@@ -176,7 +176,7 @@
                                   </a>
                                 </div>
                                 <div class="cmt">
-                                  <a href="javascript:;" title="Purchase">
+                                  <a href="javascript:;" title="Purchase" (click)="openCardModel(purchase, i, 'track')">
                                    ${{artist.price}}
                                   </a>
                                 </div>
@@ -267,7 +267,7 @@
                                   </a>
                                 </div>
                                 <div class="cmt">
-                                  <a href="javascript:;" title="Download" title="Purchase">
+                                  <a href="javascript:;" title="Download" title="Purchase" (click)="openCardModel(purchase, i, 'rank')">
                                     ${{rank.price}}
                                   </a>
                                 </div>
@@ -394,18 +394,21 @@
 <ng-template #purchase let-c="close" let-d="dismiss">
   <div class="modal-body">
     <div class="forget_password_modal">
-      <!-- <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
           <span aria-hidden="true">&times;</span>
-      </button> -->
-      <form >
-          <h3 class="forget_password_header">Purchase Track</h3>
+      </button>
+      <form id="payment-form">
+          <div class="col-12 text-center shared_popup_header">
+              <h4>Purchase Track</h4>
+              <span>You are going to purchase the "{{track_data && track_data['name'] ? track_data['name'] : '' }}" Track.</span>
+          </div>
           <div class="col-sm-12">
-              <div class="form-group">
+              <!-- <div class="form-group">
                   <label class="control-label custom_form_label">Name</label>
                   <input type="email" class="form-control custom_form" name="Name"  placeholder="Enter Card Name"/>
-              </div>
+              </div> -->
               <div class="form-group">
-                  <label for="card-element">
+                  <label for="card-element" class="control-label custom_form_label">
                       Credit or debit card
                   </label>
                   <div id="card-element">
@@ -413,6 +416,10 @@
                   </div>
                   <!-- Used to display form errors. -->
                   <div id="card-errors" class="text-danger" role="alert"></div>
+              </div>
+              <div class="form-group">
+                <label class="control-label custom_form_label">Price</label>
+                <input class="form-control custom_form" value="{{'$'+track_data['price']}}" readonly/>
               </div>
               <div class="form-group text-right">
                   <button class="btn forget_btn" [disabled]="show_spinner">Submit <i *ngIf="show_spinner" class="fa fa-spinner fa-spin"></i></button>
