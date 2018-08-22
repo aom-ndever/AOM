@@ -101,6 +101,9 @@ li.notification span.new-up {
     font-weight: 400;
     text-decoration: none;
 }
+.update-option li a:hover {
+    color: #9c27b0;
+}
 .navigation ul li a:focus,.update-option li a:focus{
     outline:none !important;
 }
@@ -1237,6 +1240,14 @@ span.up_text {
     font-family: 'Poppins', sans-serif;
     color:#9C27B0;
     margin: 0px auto;
+}
+.vote-btn a:hover , .vote-btn a:focus{
+       color:#9C27B0;
+       opacity: 0.9; 
+}
+a:hover{      color:#9C27B0;}
+.player .title a:hover, .player .title a:focus{
+        color:#9C27B0;
 }
 .content-block{
     display: -webkit-box;
@@ -4404,10 +4415,13 @@ justify-content: space-around !important;
   background:#9c27b0;
     border-radius: 12px;
 }
+
 .rofile-tab-content .tab-content>.tab-pan{    display: none;}
 .rofile-tab-content .tab-content>.active {
     display: block !important;
 }
+.creat_contest_body .custom_modal_form .date-of-birth{    padding: 0 15px;}
+
 /*MEDIA START*/
 @media screen and (min-width: 768px){
     .content-block{width: 750px;}
