@@ -64,7 +64,7 @@ router.post('/purchase', async (req, res) => {
       res.status(config.INTERNAL_SERVER_ERROR).json(resp_data);
     } else {
       logger.trace("music got successfully = ", resp_data);
-      var charge_id = await stripe.charges.create({
+      var transaction = await stripe.charges.create({
         amount: track_response.track.price * 100,
         currency: "usd",
         source: req.body.card_id,
@@ -75,7 +75,13 @@ router.post('/purchase', async (req, res) => {
 
         });
       });
-      res.status(config.OK_STATUS).json(resp_data);
+      if (transaction.status == 0) {
+        res.status(config.INTERNAL_SERVER_ERROR).json(errr);
+      }
+      else {
+        res.status(config.OK_STATUS).json(resp_data);
+      }
+
     }
   } else {
     logger.error("Validation Error = ", errors);
