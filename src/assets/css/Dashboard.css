@@ -1340,6 +1340,10 @@ label input[type="radio"], input[type="radio"]{
 #profile .edit-details label{
   vertical-align: top;
 }
+#musictype{
+      height: 34px;
+}
+.edit-details{}
 
 
 @media(max-width:1024px){
@@ -1574,10 +1578,10 @@ label input[type="radio"], input[type="radio"]{
 }
 @media(min-width:1285px){
   .artists_table .dataTables_scrollHeadInner table{
-    width: 1288px !important ;
+    width: 100% !important ;
   }
-  .artists_table .dataTables_scrollBody table{
-    width: 1280px !important ;
+  .artists_table .dataTables_scrollBody table, .dataTables_scrollHeadInner{
+    width: 100% !important ;
     margin-bottom: 0 !important;
   }
   .artists_table table, .artists_table table.dataTable{
