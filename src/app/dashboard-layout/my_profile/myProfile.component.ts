@@ -383,7 +383,6 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
           console.log(dataTablesParameters);
           that.audio_ins = [];
           that.MyProfileService.getBookmarkedTrack(dataTablesParameters).subscribe((response) => {
-            
             that.bookmark_list = response['bookmark'];
             if(that.bookmark_list.length > 0) { 
               this.audio_ins = [];
@@ -2042,7 +2041,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
           let data = {
             "fname": form['elements'][0].value,
             "lname": form['elements'][1].value,
-            "card_id" : result.token['id'],
+            "card_id" : result.token['card']['id'],
             "card_type" : result.token['card']['brand'].toLowerCase()
           };
           
