@@ -57,19 +57,14 @@ router.post('/purchase', async (req, res) => {
 
     var track_response = await track_helper.get_all_track_by_track_id(obj.track_id);
 
-    var transaction = await stripe.charges.create({
+    var charge = await stripe.charges.create({
       amount: track_response.track.price * 100,
       currency: "usd",
-      source: req.body.card_id,
+      source: "tok_1D1s3cByKlzX7uR6msux7LRg",
       description: "Charge for jenny.rosen@example.com"
-    }, function (err, charge) {
-      console.log('charge', charge);
-
-      stripe.charges.capture(charge.id, function (err, charges) {
-        console.log('charges', charges);
-
-      });
     });
+
+    console.log("Charge ==> ", charge);
 
     var resp_data = await purchase_helper.purchase_track(obj);
     if (resp_data.status == 0) {

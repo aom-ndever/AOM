@@ -17,6 +17,7 @@ var user_helper = require('../../helpers/user_helper');
 var download_helper = require('../../helpers/download_helper');
 var vote_track_helper = require('../../helpers/vote_track_helper');
 var contest_helper = require('../../helpers/contest_helper');
+var stripe = require("stripe")("sk_test_FUsMHGCLfkGJmKEbW0aiRATb");
 
 var mongoose = require('mongoose');
 var ObjectId = mongoose.Types.ObjectId;
@@ -191,10 +192,10 @@ router.put('/bank/:bank_id', async (req, res) => {
 router.post('/add_bank_details', async (req, res) => {
     artist_id = req.userInfo.id;
     var obj = {
-        "card_number": req.body.card_number,
+        "name": req.body.name,
         "holder_name": req.body.holder_name,
-        "expiry_date": req.body.expiry_date,
-        "cvv": req.body.cvv,
+        "account_number": req.body.account_number,
+        "bsb": req.body.bsb,
         "artist_id": artist_id,
     };
 
@@ -202,6 +203,15 @@ router.post('/add_bank_details', async (req, res) => {
     if (card_resp.status === 0) {
         res.status(config.INTERNAL_SERVER_ERROR).json(card_resp);
     } else {
+
+
+        // stripe.accounts.create({
+        //     type: 'custom',
+        //     country: 'US',
+        //     email: 'mm@narola.email'
+        // }, function (err, account) {
+
+        // });
         res.status(config.OK_STATUS).json(card_resp);
     }
 
@@ -421,7 +431,7 @@ router.get('/bank', async (req, res) => {
     var card = await artist_helper.get_all_bank_by_artist_id(artist_id);
     if (card.status === 1) {
         logger.trace("got details successfully");
-        res.status(config.OK_STATUS).json({ "status": 1, "card": card.bank });
+        res.status(config.OK_STATUS).json({ "status": 1, "bank": card.bank });
     } else {
         logger.error("Error occured while fetching = ", card);
         res.status(config.INTERNAL_SERVER_ERROR).json(card);

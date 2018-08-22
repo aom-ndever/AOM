@@ -7,11 +7,11 @@ var SALT_WORK_FACTOR = 10;
 var Schema = mongoose.Schema;
 
 var BankModelSchema = new Schema({
+    name: String,
     artist_id: { type: mongoose.Schema.Types.ObjectId, ref: 'artist' },
-    card_number: Number,
+    account_number: Number,
     holder_name: String,
-    expiry_date: Date,
-    cvv: String,
+    bsb: String,
     status: { type: Boolean, default: false },
     created_at: { type: Date, default: Date.now }
 }, { versionKey: false });
