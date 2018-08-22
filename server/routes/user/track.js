@@ -63,8 +63,10 @@ router.post('/purchase', async (req, res) => {
       source: req.body.card_id,
       description: "Charge for jenny.rosen@example.com"
     }, function (err, charge) {
+      console.log('charge', charge);
 
       stripe.charges.capture(charge.id, function (err, charges) {
+        console.log('charges', charges);
 
       });
     });
