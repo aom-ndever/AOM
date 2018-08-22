@@ -4,7 +4,8 @@ var Artist = require("./../models/artist");
 var User = require("./../models/user");
 var Track = require("./../models/track");
 var Notification = require("./../models/notification");
-var Card = require("../models/card");
+var Bank = require("../models/bank");
+var Account = require("../models/account");
 const saltRounds = 10;
 var artist_helper = {};
 var mongoose = require('mongoose');
@@ -30,6 +31,31 @@ artist_helper.insert_artist = async (object) => {
     }
 };
 
+artist_helper.insert_account = async (object) => {
+    console.log('object', object);
+
+    let art = new Account(object)
+    try {
+        let data = await art.save();
+        return { "status": 1, "message": "Record inserted", "account": data };
+    } catch (err) {
+        return { "status": 0, "message": "Error occured while inserting artist", "error": err };
+    }
+};
+
+artist_helper.get_account_by_artist_id = async (artist_id) => {
+    try {
+        var account = await Account.findOne({ "artist_id": ObjectId(artist_id) }).lean();
+        if (account) {
+            return { "status": 1, "message": "account details found", "account": account };
+        } else {
+            return { "status": 2, "message": "account not found" };
+        }
+    } catch (err) {
+        return { "status": 0, "message": "Error occured while finding account", "error": err }
+    }
+};
+
 artist_helper.insert_user_to_artists = async (object) => {
 
     try {
@@ -42,44 +68,43 @@ artist_helper.insert_user_to_artists = async (object) => {
 
 
 
-artist_helper.delete_card = async (card_id, artist_id) => {
+artist_helper.delete_bank = async (bank_id, artist_id) => {
     try {
 
-        var artist = await Card.findOneAndRemove({ "_id": new ObjectId(card_id), "artist_id": new ObjectId(artist_id) })
+        var artist = await Bank.findOneAndRemove({ "_id": new ObjectId(bank_id), "artist_id": new ObjectId(artist_id) })
         if (artist) {
-            return { "status": 1, "message": "artist details found", "artist": artist };
+            return { "status": 1, "message": "Bank Account Deleted", "artist": artist };
         } else {
-            return { "status": 2, "message": "artist not found" };
+            return { "status": 2, "message": "bank not found" };
         }
     } catch (err) {
-        return { "status": 0, "message": "Error occured while finding artist", "error": err }
+        return { "status": 0, "message": "Error occured while finding bank", "error": err }
     }
 };
 
 
 
-artist_helper.update_card = async (artist_id, card_id) => {
+artist_helper.update_bank = async (artist_id, card_id) => {
     try {
 
-        let card = await Card.findOneAndUpdate({ "_id": new ObjectId(card_id), "artist_id": new ObjectId(artist_id) }, { "status": true }, { new: true });
-        let cards = await Card.updateMany({ "_id": { $ne: new ObjectId(card_id) }, "artist_id": new ObjectId(artist_id) }, { "status": false }, { new: true });
+        let card = await Bank.findOneAndUpdate({ "_id": new ObjectId(card_id), "artist_id": new ObjectId(artist_id) }, { "status": true }, { new: true });
+        let cards = await Bank.updateMany({ "_id": { $ne: new ObjectId(card_id) }, "artist_id": new ObjectId(artist_id) }, { "status": false }, { new: true });
         if (!card) {
-            return { "status": 2, "message": "Card has not updated" };
+            return { "status": 2, "message": "Bank has not updated" };
         } else {
 
-            return { "status": 1, "message": "card has been updated", "card": card };
+            return { "status": 1, "message": "Bank has been updated", "card": card };
         }
     } catch (err) {
-        return { "status": 0, "message": "Error occured while updating card", "error": err }
+        return { "status": 0, "message": "Error occured while updating bank", "error": err }
     }
 };
 
-artist_helper.insert_card = async (object) => {
-    let payment = new Card(object)
+artist_helper.insert_bank = async (object) => {
+    let bank = new Bank(object)
     try {
-        let data = await payment.save();
-
-        return { "status": 1, "message": "Record inserted", "card": data };
+        let data = await bank.save();
+        return { "status": 1, "message": "Record inserted", "card": bank };
     } catch (err) {
         return { "status": 0, "message": "Error occured while inserting artist", "error": err };
     }
@@ -496,37 +521,22 @@ artist_helper.get_all_active_and_suspend_artist = async (start, length, filter, 
         return { "status": 0, "message": "Error occured while finding artist", "error": err }
     }
 };
-artist_helper.get_all_card_by_artist_id = async (artist_id) => {
+artist_helper.get_all_bank_by_artist_id = async (artist_id) => {
     try {
 
-        var card = await Card
+        var bank = await Bank
             .find({ "artist_id": new ObjectId(artist_id) })
 
-        if (card) {
-            return { "status": 1, "message": "card details found", "card": card };
+        if (bank) {
+            return { "status": 1, "message": "bank details found", "bank": bank };
         } else {
-            return { "status": 2, "message": "card not found" };
+            return { "status": 2, "message": "bank not found" };
         }
     } catch (err) {
-        return { "status": 0, "message": "Error occured while finding card", "error": err }
+        return { "status": 0, "message": "Error occured while finding bank", "error": err }
     }
 };
 
-artist_helper.get_all_card_by_artist_id_card_id = async (artist_id, card_id) => {
-    try {
-
-        var card = await Card
-            .findOne({ "artist_id": new ObjectId(artist_id), "_id": new ObjectId(card_id) })
-
-        if (card) {
-            return { "status": 1, "message": "card details found", "card": card };
-        } else {
-            return { "status": 2, "message": "card not found" };
-        }
-    } catch (err) {
-        return { "status": 0, "message": "Error occured while finding card", "error": err }
-    }
-};
 
 artist_helper.update_artist_status = async (artist_id, status) => {
     try {

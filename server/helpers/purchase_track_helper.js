@@ -14,16 +14,212 @@ purchase_helper.purchase_track = async (object) => {
     }
 };
 
-purchase_helper.get_purchased_track = async (user_id) => {
+purchase_helper.get_purchased_track = async (user_id, start, length) => {
     try {
-        var aggregate = [{
-            "$match": {
-                "user_id": new ObjectId(user_id)
+
+        var aggregates = [
+            {
+                "$match": {
+                    "user_id": new ObjectId(user_id)
+                }
+            },
+            {
+                '$lookup': {
+                    from: 'track',
+                    localField: 'track_id',
+                    foreignField: '_id',
+                    as: 'track'
+                }
+            },
+            {
+                '$unwind': '$track'
+            },
+            {
+                '$lookup': {
+                    from: 'artist',
+                    localField: 'track.artist_id',
+                    foreignField: '_id',
+                    as: 'artist'
+                }
+            },
+            {
+                '$unwind': '$artist'
+            },
+            {
+                '$lookup': {
+                    from: 'music_type',
+                    localField: 'artist.music_type',
+                    foreignField: '_id',
+                    as: 'music_type'
+                }
+            },
+            {
+                '$unwind': '$music_type'
+            },
+            {
+                '$lookup': {
+                    from: 'state',
+                    localField: 'artist.state',
+                    foreignField: '_id',
+                    as: 'state'
+                }
+            },
+            {
+                '$unwind': '$state'
+            },
+
+            {
+                '$lookup': {
+                    from: 'user',
+                    localField: 'user_id',
+                    foreignField: '_id',
+                    as: 'user'
+                }
+            },
+            {
+                '$unwind': '$user'
+            },
+            {
+                '$lookup': {
+                    from: 'music_type',
+                    localField: 'user.music_type',
+                    foreignField: '_id',
+                    as: 'music_type'
+                }
+            },
+            {
+                '$unwind': '$music_type'
+            },
+            {
+                '$lookup': {
+                    from: 'state',
+                    localField: 'user.state',
+                    foreignField: '_id',
+                    as: 'state'
+                }
+            },
+            {
+                '$unwind': '$state'
+            },
+            {
+                '$project': {
+                    'artist.music_type': 0,
+                    'artist.state': 0,
+                    'track.artist_id': 0
+                }
+            },
+
+        ];
+        var tracks = await Purchase.aggregate(aggregates);
+
+
+        var tot_cnt = tracks.length;
+
+
+
+        var aggregate = [
+            {
+                "$match": {
+                    "user_id": new ObjectId(user_id)
+                }
+            },
+            {
+                '$lookup': {
+                    from: 'track',
+                    localField: 'track_id',
+                    foreignField: '_id',
+                    as: 'track'
+                }
+            },
+            {
+                '$unwind': '$track'
+            },
+            {
+                '$lookup': {
+                    from: 'artist',
+                    localField: 'track.artist_id',
+                    foreignField: '_id',
+                    as: 'artist'
+                }
+            },
+            {
+                '$unwind': '$artist'
+            },
+            {
+                '$lookup': {
+                    from: 'music_type',
+                    localField: 'artist.music_type',
+                    foreignField: '_id',
+                    as: 'music_type'
+                }
+            },
+            {
+                '$unwind': '$music_type'
+            },
+            {
+                '$lookup': {
+                    from: 'state',
+                    localField: 'artist.state',
+                    foreignField: '_id',
+                    as: 'state'
+                }
+            },
+            {
+                '$unwind': '$state'
+            },
+
+            {
+                '$lookup': {
+                    from: 'user',
+                    localField: 'user_id',
+                    foreignField: '_id',
+                    as: 'user'
+                }
+            },
+            {
+                '$unwind': '$user'
+            },
+            {
+                '$lookup': {
+                    from: 'music_type',
+                    localField: 'user.music_type',
+                    foreignField: '_id',
+                    as: 'music_type'
+                }
+            },
+            {
+                '$unwind': '$music_type'
+            },
+            {
+                '$lookup': {
+                    from: 'state',
+                    localField: 'user.state',
+                    foreignField: '_id',
+                    as: 'state'
+                }
+            },
+            {
+                '$unwind': '$state'
+            },
+            {
+                '$project': {
+                    'artist.music_type': 0,
+                    'artist.state': 0,
+                    'track.artist_id': 0
+                }
+            },
+
+            {
+                $skip: start
+            },
+            {
+                $limit: length
             }
-        }];
+        ];
         var track = await Purchase.aggregate(aggregate);
-        if (track && track.length > 0) {
-            return { "status": 1, "message": "media found", "track": track };
+        var filter_cnt = track.length;
+        if (track) {
+            return { "status": 1, "message": "Purchased Track found", "track": track, "recordsFiltered": filter_cnt, "recordsTotal": tot_cnt };
         } else {
             return { "status": 2, "message": "No track available" };
         }

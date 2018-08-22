@@ -56,33 +56,32 @@ router.post('/purchase', async (req, res) => {
     };
 
     var track_response = await track_helper.get_all_track_by_track_id(obj.track_id);
-
-    var transaction = await stripe.charges.create({
-      amount: track_response.track.price * 100,
-      currency: "usd",
-      source: req.body.card_id,
-      description: "Charge for jenny.rosen@example.com"
-    }, function (err, charge) {
-      console.log('charge', charge);
-
-      stripe.charges.capture(charge.id, function (err, charges) {
-        console.log('charges', charges);
+    try {
+      var charge = await stripe.charges.create({
+        amount: track_response.track.price * 100,
+        currency: "usd",
+        source: "tok_1D1rvyByKlzX7uR6uARha3Px",
+        description: "Charge for jenny.rosen@example.com"
 
       });
-    });
+      var resp_data = await purchase_helper.purchase_track(obj);
+      if (resp_data.status == 0) {
+        logger.error("Error occured while fetching music = ", resp_data);
+        res.status(config.INTERNAL_SERVER_ERROR).json(resp_data);
+      } else {
+        logger.trace("purchased successfully = ", resp_data);
+        res.status(config.OK_STATUS).json(resp_data);
+      }
 
-    var resp_data = await purchase_helper.purchase_track(obj);
-    if (resp_data.status == 0) {
-      logger.error("Error occured while fetching music = ", resp_data);
-      res.status(config.INTERNAL_SERVER_ERROR).json(resp_data);
-    } else {
-      logger.trace("purchased successfully = ", resp_data);
-      res.status(config.OK_STATUS).json(resp_data);
+    } catch (error) {
+      res.status(config.INTERNAL_SERVER_ERROR).json({ "message": "invalid token" });
     }
-  } else {
+  }
+  else {
     logger.error("Validation Error = ", errors);
     res.status(config.BAD_REQUEST).json({ message: errors });
   }
+
 });
 
 
@@ -95,10 +94,10 @@ router.post('/purchase', async (req, res) => {
  * @apiSuccess (Success 200) {Array} track  of track document
  * @apiError (Error 4xx) {String} message Validation or error message.
  */
-router.get("/purchased", async (req, res) => {
+router.post("/purchased", async (req, res) => {
   user_id = req.userInfo.id;
   logger.trace("Get all Artist API called");
-  var resp_data = await purchase_helper.get_purchased_track(user_id);
+  var resp_data = await purchase_helper.get_purchased_track(user_id, req.body.start, req.body.length);
   if (resp_data.status == 0) {
     logger.error("Error occured while fetching Track = ", resp_data);
     res.status(config.INTERNAL_SERVER_ERROR).json(resp_data);

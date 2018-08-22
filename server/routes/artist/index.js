@@ -17,6 +17,7 @@ var user_helper = require('../../helpers/user_helper');
 var download_helper = require('../../helpers/download_helper');
 var vote_track_helper = require('../../helpers/vote_track_helper');
 var contest_helper = require('../../helpers/contest_helper');
+var stripe = require("stripe")("sk_test_FUsMHGCLfkGJmKEbW0aiRATb");
 
 var mongoose = require('mongoose');
 var ObjectId = mongoose.Types.ObjectId;
@@ -174,11 +175,11 @@ router.put('/', async (req, res) => {
 
 });
 
-router.put('/card/:card_id', async (req, res) => {
+router.put('/bank/:bank_id', async (req, res) => {
     user_id = req.userInfo.id;
     var obj = {
     };
-    var user_resp = await artist_helper.update_card(req.userInfo.id, req.params.card_id);
+    var user_resp = await artist_helper.update_bank(req.userInfo.id, req.params.bank_id);
     console.log('user_resp', user_resp);
 
     if (user_resp.status === 0) {
@@ -188,23 +189,69 @@ router.put('/card/:card_id', async (req, res) => {
     }
 
 });
-router.post('/add_payment_method', async (req, res) => {
+router.post('/add_bank_details', async (req, res) => {
     artist_id = req.userInfo.id;
     var obj = {
-        "fname": req.body.fname,
-        "lname": req.body.lname,
-        "card_type": req.body.card_type,
-        "card_id": req.body.card_id,
+        "name": req.body.name,
+        "holder_name": req.body.holder_name,
+        "account_number": req.body.account_number,
+        "bsb": req.body.bsb,
         "artist_id": artist_id,
-    };
 
-    var card_resp = await artist_helper.insert_card(obj);
+    };
+    var artist_data = await artist_helper.get_artist_by_id(artist_id);
+
+    var card_resp = await artist_helper.insert_bank(obj);
     if (card_resp.status === 0) {
         res.status(config.INTERNAL_SERVER_ERROR).json(card_resp);
     } else {
-        res.status(config.OK_STATUS).json(card_resp);
-    }
+        try {
 
+            let bank_account_token = await stripe.tokens.create({
+                bank_account: {
+                    account_number: obj.account_number,
+                    country: 'US',
+                    currency: 'usd',
+                    account_holder_name: obj.holder_name,
+                    account_holder_type: 'individual',
+                    routing_number: obj.bsb
+                }
+            });
+
+            console.log("bank_account_token => ", bank_account_token);
+            var card_resp = await artist_helper.get_account_by_artist_id(artist_id);
+
+            console.log("card resp => ", card_resp);
+
+            if (card_resp && card_resp.status != 1) {
+
+                var account = await stripe.accounts.create({
+                    type: 'custom',
+                    country: 'US',
+                    email: artist_data.artist.email
+
+                });
+                var account_obj = {
+                    "artist_id": artist_id,
+                    "account_id": account.id
+                }
+                var card_resp = await artist_helper.insert_account(account_obj);
+
+            }
+
+            await stripe.accounts.createExternalAccount(
+                card_resp.account.account_id,
+                { external_account: bank_account_token.id }
+            );
+
+            res.status(config.OK_STATUS).json({ "message": "Account created" });
+
+        } catch (error) {
+            console.log(error)
+        }
+
+
+    }
 });
 
 /**
@@ -255,15 +302,15 @@ router.put('/notification_settings', function (req, res) {
 
 });
 
-router.delete('/card/:card_id', async (req, res) => {
+router.delete('/bank/:bank_id', async (req, res) => {
     artist_id = req.userInfo.id;
-    var del_resp = await artist_helper.delete_card(req.params.card_id, artist_id);
+    var del_resp = await artist_helper.delete_bank(req.params.bank_id, artist_id);
     if (del_resp.status === 0) {
-        res.status(config.INTERNAL_SERVER_ERROR).json({ "status": 0, "message": "Error occured while deleting artist image", "error": del_resp.error });
+        res.status(config.INTERNAL_SERVER_ERROR).json({ "status": 0, "message": "Error occured while deleting artist bank", "error": del_resp.error });
     } else if (del_resp.status === 2) {
-        res.status(config.BAD_REQUEST).json({ "status": 0, "message": "Can't delete artist card" });
+        res.status(config.BAD_REQUEST).json({ "status": 0, "message": "Can't delete artist bank" });
     } else {
-        res.status(config.OK_STATUS).json({ "status": 1, "message": "artist card has been deleted" });
+        res.status(config.OK_STATUS).json({ "status": 1, "message": "artist bank has been deleted" });
     }
 });
 
@@ -416,12 +463,12 @@ router.delete('/cover_image/:artist_id', async (req, res) => {
     }
 });
 
-router.get('/card', async (req, res) => {
+router.get('/bank', async (req, res) => {
     artist_id = req.userInfo.id;
-    var card = await artist_helper.get_all_card_by_artist_id(artist_id);
+    var card = await artist_helper.get_all_bank_by_artist_id(artist_id);
     if (card.status === 1) {
         logger.trace("got details successfully");
-        res.status(config.OK_STATUS).json({ "status": 1, "card": card.card });
+        res.status(config.OK_STATUS).json({ "status": 1, "bank": card.bank });
     } else {
         logger.error("Error occured while fetching = ", card);
         res.status(config.INTERNAL_SERVER_ERROR).json(card);
