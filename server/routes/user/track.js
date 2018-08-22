@@ -57,31 +57,25 @@ router.post('/purchase', async (req, res) => {
 
     var track_response = await track_helper.get_all_track_by_track_id(obj.track_id);
 
+    var transaction = await stripe.charges.create({
+      amount: track_response.track.price * 100,
+      currency: "usd",
+      source: req.body.card_id,
+      description: "Charge for jenny.rosen@example.com"
+    }, function (err, charge) {
+
+      stripe.charges.capture(charge.id, function (err, charges) {
+
+      });
+    });
 
     var resp_data = await purchase_helper.purchase_track(obj);
     if (resp_data.status == 0) {
       logger.error("Error occured while fetching music = ", resp_data);
       res.status(config.INTERNAL_SERVER_ERROR).json(resp_data);
     } else {
-      logger.trace("music got successfully = ", resp_data);
-      var transaction = await stripe.charges.create({
-        amount: track_response.track.price * 100,
-        currency: "usd",
-        source: req.body.card_id,
-        description: "Charge for jenny.rosen@example.com"
-      }, function (err, charge) {
-
-        stripe.charges.capture(charge.id, function (errr, charges) {
-
-        });
-      });
-      if (transaction.status == 0) {
-        res.status(config.INTERNAL_SERVER_ERROR).json(errr);
-      }
-      else {
-        res.status(config.OK_STATUS).json(resp_data);
-      }
-
+      logger.trace("purchased successfully = ", resp_data);
+      res.status(config.OK_STATUS).json(resp_data);
     }
   } else {
     logger.error("Validation Error = ", errors);
