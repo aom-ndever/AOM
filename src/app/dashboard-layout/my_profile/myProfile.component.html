@@ -965,7 +965,7 @@
 <section class="edit-profile-wrap" *ngIf="userdata.type == 'user'">
     <div class="container">
         <div class="row">
-            <div class="col-md-2 col-sm-3 col-xs-3">
+            <div class="col-lg-2 col-md-3 col-sm-3 col-xs-3">
                 <div class="profile-tabs">
                     <ul class="nav nav-tabs" id="myTab">
                         <li class="nav-item"><a class="nav-link {{tab_cnt == 1 ? 'active' : '' }}" (click)="tabChange(1)" data-toggle="tab" href="javascript:;">Profile</a></li>
@@ -976,7 +976,7 @@
                     </ul>
                 </div>
             </div>
-            <div class="col-md-10 col-sm-9 col-xs-9">
+            <div class="col-lg-10 col-md-9 col-sm-9 col-xs-9">
                 <div class="rofile-tab-content">
                     <div class="tab-content">
                         <div class="tab-pane fade {{tab_cnt == 1 ? 'show active' : '' }} " id="profile">
@@ -1255,7 +1255,7 @@
                             <div class="row">
                                 <div class="col-sm-12 col-md-12 col-12">
                                     <h3>Bookmarked track</h3>
-                                    <div class="track-table">
+                                    <div class="track-table Bookmarked_table">
                                         <table datatable [dtOptions]="dtOptions[0]">
                                             <tbody>
                                                 <tr *ngFor="let val of bookmark_list; let i = index;">
