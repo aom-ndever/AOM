@@ -8,7 +8,7 @@ purchase_helper.purchase_track = async (object) => {
     let track = new Purchase(object)
     try {
         let data = await track.save();
-        return { "status": 1, "message": "Record inserted", "track": data };
+        return { "status": 1, "message": "Track Purchased Successfully", "track": data };
     } catch (err) {
         return { "status": 0, "message": "Error occured while purchasing track", "error": err };
     }

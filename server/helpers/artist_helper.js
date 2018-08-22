@@ -10,6 +10,7 @@ var artist_helper = {};
 var mongoose = require('mongoose');
 var ObjectId = mongoose.Types.ObjectId;
 var moment = require('moment');
+
 /*
  * insert_artist is used to insert into artist collection
  * 
@@ -500,6 +501,22 @@ artist_helper.get_all_card_by_artist_id = async (artist_id) => {
 
         var card = await Card
             .find({ "artist_id": new ObjectId(artist_id) })
+
+        if (card) {
+            return { "status": 1, "message": "card details found", "card": card };
+        } else {
+            return { "status": 2, "message": "card not found" };
+        }
+    } catch (err) {
+        return { "status": 0, "message": "Error occured while finding card", "error": err }
+    }
+};
+
+artist_helper.get_all_card_by_artist_id_card_id = async (artist_id, card_id) => {
+    try {
+
+        var card = await Card
+            .findOne({ "artist_id": new ObjectId(artist_id), "_id": new ObjectId(card_id) })
 
         if (card) {
             return { "status": 1, "message": "card details found", "card": card };

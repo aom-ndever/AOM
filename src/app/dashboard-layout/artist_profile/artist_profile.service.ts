@@ -94,4 +94,10 @@ export class ArtistProfileService {
     this.headers = new HttpHeaders({ 'x-access-token' : this.user.token });
     return this.http.post(`${this.api_host}/user/bookmark/add`, data, {headers : this.headers});
   }
+  // purchase track
+  purchaseTrack(data) {
+    this.user = JSON.parse(localStorage.getItem('user'));
+    this.headers = new HttpHeaders({ 'x-access-token' : this.user.token });
+    return this.http.post(`${this.api_host}/user/track/purchase`, data, {headers : this.headers});
+  }
 }

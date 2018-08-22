@@ -10,7 +10,7 @@ import { Subscription } from 'rxjs/Subscription';
 import {NgbModal, ModalDismissReasons, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
 import { FormGroup, FormBuilder, Validators, FormControl, AbstractControl, NG_VALIDATORS, Validator } from '@angular/forms';
 declare var FB : any;
-
+declare let Stripe: any;
 @Component({
   selector: 'app-artist_profile',
   templateUrl: './artist_profile.component.html',
@@ -486,97 +486,178 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
     }
   }
 
-    // share on facebook
-    shareOnFacebook() {
+  // share on facebook
+  shareOnFacebook() {
+    let track = this.track_data;
+    console.log(track);
+    let url = 'http://'+window.location.host+'/artist_profile/'+track['artist_id']['_id']+'/track/'+track['_id']+'/comments';
+    let str = "Track Name: "+track['name']+"\nArtist: "+track['artist_id']['first_name']+' '+track['artist_id']['last_name']+'\nDescription: '+track['description'];
+    // var facebookWindow = window.open('https://www.facebook.com/sharer.php?s=100&p[summary]='+encodeURIComponent(str)+"&p[url]="+encodeURIComponent(url), 'facebook-popup', 'height=350,width=600');
+    // if(facebookWindow.focus) { facebookWindow.focus(); }
+    FB.ui({
+      method: 'share_open_graph',
+      action_type: 'og.likes',
+      action_properties : JSON.stringify({
+        object : {
+          'og:url' : url,
+          'og:title' : 'AOM',
+          'og:description' : str
+        }
+      })
+    }, function(response){});
+  }
+  // share on twitter
+  shareOnTwitter() {
+    let track = this.track_data;
+    console.log(track);
+    let url = 'http://'+window.location.host+'/artist_profile/'+track['artist_id']['_id']+'/track/'+track['_id']+'/comments';
+    let str = "Track Name: "+track['name']+"\nArtist: "+track['artist_id']['first_name']+' '+track['artist_id']['last_name']+'\nDescription: '+track['description'];
+    var twitterWindow = window.open('https://twitter.com/share?url=' +encodeURIComponent(url)+'&text='+encodeURIComponent(str), 'twitter-popup', 'height=350,width=600');
+    if(twitterWindow.focus) { twitterWindow.focus(); }
+  }
+  // share track via email
+  share_via_email(flag : boolean) {
+    if(flag) {
+      this.share_form_validation = !flag;
+      this.show_spinner = true;
       let track = this.track_data;
-      console.log(track);
       let url = 'http://'+window.location.host+'/artist_profile/'+track['artist_id']['_id']+'/track/'+track['_id']+'/comments';
-      let str = "Track Name: "+track['name']+"\nArtist: "+track['artist_id']['first_name']+' '+track['artist_id']['last_name']+'\nDescription: '+track['description'];
-      // var facebookWindow = window.open('https://www.facebook.com/sharer.php?s=100&p[summary]='+encodeURIComponent(str)+"&p[url]="+encodeURIComponent(url), 'facebook-popup', 'height=350,width=600');
-      // if(facebookWindow.focus) { facebookWindow.focus(); }
-      FB.ui({
-        method: 'share_open_graph',
-        action_type: 'og.likes',
-        action_properties : JSON.stringify({
-          object : {
-            'og:url' : url,
-            'og:title' : 'AOM',
-            'og:description' : str
-          }
-        })
-      }, function(response){});
+      let data = {
+        email : this.share_data['email'],
+        track_id : track['_id'],
+        url : url
+      };
+      this.ArtistProfileService.shareTrackViaEmail(data).subscribe((response) => {
+        this.toastr.success(response['message'], 'Success!');
+        this.emailmodalRef.close();
+      }, (error) => {
+        this.toastr.error(error['error'].message, 'Error!');
+        this.show_spinner = false;
+      }, () => {
+        this.show_spinner = false;
+      });
+    } else {
+      this.share_form_validation = !flag;
     }
-    // share on twitter
-    shareOnTwitter() {
+  }
+  // share via sms
+  share_via_sms(flag : boolean) {
+    if(flag) {
+      this.share_form_validation = !flag;
+      this.show_spinner = true;
       let track = this.track_data;
-      console.log(track);
       let url = 'http://'+window.location.host+'/artist_profile/'+track['artist_id']['_id']+'/track/'+track['_id']+'/comments';
-      let str = "Track Name: "+track['name']+"\nArtist: "+track['artist_id']['first_name']+' '+track['artist_id']['last_name']+'\nDescription: '+track['description'];
-      var twitterWindow = window.open('https://twitter.com/share?url=' +encodeURIComponent(url)+'&text='+encodeURIComponent(str), 'twitter-popup', 'height=350,width=600');
-      if(twitterWindow.focus) { twitterWindow.focus(); }
+      let data = {
+        phone_no : this.share_data['phone_no'],
+        track_id : track['_id'],
+        url : url
+      };
+      this.ArtistProfileService.shareTrackViaSms(data).subscribe((response) => {
+        this.toastr.success(response['message'], 'Success!');
+        this.emailmodalRef.close();
+        this.share_data = {};
+      }, (error) => {
+        this.toastr.error(error['error'].message, 'Error!');
+        this.show_spinner = false;
+      }, () => {
+        this.show_spinner = false;
+      });
+    } else {
+      this.share_form_validation = !flag;
     }
-    // share track via email
-    share_via_email(flag : boolean) {
-      if(flag) {
-        this.share_form_validation = !flag;
-        this.show_spinner = true;
-        let track = this.track_data;
-        let url = 'http://'+window.location.host+'/artist_profile/'+track['artist_id']['_id']+'/track/'+track['_id']+'/comments';
-        let data = {
-          email : this.share_data['email'],
-          track_id : track['_id'],
-          url : url
-        };
-        this.ArtistProfileService.shareTrackViaEmail(data).subscribe((response) => {
-          this.toastr.success(response['message'], 'Success!');
-          this.emailmodalRef.close();
-        }, (error) => {
-          this.toastr.error(error['error'].message, 'Error!');
-          this.show_spinner = false;
-        }, () => {
-          this.show_spinner = false;
-        });
+  }
+  // copy share track link
+  copy_link() {
+    let track = this.track_data;
+    console.log(track);
+    let url = 'http://'+window.location.host+'/artist_profile/'+track['artist_id']['_id']+'/track/'+track['_id']+'/comments';
+    var textArea = document.createElement("textarea");
+    textArea.value = url;
+    document.body.appendChild(textArea);
+    textArea.focus();
+    textArea.select();
+    document.execCommand("copy");
+    textArea.remove();
+  }
+
+
+  // Stripe Credit-Card implementation
+  openCardModel(content, index, type) {
+    if(this.user && this.user['user']) {
+      setTimeout(()=>{
+        this.setupStripeFrom();
+      },500);
+      if(type == 'track') {
+        this.track_data = this.artisttrack[index];
       } else {
-        this.share_form_validation = !flag;
+        this.track_data = this.rankingtrack[index];
       }
+      this.modalRef = this.modalService.open(content, { centered: true, backdrop : true });
+    } else {
+      this.toastr.info('Please sign-in as listener to purchase track.', 'Info!');
     }
-    // share via sms
-    share_via_sms(flag : boolean) {
-      if(flag) {
-        this.share_form_validation = !flag;
-        this.show_spinner = true;
-        let track = this.track_data;
-        let url = 'http://'+window.location.host+'/artist_profile/'+track['artist_id']['_id']+'/track/'+track['_id']+'/comments';
-        let data = {
-          phone_no : this.share_data['phone_no'],
-          track_id : track['_id'],
-          url : url
-        };
-        this.ArtistProfileService.shareTrackViaSms(data).subscribe((response) => {
-          this.toastr.success(response['message'], 'Success!');
-          this.emailmodalRef.close();
-          this.share_data = {};
-        }, (error) => {
-          this.toastr.error(error['error'].message, 'Error!');
-          this.show_spinner = false;
-        }, () => {
-          this.show_spinner = false;
-        });
+  }
+  style = {
+    base: {
+      color: '#32325d',
+      lineHeight: '18px',
+      fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
+      fontSmoothing: 'antialiased',
+      fontSize: '16px',
+      '::placeholder': {
+        color: '#aab7c4'
+      }
+    },
+    invalid: {
+      color: '#fa755a',
+      iconColor: '#fa755a'
+    }
+  };
+  setupStripeFrom() {
+    var stripe = Stripe(environment.STRIPE_PUB_KEY);
+    var elements = stripe.elements();
+    var card = elements.create('card', { style: this.style });
+    card.mount('#card-element');
+    // this.registerElements([card], 'ex');
+    card.addEventListener('change', function (event) {
+      var displayError = document.getElementById('card-errors');
+      if (event.error) {
+        displayError.textContent = event.error.message;
       } else {
-        this.share_form_validation = !flag;
+        displayError.textContent = '';
       }
-    }
-    // copy share track link
-    copy_link() {
-      let track = this.track_data;
-      console.log(track);
-      let url = 'http://'+window.location.host+'/artist_profile/'+track['artist_id']['_id']+'/track/'+track['_id']+'/comments';
-      var textArea = document.createElement("textarea");
-      textArea.value = url;
-      document.body.appendChild(textArea);
-      textArea.focus();
-      textArea.select();
-      document.execCommand("copy");
-      textArea.remove();
-    }
+    });
+
+    var form = document.getElementById('payment-form');
+    
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      this.show_spinner = true;
+      stripe.createToken(card).then((result) => {
+        if (result.error) {
+          // Inform the customer that there was an error.
+          var errorElement = document.getElementById('card-errors');
+          errorElement.textContent = result.error.message;
+          this.show_spinner = false;
+        } else {
+          // Send the token to your server.
+          console.log(result.token);
+          let data = {
+            track_id : this.track_data['_id'],
+            card_id : result['token']['id']
+          };
+          // this.ArtistProfileService.purchaseTrack(data).subscribe((response) => {
+          //   this.toastr.success(response['message'], 'Success!');
+          //   this.modalRef.close();
+          // }, (error) => {
+          //   this.toastr.error(error['error'].message, 'Error!');
+          //   this.show_spinner = false;
+          // }, () => {
+          //   this.show_spinner = false;
+          // });
+          //this.stripeTokenHandler(result.token);
+        }
+      });
+    });
+  }
 }
