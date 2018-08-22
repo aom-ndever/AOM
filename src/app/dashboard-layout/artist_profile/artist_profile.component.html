@@ -157,25 +157,31 @@
                               </td>
                               <td class="action music_action" colspan="2">
                                 <div class="cmt">
-                                    <a href="javascript:;" class="liked" (click)="bookMarkTrack(artist._id, i, 'track')">
+                                    <a href="javascript:;" title="Bookmarked Track" class="liked" (click)="bookMarkTrack(artist._id, i, 'track')">
                                         <i class="fa {{artist['is_bookmarked'] ? 'fa-heart' : 'fa-heart-o'}}"></i>
                                     </a>
                                 </div>
                                 <div class="cmt-like">
-                                  <a href="javascript:;" class="liked" (click)="likeTrack(artist._id, i)">
+                                  <a href="javascript:;" title="Like" class="liked" (click)="likeTrack(artist._id, i)">
                                     <img class="like_bw" src="img/likehand.png" alt=""><img class="like_active" src="img/like-color.jpg" alt="">{{artist.no_of_likes}}
                                   </a>
                                 </div>
                                 <div class="cmt">
-                                  <a href="javascript:;" (click)="goToComment(artistdata['_id'], artist._id)">
+                                  <a href="javascript:;" title="Comment" (click)="goToComment(artistdata['_id'], artist._id)">
                                     <img src="img/comment.png" alt="">{{artist.no_of_comments}}</a>
                                 </div>
                                 <div class="download">
-                                  <a href="javascript:;" >
-                                    <img src="img/download.png" *ngIf="artist.is_downloadable" (click)="downloadTrack(artist._id)" alt="">${{artist.price}}</a>
+                                  <a href="javascript:;" title="Download">
+                                    <img src="img/download.png"  *ngIf="artist.is_downloadable" (click)="downloadTrack(artist._id)" alt="">
+                                  </a>
+                                </div>
+                                <div class="cmt">
+                                  <a href="javascript:;" title="Purchase">
+                                   ${{artist.price}}
+                                  </a>
                                 </div>
                                 <div class="share">
-                                  <a href="javascript:;" (click)="openShareTrackModel(shareTrack, i, 'track')">
+                                  <a href="javascript:;" title="share" (click)="openShareTrackModel(shareTrack, i, 'track')">
                                     <img src="img/share.png" alt="">
                                   </a>
                                 </div>
@@ -243,24 +249,30 @@
                               </td>
                               <td class="action" colspan="2">
                                   <div class="cmt">
-                                      <a href="javascript:;" class="liked" (click)="bookMarkTrack(rank._id, i, 'rank')">
+                                      <a href="javascript:;" title="Bookmark Track" class="liked" (click)="bookMarkTrack(rank._id, i, 'rank')">
                                           <i class="fa {{rank['is_bookmarked'] ? 'fa-heart' : 'fa-heart-o'}}"></i>
                                       </a>
                                   </div>
                                 <div class="cmt-like">
-                                  <a class="liked" href="javascript:;" (click)="likeRankTrack(rank._id, i)">
+                                  <a class="liked" title="Like" href="javascript:;" (click)="likeRankTrack(rank._id, i)">
                                       <img class="like_bw" src="img/likehand.png" alt=""><img class="like_active" src="img/like-color.jpg" alt="">{{rank.no_of_likes}}</a>
                                 </div>
                                 <div class="cmt">
-                                  <a href="javascript:;" (click)="goToComment(rank._id)">
+                                  <a href="javascript:;" title="Comment" (click)="goToComment(rank._id)">
                                     <img src="img/comment.png" alt="">{{rank.no_of_comments}}</a>
                                 </div>
                                 <div class="download">
-                                  <a href="javascript:;" >
-                                    <img src="img/download.png" *ngIf="rank.is_downloadable" (click)="downloadTrack(rank._id)" alt="">${{rank.price}}</a>
+                                  <a href="javascript:;" title="Download">
+                                    <img src="img/download.png" *ngIf="rank.is_downloadable" (click)="downloadTrack(rank._id)" alt="">
+                                  </a>
+                                </div>
+                                <div class="cmt">
+                                  <a href="javascript:;" title="Download" title="Purchase">
+                                    ${{rank.price}}
+                                  </a>
                                 </div>
                                 <div class="share">
-                                  <a href="javascript:;" (click)="openShareTrackModel(shareTrack, i, 'rank')">
+                                  <a href="javascript:;" title="Share" (click)="openShareTrackModel(shareTrack, i, 'rank')">
                                     <img src="img/share.png" alt="">
                                   </a>
                                 </div>
@@ -372,6 +384,38 @@
               </div>
               <div class="form-group text-right">
                   <button class="btn forget_btn" (click)="share_via_sms(share_form_phone.valid)" [disabled]="show_spinner">Submit <i *ngIf="show_spinner" class="fa fa-spinner fa-spin"></i></button>
+              </div>
+          </div>
+      </form>
+   </div>
+  </div>
+</ng-template>
+
+<ng-template #purchase let-c="close" let-d="dismiss">
+  <div class="modal-body">
+    <div class="forget_password_modal">
+      <!-- <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+          <span aria-hidden="true">&times;</span>
+      </button> -->
+      <form >
+          <h3 class="forget_password_header">Purchase Track</h3>
+          <div class="col-sm-12">
+              <div class="form-group">
+                  <label class="control-label custom_form_label">Name</label>
+                  <input type="email" class="form-control custom_form" name="Name"  placeholder="Enter Card Name"/>
+              </div>
+              <div class="form-group">
+                  <label for="card-element">
+                      Credit or debit card
+                  </label>
+                  <div id="card-element">
+                  <!-- A Stripe Element will be inserted here. -->
+                  </div>
+                  <!-- Used to display form errors. -->
+                  <div id="card-errors" class="text-danger" role="alert"></div>
+              </div>
+              <div class="form-group text-right">
+                  <button class="btn forget_btn" [disabled]="show_spinner">Submit <i *ngIf="show_spinner" class="fa fa-spinner fa-spin"></i></button>
               </div>
           </div>
       </form>
