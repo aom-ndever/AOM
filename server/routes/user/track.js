@@ -86,7 +86,9 @@ router.post('/purchase', async (req, res) => {
             currency: "usd",
             destination: card_resp.account.account_id
           });
-          console.log('transfer------------->', transfer);
+          console.log('transfer------------->', transfer.amount);
+          console.log('transfer', typeof transfer.amount);
+
           var obj = {
             "transfer_id": transfer.id,
             "to_account": transfer.destination,
