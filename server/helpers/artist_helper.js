@@ -6,6 +6,7 @@ var Track = require("./../models/track");
 var Notification = require("./../models/notification");
 var Bank = require("../models/bank");
 var Account = require("../models/account");
+var Transaction = require("../models/transaction");
 const saltRounds = 10;
 var artist_helper = {};
 var mongoose = require('mongoose');
@@ -60,6 +61,16 @@ artist_helper.insert_user_to_artists = async (object) => {
 
     try {
         let data = await Artist.insertMany([object]);
+        return { "status": 1, "message": "Record inserted", "artist": data };
+    } catch (err) {
+        return { "status": 0, "message": "Error occured while inserting artist", "error": err };
+    }
+};
+
+artist_helper.insert_transaction = async (object) => {
+    let art = new Transaction(object)
+    try {
+        let data = await art.save();
         return { "status": 1, "message": "Record inserted", "artist": data };
     } catch (err) {
         return { "status": 0, "message": "Error occured while inserting artist", "error": err };
