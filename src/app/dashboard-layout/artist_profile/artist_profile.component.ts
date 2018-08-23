@@ -641,19 +641,19 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
         } else {
           // Send the token to your server.
           console.log(result.token);
-          // let data = {
-          //   track_id : this.track_data['_id'],
-          //   card_id : result['token']['id']
-          // };
-          // this.ArtistProfileService.purchaseTrack(data).subscribe((response) => {
-          //   this.toastr.success(response['message'], 'Success!');
-          //   this.modalRef.close();
-          // }, (error) => {
-          //   this.toastr.error(error['error'].message, 'Error!');
-          //   this.show_spinner = false;
-          // }, () => {
-          //   this.show_spinner = false;
-          // });
+          let data = {
+            track_id : this.track_data['_id'],
+            card_id : result['token']['id']
+          };
+          this.ArtistProfileService.purchaseTrack(data).subscribe((response) => {
+            this.toastr.success(response['message'], 'Success!');
+            this.modalRef.close();
+          }, (error) => {
+            this.toastr.error(error['error'].message, 'Error!');
+            this.show_spinner = false;
+          }, () => {
+            this.show_spinner = false;
+          });
           //this.stripeTokenHandler(result.token);
         }
       });

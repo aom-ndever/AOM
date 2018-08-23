@@ -234,4 +234,12 @@ export class MyProfileService {
   downloadTrack(id : any) {
     return this.http.get(`${this.api_host}/user/track/${id}/download`, {headers : this.headers});
   }
+  // Get all transaction 
+  getAllTransction(data) {
+    return this.http.post(`${this.api_host}/artist/transaction`, data, {headers : this.headers});
+  }
+  // Get proceed chart data
+  getProceedChartData(data) {
+    return this.http.post(`${this.api_host}/artist/track/payment_by_day`, data, {headers : this.headers});
+  }
 }
