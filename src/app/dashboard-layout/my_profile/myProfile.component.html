@@ -401,105 +401,33 @@
                                 <div id="proceeds" class="tab-pane fade {{payment_tab_cnt == 1 ? 'show active' : ''}}">
                                     <div class="trans-history">
                                         <div class="edit-head">Transaction History</div>
-                                        <div class="transaction-table mCustomScrollbar table-responsive " data-mcs-theme="dark-3">
-                                            <table>
+                                        <div class="artists_table copyright_table table-responsive " data-mcs-theme="dark-3">
+                                            <table datatable [dtOptions]="dtOptions[1]" >
                                                 <thead>
                                                     <tr>
-                                                        <td>N°</td>
-                                                        <td>Track</td>
-                                                        <td>Date</td>
-                                                        <td>Time</td>
-                                                        <td>Price</td>
-                                                        <td>Status</td>
+                                                        <th>N°</th>
+                                                        <th>Track</th>
+                                                        <th>Date</th>
+                                                        <th>Time</th>
+                                                        <th>Price</th>
+                                                        <th>Status</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <tr>
-                                                        <td>1.</td>
-                                                        <td>Say Thanks</td>
-                                                        <td>May 10,2018</td>
-                                                        <td>10:34:12</td>
-                                                        <td>$1.99</td>
-                                                        <td>Finised</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>2.</td>
-                                                        <td>Blue State of Mind</td>
-                                                        <td>May 10,2018</td>
-                                                        <td>10:34:12</td>
-                                                        <td>$1.99</td>
-                                                        <td>Finised</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>3.</td>
-                                                        <td>Blue State of Mind</td>
-                                                        <td>May 10,2018</td>
-                                                        <td>10:34:12</td>
-                                                        <td>$1.99</td>
-                                                        <td>Finised</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>4.</td>
-                                                        <td>Blue State of Mind</td>
-                                                        <td>May 10,2018</td>
-                                                        <td>10:34:12</td>
-                                                        <td>$1.99</td>
-                                                        <td>Finised</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>5.</td>
-                                                        <td>Say Thanks</td>
-                                                        <td>May 10,2018</td>
-                                                        <td>10:34:12</td>
-                                                        <td>$1.99</td>
-                                                        <td>Finised</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>6.</td>
-                                                        <td>Say Thanks</td>
-                                                        <td>May 10,2018</td>
-                                                        <td>10:34:12</td>
-                                                        <td>$1.99</td>
-                                                        <td>Finised</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>7.</td>
-                                                        <td>Blue State of Mind</td>
-                                                        <td>May 10,2018</td>
-                                                        <td>10:34:12</td>
-                                                        <td>$1.99</td>
-                                                        <td>Finised</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>8.</td>
-                                                        <td>Blue State of Mind</td>
-                                                        <td>May 10,2018</td>
-                                                        <td>10:34:12</td>
-                                                        <td>$1.99</td>
-                                                        <td>Finised</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>9.</td>
-                                                        <td>Blue State of Mind</td>
-                                                        <td>May 10,2018</td>
-                                                        <td>10:34:12</td>
-                                                        <td>$1.99</td>
-                                                        <td>Finised</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>10.</td>
-                                                        <td>Say Thanks</td>
-                                                        <td>May 10,2018</td>
-                                                        <td>10:34:12</td>
-                                                        <td>$1.99</td>
-                                                        <td>Finised</td>
+                                                    <tr *ngFor="let t of transaction_data; let i = index;">
+                                                        <td>{{i+1}}</td>
+                                                        <td>{{t && t['track_id'] ? t['track_id']['name'] : ''}}</td>
+                                                        <td>{{t && t.created_at ? (t.created_at | date : 'MM d, yyyy') : ''}}</td>
+                                                        <td>{{t && t.created_at ? (t.created_at | date : 'H:m:s') : ''}}</td>
+                                                        <td>${{t && t['amount'] ?  t['amount'] : ''}}</td>
+                                                        <td>{{t && t['status'] ? (t['status'] | titlecase) : ''}}</td>
                                                     </tr>
                                                 </tbody>
                                             </table>
                                         </div>
                                         <div class="proceeds">
-                                            <div class="edit-head">$5,200.87 Proceeds</div>
-                                            <img src="img/proceeds.jpg" alt="Proceeds Graph">
+                                            <div class="edit-head">${{payment_count}} Proceeds</div>
+                                            <div [chart]="payment_chart"></div>
                                         </div>
                                     </div>
                                 </div>
@@ -858,9 +786,9 @@
                                         </div>
                                     </div>
                                     <div class="artist-proceeds">
-                                        <div class="edit-head">$2600 Proceeds</div>
+                                        <div class="edit-head">${{procced_count}} Proceeds</div>
                                         <div class="vote-graph">
-                                            <img src="img/d-download.jpg" alt="Downloads Map">
+                                            <div [chart]="proceed_chart"></div>
                                         </div>
                                     </div>
                                 </div>

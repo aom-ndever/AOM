@@ -123,6 +123,11 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
 
   // payment tab
   payment_tab_cnt : any = 0;
+  transaction_data : any = [];
+  payment_chart : any = '';
+  payment_count : any = 0;
+  proceed_chart : any = '';
+  procced_count : any = 0;
 
   constructor(private MyProfileService : MyProfileService, 
     private toastr: ToastrService,
@@ -360,8 +365,9 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
       this.calculateDateFromDays(this.analytics_days);
       this.getAllCard();
       //this.getAllTrackAnalytic({day : this.analytics_days});
-      this.getAllOverviewAnalytic({day : 14});
+      this.getAllOverviewAnalytic({day : this.analytics_days});
       this.getAllDownloadAnalytic({day : this.analytics_days});
+      this.getAllPayment({day : 30});
       const that = this;
       this.dtOptions[0] = {
         pagingType: 'full_numbers',
@@ -386,6 +392,35 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
           
         },
         columns: [
+          { data: '' },
+          { data: '' }
+        ]
+      };
+      this.dtOptions[1] = {
+        pagingType: 'full_numbers',
+        pageLength: 10,
+        serverSide: true,
+        processing: true,
+        searching: false,
+        ordering: false,
+        lengthChange: false,
+        responsive: true,
+        ajax: (dataTablesParameters: any, callback) => {
+          that.MyProfileService.getAllTransction(dataTablesParameters).subscribe((response) => {
+            that.transaction_data = response['account'];
+            callback({
+              recordsTotal: response['recordsTotal'],
+              recordsFiltered: response['recordsTotal'],
+              data: []
+            });
+          });
+          
+        },
+        columns: [
+          { data: '' },
+          { data: '' },
+          { data: '' },
+          { data: '' },
           { data: '' },
           { data: '' }
         ]
@@ -488,7 +523,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
           { data: '' }
         ]
       };
-
+     
     }
 
   }
@@ -546,6 +581,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
     this.getAllTrackAnalytic({day : this.analytics_days});
     this.getAllOverviewAnalytic({day : this.analytics_days});
     this.getAllDownloadAnalytic({day : this.analytics_days});
+    this. getAllProceed({day : this.analytics_days});
   }
 
   tabChange(cnt : Number) {
@@ -573,6 +609,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
       this.getAllTrackAnalytic({day : this.analytics_days});
     } else if(cnt == 4) {
       this.getAllDownloadAnalytic({day : this.analytics_days});
+      this.getAllProceed({day : this.analytics_days});
     }
   }
   // Update user profile
@@ -1079,6 +1116,20 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
         
     });
   }
+
+  // Get all payment details
+  getAllPayment(data) {
+    this.MyProfileService.getProceedChartData(data).subscribe((response) => {
+      this.paymentChart(response['day']);
+    });
+  }
+  // Get all proceed details
+  getAllProceed(data) {
+    this.MyProfileService.getProceedChartData(data).subscribe((response) => {
+      this.proceedChart(response['day']);
+    });
+  }
+
   // Get all download analytics data
   getAllDownloadAnalytic(data) {
     this.MyProfileService.getAllDownloadAnalytic(data).subscribe(response => {
@@ -1307,6 +1358,111 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
       ]
     });
   }
+
+  // payment chart 
+  paymentChart(data : any) {
+    let result = [];
+    let cat = [];
+    let dt = new Date();
+    for(let i = 1; i<= 30; i++) {
+      cat.push(this.month_name(dt)+" "+i);
+      result.push(0);
+    }
+    this.payment_count = 0;
+    data.forEach(ele => {
+      result[ele['day'] - 1] = ele.amount;
+      this.payment_count += ele.amount;
+    });
+    this.payment_chart = new Chart({
+      chart: {
+        type: 'area',
+        height : 200
+      },
+      title: {
+        text: ''
+      },
+      xAxis : {
+        categories : cat,
+        labels: {
+            enabled: true
+        },
+        tickmarkPlacement: 'on',
+        minorTickLength: 0,
+        tickLength: 0
+      },
+      yAxis : {
+        visible : true,
+        labels : {
+          format : '${value}'
+        }
+      },
+      tooltip : {
+        formatter : function () {
+          return 'Proceeds <b>$'+this.y+'</b>';
+        }
+      },
+      series: [
+        {
+          name : 'Proceed',
+          color : '#9b26b0',
+          data: result
+        }
+      ]
+    });
+  }
+
+  // proceed chart
+  proceedChart(data : any) {
+    let result = [];
+    let cat = [];
+    let dt = new Date();
+    for(let i = 1; i<= this.analytics_days; i++) {
+      cat.push(this.month_name(dt)+" "+i);
+      result.push(0);
+    }
+    this.procced_count = 0;
+    data.forEach(ele => {
+      result[ele['day'] - 1] = ele.amount;
+      this.procced_count += ele.amount;
+    });
+    this.proceed_chart = new Chart({
+      chart: {
+        type: 'area',
+        height : 200
+      },
+      title: {
+        text: ''
+      },
+      xAxis : {
+        categories : cat,
+        labels: {
+            enabled: true
+        },
+        tickmarkPlacement: 'on',
+        minorTickLength: 0,
+        tickLength: 0
+      },
+      yAxis : {
+        visible : true,
+        labels : {
+          format : '${value}'
+        }
+      },
+      tooltip : {
+        formatter : function () {
+          return 'Proceeds <b>$'+this.y+'</b>';
+        }
+      },
+      series: [
+        {
+          name : 'Proceed',
+          color : '#9b26b0',
+          data: result
+        }
+      ]
+    });
+  }
+
   // Overview Gender chart
   overviewGenderChart(data : any) {
     let result = [];
@@ -1377,16 +1533,19 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
   // Track Gender chart
   trackGenderChart(data : any) {
     let result = [];
-    data.forEach(ele => {
-      if(ele['_id'] == 'male') 
-        this.track_male_per = ele['percentage_value'];
-      else
-      this.track_female_per = ele['percentage_value'];
-      result.push({
-        name : ele['_id'],
-        y : parseFloat(ele['percentage_value'])
+    if(data) {
+      data.forEach(ele => {
+        if(ele['_id'] == 'male') 
+          this.track_male_per = ele['percentage_value'];
+        else
+        this.track_female_per = ele['percentage_value'];
+        result.push({
+          name : ele['_id'],
+          y : parseFloat(ele['percentage_value'])
+        });
       });
-    });
+    }
+    
     this.track_gender_chart = new Chart({
       chart: {
         type: 'pie',
