@@ -191,7 +191,7 @@
               </div>
               <div class="content-wrap ">
                 <div class="player ">
-                  <div class="title "><a href="javascript:;">{{artist && artist.first_name ? artist.first_name : ''  +' '+ artist && artist.last_name ? artist.last_name : '' }}</a></div>
+                  <div class="title "><a href="javascript:;" routerLink="/artist_profile/{{artist._id}}">{{artist && artist.first_name ? artist.first_name : ''  +' '+ artist && artist.last_name ? artist.last_name : '' }}</a></div>
                   <div class="cat {{artist && artist['music_type'] ? artist.music_type.alias : ''}}">{{artist && artist['music_type'] ? artist['music_type']['name'] : '' }}</div>
                 </div>
                 <div class="location ">
@@ -225,7 +225,7 @@
               </div>
               <div class="content-wrap ">
                 <div class="player ">
-                  <div class="title "><a href="javascript:;">{{artist && artist.first_name ? artist.first_name : ''  +' '+ artist && artist.last_name ? artist.last_name : '' }}</a></div>
+                  <div class="title "><a href="javascript:;" routerLink="/artist_profile/{{artist._id}}">{{artist && artist.first_name ? artist.first_name : ''  +' '+ artist && artist.last_name ? artist.last_name : '' }}</a></div>
                   <div class="cat {{artist && artist['music_type'] ? artist.music_type.alias : ''}}">{{artist && artist['music_type'] ? artist['music_type']['name'] : '' }}</div>
                 </div>
                 <div class="location ">

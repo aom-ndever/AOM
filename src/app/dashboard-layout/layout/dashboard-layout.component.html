@@ -39,7 +39,7 @@
                 </div> -->
               </div>
               <div class="music_icons">
-                  <a href="javascript:;" *ngIf="user && audio_list[song_cnt] && audio_list[song_cnt]['is_downloadable']" (click)="downloadTrack()"><img src="img/download.png"/> {{audio_list[song_cnt] && audio_list[song_cnt]['price'] ? audio_list[song_cnt]['price'] : '' }}</a>
+                  <a href="javascript:;" *ngIf="user && audio_list[song_cnt] && audio_list[song_cnt]['is_downloadable']" (click)="downloadTrack()"><img src="img/download.png"/> <span>${{audio_list[song_cnt] && audio_list[song_cnt]['price'] ? audio_list[song_cnt]['price'] : '' }}</span></a>
                   <a href="javascript:;" (click)="openShareTrackModel(shareTrack)"><img src="img/share.png"/></a>
               </div>
           </div>
