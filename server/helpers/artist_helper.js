@@ -64,6 +64,7 @@ artist_helper.get_transaction_by_artist_id = async (artist_id, start, length) =>
 
         var account = await Transaction
             .find({ "artist_id": ObjectId(artist_id) })
+            .populate('track_id')
             .skip(start)
             .limit(length)
         var filter_cnt = account.length
@@ -89,7 +90,6 @@ artist_helper.insert_user_to_artists = async (object) => {
 
 
 artist_helper.get_payment_by_day = async (artist_id, day) => {
-    console.log('1', 1);
 
     var to = moment().utcOffset(0);
     var from = moment(to).subtract(day, "days").utcOffset(0);

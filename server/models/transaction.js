@@ -9,8 +9,10 @@ var Schema = mongoose.Schema;
 var TransactionModelSchema = new Schema({
     to_account: String,
     artist_id: { type: mongoose.Schema.Types.ObjectId, ref: 'artist' },
+    track_id: { type: mongoose.Schema.Types.ObjectId, ref: 'track' },
     amount: Number,
     transfer_id: String,
+    status: String,
     created_at: { type: Date, default: Date.now }
 }, { versionKey: false });
 
