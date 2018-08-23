@@ -114,6 +114,9 @@ download_helper.get_downloads_by_day = async (artist_id, day) => {
     }
 
 };
+
+
+
 download_helper.get_downloads_by_location = async (artist_id, day) => {
 
     var to = moment().utcOffset(0);

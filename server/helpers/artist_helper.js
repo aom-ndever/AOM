@@ -56,6 +56,26 @@ artist_helper.get_account_by_artist_id = async (artist_id) => {
         return { "status": 0, "message": "Error occured while finding account", "error": err }
     }
 };
+artist_helper.get_transaction_by_artist_id = async (artist_id, start, length) => {
+    try {
+        var accounts = await Transaction
+            .find({ "artist_id": ObjectId(artist_id) })
+        var tot_cnt = accounts.length;
+
+        var account = await Transaction
+            .find({ "artist_id": ObjectId(artist_id) })
+            .skip(start)
+            .limit(length)
+        var filter_cnt = account.length
+        if (account) {
+            return { "status": 1, "message": "account details found", "account": account, "recordsFiltered": filter_cnt, "recordsTotal": tot_cnt };
+        } else {
+            return { "status": 2, "message": "account not found" };
+        }
+    } catch (err) {
+        return { "status": 0, "message": "Error occured while finding account", "error": err }
+    }
+};
 
 artist_helper.insert_user_to_artists = async (object) => {
 
@@ -66,6 +86,59 @@ artist_helper.insert_user_to_artists = async (object) => {
         return { "status": 0, "message": "Error occured while inserting artist", "error": err };
     }
 };
+
+
+artist_helper.get_payment_by_day = async (artist_id, day) => {
+    console.log('1', 1);
+
+    var to = moment().utcOffset(0);
+    var from = moment(to).subtract(day, "days").utcOffset(0);
+    var aggregate = [
+        {
+            "$match":
+            {
+                "created_at": { "$gt": new Date(from), "$lt": new Date(to) },
+                "artist_id": new ObjectId(artist_id)
+            },
+        },
+        {
+            "$group": {
+                _id: {
+                    _id: "$_id",
+                    days: { $dayOfWeek: "$created_at" },
+                },
+                count: { $sum: 1 },
+            }
+        },
+        {
+            "$group": {
+                _id: "$_id.days",
+                day: { $first: "$_id.days" },
+                count: { $sum: 1 },
+            }
+        },
+        {
+            $project:
+            {
+                _id: 0
+            }
+        }
+
+    ];
+    let result = await Transaction.aggregate(aggregate);
+
+
+    if (result) {
+        return { "status": 1, "message": "Track  found", "results": result }
+    } else {
+        return { "status": 2, "message": "No  available Track" }
+    }
+
+};
+
+
+
+
 
 artist_helper.insert_transaction = async (object) => {
     let art = new Transaction(object)

@@ -291,7 +291,18 @@ router.post('/withdraw', async (req, res) => {
     }
 });
 
-
+router.post("/transaction", async (req, res) => {
+    user_id = req.userInfo.id;
+    logger.trace("Get all Artist API called");
+    var resp_data = await artist_helper.get_transaction_by_artist_id(user_id, req.body.start, req.body.length);
+    if (resp_data.status == 0) {
+        logger.error("Error occured while fetching Track = ", resp_data);
+        res.status(config.INTERNAL_SERVER_ERROR).json(resp_data);
+    } else {
+        logger.trace("Artist got successfully = ", resp_data);
+        res.status(config.OK_STATUS).json(resp_data);
+    }
+});
 
 
 
