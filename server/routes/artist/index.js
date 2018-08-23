@@ -254,6 +254,47 @@ router.post('/add_bank_details', async (req, res) => {
     }
 });
 
+
+router.post('/withdraw', async (req, res) => {
+    var schema = {
+        'amount': {
+            notEmpty: true,
+            errorMessage: "Withdrawal amount is required"
+        },
+        // 'bank_account': {
+        //     notEmpty: true,
+        //     errorMessage: "Bank account is required"
+        // }
+    };
+
+    req.checkBody(schema);
+    const errors = req.validationErrors();
+    artist_id = req.userInfo.id
+    var card_resp = await artist_helper.get_account_by_artist_id(artist_id);
+
+    if (!errors) {
+        try {
+            let transfer = await stripe.transfers.create({
+                amount: req.body.amount * 100,
+                currency: "usd",
+                destination: card_resp.account.account_id
+            });
+            console.log('transfer', transfer);
+            res.status(config.OK_STATUS).json({ data: transfer });
+        }
+        catch (error) {
+            console.log(error)
+            res.status(config.BAD_REQUEST).json({ message: "insufficient balance" });
+        }
+    } else {
+        res.status(config.BAD_REQUEST).json({ message: errors });
+    }
+});
+
+
+
+
+
 /**
  * @api {put} /artist/notification_settings Update notification
  * @apiName Update notification

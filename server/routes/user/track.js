@@ -56,24 +56,56 @@ router.post('/purchase', async (req, res) => {
     };
 
     var track_response = await track_helper.get_all_track_by_track_id(obj.track_id);
+    artist_id = track_response.track.artist_id._id;
+
     try {
       var charge = await stripe.charges.create({
         amount: track_response.track.price * 100,
         currency: "usd",
-        source: "tok_1D1rvyByKlzX7uR6uARha3Px",
+        source: req.body.card_id,
+        //source: 'tok_1D2CEMByKlzX7uR6PCR4CuuV',
         description: "Charge for jenny.rosen@example.com"
 
       });
+      console.log('charge', charge);
+
       var resp_data = await purchase_helper.purchase_track(obj);
       if (resp_data.status == 0) {
         logger.error("Error occured while fetching music = ", resp_data);
         res.status(config.INTERNAL_SERVER_ERROR).json(resp_data);
       } else {
         logger.trace("purchased successfully = ", resp_data);
+
+        var card_resp = await artist_helper.get_account_by_artist_id(artist_id);
+        if (card_resp.status == 0) {
+          logger.error("Error occured while fetching music = ", resp_data);
+          res.status(config.INTERNAL_SERVER_ERROR).json(resp_data);
+        } else {
+          let transfer = await stripe.transfers.create({
+            amount: track_response.track.price * 100,
+            currency: "usd",
+            destination: card_resp.account.account_id
+          });
+          console.log('transfer------------->', transfer.amount);
+          console.log('transfer', typeof transfer.amount);
+
+          var obj = {
+            "transfer_id": transfer.id,
+            "to_account": transfer.destination,
+            "amount": transfer.amount,
+            "artist_id": artist_id,
+            "track_id": obj.track_id
+          }
+          var transfer_resp = await artist_helper.insert_transaction(obj);
+
+
+        }
         res.status(config.OK_STATUS).json(resp_data);
       }
 
     } catch (error) {
+      console.log('error', error);
+
       res.status(config.INTERNAL_SERVER_ERROR).json({ "message": "invalid token" });
     }
   }
