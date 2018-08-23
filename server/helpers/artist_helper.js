@@ -102,27 +102,35 @@ artist_helper.get_payment_by_day = async (artist_id, day) => {
             },
         },
         {
-            "$group": {
-                _id: {
-                    _id: "$_id",
-                    days: { $dayOfWeek: "$created_at" },
-                },
-                count: { $sum: 1 },
+            $project: {
+                dayOfWeek: { $dayOfWeek: "$created_at" },
+                amount: 1
             }
         },
         {
-            "$group": {
-                _id: "$_id.days",
-                day: { $first: "$_id.days" },
-                count: { $sum: 1 },
+            $group: {
+                _id: "$dayOfWeek",
+                totalAmount: {
+                    $sum: "$amount"
+                }
             }
         },
         {
-            $project:
-            {
-                _id: 0
+            $project: {
+                _id: 0,
+                day: "$_id",
+                amount: "$totalAmount"
             }
-        }
+        },
+        // {
+        //     "$group": {
+        //         _id: {
+        //             // _id: "$_id",
+        //             days: { $month: "$created_at" },
+        //         },
+        //         count: { $sum: "$amount" },
+        //     }
+        // },
 
     ];
     let result = await Transaction.aggregate(aggregate);
@@ -414,7 +422,49 @@ artist_helper.get_artist_by_filter = async (filter, start, length) => {
             .populate('state')
             .skip(start)
             .limit(length)
+        // var aggregate = [
+        //     {
+        //         "$match": {
+        //             "flag": false
+        //         }
+        //     },
 
+        //     {
+        //         '$lookup': {
+        //             from: 'music_type',
+        //             localField: 'music_type',
+        //             foreignField: '_id',
+        //             as: 'music_type'
+        //         }
+        //     },
+        //     {
+        //         '$unwind': '$music_type'
+        //     },
+        //     {
+        //         '$lookup': {
+        //             from: 'state',
+        //             localField: 'state',
+        //             foreignField: '_id',
+        //             as: 'state'
+        //         }
+        //     },
+        //     {
+        //         '$unwind': '$state'
+        //     },
+
+        //     // {
+        //     //     $skip: start
+        //     // },
+        //     // {
+        //     //     $limit: length
+        //     // }
+        // ];
+
+        // if (filter) {
+        //     aggregate.push({
+        //         "$match": filter
+        //     })
+        // }
 
         if (artist) {
             return { "status": 1, "message": "artist details found", "artist": artist };
