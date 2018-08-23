@@ -60,10 +60,12 @@ router.post('/purchase', async (req, res) => {
       var charge = await stripe.charges.create({
         amount: track_response.track.price * 100,
         currency: "usd",
-        source: "tok_1D1rvyByKlzX7uR6uARha3Px",
+        source: req.body.card_id,
         description: "Charge for jenny.rosen@example.com"
 
       });
+      console.log('charge', charge);
+
       var resp_data = await purchase_helper.purchase_track(obj);
       if (resp_data.status == 0) {
         logger.error("Error occured while fetching music = ", resp_data);
@@ -74,6 +76,8 @@ router.post('/purchase', async (req, res) => {
       }
 
     } catch (error) {
+      console.log('error', error);
+
       res.status(config.INTERNAL_SERVER_ERROR).json({ "message": "invalid token" });
     }
   }
