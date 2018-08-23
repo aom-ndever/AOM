@@ -122,15 +122,6 @@ artist_helper.get_payment_by_day = async (artist_id, day) => {
                 amount: "$totalAmount"
             }
         },
-        // {
-        //     "$group": {
-        //         _id: {
-        //             // _id: "$_id",
-        //             days: { $month: "$created_at" },
-        //         },
-        //         count: { $sum: "$amount" },
-        //     }
-        // },
 
     ];
     let result = await Transaction.aggregate(aggregate);
@@ -143,8 +134,6 @@ artist_helper.get_payment_by_day = async (artist_id, day) => {
     }
 
 };
-
-
 
 
 
