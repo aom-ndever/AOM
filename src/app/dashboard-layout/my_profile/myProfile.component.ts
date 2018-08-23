@@ -46,6 +46,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
   private _albums: any = [];
   artist_media_url : any = environment.API_URL+environment.ARTIST_MEDIA;
   track_url : any = environment.API_URL+environment.ARTIST_TRACK;
+  user_img_url : any = environment.API_URL+environment.USER_IMG;
   video_url : any = '';
   analytic_tab : any = 1;
   analytics_days : any = 7;
@@ -95,7 +96,10 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
   // upgrade to artist form group
   upgrade_artist : FormGroup;
   upgrade_artist_validation : boolean = false;
-  upgrade_artist_data : any = {};
+  upgrade_artist_data : any = {
+    state : '',
+    region : ''
+  };
   region_list : any = [];
   state_list : any = [];
   upgrade_artist_img : any = '';
@@ -116,6 +120,9 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
   // Purchased track
   purchased_track : any = [];
   purchased_track_list : any = [];
+
+  // payment tab
+  payment_tab_cnt : any = 0;
 
   constructor(private MyProfileService : MyProfileService, 
     private toastr: ToastrService,
@@ -177,6 +184,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
       };
       this.upgrade_artist_data = {...this.userdata, share_url};
       this.upgrade_artist_data['music_type'] = '';
+      this.upgrade_artist_data['state'] = '';
       delete this.userdata['token'];
       delete this.userdata['token'];
       if(this.userdata.dob) {
@@ -371,7 +379,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
             that.playlist = response['playlist'];
             callback({
               recordsTotal: response['recordsTotal'],
-              recordsFiltered: response['recordsFiltered'],
+              recordsFiltered: response['recordsTotal'],
               data: []
             });
           });
@@ -407,7 +415,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
             }
             callback({
               recordsTotal: response['recordsTotal'],
-              recordsFiltered: response['recordsFiltered'],
+              recordsFiltered: response['recordsTotal'],
               data: []
             });
           });
@@ -436,7 +444,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
             that.playlist = response['playlist'];
             callback({
               recordsTotal: response['recordsTotal'],
-              recordsFiltered: response['recordsFiltered'],
+              recordsFiltered: response['recordsTotal'],
               data: []
             });
           });
@@ -467,7 +475,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
             that.purchased_track.forEach((ele) => {this.purchased_track_list.push(ele['track'])});
             callback({
               recordsTotal: response['recordsTotal'],
-              recordsFiltered: response['recordsFiltered'],
+              recordsFiltered: response['recordsTotal'],
               data: []
             });
           });
@@ -543,6 +551,11 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
   tabChange(cnt : Number) {
     this.tab_cnt = cnt;
     this.track_flag = false;
+  }
+
+  // Payment tab change
+  paymentTabChange(cnt : Number) {
+    this.payment_tab_cnt = cnt;
   }
 
   togglelocBarChart(flag : boolean) {
@@ -984,6 +997,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
     let formData: FormData = new FormData();
     formData.append('link', this.video_url);
     if(this.video_url) {
+      this.show_spinner = true;
       this.MyProfileService.uploadMedia(formData).subscribe(event => {
         if (event instanceof HttpResponse) {
           this.video_url = '';
@@ -993,9 +1007,11 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
         }
       }, error => {
         this.toastr.error(error['error'].message, 'Error!');
+        this.show_spinner = false;
       });
     } else {
-      this.toastr.error('Please provide video url', 'Error!');
+      this.toastr.error('Please add video url or Image.', 'Error!');
+      this.show_spinner = false;
     }
   }
 
@@ -1852,7 +1868,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
             }
             callback({
               recordsTotal: response['recordsTotal'],
-              recordsFiltered: response['recordsFiltered'],
+              recordsFiltered: response['recordsTotal'],
               data: []
             });
           });
@@ -2092,6 +2108,15 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
   markAsDefault(id) {
     this.MyProfileService.markAsDefault(id).subscribe((response) => {
       this.toastr.success(response['message'], 'Success!');
+    });
+  }
+  // Download track
+  downloadTrack(id : any) {
+    this.MyProfileService.downloadTrack(id).subscribe(response => {
+      console.log(response);
+      window.location.href = this.user_img_url+response['filename'];
+    }, error => {
+      this.toastr.error(error['error'].message, 'Error!');
     });
   }
 }

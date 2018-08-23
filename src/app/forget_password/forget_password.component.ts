@@ -53,6 +53,7 @@ export class ForgetPasswordComponent implements OnInit {
       this.ForgetPasswordService.artistChangePassword(data).subscribe(response => {
         this.forget_password = '';
         this.conf = '';
+        this.router.navigate(['']);
         this.toastr.success(response['message'], 'Success!');
       }, error => {
         this.toastr.error(error['error'].message, 'Error!');
@@ -69,6 +70,7 @@ export class ForgetPasswordComponent implements OnInit {
       this.ForgetPasswordService.adminChangePassword(data).subscribe(response => {
         this.forget_password = '';
         this.conf = '';
+        this.router.navigate(['']);
         this.toastr.success(response['message'], 'Success!');
       }, error => {
         this.toastr.error(error['error'].message, 'Error!');
@@ -82,10 +84,11 @@ export class ForgetPasswordComponent implements OnInit {
         password : this.forget_password
       };
       this.show_spinner = true;
-      this.ForgetPasswordService.artistChangePassword(data).subscribe(response => {
+      this.ForgetPasswordService.userChangePassword(data).subscribe(response => {
         console.log(response);
         this.forget_password = '';
         this.conf = '';
+        this.router.navigate(['']);
         this.toastr.success(response['message'], 'Success!');
       }, error => {
         this.toastr.error(error['error'].message, 'Error!');

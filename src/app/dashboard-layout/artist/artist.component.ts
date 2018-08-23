@@ -133,7 +133,7 @@ export class ArtistComponent implements OnInit {
   // Get my follower
   getMyFollower() {
     let user = JSON.parse(localStorage.getItem('user'));
-      if(user) {
+      if(user && user['user']) {
       this.ArtistService.getMyFollower().subscribe((response) => {
         this.my_follower_list = response['user'];
       });

@@ -230,4 +230,8 @@ export class MyProfileService {
   getAllPurchasedTrack(data) {
     return this.http.post(`${this.api_host}/user/track/purchased`, data, {headers : this.headers});
   }
+  // download the track 
+  downloadTrack(id : any) {
+    return this.http.get(`${this.api_host}/user/track/${id}/download`, {headers : this.headers});
+  }
 }
