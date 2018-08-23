@@ -93,7 +93,8 @@ router.post('/purchase', async (req, res) => {
             "transfer_id": transfer.id,
             "to_account": transfer.destination,
             "amount": transfer.amount,
-            "artist_id": artist_id
+            "artist_id": artist_id,
+            "track_id": obj.track_id
           }
           var transfer_resp = await artist_helper.insert_transaction(obj);
 
