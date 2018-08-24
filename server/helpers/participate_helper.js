@@ -32,10 +32,33 @@ participate_helper.get_participant = async (id, ids, trackid) => {
     }
 };
 
-participate_helper.get_participant_by_track_id = async (id) => {
+
+participate_helper.get_all_participant = async (start, length) => {
     try {
         var participate = await Participate
-            .find({ "track_id": new ObjectId(trackid) })
+            .find()
+            .populate({ path: 'artist_id', populate: { path: 'music_type' } })
+            .populate({ path: 'artist_id', populate: { path: 'state' } })
+            .populate('track_id')
+            .populate('contest_id')
+            .skip(start)
+            .limit(length)
+        if (participate) {
+            return { "status": 1, "message": "comment details found", "participate": participate };
+        } else {
+            return { "status": 2, "message": "comment not found" };
+        }
+    } catch (err) {
+        return { "status": 0, "message": "Error occured while finding artist", "error": err }
+    }
+};
+
+
+participate_helper.get_participant_by_track_id = async (trackid) => {
+    try {
+        var participate = await Participate
+            .findOne({ "track_id": new ObjectId(trackid) })
+        //.populate()
         if (participate) {
             return { "status": 1, "message": "comment details found", "participate": participate };
         } else {

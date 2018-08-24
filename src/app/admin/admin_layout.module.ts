@@ -51,6 +51,7 @@ import { AlertService } from './alerts/alerts.service';
         component:AdminLayoutComponent, 
         children: [
           {path: '', component: HomeComponent,canActivate: [AuthService]},
+          {path: 'home', component: HomeComponent,canActivate: [AuthService]},
           {path: 'alerts', component: AlertsComponent,canActivate: [AuthService]},
           {path: 'artist', component: ArtistComponent,canActivate: [AuthService]},
           {path: 'users', component: UsersComponent,canActivate: [AuthService]},

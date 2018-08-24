@@ -112,6 +112,10 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
   search_track : any = '';
   track_flag : boolean = false;
   playlist_track_list : any = [];
+  playlist_fg : FormGroup;
+  playlist_validation : boolean = false;
+  track_fg : FormGroup;
+  track_validation : boolean = false;
 
   // Bank
   bank_fg :  FormGroup;
@@ -120,6 +124,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
   // Purchased track
   purchased_track : any = [];
   purchased_track_list : any = [];
+  
 
   // payment tab
   payment_tab_cnt : any = 0;
@@ -279,6 +284,13 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
       hname : ['', [Validators.required, this.noWhitespaceValidator]],
       acno : ['', [Validators.required, Validators.minLength(16), Validators.maxLength(16) , this.noWhitespaceValidator]],
       rno : ['', [Validators.required, this.noWhitespaceValidator]]
+    });
+
+    this.playlist_fg = this.fb.group({
+      name : ['', [Validators.required, this.noWhitespaceValidator]]
+    });
+    this.track_fg = this.fb.group({
+      name : ['', [Validators.required]]
     });
 
      // this.getAllData();
@@ -520,7 +532,8 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
           { data: '' },
           { data: '' },
           { data: '' },
-          { data: '' }
+          { data: '' },
+          {data : ''}
         ]
       };
      
@@ -1833,7 +1846,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
   }
   // open edit playlist model
   openEditPlaylistModel(content, index : any) {
-    this.playlist_data = this.playlist[index];
+    this.playlist_data = {...this.playlist[index]};
     this.media_modal_ref = this.modalService.open(content, { centered: true });
   }
   // open edit playlist model
@@ -1841,92 +1854,99 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
     this.media_modal_ref = this.modalService.open(content, { centered: true });
   }
   // add new playlist to db
-  addNewPlaylist() {
-    if(this.userdata && this.userdata['type'] == 'user') {
-      if(this.playlist_data && this.playlist_data['name'] && this.playlist_data['name'] != null) {
-        this.show_spinner = true;
-        this.MyProfileService.addNewListenerPlaylist(this.playlist_data).subscribe((response) => {
-          this.dtElements.forEach((dtElement: DataTableDirective, index: number) => {
-              dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
-                dtInstance.draw();
-              });
+  addNewPlaylist(flag) {
+    if(flag) {
+      if(this.userdata && this.userdata['type'] == 'user') {
+        if(this.playlist_data && this.playlist_data['name'] && this.playlist_data['name'] != null) {
+          this.show_spinner = true;
+          this.MyProfileService.addNewListenerPlaylist(this.playlist_data).subscribe((response) => {
+            this.dtElements.forEach((dtElement: DataTableDirective, index: number) => {
+                dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
+                  dtInstance.draw();
+                });
+            });
+            this.media_modal_ref.close();
+            this.toastr.success(response['message'], 'Success!');
+          }, (error) => {
+            this.show_spinner = false;
+            this.toastr.error(error['error'].message, 'Error!');
+          }, () => {
+            this.show_spinner = false;
           });
-          this.media_modal_ref.close();
-          this.toastr.success(response['message'], 'Success!');
-        }, (error) => {
-          this.show_spinner = false;
-          this.toastr.error(error['error'].message, 'Error!');
-        }, () => {
-          this.show_spinner = false;
-        });
+        } else {
+          this.toastr.error('Playlist name is required', 'Error!');
+        }
       } else {
-        this.toastr.error('Playlist name is required', 'Error!');
-      }
-    } else {
-      if(this.playlist_data && this.playlist_data['name'] && this.playlist_data['name'] != null) {
-        this.show_spinner = true;
-        this.MyProfileService.createArtistPlaylist(this.playlist_data).subscribe((response) => {
-          this.dtElements.forEach((dtElement: DataTableDirective, index: number) => {
-              dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
-                dtInstance.draw();
-              });
+        if(this.playlist_data && this.playlist_data['name'] && this.playlist_data['name'] != null) {
+          this.show_spinner = true;
+          this.MyProfileService.createArtistPlaylist(this.playlist_data).subscribe((response) => {
+            this.dtElements.forEach((dtElement: DataTableDirective, index: number) => {
+                dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
+                  dtInstance.draw();
+                });
+            });
+            this.media_modal_ref.close();
+            this.toastr.success(response['message'], 'Success!');
+          }, (error) => {
+            this.show_spinner = false;
+            this.toastr.error(error['error'].message, 'Error!');
+          }, () => {
+            this.show_spinner = false;
           });
-          this.media_modal_ref.close();
-          this.toastr.success(response['message'], 'Success!');
-        }, (error) => {
-          this.show_spinner = false;
-          this.toastr.error(error['error'].message, 'Error!');
-        }, () => {
-          this.show_spinner = false;
-        });
-      } else {
-        this.toastr.error('Playlist name is required', 'Error!');
+        } else {
+          this.toastr.error('Playlist name is required', 'Error!');
+        }
       }
     }
+    this.playlist_validation = !flag;
   }
   // edit existing playlist
-  editPlaylist() {
-    if(this.userdata && this.userdata['type'] == 'user') {
-      if(this.playlist_data && this.playlist_data['name'] && this.playlist_data['name'] != null) {
-        this.show_spinner = true;
-        this.MyProfileService.updateListenerPlaylist(this.playlist_data, this.playlist_data['_id']).subscribe((response) => {
-          this.dtElements.forEach((dtElement: DataTableDirective, index: number) => {
-              dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
-                dtInstance.draw();
-              });
+  editPlaylist(flag) {
+    if(flag) {
+      if(this.userdata && this.userdata['type'] == 'user') {
+        if(this.playlist_data && this.playlist_data['name'] && this.playlist_data['name'] != null) {
+          this.show_spinner = true;
+          this.MyProfileService.updateListenerPlaylist(this.playlist_data, this.playlist_data['_id']).subscribe((response) => {
+            this.dtElements.forEach((dtElement: DataTableDirective, index: number) => {
+                dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
+                  dtInstance.draw();
+                });
+            });
+            this.media_modal_ref.close();
+            this.toastr.success(response['message'], 'Success!');
+          }, (error) => {
+            this.show_spinner = false;
+            this.toastr.error(error['error'].message, 'Error!');
+          }, () => {
+            this.show_spinner = false;
           });
-          this.media_modal_ref.close();
-          this.toastr.success(response['message'], 'Success!');
-        }, (error) => {
-          this.show_spinner = false;
-          this.toastr.error(error['error'].message, 'Error!');
-        }, () => {
-          this.show_spinner = false;
-        });
+        } else {
+          this.toastr.error('Playlist name is required', 'Error!');
+        }
       } else {
-        this.toastr.error('Playlist name is required', 'Error!');
-      }
-    } else {
-      if(this.playlist_data && this.playlist_data['name'] && this.playlist_data['name'] != null) {
-        this.show_spinner = true;
-        this.MyProfileService.updateArtistPlaylist(this.playlist_data, this.playlist_data['_id']).subscribe((response) => {
-          this.dtElements.forEach((dtElement: DataTableDirective, index: number) => {
-              dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
-                dtInstance.draw();
-              });
+        if(this.playlist_data && this.playlist_data['name'] && this.playlist_data['name'] != null) {
+          this.show_spinner = true;
+          this.MyProfileService.updateArtistPlaylist(this.playlist_data, this.playlist_data['_id']).subscribe((response) => {
+            this.dtElements.forEach((dtElement: DataTableDirective, index: number) => {
+                dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
+                  dtInstance.draw();
+                });
+            });
+            this.media_modal_ref.close();
+            this.toastr.success(response['message'], 'Success!');
+          }, (error) => {
+            this.show_spinner = false;
+            this.toastr.error(error['error'].message, 'Error!');
+          }, () => {
+            this.show_spinner = false;
           });
-          this.media_modal_ref.close();
-          this.toastr.success(response['message'], 'Success!');
-        }, (error) => {
-          this.show_spinner = false;
-          this.toastr.error(error['error'].message, 'Error!');
-        }, () => {
-          this.show_spinner = false;
-        });
-      } else {
-        this.toastr.error('Playlist name is required', 'Error!');
+        } else {
+          this.toastr.error('Playlist name is required', 'Error!');
+        }
       }
     }
+    this.playlist_validation = !flag;
+    
   }
   // Remove existing playlist
   removePlaylist(id : any) {
@@ -2055,57 +2075,61 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
     });
   }
   // Add track to playlist
-  addTrackPlaylist() {
-    if(this.userdata && this.userdata['type'] == 'user') {
-      console.log(this.search_track);
-      if(this.search_track) {
-        let data = {
-         track_id : [] 
-        }
-        this.search_track.forEach((ele) => { data['track_id'].push(ele['_id']) });
-        this.show_spinner = true;
-        this.MyProfileService.addTrackListenerPlaylist(data, this.playlist_data['_id']).subscribe((response) => {
-          this.dtElements.forEach((dtElement: DataTableDirective, index: number) => {
-              dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
-                dtInstance.draw();
-              });
+  addTrackPlaylist(flag) {
+    if(flag) {
+      if(this.userdata && this.userdata['type'] == 'user') {
+        console.log(this.search_track);
+        if(this.search_track) {
+          let data = {
+           track_id : [] 
+          }
+          this.search_track.forEach((ele) => { data['track_id'].push(ele['_id']) });
+          this.show_spinner = true;
+          this.MyProfileService.addTrackListenerPlaylist(data, this.playlist_data['_id']).subscribe((response) => {
+            this.dtElements.forEach((dtElement: DataTableDirective, index: number) => {
+                dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
+                  dtInstance.draw();
+                });
+            });
+            this.media_modal_ref.close();
+            this.toastr.success(response['message'], 'Success!');
+          }, (error) => {
+            this.show_spinner = false;
+            this.toastr.error(error['error'].message, 'Error!');
+          }, () => {
+            this.show_spinner = false;
           });
-          this.media_modal_ref.close();
-          this.toastr.success(response['message'], 'Success!');
-        }, (error) => {
-          this.show_spinner = false;
-          this.toastr.error(error['error'].message, 'Error!');
-        }, () => {
-          this.show_spinner = false;
-        });
-      } else {
-        this.toastr.error('Track name is required.', 'Error!');
-      }
-    } else {
-      if(this.search_track) {
-        let data = {
-         track_id : [] 
+        } else {
+          this.toastr.error('Track name is required.', 'Error!');
         }
-        this.search_track.forEach((ele) => { data['track_id'].push(ele['_id']) });
-        this.show_spinner = true;
-        this.MyProfileService.addTrackToArtistPlaylist(data, this.playlist_data['_id']).subscribe((response) => {
-          this.dtElements.forEach((dtElement: DataTableDirective, index: number) => {
-              dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
-                dtInstance.draw();
-              });
-          });
-          this.media_modal_ref.close();
-          this.toastr.success(response['message'], 'Success!');
-        }, (error) => {
-          this.show_spinner = false;
-          this.toastr.error(error['error'].message, 'Error!');
-        }, () => {
-          this.show_spinner = false;
-        });
       } else {
-        this.toastr.error('Track name is required.', 'Error!');
+        if(this.search_track) {
+          let data = {
+           track_id : [] 
+          }
+          this.search_track.forEach((ele) => { data['track_id'].push(ele['_id']) });
+          this.show_spinner = true;
+          this.MyProfileService.addTrackToArtistPlaylist(data, this.playlist_data['_id']).subscribe((response) => {
+            this.dtElements.forEach((dtElement: DataTableDirective, index: number) => {
+                dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
+                  dtInstance.draw();
+                });
+            });
+            this.media_modal_ref.close();
+            this.toastr.success(response['message'], 'Success!');
+          }, (error) => {
+            this.show_spinner = false;
+            this.toastr.error(error['error'].message, 'Error!');
+          }, () => {
+            this.show_spinner = false;
+          });
+        } else {
+          this.toastr.error('Track name is required.', 'Error!');
+        }
       }
     }
+    this.track_validation = !flag;
+    
   }
   // Remove track from playlist for listener
   removeTrackFromPlaylist(id) {

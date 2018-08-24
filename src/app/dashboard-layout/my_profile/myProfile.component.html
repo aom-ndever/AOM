@@ -22,7 +22,7 @@
                                     <div class="upload-cover">
                                         <img [src]="default_cover_img" alt="Edit cover Image">
                                         <span class="up_text">Update Photo</span>
-                                        <input type="file" name="my_doc_upload" formControlName="upload" id="cover_upload1" multiple="false" (change)="updateCoverImage($event)">
+                                        <input type="file" name="my_doc_upload"  id="cover_upload1" multiple="false" (change)="updateCoverImage($event)">
                                         <a data-fancybox data-animation-duration="700" data-src="#delete" href="javascript:;" *ngIf="userdata.cover_image" (click)="removeArtistCoverImage()" class="delete"><i class="fa fa-trash"></i></a>
                                     </div>
                                     <div class="edit-details">
@@ -33,7 +33,7 @@
                                                     <div class="upload-cover">
                                                         <img [src]="default_profile_img" alt="Edit cover Image">
                                                         <span class="up_text">Update Photo</span>
-                                                        <input type="file" formControlName="cover" name="upload" id="cover_upload" (change)="updateProfileImage($event)">
+                                                        <input type="file"  name="upload" id="cover_upload" (change)="updateProfileImage($event)">
                                                         <a data-fancybox data-animation-duration="700" data-src="#delete" *ngIf="userdata.image" href="javascript:;" class="delete" (click)="removeArtistImage()"><i class="fa fa-trash"></i></a>
                                                     </div>
                                                 </div>
@@ -902,7 +902,7 @@
                                                     <div class="upload-cover">
                                                         <img src="{{default_profile_img}}" alt="Edit cover Image">
                                                         <span class="up_text">Update Photo</span>
-                                                        <input type="file" name="upload" formControlName="upload" id="cover_upload" (change)="updateProfileImage($event)">
+                                                        <input type="file" name="upload"  id="cover_upload" (change)="updateProfileImage($event)">
                                                         <a data-fancybox data-animation-duration="700" data-src="#delete" *ngIf="userdata.image" (click)="removeUserImage()" href="javascript:;" class="delete"><i class="fa fa-trash"></i></a>
                                                     </div>
                                                 </div>
@@ -1568,16 +1568,20 @@
         <span aria-hidden="true">&times;</span>
     </button>
     <div class="modal-body">
-        <form>
+        <form [formGroup]="playlist_fg">
             <div class="media-modal">
                 <h3>Add New Playlist</h3>
                 <div class="form-group">
                     <label for="vlink">Name</label>
-                    <input type="text" class="form-control" placeholder="Playlist name" name="playlist" [(ngModel)]="playlist_data.name">
+                    <input type="text" class="form-control"  formControlName="name" placeholder="Playlist name" name="playlist" [(ngModel)]="playlist_data.name">
+                    <div class="cust_err_msg" *ngIf="playlist_validation && !playlist_fg.controls['name'].valid">
+                        <span *ngIf="playlist_fg.controls['name'].errors['required']" class="text-danger">Playlist name is required.</span>
+                        <span *ngIf="!playlist_fg.controls['name'].errors['required'] && playlist_fg.controls['name'].errors['whitespace'] " class="text-danger">Enter valid data.</span>
+                    </div>
                 </div>
             </div>
             <div class="button_group">
-                <button type="submit" class="add-btn" (click)="addNewPlaylist()" [disabled]="show_spinner">Add Playlist <i *ngIf="show_spinner" class="fa fa-spinner fa-spin"></i></button>
+                <button type="submit" class="add-btn" (click)="addNewPlaylist(playlist_fg.valid)" [disabled]="show_spinner">Add Playlist <i *ngIf="show_spinner" class="fa fa-spinner fa-spin"></i></button>
             </div>
         </form>
     </div>
@@ -1588,16 +1592,20 @@
         <span aria-hidden="true">&times;</span>
     </button>
     <div class="modal-body">
-        <form>
+        <form [formGroup]="playlist_fg">
             <div class="media-modal">
                 <h3>Edit New Playlist</h3>
                 <div class="form-group">
                     <label for="vlink">Name</label>
-                    <input type="text" class="form-control" placeholder="Playlist name" name="playlist" [(ngModel)]="playlist_data.name">
+                    <input type="text" class="form-control"  formControlName="name" placeholder="Playlist name" name="playlist" [(ngModel)]="playlist_data.name">
+                    <div class="cust_err_msg" *ngIf="playlist_validation && !playlist_fg.controls['name'].valid">
+                        <span *ngIf="playlist_fg.controls['name'].errors['required']" class="text-danger">Playlist name is required.</span>
+                        <span *ngIf="!playlist_fg.controls['name'].errors['required'] && playlist_fg.controls['name'].errors['whitespace'] " class="text-danger">Enter valid data.</span>
+                    </div>
                 </div>
             </div>
             <div class="button_group">
-                <button type="submit" class="add-btn" (click)="editPlaylist()" [disabled]="show_spinner">Save <i *ngIf="show_spinner" class="fa fa-spinner fa-spin"></i></button>
+                <button type="submit" class="add-btn" (click)="editPlaylist(playlist_fg.valid)" [disabled]="show_spinner">Save <i *ngIf="show_spinner" class="fa fa-spinner fa-spin"></i></button>
             </div>
         </form>
     </div>
@@ -1608,17 +1616,21 @@
         <span aria-hidden="true">&times;</span>
     </button>
     <div class="modal-body">
-        <form>
+        <form [formGroup]="track_fg">
             <div class="media-modal">
                 <h3>Add Track</h3>
                 <div class="form-group">
                     <label for="vlink">Name</label>
-                    <p-autoComplete [(ngModel)]="search_track" name="search_track" field="name" [multiple]="true" [suggestions]="serach_track_list" [dataKey]="_id" (completeMethod)="search($event)"></p-autoComplete>
+                    <p-autoComplete [(ngModel)]="search_track" formControlName="name" name="search_track" field="name" [multiple]="true" [suggestions]="serach_track_list" [dataKey]="_id" (completeMethod)="search($event)"></p-autoComplete>
+                    <div class="cust_err_msg" *ngIf="track_validation && !track_fg.controls['name'].valid">
+                        <span *ngIf="track_fg.controls['name'].errors['required']" class="text-danger">Track required.</span>
+                        <span *ngIf="!track_fg.controls['name'].errors['required'] && track_fg.controls['name'].errors['whitespace'] " class="text-danger">Enter valid data.</span>
+                    </div>
                     <!--input type="text" class="form-control" placeholder="Playlist name" name="playlist" [(ngModel)]="playlist_data.name"-->
                 </div>
             </div>
             <div class="button_group">
-                <button type="submit" class="add-btn" (click)="addTrackPlaylist()" [disabled]="show_spinner">Add <i *ngIf="show_spinner" class="fa fa-spinner fa-spin"></i></button>
+                <button type="submit" class="add-btn" (click)="addTrackPlaylist(track_fg.valid)" [disabled]="show_spinner">Add <i *ngIf="show_spinner" class="fa fa-spinner fa-spin"></i></button>
             </div>
         </form>
     </div>

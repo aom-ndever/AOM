@@ -16,6 +16,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
   @Input() images: any[];
   @Input() showFavourit: boolean;
   @Input() carouselType : any;
+  @Input() allData : any;
   public carouselOne: NgxCarousel;
   track_url : any = environment.API_URL+environment.ARTIST_TRACK;
   audio_ins : any = [];
@@ -109,7 +110,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
         this.audio_ins[idx] = false;
       });
       this.audio_ins[index] = true;
-      this.MessageService.sendMessage({data : data, index : index, action : 'start', list : 1});
+      this.MessageService.sendMessage({data : this.allData, index : index, action : 'start', list : 1});
     // }
   }
   // Stop audio
@@ -117,7 +118,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
     data.forEach((ele, idx) => {
       this.audio_ins[idx] = false;
     });
-    this.MessageService.sendMessage({data : data, index : index, action : 'stop', list : 1});
+    this.MessageService.sendMessage({data : this.allData, index : index, action : 'stop', list : 1});
   }
   // Follow artist
   followArtist(id : any) {

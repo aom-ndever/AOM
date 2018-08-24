@@ -7,9 +7,11 @@ var SALT_WORK_FACTOR = 10;
 var Schema = mongoose.Schema;
 
 var VoteTrackModelSchema = new Schema({
-    track_id :{ type: mongoose.Schema.Types.ObjectId, ref: 'track' }, 
-    artist_id :{ type: mongoose.Schema.Types.ObjectId, ref: 'artist' }, 
-    user_id :{ type: mongoose.Schema.Types.ObjectId, ref: 'user' }, 
+    track_id: { type: mongoose.Schema.Types.ObjectId, ref: 'track' },
+    artist_id: { type: mongoose.Schema.Types.ObjectId, ref: 'artist' },
+    user_id: { type: mongoose.Schema.Types.ObjectId, ref: 'user' },
+    contest_id: { type: mongoose.Schema.Types.ObjectId, ref: 'contest' },
+    round_id: { type: mongoose.Schema.Types.ObjectId, ref: 'round' },
     created_at: { type: Date, default: Date.now }
 }, { versionKey: false });
 

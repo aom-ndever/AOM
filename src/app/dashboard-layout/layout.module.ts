@@ -31,6 +31,7 @@ import { CommentsService } from './artist_comments/comments.service';
 import { TrackCommentsService } from './track_comments/track_comments.service';
 import { ArtistTrackCommentsService } from './artist_track_comments/artist_track_comments.service';
 import { ArtistProfileService } from './artist_profile/artist_profile.service';
+import { VoteService } from './vote/vote.service';
 import { 
   ArtistProfileResolve,
   ArtistTrackResolve,
@@ -115,7 +116,8 @@ import { AuthService } from '../shared/auth.service';
      TrackCommentResolve,
      TrackArtistProfileResolve,
      TrackDetailResolve,
-     DashboardLayoutService
+     DashboardLayoutService,
+     VoteService
     ]
 })
 export class LayoutModule { }
