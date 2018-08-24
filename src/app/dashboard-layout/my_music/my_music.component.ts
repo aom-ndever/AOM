@@ -242,7 +242,13 @@ export class MyMusicComponent implements OnInit, OnDestroy {
   }
   
   addTrack() {
-    if(this.trackdata && this.trackdata.name && this.trackdata.price && this.trackdata.price > 0 && this.audio_file && this.image_upload) {
+    let isWhitespace;
+    let isValid;
+    if(this.trackdata && this.trackdata.name) {
+      isWhitespace = this.trackdata.name.trim().length === 0;
+      isValid = !isWhitespace;
+    }
+    if(this.trackdata && this.trackdata.name && isValid && this.trackdata.price && this.trackdata.price > 0 && this.audio_file && this.image_upload) {
       let formdata = new FormData();
       formdata.append('name', this.trackdata.name);
       formdata.append('price', this.trackdata.price);
@@ -269,10 +275,10 @@ export class MyMusicComponent implements OnInit, OnDestroy {
       this.toastr.error('Please select audio file', 'Error!');
     } else if(!this.image_upload) {
       this.toastr.error('Please select track image', 'Error!');
-    } else if(!this.trackdata.name) {
-      this.toastr.error('Please select track name', 'Error!');
+    } else if(!this.trackdata.name || !isValid) {
+      this.toastr.error('Please enter track name', 'Error!');
     } else if(!this.trackdata.price) {
-      this.toastr.error('Please select track price', 'Error!');
+      this.toastr.error('Please enter track price', 'Error!');
     } else if(this.trackdata.price < 0) {
       this.toastr.error('Track price must be positive value.', 'Error!');
     } else {
@@ -314,13 +320,20 @@ export class MyMusicComponent implements OnInit, OnDestroy {
 
   // update track
   updateTrack() {
-    this.show_spinner = true;
-      if(this.trackdata && this.trackdata.name && this.trackdata.price && this.trackdata.price > 0 && this.trackdata.image) {
+    let isWhitespace;
+    let isValid;
+    if(this.trackdata && this.trackdata.name) {
+      isWhitespace = this.trackdata.name.trim().length === 0;
+      isValid = !isWhitespace;
+    }
+    
+    if(this.trackdata && this.trackdata.name && isValid && this.trackdata.price && this.trackdata.price > 0 && this.trackdata.image) {
         let formdata = new FormData();
         formdata.append('name', this.trackdata.name);
         formdata.append('price', this.trackdata.price);
         formdata.append('image', this.trackdata.image);
         formdata.append('description', this.trackdata.description);
+        this.show_spinner = true;
         this.MyMusicService.updateTrack(formdata, this.trackdata._id).subscribe(response => {
           if(!response['track']['image']) {
             this.edit_image = 'img/profile-img.png';
@@ -338,10 +351,10 @@ export class MyMusicComponent implements OnInit, OnDestroy {
         });
     } else if(!this.trackdata.image) {
       this.toastr.error('Please select track image', 'Error!');
-    } else if(!this.trackdata.name) {
-      this.toastr.error('Please select track name', 'Error!');
+    } else if(!this.trackdata.name || !isValid) {
+      this.toastr.error('Please enter track name', 'Error!');
     } else if(!this.trackdata.price) {
-      this.toastr.error('Please select track price', 'Error!');
+      this.toastr.error('Please enter track price', 'Error!');
     } else if(this.trackdata.price < 0) {
       this.toastr.error('Track price must be positive.', 'Error!');
     } else {

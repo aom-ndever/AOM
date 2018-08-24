@@ -59,7 +59,13 @@ export class TrackConmmentsComponent implements OnInit {
   }
   // Post comment
   postComment() {
-    if(this.comment_txt && this.comment_txt != null) {
+    let isWhitespace;
+    let isValid;
+    if(this.comment_txt) {
+      isWhitespace = this.comment_txt.name.trim().length === 0;
+      isValid = !isWhitespace;
+    }
+    if(this.comment_txt && isValid) {
       this.show_spinner = true;
       let data = {
         "track_id": this.track._id,
