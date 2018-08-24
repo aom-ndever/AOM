@@ -17,6 +17,7 @@ var user_helper = require('../../helpers/user_helper');
 var download_helper = require('../../helpers/download_helper');
 var vote_track_helper = require('../../helpers/vote_track_helper');
 var contest_helper = require('../../helpers/contest_helper');
+var stripe = require("stripe")("sk_test_FUsMHGCLfkGJmKEbW0aiRATb");
 
 var mongoose = require('mongoose');
 var ObjectId = mongoose.Types.ObjectId;
@@ -191,21 +192,119 @@ router.put('/bank/:bank_id', async (req, res) => {
 router.post('/add_bank_details', async (req, res) => {
     artist_id = req.userInfo.id;
     var obj = {
-        "card_number": req.body.card_number,
+        "name": req.body.name,
         "holder_name": req.body.holder_name,
-        "expiry_date": req.body.expiry_date,
-        "cvv": req.body.cvv,
+        "account_number": req.body.account_number,
+        "bsb": req.body.bsb,
         "artist_id": artist_id,
+
     };
+    var artist_data = await artist_helper.get_artist_by_id(artist_id);
 
     var card_resp = await artist_helper.insert_bank(obj);
     if (card_resp.status === 0) {
         res.status(config.INTERNAL_SERVER_ERROR).json(card_resp);
     } else {
-        res.status(config.OK_STATUS).json(card_resp);
-    }
+        try {
 
+            let bank_account_token = await stripe.tokens.create({
+                bank_account: {
+                    account_number: obj.account_number,
+                    country: 'US',
+                    currency: 'usd',
+                    account_holder_name: obj.holder_name,
+                    account_holder_type: 'individual',
+                    routing_number: obj.bsb
+                }
+            });
+
+            console.log("bank_account_token => ", bank_account_token);
+            var card_resp = await artist_helper.get_account_by_artist_id(artist_id);
+
+            console.log("card resp => ", card_resp);
+
+            if (card_resp && card_resp.status != 1) {
+
+                var account = await stripe.accounts.create({
+                    type: 'custom',
+                    country: 'US',
+                    email: artist_data.artist.email
+
+                });
+                var account_obj = {
+                    "artist_id": artist_id,
+                    "account_id": account.id
+                }
+                var card_resp = await artist_helper.insert_account(account_obj);
+
+            }
+
+            await stripe.accounts.createExternalAccount(
+                card_resp.account.account_id,
+                { external_account: bank_account_token.id }
+            );
+
+            res.status(config.OK_STATUS).json({ "message": "Account created" });
+
+        } catch (error) {
+            console.log(error)
+        }
+
+
+    }
 });
+
+
+router.post('/withdraw', async (req, res) => {
+    var schema = {
+        'amount': {
+            notEmpty: true,
+            errorMessage: "Withdrawal amount is required"
+        },
+        // 'bank_account': {
+        //     notEmpty: true,
+        //     errorMessage: "Bank account is required"
+        // }
+    };
+
+    req.checkBody(schema);
+    const errors = req.validationErrors();
+    artist_id = req.userInfo.id
+    var card_resp = await artist_helper.get_account_by_artist_id(artist_id);
+
+    if (!errors) {
+        try {
+            let transfer = await stripe.transfers.create({
+                amount: req.body.amount * 100,
+                currency: "usd",
+                destination: card_resp.account.account_id
+            });
+            console.log('transfer', transfer);
+            res.status(config.OK_STATUS).json({ data: transfer });
+        }
+        catch (error) {
+            console.log(error)
+            res.status(config.BAD_REQUEST).json({ message: "insufficient balance" });
+        }
+    } else {
+        res.status(config.BAD_REQUEST).json({ message: errors });
+    }
+});
+
+router.post("/transaction", async (req, res) => {
+    user_id = req.userInfo.id;
+    logger.trace("Get all Artist API called");
+    var resp_data = await artist_helper.get_transaction_by_artist_id(user_id, req.body.start, req.body.length);
+    if (resp_data.status == 0) {
+        logger.error("Error occured while fetching Track = ", resp_data);
+        res.status(config.INTERNAL_SERVER_ERROR).json(resp_data);
+    } else {
+        logger.trace("Artist got successfully = ", resp_data);
+        res.status(config.OK_STATUS).json(resp_data);
+    }
+});
+
+
 
 /**
  * @api {put} /artist/notification_settings Update notification
@@ -421,7 +520,7 @@ router.get('/bank', async (req, res) => {
     var card = await artist_helper.get_all_bank_by_artist_id(artist_id);
     if (card.status === 1) {
         logger.trace("got details successfully");
-        res.status(config.OK_STATUS).json({ "status": 1, "card": card.bank });
+        res.status(config.OK_STATUS).json({ "status": 1, "bank": card.bank });
     } else {
         logger.error("Error occured while fetching = ", card);
         res.status(config.INTERNAL_SERVER_ERROR).json(card);

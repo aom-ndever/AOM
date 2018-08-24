@@ -170,7 +170,6 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
               });
             });
           }, 0)
-          
         },
         columns: [
           { data: '' },
@@ -340,7 +339,7 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
         this.toastr.error(error['error'].message, 'Error!');
       });
     } else {
-      this.toastr.info('Please login first to follow the artist.', 'Information!');
+      this.toastr.info('Please signin as listener follow the artist.', 'Info!');
     }
   }
   // Open artist media in lightbox
@@ -646,15 +645,15 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
             track_id : this.track_data['_id'],
             card_id : result['token']['id']
           };
-          // this.ArtistProfileService.purchaseTrack(data).subscribe((response) => {
-          //   this.toastr.success(response['message'], 'Success!');
-          //   this.modalRef.close();
-          // }, (error) => {
-          //   this.toastr.error(error['error'].message, 'Error!');
-          //   this.show_spinner = false;
-          // }, () => {
-          //   this.show_spinner = false;
-          // });
+          this.ArtistProfileService.purchaseTrack(data).subscribe((response) => {
+            this.toastr.success(response['message'], 'Success!');
+            this.modalRef.close();
+          }, (error) => {
+            this.toastr.error(error['error'].message, 'Error!');
+            this.show_spinner = false;
+          }, () => {
+            this.show_spinner = false;
+          });
           //this.stripeTokenHandler(result.token);
         }
       });

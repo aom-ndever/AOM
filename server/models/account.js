@@ -6,16 +6,12 @@ var SALT_WORK_FACTOR = 10;
 //Define a schema
 var Schema = mongoose.Schema;
 
-var BankModelSchema = new Schema({
-    name: String,
+var AccountModelSchema = new Schema({
+    account_id: String,
     artist_id: { type: mongoose.Schema.Types.ObjectId, ref: 'artist' },
-    account_number: Number,
-    holder_name: String,
-    bsb: String,
-    status: { type: Boolean, default: false },
     created_at: { type: Date, default: Date.now }
 }, { versionKey: false });
 
-var Bank = mongoose.model('bank', BankModelSchema, 'bank');
+var Account = mongoose.model('account', AccountModelSchema, 'account');
 
-module.exports = Bank;
+module.exports = Account;

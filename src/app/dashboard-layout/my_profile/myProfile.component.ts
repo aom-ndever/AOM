@@ -46,6 +46,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
   private _albums: any = [];
   artist_media_url : any = environment.API_URL+environment.ARTIST_MEDIA;
   track_url : any = environment.API_URL+environment.ARTIST_TRACK;
+  user_img_url : any = environment.API_URL+environment.USER_IMG;
   video_url : any = '';
   analytic_tab : any = 1;
   analytics_days : any = 7;
@@ -95,7 +96,10 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
   // upgrade to artist form group
   upgrade_artist : FormGroup;
   upgrade_artist_validation : boolean = false;
-  upgrade_artist_data : any = {};
+  upgrade_artist_data : any = {
+    state : '',
+    region : ''
+  };
   region_list : any = [];
   state_list : any = [];
   upgrade_artist_img : any = '';
@@ -108,6 +112,22 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
   search_track : any = '';
   track_flag : boolean = false;
   playlist_track_list : any = [];
+
+  // Bank
+  bank_fg :  FormGroup;
+  bank_validation : boolean = false;
+
+  // Purchased track
+  purchased_track : any = [];
+  purchased_track_list : any = [];
+
+  // payment tab
+  payment_tab_cnt : any = 0;
+  transaction_data : any = [];
+  payment_chart : any = '';
+  payment_count : any = 0;
+  proceed_chart : any = '';
+  procced_count : any = 0;
 
   constructor(private MyProfileService : MyProfileService, 
     private toastr: ToastrService,
@@ -169,6 +189,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
       };
       this.upgrade_artist_data = {...this.userdata, share_url};
       this.upgrade_artist_data['music_type'] = '';
+      this.upgrade_artist_data['state'] = '';
       delete this.userdata['token'];
       delete this.userdata['token'];
       if(this.userdata.dob) {
@@ -251,6 +272,13 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
       phone : ['', [Validators.required, Validators.pattern('[0-9]+'), Validators.minLength(10),Validators.maxLength(10), this.noWhitespaceValidator]],
       zipcode : ['', [Validators.required, this.noWhitespaceValidator]],
       music_type : ['']
+    });
+
+    this.bank_fg = this.fb.group({
+      bname : ['', [Validators.required, this.noWhitespaceValidator]],
+      hname : ['', [Validators.required, this.noWhitespaceValidator]],
+      acno : ['', [Validators.required, Validators.minLength(16), Validators.maxLength(16) , this.noWhitespaceValidator]],
+      rno : ['', [Validators.required, this.noWhitespaceValidator]]
     });
 
      // this.getAllData();
@@ -337,8 +365,9 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
       this.calculateDateFromDays(this.analytics_days);
       this.getAllCard();
       //this.getAllTrackAnalytic({day : this.analytics_days});
-      this.getAllOverviewAnalytic({day : 14});
+      this.getAllOverviewAnalytic({day : this.analytics_days});
       this.getAllDownloadAnalytic({day : this.analytics_days});
+      this.getAllPayment({day : 30});
       const that = this;
       this.dtOptions[0] = {
         pagingType: 'full_numbers',
@@ -356,13 +385,42 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
             that.playlist = response['playlist'];
             callback({
               recordsTotal: response['recordsTotal'],
-              recordsFiltered: response['recordsFiltered'],
+              recordsFiltered: response['recordsTotal'],
               data: []
             });
           });
           
         },
         columns: [
+          { data: '' },
+          { data: '' }
+        ]
+      };
+      this.dtOptions[1] = {
+        pagingType: 'full_numbers',
+        pageLength: 10,
+        serverSide: true,
+        processing: true,
+        searching: false,
+        ordering: false,
+        lengthChange: false,
+        responsive: true,
+        ajax: (dataTablesParameters: any, callback) => {
+          that.MyProfileService.getAllTransction(dataTablesParameters).subscribe((response) => {
+            that.transaction_data = response['account'];
+            callback({
+              recordsTotal: response['recordsTotal'],
+              recordsFiltered: response['recordsTotal'],
+              data: []
+            });
+          });
+          
+        },
+        columns: [
+          { data: '' },
+          { data: '' },
+          { data: '' },
+          { data: '' },
           { data: '' },
           { data: '' }
         ]
@@ -392,7 +450,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
             }
             callback({
               recordsTotal: response['recordsTotal'],
-              recordsFiltered: response['recordsFiltered'],
+              recordsFiltered: response['recordsTotal'],
               data: []
             });
           });
@@ -421,7 +479,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
             that.playlist = response['playlist'];
             callback({
               recordsTotal: response['recordsTotal'],
-              recordsFiltered: response['recordsFiltered'],
+              recordsFiltered: response['recordsTotal'],
               data: []
             });
           });
@@ -432,6 +490,40 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
           { data: '' }
         ]
       };
+      this.dtOptions[2] = {
+        pagingType: 'full_numbers',
+        pageLength: 10,
+        serverSide: true,
+        processing: true,
+        searching: false,
+        ordering: false,
+        lengthChange: false,
+        responsive: true,
+        ajax: (dataTablesParameters: any, callback) => {
+          console.log(dataTablesParameters);
+          that.audio_ins = [];
+          that.MyProfileService.getAllPurchasedTrack(dataTablesParameters).subscribe((response) => {
+            that.purchased_track = response['track'];
+            this.audio_ins = [];
+            this.purchased_track_list = [];
+            that.purchased_track.forEach((ele) => {this.audio_ins.push(false)});
+            that.purchased_track.forEach((ele) => {this.purchased_track_list.push(ele['track'])});
+            callback({
+              recordsTotal: response['recordsTotal'],
+              recordsFiltered: response['recordsTotal'],
+              data: []
+            });
+          });
+          
+        },
+        columns: [
+          { data: '' },
+          { data: '' },
+          { data: '' },
+          { data: '' }
+        ]
+      };
+     
     }
 
   }
@@ -489,11 +581,17 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
     this.getAllTrackAnalytic({day : this.analytics_days});
     this.getAllOverviewAnalytic({day : this.analytics_days});
     this.getAllDownloadAnalytic({day : this.analytics_days});
+    this. getAllProceed({day : this.analytics_days});
   }
 
   tabChange(cnt : Number) {
     this.tab_cnt = cnt;
     this.track_flag = false;
+  }
+
+  // Payment tab change
+  paymentTabChange(cnt : Number) {
+    this.payment_tab_cnt = cnt;
   }
 
   togglelocBarChart(flag : boolean) {
@@ -511,6 +609,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
       this.getAllTrackAnalytic({day : this.analytics_days});
     } else if(cnt == 4) {
       this.getAllDownloadAnalytic({day : this.analytics_days});
+      this.getAllProceed({day : this.analytics_days});
     }
   }
   // Update user profile
@@ -935,6 +1034,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
     let formData: FormData = new FormData();
     formData.append('link', this.video_url);
     if(this.video_url) {
+      this.show_spinner = true;
       this.MyProfileService.uploadMedia(formData).subscribe(event => {
         if (event instanceof HttpResponse) {
           this.video_url = '';
@@ -944,9 +1044,11 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
         }
       }, error => {
         this.toastr.error(error['error'].message, 'Error!');
+        this.show_spinner = false;
       });
     } else {
-      this.toastr.error('Please provide video url', 'Error!');
+      this.toastr.error('Please add video url or Image.', 'Error!');
+      this.show_spinner = false;
     }
   }
 
@@ -1014,6 +1116,20 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
         
     });
   }
+
+  // Get all payment details
+  getAllPayment(data) {
+    this.MyProfileService.getProceedChartData(data).subscribe((response) => {
+      this.paymentChart(response['day']);
+    });
+  }
+  // Get all proceed details
+  getAllProceed(data) {
+    this.MyProfileService.getProceedChartData(data).subscribe((response) => {
+      this.proceedChart(response['day']);
+    });
+  }
+
   // Get all download analytics data
   getAllDownloadAnalytic(data) {
     this.MyProfileService.getAllDownloadAnalytic(data).subscribe(response => {
@@ -1242,6 +1358,111 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
       ]
     });
   }
+
+  // payment chart 
+  paymentChart(data : any) {
+    let result = [];
+    let cat = [];
+    let dt = new Date();
+    for(let i = 1; i<= 30; i++) {
+      cat.push(this.month_name(dt)+" "+i);
+      result.push(0);
+    }
+    this.payment_count = 0;
+    data.forEach(ele => {
+      result[ele['day'] - 1] = ele.amount;
+      this.payment_count += ele.amount;
+    });
+    this.payment_chart = new Chart({
+      chart: {
+        type: 'area',
+        height : 200
+      },
+      title: {
+        text: ''
+      },
+      xAxis : {
+        categories : cat,
+        labels: {
+            enabled: true
+        },
+        tickmarkPlacement: 'on',
+        minorTickLength: 0,
+        tickLength: 0
+      },
+      yAxis : {
+        visible : true,
+        labels : {
+          format : '${value}'
+        }
+      },
+      tooltip : {
+        formatter : function () {
+          return 'Proceeds <b>$'+this.y+'</b>';
+        }
+      },
+      series: [
+        {
+          name : 'Proceed',
+          color : '#9b26b0',
+          data: result
+        }
+      ]
+    });
+  }
+
+  // proceed chart
+  proceedChart(data : any) {
+    let result = [];
+    let cat = [];
+    let dt = new Date();
+    for(let i = 1; i<= this.analytics_days; i++) {
+      cat.push(this.month_name(dt)+" "+i);
+      result.push(0);
+    }
+    this.procced_count = 0;
+    data.forEach(ele => {
+      result[ele['day'] - 1] = ele.amount;
+      this.procced_count += ele.amount;
+    });
+    this.proceed_chart = new Chart({
+      chart: {
+        type: 'area',
+        height : 200
+      },
+      title: {
+        text: ''
+      },
+      xAxis : {
+        categories : cat,
+        labels: {
+            enabled: true
+        },
+        tickmarkPlacement: 'on',
+        minorTickLength: 0,
+        tickLength: 0
+      },
+      yAxis : {
+        visible : true,
+        labels : {
+          format : '${value}'
+        }
+      },
+      tooltip : {
+        formatter : function () {
+          return 'Proceeds <b>$'+this.y+'</b>';
+        }
+      },
+      series: [
+        {
+          name : 'Proceed',
+          color : '#9b26b0',
+          data: result
+        }
+      ]
+    });
+  }
+
   // Overview Gender chart
   overviewGenderChart(data : any) {
     let result = [];
@@ -1312,16 +1533,19 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
   // Track Gender chart
   trackGenderChart(data : any) {
     let result = [];
-    data.forEach(ele => {
-      if(ele['_id'] == 'male') 
-        this.track_male_per = ele['percentage_value'];
-      else
-      this.track_female_per = ele['percentage_value'];
-      result.push({
-        name : ele['_id'],
-        y : parseFloat(ele['percentage_value'])
+    if(data) {
+      data.forEach(ele => {
+        if(ele['_id'] == 'male') 
+          this.track_male_per = ele['percentage_value'];
+        else
+        this.track_female_per = ele['percentage_value'];
+        result.push({
+          name : ele['_id'],
+          y : parseFloat(ele['percentage_value'])
+        });
       });
-    });
+    }
+    
     this.track_gender_chart = new Chart({
       chart: {
         type: 'pie',
@@ -1803,7 +2027,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
             }
             callback({
               recordsTotal: response['recordsTotal'],
-              recordsFiltered: response['recordsFiltered'],
+              recordsFiltered: response['recordsTotal'],
               data: []
             });
           });
@@ -1986,86 +2210,36 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   // Stripe Credit-Card implementation
+  bank_data : any = {};
   openCardModel(content) {
-    setTimeout(()=>{
-      this.setupStripeFrom();
-    },500);
+    this.bank_data = {};
     this.media_modal_ref = this.modalService.open(content, { centered: true, backdrop : true });
   }
-
-  style = {
-    base: {
-      color: '#32325d',
-      lineHeight: '18px',
-      fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
-      fontSmoothing: 'antialiased',
-      fontSize: '16px',
-      '::placeholder': {
-        color: '#aab7c4'
-      }
-    },
-    invalid: {
-      color: '#fa755a',
-      iconColor: '#fa755a'
-    }
-  };
-
-  setupStripeFrom() {
-    var stripe = Stripe(environment.STRIPE_PUB_KEY);
-    var elements = stripe.elements();
-    var card = elements.create('card', { style: this.style });
-    card.mount('#card-element');
-    // this.registerElements([card], 'ex');
-    card.addEventListener('change', function (event) {
-      var displayError = document.getElementById('card-errors');
-      if (event.error) {
-        displayError.textContent = event.error.message;
-      } else {
-        displayError.textContent = '';
-      }
-    });
-
-    var form = document.getElementById('payment-form');
-    
-    form.addEventListener('submit', (event) => {
-      event.preventDefault();
+  // Add new bank
+  addBank(flag) {
+    if(flag) {
       this.show_spinner = true;
-      stripe.createToken(card).then((result) => {
-        if (result.error) {
-          // Inform the customer that there was an error.
-          var errorElement = document.getElementById('card-errors');
-          errorElement.textContent = result.error.message;
-        } else {
-          // Send the token to your server.
-          console.log(result.token);
-          let data = {
-            "fname": form['elements'][0].value,
-            "lname": form['elements'][1].value,
-            "card_id" : result.token['card']['id'],
-            "card_type" : result.token['card']['brand'].toLowerCase()
-          };
-          
-          this.MyProfileService.addNewPaymentMethod(data).subscribe((response) => {
-            this.toastr.success(response['message'], 'Success!');
-            this.media_modal_ref.close();
-            this.getAllCard();
-          }, (error) => {
-            this.toastr.error(error['error'].message, 'Error!');
-            this.show_spinner = false;
-          }, () => {
-            this.show_spinner = false;
-          });
-          //this.stripeTokenHandler(result.token);
-        }
+      this.MyProfileService.addNewPaymentMethod(this.bank_data).subscribe((response) => {
+        this.toastr.success(response['message'], 'Success!');
+        this.getAllCard();
+        this.media_modal_ref.close();
+      }, (error) => {
+        this.toastr.error(error['error'].message, 'Error!');
+        this.show_spinner = false;
+      }, () => {
+        this.show_spinner = false;
       });
-    });
+    } 
+    this.bank_validation = !flag;
   }
-  
   // get all card
   card_list : any = [];
   getAllCard() {
-    this.MyProfileService.getAllCard().subscribe((response) => {
-      this.card_list = response['card'];
+    this.MyProfileService.getAllBank().subscribe((response) => {
+      this.card_list = response['bank'];
+      this.card_list.forEach((ele) => {
+        ele['account_number'] = ele['account_number'].toString().replace(/.(?=.{4})/g, 'X');
+      });
     });
   }
   // remove card
@@ -2080,7 +2254,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
       confirmButtonText: 'Yes, delete it!'
     }).then((flag) => {
       if(flag.value) {
-        this.MyProfileService.removeCard(id).subscribe((response)=>{
+        this.MyProfileService.removeBank(id).subscribe((response)=>{
           this.toastr.success(response['message'], 'Success!');
           this.getAllCard();
         });
@@ -2088,115 +2262,20 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
     });
     
   }
-  registerElements(elements, exampleName) {
-    var stripe = Stripe(environment.STRIPE_PUB_KEY);
-    var formClass = '.' + exampleName;
-    var example = document.querySelector(formClass);
   
-    var form = example.querySelector('form');
-    var resetButton = example.querySelector('a.reset');
-    var error = form.querySelector('.error');
-    var errorMessage = error.querySelector('.message');
-  
-    function enableInputs() {
-      Array.prototype.forEach.call(
-        form.querySelectorAll(
-          "input[type='text'], input[type='email'], input[type='tel']"
-        ),
-        function(input) {
-          input.removeAttribute('disabled');
-        }
-      );
-    }
-  
-    function disableInputs() {
-      Array.prototype.forEach.call(
-        form.querySelectorAll(
-          "input[type='text'], input[type='email'], input[type='tel']"
-        ),
-        function(input) {
-          input.setAttribute('disabled', 'true');
-        }
-      );
-    }
-  
-    // Listen for errors from each Element, and show error messages in the UI.
-    elements.forEach(function(element) {
-      element.on('change', function(event) {
-        if (event.error) {
-          error.classList.add('visible');
-          errorMessage['innerText'] = event.error.message;
-        } else {
-          error.classList.remove('visible');
-        }
-      });
-    });
-  
-    // Listen on the form's 'submit' handler...
-    form.addEventListener('submit', function(e) {
-      e.preventDefault();
-  
-      // Show a loading screen...
-      example.classList.add('submitting');
-  
-      // Disable all inputs.
-      disableInputs();
-  
-      // Gather additional customer data we may have collected in our form.
-      var name = form.querySelector('#' + exampleName + '-name');
-      var address1 = form.querySelector('#' + exampleName + '-address');
-      var city = form.querySelector('#' + exampleName + '-city');
-      var state = form.querySelector('#' + exampleName + '-state');
-      var zip = form.querySelector('#' + exampleName + '-zip');
-      var additionalData = {
-        name: name ? name['value'] : undefined,
-        address_line1: address1 ? address1['value'] : undefined,
-        address_city: city ? city['value'] : undefined,
-        address_state: state ? state['value'] : undefined,
-        address_zip: zip ? zip['value'] : undefined,
-      };
-  
-      // Use Stripe.js to create a token. We only need to pass in one Element
-      // from the Element group in order to create a token. We can also pass
-      // in the additional customer data we collected in our form.
-      stripe.createToken(elements[0], additionalData).then(function(result) {
-        // Stop loading!
-        example.classList.remove('submitting');
-  
-        if (result.token) {
-          // If we received a token, show the token ID.
-          example.querySelector('.token')['innerText'] = result.token.id;
-          example.classList.add('submitted');
-        } else {
-          // Otherwise, un-disable inputs.
-          enableInputs();
-        }
-      });
-    });
-  
-    resetButton.addEventListener('click', function(e) {
-      e.preventDefault();
-      // Resetting the form (instead of setting the value to `''` for each input)
-      // helps us clear webkit autofill styles.
-      form.reset();
-  
-      // Clear each Element.
-      elements.forEach(function(element) {
-        element.clear();
-      });
-  
-      // Reset error state as well.
-      error.classList.remove('visible');
-  
-      // Resetting the form does not un-disable inputs, so we need to do it separately:
-      enableInputs();
-      example.classList.remove('submitted');
-    });
-  }
   // Make payment method default
   markAsDefault(id) {
     this.MyProfileService.markAsDefault(id).subscribe((response) => {
       this.toastr.success(response['message'], 'Success!');
+    });
+  }
+  // Download track
+  downloadTrack(id : any) {
+    this.MyProfileService.downloadTrack(id).subscribe(response => {
+      console.log(response);
+      window.location.href = this.user_img_url+response['filename'];
+    }, error => {
+      this.toastr.error(error['error'].message, 'Error!');
     });
   }
 }

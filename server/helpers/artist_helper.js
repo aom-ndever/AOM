@@ -5,6 +5,8 @@ var User = require("./../models/user");
 var Track = require("./../models/track");
 var Notification = require("./../models/notification");
 var Bank = require("../models/bank");
+var Account = require("../models/account");
+var Transaction = require("../models/transaction");
 const saltRounds = 10;
 var artist_helper = {};
 var mongoose = require('mongoose');
@@ -30,10 +32,115 @@ artist_helper.insert_artist = async (object) => {
     }
 };
 
+artist_helper.insert_account = async (object) => {
+    console.log('object', object);
+
+    let art = new Account(object)
+    try {
+        let data = await art.save();
+        return { "status": 1, "message": "Record inserted", "account": data };
+    } catch (err) {
+        return { "status": 0, "message": "Error occured while inserting artist", "error": err };
+    }
+};
+
+artist_helper.get_account_by_artist_id = async (artist_id) => {
+    try {
+        var account = await Account.findOne({ "artist_id": ObjectId(artist_id) }).lean();
+        if (account) {
+            return { "status": 1, "message": "account details found", "account": account };
+        } else {
+            return { "status": 2, "message": "account not found" };
+        }
+    } catch (err) {
+        return { "status": 0, "message": "Error occured while finding account", "error": err }
+    }
+};
+artist_helper.get_transaction_by_artist_id = async (artist_id, start, length) => {
+    try {
+        var accounts = await Transaction
+            .find({ "artist_id": ObjectId(artist_id) })
+        var tot_cnt = accounts.length;
+
+        var account = await Transaction
+            .find({ "artist_id": ObjectId(artist_id) })
+            .populate('track_id')
+            .skip(start)
+            .limit(length)
+        var filter_cnt = account.length
+        if (account) {
+            return { "status": 1, "message": "account details found", "account": account, "recordsFiltered": filter_cnt, "recordsTotal": tot_cnt };
+        } else {
+            return { "status": 2, "message": "account not found" };
+        }
+    } catch (err) {
+        return { "status": 0, "message": "Error occured while finding account", "error": err }
+    }
+};
+
 artist_helper.insert_user_to_artists = async (object) => {
 
     try {
         let data = await Artist.insertMany([object]);
+        return { "status": 1, "message": "Record inserted", "artist": data };
+    } catch (err) {
+        return { "status": 0, "message": "Error occured while inserting artist", "error": err };
+    }
+};
+
+
+artist_helper.get_payment_by_day = async (artist_id, day) => {
+
+    var to = moment().utcOffset(0);
+    var from = moment(to).subtract(day, "days").utcOffset(0);
+    var aggregate = [
+        {
+            "$match":
+            {
+                "created_at": { "$gt": new Date(from), "$lt": new Date(to) },
+                "artist_id": new ObjectId(artist_id)
+            },
+        },
+        {
+            $project: {
+                dayOfWeek: { $dayOfWeek: "$created_at" },
+                amount: 1
+            }
+        },
+        {
+            $group: {
+                _id: "$dayOfWeek",
+                totalAmount: {
+                    $sum: "$amount"
+                }
+            }
+        },
+        {
+            $project: {
+                _id: 0,
+                day: "$_id",
+                amount: "$totalAmount"
+            }
+        },
+
+    ];
+    let result = await Transaction.aggregate(aggregate);
+
+
+    if (result) {
+        return { "status": 1, "message": "Track  found", "results": result }
+    } else {
+        return { "status": 2, "message": "No  available Track" }
+    }
+
+};
+
+
+
+artist_helper.insert_transaction = async (object) => {
+    let art = new Transaction(object)
+    try {
+        let data = await art.save();
         return { "status": 1, "message": "Record inserted", "artist": data };
     } catch (err) {
         return { "status": 0, "message": "Error occured while inserting artist", "error": err };
@@ -304,7 +411,49 @@ artist_helper.get_artist_by_filter = async (filter, start, length) => {
             .populate('state')
             .skip(start)
             .limit(length)
+        // var aggregate = [
+        //     {
+        //         "$match": {
+        //             "flag": false
+        //         }
+        //     },
 
+        //     {
+        //         '$lookup': {
+        //             from: 'music_type',
+        //             localField: 'music_type',
+        //             foreignField: '_id',
+        //             as: 'music_type'
+        //         }
+        //     },
+        //     {
+        //         '$unwind': '$music_type'
+        //     },
+        //     {
+        //         '$lookup': {
+        //             from: 'state',
+        //             localField: 'state',
+        //             foreignField: '_id',
+        //             as: 'state'
+        //         }
+        //     },
+        //     {
+        //         '$unwind': '$state'
+        //     },
+
+        //     // {
+        //     //     $skip: start
+        //     // },
+        //     // {
+        //     //     $limit: length
+        //     // }
+        // ];
+
+        // if (filter) {
+        //     aggregate.push({
+        //         "$match": filter
+        //     })
+        // }
 
         if (artist) {
             return { "status": 1, "message": "artist details found", "artist": artist };
