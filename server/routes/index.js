@@ -26,6 +26,7 @@ var state_helper = require('./../helpers/state_helper');
 var region_helper = require('./../helpers/region_helper');
 var global_helper = require('./../helpers/global_helper');
 var contest_helper = require('./../helpers/contest_helper');
+var participate_helper = require('./../helpers/participate_helper');
 
 /**
  * @api {post} /artist_registration Artist Registration
@@ -278,6 +279,19 @@ router.post('/user_registration_facebook', async (req, res) => {
   }
 });
 
+
+router.post('/get_all_participants', async (req, res) => {
+
+  var artist = await participate_helper.get_all_participant(req.body.start, req.body.length);
+
+  if (artist.status === 1) {
+    logger.trace("got details successfully");
+    res.status(config.OK_STATUS).json({ "status": 1, "artist": artist.participate });
+  } else {
+    logger.error("Error occured while fetching = ", artist);
+    res.status(config.INTERNAL_SERVER_ERROR).json(artist);
+  }
+});
 
 
 //gmail registration
