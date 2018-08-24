@@ -156,65 +156,85 @@ router.post("/purchased", async (req, res) => {
  * @apiSuccess (Success 200) {JSON} vote details
  * @apiError (Error 4xx) {String} message Validation or error message.
  */
-// router.post('/vote_track', async (req, res) => {
-//   user_id = req.userInfo.id;
-//   var schema = {
-//     "track_id": {
-//       notEmpty: true,
-//       errorMessage: "Track Id is required"
-//     },
-//   };
-//   req.checkBody(schema);
-//   var errors = req.validationErrors();
+router.post('/vote_track', async (req, res) => {
+  user_id = req.userInfo.id;
+  var schema = {
+    "track_id": {
+      notEmpty: true,
+      errorMessage: "Track Id is required"
+    },
+  };
+  req.checkBody(schema);
+  var errors = req.validationErrors();
 
-//   if (!errors) {
-//     var obj = {
-//       user_id: req.userInfo.id,
-//       track_id: req.body.track_id,
-//       artist_id: req.body.artist_id
-//     };
-
-//     var resp_data = await vote_track_helper.get_all_voted_artist(user_id, obj.track_id);
-
-//     if (resp_data && resp_data.vote == 0) {
-//       //var data = await vote_track_helper.vote_for_track(user_id, obj);
-//       var participate_response = await participate_helper.get_participant_by_track_id(obj.track_id);
-//       contest_id = participate_response.participate.contest_id;
-//       var round_response = await round_helper.get_round_by_id(contest_id);
-//       console.log('round_response.participate', round_response);
+  if (!errors) {
 
 
-//       // var round_response = await round_helper.get_rounds_by_contestid(contest_id);
-//       // console.log('round_response', round_response);
+    var participate_response = await participate_helper.get_participant_by_track_id(req.body.track_id);
+    contest_id = participate_response.participate.contest_id;
+    var round_response = await round_helper.get_current_round_of_contest(contest_id);
 
-//       //   if (data && data.status == 0) {
-//       //     logger.error("Error occured while voting = ", data);
-//       //     res.status(config.INTERNAL_SERVER_ERROR).json(data);
-//       //   } else {
-//       //     var resp_data = await winner(obj.track_id);
+    var obj = {
+      user_id: req.userInfo.id,
+      track_id: req.body.track_id,
+      artist_id: req.body.artist_id,
+      round_id: round_response.round._id,
+      contest_id: round_response.round.contest_id,
 
-//       //     var resp_data = await track_helper.get_all_track_by_track_id(obj.track_id);
-//       //     no_vote = resp_data.track.no_of_votes + 1;
+    };
+    if (round_response.status == 1) {
+      var data = await vote_track_helper.get_all_voted_artist(user_id, obj.track_id, obj.contest_id, obj.round_id);
+
+      if (data && data.vote == 0) {
+        var data = await vote_track_helper.vote_for_track(user_id, obj);
+
+        var resp_data = await track_helper.get_all_track_by_track_id(obj.track_id);
+        no_vote = resp_data.track.no_of_votes + 1;
+        var resp_data = await track_helper.update_votes(obj.track_id, no_vote);
+
+        logger.trace("voting done successfully = ", data);
+        res.status(config.OK_STATUS).json(resp_data);
+      }
+      else {
+        res.status(config.OK_STATUS).json({ "message": "Already Voted" });
+      }
+    }
+    else {
+      res.status(config.OK_STATUS).json({ "message": "Voting lines are closed for now" });
+    }
 
 
-//       //     var resp_data = await track_helper.update_votes(obj.track_id, no_vote);
+    // var round_response = await round_helper.get_rounds_by_contestid(contest_id);
+    // console.log('round_response', round_response);
 
-//       //     logger.trace("voting done successfully = ", data);
-//       //     // var resp = await user_helper.get_user_by_id(obj.user_id);
-//       //     // no_vote = resp.user.no_of_votes + 1
-//       //     // var resp_data = await user_helper.update_user_for_votes(obj.user_id, no_vote);
-//       //     logger.trace("voting done successfully = ", data);
-//       //     res.status(config.OK_STATUS).json(data);
-//       //   }
-//     }
+    //   if (data && data.status == 0) {
+    //     logger.error("Error occured while voting = ", data);
+    //     res.status(config.INTERNAL_SERVER_ERROR).json(data);
+    //   } else {
+    //     var resp_data = await winner(obj.track_id);
 
-//     else {
-//       logger.trace("Already Voted");
-//       res.status(config.OK_STATUS).json({ "message": "Already Voted" });
-//     }
+    //     var resp_data = await track_helper.get_all_track_by_track_id(obj.track_id);
+    //     no_vote = resp_data.track.no_of_votes + 1;
 
-//   }
-// });
+
+    //     var resp_data = await track_helper.update_votes(obj.track_id, no_vote);
+
+    //     logger.trace("voting done successfully = ", data);
+    //     // var resp = await user_helper.get_user_by_id(obj.user_id);
+    //     // no_vote = resp.user.no_of_votes + 1
+    //     // var resp_data = await user_helper.update_user_for_votes(obj.user_id, no_vote);
+    //     logger.trace("voting done successfully = ", data);
+    //     res.status(config.OK_STATUS).json(data);
+    //   }
+    // }
+
+    // else {
+    //   logger.trace("Already Voted");
+    //   res.status(config.OK_STATUS).json({ "message": "Already Voted" });
+    // }
+
+  }
+});
 
 
 /**
