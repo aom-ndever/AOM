@@ -219,7 +219,7 @@
                 <tr>
                   <th>N<sup>O</sup></th>
                   <th>Track Name</th>
-                  <th>Duration</th>
+                  <th>Date</th>
                   <th>Actions</th>
                 </tr>
               </thead>
@@ -227,7 +227,7 @@
                 <tr *ngFor="let track of artist_track; let i = index;">
                   <td>{{i+1}}</td>
                   <td>{{track['name']}}</td>
-                  <td>3:10</td>
+                  <td>{{track['created_at'] | date : 'd M, yyyy'}}</td>
                   <td class="td_img">
                     <a href="javascript:;" (click)="removeTrack(track['_id'])"><i class="fa fa-trash"></i> Delete</a>&nbsp;
                     
