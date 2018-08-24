@@ -22,7 +22,7 @@
                                     <div class="upload-cover">
                                         <img [src]="default_cover_img" alt="Edit cover Image">
                                         <span class="up_text">Update Photo</span>
-                                        <input type="file" name="my_doc_upload" formControlName="upload" id="cover_upload1" multiple="false" (change)="updateCoverImage($event)">
+                                        <input type="file" name="my_doc_upload"  id="cover_upload1" multiple="false" (change)="updateCoverImage($event)">
                                         <a data-fancybox data-animation-duration="700" data-src="#delete" href="javascript:;" *ngIf="userdata.cover_image" (click)="removeArtistCoverImage()" class="delete"><i class="fa fa-trash"></i></a>
                                     </div>
                                     <div class="edit-details">
@@ -33,7 +33,7 @@
                                                     <div class="upload-cover">
                                                         <img [src]="default_profile_img" alt="Edit cover Image">
                                                         <span class="up_text">Update Photo</span>
-                                                        <input type="file" formControlName="cover" name="upload" id="cover_upload" (change)="updateProfileImage($event)">
+                                                        <input type="file"  name="upload" id="cover_upload" (change)="updateProfileImage($event)">
                                                         <a data-fancybox data-animation-duration="700" data-src="#delete" *ngIf="userdata.image" href="javascript:;" class="delete" (click)="removeArtistImage()"><i class="fa fa-trash"></i></a>
                                                     </div>
                                                 </div>
@@ -902,7 +902,7 @@
                                                     <div class="upload-cover">
                                                         <img src="{{default_profile_img}}" alt="Edit cover Image">
                                                         <span class="up_text">Update Photo</span>
-                                                        <input type="file" name="upload" formControlName="upload" id="cover_upload" (change)="updateProfileImage($event)">
+                                                        <input type="file" name="upload"  id="cover_upload" (change)="updateProfileImage($event)">
                                                         <a data-fancybox data-animation-duration="700" data-src="#delete" *ngIf="userdata.image" (click)="removeUserImage()" href="javascript:;" class="delete"><i class="fa fa-trash"></i></a>
                                                     </div>
                                                 </div>

@@ -42,7 +42,7 @@ export class AdminLoginComponent implements OnInit {
     this.AdminLoginService.login(this.admin_data).subscribe(response => {
       console.log(response);
       localStorage.setItem('user', JSON.stringify(response));
-      this.router.navigate(['/admin']);
+      this.router.navigate(['/admin/home']);
     }, error => {
       this.toastr.error(error['error'].message, 'Error!');
       this.show_spinner = false;
