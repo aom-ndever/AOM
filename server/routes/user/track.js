@@ -63,7 +63,7 @@ router.post('/purchase', async (req, res) => {
       var charge = await stripe.charges.create({
         amount: track_response.track.price * 100,
         currency: "usd",
-        source: "tok_1D2XvGByKlzX7uR6cP0IOMqF",
+        source: req.body.card_id,
         //source: 'tok_1D2CEMByKlzX7uR6PCR4CuuV',
         description: "Charge for jenny.rosen@example.com"
 
