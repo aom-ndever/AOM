@@ -10,7 +10,7 @@
 #pButton{ box-shadow: 0px 2px 10px rgba(0,0,0,0.3);  background-color: #9b26b0;border-radius: 50% !important;width: 50px;height: 50px;color: #fff;margin: 0 10px;border: none;background-size: 21px;background-repeat: no-repeat;background-position: center;float: left;outline: none;}
 .play{background: url('img/play_icon.png');    background-position: left 18px top 14px !important;}
 .pause{background: url('img/pause_icon.png') ;    background-size: 15px !important;}
- .audio_content{width: 61.5%;margin-top: 3px;float: left;}
+ .audio_content{width: 58.5%;margin-top: 3px;float: left;}
  #timeline{width: 100%;height: 4px;float: left;border-radius: 15px;background: rgb(215, 215, 215);}
  #playhead{    width: 18px;height: 4px;border-radius: 12px;margin-top: 0;background: rgb(155, 38, 176);}
 .prev_icon img{transform: rotate(180deg);}
@@ -21,7 +21,7 @@
 .audio_profile_name h3{    font-family: Helvetica;font-size: 14px;font-weight: bold;text-align: left;color: #1a1a1a;margin-bottom: 0 !important;vertical-align: bottom;}
 .audio_profile_name span{    vertical-align: top;opacity: 0.5;font-family: Helvetica;font-size: 12px;text-align: left;color: #1a1a1a;margin-bottom: 5px;display: inline-block;}
 .music_icons{    float: right;margin-right: 41px;}
-.music_icons img {height: auto;margin: 22px 4px 0 4px;}
+.music_icons img {height: auto;margin: 18px  4px 0 4px;}
 .music_icons a:focus{
   outline:none !important;
 }
