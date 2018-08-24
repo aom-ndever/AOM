@@ -2,6 +2,8 @@ var Round = require("./../models/round");
 var round_helper = {};
 var mongoose = require('mongoose');
 var _ = require('underscore');
+var moment = require('moment');
+
 var ObjectId = mongoose.Types.ObjectId;
 
 
@@ -32,6 +34,20 @@ round_helper.get_contest_by_id = async (id) => {
 
 
 round_helper.get_round_by_id = async (id) => {
+
+    try {
+        var contest = await Round
+            .find({ "contest_id": new ObjectId(id) })
+        if (contest) {
+            return { "status": 1, "message": "contest details found", "contest": contest };
+        } else {
+            return { "status": 2, "message": "contest not found" };
+        }
+    } catch (err) {
+        return { "status": 0, "message": "Error occured while finding contest", "error": err }
+    }
+};
+round_helper.get_rounds_by_contestid = async (id) => {
 
     try {
         var contest = await Round

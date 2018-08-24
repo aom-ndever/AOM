@@ -32,10 +32,11 @@ participate_helper.get_participant = async (id, ids, trackid) => {
     }
 };
 
-participate_helper.get_participant_by_track_id = async (id) => {
+participate_helper.get_participant_by_track_id = async (trackid) => {
     try {
         var participate = await Participate
-            .find({ "track_id": new ObjectId(trackid) })
+            .findOne({ "track_id": new ObjectId(trackid) })
+        //.populate()
         if (participate) {
             return { "status": 1, "message": "comment details found", "participate": participate };
         } else {

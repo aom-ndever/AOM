@@ -14,7 +14,8 @@ var artist_helper = require('../../helpers/artist_helper');
 var user_helper = require('../../helpers/user_helper');
 var mail_helper = require('../../helpers/mail_helper');
 var winner_helper = require('../../helpers/winner_helper');
-var winner_helper = require('../../helpers/winner_helper');
+var participate_helper = require('../../helpers/participate_helper');
+var round_helper = require('../../helpers/round_helper');
 var mongoose = require('mongoose');
 var ObjectId = mongoose.Types.ObjectId;
 var fs = require('fs');
@@ -62,7 +63,7 @@ router.post('/purchase', async (req, res) => {
       var charge = await stripe.charges.create({
         amount: track_response.track.price * 100,
         currency: "usd",
-        source: req.body.card_id,
+        source: "tok_1D2XvGByKlzX7uR6cP0IOMqF",
         //source: 'tok_1D2CEMByKlzX7uR6PCR4CuuV',
         description: "Charge for jenny.rosen@example.com"
 
@@ -86,8 +87,7 @@ router.post('/purchase', async (req, res) => {
             currency: "usd",
             destination: card_resp.account.account_id
           });
-          console.log('transfer------------->', transfer.amount);
-          console.log('transfer', typeof transfer.amount);
+
 
           var obj = {
             "transfer_id": transfer.id,
@@ -95,7 +95,7 @@ router.post('/purchase', async (req, res) => {
             "amount": transfer.amount,
             "artist_id": artist_id,
             "track_id": obj.track_id,
-            "status": finised
+            "status": "finised"
           }
           var transfer_resp = await artist_helper.insert_transaction(obj);
 
@@ -156,55 +156,65 @@ router.post("/purchased", async (req, res) => {
  * @apiSuccess (Success 200) {JSON} vote details
  * @apiError (Error 4xx) {String} message Validation or error message.
  */
-router.post('/vote_track', async (req, res) => {
-  user_id = req.userInfo.id;
-  var schema = {
-    "track_id": {
-      notEmpty: true,
-      errorMessage: "Track Id is required"
-    },
-  };
-  req.checkBody(schema);
-  var errors = req.validationErrors();
+// router.post('/vote_track', async (req, res) => {
+//   user_id = req.userInfo.id;
+//   var schema = {
+//     "track_id": {
+//       notEmpty: true,
+//       errorMessage: "Track Id is required"
+//     },
+//   };
+//   req.checkBody(schema);
+//   var errors = req.validationErrors();
 
-  if (!errors) {
-    var obj = {
-      user_id: req.userInfo.id,
-      track_id: req.body.track_id,
-      artist_id: req.body.artist_id
-    };
+//   if (!errors) {
+//     var obj = {
+//       user_id: req.userInfo.id,
+//       track_id: req.body.track_id,
+//       artist_id: req.body.artist_id
+//     };
 
-    var resp_data = await vote_track_helper.get_all_voted_artist(user_id, obj.track_id);
+//     var resp_data = await vote_track_helper.get_all_voted_artist(user_id, obj.track_id);
 
-    if (resp_data && resp_data.vote == 0) {
-      var data = await vote_track_helper.vote_for_track(user_id, obj);
-      if (data && data.status == 0) {
-        logger.error("Error occured while voting = ", data);
-        res.status(config.INTERNAL_SERVER_ERROR).json(data);
-      } else
-        var resp_data = await winner(obj.track_id);
-
-      var resp_data = await track_helper.get_all_track_by_track_id(obj.track_id);
-      no_vote = resp_data.track.no_of_votes + 1;
+//     if (resp_data && resp_data.vote == 0) {
+//       //var data = await vote_track_helper.vote_for_track(user_id, obj);
+//       var participate_response = await participate_helper.get_participant_by_track_id(obj.track_id);
+//       contest_id = participate_response.participate.contest_id;
+//       var round_response = await round_helper.get_round_by_id(contest_id);
+//       console.log('round_response.participate', round_response);
 
 
-      var resp_data = await track_helper.update_votes(obj.track_id, no_vote);
+//       // var round_response = await round_helper.get_rounds_by_contestid(contest_id);
+//       // console.log('round_response', round_response);
 
-      logger.trace("voting done successfully = ", data);
-      // var resp = await user_helper.get_user_by_id(obj.user_id);
-      // no_vote = resp.user.no_of_votes + 1
-      // var resp_data = await user_helper.update_user_for_votes(obj.user_id, no_vote);
-      logger.trace("voting done successfully = ", data);
-      res.status(config.OK_STATUS).json(data);
-    }
+//       //   if (data && data.status == 0) {
+//       //     logger.error("Error occured while voting = ", data);
+//       //     res.status(config.INTERNAL_SERVER_ERROR).json(data);
+//       //   } else {
+//       //     var resp_data = await winner(obj.track_id);
 
-    else {
-      logger.trace("Already Voted");
-      res.status(config.OK_STATUS).json({ "message": "Already Voted" });
-    }
+//       //     var resp_data = await track_helper.get_all_track_by_track_id(obj.track_id);
+//       //     no_vote = resp_data.track.no_of_votes + 1;
 
-  }
-});
+
+//       //     var resp_data = await track_helper.update_votes(obj.track_id, no_vote);
+
+//       //     logger.trace("voting done successfully = ", data);
+//       //     // var resp = await user_helper.get_user_by_id(obj.user_id);
+//       //     // no_vote = resp.user.no_of_votes + 1
+//       //     // var resp_data = await user_helper.update_user_for_votes(obj.user_id, no_vote);
+//       //     logger.trace("voting done successfully = ", data);
+//       //     res.status(config.OK_STATUS).json(data);
+//       //   }
+//     }
+
+//     else {
+//       logger.trace("Already Voted");
+//       res.status(config.OK_STATUS).json({ "message": "Already Voted" });
+//     }
+
+//   }
+// });
 
 
 /**
