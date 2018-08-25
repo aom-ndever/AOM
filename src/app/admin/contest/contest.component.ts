@@ -127,6 +127,7 @@ export class ContestComponent implements OnInit {
     this.ContestService.getContestParticipants(data).subscribe((response) => {
       this.participant_data =  response['artist'];
     });
+    this.is_valid = false;
     this.modalRef = this.modalService.show(template, { backdrop : 'static' });
   }
 

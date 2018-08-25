@@ -778,6 +778,7 @@ var ContestComponent = /** @class */ (function () {
         this.ContestService.getContestParticipants(data).subscribe(function (response) {
             _this.participant_data = response['artist'];
         });
+        this.is_valid = false;
         this.modalRef = this.modalService.show(template, { backdrop: 'static' });
     };
     ContestComponent.prototype.openContestModel = function (template) {
@@ -2270,6 +2271,7 @@ var AdminLoginComponent = /** @class */ (function () {
     };
     AdminLoginComponent.prototype.openContestModel = function (template) {
         this.forget_data = {};
+        this.forget_validation = false;
         this.ModelRef = this.modalService.show(template, { backdrop: 'static' });
     };
     // Forget password

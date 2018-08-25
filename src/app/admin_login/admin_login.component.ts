@@ -61,6 +61,7 @@ export class AdminLoginComponent implements OnInit {
   
   openContestModel(template : any) {
     this.forget_data = {};
+    this.forget_validation = false;
     this.ModelRef = this.modalService.show(template, {backdrop : 'static'});
   }
 
