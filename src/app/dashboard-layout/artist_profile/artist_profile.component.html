@@ -2,7 +2,7 @@
   <div class="container">
     <div class="row">
       <div class="col-md-12">
-        <div class="cover-img">
+        <div class="cover-img" style="background:url('{{artistdata['cover_image'] ? artist_img_url +artistdata['cover_image'] : 'img/cover.png'}}');" >
           <img src="{{artistdata['cover_image'] ? artist_img_url +artistdata['cover_image'] : 'img/cover.png'}}" alt="Cover Image">
         </div>
       </div>
@@ -197,19 +197,18 @@
                   </div>
                   <div id="media" class="tab-pane fade {{active_tab_index == 2 ? 'active show' : ''}}">
                     <div class="media-wrapper">
-                      <div class="row">
-                        <div class="alert alert-info col-sm-12" *ngIf="artistmedia.length <= 0">No data available.</div>
-                        <div class="col-md-4 col-sm-6 col-xs-12" *ngFor="let media of artistmedia; let i = index;">
+                
+                        <div class="alert alert-info" *ngIf="artistmedia.length <= 0">No data available.</div>
+                        <div class="" *ngFor="let media of artistmedia; let i = index;">
                           <a class="img-wrap" href="javascript:;" data-fancybox="images" data-width="1500" data-height="1000" >
                             <img src="{{media.image ? artist_media_url+media.image : 'img/media-1.png'}}" alt="Media">
                           </a>
-                          <div class="col-12" *ngIf="media.link">
-                            <video width="218" height="138" controls>
+                               <video class="media_video" *ngIf="media.link" width="218" height="138" controls>
                                 <source [src]="media.link" >
                             </video>
-                          </div>
+                 
                         </div>
-                      </div>
+                      
                     </div>
                   </div>
                   <div id="ranking" class="tab-pane fade {{active_tab_index == 3 ? 'active show' : ''}}">

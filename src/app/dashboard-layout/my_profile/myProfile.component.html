@@ -437,7 +437,7 @@
                             <div class="media-wrapper">
                                 <div class="row">
                                     <div class="col-md-12">
-                                        <div class="edit-head">Your Media</div>
+                                        <div class="edit-head top_label_pd0">Your Media</div>
                                     </div>
                                     <div class="col-md-12">
                                         <a data-fancybox data-animation-duration="700" data-src="#addmedia" (click)="openAddMediaModal(content)" href="javascript:;" class="add-payment"><img src="img/icons8-plus_mathNormal.png" alt="">Add Media</a>
@@ -798,23 +798,23 @@
                         <div class="tab-pan fade {{tab_cnt == 6 ? 'show active' : ''}}" id="playlist">
                                 <div class="row" *ngIf="!track_flag">
                                     <div class="col-sm-12 col-md-12 col-12">
-                                        <h3>Playlist</h3>
-                                        <a href="javascript:;" class="btn btn-primary" (click)="openAddPlaylistModel(addplaylist)">Add <i class="fa fa-plus"></i></a>
-                                        <div class="track-table">
+                                        <div class="edit-head top_label_pd0">Playlist</div>
+                                        <a href="javascript:;" class="btn btn-primary playlist_add_btn" (click)="openAddPlaylistModel(addplaylist)">Add <i class="fa fa-plus"></i></a>
+                                        <div class="track-table playlist_table table_design">
                                             <table datatable [dtOptions]="dtOptions[0]">
                                                 <thead>
                                                     <tr>
                                                         <th>Name</th>
-                                                        <th>Actions</th>
+                                                        <th class="action_thead">Actions</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
                                                     <tr *ngFor="let val of playlist;let i = index;">
                                                         <td>{{val['name']}}</td>
                                                         <td>
-                                                            <a href="javascript:;" (click)="openEditPlaylistModel(editplaylist, i)"><i class="fa fa-pencil"></i></a>
-                                                            <a href="javascript:;" (click)="removePlaylist(val['_id'])"><i class="fa fa-trash"></i></a>
-                                                            <a href="javascript:;" (click)="getPlaylistTrack(val['_id'], i)">Track</a>
+                                                            <a class="edit_plalist_link" href="javascript:;" (click)="openEditPlaylistModel(editplaylist, i)"><i class="fa fa-pencil"></i></a>
+                                                            <a class="delete_plalist_link" href="javascript:;" (click)="removePlaylist(val['_id'])"><i class="fa fa-trash"></i></a>
+                                                            <a class="track_plalist_link" href="javascript:;" (click)="getPlaylistTrack(val['_id'], i)"><i aria-hidden="true" class="fa fa-music"></i></a>
                                                         </td>
                                                     </tr>
                                                     <tr *ngIf="playlist.length == 0">
@@ -827,8 +827,8 @@
                                 </div>
                                 <div class="row" *ngIf="track_flag">
                                     <div class="col-sm-12 col-md-12 col-12">
-                                        <h3>"{{playlist_data['name']}}" - Tracks</h3>
-                                        <a href="javascript:;" class="btn btn-primary" (click)="openPlaylistTrackModel(addtrackplaylist)" >Add <i class="fa fa-plus"></i></a>
+                                        <div class="edit-head top_label_pd0">"{{playlist_data['name']}}" - Tracks</div>
+                                        <a href="javascript:;" class="btn btn-primary playlist_add_btn" (click)="openPlaylistTrackModel(addtrackplaylist)" >Add <i class="fa fa-plus"></i></a>
                                         <div class="track-table">
                                             <table datatable [dtOptions]="dtOptions[1]">
                                                 <tbody>
@@ -857,8 +857,8 @@
                                                                 <span>Votes</span>
                                                             </span>
                                                         </td>
-                                                        <td>
-                                                            <a href="javascript:;" (click)="removeTrackFromPlaylist(val['track']['_id'])"><i class="fa fa-trash"></i></a>
+                                                        <td class="action_thead">
+                                                            <a class="delete_plalist_link" href="javascript:;" (click)="removeTrackFromPlaylist(val['track']['_id'])"><i class="fa fa-trash"></i></a>
                                                         </td>
                                                     </tr>
                                                 </tbody>
@@ -1166,7 +1166,7 @@
                         <div class="tab-pane fade {{tab_cnt == 3 ? 'show active' : ''}}" id="bookmarked_track">
                             <div class="row">
                                 <div class="col-sm-12 col-md-12 col-12">
-                                    <h3>Bookmarked track</h3>
+                                    <div class="edit-head top_label_pd0 top_label_pdb0">Bookmarked track</div>
                                     <div class="track-table Bookmarked_table">
                                         <table datatable [dtOptions]="dtOptions[0]">
                                             <tbody>
@@ -1210,14 +1210,14 @@
                         <div class="tab-pan fade {{tab_cnt == 4 ? 'show active' : ''}}" id="playlist">
                             <div class="row" *ngIf="!track_flag">
                                 <div class="col-sm-12 col-md-12 col-12">
-                                    <h3>Playlist</h3>
+                                    <div class="edit-head top_label_pd0">Playlist</div>
                                     <a href="javascript:;" class="btn btn-primary playlist_add_btn" (click)="openAddPlaylistModel(addplaylist)">Add <i class="fa fa-plus"></i></a>
-                                    <div class="track-table playlist_table">
+                                    <div class="track-table playlist_table table_design">
                                         <table datatable [dtOptions]="dtOptions[1]">
                                             <thead>
                                                 <tr>
                                                     <th>Name</th>
-                                                    <th>Actions</th>
+                                                    <th class="action_thead">Actions</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -1226,7 +1226,7 @@
                                                     <td class="action_playlist">
                                                         <a class="edit_plalist_link" href="javascript:;" (click)="openEditPlaylistModel(editplaylist, i)"><i class="fa fa-pencil"></i></a>
                                                         <a class="delete_plalist_link" href="javascript:;" (click)="removePlaylist(val['_id'])"><i class="fa fa-trash"></i></a>
-                                                        <a class="track_plalist_link" href="javascript:;" (click)="getPlaylistTrack(val['_id'], i)">Track</a>
+                                                        <a class="track_plalist_link" href="javascript:;" (click)="getPlaylistTrack(val['_id'], i)"><i class="fa fa-music" aria-hidden="true"></i></a>
                                                     </td>
                                                 </tr>
                                                 <tr *ngIf="playlist.length == 0">
@@ -1239,8 +1239,8 @@
                             </div>
                             <div class="row" *ngIf="track_flag">
                                 <div class="col-sm-12 col-md-12 col-12">
-                                    <h3>"{{playlist_data['name']}}" - Tracks</h3>
-                                    <a href="javascript:;" class="btn btn-primary" (click)="openPlaylistTrackModel(addtrackplaylist)" >Add <i class="fa fa-plus"></i></a>
+                                    <div class="edit-head top_label_pd0">"{{playlist_data['name']}}" - Tracks</div>
+                                    <a href="javascript:;" class="btn btn-primary playlist_add_btn" (click)="openPlaylistTrackModel(addtrackplaylist)" >Add <i class="fa fa-plus"></i></a>
                                     <div class="track-table">
                                         <table datatable [dtOptions]="dtOptions[2]">
                                             <tbody>
@@ -1283,7 +1283,7 @@
                             <div class="edit-cover">
                                 <form [formGroup]="upgrade_artist">
                                     <div class="edit-details">
-                                        <h3 class="detail-head" >Your Details</h3>
+                                        <div class="edit-head top_label_pd0">Your Details</div>
                                         <div class="row">
                                             <div class="col-md-3 col-sm-12 col-xs-12">
                                                 <div class="edit-profile-picture">
@@ -1470,7 +1470,7 @@
                         <div class="tab-pan fade {{tab_cnt == 6 ? 'show active' : ''}}" id="purchased_track">
                             <div class="row">
                                 <div class="col-sm-12 col-md-12 col-12">
-                                    <h3>Purchased track</h3>
+                                    <div class="edit-head top_label_pd0 top_label_pdb0">Purchased track</div>
                                     <div class="track-table Bookmarked_table">
                                         <table datatable [dtOptions]="dtOptions[2]">
                                             <tbody>

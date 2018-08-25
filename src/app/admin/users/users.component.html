@@ -110,7 +110,7 @@
               <option value="1">Newest Last</option>
             </select>
           </div> 
-          <div class="artists_table copyright_table table-responsive">
+          <div class="artists_table copyright_table table-responsive table_max_height">
             <table class="table" datatable [dtOptions]="dtOptions">
                   <thead>
                     <tr>
@@ -121,7 +121,7 @@
                       <th>Votes Casted</th>
                       <th>Likes Casted</th>
                       <th>Comments</th>
-                      <th>Actions</th>
+                      <th class="action_div">Actions</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -133,7 +133,7 @@
                       <td class="td_img"><img src="img/vote.png"/>{{user['no_of_votes']}}</td>
                       <td class="td_img"><img src="img/likes.png"/>{{user['no_of_likes']}}</td>
                       <td class="td_img"><img src="img/comments.png"/>{{user['no_of_followers']}}</td> 
-                      <td class="td_img"><img src="img/suspend.png">
+                      <td class="td_img action_div"><img src="img/suspend.png">
                         <a href="javascript:;" (click)="suspendUser(user['_id'])">{{user['flag']? 'Un-suspend' : 'Suspend'}}</a>
                       </td>                               
                     </tr>                     
@@ -181,7 +181,7 @@
           <div class="col-sm-12">
             <b class="template_modal_name">Artists Following</b>
           </div>
-          <div class="artists_table copyright_table table-responsive col-sm-12">
+          <div class="artists_table copyright_table table-responsive col-sm-12 table_max_height">
             <table class="table">
                 <thead>
                   <tr>
@@ -209,20 +209,20 @@
       <div class="col-sm-12">
         <b class="flag_head">Flags</b>
       </div>
-      <div class="artists_table  table-responsive col-sm-12">
+      <div class="artists_table  table-responsive col-sm-12 table_max_height">
         <table class="table">
             <thead>
               <tr>
                 <th>Date</th>
                 <th>Type</th>
-                <th>Actions</th>
+                <th class="action_div">Actions</th>
               </tr>
             </thead>
             <tbody>
               <tr *ngFor="let val of user_flag">
                 <td>{{val.created_at | date : 'MMMM dd, yyyy'}}</td>
                 <td>{{val['from']['account_type']}}</td>
-                <td>Suspended by {{val['from']['account_type']}}</td>
+                <td class="action_div">Suspended by {{val['from']['account_type']}}</td>
               </tr>
             </tbody>
         </table>
