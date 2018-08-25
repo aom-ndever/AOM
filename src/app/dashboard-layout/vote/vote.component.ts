@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { VoteService } from './vote.service';
+import { ToastrService } from 'ngx-toastr';
 import { environment } from '../../../environments/environment' ;
 @Component({
   selector: 'app-vote',
@@ -22,7 +23,10 @@ export class VoteComponent implements OnInit {
   participants : any = [];
   start : any = 0;
   length : any = 10;
-  constructor(private VoteService : VoteService) {
+  constructor(
+    private VoteService : VoteService,
+    private toastr : ToastrService
+  ) {
     this.getAllState();
     this.getAllMusicType();
     let data = {
@@ -57,5 +61,25 @@ export class VoteComponent implements OnInit {
       this.participants = response['artist'];
       this.show_loader = false;
     });
+  }
+   // Follow artist
+   followArtist(id : any) {
+    let data = JSON.parse(localStorage.getItem('user'));
+    if(data && data.user) {
+      let data = {
+        artist_id : id
+      };  
+      this.VoteService.followArtist(data).subscribe(response => {
+        this.toastr.success(response['message'], 'Success!'); 
+      }, error => {
+        this.toastr.error(error['error'].message, 'Error!');
+      });
+    } else {
+      this.toastr.info('Please signin as listener to follow the artist.', 'Information!');
+    }
+  }
+  // vote to the track
+  voteTrack(track_id, artist_id) {
+
   }
 }

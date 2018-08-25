@@ -361,7 +361,7 @@
                   <div class="final-wrap">
                     <div class="img-wrap">
                       <img src="{{p && p['artist_id'] ? artist_img_url+p['artist_id'].image : 'img/highlight-player.png'}}" alt="Finalists">
-                      <a href="javascript:void(0)" class="fan"><i class="fa fa-heart-o" aria-hidden="true"></i></a>
+                      <a href="javascript:void(0)" (click)="followArtist(p['artist_id'])" class="fan"><i class="fa fa-heart-o" aria-hidden="true"></i></a>
                     </div>
                     <div class="content-wrap">
                       <div class="player">

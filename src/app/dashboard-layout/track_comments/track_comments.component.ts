@@ -62,7 +62,7 @@ export class TrackConmmentsComponent implements OnInit {
     let isWhitespace;
     let isValid;
     if(this.comment_txt) {
-      isWhitespace = this.comment_txt.name.trim().length === 0;
+      isWhitespace = this.comment_txt.trim().length === 0;
       isValid = !isWhitespace;
     }
     if(this.comment_txt && isValid) {

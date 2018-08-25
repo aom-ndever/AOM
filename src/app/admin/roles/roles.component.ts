@@ -28,6 +28,7 @@ export class RolesComponent implements OnInit {
   music_type : any = [];
   user_data : any = {};
   add_admin : FormGroup;
+  add_admin_validation : boolean = false;
   passwordFormGroup: FormGroup;
   user : any = {};
   constructor(
@@ -38,14 +39,14 @@ export class RolesComponent implements OnInit {
   ) {
     this.user = JSON.parse(localStorage.getItem('user'));
     this.passwordFormGroup = this.fb.group({
-      password: ['', Validators.minLength(6)],
-      conf: ['',  Validators.minLength(6)]
+      password: ['', [Validators.required, Validators.minLength(6)]],
+      conf: ['', [Validators.required, Validators.minLength(6)]]
     }, {
       validator : this.passwordMatchValidator
     });
     this.add_admin = this.fb.group({
-      'fname' : ['', [Validators.required]],
-      'lname' : ['', [Validators.required]],
+      'fname' : ['', [Validators.required, this.noWhitespaceValidator]],
+      'lname' : ['', [Validators.required, this.noWhitespaceValidator]],
       'account_type' : ['', [Validators.required]],
       'email' : ['', [Validators.required, Validators.email]],
       passwordFormGroup1 : this.passwordFormGroup
@@ -54,6 +55,13 @@ export class RolesComponent implements OnInit {
 
   passwordMatchValidator(g: FormGroup) {
       return g.get('password').value === g.get('conf').value ? null : g.get('conf').setErrors({'mismatch': true});
+  }
+  noWhitespaceValidator(control: FormControl) {
+      if(typeof (control.value || '') === 'string' || (control.value || '') instanceof String) {
+        let isWhitespace = (control.value || '').trim().length === 0;
+        let isValid = !isWhitespace;
+        return isValid ? null : { 'whitespace': true }
+      }
   }
   ngOnInit() {
     const that = this;
@@ -120,6 +128,8 @@ export class RolesComponent implements OnInit {
   }
 
   openContestModel(template : any) {
+    this.user_data = {};
+    this.add_admin_validation = false;
     this.contestModelRef = this.modalService.show(template, {backdrop : 'static'});
   }
 
@@ -207,24 +217,27 @@ export class RolesComponent implements OnInit {
   }
 
   // Create new admin
-  addNewAdmin(idx : any) {
-    this.show_spinner = true;
-    this.RolesService.addNewAdmin(this.user_data).subscribe((response) => {
-      this.dtElements.forEach((dtElement: DataTableDirective, index: number) => {
-        if(idx == index) {
-          dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
-            dtInstance.draw();
-          });
-        }
+  addNewAdmin(idx : any, flag) {
+    if(flag) {
+      this.show_spinner = true;
+      this.RolesService.addNewAdmin(this.user_data).subscribe((response) => {
+        this.dtElements.forEach((dtElement: DataTableDirective, index: number) => {
+          if(idx == index) {
+            dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
+              dtInstance.draw();
+            });
+          }
+        });
+        this.toastr.success(response['message'], 'Success!');
+        this.contestModelRef.hide();
+      }, (error) => {
+        this.toastr.error(error['error'].message, 'Error!');
+        this.show_spinner = false;
+      }, () => {
+        this.show_spinner = false;
       });
-      this.toastr.success(response['message'], 'Success!');
-      this.contestModelRef.hide();
-    }, (error) => {
-      this.toastr.error(error['error'].message, 'Error!');
-      this.show_spinner = false;
-    }, () => {
-      this.show_spinner = false;
-    });
+    }
+    this.add_admin_validation = !flag;
   }
   // remove admin 
   removeAdmin(id : any, idx : any) {

@@ -29,8 +29,8 @@
                         <tr *ngFor="let contest of contest_data; let i = index;">
                           <td>{{i+1}}.</td>
                           <td><a href="javascript:;" (click)="openModal(paricipant, contest['contest_id']['_id'])">{{contest ['round_name']}}</a></td>
-                          <td>{{contest['start_date'] | date : 'MMMM dd, yyyy'}}</td>
-                          <td>{{contest['end_date'] | date : 'MMMM dd, yyyy'}}</td>
+                          <td>{{contest['start_date'] | date : 'MMMM d, yyyy':'UTC' }}</td>
+                          <td>{{contest['end_date'] | date : 'MMMM d, yyyy':'UTC' }}</td>
                           <td>{{contest['days']}}</td>
                           <td>{{contest['contest_id']['music_type']['name']}}</td>
                           <td>{{contest['state'] && contest['state']['name'] ? contest['state']['name'] : '' }}</td>
@@ -99,6 +99,9 @@
                   <input name="type" formControlName="type" type="radio" [(ngModel)]="is_new_or_existing" value="2">Existing
                   <div class="radio_check"></div>
                 </label>
+            </div>
+            <div class="terms_error_msg" *ngIf="is_valid && !contest_validation.controls['type'].valid">
+                <span *ngIf="contest_validation.controls['type'].errors['required']" class="text-danger">Contest type is required.</span>
             </div>
           </div>
           <div class="form-group custom_modal_form" *ngIf="is_new_or_existing == 1">

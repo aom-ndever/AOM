@@ -6,6 +6,9 @@
             <div class="col-md-12 col-sm-12 col-xs-12">
               <div class="comments">
                 <h3 class="num-cmt">{{trackcomments.length}} Comments</h3>
+                <div class="alert alert-info" *ngIf="trackcomments.length == 0">
+                    No data available.
+                </div>
                 <div class="add-comment" *ngIf="user && user.user">
                     <form class="write_comment_section">
                       <div class="s-img"><img src="{{user['user'].image ? user_img_url+user['user'].image : 'img/fan1.png'}}" alt="img"></div>
@@ -34,8 +37,6 @@
                       <p>{{comment['comment']}}</p>
                     </div>
                   </div>
-                  
-
                 </div>
               </div>
             </div>
