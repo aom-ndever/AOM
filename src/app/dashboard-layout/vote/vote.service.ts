@@ -25,4 +25,16 @@ export class VoteService {
   getAllParticipants(data) {
       return this.http.post(`${this.api_host}/get_all_participants`, data);
   }
+  // Follow the artist 
+  followArtist(data : any) {
+    this.user = JSON.parse(localStorage.getItem('user'));
+    this.headers = new HttpHeaders({ 'x-access-token' : this.user.token });  
+    return this.http.post(`${this.api_host}/user/artist/follow`, data, {headers : this.headers});
+  }
+  // vote to artist track
+  giveVoteToTrack(data) {
+    this.user = JSON.parse(localStorage.getItem('user'));
+    this.headers = new HttpHeaders({ 'x-access-token' : this.user.token });  
+    return this.http.post(`${this.api_host}/user/track/vote_track`, data, {headers : this.headers});
+  }
 }

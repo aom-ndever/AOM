@@ -100,7 +100,7 @@ export class ArtistComponent implements OnInit {
         this.toastr.error(error['error'].message, 'Error!');
       });
     } else {
-      this.toastr.info('Please login first to follow the artist.', 'Information!');
+      this.toastr.info('Please signin as listener to follow the artist.', 'Information!');
     }
   }
   // get All follower

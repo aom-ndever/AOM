@@ -53,7 +53,7 @@ export class ContestComponent implements OnInit {
       this.year.push(i);
     }
     this.contest_validation = this.fb.group({
-      type : [],
+      type : ['', [Validators.required]],
       name : ['', [Validators.required, this.noWhitespaceValidator]],
       day : ['', [Validators.required]],
       month : ['', [Validators.required]],
