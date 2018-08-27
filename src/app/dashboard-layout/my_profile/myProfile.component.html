@@ -977,9 +977,11 @@
 
                                                     <div class="form-group music-grp">
                                                         <label for="musictype">Music Type</label>
-                                                        <select class="form-control" id="musictype" formControlName="music_type" multiple name="music_type" [(ngModel)]="userdata.music_type">
+                                                        <!-- <select class="form-control" id="musictype" formControlName="music_type" multiple name="music_type" [(ngModel)]="userdata.music_type">
                                                             <option *ngFor="let type of music_types" value="{{type._id}}">{{type.name}}</option>
-                                                        </select>
+                                                        </select> -->
+
+                                                        <p-multiSelect class="form-control" id="musictype" [options]="music_types"  [filter]="false" formControlName="music_type" name="music_type" [(ngModel)]="userdata.music_type" ></p-multiSelect>
                                                         <div class="cust_err_msg" *ngIf="listenerProfileValidation && !listener_profile.controls['music_type'].valid">
                                                             <span *ngIf="listener_profile.controls['music_type'].errors['required']" class="text-danger">Music type is required.</span>
                                                         </div>
