@@ -4615,8 +4615,24 @@ max-height: unset !important;
 
 
 
-.table_max_height  .dataTables_scroll,.table_max_height .table_container{max-height: 281px;
-    overflow: auto;    padding-right: 5px;}
+.table_max_height  .dataTables_scroll,.table_max_height .table_container{max-height: 281px;overflow: auto;    padding-right: 5px;}
+.custom_music_container{position: relative;}
+.custom_music_content{    padding-left: 50px;}
+.custom_music_container .track-pic{ 
+   position: absolute;
+    width: 50px;
+    height: 50px;
+    left: 0;
+    top: 5px;
+}
+.custom_music_content {
+    padding-left: 55px;
+}
+.custom_track_table .track-det{
+         width: 18%;
+}
+.custom_track_table .votes_label{}
+.custom_track_table .music_vote{    width: 30%;}
 /*MEDIA START*/
 @media screen and (min-width: 768px){
     .content-block{width: 750px;}
