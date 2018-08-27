@@ -52,3 +52,4 @@ Thumbs.db
 /server/helpers/demo_helper.js
 /server/helpers/block_helper.js
 /server/models/block.js
+/server/uploads
