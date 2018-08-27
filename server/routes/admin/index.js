@@ -211,10 +211,11 @@ router.post("/add_contest", async (req, res) => {
       }
 
       var resp_data = await contest_helper.insert_contest(contest_obj);
+      var start_date = (moment().date(req.body.day).month(req.body.month).year(req.body.year).format('YYYY-MM-DD'))
 
       var round_obj = {
         contest_id: resp_data.contest._id,
-        start_date: moment(req.body.start_date).utc(),
+        start_date: moment(start_date).utc(),
         state: req.body.state,
         region: req.body.region,
         duration: req.body.duration,
@@ -249,7 +250,7 @@ router.post("/add_contest", async (req, res) => {
       var obj = {
         admin_id: req.userInfo.id,
         name: req.body.name,
-        start_date: moment(req.body.start_date).utc(),
+        start_date: moment(start_date).utc(),
         duration: req.body.duration,
         end_date: moment(req.body.start_date).utc().add((req.body.duration * 7), 'days'),
         music_type: req.body.music_type,
