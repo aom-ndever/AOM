@@ -210,6 +210,7 @@ router.post("/add_contest", async (req, res) => {
       }
 
       var resp_data = await contest_helper.insert_contest(contest_obj);
+      var start_date = (moment().date(req.body.day).month(req.body.month).year(req.body.year).format('YYYY-MM-DD'))
 
       var round_obj = {
         contest_id: resp_data.contest._id,
@@ -1271,16 +1272,16 @@ router.put("/featured_artist", async (req, res) => {
 
 
 cron.schedule('* * * * *', async () => {
-  //contest_id = req.body.contest_id
-  contest_id = "5b8379ceefeb26718f02923b";
-  var round = await round_helper.get_current_round_of_contest(contest_id);
-  console.log('round', round);
+  //   //contest_id = req.body.contest_id
+  //   contest_id = "5b8379ceefeb26718f02923b";
+  //   var round = await round_helper.get_current_round_of_contest(contest_id);
+  //   console.log('round', round);
 
-  var round_id = round
-  console.log('round_id', round_id);
+  //   var round_id = round.round
+  //   console.log('round_id', round_id);
 
-  var nextround = await winner_helper.get_qualified(round_id);
-  console.log('nextround', nextround);
+  // var nextround = await winner_helper.get_qualified(round_id);
+  // console.log('nextround', nextround);
 
 });
 
