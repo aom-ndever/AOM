@@ -109,6 +109,7 @@
             <input name="name" formControlName="name" class="form-control" [(ngModel)]="contest_detail['name']" />
             <div class="terms_error_msg" *ngIf="is_valid && !contest_validation.controls['name'].valid">
               <span *ngIf="contest_validation.controls['name'].errors['required']" class="text-danger">Contest Name is required.</span>
+              <span *ngIf="!contest_validation.controls['name'].errors['required'] && contest_validation.controls['name'].errors['whitespace']" class="text-danger">Please enter valid detail.</span>
             </div>
           </div>
           <div class="form-group custom_modal_form" *ngIf="is_new_or_existing == 2">
@@ -119,7 +120,7 @@
             </select>
             <div class="terms_error_msg" *ngIf="is_valid && !contest_validation.controls['name'].valid">
               <span *ngIf="contest_validation.controls['name'].errors['required']" class="text-danger">Contest Name is required.</span>
-              <span *ngIf="!contest_validation.controls['name'].errors['required'] && contest_validation.controls['name'].errors['whitespace']" class="text-danger">Please enter valid detail.</span>
+              
             </div>
           </div>
           <div class="custom_modal_form">
