@@ -13,7 +13,7 @@
         <option value="suspend">Suspended</option>
       </select>
     </div> 
-    <div class="artists_table contest_table table-responsive">
+    <div class="artists_table contest_table table-responsive table_max_height">
       <table class="table" datatable [dtOptions]="dtOptions[0]">
             <thead>
               <tr>
@@ -56,7 +56,7 @@
         <option value="1">Sort by Start Date</option>
       </select>
     </div> 
-    <div class="artists_table contest_table table-responsive">
+    <div class="artists_table contest_table table-responsive table_max_height">
       <table class="table" datatable [dtOptions]="dtOptions[1]">
             <thead>
               <tr>
@@ -113,15 +113,17 @@
         <div class="form-group custom_modal_form">
           <label class="control-label">First Name</label>
           <input name="fname" class="form-control" formControlName="fname"  [(ngModel)]="user_data.first_name" />
-          <div *ngIf="!add_admin.controls['fname'].valid && add_admin.controls['fname'].dirty">
+          <div class="terms_error_msg" *ngIf="add_admin_validation && !add_admin.controls['fname'].valid">
               <span *ngIf="add_admin.controls['fname'].errors['required']" class="text-danger">First Name is required.</span>
+              <span *ngIf="!add_admin.controls['fname'].errors['required'] && add_admin.controls['fname'].errors['whitespace']" class="text-danger">Enter valid data.</span>
           </div>
         </div>
         <div class="form-group custom_modal_form">
           <label class="control-label">Last Name</label>
           <input name="lname" class="form-control" formControlName="lname"  [(ngModel)]="user_data.last_name" />
-          <div *ngIf="!add_admin.controls['lname'].valid && add_admin.controls['lname'].dirty">
+          <div class="terms_error_msg" *ngIf="add_admin_validation && !add_admin.controls['lname'].valid">
               <span *ngIf="add_admin.controls['lname'].errors['required']" class="text-danger">Last Name is required.</span>
+              <span *ngIf="!add_admin.controls['lname'].errors['required'] && add_admin.controls['lname'].errors['whitespace']" class="text-danger">Enter valid data.</span>
           </div>
         </div>
         <div class="form-group custom_modal_form">
@@ -131,14 +133,14 @@
             <option value="admin">Admin</option>
             <option value="moderator">Moderator</option>
           </select>
-          <div *ngIf="!add_admin.controls['account_type'].valid && add_admin.controls['account_type'].dirty">
+          <div class="terms_error_msg" *ngIf="add_admin_validation && !add_admin.controls['account_type'].valid">
               <span *ngIf="add_admin.controls['account_type'].errors['required']" class="text-danger">Account type is required.</span>
           </div>
         </div>
         <div class="form-group custom_modal_form">
           <label class="control-label">Email</label>
           <input type="email" name="email" class="form-control" formControlName="email"  [(ngModel)]="user_data.email"/>
-          <div *ngIf="!add_admin.controls['email'].valid && add_admin.controls['email'].dirty">
+          <div class="terms_error_msg" *ngIf="add_admin_validation && !add_admin.controls['email'].valid">
               <span *ngIf="add_admin.controls['email'].errors['required']" class="text-danger">Email is required.</span>
               <span *ngIf="!add_admin.controls['email'].errors['required'] && add_admin.controls['email'].errors['email']" class="text-danger">Email Mismatched.</span>
           </div>
@@ -148,19 +150,19 @@
             <label class="control-label">Password</label>
             <input type="password" name="password" class="form-control" formControlName="password"  [(ngModel)]="user_data.password"/>
             <div class="pwd-icon"><i class="fa fa-eye" aria-hidden="true"></i></div>
-            <div *ngIf="!passwordFormGroup.controls['password'].valid && passwordFormGroup.controls['password'].dirty">
+            <div class="terms_error_msg" *ngIf="add_admin_validation && !passwordFormGroup.controls['password'].valid">
                 <span *ngIf="passwordFormGroup.controls['password'].errors['required']" class="text-danger">Password is required.</span>
-                <span *ngIf="passwordFormGroup.controls['password'].errors['minlength']" class="text-danger">Must be longer than 6 characters.</span>
+                <span *ngIf="!passwordFormGroup.controls['password'].errors['required'] && passwordFormGroup.controls['password'].errors['minlength']" class="text-danger">Must be longer than 6 characters.</span>
             </div>
           </div>
           <div class="form-group custom_modal_form">
             <label class="control-label">Confirm Password</label>
             <input type="password" name="conf" class="form-control" formControlName="conf"/>
             <div class="pwd-icon"><i class="fa fa-eye" aria-hidden="true"></i></div>
-            <div *ngIf="!passwordFormGroup.controls['password'].valid && passwordFormGroup.controls['password'].dirty">
-                <span *ngIf="passwordFormGroup.controls['password'].errors['required']" class="text-danger">Confirm Password is required.</span>
-                <span *ngIf="passwordFormGroup.controls['password'].errors['minlength']" class="text-danger">Must be longer than 6 characters.</span>
-                <span *ngIf="passwordFormGroup.controls['password'].errors['mismatch']" class="text-danger">Please enter correct confirm password.</span>
+            <div class="terms_error_msg" *ngIf="add_admin_validation && !passwordFormGroup.controls['conf'].valid">
+                <span *ngIf="passwordFormGroup.controls['conf'].errors['required']" class="text-danger">Confirm Password is required.</span>
+                <span *ngIf="!passwordFormGroup.controls['conf'].errors['required'] && passwordFormGroup.controls['conf'].errors['minlength']" class="text-danger">Must be longer than 6 characters.</span>
+                <span *ngIf="!passwordFormGroup.controls['conf'].errors['required'] && passwordFormGroup.controls['conf'].errors['mismatch']" class="text-danger">Please enter correct confirm password.</span>
             </div>
           </div>
         </div>
@@ -169,7 +171,7 @@
                 <button type="button" class="custom_cancel_btn btn" (click)="contestModelRef.hide()">Cancel</button>
             </div>
             <div class="col-sm-6 text-right">
-                <button type="submit" class="custom_save btn" (click)="addNewAdmin(0)" [disabled]="!add_admin.valid || show_spinner">Create <i class="fa fa-spinner fa-spin" *ngIf="show_spinner"></i></button>
+                <button type="submit" class="custom_save btn" (click)="addNewAdmin(0, add_admin.valid)" [disabled]="show_spinner">Create <i class="fa fa-spinner fa-spin" *ngIf="show_spinner"></i></button>
             </div>
           </div>
       </div>

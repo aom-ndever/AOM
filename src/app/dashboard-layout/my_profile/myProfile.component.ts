@@ -224,6 +224,11 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
     }
     this.MyProfileService.getAllMusicType().subscribe(response => {
       this.music_types = response['music'];
+      let tmp = [];
+      this.music_types.forEach((ele) => {
+        tmp.push({label : ele['name'], value : ele['_id']});
+      });
+      this.music_types = tmp;
     });
     this.artist_profile = this.fb.group({
       upload : [''],
@@ -1842,6 +1847,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
   // Open add new playlist model
   openAddPlaylistModel(content) {
     this.playlist_data = {};
+    this.playlist_validation = false;
     this.media_modal_ref = this.modalService.open(content, { centered: true });
   }
   // open edit playlist model
@@ -1851,6 +1857,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
   }
   // open edit playlist model
   openPlaylistTrackModel(content) {
+    this.search_track = '';
     this.media_modal_ref = this.modalService.open(content, { centered: true });
   }
   // add new playlist to db

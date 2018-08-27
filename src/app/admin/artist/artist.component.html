@@ -134,7 +134,8 @@
                 <option value="1">Newest Last</option>
               </select>
             </div> 
-            <div class="artists_table copyright_table table-responsive">
+            <div class="artists_table copyright_table table-responsive table_max_height">
+        
               <table class="table" datatable [dtOptions]="dtOptions">
                     <thead>
                       <tr>
@@ -145,7 +146,7 @@
                         <th>Likes</th>
                         <th>Followers</th>
                         <th>Comments</th>
-                        <th>Actions</th>
+                        <th class="action_div">Actions</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -157,15 +158,13 @@
                         <td class="td_img"><img src="img/likes.png"/>{{artist['no_of_likes']}}</td>
                         <td class="td_img"><img src="img/followers.png"/>{{artist['no_of_followers']}}</td>
                         <td class="td_img"><img src="img/comments.png"/>{{artist['no_of_comments']}}</td> 
-                        <td class="td_img"><img src="img/suspend.png">
+                        <td class="td_img action_div"><img src="img/suspend.png">
                           <a href="javascript:;" (click)="suspendArtist(artist['_id'])">{{artist['flag'] ? 'Un-suspend' : 'Suspend'}}</a>
                         </td>                               
                       </tr>
-                      <tr *ngIf="artist_data?.length == 0">
-                        <td colspan="8" class="no-data-available">No data!</td>
-                      </tr>
                     </tbody>
                   </table>
+           
             </div>
         </div>
 </div>
@@ -182,7 +181,7 @@
           <img src="{{artist_detail['image'] ? artist_img_url+artist_detail['image'] : 'img/profile-img.png'}}" />
         </div>
         <div class="col-sm-8 profile_detail">
-          <span class="pull-right">{{artist_detail['flag'] ? 'Active' : 'Suspend'}}</span>
+          <span class="pull-right">{{artist_detail['flag'] ? 'Suspend' : 'Active'}}</span>
           <h3>{{artist_detail['first_name']+' '+artist_detail['last_name']}}</h3>
           <div class="checkbox custom_check_box">
               <label>
@@ -213,7 +212,8 @@
         <div class="col-sm-12">
           <b class="template_modal_name">Tracks</b>
         </div>
-        <div class="artists_table copyright_table table-responsive col-sm-12">
+        <div class="artists_table copyright_table table-responsive col-sm-12 table_max_height">
+                        <div class="table_container">
           <table class="table">
               <thead>
                 <tr>
@@ -231,7 +231,7 @@
                   <td class="td_img">
                     <a href="javascript:;" (click)="removeTrack(track['_id'])"><i class="fa fa-trash"></i> Delete</a>&nbsp;
                     
-                    <a href="javascript:;"> <img src="img/suspend.png">Suspend</a>
+                    <!-- <a href="javascript:;"> <img src="img/suspend.png">Suspend</a> -->
                   </td>
                 </tr>
                 <tr *ngIf="artist_track?.length == 0">
@@ -240,12 +240,14 @@
               </tbody>
           </table>
         </div>
+        </div>
       </div>
       <div class="row">
         <div class="col-sm-12">
           <b class="template_modal_name">Flags</b>
         </div>
-        <div class="artists_table table-responsive col-sm-12">
+        <div class="artists_table table-responsive col-sm-12 table_max_height">
+                <div class="table_container">
           <table class="table">
               <thead>
                 <tr>
@@ -262,6 +264,7 @@
                 </tr>
               </tbody>
           </table>
+       </div>
         </div>
       </div>
     </div>

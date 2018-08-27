@@ -53,8 +53,8 @@ export class ContestComponent implements OnInit {
       this.year.push(i);
     }
     this.contest_validation = this.fb.group({
-      type : [],
-      name : ['', [Validators.required]],
+      type : ['', [Validators.required]],
+      name : ['', [Validators.required, this.noWhitespaceValidator]],
       day : ['', [Validators.required]],
       month : ['', [Validators.required]],
       year : ['', [Validators.required]],
@@ -64,7 +64,6 @@ export class ContestComponent implements OnInit {
       region : ['', [Validators.required]],
       state : ['', [Validators.required]],
       participate : []
-      
     });
   }
 
@@ -72,7 +71,7 @@ export class ContestComponent implements OnInit {
     const that = this;
     this.dtOptions = {
       pagingType: 'full_numbers',
-      pageLength: 5,
+      pageLength: 10,
       serverSide: true,
       processing: true,
       searching: false,
@@ -104,6 +103,14 @@ export class ContestComponent implements OnInit {
     this.getAllRegion();
   }
 
+  noWhitespaceValidator(control: FormControl) {
+      if(typeof (control.value || '') === 'string' || (control.value || '') instanceof String) {
+        let isWhitespace = (control.value || '').trim().length === 0;
+        let isValid = !isWhitespace;
+        return isValid ? null : { 'whitespace': true }
+      }
+  }
+
   // Get day difference between dates
   getDaysDiff(dt1 : any, dt2 : any) {
     let date1 = new Date(dt1);
@@ -120,6 +127,7 @@ export class ContestComponent implements OnInit {
     this.ContestService.getContestParticipants(data).subscribe((response) => {
       this.participant_data =  response['artist'];
     });
+    this.is_valid = false;
     this.modalRef = this.modalService.show(template, { backdrop : 'static' });
   }
 
@@ -175,34 +183,49 @@ export class ContestComponent implements OnInit {
     if(flag) { 
       this.is_valid = !flag;
       if(this.is_new_or_existing == 1) {
-        let stdt = new Date(this.contest_detail['year'], this.contest_detail['month'], this.contest_detail['day']);
+        let dt = new Date(this.contest_detail['year'], this.contest_detail['month'], this.contest_detail['day']);
+        let timestamp = Date.UTC(dt.getFullYear(), dt.getMonth(), dt.getDate());
+        let stdt = new Date(timestamp);
         //let enddt = new Date(stdt.getTime() + this.contest_detail['duration'] * 24 * 60 * 60 * 1000);
+        console.log(this.getDaysDiff(stdt, new Date()));
+        if(stdt.getTime() <= (new Date()).getTime() ) {
+          this.toastr.info('The Date must be Bigger or Equal to today date');
+          return;
+        }
+        
         let data = {
           name : this.contest_detail['name'],
           music_type : this.contest_detail['music_type'],
           region : this.contest_detail['region'],
           state : this.contest_detail['state'],
-          round : 1,
+          round : this.contest_detail['no_of_round'],
           start_date : stdt,
           duration : this.contest_detail['duration']
         };
-        this.show_spinner = true;
-        this.ContestService.addNewContest(data).subscribe((response) => {
-          this.datatableElement.dtInstance.then((dtInstance: DataTables.Api) => {
-            dtInstance.draw();
-          });
-          this.contest_detail = {};
-          this.contestModelRef.hide();
-          this.toastr.success(response['message'], 'Success!');
-        }, (error) => {
-          this.toastr.error(error['error'].message,  'Error!');
-          this.show_spinner = false;
-        }, () => {
-          this.show_spinner = false;
-        });
+        console.log(data);
+        // this.show_spinner = true;
+        // this.ContestService.addNewContest(data).subscribe((response) => {
+        //   this.datatableElement.dtInstance.then((dtInstance: DataTables.Api) => {
+        //     dtInstance.draw();
+        //   });
+        //   this.contest_detail = {};
+        //   this.contestModelRef.hide();
+        //   this.toastr.success(response['message'], 'Success!');
+        // }, (error) => {
+        //   this.toastr.error(error['error'].message,  'Error!');
+        //   this.show_spinner = false;
+        // }, () => {
+        //   this.show_spinner = false;
+        // });
       } else {
-        let stdt = new Date(this.contest_detail['year'], this.contest_detail['month'], this.contest_detail['day']);
+        let dt = new Date(this.contest_detail['year'], this.contest_detail['month'], this.contest_detail['day']);
+        let timestamp = Date.UTC(dt.getFullYear(), dt.getMonth(), dt.getDate());
+        let stdt = new Date(timestamp);
         //let enddt = new Date(stdt.getTime() + this.contest_detail['duration'] * 24 * 60 * 60 * 1000);
+        if(stdt.getTime() <= (new Date()).getTime() ) {
+          this.toastr.info('The Date must be Bigger or Equal to today date');
+          return;
+        }
         let data = {
           contest_id : this.contest_detail['contest_id']['_id'],
           // music_type : this.contest_detail['music_type'],

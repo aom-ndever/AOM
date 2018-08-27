@@ -12,7 +12,7 @@ body{
 
 
 #sidebar-wrapper {
-      top: 112px;
+      top: 87px;
   z-index: 1000;
   position: fixed;
   height: 100%;
@@ -53,7 +53,6 @@ body{
 .sidebar-nav li a {
     display: block;
     text-decoration: none;
-    font-family: Helvetica;
     font-size: 16px;
     font-weight: normal;
     font-style: normal;
@@ -138,7 +137,6 @@ background-color: #9c27b0;
     border-color: snow;
 }
 .Days{
-    font-family: Helvetica;
     font-size: 14px;
     font-weight: 500;
     letter-spacing: 0.8px;
@@ -208,16 +206,15 @@ background-color: #9c27b0;
 .artists_table .table tbody td:nth-child(2) a{color:#1a1a1a;}
 .artists_table .table tbody td:first-child a:hover{color:#9c27b0;}
 .artists_table .table tbody td:nth-child(2) a:hover{color:#9c27b0;}
-.artists_table .table tbody td.td_img{
-  position: relative;
-  padding-left: 26px;
-}
+
+.artists_table .table tbody td.td_img .td_div{  position: relative;
+  padding-left: 26px;}
 .artists_table .table tbody td.td_img img  {
   width: 12px;
   margin-right: 7px;
   position: absolute;
-  left: 10px;
-  top: 19px;
+  left: 2px;
+  top: 5px;
 }
 .artist_view_modal .td_img a{
   position: relative;
@@ -343,7 +340,6 @@ background-color: #9c27b0;
   transform: rotate(45deg);
 }
 .custom_drop_btn{
-    font-family: Helvetica;
   font-size: 14px;
   font-weight: 500;
   letter-spacing: 0.8px;
@@ -512,7 +508,7 @@ label {
 }
 
 .custom_modal  .modal-body{
-  padding: 20px;
+  padding:30px 20px;
 }
 .custom_modal .modal-body h3{
   font-size: 18px;
@@ -955,17 +951,18 @@ h3.user_name {
     text-align: left;
     color: #ffffff;
 }
-.profile_name .drop_icon{
+.profile_name > .dropdown{
      position: absolute;
     top: 1px;
     right: 15px;
-    color: #fff;
+  
     font-size: 15px;
     line-height: normal;
     background-color: transparent;
     border: transparent;
     padding: 0;
 }
+.profile_name > .dropdown > a{   color: #fff !important;}
 .sidebar-brand {
     height: auto;
     padding-top: 30px;
@@ -980,7 +977,7 @@ h3.user_name {
     position: absolute;
     left: 15px;
     background-size: contain;
-    top: 13px;
+    top: 15px;
     background-repeat: no-repeat;
 }
 .sidebar-nav li.home a i:after {
@@ -1040,17 +1037,7 @@ background-color: transparent;
     top: 5px;
     display: none;
 }
-.drop_icon {
-  position: absolute;
-  top: -28px;
-  right: 15px;
-  color: #fff;
-  font-size: 15px;
-  line-height: normal;
-  background-color: transparent;
-  border: transparent;
-  padding: 0;
-}
+
 .drop_icon.dropdown-toggle::after {
     border-top: 5px solid;
     border-right: 5px solid transparent;
@@ -1108,7 +1095,6 @@ background-color: transparent;
 .profile_name{   
   display: block;
   text-decoration: none;
-  font-family: Helvetica;
   font-size: 16px;
   font-weight: normal;
   font-style: normal;

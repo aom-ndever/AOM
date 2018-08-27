@@ -11,7 +11,7 @@
                     <option value="1">Sort By Start Date</option>
                   </select>
                 </div> 
-                <div class="artists_table contest_table table-responsive">
+                <div class="artists_table contest_table table-responsive table_max_height">
                   <table class="table" datatable [dtOptions]="dtOptions">
                         <thead>
                           <tr>
@@ -29,8 +29,8 @@
                         <tr *ngFor="let contest of contest_data; let i = index;">
                           <td>{{i+1}}.</td>
                           <td><a href="javascript:;" (click)="openModal(paricipant, contest['contest_id']['_id'])">{{contest ['round_name']}}</a></td>
-                          <td>{{contest['start_date'] | date : 'MMMM dd, yyyy'}}</td>
-                          <td>{{contest['end_date'] | date : 'MMMM dd, yyyy'}}</td>
+                          <td>{{contest['start_date'] | date : 'MMMM d, yyyy':'UTC' }}</td>
+                          <td>{{contest['end_date'] | date : 'MMMM d, yyyy':'UTC' }}</td>
                           <td>{{contest['days']}}</td>
                           <td>{{contest['contest_id']['music_type']['name']}}</td>
                           <td>{{contest['state'] && contest['state']['name'] ? contest['state']['name'] : '' }}</td>
@@ -52,7 +52,7 @@
             <div class="col-sm-12">
                 <b class="template_modal_name">Participants</b>
               </div>
-          <div class="artists_table copyright_table table-responsive col-sm-12">
+          <div class="artists_table copyright_table table-responsive col-sm-12 table_max_height">
             <table class="table">
                 <thead>
                   <tr>
@@ -100,6 +100,9 @@
                   <div class="radio_check"></div>
                 </label>
             </div>
+            <div class="terms_error_msg" *ngIf="is_valid && !contest_validation.controls['type'].valid">
+                <span *ngIf="contest_validation.controls['type'].errors['required']" class="text-danger">Contest type is required.</span>
+            </div>
           </div>
           <div class="form-group custom_modal_form" *ngIf="is_new_or_existing == 1">
             <label class="control-label">Contest Name</label>
@@ -116,6 +119,7 @@
             </select>
             <div class="terms_error_msg" *ngIf="is_valid && !contest_validation.controls['name'].valid">
               <span *ngIf="contest_validation.controls['name'].errors['required']" class="text-danger">Contest Name is required.</span>
+              <span *ngIf="!contest_validation.controls['name'].errors['required'] && contest_validation.controls['name'].errors['whitespace']" class="text-danger">Please enter valid detail.</span>
             </div>
           </div>
           <div class="custom_modal_form">
@@ -224,9 +228,9 @@
               <label class="control-label">Participants</label>
               <select class="form-control" name="participant" formControlName="participate">
                 <option value="">Select Participants</option>
-                <option value="">Northeast Hiphop Round 3 Finalist</option>
+                <!-- <option value="">Northeast Hiphop Round 3 Finalist</option>
                 <option value="">Southeast Hiphop Round 3 Finalist</option>
-                <option value="">Midwest Hiphop Round 3 Finalist</option>
+                <option value="">Midwest Hiphop Round 3 Finalist</option> -->
               </select>
             </div>
           </div>

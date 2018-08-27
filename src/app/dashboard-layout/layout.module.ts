@@ -5,7 +5,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { DataTablesModule } from 'angular-datatables';
 import { SlimScroll } from 'angular-io-slimscroll';
-import {AutoCompleteModule} from 'primeng/primeng';
+import {AutoCompleteModule, MultiSelectModule} from 'primeng/primeng';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { DashboardLayoutComponent } from './layout/dashboard-layout.component';
 import { DashboardLayoutService } from './layout/dashboard-layout.service';
@@ -31,6 +31,7 @@ import { CommentsService } from './artist_comments/comments.service';
 import { TrackCommentsService } from './track_comments/track_comments.service';
 import { ArtistTrackCommentsService } from './artist_track_comments/artist_track_comments.service';
 import { ArtistProfileService } from './artist_profile/artist_profile.service';
+import { VoteService } from './vote/vote.service';
 import { 
   ArtistProfileResolve,
   ArtistTrackResolve,
@@ -63,6 +64,7 @@ import { AuthService } from '../shared/auth.service';
     LightboxModule,
     DataTablesModule,
     AutoCompleteModule,
+    MultiSelectModule,
     RouterModule.forChild([
       {
         path: '',
@@ -115,7 +117,8 @@ import { AuthService } from '../shared/auth.service';
      TrackCommentResolve,
      TrackArtistProfileResolve,
      TrackDetailResolve,
-     DashboardLayoutService
+     DashboardLayoutService,
+     VoteService
     ]
 })
 export class LayoutModule { }

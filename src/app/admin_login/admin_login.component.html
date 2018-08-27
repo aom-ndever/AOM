@@ -9,13 +9,13 @@
             <div style="display:none" id="login-alert" class="alert alert-danger col-sm-12"></div>
               <form id="loginform" class="form-horizontal" role="form" [formGroup]="admin_formgroup">
                   <div class="form-group">
-                      <input id="login-username" type="text" formControlName="email"  [(ngModel)]="admin_data.email" class="form-control login_form" name="username" value="" placeholder="username or email">                                        
+                      <input id="login-username" type="text" formControlName="email"  [(ngModel)]="admin_data.email" class="form-control login_form" name="username" value="" placeholder="Username or Email">                                        
                       <div *ngIf="!admin_formgroup.controls['email'].valid && admin_formgroup.controls['email'].dirty">
                         <span *ngIf="admin_formgroup.controls['email'].errors['required']" class="text-danger error_msg">Email is required.</span>
                       </div>
                   </div>
                   <div class="form-group">
-                      <input id="login-password" type="password" formControlName="password"  [(ngModel)]="admin_data.password" class="form-control login_form" name="password" placeholder="password">
+                      <input id="login-password" type="password" formControlName="password"  [(ngModel)]="admin_data.password" class="form-control login_form" name="password" placeholder="Password">
                       <div *ngIf="!admin_formgroup.controls['password'].valid && admin_formgroup.controls['password'].dirty">
                         <span *ngIf="admin_formgroup.controls['password'].errors['required']" class="text-danger error_msg">Password is required.</span>
                       </div>
@@ -54,14 +54,15 @@
         <div class="form-group custom_modal_form">
           <label class="control-label">Email</label>
           <input type="email" name="email" class="form-control" formControlName="email" [(ngModel)]="forget_data.email" />
-          <div *ngIf="!forget_formgroup.controls['email'].valid && forget_formgroup.controls['email'].dirty">
+          <div  class="cust_err_msg" *ngIf="forget_validation && !forget_formgroup.controls['email'].valid">
               <span *ngIf="forget_formgroup.controls['email'].errors['required']" class="text-danger">Email is required.</span>
-              <span *ngIf="forget_formgroup.controls['email'].errors['email']" class="text-danger">Email Mismatched.</span>
+              <span *ngIf="!forget_formgroup.controls['email'].errors['required'] && forget_formgroup.controls['email'].errors['email']" class="text-danger">Email Mismatched.</span>
+              <span *ngIf="!forget_formgroup.controls['email'].errors['required'] && forget_formgroup.controls['email'].errors['whitespace']" class="text-danger">Please enter valid data.</span>
           </div>
         </div>
         <div class="row modal_btns">
           <div class="col-sm-12 text-right">
-              <button class="custom_save btn" (click)="forgetPassword()" [disabled]="!forget_formgroup.valid || show_spinner">Forget <i class="fa fa-spinner" *ngIf="show_spinner"></i></button>
+              <button class="custom_save btn" (click)="forgetPassword(forget_formgroup.valid)" [disabled]="show_spinner">Forget <i class="fa fa-spinner" *ngIf="show_spinner"></i></button>
           </div>
         </div>
       </div>

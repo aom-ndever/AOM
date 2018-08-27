@@ -2,7 +2,7 @@
   <div class="container">
     <div class="row">
       <div class="col-md-12">
-        <div class="cover-img">
+        <div class="cover-img" style="background:url('{{artistdata['cover_image'] ? artist_img_url +artistdata['cover_image'] : 'img/cover.png'}}');" >
           <img src="{{artistdata['cover_image'] ? artist_img_url +artistdata['cover_image'] : 'img/cover.png'}}" alt="Cover Image">
         </div>
       </div>
@@ -30,7 +30,7 @@
                   </li>
                   <li>
                     <a [href]="artistdata.social_media['instagram']">
-                      <i class="fa fa-instagram" aria-hidden="true"></i>
+                   <img _ngcontent-c3="" alt="" src="img/inst2.png" style="vertical-align: baseline;">
                     </a>
                   </li>
                   <li>
@@ -136,16 +136,19 @@
                                     <img src="img/pause.png " alt="Pause "  [style.display]="audio_ins[i] ? 'block' : 'none'" (click)="stopAudio(i, artisttrack)"> -->
                                 
                               </td>
-                              <td class="track-pic">
+                           
+                              <td class="track-det" colspan="2">
+                                   <div class="track-pic">
                                 <a href="javascript:;">
                                   <img src="{{artist.image ? track_url+artist.image : 'img/track-img.png'}}" style="height:50px;width:50px;" alt="Track Image">
                                 </a>
-                              </td>
-                              <td class="track-det" colspan="2">
+                              </div>
+                              <div class="track_title">
                                 <p class="track-name">{{artist.name}}</p>
                                 <p class="track-singer">{{artist.artist_id.first_name+' '+artist.artist_id.last_name}}</p>
                                 <p class="track-year">{{artist.created_at | date : 'yyyy'}}</p>
                                 <p class="track-date">{{artist.created_at | date : 'MMMM dd,yyyy'}}</p>
+                              </div>
                               </td>
                               
                               <td class="td track-vote music_vote">
@@ -170,9 +173,9 @@
                                   <a href="javascript:;" title="Comment" (click)="goToComment(artistdata['_id'], artist._id)">
                                     <img src="img/comment.png" alt="">{{artist.no_of_comments}}</a>
                                 </div>
-                                <div class="download">
+                                <div class="download" *ngIf="artist.is_downloadable">
                                   <a href="javascript:;" title="Download">
-                                    <img src="img/download.png"  *ngIf="artist.is_downloadable" (click)="downloadTrack(artist._id)" alt="">
+                                    <img src="img/download.png"   (click)="downloadTrack(artist._id)" alt="">
                                   </a>
                                 </div>
                                 <div class="cmt">
@@ -194,19 +197,18 @@
                   </div>
                   <div id="media" class="tab-pane fade {{active_tab_index == 2 ? 'active show' : ''}}">
                     <div class="media-wrapper">
-                      <div class="row">
-                        <div class="alert alert-info col-sm-12" *ngIf="artistmedia.length <= 0">No data available.</div>
-                        <div class="col-md-4 col-sm-6 col-xs-12" *ngFor="let media of artistmedia; let i = index;">
+                
+                        <div class="alert alert-info" *ngIf="artistmedia.length <= 0">No data available.</div>
+                        <div class="" *ngFor="let media of artistmedia; let i = index;">
                           <a class="img-wrap" href="javascript:;" data-fancybox="images" data-width="1500" data-height="1000" >
                             <img src="{{media.image ? artist_media_url+media.image : 'img/media-1.png'}}" alt="Media">
                           </a>
-                          <div class="col-12" *ngIf="media.link">
-                            <video width="218" height="138" controls>
+                               <video class="media_video" *ngIf="media.link" width="218" height="138" controls>
                                 <source [src]="media.link" >
                             </video>
-                          </div>
+                 
                         </div>
-                      </div>
+                      
                     </div>
                   </div>
                   <div id="ranking" class="tab-pane fade {{active_tab_index == 3 ? 'active show' : ''}}">
@@ -233,16 +235,19 @@
                                     <img src="img/pause.png " alt="Pause "  [style.display]="rank_audio_ins[i] ? 'block' : 'none'" (click)="stopRankAudio(i, rankingtrack)">
                                 </a> -->
                               </td>
-                              <td class="track-pic">
-                                <a href="javascript:;">
-                                  <img src="{{rank.image ? track_url+rank.image : 'img/track-img.png'}}" alt="Track Image" style="height: 50px;width: 50px;;">
-                                </a>
-                              </td>
+                            
                               <td class="track-det" colspan="2">
-                                <p class="track-name">{{rank.name}}</p>
-                                <p class="track-singer">{{rank.artist_id.first_name+' '+rank.artist_id.last_name}}</p>
-                                <p class="track-year">{{rank.created_at | date  : 'yyyy'}}</p>
-                                <p class="track-date">{{rank.created_at | date  : 'MMMM dd,yyyy'}}</p>
+                                <div class="track-pic">
+                                  <a href="javascript:;">
+                                    <img src="{{rank.image ? track_url+rank.image : 'img/track-img.png'}}" alt="Track Image" style="height: 50px;width: 50px;;">
+                                  </a>
+                                </div>
+                                <div class="track_title">
+                                  <p class="track-name">{{rank.name}}</p>
+                                  <p class="track-singer">{{rank.artist_id.first_name+' '+rank.artist_id.last_name}}</p>
+                                  <p class="track-year">{{rank.created_at | date  : 'yyyy'}}</p>
+                                  <p class="track-date">{{rank.created_at | date  : 'MMMM dd,yyyy'}}</p>
+                                </div>
                               </td>
                       
                               <td class="td track-vote">
@@ -266,9 +271,9 @@
                                   <a href="javascript:;" title="Comment" (click)="goToComment(rank._id)">
                                     <img src="img/comment.png" alt="">{{rank.no_of_comments}}</a>
                                 </div>
-                                <div class="download">
+                                <div class="download" *ngIf="rank.is_downloadable">
                                   <a href="javascript:;" title="Download">
-                                    <img src="img/download.png" *ngIf="rank.is_downloadable" (click)="downloadTrack(rank._id)" alt="">
+                                    <img src="img/download.png"  (click)="downloadTrack(rank._id)" alt="">
                                   </a>
                                 </div>
                                 <div class="cmt">

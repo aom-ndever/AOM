@@ -18,6 +18,7 @@ export class AdminLoginComponent implements OnInit {
   admin_formgroup : FormGroup;
   forget_formgroup : FormGroup;
   forget_data : any = {};
+  forget_validation : boolean = false;
   constructor(private AdminLoginService : AdminLoginService, 
     private fb: FormBuilder,
     private toastr: ToastrService,
@@ -29,10 +30,17 @@ export class AdminLoginComponent implements OnInit {
       'password' : ['', [Validators.required]],
     });
     this.forget_formgroup = this.fb.group({
-      email : ['', [Validators.required, Validators.email]]
+      email : ['', [Validators.required, Validators.email, this.noWhitespaceValidator]]
     });
   }
 
+  noWhitespaceValidator(control: FormControl) {
+      if(typeof (control.value || '') === 'string' || (control.value || '') instanceof String) {
+        let isWhitespace = (control.value || '').trim().length === 0;
+        let isValid = !isWhitespace;
+        return isValid ? null : { 'whitespace': true }
+      }
+  }
   ngOnInit() {
    
   }
@@ -52,21 +60,26 @@ export class AdminLoginComponent implements OnInit {
   }
   
   openContestModel(template : any) {
+    this.forget_data = {};
+    this.forget_validation = false;
     this.ModelRef = this.modalService.show(template, {backdrop : 'static'});
   }
 
   // Forget password
-  forgetPassword() {
-    this.show_spinner = true;
-    this.AdminLoginService.forgetPassword(this.forget_data).subscribe((response) => {
-      this.forget_data = {};
-      this.ModelRef.hide();
-      this.toastr.success(response['message'], 'Success!');
-    }, (error) => {
-      this.toastr.error(error['error'].message, 'Error!');
-      this.show_spinner = false;
-    }, () => {
-      this.show_spinner = false;
-    });
+  forgetPassword(flag) {
+    if(flag) {
+      this.show_spinner = true;
+      this.AdminLoginService.forgetPassword(this.forget_data).subscribe((response) => {
+        this.forget_data = {};
+        this.ModelRef.hide();
+        this.toastr.success(response['message'], 'Success!');
+      }, (error) => {
+        this.toastr.error(error['error'].message, 'Error!');
+        this.show_spinner = false;
+      }, () => {
+        this.show_spinner = false;
+      });
+    }
+    this.forget_validation = !flag;
   }
 }

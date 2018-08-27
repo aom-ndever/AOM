@@ -1,11 +1,11 @@
 <app-header></app-header>
 <router-outlet></router-outlet>
-<app-footer></app-footer>
+<app-footer class="{{audio_instance_list.length > 0 ? 'audio_footer' : ''}}"></app-footer>
 <div id="loader" *ngIf="loading">
     <i class="fa fa-spinner fa-spin fa-3x" aria-hidden="true"></i>
 </div>
 
-<section class="player-wrapper" [style.display]="audio_instance_list.length > 0 ? 'block' : 'none'">
+<section class="player-wrapper " [style.display]="audio_instance_list.length > 0 ? 'block' : 'none'">
   <div class="container">
     <div class="row">
       <div class="col-lg-11 col-md-12 audio_container">
@@ -39,7 +39,8 @@
                 </div> -->
               </div>
               <div class="music_icons">
-                  <a href="javascript:;" *ngIf="user && audio_list[song_cnt] && audio_list[song_cnt]['is_downloadable']" (click)="downloadTrack()"><img src="img/download.png"/> <span>${{audio_list[song_cnt] && audio_list[song_cnt]['price'] ? audio_list[song_cnt]['price'] : '' }}</span></a>
+                  <a href="javascript:;" *ngIf="user && audio_list[song_cnt] && audio_list[song_cnt]['is_downloadable']" (click)="downloadTrack()"><img src="img/download.png"/></a>
+                   <span class="audio_price">${{audio_list[song_cnt] && audio_list[song_cnt]['price'] ? audio_list[song_cnt]['price'] : '' }}</span>
                   <a href="javascript:;" (click)="openShareTrackModel(shareTrack)"><img src="img/share.png"/></a>
               </div>
           </div>

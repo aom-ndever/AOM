@@ -62,10 +62,10 @@
                             <td>{{artist.gender | titlecase}}</td>
                             <td>{{artist['music_type'] ? artist['music_type']['name'] : ''}}</td>
                             <td>{{artist.no_of_tracks}}</td>
-                            <td class="td_img"><img src="img/vote.png"/>{{artist.no_of_votes}}</td>
-                            <td class="td_img"><img src="img/likes.png"/>{{artist.no_of_likes}}</td>
-                            <td class="td_img"><img src="img/followers.png"/>{{artist.no_of_followers}}</td>
-                            <td class="td_img"><img src="img/comments.png"/>{{artist.no_of_comments}}</td>
+                            <td class="td_img"><div class="td_div"><img src="img/vote.png"/>{{artist.no_of_votes}}</div></td>
+                            <td class="td_img"><div class="td_div"><img src="img/likes.png"/>{{artist.no_of_likes}}</div></td>
+                            <td class="td_img"><div class="td_div"><img src="img/followers.png"/>{{artist.no_of_followers}}</div></td>
+                            <td class="td_img"><div class="td_div"><img src="img/comments.png"/>{{artist.no_of_comments}}</div></td>
                             <td>
                                 <div dropdown class="menu_container">
                                     <a href="javascript:;" dropdownToggle><i class="fa fa-ellipsis-v"></i></a>
