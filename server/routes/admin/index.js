@@ -25,11 +25,11 @@ var winner_helper = require('../../helpers/winner_helper');
 var bookmark_helper = require('../../helpers/bookmark_helper');
 var like_helper = require('../../helpers/like_helper');
 var playlist_helper = require('../../helpers/playlist_helper');
+var Round = require('../../models/round')
 
 var _ = require('underscore');
-
+var cron = require('node-cron');
 var moment = require('moment');
-
 var mongoose = require('mongoose');
 var ObjectId = mongoose.Types.ObjectId;
 var fs = require('fs');
@@ -464,78 +464,6 @@ router.post('/get_admin_request', async (req, res) => {
     res.status(config.OK_STATUS).json({ "status": 1, "contest": contest });
   } else {
     res.status(config.INTERNAL_SERVER_ERROR).json(contest);
-  }
-
-});
-
-
-router.post('/shortlisted', async (req, res) => {
-  var participant = await participate_helper.get_all_participants(req.body.contest_id);
-
-  console.log('participant', participant);
-
-  var winner_obj = participant.participate.map((p) => {
-    return obj = {
-
-      "artist_id": p.artist_id,
-      "track_id": p.track_id._id,
-      "contest_id": p.contest_id,
-      "no_of_votes": p.track_id.no_of_votes,
-      "round": 0
-    }
-  });
-  console.log('winner_obj', winner_obj);
-
-  var shortlist = await winner_helper.get_all_shortlisted(0);
-
-  if (shortlist.status === 1) {
-    res.status(config.OK_STATUS).json({ "message": shortlist });
-  }
-  else if (shortlist.status === 2) {
-    var participant = await winner_helper.insert_winner(winner_obj);
-    var shortlist = await winner_helper.get_all_shortlisted(0);
-
-    if (participant.status === 1) {
-      logger.trace("got details successfully");
-      res.status(config.OK_STATUS).json({ "message": shortlist });
-    } else {
-      res.status(config.INTERNAL_SERVER_ERROR).json();
-    }
-  }
-
-});
-
-
-router.post('/get_winners_round1', async (req, res) => {
-
-  var shortlists = await winner_helper.get_all_shortlisted(0);
-
-  var winner_obj = shortlists.winner.map((p) => {
-    return obj = {
-
-      "artist_id": p.artist_id._id,
-      "track_id": p.track_id._id,
-      "contest_id": p.contest_id._id,
-      "round": 1
-    }
-
-  })
-
-  var shortlist = await winner_helper.get_all_shortlisted(1);
-
-  if (shortlist.status === 1) {
-    res.status(config.OK_STATUS).json({ "message": shortlist });
-  }
-  else if (shortlist.status === 2) {
-    var participant = await winner_helper.insert_winner(winner_obj);
-    var shortlist = await winner_helper.get_all_shortlisted(1);
-
-    if (participant.status === 1) {
-      logger.trace("got details successfully");
-      res.status(config.OK_STATUS).json({ "message": shortlist });
-    } else {
-      res.status(config.INTERNAL_SERVER_ERROR).json();
-    }
   }
 
 });
@@ -1341,5 +1269,19 @@ router.put("/featured_artist", async (req, res) => {
 });
 
 
+
+cron.schedule('* * * * *', async () => {
+  //contest_id = req.body.contest_id
+  contest_id = "5b8379ceefeb26718f02923b";
+  var round = await round_helper.get_current_round_of_contest(contest_id);
+  console.log('round', round);
+
+  var round_id = round
+  console.log('round_id', round_id);
+
+  var nextround = await winner_helper.get_qualified(round_id);
+  console.log('nextround', nextround);
+
+});
 
 module.exports = router;

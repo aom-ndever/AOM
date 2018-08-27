@@ -21,7 +21,7 @@ vote_track_helper.vote_for_track = async (user_id, obj) => {
 
 vote_track_helper.get_all_voted_artist = async (user_id, track_id, contest_id, round_id) => {
     try {
-        var vote = await Vote.find({ "user_id": new ObjectId(user_id), "track_id": new ObjectId(track_id), "contest_id": new ObjectId(contest_id), "round_id": new ObjectId(round_id) })
+        var vote = await Vote.findOne({ "user_id": new ObjectId(user_id), "track_id": new ObjectId(track_id), "contest_id": new ObjectId(contest_id), "round_id": new ObjectId(round_id) })
         if (vote) {
             return { "status": 1, "message": "vote details found", "vote": vote.length };
         } else {
@@ -40,6 +40,26 @@ vote_track_helper.get_all_voted_artist_by_id = async (artist_id) => {
             .populate({ path: 'artist_id', populate: { path: 'music_type' } })
             .populate({ path: 'user_id', populate: { path: 'music_type' } })
             .populate('track_id')
+        if (vote) {
+            return { "status": 1, "message": "vote details found", "vote": vote };
+        } else {
+            return { "status": 2, "message": "vote not found" };
+        }
+    } catch (err) {
+        return { "status": 0, "message": "Error occured while finding vote", "error": err }
+    }
+};
+
+
+vote_track_helper.get_all_voted_artists = async () => {
+    try {
+        var vote = await Vote
+            .find()
+            .populate('track_id')
+            .populate({ path: 'artist_id', populate: { path: 'music_type' } })
+            .populate({ path: 'artist_id', populate: { path: 'state' } })
+            .populate('round_id')
+
         if (vote) {
             return { "status": 1, "message": "vote details found", "vote": vote };
         } else {
@@ -94,7 +114,6 @@ vote_track_helper.get_artist_vote_by_day = async (artist_id, day) => {
     }
 
 };
-
 
 
 
@@ -272,4 +291,8 @@ vote_track_helper.get_artist_by_location_votes = async (id, day) => {
         return { "status": 2, "message": "No  available Track" }
     }
 };
+
+
+
+
 module.exports = vote_track_helper;

@@ -122,26 +122,30 @@ round_helper.get_all_contests = async () => {
 }
 
 round_helper.get_current_round_of_contest = async (id) => {
-    try {
-        let current = moment().toISOString();
-        var round = await Round
-            .findOne({
-                "contest_id": new ObjectId(id),
-                "start_date": {
-                    $lte: current
-                },
-                "end_date": {
-                    $gte: current
-                }
-            })
-        if (round) {
-            return { "status": 1, "message": "round details found", "round": round };
-        } else {
-            return { "status": 2, "message": "contest not found" };
-        }
-    } catch (err) {
-        return { "status": 0, "message": "Error occured while finding contest", "error": err }
+    // try {
+    let current = moment().toISOString();
+    var round = await Round
+        .findOne({
+            "contest_id": new ObjectId(id),
+            "start_date": {
+                $lte: current
+            },
+            "end_date": {
+                $gte: current
+            }
+        });
+    console.log('round=====>', round);
+
+    if (round) {
+        return { "status": 1, "message": "round details found", "round": round };
+    } else {
+        return { "status": 2, "message": "contest not found" };
     }
+    console.log('1', 1);
+
+    //  } catch (err) {
+    //    return { "status": 0, "message": "Error occured while finding contest", "error": err }
+    // }
 };
 
 module.exports = round_helper;

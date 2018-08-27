@@ -17,7 +17,7 @@ var artist_helper = require('./../helpers/artist_helper');
 var user_helper = require('./../helpers/user_helper');
 var track_helper = require('./../helpers/track_helper');
 var music_helper = require('./../helpers/music_helper');
-var round_helper = require('../helpers/comment_helper');
+//var round_helper = require('../helpers/comment_helper');
 var admin_helper = require('./../helpers/admin_helper');
 var media_helper = require('./../helpers/media_helper');
 var follower_helper = require('./../helpers/follower_helper');
@@ -27,6 +27,8 @@ var region_helper = require('./../helpers/region_helper');
 var global_helper = require('./../helpers/global_helper');
 var contest_helper = require('./../helpers/contest_helper');
 var participate_helper = require('./../helpers/participate_helper');
+var vote_track_helper = require('./../helpers/vote_track_helper');
+var round_helper = require('./../helpers/round_helper');
 
 /**
  * @api {post} /artist_registration Artist Registration
@@ -1824,6 +1826,17 @@ router.post('/get_comment_by_track_id', async (req, res) => {
   }
 });
 
+router.get('/get_vote_listing', async (req, res) => {
+  var user = await vote_track_helper.get_all_voted_artists();
+  if (user.status === 1) {
+    logger.trace("got details successfully");
+    res.status(config.OK_STATUS).json(user);
+  } else {
+    logger.error("Error occured while fetching = ", user);
+    res.status(config.INTERNAL_SERVER_ERROR).json(user);
+  }
+});
+
 
 /**
  * @api {post} /tracks/:track_id Track detail by Track id- Get 
@@ -1844,6 +1857,20 @@ router.get('/tracks/:track_id', async (req, res) => {
   } else {
     logger.error("Error occured while fetching = ", track);
     res.status(config.INTERNAL_SERVER_ERROR).json(track);
+  }
+});
+
+
+
+router.post('/get_track_for_current_round', async (req, res) => {
+
+  var round = await round_helper.get_current_round_of_contest(req.body.contest_id);
+  if (round.status === 1) {
+    logger.trace("got details successfully");
+    res.status(config.OK_STATUS).json({ "status": 1, "round": round });
+  } else {
+    logger.error("Error occured while fetching = ", round);
+    res.status(config.INTERNAL_SERVER_ERROR).json(round);
   }
 });
 
