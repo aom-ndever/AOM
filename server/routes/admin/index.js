@@ -196,6 +196,7 @@ router.post("/add_contest", async (req, res) => {
     },
 
   };
+  var start_date = (moment().date(req.body.day).month(req.body.month).year(req.body.year).format('YYYY-MM-DD'))
 
   req.checkBody(schema);
   var errors = req.validationErrors();
@@ -210,7 +211,6 @@ router.post("/add_contest", async (req, res) => {
       }
 
       var resp_data = await contest_helper.insert_contest(contest_obj);
-      var start_date = (moment().date(req.body.day).month(req.body.month).year(req.body.year).format('YYYY-MM-DD'))
 
       var round_obj = {
         contest_id: resp_data.contest._id,
