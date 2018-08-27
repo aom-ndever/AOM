@@ -1842,6 +1842,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
   // Open add new playlist model
   openAddPlaylistModel(content) {
     this.playlist_data = {};
+    this.playlist_validation = false;
     this.media_modal_ref = this.modalService.open(content, { centered: true });
   }
   // open edit playlist model
