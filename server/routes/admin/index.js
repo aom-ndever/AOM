@@ -196,7 +196,7 @@ router.post("/add_contest", async (req, res) => {
     },
 
   };
-  var start = (moment().date(req.body.day).month(req.body.month).year(req.body.year).format('YYYY-MM-DD'))
+  var start_date = (moment().date(req.body.day).month(req.body.month).year(req.body.year).format('YYYY-MM-DD'))
 
   req.checkBody(schema);
   var errors = req.validationErrors();
@@ -211,15 +211,21 @@ router.post("/add_contest", async (req, res) => {
       }
 
       var resp_data = await contest_helper.insert_contest(contest_obj);
-      var start_date = (moment().date(req.body.day).month(req.body.month).year(req.body.year).format('YYYY-MM-DD'))
-      var date = moment(start).utc();
+      var start_date = moment(
+        {
+          year: req.body.year,
+          month: (parseInt(req.body.month) - 1),
+          date: req.body.day,
+        }
+      ).startOf('day').utc()
+      // var start_date = (moment({year:}).date(req.body.day).month((parseInt(req.body.month) - 1)).year(req.body.year).utc())
+
       var round_obj = {
         contest_id: resp_data.contest._id,
-        start_date: date,
-        state: req.body.state,
+        start_date: start_date,
         region: req.body.region,
         duration: req.body.duration,
-        end_date: date.add((req.body.duration * 7), 'days'),
+        end_date: moment(start_date).utc().add((req.body.duration * 7), 'days'),
         round: req.body.round,
         round_name: contest_obj.name + " " + "round" + req.body.round
       };
@@ -250,9 +256,9 @@ router.post("/add_contest", async (req, res) => {
       var obj = {
         admin_id: req.userInfo.id,
         name: req.body.name,
-        start_date: date,
+        start_date: moment(req.body.start_date).utc(),
         duration: req.body.duration,
-        end_date: date.add((req.body.duration * 7), 'days'),
+        end_date: moment(start_date).utc().add((req.body.duration * 7), 'days'),
         music_type: req.body.music_type,
         state: req.body.state,
         region: req.body.region,
