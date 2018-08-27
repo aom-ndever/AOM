@@ -4495,12 +4495,10 @@ justify-content: space-around !important;
     padding: 6px 23px;
     margin-bottom: 22px;
 }
-.playlist_add_btn:focus{box-shadow: none; }
+.playlist_add_btn:focus{box-shadow: none !important; }
 
 .playlist_table table tr th{
     padding: 8px 10px !important;
-
-
 }
 .table_design thead tr th{    padding: 10px;
     background: rgba(156, 39, 176, 0.1);
@@ -4629,10 +4627,38 @@ max-height: unset !important;
     padding-left: 55px;
 }
 .custom_track_table .track-det{
-         width: 18%;
+         width: 23%;
 }
 .custom_track_table .votes_label{}
 .custom_track_table .music_vote{    width: 30%;}
+.add_track_form > label{width:100%;}
+.add_track_autocomplete{width:100%;}
+.media-modal .add_track_autocomplete ul{
+    border: 0;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    border-bottom: 1px solid #DEDEDE;
+    color: #1a1a1a;
+    font-size: 14px;
+    font-weight: 400;
+    border-radius: 0;
+    width: 100%;
+    padding: 0;
+    border: 0 !important;
+}
+.add_track_autocomplete > span, .add_track_autocomplete > span .ui-autocomplete-input-token, .add_track_autocomplete > span .ui-autocomplete-input-token  input{   width: 100% !important;}
+.add_track_autocomplete .ui-autocomplete-input-token  >input:focus{
+        border-bottom: 2px solid #9B26B0 !important;
+}
+.add_track_autocomplete .ui-autocomplete-input-token  >input{
+        padding: 7px !important;
+    border-bottom: 1px solid #d0cdcd;
+}
+.artist_track_comment .s-img{
+    left: 0!important;
+}
+s
+.remove_comment_block > as{    color: #9b26b0 !important;}
 /*MEDIA START*/
 @media screen and (min-width: 768px){
     .content-block{width: 750px;}
@@ -5246,6 +5272,9 @@ max-height: unset !important;
         white-space: nowrap;
         overflow: hidden;
     }
+   .modal-body .add-btn {
+    margin: 15px 15px;
+}
 }
 @media screen and (max-width: 576px){
     .custom_header .col-xs-2, .custom_header .col-xs-3 {
