@@ -168,71 +168,72 @@ router.post('/vote_track', async (req, res) => {
   var errors = req.validationErrors();
 
   if (!errors) {
-
-
     var participate_response = await participate_helper.get_participant_by_track_id(req.body.track_id);
     contest_id = participate_response.participate.contest_id;
+    console.log('contest_id', contest_id);
+
     var round_response = await round_helper.get_current_round_of_contest(contest_id);
+    if (round_response.status === 1) {
 
-    var obj = {
-      user_id: req.userInfo.id,
-      track_id: req.body.track_id,
-      artist_id: req.body.artist_id,
-      round_id: round_response.round._id,
-      contest_id: round_response.round.contest_id,
+      var obj = {
+        user_id: req.userInfo.id,
+        track_id: req.body.track_id,
+        artist_id: req.body.artist_id,
+        round_id: round_response.round._id,
+        contest_id: round_response.round.contest_id,
+      };
 
-    };
-    if (round_response.status == 1) {
+
+
       var data = await vote_track_helper.get_all_voted_artist(user_id, obj.track_id, obj.contest_id, obj.round_id);
 
-      if (data && data.vote == 0) {
+      if (data.status == 2) {
         var data = await vote_track_helper.vote_for_track(user_id, obj);
-
         var resp_data = await track_helper.get_all_track_by_track_id(obj.track_id);
-        no_vote = resp_data.track.no_of_votes + 1;
-        var resp_data = await track_helper.update_votes(obj.track_id, no_vote);
+        console.log('resp_data', resp_data);
 
+        var no_vote = resp_data.track.no_of_votes + 1;
+        resp_data = await track_helper.update_votes(obj.track_id, no_vote);
+        console.log('track_helper resp_data', resp_data);
+
+        resp_data = await winner_helper.get_qualified_contestant(obj.track_id, obj.round_id);
+        console.log('winner_helper track_helper resp_data', resp_data);
+        console.log('resp_data.status', resp_data.status);
+
+        if (resp_data.status == 2) {
+          var object = {
+            track_id: req.body.track_id,
+            round_id: round_response.round._id,
+            votes: [req.userInfo.id]
+          }
+          var resp = await winner_helper.insert_winner(object);
+
+          return res.send(resp);
+        } else if (resp_data.status == 1) {
+
+          var resp_data = await winner_helper.get_qualified_contestant(obj.track_id, obj.round_id);
+
+          var vote = resp_data.winner.votes;
+          vote.push(req.userInfo.id);
+          let newVote = {
+            votes: vote
+          }
+          resp_data = await winner_helper.update_votes(obj.track_id, obj.round_id, newVote);
+
+
+        }
         logger.trace("voting done successfully = ", data);
-        res.status(config.OK_STATUS).json(resp_data);
+        res.status(config.OK_STATUS).json({ "message": "voting done successfully" });
       }
       else {
         res.status(config.OK_STATUS).json({ "message": "Already Voted" });
       }
     }
-    else {
+    else if (round_response.status === 2) {
+
       res.status(config.OK_STATUS).json({ "message": "Voting lines are closed for now" });
+
     }
-
-
-    // var round_response = await round_helper.get_rounds_by_contestid(contest_id);
-    // console.log('round_response', round_response);
-
-    //   if (data && data.status == 0) {
-    //     logger.error("Error occured while voting = ", data);
-    //     res.status(config.INTERNAL_SERVER_ERROR).json(data);
-    //   } else {
-    //     var resp_data = await winner(obj.track_id);
-
-    //     var resp_data = await track_helper.get_all_track_by_track_id(obj.track_id);
-    //     no_vote = resp_data.track.no_of_votes + 1;
-
-
-    //     var resp_data = await track_helper.update_votes(obj.track_id, no_vote);
-
-    //     logger.trace("voting done successfully = ", data);
-    //     // var resp = await user_helper.get_user_by_id(obj.user_id);
-    //     // no_vote = resp.user.no_of_votes + 1
-    //     // var resp_data = await user_helper.update_user_for_votes(obj.user_id, no_vote);
-    //     logger.trace("voting done successfully = ", data);
-    //     res.status(config.OK_STATUS).json(data);
-    //   }
-    // }
-
-    // else {
-    //   logger.trace("Already Voted");
-    //   res.status(config.OK_STATUS).json({ "message": "Already Voted" });
-    // }
-
   }
 });
 
