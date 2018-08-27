@@ -1247,7 +1247,7 @@
                                 <div class="col-sm-12 col-md-12 col-12">
                                     <div class="edit-head top_label_pd0">"{{playlist_data['name']}}" - Tracks</div>
                                     <a href="javascript:;" class="btn btn-primary playlist_add_btn" (click)="openPlaylistTrackModel(addtrackplaylist)" >Add <i class="fa fa-plus"></i></a>
-                                    <div class="track-table">
+                                    <div class="track-table track_play">
                                         <table datatable [dtOptions]="dtOptions[2]">
                                             <tbody>
                                                 <tr *ngFor="let val of playlist_track;let i = index;">

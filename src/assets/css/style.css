@@ -4623,9 +4623,11 @@ max-height: unset !important;
    position: absolute;
     width: 50px;
     height: 50px;
-    left: 0;
-    top: 5px;
+    left: 9px;
+    top: 50%;
+    transform: translate(0,-50%);
 }
+
 .custom_music_content {
     padding-left: 55px;
 }
@@ -4660,8 +4662,18 @@ max-height: unset !important;
 .artist_track_comment .s-img{
     left: 0!important;
 }
-s
+
 .remove_comment_block > a{    color: #9b26b0 !important;}
+.custom_modal.artist_view_modal{    padding: 45px 20px 20px 20px;}
+.artist_view_modal .profile_detail  > span {
+    opacity: 1;
+    color: #4caf50;
+}
+.track_play .custom_music_container{    width: 40%;}
+.track_play .music_vote{    width: 45%;}
+.track_play tbody td:last-child > a{
+        color: #9c27b0 !important;
+}
 /*MEDIA START*/
 @media screen and (min-width: 768px){
     .content-block{width: 750px;}
