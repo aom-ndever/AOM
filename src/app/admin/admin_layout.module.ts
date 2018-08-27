@@ -11,7 +11,7 @@ import { ChartModule, HIGHCHARTS_MODULES } from 'angular-highcharts';
 import * as highmaps from 'highcharts/modules/map.src';
 // import more from 'highcharts/highcharts-more.src';
 import { AmChartsModule } from "@amcharts/amcharts3-angular";
-import { BsDropdownModule, ModalModule  } from 'ngx-bootstrap';
+import { BsDropdownModule, ModalModule, PopoverModule   } from 'ngx-bootstrap';
 import { DataTablesModule } from 'angular-datatables';
 import { AuthService } from '../shared/auth.service';
 import { AdminLayoutComponent } from './layout/admin_layout.component';
@@ -41,6 +41,7 @@ import { AlertService } from './alerts/alerts.service';
     ToastrModule.forRoot(),
     BsDropdownModule.forRoot(),
     ModalModule.forRoot(),
+    PopoverModule.forRoot(),
     LightboxModule,
     ChartModule,
     AmChartsModule,
