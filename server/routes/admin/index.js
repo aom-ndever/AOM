@@ -256,7 +256,7 @@ router.post("/add_contest", async (req, res) => {
       var obj = {
         admin_id: req.userInfo.id,
         name: req.body.name,
-        start_date: moment(req.body.start_date).utc(),
+        start_date: start_date,
         duration: req.body.duration,
         end_date: moment(start_date).utc().add((req.body.duration * 7), 'days'),
         music_type: req.body.music_type,
