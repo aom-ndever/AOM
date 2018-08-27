@@ -1628,9 +1628,9 @@
         <form [formGroup]="track_fg">
             <div class="media-modal">
                 <h3>Add Track</h3>
-                <div class="form-group">
+                <div class="form-group add_track_form">
                     <label for="vlink">Name</label>
-                    <p-autoComplete [(ngModel)]="search_track" formControlName="name" name="search_track" field="name" [multiple]="true" [suggestions]="serach_track_list" [dataKey]="_id" (completeMethod)="search($event)"></p-autoComplete>
+                    <p-autoComplete class="add_track_autocomplete" [(ngModel)]="search_track" formControlName="name" name="search_track" field="name" [multiple]="true" [suggestions]="serach_track_list" [dataKey]="_id" (completeMethod)="search($event)"></p-autoComplete>
                     <div class="cust_err_msg" *ngIf="track_validation && !track_fg.controls['name'].valid">
                         <span *ngIf="track_fg.controls['name'].errors['required']" class="text-danger">Track required.</span>
                         <span *ngIf="!track_fg.controls['name'].errors['required'] && track_fg.controls['name'].errors['whitespace'] " class="text-danger">Enter valid data.</span>

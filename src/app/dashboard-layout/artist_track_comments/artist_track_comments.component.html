@@ -22,9 +22,9 @@
                     </form>
 									</div>
                 <div class="login-alert" *ngIf="!user">Please Login to leave your comment</div>
-                <div class="comment-block col-md-12" *ngFor="let comment of trackcomments; let i=index;">
+                <div class="comment-block artist_track_comment col-md-12" *ngFor="let comment of trackcomments; let i=index;">
                   <div class="s-name">{{comment['track_id']['name']}}</div>
-                  <div class="pull-right">
+                  <div class="pull-right remove_comment_block">
                     <a href="javascript:;" *ngIf="comment['user_id']['status'] == 'active'" (click)="blockUnblockUser(comment['user_id']['_id'])"><i class="fa fa-unlock"></i></a>
                     <a  href="javascript:;" *ngIf="comment['user_id']['status'] == 'suspended'" (click)="blockUnblockUser(comment['user_id']['_id'])"><i class="fa fa-lock"></i></a>
                     <a href="javascript:;" (click)="removeComment(comment._id)"><i class="fa fa-trash"></i></a>
