@@ -832,7 +832,9 @@ var ContestComponent = /** @class */ (function () {
         if (flag) {
             this.is_valid = !flag;
             if (this.is_new_or_existing == 1) {
-                var stdt = new Date(this.contest_detail['year'], this.contest_detail['month'], this.contest_detail['day']);
+                var dt = new Date(this.contest_detail['year'], this.contest_detail['month'], this.contest_detail['day']);
+                var timestamp = Date.UTC(dt.getFullYear(), dt.getMonth(), dt.getDate());
+                var stdt = new Date(timestamp);
                 //let enddt = new Date(stdt.getTime() + this.contest_detail['duration'] * 24 * 60 * 60 * 1000);
                 console.log(this.getDaysDiff(stdt, new Date()));
                 if (stdt.getTime() <= (new Date()).getTime()) {
@@ -844,27 +846,30 @@ var ContestComponent = /** @class */ (function () {
                     music_type: this.contest_detail['music_type'],
                     region: this.contest_detail['region'],
                     state: this.contest_detail['state'],
-                    round: 1,
+                    round: this.contest_detail['no_of_round'],
                     start_date: stdt,
                     duration: this.contest_detail['duration']
                 };
-                this.show_spinner = true;
-                this.ContestService.addNewContest(data).subscribe(function (response) {
-                    _this.datatableElement.dtInstance.then(function (dtInstance) {
-                        dtInstance.draw();
-                    });
-                    _this.contest_detail = {};
-                    _this.contestModelRef.hide();
-                    _this.toastr.success(response['message'], 'Success!');
-                }, function (error) {
-                    _this.toastr.error(error['error'].message, 'Error!');
-                    _this.show_spinner = false;
-                }, function () {
-                    _this.show_spinner = false;
-                });
+                console.log(data);
+                // this.show_spinner = true;
+                // this.ContestService.addNewContest(data).subscribe((response) => {
+                //   this.datatableElement.dtInstance.then((dtInstance: DataTables.Api) => {
+                //     dtInstance.draw();
+                //   });
+                //   this.contest_detail = {};
+                //   this.contestModelRef.hide();
+                //   this.toastr.success(response['message'], 'Success!');
+                // }, (error) => {
+                //   this.toastr.error(error['error'].message,  'Error!');
+                //   this.show_spinner = false;
+                // }, () => {
+                //   this.show_spinner = false;
+                // });
             }
             else {
-                var stdt = new Date(this.contest_detail['year'], this.contest_detail['month'], this.contest_detail['day']);
+                var dt = new Date(this.contest_detail['year'], this.contest_detail['month'], this.contest_detail['day']);
+                var timestamp = Date.UTC(dt.getFullYear(), dt.getMonth(), dt.getDate());
+                var stdt = new Date(timestamp);
                 //let enddt = new Date(stdt.getTime() + this.contest_detail['duration'] * 24 * 60 * 60 * 1000);
                 if (stdt.getTime() <= (new Date()).getTime()) {
                     this.toastr.info('The Date must be Bigger or Equal to today date');
@@ -11596,7 +11601,7 @@ var environment = {
     GMAP_KEY: 'AIzaSyD6DEW05AQ8M_hrpSI7eTE3jbZB9k7c0Oc',
     GOOGLE_CLIENT_ID: '112936390114-hb3eeajuhemp9ls1n4i7cag8apf07mf8.apps.googleusercontent.com',
     GOOGLE_CLIENT_SECRET: 'bohGfi5VZz7Yd4kGgWkUJimF',
-    API_URL: 'http://34.204.127.137:3000',
+    API_URL: 'http://18.211.240.89:3000',
     ARTIST_IMG: '/uploads/artist/',
     USER_IMG: '/uploads/user/',
     ARTIST_MEDIA: '/uploads/media/',

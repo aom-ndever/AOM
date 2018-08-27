@@ -183,7 +183,9 @@ export class ContestComponent implements OnInit {
     if(flag) { 
       this.is_valid = !flag;
       if(this.is_new_or_existing == 1) {
-        let stdt = new Date(this.contest_detail['year'], this.contest_detail['month'], this.contest_detail['day']);
+        let dt = new Date(this.contest_detail['year'], this.contest_detail['month'], this.contest_detail['day']);
+        let timestamp = Date.UTC(dt.getFullYear(), dt.getMonth(), dt.getDate());
+        let stdt = new Date(timestamp);
         //let enddt = new Date(stdt.getTime() + this.contest_detail['duration'] * 24 * 60 * 60 * 1000);
         console.log(this.getDaysDiff(stdt, new Date()));
         if(stdt.getTime() <= (new Date()).getTime() ) {
@@ -196,26 +198,29 @@ export class ContestComponent implements OnInit {
           music_type : this.contest_detail['music_type'],
           region : this.contest_detail['region'],
           state : this.contest_detail['state'],
-          round : 1,
+          round : this.contest_detail['no_of_round'],
           start_date : stdt,
           duration : this.contest_detail['duration']
         };
-        this.show_spinner = true;
-        this.ContestService.addNewContest(data).subscribe((response) => {
-          this.datatableElement.dtInstance.then((dtInstance: DataTables.Api) => {
-            dtInstance.draw();
-          });
-          this.contest_detail = {};
-          this.contestModelRef.hide();
-          this.toastr.success(response['message'], 'Success!');
-        }, (error) => {
-          this.toastr.error(error['error'].message,  'Error!');
-          this.show_spinner = false;
-        }, () => {
-          this.show_spinner = false;
-        });
+        console.log(data);
+        // this.show_spinner = true;
+        // this.ContestService.addNewContest(data).subscribe((response) => {
+        //   this.datatableElement.dtInstance.then((dtInstance: DataTables.Api) => {
+        //     dtInstance.draw();
+        //   });
+        //   this.contest_detail = {};
+        //   this.contestModelRef.hide();
+        //   this.toastr.success(response['message'], 'Success!');
+        // }, (error) => {
+        //   this.toastr.error(error['error'].message,  'Error!');
+        //   this.show_spinner = false;
+        // }, () => {
+        //   this.show_spinner = false;
+        // });
       } else {
-        let stdt = new Date(this.contest_detail['year'], this.contest_detail['month'], this.contest_detail['day']);
+        let dt = new Date(this.contest_detail['year'], this.contest_detail['month'], this.contest_detail['day']);
+        let timestamp = Date.UTC(dt.getFullYear(), dt.getMonth(), dt.getDate());
+        let stdt = new Date(timestamp);
         //let enddt = new Date(stdt.getTime() + this.contest_detail['duration'] * 24 * 60 * 60 * 1000);
         if(stdt.getTime() <= (new Date()).getTime() ) {
           this.toastr.info('The Date must be Bigger or Equal to today date');
