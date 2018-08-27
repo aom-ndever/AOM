@@ -8,11 +8,11 @@ var Schema = mongoose.Schema;
 
 var WinnerModelSchema = new Schema({
     round_id: { type: mongoose.Schema.Types.ObjectId, ref: 'round' },
-    //round: Number,
     artist_id: { type: mongoose.Schema.Types.ObjectId, ref: 'artist' },
+    //participate_id: { type: mongoose.Schema.Types.ObjectId, ref: 'participate' },
     track_id: { type: mongoose.Schema.Types.ObjectId, ref: 'track' },
-    no_of_votes: Number,
-    contest_id: { type: mongoose.Schema.Types.ObjectId, ref: 'contest' },
+    votes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'user' }],
+    //contest_id: { type: mongoose.Schema.Types.ObjectId, ref: 'contest' },
     created_at: { type: Date, default: Date.now }
 }, { versionKey: false });
 

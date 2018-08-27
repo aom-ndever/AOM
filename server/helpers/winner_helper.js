@@ -22,7 +22,7 @@ winner_helper.insert_winner = async (object) => {
 };
 
 
-winner_helper.get_all_shortlisted = async (round) => {
+winner_helper.get_all_qualifieds = async (contest_id, round_id) => {
     try {
 
         var winner = await Winner
@@ -30,7 +30,6 @@ winner_helper.get_all_shortlisted = async (round) => {
             .populate({ path: 'artist_id', populate: { path: 'music_type' } })
             .populate('track_id')
             .populate('contest_id')
-            .sort({ 'track_id.no_of_votes': -1 })
             .limit(50)
 
         if (winner && winner.length > 0) {
@@ -42,19 +41,13 @@ winner_helper.get_all_shortlisted = async (round) => {
         return { "status": 0, "message": "Error occured while finding artist", "error": err }
     }
 };
-
-
-winner_helper.get_all_round1 = async (round) => {
+winner_helper.get_qualified_contestant = async (track_id, round_id) => {
     try {
-        var winner = await Winner
-            .find({ "round": round })
-            .populate({ path: 'artist_id', populate: { path: 'music_type' } })
-            .populate('track_id')
-            .populate('contest_id')
-            .sort({ 'track_id.no_of_votes': -1 })
-            .limit('25')
 
-        if (winner && winner.length > 0) {
+        var winner = await Winner
+            .findOne({ round_id: new ObjectId(round_id), track_id: new ObjectId(track_id) })
+
+        if (winner) {
             return { "status": 1, "message": "winner details found", "winner": winner };
         } else {
             return { "status": 2, "message": "winner not found" };
@@ -63,17 +56,16 @@ winner_helper.get_all_round1 = async (round) => {
         return { "status": 0, "message": "Error occured while finding artist", "error": err }
     }
 };
-winner_helper.get_all_round2 = async (round) => {
-    try {
-        var winner = await Winner
-            .find({ "round": round })
-            .populate({ path: 'artist_id', populate: { path: 'music_type' } })
-            .populate('track_id')
-            .populate('contest_id')
-            .sort({ 'no_of_votes': -1 })
-            .limit('25')
 
-        if (winner && winner.length > 0) {
+
+
+winner_helper.get_qualified = async (round_id) => {
+    try {
+
+        var winner = await Winner
+            .find({ round_id: new ObjectId(round_id) })
+
+        if (winner) {
             return { "status": 1, "message": "winner details found", "winner": winner };
         } else {
             return { "status": 2, "message": "winner not found" };
@@ -82,4 +74,20 @@ winner_helper.get_all_round2 = async (round) => {
         return { "status": 0, "message": "Error occured while finding artist", "error": err }
     }
 };
+
+
+
+winner_helper.update_votes = async (track_id, round_id, vote) => {
+    try {
+        var vote = await Winner.findOneAndUpdate({ "round_id": new ObjectId(round_id), "track_id": new ObjectId(track_id) }, vote, { new: true })
+        if (vote) {
+            return { "status": 1, "message": "vote details found", "vote": vote };
+        } else {
+            return { "status": 2, "message": "vote not found" };
+        }
+    } catch (err) {
+        return { "status": 0, "message": "Error occured while finding vote", "error": err }
+    }
+};
+
 module.exports = winner_helper;

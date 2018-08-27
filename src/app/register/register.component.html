@@ -73,7 +73,7 @@
                             </div>
                             <div class="form-group pwd-grp">
                               <label for="pwd">Confirm Password</label>
-                              <input type="password" class="form-control" formControlName="artist_conf"  name="confirm" [(ngModel)]="artist_data.confirm_password" placeholder="Password" required >
+                              <input type="password" class="form-control" formControlName="artist_conf"  name="confirm" [(ngModel)]="artist_data.confirm_password" placeholder="Confirm Password" required >
                               <div class="pwd-icon"><i class="fa fa-eye" aria-hidden="true"></i></div>
                               <div class="cust_err_msg" *ngIf="artist_validation[1] && !passwordFormGroup1.controls['artist_conf'].valid">
                                 <!-- <span *ngIf="passwordFormGroup.controls['conf'].errors['required']" class="text-danger">Confirm Password is required.</span> -->
@@ -156,7 +156,7 @@
                         </div>
                         <div class="form-group gender-grp">
                           <label for="geder">Phone Number</label>
-                          <input class="form-control" id="phone" formControlName="phone" name="artist_phone" [(ngModel)]="artist_data.phone_no" />
+                          <input class="form-control" id="phone" formControlName="phone" placeholder="Phone Number"  name="artist_phone" [(ngModel)]="artist_data.phone_no" />
                           <div class="cust_err_msg" *ngIf="artist_validation[2] && !artist_step3.controls['phone'].valid">
                             <span *ngIf="artist_step3.controls['phone'].errors['required']" class="text-danger">Phone Number is required</span>
                             <span *ngIf="artist_step3.controls['phone'].dirty && (artist_step3.controls['phone'].errors['pattern'] || artist_step3.controls['phone'].errors['maxlength'] || artist_step3.controls['phone'].errors['minlength'] )" class="text-danger">Please enter valid format.</span>
@@ -504,7 +504,7 @@
 
                       <div class="form-group">
                         <label class="control-label">Phone Number</label>
-                        <input name="listener_phone" class="form-control" formControlName="phone" [(ngModel)]="listener_data.phone_no"/>
+                        <input name="listener_phone" class="form-control" formControlName="phone" placeholder="Phone Number" [(ngModel)]="listener_data.phone_no"/>
                         <div class="terms_error_msg" *ngIf="listener_validation[2] && !listener_step3.controls['phone'].valid">
                           <span *ngIf="listener_step3.controls['phone'].errors['required']" class="text-danger">Phone number is required</span>
                           <span *ngIf="(listener_step3.controls['phone'].errors['maxlength'] || listener_step3.controls['phone'].errors['minlength'])  && listener_step3.controls['phone'].dirty" class="text-danger">Please enter valid phone number.</span>
