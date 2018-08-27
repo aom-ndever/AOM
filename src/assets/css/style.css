@@ -214,6 +214,9 @@ a.vote-now-btn {
     font-family: 'Poppins', sans-serif;
     text-transform: capitalize;
 }
+a.vote-now-btn:hover {
+    color: #9C27B0;
+}
 /*banner*/
 
 /*Filter wrap*/
@@ -4658,7 +4661,7 @@ max-height: unset !important;
     left: 0!important;
 }
 s
-.remove_comment_block > as{    color: #9b26b0 !important;}
+.remove_comment_block > a{    color: #9b26b0 !important;}
 /*MEDIA START*/
 @media screen and (min-width: 768px){
     .content-block{width: 750px;}
