@@ -254,14 +254,19 @@ export class DashboardLayoutComponent implements OnInit, AfterViewInit, AfterVie
 
   downloadTrack() {
     console.log(this.audio_list[this.song_cnt]);
-    this.DashboardLayoutService.downloadTrack(this.audio_list[this.song_cnt]['_id']).subscribe((response) => {
-      if(response['message']) {
-        this.toastr.info(response['message'], 'Info!');
-      }
-      if(response['filename']) {
-        window.location.href = this.user_img_url+response['filename'];
-      }
-    });
+    if(this.user) {
+      this.DashboardLayoutService.downloadTrack(this.audio_list[this.song_cnt]['_id']).subscribe((response) => {
+        if(response['message']) {
+          this.toastr.info(response['message'], 'Info!');
+        }
+        if(response['filename']) {
+          window.location.href = this.user_img_url+response['filename'];
+        }
+      });
+    } else {
+      this.toastr.info('Login first to download the track.', 'Information!');
+    }
+    
   }
 
   // share on facebook

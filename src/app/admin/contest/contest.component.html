@@ -32,8 +32,8 @@
                           <td>{{contest['start_date'] | date : 'MMMM d, yyyy':'UTC' }}</td>
                           <td>{{contest['end_date'] | date : 'MMMM d, yyyy':'UTC' }}</td>
                           <td>{{contest['days']}}</td>
-                          <td>{{contest['contest_id']['music_type']['name']}}</td>
-                          <td>{{contest['state'] && contest['state']['name'] ? contest['state']['name'] : '' }}</td>
+                          <td>{{contest && contest['contest_id'] && contest['contest_id']['music_type'] ? contest['contest_id']['music_type']['name'] : '' }}</td>
+                          <td>{{contest['state'] && contest['state'] ? contest['state']['name'] : '' }}</td>
                           <td>{{contest['no_of_participants']}}</td>
                         </tr>
                         </tbody>
@@ -92,11 +92,11 @@
           <div class="form-group custom_modal_form">
             <div class="radio">
                 <label class="radio-inline">
-                  <input name="type" formControlName="type" type="radio" checked [(ngModel)]="is_new_or_existing" value="1">New
+                  <input name="type" formControlName="type" type="radio" [checked]="is_new_or_existing == 1 ? true : false" [(ngModel)]="is_new_or_existing" value="1">New
                   <div class="radio_check"></div>
                 </label>
                 <label class="radio-inline">
-                  <input name="type" formControlName="type" type="radio" [(ngModel)]="is_new_or_existing" value="2">Existing
+                  <input name="type" formControlName="type" type="radio" [checked]="is_new_or_existing == 2 ? true : false" [(ngModel)]="is_new_or_existing" value="2">Existing
                   <div class="radio_check"></div>
                 </label>
             </div>

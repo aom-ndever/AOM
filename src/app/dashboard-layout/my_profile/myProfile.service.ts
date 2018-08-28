@@ -11,7 +11,7 @@ export class MyProfileService {
   private user : any = '';
   private headers : any = '';
 
-  constructor(private http: HttpClient,private MessageService : MessageService,) { 
+  constructor(private http: HttpClient,private MessageService : MessageService) { 
     this.user = JSON.parse(localStorage.getItem('user'));
     this.headers = new HttpHeaders({ 'x-access-token' : this.user.token });  
     this.MessageService.getMessage().subscribe((response) => {

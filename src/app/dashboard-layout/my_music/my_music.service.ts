@@ -4,15 +4,22 @@ import { HttpClient, HttpHeaders, HttpParams, HttpRequest } from '@angular/commo
 import 'rxjs/add/operator/toPromise';
 import { environment } from '../../../environments/environment';
 import { dashCaseToCamelCase } from '@angular/compiler/src/util';
+import { MessageService } from '../../shared/message.service';
 @Injectable()
 export class MyMusicService {
   private api_host : any = environment.API_URL;
   private user : any = '';
   private headers : any = '';
 
-  constructor(private http: HttpClient) { 
+  constructor(private http: HttpClient, private MessageService : MessageService) { 
     this.user = JSON.parse(localStorage.getItem('user'));
     this.headers = new HttpHeaders({ 'x-access-token' : this.user.token });  
+    this.MessageService.getMessage().subscribe((response) => {
+      if(response && response['loggedin_user']) {
+        this.user = response['loggedin_user'];
+        this.headers = new HttpHeaders({ 'x-access-token' : this.user.token });
+      }
+    });
   }
 
   // Add artist track

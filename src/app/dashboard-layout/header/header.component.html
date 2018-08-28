@@ -141,7 +141,7 @@
           <div class="form-group pwd-grp">
             <label for="pwd">Password</label>
             <input type="password" class="form-control" formControlName="password" name="password" id="pwd" [(ngModel)]="userdata.password" placeholder="Password">
-            <div class="pwd-icon"><i class="fa fa-eye" aria-hidden="true"></i></div>
+            <div class="pwd-icon"></div>
             <div class="cust_err_msg" *ngIf="login_validation && !login_form.controls['password'].valid">
               <span *ngIf="login_form.controls['password'].errors['required']" class="text-danger">Password is required.</span>
             </div>
