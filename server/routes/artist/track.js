@@ -118,13 +118,26 @@ router.post("/", async (req, res) => {
                 obj.image = await filename1;
             }
         }
-        var resp = await track_helper.insert_track(artist_id, obj);
-        if (resp.status === 0) {
-            res.status(config.INTERNAL_SERVER_ERROR).json({ "error": resp.error });
-        } else {
-            var resp = await artist_helper.get_artist_by_id(artist_id);
-            no_track = resp.artist.no_of_tracks + 1
-            res.status(config.OK_STATUS).json({ "message": "Inserted successfully" });
+
+        var card_resp = await artist_helper.get_account_by_artist_id(artist_id);
+        console.log('card_resp', card_resp);
+
+        if (card_resp.status === 2) {
+
+            res.status(config.INTERNAL_SERVER_ERROR).json({ "message": "Please Add bank Details to get money into your Account When Track is being Purchased" });
+        } else if (card_resp.status === 1) {
+
+            var resp = await track_helper.insert_track(artist_id, obj);
+            if (resp.status === 0) {
+                res.status(config.INTERNAL_SERVER_ERROR).json({ "error": resp.error });
+            } else {
+                var resp = await artist_helper.get_artist_by_id(artist_id);
+                no_track = resp.artist.no_of_tracks + 1
+                res.status(config.OK_STATUS).json({ "message": "Inserted successfully" });
+            }
+        }
+        else {
+            res.status(config.OK_STATUS).json({ "message": "Error occured while adding bank details" });
         }
     });
 });

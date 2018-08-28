@@ -134,7 +134,6 @@ round_helper.get_current_round_of_contest = async (id) => {
                 $gte: current
             }
         });
-    console.log('round=====>', round);
 
     if (round) {
         return { "status": 1, "message": "round details found", "round": round };

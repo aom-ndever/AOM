@@ -180,7 +180,6 @@ router.put('/bank/:bank_id', async (req, res) => {
     var obj = {
     };
     var user_resp = await artist_helper.update_bank(req.userInfo.id, req.params.bank_id);
-    console.log('user_resp', user_resp);
 
     if (user_resp.status === 0) {
         res.status(config.INTERNAL_SERVER_ERROR).json(user_resp);
@@ -245,7 +244,9 @@ router.post('/add_bank_details', async (req, res) => {
             res.status(config.OK_STATUS).json({ "message": "Account created" });
 
         } catch (error) {
-            res.status(config.OK_STATUS).json({ "message": "Transaction not successful" });
+            console.log('error', error);
+
+            res.status(config.OK_STATUS).json({ "message": "Account not created" });
 
         }
 

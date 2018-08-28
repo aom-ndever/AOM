@@ -29,6 +29,7 @@ var contest_helper = require('./../helpers/contest_helper');
 var participate_helper = require('./../helpers/participate_helper');
 var vote_track_helper = require('./../helpers/vote_track_helper');
 var round_helper = require('./../helpers/round_helper');
+var winner_helper = require('./../helpers/winner_helper');
 
 /**
  * @api {post} /artist_registration Artist Registration
@@ -1865,14 +1866,37 @@ router.get('/tracks/:track_id', async (req, res) => {
 router.post('/get_track_for_current_round', async (req, res) => {
 
   var round = await round_helper.get_current_round_of_contest(req.body.contest_id);
-  if (round.status === 1) {
+  round_id = round.round._id
+
+  var track = await winner_helper.get_qualified(round_id, req.body.start, req.body.length);
+  if (track.status === 1) {
     logger.trace("got details successfully");
-    res.status(config.OK_STATUS).json({ "status": 1, "round": round });
+    res.status(config.OK_STATUS).json({ "status": 1, "track": track.winner });
   } else {
-    logger.error("Error occured while fetching = ", round);
-    res.status(config.INTERNAL_SERVER_ERROR).json(round);
+    logger.error("Error occured while fetching = ", track);
+    res.status(config.INTERNAL_SERVER_ERROR).json(track);
   }
 });
 
+router.post('/winners', async (req, res) => {
 
+  var round = await round_helper.get_current_round_of_contest(req.body.contest_id);
+  round_id = round.round._id
+
+  var track = await winner_helper.get_qualified(round_id, req.body.start, req.body.length);
+
+  for (let x of track.winner) {
+    var length = x.votes.length;
+    x.totalVotes = length;
+  }
+
+
+  if (track.status === 1) {
+    logger.trace("got details successfully");
+    res.status(config.OK_STATUS).json({ "status": 1, "track": track.winner });
+  } else {
+    logger.error("Error occured while fetching = ", track);
+    res.status(config.INTERNAL_SERVER_ERROR).json(track);
+  }
+});
 module.exports = router;
