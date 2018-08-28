@@ -828,7 +828,8 @@
                                 <div class="row" *ngIf="track_flag">
                                     <div class="col-sm-12 col-md-12 col-12">
                                         <div class="edit-head top_label_pd0">"{{playlist_data['name']}}" - Tracks</div>
-                                        <a href="javascript:;" class="btn btn-primary playlist_add_btn" (click)="openPlaylistTrackModel(addtrackplaylist)" >Add <i class="fa fa-plus"></i></a>
+                                        <a href="javascript:;" class="btn btn-primary playlist_add_btn" (click)="openPlaylistTrackModel(addtrackplaylist)" >Add <i class="fa fa-plus"></i></a>&nbsp;
+                                        <a href="javascript:;" class="btn btn-primary playlist_add_btn" (click)="tabChange(6)" >Back <i class="fa fa-arrow-left"></i></a>&nbsp;&nbsp;
                                         <div class="track-table custom_track_table">
                                             <table datatable [dtOptions]="dtOptions[1]">
                                                 <tbody>

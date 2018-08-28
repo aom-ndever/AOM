@@ -229,8 +229,9 @@
                   <td>{{track['name']}}</td>
                   <td>{{track['created_at'] | date : 'd M, yyyy'}}</td>
                   <td class="td_img">
-                    <a href="javascript:;" (click)="removeTrack(track['_id'])"><i class="fa fa-trash"></i> Delete</a>&nbsp;
                     
+                    <a href="javascript:;" ><i class="fa fa-trash"></i> Delete</a>&nbsp;
+      
                     <!-- <a href="javascript:;"> <img src="img/suspend.png">Suspend</a> -->
                   </td>
                 </tr>

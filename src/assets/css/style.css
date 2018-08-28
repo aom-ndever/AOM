@@ -4525,6 +4525,7 @@ justify-content: space-around !important;
     float: right;
     padding: 6px 23px;
     margin-bottom: 22px;
+    margin-left: 5px;
 }
 .playlist_add_btn:focus{box-shadow: none !important; }
 
