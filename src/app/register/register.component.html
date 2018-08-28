@@ -576,9 +576,9 @@
                                    
                 <div class="type-music">                      
                   <ul>
-                    <li *ngFor="let x of music_types">
-                        <input type="checkbox" name="music" (change)="onChangeForListener(x['_id'], $event.target.checked)">
-                        <label class="music-checked chk-{{x['alias']}}"  >{{x.name}}</label>
+                    <li *ngFor="let x of music_types; let i=index;">
+                        <input type="checkbox" id="{{i}}" name="music" (change)="onChangeForListener(x['_id'], $event.target.checked)">
+                        <label for="{{i}}" class="music-checked chk-{{x['alias']}}"  >{{x.name}}</label>
                     </li>
                   </ul>
                   <div class="cust_err_msg" *ngIf="listener_validation[4]">

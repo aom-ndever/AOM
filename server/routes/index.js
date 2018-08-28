@@ -1867,9 +1867,8 @@ router.post('/get_track_for_current_round', async (req, res) => {
 
   var round = await round_helper.get_current_round_of_contest(req.body.contest_id);
   round_id = round.round._id
-  console.log('round', round_id);
 
-  var track = await winner_helper.get_qualified(round_id);
+  var track = await winner_helper.get_qualified(round_id, req.body.start, req.body.length);
   if (track.status === 1) {
     logger.trace("got details successfully");
     res.status(config.OK_STATUS).json({ "status": 1, "track": track.winner });
@@ -1879,5 +1878,25 @@ router.post('/get_track_for_current_round', async (req, res) => {
   }
 });
 
+router.post('/winners', async (req, res) => {
 
+  var round = await round_helper.get_current_round_of_contest(req.body.contest_id);
+  round_id = round.round._id
+
+  var track = await winner_helper.get_qualified(round_id, req.body.start, req.body.length);
+
+  for (let x of track.winner) {
+    var length = x.votes.length;
+    x.totalVotes = length;
+  }
+
+
+  if (track.status === 1) {
+    logger.trace("got details successfully");
+    res.status(config.OK_STATUS).json({ "status": 1, "track": track.winner });
+  } else {
+    logger.error("Error occured while fetching = ", track);
+    res.status(config.INTERNAL_SERVER_ERROR).json(track);
+  }
+});
 module.exports = router;
