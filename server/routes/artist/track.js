@@ -122,10 +122,10 @@ router.post("/", async (req, res) => {
         var card_resp = await artist_helper.get_account_by_artist_id(artist_id);
         console.log('card_resp', card_resp);
 
-        if (card_resp.status == 2) {
+        if (card_resp.status === 2) {
 
             res.status(config.INTERNAL_SERVER_ERROR).json({ "message": "Please Add bank Details to get money into your Account When Track is being Purchased" });
-        } else if (card_resp.status == 1) {
+        } else if (card_resp.status === 1) {
 
             var resp = await track_helper.insert_track(artist_id, obj);
             if (resp.status === 0) {
