@@ -180,7 +180,6 @@ router.put('/bank/:bank_id', async (req, res) => {
     var obj = {
     };
     var user_resp = await artist_helper.update_bank(req.userInfo.id, req.params.bank_id);
-    console.log('user_resp', user_resp);
 
     if (user_resp.status === 0) {
         res.status(config.INTERNAL_SERVER_ERROR).json(user_resp);

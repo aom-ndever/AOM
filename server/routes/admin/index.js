@@ -1041,7 +1041,6 @@ router.post("/get_flag", async (req, res) => {
 
 router.post("/get_artist_votes", async (req, res) => {
   artist_id = req.body.artist_id;
-  console.log('artist_id', artist_id);
 
   var resp_data = await vote_track_helper.get_all_voted_artist_by_id(artist_id);
   if (resp_data.status == 0) {

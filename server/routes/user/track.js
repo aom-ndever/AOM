@@ -58,7 +58,6 @@ router.post('/purchase', async (req, res) => {
 
     var track_response = await track_helper.get_all_track_by_track_id(obj.track_id);
     artist_id = track_response.track.artist_id._id;
-    console.log('artist_id', artist_id);
 
     try {
       var charge = await stripe.charges.create({
@@ -69,7 +68,6 @@ router.post('/purchase', async (req, res) => {
         description: "Charge for jenny.rosen@example.com"
 
       });
-      console.log('charge', charge);
 
       var resp_data = await purchase_helper.purchase_track(obj);
       if (resp_data.status == 0) {
@@ -78,7 +76,6 @@ router.post('/purchase', async (req, res) => {
       } else {
 
         var card_resp = await artist_helper.get_account_by_artist_id(artist_id);
-        console.log('card_resp.status========>', card_resp.status);
 
         if (card_resp.status == 0) {
           logger.error("Error occured while fetching music = ", resp_data);
@@ -101,7 +98,6 @@ router.post('/purchase', async (req, res) => {
           }
           var transfer_resp = await artist_helper.insert_transaction(obj);
 
-          console.log('transfer_resp', transfer_resp);
 
         } else {
           res.status(config.BAD_REQUEST).json({ "message": "Artist doesn't have bank account" });
@@ -110,7 +106,6 @@ router.post('/purchase', async (req, res) => {
       }
 
     } catch (error) {
-      console.log('error', error);
 
       res.status(config.INTERNAL_SERVER_ERROR).json({ "message": "invalid token" });
     }
@@ -175,7 +170,6 @@ router.post('/vote_track', async (req, res) => {
   if (!errors) {
     var participate_response = await participate_helper.get_participant_by_track_id(req.body.track_id);
     contest_id = participate_response.participate.contest_id;
-    console.log('contest_id', contest_id);
 
     var round_response = await round_helper.get_current_round_of_contest(contest_id);
     if (round_response.status === 1) {
@@ -195,16 +189,11 @@ router.post('/vote_track', async (req, res) => {
       if (data.status == 2) {
         var data = await vote_track_helper.vote_for_track(user_id, obj);
         var resp_data = await track_helper.get_all_track_by_track_id(obj.track_id);
-        console.log('resp_data', resp_data);
 
         var no_vote = resp_data.track.no_of_votes + 1;
         resp_data = await track_helper.update_votes(obj.track_id, no_vote);
-        console.log('track_helper resp_data', resp_data);
-
         resp_data = await winner_helper.get_qualified_contestant(obj.track_id, obj.round_id);
-        console.log('winner_helper track_helper resp_data', resp_data);
-        console.log('resp_data.status', resp_data.status);
-
+     
         if (resp_data.status == 2) {
           var object = {
             track_id: req.body.track_id,
@@ -291,11 +280,8 @@ router.post('/like_track', async (req, res) => {
 
       } else
         var resp_data = await track_helper.get_all_track_by_track_id(obj.track_id);
-      console.log('resp_data', resp_data);
-
 
       no_vote = resp_data.track.no_of_likes + 1;
-      console.log('no_vote', no_vote);
 
       var resp_data = await track_helper.update_track_for_likes(obj.track_id, no_vote);
 
@@ -376,7 +362,6 @@ router.post('/share_track_by_mail', async (req, res) => {
       "track": track_name,
       "url": obj.url
     });
-  console.log('mail_resp', mail_resp);
 
   if (mail_resp.status == 1) {
     res.status(config.OK_STATUS).json({ message: "Track shared successfully" });

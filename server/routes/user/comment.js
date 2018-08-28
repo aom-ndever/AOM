@@ -77,7 +77,6 @@ router.post('/', async (req, res) => {
 
         var resp = await artist_helper.get_artist_by_id(obj.artist_id);
         if (resp.artist.notification_settings.comment_by_email == true) {
-          console.log('resp.artist._id', resp.artist._id);
 
 
           let mail_resp = await mail_helper.send("notification_comment", {
