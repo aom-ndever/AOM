@@ -120,14 +120,14 @@ router.post("/", async (req, res) => {
         }
 
         var card_resp = await artist_helper.get_account_by_artist_id(artist_id);
+        console.log('card_resp', card_resp);
 
         if (card_resp.status == 0) {
+            console.log('1', 1);
 
             res.status(config.INTERNAL_SERVER_ERROR).json({ "message": "Please Add bank Details to get money into your Account When Track is being Purchased" });
         } else if (card_resp.status == 1) {
-
-
-
+            console.log('2', 2);
 
             var resp = await track_helper.insert_track(artist_id, obj);
             if (resp.status === 0) {
@@ -137,6 +137,10 @@ router.post("/", async (req, res) => {
                 no_track = resp.artist.no_of_tracks + 1
                 res.status(config.OK_STATUS).json({ "message": "Inserted successfully" });
             }
+        }
+        else {
+            console.log('3', 3);
+
         }
     });
 });
