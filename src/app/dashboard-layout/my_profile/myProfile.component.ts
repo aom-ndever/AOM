@@ -966,7 +966,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
 
   changePassword() {
     if(this.change_pwd['old']) {
-      if(this.change_pwd['new'] && this.change_pwd['repeat'] && this.change_pwd['new'] == this.change_pwd['repeat']) {
+      if(this.change_pwd['new'] && this.change_pwd['repeat'] && this.change_pwd['new'] == this.change_pwd['repeat'] && this.change_pwd['new'].length >= 6 && this.change_pwd['repeat'] >= 6 ) {
         let data = {
           password : this.change_pwd['old'],
           new_password : this.change_pwd['new']
@@ -992,6 +992,10 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
         this.toastr.error('Please enter new password');
       } else if (!this.change_pwd['repeat']) {
         this.toastr.error('Please enter repeat password');
+      } else if(this.change_pwd['new'].length < 6) {
+        this.toastr.error('New password must be more than 6 character');
+      } else if(this.change_pwd['repeat'].length < 6) {
+        this.toastr.error('Repeat password must be more than 6 character');
       } else {
         this.toastr.error('New and repeat password must be same');
       }
@@ -2017,7 +2021,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
             }
             callback({
               recordsTotal: response['recordsTotal'],
-              recordsFiltered: response['recordsFiltered'],
+              recordsFiltered: response['recordsTotal'],
               data: []
             });
           });

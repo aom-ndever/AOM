@@ -561,7 +561,10 @@ display: inline-block;
   position: absolute;
     left: 18px;
     font-size: 20px;
-    top: 12px;
+    top: 17px;
+}
+.log_out > a:hover >i {
+    color: #9c27b0;
 }
 .artist_img img{
   max-width:100%;

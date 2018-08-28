@@ -219,25 +219,25 @@
                                     <form (ngSubmit)="changePassword()">
                                         <div class="form-group">
                                             <label for="ypwd">Your Password</label>
-                                            <input type="password" class="form-control" id="ypwd" name="old" [(ngModel)]="change_pwd.old" placeholder="Your Email">
+                                            <input type="password" class="form-control" id="ypwd" name="old" [(ngModel)]="change_pwd.old" placeholder="Your Password">
                                             <div class="pwd-icon">
-                                                <i class="fa fa-eye" aria-hidden="true"></i>
+                                                <!-- <i class="fa fa-eye" aria-hidden="true"></i> -->
                                                 <!-- <i class="fa fa-eye-slash" aria-hidden="true"></i> -->
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <label for="npwd">New Password</label>
-                                            <input type="password" class="form-control" name="old" [(ngModel)]="change_pwd.new" id="npwd" placeholder="New Name">
+                                            <input type="password" class="form-control" name="old" [(ngModel)]="change_pwd.new" id="npwd" placeholder="New Password">
                                             <div class="pwd-icon">
-                                                <i class="fa fa-eye" aria-hidden="true"></i>
+                                                <!-- <i class="fa fa-eye" aria-hidden="true"></i> -->
                                                 <!-- <i class="fa fa-eye-slash" aria-hidden="true"></i> -->
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <label for="rpwd">Repeat New Password</label>
-                                            <input type="password" class="form-control" id="rpwd" name="old" [(ngModel)]="change_pwd.repeat" placeholder="Repeat Email">
+                                            <input type="password" class="form-control" id="rpwd" name="old" [(ngModel)]="change_pwd.repeat" placeholder="Repeat Password">
                                             <div class="pwd-icon">
-                                                <i class="fa fa-eye " aria-hidden="true"></i>
+                                                <!-- <i class="fa fa-eye " aria-hidden="true"></i> -->
                                                 <!-- <i class="fa fa-eye-slash" aria-hidden="true"></i> -->
                                             </div>
                                         </div>
@@ -828,7 +828,8 @@
                                 <div class="row" *ngIf="track_flag">
                                     <div class="col-sm-12 col-md-12 col-12">
                                         <div class="edit-head top_label_pd0">"{{playlist_data['name']}}" - Tracks</div>
-                                        <a href="javascript:;" class="btn btn-primary playlist_add_btn" (click)="openPlaylistTrackModel(addtrackplaylist)" >Add <i class="fa fa-plus"></i></a>
+                                        <a href="javascript:;" class="btn btn-primary playlist_add_btn" (click)="openPlaylistTrackModel(addtrackplaylist)" >Add <i class="fa fa-plus"></i></a>&nbsp;
+                                        <a href="javascript:;" class="btn btn-primary playlist_add_btn" (click)="tabChange(6)" >Back <i class="fa fa-arrow-left"></i></a>&nbsp;&nbsp;
                                         <div class="track-table custom_track_table">
                                             <table datatable [dtOptions]="dtOptions[1]">
                                                 <tbody>
@@ -1041,7 +1042,7 @@
 										<form (ngSubmit)="changePassword()">
 											<div class="form-group">
 												<label for="ypwd">Your Password</label>
-												<input type="password" class="form-control" id="ypwd" name="old" [(ngModel)]="change_pwd.old" placeholder="Your Email">
+												<input type="password" class="form-control" id="ypwd" name="old" [(ngModel)]="change_pwd.old" placeholder="Your Password">
 												<div class="pwd-icon">
 													<i class="fa fa-eye" aria-hidden="true"></i>
 													<!-- <i class="fa fa-eye-slash" aria-hidden="true"></i> -->
@@ -1049,7 +1050,7 @@
 											</div>
 											<div class="form-group">
 												<label for="npwd">New Password</label>
-												<input type="password" class="form-control" name="old" [(ngModel)]="change_pwd.new" id="npwd" placeholder="New Name">
+												<input type="password" class="form-control" name="old" [(ngModel)]="change_pwd.new" id="npwd" placeholder="New Password">
 												<div class="pwd-icon">
 													<i class="fa fa-eye" aria-hidden="true"></i>
 													<!-- <i class="fa fa-eye-slash" aria-hidden="true"></i> -->
@@ -1057,7 +1058,7 @@
 											</div>
 											<div class="form-group">
 												<label for="rpwd">Repeat New Password</label>
-												<input type="password" class="form-control" id="rpwd" name="old" [(ngModel)]="change_pwd.repeat" placeholder="Repeat Email">
+												<input type="password" class="form-control" id="rpwd" name="old" [(ngModel)]="change_pwd.repeat" placeholder="Repeat Password">
 												<div class="pwd-icon">
 													<i class="fa fa-eye " aria-hidden="true"></i>
 													<!-- <i class="fa fa-eye-slash" aria-hidden="true"></i> -->
@@ -1247,7 +1248,7 @@
                                 <div class="col-sm-12 col-md-12 col-12">
                                     <div class="edit-head top_label_pd0">"{{playlist_data['name']}}" - Tracks</div>
                                     <a href="javascript:;" class="btn btn-primary playlist_add_btn" (click)="openPlaylistTrackModel(addtrackplaylist)" >Add <i class="fa fa-plus"></i></a>
-                                    <div class="track-table">
+                                    <div class="track-table track_play">
                                         <table datatable [dtOptions]="dtOptions[2]">
                                             <tbody>
                                                 <tr *ngFor="let val of playlist_track;let i = index;">
