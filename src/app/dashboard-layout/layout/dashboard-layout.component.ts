@@ -58,7 +58,7 @@ export class DashboardLayoutComponent implements OnInit, AfterViewInit, AfterVie
         this.audio_list = response['data'];
         response['data'].forEach((ele) => {
           let audio = new Audio();
-          audio.src = this.track_url+'/'+ele['audio'];
+          audio.src = ele['audio'] ? this.track_url+'/'+ele['audio'] : '';
           audio.load();
           this.audio_instance_list.push(audio);
           audio.addEventListener('timeupdate', this.timeUpdate, false);

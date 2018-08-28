@@ -287,7 +287,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
     this.bank_fg = this.fb.group({
       bname : ['', [Validators.required, this.noWhitespaceValidator]],
       hname : ['', [Validators.required, this.noWhitespaceValidator]],
-      acno : ['', [Validators.required, Validators.minLength(16), Validators.maxLength(16) , this.noWhitespaceValidator]],
+      acno : ['', [Validators.required,  this.noWhitespaceValidator]],
       rno : ['', [Validators.required, this.noWhitespaceValidator]]
     });
 

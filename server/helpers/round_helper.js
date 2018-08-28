@@ -109,7 +109,7 @@ round_helper.get_all_contests = async () => {
             .populate('music_type')
             .populate('contest_id')
             .populate('state')
-            .populate()
+
 
         if (participate) {
             return { "status": 1, "message": "contest details found", "contest": participate };
@@ -140,7 +140,6 @@ round_helper.get_current_round_of_contest = async (id) => {
     } else {
         return { "status": 2, "message": "contest not found" };
     }
-    console.log('1', 1);
 
     //  } catch (err) {
     //    return { "status": 0, "message": "Error occured while finding contest", "error": err }

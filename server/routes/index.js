@@ -1866,15 +1866,20 @@ router.get('/tracks/:track_id', async (req, res) => {
 router.post('/get_track_for_current_round', async (req, res) => {
 
   var round = await round_helper.get_current_round_of_contest(req.body.contest_id);
-  round_id = round.round._id
 
-  var track = await winner_helper.get_qualified(round_id, req.body.start, req.body.length);
-  if (track.status === 1) {
-    logger.trace("got details successfully");
-    res.status(config.OK_STATUS).json({ "status": 1, "track": track.winner });
+  if (round.status === 1) {
+    round_id = round.round._id
+    var track = await winner_helper.get_qualified(round_id, req.body.start, req.body.length);
+
+    if (track.status === 1) {
+      logger.trace("got details successfully");
+      res.status(config.OK_STATUS).json({ "status": 1, "track": track.winner });
+    } else {
+
+      res.status(config.OK_STATUS).json({ "message": "no participants yet for this contest" });
+    }
   } else {
-    logger.error("Error occured while fetching = ", track);
-    res.status(config.INTERNAL_SERVER_ERROR).json(track);
+    res.status(config.INTERNAL_SERVER_ERROR).json({ "message": "no participants yet for this contest" });
   }
 });
 
@@ -1882,7 +1887,6 @@ router.post('/winners', async (req, res) => {
 
   var round = await round_helper.get_current_round_of_contest(req.body.contest_id);
   round_id = round.round._id
-
   var track = await winner_helper.get_qualified(round_id, req.body.start, req.body.length);
 
   for (let x of track.winner) {
@@ -1894,9 +1898,25 @@ router.post('/winners', async (req, res) => {
   if (track.status === 1) {
     logger.trace("got details successfully");
     res.status(config.OK_STATUS).json({ "status": 1, "track": track.winner });
-  } else {
+  }
+  else {
     logger.error("Error occured while fetching = ", track);
     res.status(config.INTERNAL_SERVER_ERROR).json(track);
   }
+
+});
+
+
+router.get('/get_contest', async (req, res) => {
+
+
+  var contest = await contest_helper.get_all_contest_and_participant();
+  if (contest.status === 1) {
+    logger.trace("got details successfully");
+    res.status(config.OK_STATUS).json({ "status": 1, "contest": contest });
+  } else {
+    res.status(config.INTERNAL_SERVER_ERROR).json(contest);
+  }
+
 });
 module.exports = router;

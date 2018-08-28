@@ -73,7 +73,7 @@
               </div>
               <div class="content-wrap">
                 <div class="player">
-                  <div class="title"><a href="javascript:;">{{nupload.name ? nupload.name : ''}}</a></div>
+                  <div class="title"><a href="javascript:;" routerLink="/artist_profile/{{nupload.artist_id._id}}">{{nupload.name ? nupload.name : ''}}</a></div>
                   <div class="finalist-name">{{nupload.artist_id && nupload.artist_id['first_name'] ? nupload.artist_id['first_name'] : ''}}</div>
                   <!-- <div class="finalist-name">{{nupload.artist_id['first_name'] ? nupload.artist_id['first_name'] : '' +' '+nupload.artist_id['last_name'] ? nupload.artist_id['last_name'] : ''}}</div> -->
                   <div class="action-btn custom-action-btn">       
