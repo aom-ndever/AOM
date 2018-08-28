@@ -137,8 +137,7 @@ router.post("/", async (req, res) => {
             }
         }
         else {
-            console.log('3', 3);
-
+            res.status(config.OK_STATUS).json({ "message": "Error occured while adding bank details" });
         }
     });
 });
