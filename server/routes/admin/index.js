@@ -196,7 +196,7 @@ router.post("/add_contest", async (req, res) => {
     },
 
   };
-  var start_date = (moment().date(req.body.day).month(req.body.month).year(req.body.year).format('YYYY-MM-DD'))
+
 
   req.checkBody(schema);
   var errors = req.validationErrors();
@@ -211,25 +211,25 @@ router.post("/add_contest", async (req, res) => {
       }
 
       var resp_data = await contest_helper.insert_contest(contest_obj);
+
       var start_date = moment(
         {
           year: req.body.year,
           month: (parseInt(req.body.month) - 1),
-          date: req.body.day,
+          date: (parseInt(req.body.day) + 1),
         }
-      ).startOf('day').utc()
-      // var start_date = (moment({year:}).date(req.body.day).month((parseInt(req.body.month) - 1)).year(req.body.year).utc())
-
+      );
       var round_obj = {
         contest_id: resp_data.contest._id,
         start_date: start_date,
         region: req.body.region,
         duration: req.body.duration,
-        end_date: moment(start_date).utc().add((req.body.duration * 7), 'days'),
+        end_date: moment(start_date).add((req.body.duration * 7), 'days'),
         round: req.body.round,
         round_name: contest_obj.name + " " + "round" + req.body.round
       };
 
+      console.log('round_obj', round_obj);
 
       var resp_data = await round_helper.insert_round(round_obj);
 
