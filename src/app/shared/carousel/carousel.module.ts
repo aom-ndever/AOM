@@ -4,11 +4,13 @@ import { CarouselComponent } from './carousel.component';
 import { NgxCarouselModule } from 'ngx-carousel';
 import 'hammerjs';
 import { CarouselService } from './carousel.service';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   imports: [
     CommonModule,
-    NgxCarouselModule
+    NgxCarouselModule,
+    RouterModule
   ],
   declarations: [CarouselComponent],
   exports: [CarouselComponent],
