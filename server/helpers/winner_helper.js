@@ -59,15 +59,22 @@ winner_helper.get_qualified_contestant = async (track_id, round_id) => {
 
 
 
-winner_helper.get_qualified = async (round_id) => {
+winner_helper.get_qualified = async (round_id, start, length) => {
     try {
-
-        var winner = await Winner
+        var winners = await Winner
             .find({ round_id: new ObjectId(round_id) })
             .populate('track_id')
 
+        var tot_cnt = winners.length;
+        var winner = await Winner
+            .find({ round_id: new ObjectId(round_id) })
+            .populate('track_id')
+            .skip(start)
+            .limit(length)
+        var filter_cnt = winner.length;
+
         if (winner) {
-            return { "status": 1, "message": "winner details found", "winner": winner };
+            return { "status": 1, "message": "winner details found", "winner": winner, "recordsFiltered": filter_cnt, "recordsTotal": tot_cnt };
         } else {
             return { "status": 2, "message": "winner not found" };
         }
