@@ -1899,4 +1899,17 @@ router.post('/winners', async (req, res) => {
     res.status(config.INTERNAL_SERVER_ERROR).json(track);
   }
 });
+
+
+router.get('/get_contest', async (req, res) => {
+
+  var contest = await round_helper.get_all_contests();
+  if (contest.status === 1) {
+    logger.trace("got details successfully");
+    res.status(config.OK_STATUS).json({ "status": 1, "contest": contest });
+  } else {
+    res.status(config.INTERNAL_SERVER_ERROR).json(contest);
+  }
+
+});
 module.exports = router;
