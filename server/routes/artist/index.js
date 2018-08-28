@@ -244,6 +244,8 @@ router.post('/add_bank_details', async (req, res) => {
             res.status(config.OK_STATUS).json({ "message": "Account created" });
 
         } catch (error) {
+            console.log('error', error);
+
             res.status(config.OK_STATUS).json({ "message": "Transaction not successful" });
 
         }

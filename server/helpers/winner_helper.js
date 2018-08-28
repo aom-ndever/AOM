@@ -61,17 +61,23 @@ winner_helper.get_qualified_contestant = async (track_id, round_id) => {
 
 winner_helper.get_qualified = async (round_id, start, length) => {
     try {
+
+
         var winners = await Winner
             .find({ round_id: new ObjectId(round_id) })
-            .populate('track_id')
+
 
         var tot_cnt = winners.length;
         var winner = await Winner
             .find({ round_id: new ObjectId(round_id) })
-            .populate('track_id')
+            .populate({ path: 'track_id', populate: { path: 'artist_id' } })
+
+            //.populate({ path: 'track_id', populate: { path: 'artist_id', populate: 'music_type' } })
+
             .skip(start)
-            .limit(length)
+            .limit(length).lean()
         var filter_cnt = winner.length;
+
 
         if (winner) {
             return { "status": 1, "message": "winner details found", "winner": winner, "recordsFiltered": filter_cnt, "recordsTotal": tot_cnt };
