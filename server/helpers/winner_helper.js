@@ -64,6 +64,7 @@ winner_helper.get_qualified = async (round_id) => {
 
         var winner = await Winner
             .find({ round_id: new ObjectId(round_id) })
+            .populate('track_id')
 
         if (winner) {
             return { "status": 1, "message": "winner details found", "winner": winner };
