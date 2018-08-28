@@ -10,6 +10,7 @@ var ContestModelSchema = new Schema({
     admin_id: { type: mongoose.Schema.Types.ObjectId, ref: 'admin' },
     name: { type: String },
     music_type: { type: mongoose.Schema.Types.ObjectId, ref: 'music_type' },
+    no_of_participant: { type: Number, default: 0 },
     created_at: { type: Date, default: Date.now }
 }, { versionKey: false });
 
