@@ -83,7 +83,7 @@ router.post('/purchase', async (req, res) => {
         if (card_resp.status == 0) {
           logger.error("Error occured while fetching music = ", resp_data);
           res.status(config.INTERNAL_SERVER_ERROR).json(resp_data);
-        } else {
+        } else if (card_resp.status == 1) {
           let transfer = await stripe.transfers.create({
             amount: track_response.track.price * 100,
             currency: "usd",
@@ -103,6 +103,8 @@ router.post('/purchase', async (req, res) => {
 
           console.log('transfer_resp', transfer_resp);
 
+        } else {
+          res.status(config.BAD_REQUEST).json({ "message": "Artist doesn't have bank account" });
         }
         res.status(config.OK_STATUS).json(resp_data);
       }
