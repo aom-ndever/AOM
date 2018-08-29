@@ -229,26 +229,6 @@ router.post("/add_contest", async (req, res) => {
         round_name: contest_obj.name + " " + "round" + req.body.round
       };
 
-      var round = await round_helper.get_finished_round_of_contest();
-      console.log('round', round);
-      var track = await winner_helper.get_qualifiedss(round.round._id);
-
-      for (let x of track.winner) {
-        var length = x.votes.length;
-        x.totalVotes = length;
-      }
-
-
-      if (track.status === 1) {
-        logger.trace("got details successfully");
-        res.status(config.OK_STATUS).json({ "status": 1, "track": track.winner });
-      }
-      else {
-        logger.error("Error occured while fetching = ", track);
-        res.status(config.INTERNAL_SERVER_ERROR).json(track);
-      }
-
-      console.log('track', track);
 
       var resp_data = await round_helper.insert_round(round_obj);
 
