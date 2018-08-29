@@ -229,7 +229,26 @@ router.post("/add_contest", async (req, res) => {
         round_name: contest_obj.name + " " + "round" + req.body.round
       };
 
-      console.log('round_obj', round_obj);
+      var round = await round_helper.get_finished_round_of_contest();
+      console.log('round', round);
+      var track = await winner_helper.get_qualifiedss(round.round._id);
+
+      for (let x of track.winner) {
+        var length = x.votes.length;
+        x.totalVotes = length;
+      }
+
+
+      if (track.status === 1) {
+        logger.trace("got details successfully");
+        res.status(config.OK_STATUS).json({ "status": 1, "track": track.winner });
+      }
+      else {
+        logger.error("Error occured while fetching = ", track);
+        res.status(config.INTERNAL_SERVER_ERROR).json(track);
+      }
+
+      console.log('track', track);
 
       var resp_data = await round_helper.insert_round(round_obj);
 
@@ -237,6 +256,7 @@ router.post("/add_contest", async (req, res) => {
         logger.error("Error occured while inserting = ", resp_data);
         res.status(config.INTERNAL_SERVER_ERROR).json(resp_data);
       } else {
+
         var resp_music = await artist_helper.get_artist_by_music_id(contest_obj.music_type);
         if (resp_music.status == 1) {
 
@@ -248,6 +268,7 @@ router.post("/add_contest", async (req, res) => {
               "Note": "new contest has been created named :" + contest_obj.name,
             });
         }
+
         logger.trace(" got successfully = ", resp_data);
         res.status(config.OK_STATUS).json(resp_data);
       }
@@ -393,7 +414,25 @@ router.post("/add_existing_contest", async (req, res) => {
       round_name: contest_response.contest.name + "round" + req.body.round
 
     }
+    var round = await round_helper.get_finished_round_of_contest(round_obj.contest_id);
 
+    var track = await winner_helper.get_qualifiedss(round.round._id);
+
+    if (track.status === 1) {
+      var arry = [];
+      for (let x of track.winner) {
+        var winner = x.track_id;
+        arry.push(ObjectId(winner));
+      }
+      if (arry.length > 0) {
+
+        var roundget = await round_helper.get_rounds({ "_id": new ObjectId(round.round._id) }, { "track_id": null });
+        if (roundget.status == 0) {
+          var roundAdd = await round_helper.add_participant_in_next_round({ "_id": new ObjectId(round.round._id) }, { "track_id": arry });
+
+        }
+      }
+    }
     var resp_data = await round_helper.insert_round(round_obj);
 
     if (resp_data.status == 0) {
@@ -407,6 +446,21 @@ router.post("/add_existing_contest", async (req, res) => {
     logger.error("Validation Error = ", errors);
     res.status(config.BAD_REQUEST).json({ message: errors });
   }
+  var current_round = await round_helper.get_current_round_of_contest(round_obj.contest_id);
+
+
+  for (let x of track.winner) {
+    console.log('x', x);
+
+    var object = {
+      "votes": x.votes,
+      "track_id": x.track_id,
+      "round_id": current_round.round._id
+
+    }
+  }
+
+  var winner = winner_helper.insert_winner(object)
 });
 
 /**
@@ -1290,5 +1344,7 @@ cron.schedule('* * * * *', async () => {
   // console.log('nextround', nextround);
 
 });
+
+
 
 module.exports = router;
