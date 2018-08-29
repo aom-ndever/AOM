@@ -74,7 +74,7 @@
                             <div class="form-group pwd-grp">
                               <label for="pwd">Confirm Password</label>
                               <input type="password" class="form-control" formControlName="artist_conf"  name="confirm" [(ngModel)]="artist_data.confirm_password" placeholder="Confirm Password" required >
-                              <div class="pwd-icon"><i class="fa fa-eye" aria-hidden="true"></i></div>
+                              <div class="pwd-icon"></div>
                               <div class="cust_err_msg" *ngIf="artist_validation[1] && !passwordFormGroup1.controls['artist_conf'].valid">
                                 <!-- <span *ngIf="passwordFormGroup.controls['conf'].errors['required']" class="text-danger">Confirm Password is required.</span> -->
                                 <span *ngIf="!passwordFormGroup1.controls['artist_conf'].errors['required'] && passwordFormGroup1.controls['artist_conf'].errors['minlength']" class="text-danger">Must be longer than 6 characters.</span>
@@ -393,7 +393,7 @@
                         <div class="form-group pwd-grp">
                           <label for="pwd">Confirm Password</label>
                           <input type="password" class="form-control" formControlName="conf"  placeholder="Confirm Password">
-                          <div class="pwd-icon"><i class="fa fa-eye" aria-hidden="true"></i></div>
+                          <div class="pwd-icon"></div>
                           <div class="cust_err_msg" *ngIf="listener_validation[0] && !passwordFormGroup.controls['conf'].valid ">
                             <span *ngIf="passwordFormGroup.controls['conf'].errors['required']" class="text-danger">Confirm password is required</span>
                             <span *ngIf="!passwordFormGroup.controls['conf'].errors['required'] && passwordFormGroup.controls['conf'].errors['minlength'] && passwordFormGroup.controls['conf'].dirty" class="text-danger">Must be longer than 6 characters.</span>
