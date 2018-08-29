@@ -1865,6 +1865,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
   // open edit playlist model
   openPlaylistTrackModel(content) {
     this.search_track = '';
+    this.track_validation = false;
     this.media_modal_ref = this.modalService.open(content, { centered: true });
   }
   // add new playlist to db
@@ -2251,6 +2252,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
   bank_data : any = {};
   openCardModel(content) {
     this.bank_data = {};
+    this.bank_validation = false;
     this.media_modal_ref = this.modalService.open(content, { centered: true, backdrop : true });
   }
   // Add new bank

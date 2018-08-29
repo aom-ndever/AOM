@@ -164,7 +164,7 @@ export class MyMusicComponent implements OnInit, OnDestroy {
   changeAudio(event : any) {
     const file = event.target.files[0];
     console.log('audio file', file);
-    const allow_types = ['audio/mpeg', 'audio/x-aiff', 'audio/vnd.wav', "audio/mp3", "audio/wav"];
+    const allow_types = ['audio/mpeg', 'audio/x-aiff', 'audio/vnd.wav', "audio/mp3", "audio/wav", "audio/aiff"];
     if(event.target.files.length > 0) {
       if(allow_types.indexOf(file.type) == -1) {
         this.toastr.error('Invalid file format.','Error!');

@@ -31,6 +31,7 @@ export class VoteComponent implements OnInit {
   participants : any = [];
   show_spinner : boolean = false;
   vote_spinner : boolean = false;
+  advance_filter : any = {};
   start : any = 0;
   length : any = 10;
   subscription: Subscription;
@@ -114,8 +115,11 @@ export class VoteComponent implements OnInit {
   }
   // Get all contest details
   getAllContest() {
-    this.VoteService.getAllContest().subscribe((response) => {
-      this.contest_list = response['contest']['participate'];
+    let data = {
+      music_type : this.adv_filter.music_type
+    }
+    this.VoteService.getAllContest(data).subscribe((response) => {
+      this.contest_list = response['contest']['winner'];
       if(this.contest_list.length > 0) {
         this.contest_data = this.contest_list[0]['_id'];
         let data = {
@@ -157,6 +161,7 @@ export class VoteComponent implements OnInit {
         if(!(response['message'].toLowerCase() == 'already voted')) {
           this.participants[index]['track_id']['no_of_votes'] += 1; 
         }
+        this.getContestWinner();
         this.toastr.success(response['message'], 'Success!');
       },(error) => {
         this.toastr.error(error['error'].message, 'Error!');
@@ -254,4 +259,45 @@ export class VoteComponent implements OnInit {
       });
     });
   } 
+  // Advance filter
+  advanceFilter() {
+    let data = {
+      "filter" : []
+    };
+    console.log('type', this.advance_filter.music_type);
+    if(this.advance_filter.music_type && this.advance_filter.music_type != "") {
+      data['music_type'] = this.advance_filter.music_type;
+    }
+    
+    if(this.region_filter.length > 0) {
+      data['filter'].push({
+        'field' : 'state', value :  this.region_filter
+      });
+    }
+    this.show_spinner = true;
+    
+    this.VoteService.getAllContest(data).subscribe((response) => {
+      this.contest_list = response['contest']['winner'];
+      if(this.contest_list.length > 0) {
+        this.contest_data = this.contest_list[0]['_id'];
+        let data = {
+          start : this.start,
+          length : this.length,
+          contest_id : this.contest_data
+        };
+        this.getAllParticipants(data);
+        this.getContestWinner();
+      } else {
+        this.participants = [];
+        this.winner_list = [];
+      }
+    }, (error) => {
+      this.toastr.error(error['error'].message,'Error!');
+      this.show_filter = false;
+      this.show_spinner = false;
+    }, () => {
+      this.show_filter = false;
+      this.show_spinner = false;
+    });
+  }
 }
