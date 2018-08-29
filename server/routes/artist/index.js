@@ -17,6 +17,7 @@ var user_helper = require('../../helpers/user_helper');
 var download_helper = require('../../helpers/download_helper');
 var vote_track_helper = require('../../helpers/vote_track_helper');
 var contest_helper = require('../../helpers/contest_helper');
+var winner_helper = require('../../helpers/winner_helper');
 var stripe = require("stripe")("sk_test_FUsMHGCLfkGJmKEbW0aiRATb");
 
 var mongoose = require('mongoose');
