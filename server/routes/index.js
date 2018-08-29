@@ -1897,7 +1897,7 @@ router.post('/winners', async (req, res) => {
 
   if (track.status === 1) {
     logger.trace("got details successfully");
-    res.status(config.OK_STATUS).json({ "status": 1, "track": track.winner });
+    res.status(config.OK_STATUS).json({ "status": 1, "track": track });
   }
   else {
     logger.error("Error occured while fetching = ", track);

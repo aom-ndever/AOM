@@ -77,10 +77,7 @@ contest_helper.get_all_contest_and_participant = async (start, length, sort = {}
 
 
 contest_helper.get_all_contests_for_vote = async (filter) => {
-
-
     var aggregate = [
-
         {
             '$lookup': {
                 from: 'music_type',
@@ -92,9 +89,6 @@ contest_helper.get_all_contests_for_vote = async (filter) => {
         {
             '$unwind': '$music_type'
         },
-
-
-
     ];
 
     if (filter) {
@@ -102,8 +96,6 @@ contest_helper.get_all_contests_for_vote = async (filter) => {
             "$match": filter
         })
     }
-
-
 
     let winner = await Contest.aggregate(aggregate);
 
