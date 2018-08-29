@@ -16,7 +16,6 @@ contest_helper.insert_contest = async (object) => {
 };
 
 contest_helper.get_contest_by_id = async (id) => {
-
     try {
         var contest = await Contest
             .findOne({ "_id": new ObjectId(id) })
@@ -42,8 +41,6 @@ contest_helper.update_participant = async (id, no_participants) => {
         return { "status": 0, "message": "Error occured while finding contest", "error": err }
     }
 };
-
-
 
 
 contest_helper.get_all_contest_and_participant = async (start, length, sort = {}) => {
@@ -73,9 +70,6 @@ contest_helper.get_all_contest_and_participant = async (start, length, sort = {}
 }
 
 
-
-
-
 contest_helper.get_all_contests_for_vote = async (filter) => {
     var aggregate = [
         {
@@ -90,22 +84,17 @@ contest_helper.get_all_contests_for_vote = async (filter) => {
             '$unwind': '$music_type'
         },
     ];
-
     if (filter) {
         aggregate.push({
             "$match": filter
         })
     }
-
     let winner = await Contest.aggregate(aggregate);
-
     if (winner) {
         return { "status": 1, "message": "Artist  found", "winner": winner }
     } else {
         return { "status": 2, "message": "No  available Artist" }
     }
-
-
 }
 
 
