@@ -245,7 +245,6 @@ router.post('/add_bank_details', async (req, res) => {
             res.status(config.OK_STATUS).json({ "message": "Account created" });
 
         } catch (error) {
-            console.log('error', error);
 
             res.status(config.OK_STATUS).json({ "message": "Account not created" });
 
@@ -280,11 +279,9 @@ router.post('/add_bank_details', async (req, res) => {
 //                 currency: "usd",
 //                 destination: card_resp.account.account_id
 //             });
-//             console.log('transfer', transfer);
 //             res.status(config.OK_STATUS).json({ data: transfer });
 //         }
 //         catch (error) {
-//             console.log(error)
 //             res.status(config.BAD_REQUEST).json({ message: "insufficient balance" });
 //         }
 //     } else {
@@ -757,7 +754,6 @@ router.post("/participate", async (req, res) => {
             if (resp_data && resp_data.participate == 0) {
                 var resp_datas = await participate_helper.insert_participant(obj);
                 var round = await round_helper.get_current_round_of_contest(obj.contest_id)
-                console.log('round', round);
 
                 var winner_obj = {
                     artist_id: req.userInfo.id,

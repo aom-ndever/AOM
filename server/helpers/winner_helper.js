@@ -8,13 +8,9 @@ var ObjectId = mongoose.Types.ObjectId;
 
 
 winner_helper.insert_winner = async (object) => {
-    console.log('1', 1);
-
-    console.log('object', object);
 
     try {
         var winner = await Winner.insertMany(object)
-        console.log('winner', winner);
 
         if (winner) {
             return { "status": 1, "message": "winner details found", "winner": winner };
@@ -22,7 +18,6 @@ winner_helper.insert_winner = async (object) => {
             return { "status": 2, "message": "winner not found" };
         }
     } catch (err) {
-        console.log('err', err);
 
         return { "status": 0, "message": "Error occured while finding winner", "error": err }
     }
@@ -151,7 +146,6 @@ winner_helper.get_qualified = async (round_id, start, length) => {
 
                         },
                     },
-
 
                 ]
             })

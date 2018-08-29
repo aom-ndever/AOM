@@ -430,7 +430,6 @@ router.post("/add_existing_contest", async (req, res) => {
 
 
   for (let x of track.winner) {
-    console.log('x', x);
 
     var object = {
       "votes": x.votes,
@@ -1078,6 +1077,7 @@ router.post("/get_artist_votes", async (req, res) => {
 
   var resp_data = await vote_track_helper.get_all_voted_artist_by_id(artist_id);
   if (resp_data.status == 0) {
+
     logger.error("Error occured while fetching artist = ", resp_data);
     res.status(config.INTERNAL_SERVER_ERROR).json(resp_data);
   } else {
@@ -1311,19 +1311,16 @@ router.put("/featured_artist", async (req, res) => {
 
 
 
-cron.schedule('* * * * *', async () => {
-  //   //contest_id = req.body.contest_id
-  //   contest_id = "5b8379ceefeb26718f02923b";
-  //   var round = await round_helper.get_current_round_of_contest(contest_id);
-  //   console.log('round', round);
+// cron.schedule('* * * * *', async () => {
+//      contest_id = req.body.contest_id
+//      contest_id = "5b8379ceefeb26718f02923b";
+//     var round = await round_helper.get_current_round_of_contest(contest_id);
 
-  //   var round_id = round.round
-  //   console.log('round_id', round_id);
+//      var round_id = round.round
 
-  // var nextround = await winner_helper.get_qualified(round_id);
-  // console.log('nextround', nextround);
+//    var nextround = await winner_helper.get_qualified(round_id);
 
-});
+// });
 
 
 

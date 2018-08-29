@@ -73,6 +73,63 @@ contest_helper.get_all_contest_and_participant = async (start, length, sort = {}
 }
 
 
+
+
+
+contest_helper.get_all_contests_for_vote = async (filter, search) => {
+
+
+    var aggregate = [
+
+        {
+            '$lookup': {
+                from: 'music_type',
+                localField: 'music_type',
+                foreignField: '_id',
+                as: 'music_type'
+            }
+        },
+        {
+            '$unwind': '$music_type'
+        },
+
+
+
+    ];
+
+    if (filter) {
+        aggregate.push({
+            "$match": filter
+        })
+    }
+
+    if (filter) {
+        aggregate.push({
+            "$match":
+
+                search
+        });
+    }
+    if (search) {
+        aggregate.push({
+            "$match":
+
+                search
+        });
+    }
+
+    let winner = await Contest.aggregate(aggregate);
+
+    if (winner) {
+        return { "status": 1, "message": "Artist  found", "winner": winner }
+    } else {
+        return { "status": 2, "message": "No  available Artist" }
+    }
+
+
+}
+
+
 contest_helper.get_all_contests = async (music) => {
     try {
         var participate = await Contest.find({ "music_type": music })
