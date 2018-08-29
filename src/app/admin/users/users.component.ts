@@ -53,7 +53,6 @@ export class UsersComponent implements OnInit {
       searching: false,
       ordering: false,
       responsive: true,
-      scrollY :'200px',
       scrollCollapse: true,
       lengthChange: false,
       ajax: (dataTablesParameters: any, callback) => {
