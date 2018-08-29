@@ -765,7 +765,7 @@ router.post("/participate", async (req, res) => {
                     track_id: req.body.track_id,
                     round_id: round.round._id
                 };
-                var resp = await winner_helper.insert_winner(obj);
+                var resp = await winner_helper.insert_winner(winner_obj);
 
                 if (resp_data.status == 0) {
                     logger.error("Error occured while inserting = ", resp_data);
