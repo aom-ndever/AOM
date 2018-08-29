@@ -76,7 +76,7 @@ contest_helper.get_all_contest_and_participant = async (start, length, sort = {}
 
 
 
-contest_helper.get_all_contests_for_vote = async (filter, search) => {
+contest_helper.get_all_contests_for_vote = async (filter) => {
 
 
     var aggregate = [
@@ -103,20 +103,7 @@ contest_helper.get_all_contests_for_vote = async (filter, search) => {
         })
     }
 
-    if (filter) {
-        aggregate.push({
-            "$match":
 
-                search
-        });
-    }
-    if (search) {
-        aggregate.push({
-            "$match":
-
-                search
-        });
-    }
 
     let winner = await Contest.aggregate(aggregate);
 

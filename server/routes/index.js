@@ -1920,7 +1920,7 @@ router.post('/get_contest', async (req, res) => {
     var search = { "$regex": r, "$options": "i" };
     filter.name = search;
   }
-  var contest = await contest_helper.get_all_contests_for_vote(filter, filters);
+  var contest = await contest_helper.get_all_contests_for_vote(filter);
   if (contest.status === 1) {
     logger.trace("got details successfully");
     res.status(config.OK_STATUS).json({ "status": 1, "contest": contest });
