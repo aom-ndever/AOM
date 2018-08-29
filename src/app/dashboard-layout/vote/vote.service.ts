@@ -38,8 +38,8 @@ export class VoteService {
     return this.http.post(`${this.api_host}/user/track/vote_track`, data, {headers : this.headers});
   }
   // Get all contest
-  getAllContest() {
-    return this.http.get(`${this.api_host}/get_contest`);
+  getAllContest(data) {
+    return this.http.post(`${this.api_host}/get_contest`, data);
   }
   // get winners data
   getWinnersData(data) {

@@ -14,10 +14,11 @@ var RoundModelSchema = new Schema({
     music_type: { type: mongoose.Schema.Types.ObjectId, ref: 'music_type' },
     location: String,
     duration: String,
+    round: Number,
     state: { type: mongoose.Schema.Types.ObjectId, ref: 'state' },
     region: { type: mongoose.Schema.Types.ObjectId, ref: 'region' },
     no_of_participants: { type: Number, default: 0 },
-    round: { type: Number, default: 1 },
+    track_id: [{ type: mongoose.Schema.Types.ObjectId, ref: 'track' }],
     created_at: { type: Date, default: Date.now }
 }, { versionKey: false });
 

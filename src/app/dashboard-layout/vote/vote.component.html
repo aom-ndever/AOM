@@ -36,7 +36,7 @@
                                 <li>
                                   <div class="radio">
                                       <label>
-                                        <input type="radio" value="" name="musicgenre" [(ngModel)]="adv_filter.music_type">All styles
+                                        <input type="radio" value="" name="musicgenre" [(ngModel)]="advance_filter.music_type">All styles
                                         <div class="radio_check"></div>
                                       </label>
                                   </div>
@@ -44,9 +44,10 @@
                                 <li *ngFor="let music of music_list;">
                                     <div class="radio">
                                         <label>
-                                          <input type="radio" value="{{music._id}}" name="musicgenre" [(ngModel)]="adv_filter.music_type">{{music.name}}
+                                          <input type="radio" value="{{music._id}}" name="musicgenre" [(ngModel)]="advance_filter.music_type">{{music.name}}
                                           <div class="radio_check"></div>
                                         </label>
+                                        
                                     </div>
                                 </li>
                               </ul>
@@ -148,7 +149,7 @@
                           <div class="col-md-12 col-sm-12 col-xs-12">
                             <div class="button_group">
                               <a href="javascript:;" (click)="toggleFilter()" class="cancel-btn">Cancel</a>
-                              <a href="javascript:;" class="apply-btn" (click)="advanceFilter()">Apply</a>
+                              <a href="javascript:;" class="apply-btn" (click)="advanceFilter()">Apply <i *ngIf="show_spinner" class="fa fa-spinner fa-spin"></i></a>
                             </div>
                           </div>
                         </div>
@@ -227,6 +228,9 @@
                             <img src="img/start.png" alt="start">
                             <span>{{p && p['track_id'] ? p['track_id']['no_of_votes'] : '0' }}</span>
                           </td>
+                        </tr>
+                        <tr *ngIf="winner_list.length == 0">
+                          <td colspan="8">No data available.</td>
                         </tr>
                       </tbody>
                     </table>

@@ -1,15 +1,19 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { VoteService } from './vote.service';
 import { ToastrService } from 'ngx-toastr';
 import { environment } from '../../../environments/environment' ;
 import { MessageService } from '../../shared/message.service';
 import { Subscription } from 'rxjs/Subscription';
+import { DataTableDirective } from 'angular-datatables';
 @Component({
   selector: 'app-vote',
   templateUrl: './vote.component.html',
   styleUrls: []
 })
 export class VoteComponent implements OnInit {
+  @ViewChild(DataTableDirective)
+  datatableElement: DataTableDirective;
+  dtOptions: DataTables.Settings = {};
   show_filter : boolean = false;
   music_list : any = [];
   state_list : any = [];
@@ -31,6 +35,7 @@ export class VoteComponent implements OnInit {
   participants : any = [];
   show_spinner : boolean = false;
   vote_spinner : boolean = false;
+  advance_filter : any = {};
   start : any = 0;
   length : any = 10;
   subscription: Subscription;
@@ -76,6 +81,44 @@ export class VoteComponent implements OnInit {
   }
 
   ngOnInit() {
+    const that = this;
+    this.dtOptions = {
+      pagingType: 'full_numbers',
+      pageLength: 5,
+      serverSide: true,
+      processing: true,
+      searching: false,
+      ordering: false,
+      responsive: true,
+      scrollCollapse: true,
+      lengthChange: false,
+      ajax: (dataTablesParameters: any, callback) => {
+        setTimeout(() => {
+          dataTablesParameters['search'] = that.search_str;
+          dataTablesParameters['music_type'] = that.advance_filter.music_type;
+          dataTablesParameters['filter'] = [];
+          if(that.region_filter.length) {
+            dataTablesParameters['filter'].push(
+              {'field' : 'state', value :  this.region_filter}
+            );
+          }
+          that.VoteService.getWinnersData(dataTablesParameters).subscribe(response => {
+            this.winner_list = response['track'];
+              this.audio_ins1 = [];
+              this.audio_ins_list1 = [];
+              this.winner_list.forEach((ele) => {
+                this.audio_ins1.push(false);
+                this.audio_ins_list1.push(ele['track_id']);
+              });
+                callback({
+                  recordsTotal: response['user']['recordsTotal'],
+                  recordsFiltered: response['user']['recordsTotal'],
+                  data: []
+                });
+          });
+        },0);
+      }
+    };
   }
 
   toggleFilter() {
@@ -114,8 +157,11 @@ export class VoteComponent implements OnInit {
   }
   // Get all contest details
   getAllContest() {
-    this.VoteService.getAllContest().subscribe((response) => {
-      this.contest_list = response['contest']['participate'];
+    let data = {
+      music_type : this.adv_filter.music_type
+    }
+    this.VoteService.getAllContest(data).subscribe((response) => {
+      this.contest_list = response['contest']['winner'];
       if(this.contest_list.length > 0) {
         this.contest_data = this.contest_list[0]['_id'];
         let data = {
@@ -157,6 +203,7 @@ export class VoteComponent implements OnInit {
         if(!(response['message'].toLowerCase() == 'already voted')) {
           this.participants[index]['track_id']['no_of_votes'] += 1; 
         }
+        this.getContestWinner();
         this.toastr.success(response['message'], 'Success!');
       },(error) => {
         this.toastr.error(error['error'].message, 'Error!');
@@ -254,4 +301,45 @@ export class VoteComponent implements OnInit {
       });
     });
   } 
+  // Advance filter
+  advanceFilter() {
+    let data = {
+      "filter" : []
+    };
+    console.log('type', this.advance_filter.music_type);
+    if(this.advance_filter.music_type && this.advance_filter.music_type != "") {
+      data['music_type'] = this.advance_filter.music_type;
+    }
+    
+    if(this.region_filter.length > 0) {
+      data['filter'].push({
+        'field' : 'state', value :  this.region_filter
+      });
+    }
+    this.show_spinner = true;
+    
+    this.VoteService.getAllContest(data).subscribe((response) => {
+      this.contest_list = response['contest']['winner'];
+      if(this.contest_list.length > 0) {
+        this.contest_data = this.contest_list[0]['_id'];
+        let data = {
+          start : this.start,
+          length : this.length,
+          contest_id : this.contest_data
+        };
+        this.getAllParticipants(data);
+        this.getContestWinner();
+      } else {
+        this.participants = [];
+        this.winner_list = [];
+      }
+    }, (error) => {
+      this.toastr.error(error['error'].message,'Error!');
+      this.show_filter = false;
+      this.show_spinner = false;
+    }, () => {
+      this.show_filter = false;
+      this.show_spinner = false;
+    });
+  }
 }

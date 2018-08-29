@@ -36,6 +36,7 @@ export class ArtistComponent implements OnInit {
   artist_flag : any = [];
   artist_img_url : any = environment.API_URL+environment.ARTIST_IMG;
   artist_media_url : any = environment.API_URL+environment.ARTIST_MEDIA;
+  user : any = '';
   constructor(
     private ArtistService: ArtistService,
     private toastr: ToastrService,
@@ -43,6 +44,7 @@ export class ArtistComponent implements OnInit {
   ) {
     console.log("Admin dashboard component");
     this.getAllState();
+    this.user = JSON.parse(localStorage.getItem('user'));
   }
 
   ngOnInit() {  
@@ -57,7 +59,6 @@ export class ArtistComponent implements OnInit {
       ordering: false,
       lengthChange: false,
       responsive: true,
-      scrollY :'200px',
       scrollCollapse: true,
       ajax: (dataTablesParameters: any, callback) => {
         console.log(dataTablesParameters);

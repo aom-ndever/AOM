@@ -22,6 +22,7 @@ var fs = require('fs');
 var archiver = require('archiver');
 var stripe = require("stripe")("sk_test_FUsMHGCLfkGJmKEbW0aiRATb");
 
+var cron = require('node-cron');
 
 
 
@@ -182,8 +183,6 @@ router.post('/vote_track', async (req, res) => {
         contest_id: round_response.round.contest_id,
       };
 
-
-
       var data = await vote_track_helper.get_all_voted_artist(user_id, obj.track_id, obj.contest_id, obj.round_id);
 
       if (data.status == 2) {
@@ -193,7 +192,7 @@ router.post('/vote_track', async (req, res) => {
         var no_vote = resp_data.track.no_of_votes + 1;
         resp_data = await track_helper.update_votes(obj.track_id, no_vote);
         resp_data = await winner_helper.get_qualified_contestant(obj.track_id, obj.round_id);
-     
+
         if (resp_data.status == 2) {
           var object = {
             track_id: req.body.track_id,
@@ -269,35 +268,26 @@ router.post('/like_track', async (req, res) => {
       artist_id: req.body.artist_id
     };
 
+
     var resp_data = await like_helper.get_like(user_id, obj.track_id);
     if (resp_data && resp_data.like == 0) {
-
       var data = await like_helper.like_for_track(user_id, obj);
-
       if (data && data.status == 0) {
         logger.error("Error occured while voting = ", data);
         res.status(config.INTERNAL_SERVER_ERROR).json(data);
-
-      } else
+      }
+      else
         var resp_data = await track_helper.get_all_track_by_track_id(obj.track_id);
-
       no_vote = resp_data.track.no_of_likes + 1;
-
       var resp_data = await track_helper.update_track_for_likes(obj.track_id, no_vote);
-
       var responses = await artist_helper.get_artist_by_id(obj.artist_id);
-
       no_like = responses.artist.no_of_likes + 1
       var resp_data = await track_helper.update_artist_for_likes(obj.artist_id, no_like);
 
       var resp = await user_helper.get_user_by_id(obj.user_id);
       no_like = resp.user.no_of_likes + 1
       var resp_data = await user_helper.update_user_for_likes(obj.user_id, no_like);
-
-
       var resp = await artist_helper.get_artist_by_id(obj.artist_id);
-
-
       var response = await user_helper.get_user_by_id(user_id);
       if (responses.artist.notification_settings.like_by_email == true) {
 

@@ -830,7 +830,7 @@
                                         <div class="edit-head top_label_pd0">"{{playlist_data['name']}}" - Tracks</div>
                                         <a href="javascript:;" class="btn btn-primary playlist_add_btn" (click)="openPlaylistTrackModel(addtrackplaylist)" >Add <i class="fa fa-plus"></i></a>&nbsp;
                                         <a href="javascript:;" class="btn btn-primary playlist_add_btn" (click)="tabChange(6)" >Back <i class="fa fa-arrow-left"></i></a>&nbsp;&nbsp;
-                                        <div class="track-table custom_track_table">
+                                        <div class="track-table custom_track_table" [style.display]="playlist_track.length != 0 ? 'block' : 'none'">
                                             <table datatable [dtOptions]="dtOptions[1]">
                                                 <tbody>
                                                     <tr *ngFor="let val of playlist_track;let i = index;">
@@ -1681,10 +1681,10 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="label-control">Routin Number</label>
+                    <label class="label-control">Routing Number</label>
                     <input class="form-control"formControlName="rno"  id="routinnumber" [(ngModel)]="bank_data.bsb"/>
                     <div class="cust_err_msg" *ngIf="bank_validation && !bank_fg.controls['rno'].valid">
-                        <span *ngIf="bank_fg.controls['rno'].errors['required']" class="text-danger">Routin Number is required.</span>
+                        <span *ngIf="bank_fg.controls['rno'].errors['required']" class="text-danger">Routing Number is required.</span>
                         <span *ngIf="!bank_fg.controls['rno'].errors['required'] && bank_fg.controls['rno'].errors['whitespace']" class="text-danger">Enter valid data.</span>
                     </div>
                 </div>

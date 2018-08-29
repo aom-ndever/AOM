@@ -24,6 +24,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   music_type_list : any = [];
   toggFleilter : boolean = false;
   toggSearch : boolean = false;
+  show_loader : boolean = false;
   search_str : any = '';
   subscription: Subscription;
   constructor(
@@ -88,13 +89,17 @@ export class DashboardComponent implements OnInit, OnDestroy {
   getAllData(data : any) {
     this.audio_ins = [];
     this.MessageService.sendMessage({'music_flag' : 'yes'});
+    this.show_loader = true;
     this.DashboardService.getAllData(data).subscribe(response => {
       this.data = response;
       response['new_uploads'].forEach((ele) => {
         this.audio_ins.push(false);
       });
       this.InitializeSider(this.data['finalist']);
-      
+    }, (error) => {
+      this.show_loader = false;
+    }, () => {
+      this.show_loader = false;
     });
   }
   // Play audio
