@@ -73,7 +73,6 @@ export class RolesComponent implements OnInit {
       searching: false,
       ordering: false,
       lengthChange: false,
-      scrollY :'200px',
       scrollCollapse: true,
       ajax: (dataTablesParameters: any, callback) => {
         setTimeout(() => {
@@ -98,7 +97,6 @@ export class RolesComponent implements OnInit {
       searching: false,
       ordering: false,
       lengthChange: false,
-      scrollY :'200px',
       scrollCollapse: true,
       ajax: (dataTablesParameters: any, callback) => {
         setTimeout(() => {

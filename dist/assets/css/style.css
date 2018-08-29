@@ -4756,7 +4756,10 @@ max-height: unset !important;
     background-color: #9c27b0 !important;
     color: #ffffff;
 }
-
+.purchase_track_table table tbody td:last-child{width: 10%;}
+.artist_modal_table .table thead tr th:first-child {
+    width: 27%;
+}
 /*MEDIA START*/
 @media screen and (min-width: 768px){
     .content-block{width: 750px;}

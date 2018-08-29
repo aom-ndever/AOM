@@ -59,7 +59,6 @@ export class ArtistComponent implements OnInit {
       ordering: false,
       lengthChange: false,
       responsive: true,
-      scrollY :'200px',
       scrollCollapse: true,
       ajax: (dataTablesParameters: any, callback) => {
         console.log(dataTablesParameters);
