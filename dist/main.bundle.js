@@ -9949,7 +9949,7 @@ var VoteComponent = /** @class */ (function () {
             contest_id: this.contest_data
         };
         this.VoteService.getWinnersData(data).subscribe(function (response) {
-            _this.winner_list = response['track'];
+            _this.winner_list = response['track']['winner'];
             _this.audio_ins1 = [];
             _this.audio_ins_list1 = [];
             _this.winner_list.forEach(function (ele) {
