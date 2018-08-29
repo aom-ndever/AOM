@@ -35,12 +35,20 @@ export class AlertsComponent implements OnInit {
       ajax: (dataTablesParameters: any, callback) => {
         setTimeout(() => {
           // dataTablesParameters['sort'] = [{"field" : this.sort, value : 1}];
-          that.AlertService.getFlagedData(dataTablesParameters).subscribe(response => {
+          that.AlertService.getFlagedData(dataTablesParameters).subscribe((response) => {
             that.flagged_list = response['contest']['admin'];
             
             callback({
               recordsTotal: response['contest']['recordsTotal'],
               recordsFiltered: response['contest']['recordsTotal'],
+              data: []
+            });
+          }, (error) => {
+            that.flagged_list = [];
+            
+            callback({
+              recordsTotal: 0,
+              recordsFiltered: 0,
               data: []
             });
           });
