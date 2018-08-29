@@ -755,7 +755,7 @@ router.post("/participate", async (req, res) => {
             var resp_data = await participate_helper.get_participant(obj.artist_id, obj.contest_id, obj.track_id);
             if (resp_data && resp_data.participate == 0) {
                 var resp_datas = await participate_helper.insert_participant(obj);
-                var round = round_helper.get_current_round_of_contest(obj.contest_id)
+                var round = await round_helper.get_current_round_of_contest(obj.contest_id)
                 console.log('round', round);
 
                 var winner_obj = {
