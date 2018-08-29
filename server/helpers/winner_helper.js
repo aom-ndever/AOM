@@ -8,6 +8,7 @@ var ObjectId = mongoose.Types.ObjectId;
 
 
 winner_helper.insert_winner = async (object) => {
+
     try {
         var winner = await Winner.insertMany(object)
 
@@ -17,6 +18,7 @@ winner_helper.insert_winner = async (object) => {
             return { "status": 2, "message": "winner not found" };
         }
     } catch (err) {
+
         return { "status": 0, "message": "Error occured while finding winner", "error": err }
     }
 };
@@ -58,6 +60,62 @@ winner_helper.get_qualified_contestant = async (track_id, round_id) => {
 };
 
 
+winner_helper.get_all_qualifieds = async (contest_id, round_id) => {
+    try {
+
+        var winner = await Winner
+            .find()
+            .populate({ path: 'artist_id', populate: { path: 'music_type' } })
+            .populate('track_id')
+            .populate('contest_id')
+            .limit(50)
+
+        if (winner && winner.length > 0) {
+            return { "status": 1, "message": "winner details found", "winner": winner };
+        } else {
+            return { "status": 2, "message": "winner not found" };
+        }
+    } catch (err) {
+        return { "status": 0, "message": "Error occured while finding artist", "error": err }
+    }
+};
+winner_helper.get_qualified_contestant = async (track_id, round_id) => {
+    try {
+
+        var winner = await Winner
+            .findOne({ round_id: new ObjectId(round_id), track_id: new ObjectId(track_id) })
+
+        if (winner) {
+            return { "status": 1, "message": "winner details found", "winner": winner };
+        } else {
+            return { "status": 2, "message": "winner not found" };
+        }
+    } catch (err) {
+        return { "status": 0, "message": "Error occured while finding artist", "error": err }
+    }
+};
+
+
+
+winner_helper.get_qualifiedss = async (round_id, start, length) => {
+    try {
+
+
+
+        var winner = await Winner
+            .find({ round_id: new ObjectId(round_id) })
+
+
+
+        if (winner) {
+            return { "status": 1, "message": "winner details found", "winner": winner };
+        } else {
+            return { "status": 2, "message": "winner not found" };
+        }
+    } catch (err) {
+        return { "status": 0, "message": "Error occured while finding artist", "error": err }
+    }
+};
 
 winner_helper.get_qualified = async (round_id, start, length) => {
     try {
@@ -88,7 +146,6 @@ winner_helper.get_qualified = async (round_id, start, length) => {
 
                         },
                     },
-
 
                 ]
             })

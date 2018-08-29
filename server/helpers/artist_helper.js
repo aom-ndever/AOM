@@ -33,7 +33,6 @@ artist_helper.insert_artist = async (object) => {
 };
 
 artist_helper.insert_account = async (object) => {
-    console.log('object', object);
 
     let art = new Account(object)
     try {

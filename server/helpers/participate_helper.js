@@ -81,7 +81,6 @@ participate_helper.get_all_participants = async (ids) => {
         })
         participate.reverse();
         participate.splice(16000)
-        console.log('participate', participate);
 
         if (participate) {
             return { "status": 1, "message": "participants details found", "participate": participate };

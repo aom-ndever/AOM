@@ -9,7 +9,7 @@ var Schema = mongoose.Schema;
 var WinnerModelSchema = new Schema({
     round_id: { type: mongoose.Schema.Types.ObjectId, ref: 'round' },
     artist_id: { type: mongoose.Schema.Types.ObjectId, ref: 'artist' },
-    //participate_id: { type: mongoose.Schema.Types.ObjectId, ref: 'participate' },
+    round_id: { type: mongoose.Schema.Types.ObjectId, ref: 'round' },
     track_id: { type: mongoose.Schema.Types.ObjectId, ref: 'track' },
     votes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'user' }],
     //contest_id: { type: mongoose.Schema.Types.ObjectId, ref: 'contest' },

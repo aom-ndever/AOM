@@ -36,11 +36,9 @@ user_helper.insert_user = async (object) => {
  * 
  */
 user_helper.get_user_by_email = async (email) => {
-    console.log('email', email);
 
     try {
         var user = await User.findOne({ "email": email }).lean();
-        console.log('user', user);
 
         if (user) {
             return { "status": 1, "message": "user details found", "user": user };
