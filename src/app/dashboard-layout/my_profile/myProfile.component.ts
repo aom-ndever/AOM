@@ -224,11 +224,14 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
     }
     this.MyProfileService.getAllMusicType().subscribe(response => {
       this.music_types = response['music'];
-      let tmp = [];
-      this.music_types.forEach((ele) => {
-        tmp.push({label : ele['name'], value : ele['_id']});
-      });
-      this.music_types = tmp;
+      if(data && data.user) {
+        let tmp = [];
+        this.music_types.forEach((ele) => {
+          tmp.push({label : ele['name'], value : ele['_id']});
+        });
+        this.music_types = tmp;
+      }
+      
     });
     this.artist_profile = this.fb.group({
       upload : [''],

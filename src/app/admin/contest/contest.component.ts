@@ -136,6 +136,7 @@ export class ContestComponent implements OnInit {
     this.contest_detail = {
       no_of_round : 0
     };
+    this.is_new_or_existing = 1;
     this.contestModelRef = this.modalService.show(template, {backdrop : 'static'});
   }
 

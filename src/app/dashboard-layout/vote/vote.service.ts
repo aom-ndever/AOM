@@ -23,7 +23,7 @@ export class VoteService {
   }
   // get all participants
   getAllParticipants(data) {
-      return this.http.post(`${this.api_host}/get_all_participants`, data);
+      return this.http.post(`${this.api_host}/get_track_for_current_round`, data);
   }
   // Follow the artist 
   followArtist(data : any) {
@@ -36,5 +36,13 @@ export class VoteService {
     this.user = JSON.parse(localStorage.getItem('user'));
     this.headers = new HttpHeaders({ 'x-access-token' : this.user.token });  
     return this.http.post(`${this.api_host}/user/track/vote_track`, data, {headers : this.headers});
+  }
+  // Get all contest
+  getAllContest() {
+    return this.http.get(`${this.api_host}/get_contest`);
+  }
+  // get winners data
+  getWinnersData(data) {
+    return this.http.post(`${this.api_host}/winners`, data);
   }
 }

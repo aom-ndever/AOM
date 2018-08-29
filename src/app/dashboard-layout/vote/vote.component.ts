@@ -22,7 +22,12 @@ export class VoteComponent implements OnInit {
   track_url : any = environment.API_URL+environment.ARTIST_TRACK;
   audio_ins : any = [];
   audio_ins_list : any = [];
+  audio_ins1 : any = [];
+  audio_ins_list1 : any = [];
   my_follower_list : any = [];
+  winner_list : any = [];
+  contest_list : any = [];
+  contest_data : any = '';
   participants : any = [];
   show_spinner : boolean = false;
   vote_spinner : boolean = false;
@@ -36,20 +41,30 @@ export class VoteComponent implements OnInit {
   ) {
     this.getAllState();
     this.getAllMusicType();
-    let data = {
-      start : this.start,
-      length : this.length
-    };
-    this.getAllParticipants(data);
+    
+    this.getAllContest();
+    
     this.subscription = this.MessageService.getMessage().subscribe((response) => {
       if(response && response['list'] != 2) {
         this.audio_ins.forEach((ele, idx) => { this.audio_ins[idx] = false; } );
       }
+      if(response && response['action'] == 'stop' && response['list'] == 1) {
+        this.audio_ins1[response['index']] = false;
+      }
       if(response && response['action'] == 'stop' && response['list'] == 2) {
         this.audio_ins[response['index']] = false;
       }
+      if(response && response['action'] == 'start' && response['list'] == 1) {
+        this.audio_ins1[response['index']] = true;
+      }
       if(response && response['action'] == 'start' && response['list'] == 2) {
         this.audio_ins[response['index']] = true;
+      }
+      if(response && response['list'] == 1 && response['action'] == 'next' || response['action'] == 'prev' ) {
+        if(response['track_action'] && response['track_action'] == 'pause') {
+          this.audio_ins1.forEach((ele, idx) => { this.audio_ins1[idx] = false; } );
+          this.audio_ins1[response['index']] = true;
+        }
       }
       if(response && response['list'] == 2 && response['action'] == 'next' || response['action'] == 'prev' ) {
         if(response['track_action'] && response['track_action'] == 'pause') {
@@ -81,15 +96,36 @@ export class VoteComponent implements OnInit {
   // Get all participants
   getAllParticipants(data) {
     this.show_loader = true;
+    this.participants = [];
     this.VoteService.getAllParticipants(data).subscribe((response) => {
-      this.participants = response['artist'];
+      this.participants = response['track'];
       this.audio_ins =  [];
       this.audio_ins_list = [];
       this.participants.forEach((ele) => {
         this.audio_ins.push(false)
         this.audio_ins_list.push(ele['track_id']);
       });
+    }, (error) => {
       this.show_loader = false;
+      this.toastr.error(error['error'].message, 'Error!');
+    }, () => {
+      this.show_loader = false;
+    });
+  }
+  // Get all contest details
+  getAllContest() {
+    this.VoteService.getAllContest().subscribe((response) => {
+      this.contest_list = response['contest']['participate'];
+      if(this.contest_list.length > 0) {
+        this.contest_data = this.contest_list[0]['_id'];
+        let data = {
+          start : this.start,
+          length : this.length,
+          contest_id : this.contest_data
+        };
+        this.getAllParticipants(data);
+        this.getContestWinner();
+      }
     });
   }
    // Follow artist
@@ -139,11 +175,12 @@ export class VoteComponent implements OnInit {
     this.start = (this.start + this.length);
     let data = {
       start : this.start,
-      length : this.length
+      length : this.length,
+      contest_id : this.contest_data
     };
     this.VoteService.getAllParticipants(data).subscribe((response) => {
-      if(response && response['artist'].length > 0) {
-        this.participants = [...this.participants,...response['artist']];
+      if(response && response['track'].length > 0) {
+        this.participants = [...this.participants,...response['track']];
         this.audio_ins = []; 
         this.audio_ins_list = [];
         this.participants.forEach((ele) => {
@@ -174,4 +211,47 @@ export class VoteComponent implements OnInit {
     this.MessageService.sendMessage({data : data, index : index, action : 'stop', list : 2});
     
   }
+
+  // Play audio
+  playAudio1(name : any, index : any, data : any){
+    data.forEach((ele, idx) => {
+      this.audio_ins1[idx] = false;
+    });
+    this.audio_ins1[index] = true;
+    this.MessageService.sendMessage({data : data, index : index, action : 'start', list : 1});
+    
+  }
+  // Stop audio
+  stopAudio1(index, data : any) {
+    data.forEach((ele, idx) => {
+      this.audio_ins1[idx] = false;
+    });
+    this.MessageService.sendMessage({data : data, index : index, action : 'stop', list : 1});
+    
+  }
+  // change contest
+  change_contest () {
+    this.start = 0;
+    let data = {
+      start : this.start,
+      length : this.length,
+      contest_id : this.contest_data
+    };
+    this.getAllParticipants(data);
+  }
+  // get contest winner
+  getContestWinner() {
+    let data = {
+      contest_id : this.contest_data
+    };
+    this.VoteService.getWinnersData(data).subscribe((response) => {
+      this.winner_list = response['track'];
+      this.audio_ins1 = [];
+      this.audio_ins_list1 = [];
+      this.winner_list.forEach((ele) => {
+        this.audio_ins1.push(false);
+        this.audio_ins_list1.push(ele['track_id']);
+      });
+    });
+  } 
 }

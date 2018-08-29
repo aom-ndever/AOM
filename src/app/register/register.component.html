@@ -65,7 +65,7 @@
                             <div class="form-group pwd-grp">
                               <label for="pwd">Password</label>
                               <input type="password" class="form-control" formControlName="artist_password" placeholder="Password"  required [(ngModel)]="artist_data.password" name="password">
-                              <div class="pwd-icon"><i class="fa fa-eye" aria-hidden="true"></i></div>
+                              <div class="pwd-icon"></div>
                               <div class="cust_err_msg" *ngIf="artist_validation[1] && !passwordFormGroup1.controls['artist_password'].valid ">
                                 <span *ngIf="passwordFormGroup1.controls['artist_password'].errors['required']" class="text-danger">Password is required</span>
                                 <span *ngIf="!passwordFormGroup1.controls['artist_password'].errors['required'] && passwordFormGroup1.controls['artist_password'].errors['minlength']" class="text-danger">Must be longer than 6 characters.</span>
@@ -384,7 +384,7 @@
                         <div class="form-group pwd-grp">
                           <label for="pwd">Password</label>
                           <input type="password" class="form-control" formControlName="password" [(ngModel)]="listener_data.password" placeholder="Password">
-                          <div class="pwd-icon"><i class="fa fa-eye" aria-hidden="true"></i></div>
+                          <div class="pwd-icon"></div>
                           <div class="cust_err_msg" *ngIf="listener_validation[0] && !passwordFormGroup.controls['password'].valid">
                             <span *ngIf="passwordFormGroup.controls['password'].errors['required']" class="text-danger">Password is required</span>
                             <span *ngIf="!passwordFormGroup.controls['password'].errors['required'] && passwordFormGroup.controls['password'].errors['minlength'] && passwordFormGroup.controls['password'].dirty" class="text-danger">Must be longer than 6 characters.</span>

@@ -31,14 +31,14 @@
               <td>{{role['account_type']}}</td>
               <td>{{role['created_at'] | date : 'MMMM dd, yyyy'}}</td>
               <td class="td_img actions">
-                <div>
+                <div *ngIf="user['admin']['account_type'] == 'super_admin' && role['account_type'] != 'super_admin'">
                     <i class="fa fa-trash"></i>
-                  <a href="javascript:;" *ngIf="user['admin']['account_type'] == 'super_admin'" (click)="removeAdmin(role['_id'], 0)"> Delete</a>&nbsp;
+                  <a href="javascript:;"  (click)="removeAdmin(role['_id'], 0)"> Delete</a>&nbsp;
                   
                 </div>
-                <div>
-                    <img src="img/suspend.png" *ngIf="user['admin']['account_type'] == 'super_admin'">
-                  <a href="javascript:;" *ngIf="user['admin']['account_type'] == 'super_admin'" (click)="suspendAdmin(role['_id'], 0)">
+                <div *ngIf="user['admin']['account_type'] == 'super_admin' && role['account_type'] != 'super_admin'">
+                    <img src="img/suspend.png" >
+                  <a href="javascript:;"  (click)="suspendAdmin(role['_id'], 0)">
                     {{role['status'] == 'suspended' ? 'un-suspend' : 'Suspend'}}
                   </a>
                 </div>
@@ -74,19 +74,23 @@
               <td>{{role['created_at'] | date : 'MMMM dd, yyyy'}}</td>
               <td>{{role['admin_id']['first_name']+" "+role['admin_id']['last_name']+ "("+ role['admin_id']['account_type']+")"}}</td>
               <td class="td_img actions">
-                <div *ngIf="!role['action']">
-                  <i class="fa fa-check-square-o"></i>
-                  <a href="javascript:;" (click)="acceptRequest(role['_id'], 1)"> Accept</a>&nbsp;
+                <div *ngIf="user['admin']['account_type'] == 'super_admin' || user['admin']['account_type'] == 'admin'">
+                    <div *ngIf="!role['action']">
+                      <i class="fa fa-check-square-o"></i>
+                      <a href="javascript:;" (click)="acceptRequest(role['_id'], 1)"> Accept</a>&nbsp;
+                    </div>
                 </div>
                 <div *ngIf="role['action'] && role['action'] == 'accepted'">
                   <i class="fa fa-check-square-o"></i>
                    Accepted &nbsp;
                 </div>
-                <div *ngIf="!role['action']">
-                  <i class="fa fa-ban"></i>
-                  <a href="javascript:;" (click)="rejectRequest(role['_id'], 1)">
-                    Reject
-                  </a>
+                <div *ngIf="user['admin']['account_type'] == 'super_admin' || user['admin']['account_type'] == 'admin'">
+                    <div *ngIf="!role['action']">
+                      <i class="fa fa-ban"></i>
+                      <a href="javascript:;" (click)="rejectRequest(role['_id'], 1)">
+                        Reject
+                      </a>
+                    </div>
                 </div>
                 <div *ngIf="role['action'] && role['action'] == 'rejected'">
                   <i class="fa fa-ban"></i>

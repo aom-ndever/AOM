@@ -33,12 +33,14 @@ export class UsersComponent implements OnInit {
   user_following : any = [];
   user_id : any = '';
   user_img_url : any = environment.API_URL+environment.USER_IMG;
+  user_role : any = '';
   constructor(private UsersService : UsersService,
     private toastr: ToastrService,
     private modalService: BsModalService
   ) {
-    console.log("Admin dashboard component");
     this.getAllState();
+    this.user_role = JSON.parse(localStorage.getItem('user'));
+    console.log('user', this.user_role);
   }
 
   ngOnInit() {

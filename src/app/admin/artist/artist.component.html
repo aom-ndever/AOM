@@ -158,8 +158,9 @@
                         <td class="td_img"><img src="img/likes.png"/>{{artist['no_of_likes']}}</td>
                         <td class="td_img"><img src="img/followers.png"/>{{artist['no_of_followers']}}</td>
                         <td class="td_img"><img src="img/comments.png"/>{{artist['no_of_comments']}}</td> 
-                        <td class="td_img action_div"><img src="img/suspend.png">
-                          <a href="javascript:;" (click)="suspendArtist(artist['_id'])">{{artist['flag'] ? 'Un-suspend' : 'Suspend'}}</a>
+                        <td class="td_img action_div">
+                          <img src="img/suspend.png" *ngIf="user['admin']['account_type'] != 'moderator'">
+                          <a href="javascript:;" *ngIf="user['admin']['account_type'] != 'moderator'" (click)="suspendArtist(artist['_id'])">{{artist['flag'] ? 'Un-suspend' : 'Suspend'}}</a>
                         </td>                               
                       </tr>
                     </tbody>
