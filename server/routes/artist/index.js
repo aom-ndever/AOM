@@ -755,6 +755,13 @@ router.post("/participate", async (req, res) => {
             var resp_data = await participate_helper.get_participant(obj.artist_id, obj.contest_id, obj.track_id);
             if (resp_data && resp_data.participate == 0) {
                 var resp_datas = await participate_helper.insert_participant(obj);
+                var round = round_helper.get_current_round_of_contest(obj.contest_id)
+                var winner_obj = {
+                    artist_id: req.userInfo.id,
+                    contest_id: req.body.contest_id,
+                    track_id: req.body.track_id,
+                    round_id: round.round._id
+                };
                 var resp = await winner_helper.insert_winner(obj);
 
                 if (resp_data.status == 0) {
