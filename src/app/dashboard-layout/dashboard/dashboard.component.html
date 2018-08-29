@@ -66,6 +66,12 @@
     </div>
       <div class="uploads-container">
         <div class="row">
+            <div *ngIf="show_loader" class="text-center col-12">
+                <i class="fa fa-spinner fa-spin fa-3x" aria-hidden="true"></i>
+              </div>
+            <div class="alert alert-info col-sm-12" *ngIf="!show_loader && data['new_uploads'].length == 0">
+              No data available.
+            </div>
           <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12" *ngFor="let nupload of data['new_uploads']; let i = index;">
             <div class="upload">
               <div class="img-wrap">

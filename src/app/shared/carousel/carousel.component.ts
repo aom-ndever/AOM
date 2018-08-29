@@ -21,7 +21,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
   track_url : any = environment.API_URL+environment.ARTIST_TRACK;
   audio_ins : any = [];
   subscription: Subscription;
-  flag : boolean = false;
+  flag : boolean = true;
   constructor(
     private MessageService : MessageService,
     private CarouselService : CarouselService,

@@ -133,8 +133,9 @@
                       <td class="td_img"><img src="img/vote.png"/>{{user['no_of_votes']}}</td>
                       <td class="td_img"><img src="img/likes.png"/>{{user['no_of_likes']}}</td>
                       <td class="td_img"><img src="img/comments.png"/>{{user['no_of_followers']}}</td> 
-                      <td class="td_img action_div"><img src="img/suspend.png">
-                        <a href="javascript:;" (click)="suspendUser(user['_id'])">{{user['flag']? 'Un-suspend' : 'Suspend'}}</a>
+                      <td class="td_img action_div">
+                        <img src="img/suspend.png" *ngIf="user_role['admin']['account_type'] != 'moderator'">
+                        <a href="javascript:;" *ngIf="user_role['admin']['account_type'] != 'moderator'" (click)="suspendUser(user['_id'])">{{user['flag']? 'Un-suspend' : 'Suspend'}}</a>
                       </td>                               
                     </tr>                     
                   </tbody>
@@ -194,9 +195,9 @@
                 <tbody>
                   <tr *ngFor="let artist of user_following; let i = index;" >
                     <td>{{i+1}}</td>
-                    <td>{{artist['artist_id']['first_name']+' '+artist['artist_id']['last_name']}}</td>
-                    <td>{{artist['artist_id']['music_type']['name']}}</td>
-                    <td >{{artist['artist_id']['no_of_tracks']}}</td>
+                    <td>{{artist && artist['artist_id'] ? artist['artist_id']['first_name'] : ''+' '+artist && artist['artist_id'] ? artist['artist_id']['last_name'] : ''}}</td>
+                    <td>{{artist && artist['artist_id'] && artist['artist_id']['music_type'] ? artist['artist_id']['music_type']['name'] : ''}}</td>
+                    <td >{{artist && artist['artist_id'] ? artist['artist_id']['no_of_tracks'] : '0'}}</td>
                   </tr>
                   <tr *ngIf="artist?.length == 0">
                     <td colspan="4">No data available.</td>
