@@ -1333,7 +1333,10 @@ label input[type="radio"], input[type="radio"]{
       height: 34px;
 }
 .edit-details{}
-
+.artists_table .table tbody td > div {
+    position: relative;
+    padding-left: 20px;
+}
 
 @media(max-width:1024px){
   .sidebar-nav li a{   

@@ -136,6 +136,7 @@
                       <td class="td_img action_div">
                         <img src="img/suspend.png" *ngIf="user_role['admin']['account_type'] != 'moderator'">
                         <a href="javascript:;" *ngIf="user_role['admin']['account_type'] != 'moderator'" (click)="suspendUser(user['_id'])">{{user['flag']? 'Un-suspend' : 'Suspend'}}</a>
+
                       </td>                               
                     </tr>                     
                   </tbody>
