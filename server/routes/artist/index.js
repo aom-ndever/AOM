@@ -755,6 +755,8 @@ router.post("/participate", async (req, res) => {
             var resp_data = await participate_helper.get_participant(obj.artist_id, obj.contest_id, obj.track_id);
             if (resp_data && resp_data.participate == 0) {
                 var resp_datas = await participate_helper.insert_participant(obj);
+                var resp = await winner_helper.insert_winner(obj);
+
                 if (resp_data.status == 0) {
                     logger.error("Error occured while inserting = ", resp_data);
                     res.status(config.INTERNAL_SERVER_ERROR).json(resp_data);
