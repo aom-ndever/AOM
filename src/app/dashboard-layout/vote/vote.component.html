@@ -176,10 +176,14 @@
                   </select>
                   
                   </div>
-                  <ul class="ana-tabs nav nav-tabs">
-                  <li class="nav-item" ><a class="active" data-toggle="tab" href="javascript:;">Regional Quarter Final</a></li>
-                  <li class="nav-item"><b>{{contest_name}}</b></li>
-                </ul>
+                  <ul class="ana-tabs nav nav-tabs" style="max-width:85%;">
+                    <li class="nav-item" ><a class="active" data-toggle="tab" href="javascript:;">Regional Quarter Final</a></li>
+                    <li class="nav-item"><b>{{contest_name}}</b></li>
+                  </ul>
+                  <div class="loc-icon-group">
+                      <a href="javascript:;" (click)="togglelocBarChart(false)"><img src="img/top-location-icon.png" alt="top-location-icon.png" ></a>
+                      <a href="javascript:;" (click)="togglelocBarChart(true)"><img src="img/infographic-not-active.png" alt="infographic-not-active.png" ></a>
+                  </div>
               </div>
               <div class="tab-content ">
                 <div class="tab-pane fade active show" id="regionalfinals">

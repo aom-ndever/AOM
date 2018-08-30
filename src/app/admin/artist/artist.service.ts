@@ -42,7 +42,7 @@ export class ArtistService {
   }
   // Remove track 
   removeArtistTrack(id : any) {
-    return this.http.delete(`${this.api_host}/admin/track/${id}`, {headers : this.headers});
+    return this.http.delete(`${this.api_host}/admin/delete_track/${id}`, {headers : this.headers});
   }
   // Mark as featured
   markAsFeatured(data : any) {
@@ -51,5 +51,9 @@ export class ArtistService {
   // get all state
   getAllState() {
     return this.http.post(`${this.api_host}/state`, null);
+  }
+  // suspend artist track
+  suspendArtistTrack(id) {
+    return this.http.post(`${this.api_host}/admin/suspend/track/${id}`,null, {headers:this.headers});
   }
 }

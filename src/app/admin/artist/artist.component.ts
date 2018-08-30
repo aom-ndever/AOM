@@ -182,26 +182,38 @@ export class ArtistComponent implements OnInit {
 
   removeTrack(id : any) {
     const thi = this;
-    swal({
-      title: 'Are you sure?',
-      text: "You won't be able to revert this!",
-      type: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, delete it!'
-    }).then(function(flag) {
-      if(flag.value) {
+    // swal({
+    //   title: 'Are you sure?',
+    //   text: "You won't be able to revert this!",
+    //   type: 'warning',
+    //   showCancelButton: true,
+    //   confirmButtonColor: '#3085d6',
+    //   cancelButtonColor: '#d33',
+    //   confirmButtonText: 'Yes, delete it!'
+    // }).then((flag) => {
+    //   if(flag.value) {
         thi.ArtistService.removeArtistTrack(id).subscribe(response => {
           let data = {artist_id : thi.artist_id};
           thi.ArtistService.getArtistTrack(data).subscribe((response) => {
-            thi.artist_track = response['track'];
+            thi.artist_track = response['track']['music'];
           });
           thi.toastr.success(response['message'], 'Success!');
         }, error => {
           thi.toastr.error(error['error'].message, 'Error!');
-        },);
-      }
+        });
+    //   }
+    // });
+  }
+  // Suspend artist track
+  suspendArtistTrack(id : any) {
+    this.ArtistService.suspendArtistTrack(id).subscribe((response) => {
+      let data = {artist_id : this.artist_id};
+          this.ArtistService.getArtistTrack(data).subscribe((response) => {
+            this.artist_track = response['track']['music'];
+          });
+          this.toastr.success(response['message'], 'Success!');
+    }, (error) => {
+      this.toastr.error(error['error'].message, 'Error!');
     });
   }
 
