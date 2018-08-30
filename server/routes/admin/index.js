@@ -1040,7 +1040,12 @@ router.post("/get_user", async (req, res) => {
     });
   }
 
-
+  if (req.body.search) {
+    var r = new RegExp(req.body.search);
+    var search = { "$regex": r, "$options": "i" };
+    filter.first_name = search,
+      filter.last_name = search;
+  }
   var resp_data = await user_helper.get_all_active_and_suspend_user(req.body.start, req.body.length, filter, sort);
   if (resp_data.status == 0) {
     logger.error("Error occured while fetching artist = ", resp_data);
