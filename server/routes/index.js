@@ -1870,7 +1870,6 @@ router.post('/get_track_for_current_round', async (req, res) => {
   if (round.status === 1) {
     round_id = round.round._id
     var filter = {};
-    var filters = {};
     if (req.body.state) {
       filter["state._id"] = new ObjectId(req.body.state)
 
