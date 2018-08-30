@@ -155,7 +155,7 @@ export class VoteComponent implements OnInit {
       this.audio_ins_list = [];
       this.participants.forEach((ele) => {
         this.audio_ins.push(false)
-        this.audio_ins_list.push(ele['track_id']);
+        this.audio_ins_list.push(ele['track']);
       });
     }, (error) => {
       this.show_loader = false;
@@ -322,6 +322,24 @@ export class VoteComponent implements OnInit {
 
     
   } 
+  // Filter result
+  filter(e : any) {
+    if(e.keyCode == 13) {
+      let data = {
+        search : this.search_str
+      };
+      this.datatableElement.dtInstance.then((dtInstance: DataTables.Api) => {
+        dtInstance.draw();
+      });
+      let obj = {
+        start : this.start,
+        length : this.length,
+        contest_id : this.contest_data,
+        search : this.search_str
+      };
+      this.getAllParticipants(obj);
+    }
+  }
   // Advance filter
   advanceFilter() {
     let data = {
