@@ -4958,6 +4958,9 @@ max-height: unset !important;
 .action_thead {
     width:98px !important;
 }
+#tracks .music_action, #ranking .music_action {
+    width: 40%;
+}
 }
 @media screen and (max-width: 767px){
     /*Homepage*/
