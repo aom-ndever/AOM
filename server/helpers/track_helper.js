@@ -193,9 +193,12 @@ track_helper.update_track_status = async (track_id, status) => {
 };
 
 track_helper.delete_track_by_admin = async (track_id) => {
+    console.log('track_id', track_id);
 
     try {
-        var track = await Track.findOneAndRemove({ "_id": (track_id) })
+        var track = await Track.findOneAndRemove({ "_id": new ObjectId(track_id) })
+        console.log('track', track);
+
         if (track) {
             return { "status": 1, "message": "track details found", "track": track };
         } else {
