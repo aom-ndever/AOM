@@ -60,7 +60,7 @@ router.post("/", async (req, res) => {
                 logger.trace("Uploading avatar image");
                 var file = req.files['audio'];
                 var dir = "./uploads/track/";
-                var mimetype = ['audio/aac', 'audio/mp3', 'audio/mpeg', 'audio/wav', 'audio/AlFF', 'audio/FLAC', 'audio/aif'];
+                var mimetype = ['audio/aac', 'audio/mp3', 'audio/mpeg', 'audio/wav', 'audio/AlFF', 'audio/FLAC', 'audio/aiff', 'audio/x-aiff'];
 
                 if (mimetype.indexOf(file.mimetype) !== -1) {
                     if (!fs.existsSync(dir)) {
@@ -77,7 +77,7 @@ router.post("/", async (req, res) => {
                         }
                     });
                 } else {
-                    callback({ "status": config.MEDIA_ERROR_STATUS, "resp": { "status": 0, "message": "Invalid image format" } });
+                    callback({ "status": config.MEDIA_ERROR_STATUS, "resp": { "status": 0, "message": "Invalid audio format" } });
                 }
             }
             if (req.files && req.files['image']) {
