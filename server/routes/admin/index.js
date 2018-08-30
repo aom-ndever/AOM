@@ -534,7 +534,6 @@ router.delete('/delete_track/:track_id', async (req, res) => {
 
 
     var del_resp = await track_helper.delete_track_by_admin(track_id);
-    console.log('del_resp', del_resp);
 
     if (del_resp.status === 0) {
       res.status(config.INTERNAL_SERVER_ERROR).json({ "status": 0, "message": "Error occured while deleting track", "error": del_resp.error });
