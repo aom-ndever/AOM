@@ -70,7 +70,7 @@ contest_helper.get_all_contest_and_participant = async (start, length, sort = {}
 }
 
 
-contest_helper.get_all_contests_for_vote = async (filter) => {
+contest_helper.get_all_contests_for_vote = async () => {
     var aggregate = [
         {
             '$lookup': {

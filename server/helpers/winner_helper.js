@@ -106,33 +106,119 @@ winner_helper.get_qualifiedss = async (round_id, start, length) => {
     }
 };
 
-winner_helper.get_qualified = async (round_id, start, length) => {
+winner_helper.get_qualified = async (round_id, start, length, filter, filters) => {
+
     try {
         var winners = await Winner
             .find({ round_id: new ObjectId(round_id) })
 
         var tot_cnt = winners.length;
-        var winner = await Winner
-            .find({ round_id: new ObjectId(round_id) })
-            .populate({
-                path: 'track_id',
-                populate: [
-                    {
-                        path: 'artist_id',
-                        populate: {
-                            path: 'music_type',
-                        },
-                    },
-                    {
-                        path: 'artist_id',
-                        populate: {
-                            path: 'state',
-                        },
-                    },
-                ]
+        // var winner = await Winner
+        //     .find({ round_id: new ObjectId(round_id) })
+        //     .populate({
+        //         path: 'track_id',
+        //         populate: [
+        //             {
+        //                 path: 'artist_id',
+        //                 populate: {
+        //                     path: 'music_type',
+        //                 },
+        //             },
+        //             {
+        //                 path: 'artist_id',
+        //                 populate: {
+        //                     path: 'state',
+        //                 },
+        //             },
+        //         ]
+        //     })
+        //     .skip(start)
+        //     .limit(length).lean()
+        // var filter_cnt = winner.length;
+
+        var aggregate = [
+            {
+                '$match': {
+                    round_id: new ObjectId(round_id)
+                }
+            },
+            {
+                '$lookup': {
+                    from: 'track',
+                    localField: 'track_id',
+                    foreignField: '_id',
+                    as: 'track'
+                }
+            },
+            {
+                $unwind: "$track"
+            },
+
+            {
+                '$lookup': {
+                    from: 'artist',
+                    localField: 'track.artist_id',
+                    foreignField: '_id',
+                    as: 'artist'
+                }
+            },
+            {
+                '$unwind': '$artist'
+            },
+            {
+                '$lookup': {
+                    from: 'state',
+                    localField: 'artist.state',
+                    foreignField: '_id',
+                    as: 'state'
+                }
+            },
+            {
+                '$unwind': '$state'
+            },
+            {
+                '$lookup': {
+                    from: 'music_type',
+                    localField: 'artist.music_type',
+                    foreignField: '_id',
+                    as: 'music_type'
+                }
+            },
+            {
+                '$unwind': '$music_type'
+            },
+            {
+                '$project': {
+                    'artist.music_type': 0,
+                    'artist.state': 0,
+                    'track_id': 0,
+                    'artist_id': 0
+                }
+            },
+            {
+                '$skip': start
+            },
+            {
+                '$limit': length
+            }
+
+        ];
+
+        if (filter) {
+            aggregate.push({
+                "$match": filter
             })
-            .skip(start)
-            .limit(length).lean()
+        }
+
+        if (filters) {
+            aggregate.push({
+                "$match":
+
+                    { $or: [{ "artist.first_name": filters }, { "artist.last_name": filters }, { "track.name": filters }] }
+            });
+        }
+
+        let winner = await Winner.aggregate(aggregate);
         var filter_cnt = winner.length;
 
         if (winner) {
