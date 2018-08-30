@@ -1451,7 +1451,7 @@ router.post("/state", async (req, res) => {
  * @apiError (Error 4xx) {String} message Validation or error message.
  */router.post("/whatsnew", async (req, res) => {
   var filter = {};
-
+  var filters = {};
 
   var schema = {
     /* "page_no": {
@@ -1469,7 +1469,7 @@ router.post("/state", async (req, res) => {
     });
   }
   if (req.body.music_type) {
-    filter.music_type = new ObjectId(req.body.music_type);
+    filter["music_type._id"] = new ObjectId(req.body.music_type);
   }
   if (req.body.location) {
     filter.location = req.body.location;
@@ -1477,13 +1477,13 @@ router.post("/state", async (req, res) => {
   if (req.body.search) {
     var r = new RegExp(req.body.search);
     var search = { "$regex": r, "$options": "i" };
-    filter.first_name = search;
+
   }
   req.checkBody(schema);
   var errors = req.validationErrors();
   if (!errors) {
     var artist_ids = [];
-    var resp_artist = await artist_helper.get_artist_by_filter(filter, req.body.start, req.body.length);
+    var resp_artist = await artist_helper.get_artist_by_filter(filter, req.body.start, req.body.length, search);
 
 
 
