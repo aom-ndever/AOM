@@ -1025,6 +1025,7 @@ router.post("/flag/user/:user_id", async (req, res) => {
  */
 router.post("/get_user", async (req, res) => {
   var filter = {};
+  var filters = {};
   if (req.body.location) {
     filter.location = req.body.location;
   }
@@ -1038,6 +1039,11 @@ router.post("/get_user", async (req, res) => {
     req.body.filter.forEach(filter_criteria => {
       filter[filter_criteria.field] = filter_criteria.value;
     });
+  }
+  if (req.body.search) {
+    var r = new RegExp(req.body.search);
+    var search = { "$regex": r, "$options": "i" };
+    filter.first_name = search;
   }
 
 

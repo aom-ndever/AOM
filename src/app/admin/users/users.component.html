@@ -129,14 +129,14 @@
                       <td>{{i+1}}.</td>
                       <td><a href="javascript:;" (click)="openModal(template, user['_id'])">{{user['first_name']+' '+user['last_name']}}</a></td>
                       <td class="status {{user['flag'] ? 'suspended_status' : 'active_status'}}"><span>{{user['flag'] ? 'Suspended' : 'Active'}}</span></td>  
-                      <td class="td_img"><div class="icon_container"><img src="img/followers.png"/>{{user['no_of_followers']}}</div></td>                             
-                      <td class="td_img"><div class="icon_container"><img src="img/vote.png"/>{{user['no_of_votes']}}</div></td>
-                      <td class="td_img"><div class="icon_container"><img src="img/likes.png"/>{{user['no_of_likes']}}</div></td>
-                      <td class="td_img"><div class="icon_container"><img src="img/comments.png"/>{{user['no_of_followers']}}</div></td> 
+                      <td class="td_img"><img src="img/followers.png"/>{{user['no_of_followers']}}</td>                             
+                      <td class="td_img"><img src="img/vote.png"/>{{user['no_of_votes']}}</td>
+                      <td class="td_img"><img src="img/likes.png"/>{{user['no_of_likes']}}</td>
+                      <td class="td_img"><img src="img/comments.png"/>{{user['no_of_followers']}}</td> 
                       <td class="td_img action_div">
-                        <div class="icon_container"><img src="img/suspend.png" *ngIf="user_role['admin']['account_type'] != 'moderator'">
+                        <img src="img/suspend.png" *ngIf="user_role['admin']['account_type'] != 'moderator'">
                         <a href="javascript:;" *ngIf="user_role['admin']['account_type'] != 'moderator'" (click)="suspendUser(user['_id'])">{{user['flag']? 'Un-suspend' : 'Suspend'}}</a>
-</div>
+
                       </td>                               
                     </tr>                     
                   </tbody>
