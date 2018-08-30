@@ -1935,8 +1935,15 @@ router.post('/winners', async (req, res) => {
 
 
 router.post('/get_contest', async (req, res) => {
+  var schema = {};
+  var filter = {};
+  var filters = {};
+  if (req.body.music_type) {
+    filter["music_type._id"] = new ObjectId(req.body.music_type);
+  }
 
-  var contest = await contest_helper.get_all_contests_for_vote();
+
+  var contest = await contest_helper.get_all_contests_for_vote(filter);
   if (contest.status === 1) {
     logger.trace("got details successfully");
     res.status(config.OK_STATUS).json({ "status": 1, "contest": contest });
