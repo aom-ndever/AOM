@@ -292,7 +292,7 @@ export class VoteComponent implements OnInit {
       contest_id : this.contest_data
     };
     this.VoteService.getWinnersData(data).subscribe((response) => {
-      this.winner_list = response['track'];
+      this.winner_list = response['track']['winner'];
       this.audio_ins1 = [];
       this.audio_ins_list1 = [];
       this.winner_list.forEach((ele) => {
