@@ -248,6 +248,7 @@ user_helper.get_all_active_and_suspend_user = async (start, length, filter, sort
 
         var user = await User
             .find(filter)
+            .populate('state')
             .sort(sort_by)
             .skip(start)
             .limit(length)
