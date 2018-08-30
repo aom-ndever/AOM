@@ -32,6 +32,7 @@ export class VoteComponent implements OnInit {
   winner_list : any = [];
   contest_list : any = [];
   contest_data : any = '';
+  contest_name : any = '';
   participants : any = [];
   show_spinner : boolean = false;
   vote_spinner : boolean = false;
@@ -84,7 +85,7 @@ export class VoteComponent implements OnInit {
     const that = this;
     this.dtOptions = {
       pagingType: 'full_numbers',
-      pageLength: 5,
+      pageLength: 10,
       serverSide: true,
       processing: true,
       searching: false,
@@ -94,6 +95,7 @@ export class VoteComponent implements OnInit {
       lengthChange: false,
       ajax: (dataTablesParameters: any, callback) => {
         setTimeout(() => {
+          dataTablesParameters['contest_id'] = this.contest_data;
           dataTablesParameters['search'] = that.search_str;
           dataTablesParameters['music_type'] = that.advance_filter.music_type;
           dataTablesParameters['filter'] = [];
@@ -102,8 +104,8 @@ export class VoteComponent implements OnInit {
               {'field' : 'state', value :  this.region_filter}
             );
           }
-          that.VoteService.getWinnersData(dataTablesParameters).subscribe(response => {
-            this.winner_list = response['track'];
+          that.VoteService.getWinnersData(dataTablesParameters).subscribe((response) => {
+            this.winner_list = response['track']['winner'];
               this.audio_ins1 = [];
               this.audio_ins_list1 = [];
               this.winner_list.forEach((ele) => {
@@ -111,10 +113,17 @@ export class VoteComponent implements OnInit {
                 this.audio_ins_list1.push(ele['track_id']);
               });
                 callback({
-                  recordsTotal: response['user']['recordsTotal'],
-                  recordsFiltered: response['user']['recordsTotal'],
+                  recordsTotal: response['track']['recordsTotal'],
+                  recordsFiltered: response['track']['recordsTotal'],
                   data: []
                 });
+          }, (error) => {
+            this.winner_list = [];
+            callback({
+              recordsTotal: 0,
+              recordsFiltered: 0,
+              data: []
+            });
           });
         },0);
       }
@@ -164,18 +173,22 @@ export class VoteComponent implements OnInit {
       this.contest_list = response['contest']['winner'];
       if(this.contest_list.length > 0) {
         this.contest_data = this.contest_list[0]['_id'];
+        this.contest_name = this.contest_list[0]['name'];
         let data = {
           start : this.start,
           length : this.length,
           contest_id : this.contest_data
         };
         this.getAllParticipants(data);
-        this.getContestWinner();
+        // this.getContestWinner();
+        this.datatableElement.dtInstance.then((dtInstance: DataTables.Api) => {
+          dtInstance.draw();
+        });
       }
     });
   }
    // Follow artist
-   followArtist(id : any) {
+  followArtist(id : any) {
     let data = JSON.parse(localStorage.getItem('user'));
     if(data && data.user) {
       let data = {
@@ -203,7 +216,9 @@ export class VoteComponent implements OnInit {
         if(!(response['message'].toLowerCase() == 'already voted')) {
           this.participants[index]['track_id']['no_of_votes'] += 1; 
         }
-        this.getContestWinner();
+        this.datatableElement.dtInstance.then((dtInstance: DataTables.Api) => {
+          dtInstance.draw();
+        });
         this.toastr.success(response['message'], 'Success!');
       },(error) => {
         this.toastr.error(error['error'].message, 'Error!');
@@ -277,29 +292,35 @@ export class VoteComponent implements OnInit {
     
   }
   // change contest
-  change_contest () {
+  change_contest (e : any) {
     this.start = 0;
     let data = {
       start : this.start,
       length : this.length,
       contest_id : this.contest_data
     };
+    this.contest_name = (e.target.options[e.target.selectedIndex].text).trim();
     this.getAllParticipants(data);
+    this.datatableElement.dtInstance.then((dtInstance: DataTables.Api) => {
+      dtInstance.draw();
+    });
   }
   // get contest winner
   getContestWinner() {
-    let data = {
-      contest_id : this.contest_data
-    };
-    this.VoteService.getWinnersData(data).subscribe((response) => {
-      this.winner_list = response['track']['winner'];
-      this.audio_ins1 = [];
-      this.audio_ins_list1 = [];
-      this.winner_list.forEach((ele) => {
-        this.audio_ins1.push(false);
-        this.audio_ins_list1.push(ele['track_id']);
-      });
-    });
+    // let data = {
+    //   contest_id : this.contest_data
+    // };
+    // this.VoteService.getWinnersData(data).subscribe((response) => {
+    //   this.winner_list = response['track']['winner'];
+    //   this.audio_ins1 = [];
+    //   this.audio_ins_list1 = [];
+    //   this.winner_list.forEach((ele) => {
+    //     this.audio_ins1.push(false);
+    //     this.audio_ins_list1.push(ele['track_id']);
+    //   });
+    // });
+
+    
   } 
   // Advance filter
   advanceFilter() {
@@ -328,7 +349,9 @@ export class VoteComponent implements OnInit {
           contest_id : this.contest_data
         };
         this.getAllParticipants(data);
-        this.getContestWinner();
+        this.datatableElement.dtInstance.then((dtInstance: DataTables.Api) => {
+          dtInstance.draw();
+        });
       } else {
         this.participants = [];
         this.winner_list = [];

@@ -60,7 +60,7 @@ import { AlertService } from './alerts/alerts.service';
           {path: 'roles', component: RolesComponent,canActivate: [AuthService]}
         ]
       },
-      {path : '**', redirectTo : '' }
+      {path : "**", redirectTo : ''}
     ])
   ],
   declarations: [ 

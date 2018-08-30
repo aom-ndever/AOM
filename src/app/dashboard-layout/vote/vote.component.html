@@ -171,20 +171,20 @@
               </div>
               <div class="ana-header">
                   <div class="form-group days-grp">
-                  <select class="form-control" id="days-select" (change)="change_contest()" name="contest" [(ngModel)]="contest_data">
+                  <select class="form-control" id="days-select" (change)="change_contest($event)" name="contest" [(ngModel)]="contest_data">
                       <option *ngFor="let c of contest_list;" value="{{c ? c['_id'] : ''}}" >{{c ? c['name'] : '' }}</option>
                   </select>
                   
                   </div>
                   <ul class="ana-tabs nav nav-tabs">
                   <li class="nav-item" ><a class="active" data-toggle="tab" href="javascript:;">Regional Quarter Final</a></li>
-                  <!-- <li class="nav-item"><a data-toggle="tab" href="#contestname">Contest</a></li> -->
+                  <li class="nav-item"><b>{{contest_name}}</b></li>
                 </ul>
               </div>
               <div class="tab-content ">
                 <div class="tab-pane fade active show" id="regionalfinals">
                   <div class="track-table mCustomScrollbar " data-mcs-theme="dark-3">
-                    <table>
+                    <table datatable [dtOptions]="dtOptions">
                       <thead>
                         <tr>
                           <td>Rank</td>

@@ -807,13 +807,13 @@ ul.gray_font{
 .forget_password{
   text-align: right;
 }
-.actions > div{
+.actions > .icon_container{
   display: inline-block;
   margin-right: 10px;
   position: relative;
   padding-left: 20px;
 }
-.artists_table .table tbody td.td_img.actions  > div > img{
+.artists_table .table tbody td.td_img.actions  > .icon_container  img{
   top: 3px;
   left: 0;
 }
@@ -871,6 +871,10 @@ ul.gray_font{
 .my_track_table tbody tr td .action{width: 34%;}
 .my_track_table tbody tr td.play-option {    width: 10%;}
 .my_track_table tbody tr td.contest-btn a{margin: 0;}
+.profile_name .dropdown .dropdown-menu li a:active, .profile_name .dropdown .dropdown-menu li a:focus{
+      background-color: #e6e6e6;
+    outline: none;
+}
 @media(min-width:768px) {
 
   #wrapper #sidebar-wrapper {
@@ -1329,11 +1333,9 @@ label input[type="radio"], input[type="radio"]{
 #profile .edit-details label{
   vertical-align: top;
 }
-#musictype{
-      height: 34px;
-}
+
 .edit-details{}
-.artists_table .table tbody td > div {
+.artists_table .table tbody td > .icon_container {
     position: relative;
     padding-left: 20px;
 }
@@ -1578,6 +1580,7 @@ label input[type="radio"], input[type="radio"]{
   }
   .artists_table table, .artists_table table.dataTable{
     max-width:100% !important;
+    width: 100% !important;
   }
 }
 

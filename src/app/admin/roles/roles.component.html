@@ -31,17 +31,21 @@
               <td>{{role['account_type']}}</td>
               <td>{{role['created_at'] | date : 'MMMM dd, yyyy'}}</td>
               <td class="td_img actions">
-                <div *ngIf="user['admin']['account_type'] == 'super_admin' && role['account_type'] != 'super_admin'">
+                
+                <div class="icon_container" *ngIf="user['admin']['account_type'] == 'super_admin' && role['account_type'] != 'super_admin'">
                     <i class="fa fa-trash"></i>
                   <a href="javascript:;"  (click)="removeAdmin(role['_id'], 0)"> Delete</a>&nbsp;
                   
-                </div>
-                <div *ngIf="user['admin']['account_type'] == 'super_admin' && role['account_type'] != 'super_admin'">
+               
+              </div>
+             
+                <div class="icon_container" *ngIf="user['admin']['account_type'] == 'super_admin' && role['account_type'] != 'super_admin'">
                     <img src="img/suspend.png" >
                   <a href="javascript:;"  (click)="suspendAdmin(role['_id'], 0)">
                     {{role['status'] == 'suspended' ? 'un-suspend' : 'Suspend'}}
                   </a>
-                </div>
+                
+              </div>
               </td>
             </tr>
             </tbody>
@@ -74,6 +78,7 @@
               <td>{{role['created_at'] | date : 'MMMM dd, yyyy'}}</td>
               <td>{{role['admin_id']['first_name']+" "+role['admin_id']['last_name']+ "("+ role['admin_id']['account_type']+")"}}</td>
               <td class="td_img actions">
+                <div style="position:relative;">
                 <div *ngIf="user['admin']['account_type'] == 'super_admin' || user['admin']['account_type'] == 'admin'">
                     <div *ngIf="!role['action']">
                       <i class="fa fa-check-square-o"></i>
@@ -96,6 +101,7 @@
                   <i class="fa fa-ban"></i>
                    Rejected &nbsp;
                 </div>
+              </div>
               </td>
             </tr>
             </tbody>
