@@ -1025,6 +1025,7 @@ router.post("/flag/user/:user_id", async (req, res) => {
  */
 router.post("/get_user", async (req, res) => {
   var filter = {};
+  var filters = {};
   if (req.body.location) {
     filter.location = req.body.location;
   }
@@ -1039,13 +1040,13 @@ router.post("/get_user", async (req, res) => {
       filter[filter_criteria.field] = filter_criteria.value;
     });
   }
-
   if (req.body.search) {
     var r = new RegExp(req.body.search);
     var search = { "$regex": r, "$options": "i" };
-    filter.first_name = search,
-      filter.last_name = search;
+    filter.first_name = search;
   }
+
+
   var resp_data = await user_helper.get_all_active_and_suspend_user(req.body.start, req.body.length, filter, sort);
   if (resp_data.status == 0) {
     logger.error("Error occured while fetching artist = ", resp_data);
