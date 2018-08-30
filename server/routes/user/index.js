@@ -63,6 +63,9 @@ router.put("/", async (req, res) => {
     if (req.body.music_type && req.body.music_type != null) {
         obj.music_type = req.body.music_type;
     }
+    if (req.body.dob && req.body.dob != null) {
+        obj.dob = req.body.dob;
+    }
     if (req.body.gender && req.body.gender != null) {
         obj.gender = req.body.gender;
     }
