@@ -286,7 +286,7 @@ artist_helper.get_artist_by_music_id = async (id) => {
 };
 artist_helper.get_artists = async () => {
     try {
-        var artist = await Artist.find({ "featured": true })
+        var artist = await Artist.find({ "featured": true, "flag": false })
             .populate('state')
             .populate('music_type');
         if (artist) {
@@ -401,7 +401,7 @@ artist_helper.get_all_artist = async () => {
     }
 };
 
-artist_helper.get_artist_by_filter = async (filter, start, length) => {
+artist_helper.get_artist_by_filter = async (filter, start, length, filters) => {
     try {
 
         var artist = await Artist
@@ -440,12 +440,12 @@ artist_helper.get_artist_by_filter = async (filter, start, length) => {
         //         '$unwind': '$state'
         //     },
 
-        //     // {
-        //     //     $skip: start
-        //     // },
-        //     // {
-        //     //     $limit: length
-        //     // }
+        //     {
+        //         $skip: start
+        //     },
+        //     {
+        //         $limit: length
+        //     }
         // ];
 
         // if (filter) {
@@ -453,6 +453,15 @@ artist_helper.get_artist_by_filter = async (filter, start, length) => {
         //         "$match": filter
         //     })
         // }
+
+        // if (filters) {
+        //     aggregate.push({
+        //         "$match":
+
+        //             { $or: [{ "artist.first_name": filters }, { "artist.last_name": filters }] }
+        //     });
+        // }
+        // let artist = await Artist.aggregate(aggregate);
 
         if (artist) {
             return { "status": 1, "message": "artist details found", "artist": artist };
