@@ -2635,6 +2635,9 @@ ul.ana-tabs.nav.nav-tabs {
     border: 0;
     border-bottom:2px solid #9c27b0;
 }
+.ana-tabs >li>a:hover{
+    color: #1a1a1a !important;
+}
 .time-frame h3{
     font-size: 16px;
     font-weight: bold;
@@ -4814,6 +4817,7 @@ max-height: unset !important;
 .new-add-track-popup .contest-table input[type="radio"]:checked + .radio_check:after {
     top: 5px;
     }
+    .track_head_container{width: 250px !important;}
 /*MEDIA START*/
 @media screen and (min-width: 768px){
     .content-block{width: 750px;}
