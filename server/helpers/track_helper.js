@@ -3,6 +3,7 @@ var Artist = require("./../models/artist");
 var Vote_track = require("./../models/vote_track");
 var Comment = require("./../models/comment");
 var Like = require("./../models/like");
+var Track_suspend = require("./../models/track_suspend");
 var track_helper = {};
 var mongoose = require('mongoose');
 var moment = require('moment');
@@ -21,7 +22,30 @@ track_helper.insert_track = async (id, object) => {
     }
 };
 
+track_helper.insert_suspend_track = async (object) => {
+    let trk = new Track_suspend(object)
+    try {
+        let data = await trk.save();
+        return { "status": 1, "message": "Record inserted", "track": data };
+    } catch (err) {
+        return { "status": 0, "message": "Error occured while inserting media", "error": err };
+    }
+};
 
+track_helper.delete_suspend_track = async (track_id) => {
+    console.log('track_id', track_id);
+
+    try {
+        var track = await Track_suspend.findOneAndRemove({ "track_id": (track_id) })
+        if (track) {
+            return { "status": 1, "message": "Track Unsuspended", "track": track };
+        } else {
+            return { "status": 2, "message": "Track not Unsuspended" };
+        }
+    } catch (err) {
+        return { "status": 0, "message": "Error occured while finding track", "error": err }
+    }
+};
 track_helper.get_all_track_of_artist = async (artist_id, start, length, sort) => {
 
     try {
@@ -136,6 +160,38 @@ track_helper.get_track_by_artist_id = async (id) => {
     }
 };
 
+
+track_helper.get_track_by_trackk_id = async (id) => {
+    try {
+        var track = await Track
+            .findOne({ "_id": id })
+            .populate({ path: 'artist_id', populate: { path: 'music_type' } })
+
+        if (track) {
+            return { "status": 1, "message": "user details found", "track": track };
+        } else {
+            return { "status": 2, "message": "track not found" };
+        }
+    } catch (err) {
+        return { "status": 0, "message": "Error occured while finding track", "error": err }
+    }
+};
+
+
+track_helper.update_track_status = async (track_id, status) => {
+    try {
+        var track = await Track.findOneAndUpdate({ "_id": new ObjectId(track_id) }, { "is_suspend": status })
+
+        if (track) {
+            return { "status": 1, "message": "track status updated", };
+        } else {
+            return { "status": 2, "message": "track status found" };
+        }
+    } catch (err) {
+        return { "status": 0, "message": "Error occured while updating track status", "error": err }
+    }
+};
+
 track_helper.delete_track_by_admin = async (track_id) => {
 
     try {
@@ -149,6 +205,24 @@ track_helper.delete_track_by_admin = async (track_id) => {
         return { "status": 0, "message": "Error occured while finding track", "error": err }
     }
 };
+
+track_helper.get_suspended_track_by_artist_id = async (artist_id) => {
+    try {
+        var track = await Track_suspend
+            .findOne({ "artist_id": new ObjectId(artist_id) })
+            .populate('artist_id')
+            .populate('track_id')
+            .populate('suspend_by')
+        if (track) {
+            return { "status": 1, "message": "Track details found", "track": track };
+        } else {
+            return { "status": 2, "message": "track not found" };
+        }
+    } catch (err) {
+        return { "status": 0, "message": "Error occured while finding track", "error": err }
+    }
+}
+
 
 
 track_helper.get_all_track_by_track_id = async (track_id) => {

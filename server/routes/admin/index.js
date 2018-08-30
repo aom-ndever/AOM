@@ -820,6 +820,52 @@ router.post("/suspend/artist/:artist_id", async (req, res) => {
 });
 
 
+router.post("/suspend/track/:track_id", async (req, res) => {
+
+  type = await admin_helper.get_admin_by_id(req.userInfo.id)
+  account_type = type.admin.account_type;
+
+  if (type.admin.account_type == "super_admin" || type.admin.account_type == "admin") {
+    var resp = await track_helper.get_track_by_trackk_id(req.params.track_id);
+    console.log('resp', resp.track.artist_id._id);
+    artist_id = resp.track.artist_id._id;
+    if (resp.track.status == 0) {
+      logger.error("Error occured while fetching artist = ", resp);
+      res.status(config.INTERNAL_SERVER_ERROR).json(resp);
+    } else {
+      if (resp.track.is_suspend == false) {
+        var stat = true
+        var resp = await track_helper.update_track_status(req.params.track_id, stat);
+        logger.trace("Track Suspended= ", { "track": resp });
+
+        var obj = {
+          "suspend_by": req.userInfo.id,
+          "account_type": account_type,
+          "track_id": req.params.track_id,
+          "artist_id": artist_id
+        }
+        var resp = await track_helper.insert_suspend_track(obj);
+
+        res.status(config.OK_STATUS).json({ "message": "Track Suspended" });
+      }
+      else {
+        var stat = false
+        var resp = await track_helper.update_track_status(req.params.track_id, stat);
+        logger.trace("Track Suspended= ", { "track": resp });
+        var resp = await track_helper.delete_suspend_track(req.params.track_id);
+
+        res.status(config.OK_STATUS).json({ "message": "Track Unsuspended" });
+      }
+
+    }
+  }
+  else {
+    logger.trace("You dont have permission to suspend Track");
+    res.status(config.INTERNAL_SERVER_ERROR).json({ "status": 0, "message": "You dont have permission to suspend Track" });
+  }
+});
+
+
 /**
  * @api {post} /admin/accept/contest_request/:contest_id  Accept Request
  * @apiName Accept Request
@@ -1022,6 +1068,17 @@ router.post("/get_flagged_user", async (req, res) => {
   } else {
     logger.trace("user got successfully = ", { "user": resp_data });
     res.status(config.OK_STATUS).json({ "user": resp_data.user });
+  }
+});
+router.post("/get_suspended_track", async (req, res) => {
+  artist_id = req.body.artist_id;
+  var resp_data = await track_helper.get_suspended_track_by_artist_id(artist_id);
+  if (resp_data.status == 0) {
+    logger.error("Error occured while fetching user = ", resp_data);
+    res.status(config.INTERNAL_SERVER_ERROR).json(resp_data);
+  } else {
+    logger.trace("user got successfully = ", { "user": resp_data });
+    res.status(config.OK_STATUS).json({ "track": resp_data.track });
   }
 });
 
