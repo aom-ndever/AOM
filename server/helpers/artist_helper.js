@@ -461,7 +461,7 @@ artist_helper.get_artist_by_filter = async (filter, start, length, filters) => {
         //             { $or: [{ "artist.first_name": filters }, { "artist.last_name": filters }] }
         //     });
         // }
-        let artist = await Artist.aggregate(aggregate);
+        // let artist = await Artist.aggregate(aggregate);
 
         if (artist) {
             return { "status": 1, "message": "artist details found", "artist": artist };
