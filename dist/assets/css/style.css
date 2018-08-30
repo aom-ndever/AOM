@@ -4739,14 +4739,23 @@ max-height: unset !important;
 .track_play tbody td:last-child > a{
         color: #9c27b0 !important;
 }
-.music-grp .ui-multiselect{    border: none;
-    width: 100%;}
-   .music-grp  .ui-multiselect-label{       font-size: 14px !important;
+.music-grp .ui-multiselect{
+    border: none;
+    width: 100%;
+}
+.music-grp  .ui-multiselect-label{   
+    font-size: 14px !important;
     height: auto;
     padding: 3px 15px !important;
-    color: #000 !important;}
-    #musictype{    padding: 0;}
-    .music-grp  .ui-multiselect-item label{    font-size: 14px;
+    color: #000 !important;
+}
+
+#musictype{
+    height: 34px;
+    padding: .375rem .75rem;
+}
+.music-grp  .ui-multiselect-item label{  
+    font-size: 14px;
 }
 .music-grp .ui-multiselect-items .ui-multiselect-item.ui-state-highlight{
     background-color: transparent !important;
@@ -4760,6 +4769,51 @@ max-height: unset !important;
 .artist_modal_table .table thead tr th:first-child {
     width: 27%;
 }
+#payment .nav-tabs>li>a {
+    padding-top: 0;
+}
+#regionalfinals table  .music_play {
+    width: 30px;
+    display: inline-block;
+}
+.ana-header #days-select {
+    width: 128px !important;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    padding-right: 21px;
+}
+.profile-tabs-det .nav-tabs, #payment .nav-tabs>li>a {
+    border: 0;
+    font-size: 14px;
+    }
+
+    /**table design*/
+.Transaction_table table thead tr th {
+    font-size: 12px;
+    color: #1a1a1a;
+    padding: 6px 18px;
+    border-bottom: navajowhite;
+}
+.Transaction_table table tbody tr td {
+    color: #1a1a1a;
+    opacity: .6;
+    font-size: 14px;
+    border-bottom: 1px solid #dedede;
+    padding: 12px 18px;
+}
+.Transaction_table{max-height: 262px;
+    overflow: auto;
+    padding-right: 5px;}
+.proceeds .edit-head {
+    padding-top: 0;
+}
+.Transaction_table table{
+    width: 100% !important;
+}
+.new-add-track-popup .contest-table input[type="radio"]:checked + .radio_check:after {
+    top: 5px;
+    }
 /*MEDIA START*/
 @media screen and (min-width: 768px){
     .content-block{width: 750px;}
@@ -5378,6 +5432,9 @@ max-height: unset !important;
     }
    .modal-body .add-btn {
     margin: 15px 15px;
+}
+.Transaction_table table {
+    width: 500px!important;
 }
 }
 @media screen and (max-width: 576px){
