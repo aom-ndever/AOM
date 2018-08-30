@@ -13,6 +13,7 @@ var TrackModelSchema = new Schema({
     name: String,
     price: String,
     description: String,
+    is_suspend: { type: Boolean, default: false },
     is_submit: { type: Boolean, default: false },
     is_downloadable: { type: Boolean, default: false },
     no_of_votes: { type: Number, default: 0 },
