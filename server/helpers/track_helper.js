@@ -33,7 +33,6 @@ track_helper.insert_suspend_track = async (object) => {
 };
 
 track_helper.delete_suspend_track = async (track_id) => {
-    console.log('track_id', track_id);
 
     try {
         var track = await Track_suspend.findOneAndRemove({ "track_id": (track_id) })
@@ -193,11 +192,8 @@ track_helper.update_track_status = async (track_id, status) => {
 };
 
 track_helper.delete_track_by_admin = async (track_id) => {
-    console.log('track_id', track_id);
-
     try {
         var track = await Track.findOneAndRemove({ "_id": new ObjectId(track_id) })
-        console.log('track', track);
 
         if (track) {
             return { "status": 1, "message": "track details found", "track": track };

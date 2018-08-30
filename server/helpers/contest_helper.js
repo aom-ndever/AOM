@@ -70,7 +70,7 @@ contest_helper.get_all_contest_and_participant = async (start, length, sort = {}
 }
 
 
-contest_helper.get_all_contests_for_vote = async (filter) => {
+contest_helper.get_all_contests_for_vote = async () => {
     var aggregate = [
         {
             '$lookup': {
@@ -84,11 +84,7 @@ contest_helper.get_all_contests_for_vote = async (filter) => {
             '$unwind': '$music_type'
         },
     ];
-    if (filter) {
-        aggregate.push({
-            "$match": filter
-        })
-    }
+
     let winner = await Contest.aggregate(aggregate);
     if (winner) {
         return { "status": 1, "message": "Artist  found", "winner": winner }

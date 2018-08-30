@@ -1869,6 +1869,18 @@ router.post('/get_track_for_current_round', async (req, res) => {
 
   if (round.status === 1) {
     round_id = round.round._id
+    var filter = {};
+    var filters = {};
+    if (req.body.state) {
+      filter["state._id"] = new ObjectId(req.body.state)
+
+    }
+    if (req.body.music_type) {
+      filter["music_type._id"] = new ObjectId(req.body.music_type)
+
+    }
+
+
     var track = await winner_helper.get_qualified(round_id, req.body.start, req.body.length);
 
     if (track.status === 1) {
@@ -1887,7 +1899,22 @@ router.post('/winners', async (req, res) => {
 
   var round = await round_helper.get_current_round_of_contest(req.body.contest_id);
   round_id = round.round._id
-  var track = await winner_helper.get_qualified(round_id, req.body.start, req.body.length);
+  var filter = {};
+  var filters = {};
+  if (req.body.state) {
+    filter["state._id"] = new ObjectId(req.body.state)
+
+  }
+  if (req.body.music_type) {
+    filter["music_type._id"] = new ObjectId(req.body.music_type)
+
+  }
+
+  if (req.body.search) {
+    var r = new RegExp(req.body.search);
+    var search = { "$regex": r, "$options": "i" };
+  }
+  var track = await winner_helper.get_qualified(round_id, req.body.start, req.body.length, filter, search);
 
   for (let x of track.winner) {
     var length = x.votes.length;
@@ -1908,19 +1935,8 @@ router.post('/winners', async (req, res) => {
 
 
 router.post('/get_contest', async (req, res) => {
-  var schema = {};
-  var filter = {};
-  var filters = {};
-  if (req.body.music_type) {
-    filter["music_type._id"] = new ObjectId(req.body.music_type);
-  }
 
-  if (req.body.search) {
-    var r = new RegExp(req.body.search);
-    var search = { "$regex": r, "$options": "i" };
-    filter.name = search;
-  }
-  var contest = await contest_helper.get_all_contests_for_vote(filter);
+  var contest = await contest_helper.get_all_contests_for_vote();
   if (contest.status === 1) {
     logger.trace("got details successfully");
     res.status(config.OK_STATUS).json({ "status": 1, "contest": contest });

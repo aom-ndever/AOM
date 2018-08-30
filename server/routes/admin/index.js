@@ -832,7 +832,6 @@ router.post("/suspend/track/:track_id", async (req, res) => {
 
   if (type.admin.account_type == "super_admin" || type.admin.account_type == "admin") {
     var resp = await track_helper.get_track_by_trackk_id(req.params.track_id);
-    console.log('resp', resp.track.artist_id._id);
     artist_id = resp.track.artist_id._id;
     if (resp.track.status == 0) {
       logger.error("Error occured while fetching artist = ", resp);
