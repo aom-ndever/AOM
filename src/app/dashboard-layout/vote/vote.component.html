@@ -13,7 +13,7 @@
                           <form>
                             <div class="mobile-search" (click)="toggleSearch()"><i class="fa fa-search" aria-hidden="true"></i></div>
                             <div class="search-input" [style]="toggSearch ? 'block' : 'none'">
-                              <input type="text" placeholder="Search by Artist Name" (keyup)="filterArtistv1($event)" name="search" [(ngModel)]="search_str" />
+                              <input type="text" placeholder="Search by Artist Name" (keyup)="filter($event)" name="search" [(ngModel)]="search_str" />
                             </div>
                           </form>
                         </div>
@@ -207,30 +207,30 @@
                           <td>
                             <div class="music_play">
                                 <div class="artist-profile-custom-action-btn">       
-                                    <a [style.display]="!audio_ins1[i] ? 'block' : 'none'" (click)="playAudio1(p['track_id']['audio'], i, audio_ins_list1)" class="play_img" ><img src="img/play_icon.png"/></a>
+                                    <a [style.display]="!audio_ins1[i] ? 'block' : 'none'" (click)="playAudio1(p['track']['audio'], i, audio_ins_list1)" class="play_img" ><img src="img/play_icon.png"/></a>
                                     <a [style.display]="audio_ins1[i] ? 'block' : 'none'" (click)="stopAudio1(i, audio_ins_list1)" class="pause_img"><img src="img/pause_icon.png"/></a>
                                 </div>
                             </div>
                             <div class="track-pic">
                               <a href="javascript:;">
-                                <img width="50" height="50" src="{{p && p['track_id'] && p['track_id']['artist_id'] ? artist_img_url+p['track_id']['artist_id'].image : 'img/highlight-player.png'}}" alt="Track Image">
+                                <img width="50" height="50" src="{{p && p['artist'] ? artist_img_url+p['artist'].image : 'img/highlight-player.png'}}" alt="Track Image">
                               </a>
                             </div>
                             <div class="track-det" colspan="2">
-                              <p class="track-name">{{p && p['track_id'] ? p['track_id']['name'] : ''}}</p>
-                              <p class="track-singer">{{p && p['track_id']['artist_id'] ? p['track_id']['artist_id'].first_name : '' +' '+p && p['track_id']['artist_id'] ? p['track_id']['arist_id'].last_name : ''}}</p>
+                              <p class="track-name">{{p && p['track'] ? p['track']['name'] : ''}}</p>
+                              <p class="track-singer">{{p && p['artist'] ? p['artist'].first_name : '' +' '+p && p['artist'] ? p['arist'].last_name : ''}}</p>
                             </div>
                           </td>
                           <td class="music-gen ">
-                            <span class="tag {{p && p['track_id']['artist_id'] &&  p['track_id']['artist_id']['music_type'] ? p['track_id']['artist_id']['music_type']['alias'] : ''}}">{{p && p['track_id']['artist_id'] &&  p['track_id']['artist_id']['music_type'] ? p['track_id']['artist_id']['music_type']['name'] : ''}}</span>
+                            <span class="tag {{p && p['music_type'] ? p['music_type']['alias'] : ''}}">{{p && p['music_type'] ? p['music_type']['name'] : ''}}</span>
                           </td>
-                          <td class="location"><p><i class="fa fa-map-marker" aria-hidden="true"></i><span>{{p && p['track_id'] && p['track_id']['artist_id'] && p['track_id']['artist_id']['state'] ? p['track_id']['artist_id']['state']['name'] : '' }}</span></p></td>
+                          <td class="location"><p><i class="fa fa-map-marker" aria-hidden="true"></i><span>{{p && p['state'] ? p['state']['name'] : '' }}</span></p></td>
                           <td class="rounds"><p>2 <img src="img/top-arrow.png" alt=""></p></td>
                           <td class="rounds"><p>2 <img src="img/top-arrow.png" alt=""></p></td>
                           <td class="rounds"><p>2 <img src="img/top-arrow.png" alt=""></p></td>
                           <td class="td track-vote">
                             <img src="img/start.png" alt="start">
-                            <span>{{p && p['track_id'] ? p['track_id']['no_of_votes'] : '0' }}</span>
+                            <span>{{p && p['track'] ? p['track']['no_of_votes'] : '0' }}</span>
                           </td>
                         </tr>
                         <tr *ngIf="winner_list.length == 0">
@@ -258,34 +258,34 @@
                 <div class="col-lg-3 col-md-4 col-sm-4 col-xs-6" *ngFor="let p of participants; let i = index;">
                   <div class="final-wrap">
                     <div class="img-wrap">
-                      <img src="{{p && p['track_id'] && p['track_id']['artist_id'] ? artist_img_url+p['track_id']['artist_id'].image : 'img/highlight-player.png'}}" alt="Finalists">
-                      <a href="javascript:void(0)" (click)="followArtist(p['track_id']['artist_id']['_id'])" class="fan"><i class="fa fa-heart-o" aria-hidden="true"></i></a>
+                      <img src="{{p && p['artist']  ? artist_img_url+p['artist'].image : 'img/highlight-player.png'}}" alt="Finalists">
+                      <a href="javascript:void(0)" (click)="followArtist(p['artist']['_id'])" class="fan"><i class="fa fa-heart-o" aria-hidden="true"></i></a>
                     </div>
                     <div class="content-wrap">
                       <div class="player">
                         <div class="title">
-                          <a href="javascript:;" routerLink="/artist_profile/{{p && p['track_id'] && p['track_id']['artist_id'] ? p['track_id']['artist_id']._id : '' }}">
-                            {{p && p['track_id']['artist_id'] ? p['track_id']['artist_id'].first_name : '' +' '+p && p['track_id']['artist_id'] ? p['track_id']['arist_id'].last_name : ''}}
+                          <a href="javascript:;" routerLink="/artist_profile/{{p && p['artist'] ? p['artist']['_id'] : '' }}">
+                            {{p && p['artist'] ? p['artist'].first_name : '' +' '+p && p['artist'] ? p['arist'].last_name : ''}}
                           </a>
                         </div>
-                        <div class="finalist-name">{{p && p['track_id'] ? (p['track_id']['name'] | titlecase) : '' }}</div>
+                        <div class="finalist-name">{{p && p['track'] ? (p['track']['name'] | titlecase) : '' }}</div>
                         <div class="action-btn custom-action-btn">       
-                            <a [style.display]="!audio_ins[i] ? 'block' : 'none'" (click)="playAudio(p['track_id']['audio'], i, audio_ins_list)" class="play_img" ><img src="img/play_icon.png"/></a>
+                            <a [style.display]="!audio_ins[i] ? 'block' : 'none'" (click)="playAudio(p['track']['audio'], i, audio_ins_list)" class="play_img" ><img src="img/play_icon.png"/></a>
                             <a [style.display]="audio_ins[i] ? 'block' : 'none'" (click)="stopAudio(i, audio_ins_list)" class="pause_img"><img src="img/pause_icon.png"/></a>
                         </div>
                         
                       </div>
                       <div class="sub-con">
                         <div class="location">
-                          <p><i class="fa fa-map-marker" aria-hidden="true"></i><span>{{p && p['track_id'] && p['track_id']['artist_id'] && p['track_id']['artist_id']['state'] ? p['track_id']['artist_id']['state']['name'] : '' }}</span></p>
+                          <p><i class="fa fa-map-marker" aria-hidden="true"></i><span>{{p && p['state'] ? p['state']['name'] : '' }}</span></p>
                         </div>
                         <div class="td track-vote">
                               <img src="img/small-star.png" alt="start">
-                              <span>{{p && p['track_id'] ? p['track_id']['no_of_votes'] : '0' }}</span>
+                              <span>{{p && p['track'] ? p['track']['no_of_votes'] : '0' }}</span>
                             </div>
-                            <div class="cat {{p && p['track_id']['artist_id'] &&  p['track_id']['artist_id']['music_type'] ? p['track_id']['artist_id']['music_type']['alias'] : ''}}">{{p && p['track_id']['artist_id'] &&  p['track_id']['artist_id']['music_type'] ? p['track_id']['artist_id']['music_type']['name'] : ''}}</div>
+                            <div class="cat {{p &&  p['music_type'] ? p['music_type']['alias'] : ''}}">{{p && p['music_type'] ? p['music_type']['name'] : ''}}</div>
                           </div>
-                          <button href="javascript:;" (click)="voteTrack(p['track_id']['_id'], p['track_id']['artist_id']['_id'], i)"  class="add-btn">Vote</button>
+                          <button href="javascript:;" (click)="voteTrack(p['track']['_id'], p['artist']['_id'], i)"  class="add-btn">Vote</button>
                     </div>
                   </div>
                 </div>

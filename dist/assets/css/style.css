@@ -4811,6 +4811,7 @@ max-height: unset !important;
 .proceeds .edit-head {
     padding-top: 0;
 }
+
 .Transaction_table table{
     width: 100% !important;
 }
@@ -4818,6 +4819,25 @@ max-height: unset !important;
     top: 5px;
     }
     .track_head_container{width: 250px !important;}
+    .action_div .popover-header{
+            background: transparent;
+    border: none;
+    font-size: 14px;
+    color: #1a1a1a;
+    text-align: center;
+  padding-bottom: 4px;
+    }
+    .action_div .popover-body .btn-primary{    padding: 0px 12px;
+    font-size: 14px;
+    background-color: #9c27b0;
+    border-color: #9c27b0;}
+    .action_div .popover-body .btn-default{    padding: 0px 12px;
+    font-size: 14px;
+    background-color: transparent;
+    border-color: transparent;
+    color: #1a1a1a;
+    opacity: .5;}
+    .tracks_dashboard_table{overflow: visible;}
 /*MEDIA START*/
 @media screen and (min-width: 768px){
     .content-block{width: 750px;}
