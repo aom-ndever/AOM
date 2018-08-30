@@ -123,8 +123,7 @@ var AdminLayoutModule = /** @class */ (function () {
                             { path: 'contest', component: __WEBPACK_IMPORTED_MODULE_21__contest_contest_component__["a" /* ContestComponent */], canActivate: [__WEBPACK_IMPORTED_MODULE_14__shared_auth_service__["a" /* AuthService */]] },
                             { path: 'roles', component: __WEBPACK_IMPORTED_MODULE_22__roles_roles_component__["a" /* RolesComponent */], canActivate: [__WEBPACK_IMPORTED_MODULE_14__shared_auth_service__["a" /* AuthService */]] }
                         ]
-                    },
-                    { path: '**', redirectTo: '' }
+                    }
                 ])
             ],
             declarations: [
