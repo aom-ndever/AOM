@@ -984,7 +984,7 @@
 
                                                         <p-multiSelect class="form-control" id="musictype" [options]="music_types"  [filter]="false" formControlName="music_type" name="music_type" [(ngModel)]="userdata.music_type" ></p-multiSelect>
                                                         <div class="cust_err_msg" *ngIf="listenerProfileValidation && !listener_profile.controls['music_type'].valid">
-                                                            <span *ngIf="listener_profile.controls['music_type'].errors['required']" class="text-danger">Music type is required.</span>
+                                                            <span *ngIf="listener_profile.controls['music_type'].errors['multiSelectRequired']" class="text-danger">Music type is required.</span>
                                                         </div>
                                                     </div>
                                                     <div class="form-group home-grp">
@@ -1376,7 +1376,7 @@
                                                     <div class="form-group music-grp">
                                                         <label for="musictype">Music Type</label>
                                                         <select class="form-control" id="up_musictype" formControlName="music_type" name="music_type" [(ngModel)]="upgrade_artist_data.music_type">
-                                                            <option *ngFor="let type of music_types" value="{{type._id}}">{{type.name}}</option>
+                                                            <option *ngFor="let type of upgrade_artist_music_type" value="{{type._id}}">{{type.name}}</option>
                                                         </select>
                                                         <div class="cust_err_msg" *ngIf="upgrade_artist_validation && !upgrade_artist.controls['music_type'].valid">
                                                             <span *ngIf="upgrade_artist.controls['music_type'].errors['required']" class="text-danger">Music is required.</span>

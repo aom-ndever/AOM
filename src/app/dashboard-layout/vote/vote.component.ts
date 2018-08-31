@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, QueryList, ViewChildren  } from '@angular/core';
 import { VoteService } from './vote.service';
 import { ToastrService } from 'ngx-toastr';
 import { environment } from '../../../environments/environment' ;
@@ -11,9 +11,9 @@ import { DataTableDirective } from 'angular-datatables';
   styleUrls: []
 })
 export class VoteComponent implements OnInit {
-  @ViewChild(DataTableDirective)
-  datatableElement: DataTableDirective;
-  dtOptions: DataTables.Settings = {};
+  @ViewChildren(DataTableDirective) 
+  dtElements: QueryList<DataTableDirective>;
+  dtOptions: DataTables.Settings[] = [];
   show_filter : boolean = false;
   music_list : any = [];
   state_list : any = [];
@@ -36,6 +36,7 @@ export class VoteComponent implements OnInit {
   participants : any = [];
   show_spinner : boolean = false;
   vote_spinner : boolean = false;
+  table_flag : boolean = false;
   advance_filter : any = {};
   start : any = 0;
   length : any = 10;
@@ -83,7 +84,52 @@ export class VoteComponent implements OnInit {
 
   ngOnInit() {
     const that = this;
-    this.dtOptions = {
+    this.dtOptions[0] = {
+      pagingType: 'full_numbers',
+      pageLength: 10,
+      serverSide: true,
+      processing: true,
+      searching: false,
+      ordering: false,
+      responsive: true,
+      scrollCollapse: true,
+      lengthChange: false,
+      ajax: (dataTablesParameters: any, callback) => {
+        setTimeout(() => {
+          dataTablesParameters['contest_id'] = this.contest_data;
+          dataTablesParameters['search'] = that.search_str;
+          dataTablesParameters['music_type'] = that.advance_filter.music_type;
+          dataTablesParameters['filter'] = [];
+          if(that.region_filter.length) {
+            dataTablesParameters['filter'].push(
+              {'field' : 'state', value :  this.region_filter}
+            );
+          }
+          that.VoteService.getWinnersData(dataTablesParameters).subscribe((response) => {
+            this.winner_list = response['track']['winner'];
+              this.audio_ins1 = [];
+              this.audio_ins_list1 = [];
+              this.winner_list.forEach((ele) => {
+                this.audio_ins1.push(false);
+                this.audio_ins_list1.push(ele['track_id']);
+              });
+                callback({
+                  recordsTotal: response['track']['recordsTotal'],
+                  recordsFiltered: response['track']['recordsTotal'],
+                  data: []
+                });
+          }, (error) => {
+            this.winner_list = [];
+            callback({
+              recordsTotal: 0,
+              recordsFiltered: 0,
+              data: []
+            });
+          });
+        },0);
+      }
+    };
+    this.dtOptions[1] = {
       pagingType: 'full_numbers',
       pageLength: 10,
       serverSide: true,
@@ -181,8 +227,10 @@ export class VoteComponent implements OnInit {
         };
         this.getAllParticipants(data);
         // this.getContestWinner();
-        this.datatableElement.dtInstance.then((dtInstance: DataTables.Api) => {
-          dtInstance.draw();
+        this.dtElements.forEach((dtElement: DataTableDirective, index: number) => {
+          dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
+            dtInstance.draw();
+          });
         });
       }
     });
@@ -216,8 +264,10 @@ export class VoteComponent implements OnInit {
         if(!(response['message'].toLowerCase() == 'already voted')) {
           this.participants[index]['track_id']['no_of_votes'] += 1; 
         }
-        this.datatableElement.dtInstance.then((dtInstance: DataTables.Api) => {
-          dtInstance.draw();
+        this.dtElements.forEach((dtElement: DataTableDirective, index: number) => {
+          dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
+            dtInstance.draw();
+          });
         });
         this.toastr.success(response['message'], 'Success!');
       },(error) => {
@@ -301,8 +351,10 @@ export class VoteComponent implements OnInit {
     };
     this.contest_name = (e.target.options[e.target.selectedIndex].text).trim();
     this.getAllParticipants(data);
-    this.datatableElement.dtInstance.then((dtInstance: DataTables.Api) => {
-      dtInstance.draw();
+    this.dtElements.forEach((dtElement: DataTableDirective, index: number) => {
+      dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
+        dtInstance.draw();
+      });
     });
   }
   // get contest winner
@@ -328,8 +380,10 @@ export class VoteComponent implements OnInit {
       let data = {
         search : this.search_str
       };
-      this.datatableElement.dtInstance.then((dtInstance: DataTables.Api) => {
-        dtInstance.draw();
+      this.dtElements.forEach((dtElement: DataTableDirective, index: number) => {
+        dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
+          dtInstance.draw();
+        });
       });
       let obj = {
         start : this.start,
@@ -367,8 +421,10 @@ export class VoteComponent implements OnInit {
           contest_id : this.contest_data
         };
         this.getAllParticipants(data);
-        this.datatableElement.dtInstance.then((dtInstance: DataTables.Api) => {
-          dtInstance.draw();
+        this.dtElements.forEach((dtElement: DataTableDirective, index: number) => {
+          dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
+            dtInstance.draw();
+          });
         });
       } else {
         this.participants = [];
@@ -382,5 +438,10 @@ export class VoteComponent implements OnInit {
       this.show_filter = false;
       this.show_spinner = false;
     });
+  }
+
+  // toggle table and graphical view for winner
+  toggleTable(flag) {
+    this.table_flag = flag;
   }
 }

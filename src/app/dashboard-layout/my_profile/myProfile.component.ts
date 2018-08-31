@@ -103,6 +103,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
   region_list : any = [];
   state_list : any = [];
   upgrade_artist_img : any = '';
+  upgrade_artist_music_type = [];
 
   // playlist
   playlist : any = [];
@@ -224,6 +225,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
     }
     this.MyProfileService.getAllMusicType().subscribe(response => {
       this.music_types = response['music'];
+      this.upgrade_artist_music_type = response['music'];
       if(data && data.user) {
         let tmp = [];
         this.music_types.forEach((ele) => {
@@ -284,7 +286,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
       year : ['', [Validators.required]],
       phone : ['', [Validators.required, Validators.pattern('[0-9]+'), Validators.minLength(10),Validators.maxLength(10), this.noWhitespaceValidator]],
       zipcode : ['', [Validators.required, this.noWhitespaceValidator]],
-      music_type : ['']
+      music_type : ['', [this.multiSelectRequired]]
     });
 
     this.bank_fg = this.fb.group({
@@ -573,6 +575,12 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
         let isValid = !isWhitespace;
         return isValid ? null : { 'whitespace': true }
       }
+  }
+
+  multiSelectRequired(control: FormControl) {
+    const selections = control.value;
+    const isValid = selections.length > 0;
+    return isValid ?  null : {'multiSelectRequired': true};
   }
   
   calculateDateFromDays(days : any) {

@@ -117,7 +117,7 @@
                     <div class="track-wrapper">
                       <div class="track-select-wrap">
                         <select class="form-control" name="artist_track" id="gender" (change)="sortArtistTrack(0, $event.target.value)">
-                          <option value="0">Newest First</option>
+                          <option value="-1">Newest First</option>
                           <option value="1">Newest Last</option>
                         </select>
                       </div>
@@ -216,7 +216,7 @@
                     <div class="track-wrapper">
                       <div class="track-select-wrap">
                         <select class="form-control" id="sort" (change)="sortRankingTrack(1, $event.target.value)">
-                          <option value="0">Newest First</option>
+                          <option value="-1">Newest First</option>
                           <option value="1">Newest Last</option>
                         </select>
                       </div>
