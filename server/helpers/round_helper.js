@@ -133,8 +133,7 @@ round_helper.get_all_contests = async () => {
     try {
 
         var participate = await Round.find()
-            .populate('music_type')
-            .populate('contest_id')
+            .populate({ path: 'contest_id', populate: { path: 'music_type' } })
             .populate('state')
 
 
