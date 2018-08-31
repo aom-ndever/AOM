@@ -112,5 +112,27 @@ contest_helper.get_all_contests = async (music) => {
     }
 }
 
+contest_helper.get_all_contests_list = async (start, length, sort) => {
+    try {
+        var participates = await Contest.find()
+            .populate('music_type')
+        var tot_cnt = participates.length;
+
+        var participate = await Contest.find()
+            .populate('music_type')
+            .skip(start)
+            .limit(length)
+            .sort(sort)
+        var filter_cnt = participate.length
+        if (participate) {
+            return { "status": 1, "message": "contest details found", "contest": participate, "recordsFiltered": filter_cnt, "recordsTotal": tot_cnt };
+        } else {
+            return { "status": 2, "message": "contest not found" };
+        }
+    } catch (err) {
+        return { "status": 0, "message": "Error occured while finding contest", "error": err }
+    }
+}
+
 
 module.exports = contest_helper;

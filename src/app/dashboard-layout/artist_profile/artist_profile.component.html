@@ -92,8 +92,10 @@
                 <i class="fa fa-map-marker" aria-hidden="true"></i>
                 <span>{{artistdata && artistdata.state ? artistdata.state['name'] : ''}}</span>
               </div>
+
               <div class="profile-description {{show_more_flag ? 'show_more' : ''}}">
-                <p>{{artistdata.description}} <a href="javascript:;" (click)="show_more()" class="more" >more</a></p>
+                <span>{{artistdata.description}}</span>
+                 <a href="javascript:;" (click)="show_more()" class="more" >more...</a>
               </div>
               <div class="profile-tabs-det">
                 <!-- Nav tabs -->
@@ -194,9 +196,10 @@
                     </div>
                   </div>
                   <div id="media" class="tab-pane fade {{active_tab_index == 2 ? 'active show' : ''}}">
-                    <div class="media-wrapper">
+                  
                 
                         <div class="alert alert-info" *ngIf="artistmedia.length <= 0">No data available.</div>
+                   <div class="media-wrapper">
                         <div class="" *ngFor="let media of artistmedia; let i = index;">
                           <a class="img-wrap" href="javascript:;" data-fancybox="images" data-width="1500" data-height="1000" >
                             <img src="{{media.image ? artist_media_url+media.image : 'img/media-1.png'}}" alt="Media">

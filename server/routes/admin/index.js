@@ -222,6 +222,7 @@ router.post("/add_contest", async (req, res) => {
       var round_obj = {
         contest_id: resp_data.contest._id,
         start_date: start_date,
+        state: req.body.state,
         region: req.body.region,
         duration: req.body.duration,
         end_date: moment(start_date).add((req.body.duration * 7), 'days'),
@@ -396,26 +397,43 @@ router.post("/add_existing_contest", async (req, res) => {
     }
     var round = await round_helper.get_finished_round_of_contest(round_obj.contest_id);
 
-    var track = await winner_helper.get_qualifiedss(round.round._id);
+    if (round.status === 1) {
 
-    if (track.status === 1) {
-      var arry = [];
-      for (let x of track.winner) {
-        var winner = x.track_id;
-        arry.push(ObjectId(winner));
-      }
-      if (arry.length > 0) {
+      var track = await winner_helper.get_qualifiedss(round.round._id);
+      if (track.status === 1) {
 
-        var roundget = await round_helper.get_rounds({ "_id": new ObjectId(round.round._id) }, { "track_id": null });
-        if (roundget.status == 0) {
-          var roundAdd = await round_helper.add_participant_in_next_round({ "_id": new ObjectId(round.round._id) }, { "track_id": arry });
+        var arry = [];
+        for (let x of track.winner) {
+          var winner = x.track_id;
+          arry.push(ObjectId(winner));
+        }
+        if (arry.length > 0) {
 
+          var roundget = await round_helper.get_rounds({ "_id": new ObjectId(round.round._id) }, { "track_id": null });
+          console.log('roundget.status', roundget.status);
+
+          if (roundget.status == 0) {
+            var roundAdd = await round_helper.add_participant_in_next_round({ "_id": new ObjectId(round.round._id) }, { "track_id": arry });
+            for (let x of track.winner) {
+
+              var object = {
+                "votes": x.votes,
+                "track_id": x.track_id,
+                "round_id": current_round.round._id
+
+              }
+            }
+
+            var winner = winner_helper.insert_winner(object)
+          }
         }
       }
     }
+
     var resp_data = await round_helper.insert_round(round_obj);
 
-    if (resp_data.status == 0) {
+    if (resp_data.status === 0) {
+
       logger.error("Error occured while inserting = ", resp_data);
       res.status(config.INTERNAL_SERVER_ERROR).json(resp_data);
     }
@@ -427,19 +445,6 @@ router.post("/add_existing_contest", async (req, res) => {
     res.status(config.BAD_REQUEST).json({ message: errors });
   }
   var current_round = await round_helper.get_current_round_of_contest(round_obj.contest_id);
-
-
-  for (let x of track.winner) {
-
-    var object = {
-      "votes": x.votes,
-      "track_id": x.track_id,
-      "round_id": current_round.round._id
-
-    }
-  }
-
-  var winner = winner_helper.insert_winner(object)
 });
 
 /**
@@ -464,7 +469,9 @@ router.post('/contest', async (req, res) => {
     sort["_id"] = 1;
   }
 
-  var contest = await round_helper.get_all_round(req.body.start, req.body.length, sort);
+  var contest = await contest_helper.get_all_contests_list(req.body.start, req.body.length, sort);
+  console.log('contest', contest);
+
   if (contest.status === 1) {
     logger.trace("got details successfully");
     res.status(config.OK_STATUS).json({ "status": 1, "contest": contest });
@@ -478,6 +485,17 @@ router.post('/contest', async (req, res) => {
 router.get('/get_contest', async (req, res) => {
 
   var contest = await round_helper.get_all_contests();
+  if (contest.status === 1) {
+    logger.trace("got details successfully");
+    res.status(config.OK_STATUS).json({ "status": 1, "contest": contest });
+  } else {
+    res.status(config.INTERNAL_SERVER_ERROR).json(contest);
+  }
+
+});
+router.post('/get_round', async (req, res) => {
+  contest_id = req.body.contest_id;
+  var contest = await round_helper.get_rounds_by_contestid(contest_id);
   if (contest.status === 1) {
     logger.trace("got details successfully");
     res.status(config.OK_STATUS).json({ "status": 1, "contest": contest });

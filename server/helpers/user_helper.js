@@ -65,6 +65,8 @@ user_helper.get_user_by_id = async (user_id) => {
     try {
         var user = await User.findOne({ "_id": { "$eq": user_id } })
             .populate('music_type')
+            .populate({ path: 'state', populate: { path: 'region' } })
+
         if (user) {
             return { "status": 1, "message": "user details found", "user": user };
         } else {
@@ -248,7 +250,7 @@ user_helper.get_all_active_and_suspend_user = async (start, length, filter, sort
 
         var user = await User
             .find(filter)
-            .populate('state')
+            .populate({ path: 'state', populate: { path: 'region' } })
             .sort(sort_by)
             .skip(start)
             .limit(length)
