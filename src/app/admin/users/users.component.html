@@ -162,16 +162,16 @@
               <div>
                 <span>{{user_detail['gender']}}</span>
                 <span>{{user_detail['old'] }} y.o.</span>
-                <span>{{user_detail['location']}}</span>
+                <span>{{user_detail && user_detail['state'] ? user_detail['state']['name'] : ''}}</span>
               </div>
               <div class="right_span"><span>Signup date : {{user_detail['created_at'] | date : 'yyyy/MM/dd'}}</span></div>
             </div>
             <div class="template_modal_data">
               <ul>
-                  <li><i class="fa fa-star-o" aria-hidden="true"></i>Votes {{user_detail['no_of_votes']}}</li>
-                  <li><i class="fa fa-thumbs-o-up" aria-hidden="true"></i>Like {{user_detail['no_of_likes']}}</li>
-                  <li><i class="fa fa-heart-o" aria-hidden="true"></i>Followers {{user_detail['no_of_followers']}}</li>
-                  <li><i class="fa fa-commenting-o" aria-hidden="true"></i>Comments {{user_detail['no_of_comments']}}</li>
+                  <li><i class="fa fa-star-o" aria-hidden="true"></i>{{user_detail['no_of_votes']}}</li>
+                  <li><i class="fa fa-thumbs-o-up" aria-hidden="true"></i>{{user_detail['no_of_likes']}}</li>
+                  <li><i class="fa fa-heart-o" aria-hidden="true"></i>{{user_detail['no_of_followers']}}</li>
+                  <li><i class="fa fa-commenting-o" aria-hidden="true"></i>{{user_detail['no_of_comments']}}</li>
               </ul>
               <div  class="right_span">
 

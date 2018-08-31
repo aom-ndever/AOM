@@ -45,4 +45,9 @@ export class ContestService {
   addExistingContest(data : any) {
     return this.http.post(`${this.api_host}/admin/add_existing_contest`, data, {headers : this.headers});
   }
+  // get contest round by contest
+  getContestRound(data) {
+    return this.http.post(`${this.api_host}/admin/get_round`, data, {headers:this.headers});
+  }
+
 }

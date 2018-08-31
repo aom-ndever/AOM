@@ -34,6 +34,7 @@ export class ContestComponent implements OnInit {
   show_spinner : boolean = false;
   contest_validation : FormGroup;
   is_valid : boolean =  false;
+  round_list : any = [];
   constructor(
     private ContestService : ContestService,
     private toastr: ToastrService,
@@ -62,8 +63,7 @@ export class ContestComponent implements OnInit {
       round : [],
       music_type : ['', [Validators.required]],
       region : ['', [Validators.required]],
-      state : ['', [Validators.required]],
-      participate : []
+      state : ['', [Validators.required]]
     });
   }
 
@@ -84,10 +84,10 @@ export class ContestComponent implements OnInit {
           dataTablesParameters['search'] = that.search_str;
           dataTablesParameters['sort'] = [this.sort == -1 ? {"field" : "end_date", value : -1} : {"field" : "start_date", value : 1}];
           that.ContestService.getAllContest(dataTablesParameters).subscribe(response => {
-            that.contest_data = response['contest']['participate'];
-            that.contest_data.forEach((ele) => {
-              ele['days'] = that.getDaysDiff(ele['start_date'], new Date());
-            });
+            that.contest_data = response['contest']['contest'];
+            // that.contest_data.forEach((ele) => {
+            //   ele['days'] = that.getDaysDiff(ele['start_date'], new Date());
+            // });
                 callback({
                   recordsTotal: response['contest']['recordsTotal'],
                   recordsFiltered: response['contest']['recordsTotal'],
@@ -137,6 +137,20 @@ export class ContestComponent implements OnInit {
     };
     this.is_new_or_existing = 1;
     this.contestModelRef = this.modalService.show(template, {backdrop : 'static'});
+  }
+
+  openRoundModel(template: any, id : any) {
+    this.getContestRound(id);
+    this.modalRef = this.modalService.show(template, { backdrop : 'static' });
+  }
+
+  getContestRound(id) {
+    let data = {
+      contest_id : id
+    };
+    this.ContestService.getContestRound(data).subscribe((response) => {
+      this.round_list = response['contest']['contest'];
+    });
   }
 
   sortArtist() {

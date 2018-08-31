@@ -17,24 +17,20 @@
                           <tr>
                             <th>N<sup>O</sup></th>
                             <th>Contest Name</th>
-                            <th>Start Date</th>
-                            <th>End Date</th>
-                            <th>Days Remain</th>
+                            <th>Created Date</th>
                             <th>Music Genre</th>
-                            <th>Region</th>
-                            <th>Participants</th>
+                            <th>Actions</th>
                           </tr>
                         </thead>
                         <tbody>
                         <tr *ngFor="let contest of contest_data; let i = index;">
                           <td>{{i+1}}.</td>
-                          <td><a href="javascript:;" (click)="openModal(paricipant, contest['contest_id']['_id'])">{{contest ['round_name']}}</a></td>
-                          <td>{{contest['start_date'] | date : 'MMMM d, yyyy':'UTC' }}</td>
-                          <td>{{contest['end_date'] | date : 'MMMM d, yyyy':'UTC' }}</td>
-                          <td>{{contest['days']}}</td>
-                          <td>{{contest && contest['contest_id'] && contest['contest_id']['music_type'] ? contest['contest_id']['music_type']['name'] : '' }}</td>
-                          <td>{{contest['state'] && contest['state'] ? contest['state']['name'] : '' }}</td>
-                          <td>{{contest['no_of_participants']}}</td>
+                          <td><a href="javascript:;" (click)="openModal(paricipant, contest['_id'])">{{contest['name']}}</a></td>
+                          <td>{{contest['created_at'] | date : 'MMMM d, yyyy':'UTC' }}</td>
+                          <td>{{contest && contest['music_type'] ? contest['music_type']['name'] : '' }}</td>
+                          <td>
+                            <a href="javascript:;" (click)="openRoundModel(round,contest['_id'])" title="view rounds"><i class="fa fa-television"></i></a>
+                          </td>
                         </tr>
                         </tbody>
                       </table>
@@ -67,7 +63,7 @@
                     <td>{{i+1}}</td>
                     <td>{{contest['artist_id'] != null && contest['artist_id']['first_name'] != '' ? contest['artist_id']['first_name'] : '' +' '+contest['artist_id'] != null && contest['artist_id']['last_name'] != '' ? contest['artist_id']['last_name'] : ''}}</td>
                     <td>{{contest['track_id'] != null && contest['track_id']['name'] != '' ? contest['track_id']['name'] : '' }}</td>
-                    <td>{{contest['artist_id'] != null && contest['artist_id']['no_of_votes'] != '' ? contest['artist_id']['no_of_votes'] : '' }}</td>
+                    <td>{{contest['artist_id'] != null && contest['artist_id']['no_of_votes'] ? contest['artist_id']['no_of_votes'] : '0' }}</td>
                   </tr>
                   <tr *ngIf="participant_data?.length == 0">
                     <td colspan="4">No data available.</td>
@@ -79,6 +75,49 @@
       </div>
   </div>
 </ng-template>
+<ng-template #round>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    <div class="modal-body">
+      <div class="custom_modal">
+          <div class="row">
+              <div class="col-sm-12">
+                  <b class="template_modal_name">Rounds</b>
+                </div>
+            <div class="artists_table copyright_table table-responsive col-sm-12 table_max_height">
+              <table class="table">
+                  <thead>
+                    <tr>
+                      <th>N<sup>o</sup></th>
+                      <th>Name</th>
+                      <th>Start Date</th>
+                      <th>End Date</th>
+                      <th>Participants</th>
+                      <th>Region</th>
+                      <th>State</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let r of round_list; let i = index;">
+                      <td>{{i}}</td>
+                      <td>{{r['round_name']}}</td>
+                      <td>{{r['start_date'] | date : 'M d, yyyy'}}</td>
+                      <td>{{r['end_date'] | date : 'MM d, yyyy' }}</td>
+                      <td>{{r['no_of_participants']}}</td>
+                      <td>{{r['region']['name']}}</td>
+                      <td>{{r['state']['name']}}</td>
+                    </tr>
+                    <tr *ngIf="round_list.length == 0">
+                      <td colspan="7">No data available.</td>
+                    </tr>
+                  </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+    </div>
+  </ng-template>
 <ng-template #contest>
   <button type="button" class="close pull-right" aria-label="Close" (click)="contestModelRef.hide()">
     <span aria-hidden="true">&times;</span>
@@ -222,17 +261,6 @@
               <div class="terms_error_msg" *ngIf="is_valid && !contest_validation.controls['state'].valid">
                 <span *ngIf="contest_validation.controls['state'].errors['required']" class="text-danger">State is required.</span>
               </div>
-            </div>
-          </div>
-          <div class="form-group" *ngIf="is_new_or_existing == 2">
-            <div class="form-group custom_modal_form">
-              <label class="control-label">Participants</label>
-              <select class="form-control" name="participant" formControlName="participate">
-                <option value="">Select Participants</option>
-                <!-- <option value="">Northeast Hiphop Round 3 Finalist</option>
-                <option value="">Southeast Hiphop Round 3 Finalist</option>
-                <option value="">Midwest Hiphop Round 3 Finalist</option> -->
-              </select>
             </div>
           </div>
           <div class="row modal_btns">

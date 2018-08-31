@@ -181,14 +181,14 @@
                     <li class="nav-item"><a>{{contest_name}}</a></li>
                   </ul>
                   <div class="loc-icon-group">
-                      <a href="javascript:;" (click)="togglelocBarChart(false)"><img src="img/top-location-icon.png" alt="top-location-icon.png" ></a>
-                      <a href="javascript:;" (click)="togglelocBarChart(true)"><img src="img/infographic-not-active.png" alt="infographic-not-active.png" ></a>
+                      <a href="javascript:;" (click)="toggleTable(false)"><img src="img/top-location-icon.png" alt="top-location-icon.png" ></a>
+                      <a href="javascript:;" (click)="toggleTable(true)"><img src="img/infographic-not-active.png" alt="infographic-not-active.png" ></a>
                   </div>
               </div>
               <div class="tab-content ">
                 <div class="tab-pane fade active show" id="regionalfinals">
-                  <div class="track-table mCustomScrollbar " data-mcs-theme="dark-3">
-                    <table datatable [dtOptions]="dtOptions">
+                  <div class="track-table mCustomScrollbar " data-mcs-theme="dark-3" [style.display]="table_flag ? 'none' : 'block' ">
+                    <table datatable [dtOptions]="dtOptions[0]" >
                       <thead>
                         <tr>
                           <td>Rank</td>
@@ -235,6 +235,53 @@
                         </tr>
                         <tr *ngIf="winner_list.length == 0">
                           <td colspan="8">No data available.</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <div class="track-table mCustomScrollbar " data-mcs-theme="dark-3" [style.display]="table_flag ? 'block' : 'none' ">
+                    <table datatable [dtOptions]="dtOptions[1]">
+                      <thead>
+                        <tr>
+                          <td>Rank</td>
+                          <td>Track, Artist</td>
+                          <td>Music Genre</td>
+                          <td>Number of votes</td>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let p of winner_list; let i = index;">
+                          <td class="serial-num">1.</td>
+                          <td>
+                            <div class="music_play">
+                              <div class="artist-profile-custom-action-btn">       
+                                  <a [style.display]="!audio_ins1[i] ? 'block' : 'none'" (click)="playAudio1(p['track']['audio'], i, audio_ins_list1)" class="play_img" ><img src="img/play_icon.png"/></a>
+                                  <a [style.display]="audio_ins1[i] ? 'block' : 'none'" (click)="stopAudio1(i, audio_ins_list1)" class="pause_img"><img src="img/pause_icon.png"/></a>
+                              </div>
+                              </div>
+                              <div class="track-pic">
+                                <a href="javascript:;">
+                                  <img width="50" height="50" src="{{p && p['artist'] ? artist_img_url+p['artist'].image : 'img/highlight-player.png'}}" alt="Track Image">
+                                </a>
+                              </div>
+                              <div class="track-det" colspan="2">
+                                <p class="track-name">{{p && p['track'] ? p['track']['name'] : ''}}</p>
+                                <p class="track-singer">{{p && p['artist'] ? p['artist'].first_name : '' +' '+p && p['artist'] ? p['arist'].last_name : ''}}</p>
+                              </div>
+                          </td>
+                          <td class="music-gen ">
+                              <span class="tag {{p && p['music_type'] ? p['music_type']['alias'] : ''}}">{{p && p['music_type'] ? p['music_type']['name'] : ''}}</span>
+                          </td>
+                          <td class="nu-vote">
+                            <div class="download-graph">
+                              <ul>
+                                <li class="full-info">
+                                  <div class="d-num"><p>{{p && p['track'] ? p['track']['no_of_votes'] : '0' }}</p> <span>Votes</span></div>
+                                </li>
+  
+                              </ul>
+                            </div>
+                          </td>
                         </tr>
                       </tbody>
                     </table>
