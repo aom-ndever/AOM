@@ -1239,7 +1239,7 @@ router.post('/admin_login', async (req, res) => {
         res.status(config.OK_STATUS).json({ "status": 1, "message": "Logged in successful", "admin": login_resp.admin, "token": token, "refresh_token": refreshToken });
       }
       else {
-        res.status(config.BAD_REQUEST).json({ "status": 0, "message": "Your Are Account is Suspended Super Admin" });
+        res.status(config.BAD_REQUEST).json({ "status": 0, "message": "Your Account is Suspended, Please Contact Admin" });
       }
     }
 
