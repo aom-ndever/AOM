@@ -222,6 +222,7 @@ router.post("/add_contest", async (req, res) => {
       var round_obj = {
         contest_id: resp_data.contest._id,
         start_date: start_date,
+        state: req.body.state,
         region: req.body.region,
         duration: req.body.duration,
         end_date: moment(start_date).add((req.body.duration * 7), 'days'),

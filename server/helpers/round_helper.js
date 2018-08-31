@@ -68,6 +68,7 @@ round_helper.get_rounds_by_contestid = async (id) => {
             .find({ "contest_id": new ObjectId(id) })
             .populate({ path: 'contest_id', populate: { path: 'music_type' } })
             .populate('region')
+            .populate('state')
         if (contest) {
             return { "status": 1, "message": "contest details found", "contest": contest };
         } else {
