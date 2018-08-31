@@ -492,6 +492,17 @@ router.get('/get_contest', async (req, res) => {
   }
 
 });
+router.post('/get_round', async (req, res) => {
+  contest_id = req.body.contest_id;
+  var contest = await round_helper.get_rounds_by_contestid(contest_id);
+  if (contest.status === 1) {
+    logger.trace("got details successfully");
+    res.status(config.OK_STATUS).json({ "status": 1, "contest": contest });
+  } else {
+    res.status(config.INTERNAL_SERVER_ERROR).json(contest);
+  }
+
+});
 router.post('/get_admin_flagged', async (req, res) => {
 
   var contest = await admin_helper.get_all_admin_suspended(req.body.start, req.body.length);
