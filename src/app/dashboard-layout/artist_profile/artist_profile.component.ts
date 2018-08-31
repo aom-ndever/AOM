@@ -659,4 +659,10 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
       });
     });
   }
+  // manage show more for artist description
+  show_more_flag : boolean = false;
+  show_more() {
+    this.show_more_flag = !this.show_more_flag;
+  }
+
 }
