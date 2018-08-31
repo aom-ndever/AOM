@@ -102,7 +102,9 @@ export class WhatsNewComponent implements OnInit, OnDestroy {
   
   // Get all whatsnew data
   getAllData() {
-    let data = {};
+    let data = {
+      
+    };
     this.audio_ins = [];
     this.show_loader = true;
     this.WhatsNewService.getWhatsnewData(data).subscribe(response => {
@@ -113,7 +115,7 @@ export class WhatsNewComponent implements OnInit, OnDestroy {
           this.audio_ins.push(false);
         });
       }
-      this.getAllFollower();
+      this.getAllFollower(); 
     });
   }
   // Get all featured artist
