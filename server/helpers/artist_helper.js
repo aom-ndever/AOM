@@ -349,7 +349,7 @@ artist_helper.get_login_by_email = async (email) => {
  */
 artist_helper.get_all_artist = async () => {
     try {
-        var artist = await Artist.aggregate([
+        var aggregate = [
             {
                 $lookup: {
                     from: "state",
@@ -389,8 +389,10 @@ artist_helper.get_all_artist = async () => {
                     total: -1
                 }
             },
-        ]);
+        ];
 
+
+        let artist = await Artist.aggregate(aggregate);
         if (artist) {
             return { "status": 1, "message": "artist details found", "artist": artist };
         } else {

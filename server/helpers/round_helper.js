@@ -65,7 +65,7 @@ round_helper.get_rounds_by_contestid = async (id) => {
 
     try {
         var contest = await Round
-            .findOne({ "contest_id": new ObjectId(id) })
+            .find({ "contest_id": new ObjectId(id) })
             .populate({ path: 'contest_id', populate: { path: 'music_type' } })
             .populate('region')
         if (contest) {
