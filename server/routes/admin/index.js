@@ -1225,12 +1225,14 @@ router.post("/get_artist_tracks", async (req, res) => {
  * @apiError (Error 4xx) {String} message Validation or error message.
  */
 router.post("/flag/artist/:artist_id", async (req, res) => {
-  var obj = {
-    from: req.userInfo.id,
-    to: req.params.artist_id
-  }
+
   var resp = await artist_helper.get_artist_by_id(req.params.artist_id);
   type = await admin_helper.get_admin_by_id(req.userInfo.id)
+  var obj = {
+    from: req.userInfo.id,
+    to: req.params.artist_id,
+    account_type: type.admin.account_type
+  }
   if (type.admin.account_type == "super_admin" || type.admin.account_type == "admin") {
     if (resp.status == 0) {
       logger.error("Error occured while fetching artist = ", resp);
