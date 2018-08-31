@@ -406,12 +406,12 @@ artist_helper.get_all_artist = async () => {
 artist_helper.get_artist_by_filter = async (filter, start, length, filters) => {
     try {
 
-        // var artist = await Artist
-        //     .find({ "flag": false }, filter)
-        //     .populate('music_type')
-        //     .populate('state')
-        //     .skip(start)
-        //     .limit(length)
+        var artist = await Artist
+            .find({ "flag": false }, filter)
+            .populate('music_type')
+            .populate('state')
+            .skip(start)
+            .limit(length)
         // var aggregate = [
         //     {
         //         "$match": {
