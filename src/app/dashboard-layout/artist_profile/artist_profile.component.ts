@@ -139,7 +139,7 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
           setTimeout(() => {
             that.audio_ins = [];
             dataTablesParameters['artist_id'] = params['id'];
-            dataTablesParameters['sort'] = this.sort_by;
+            dataTablesParameters['sort_by'] = this.sort_by;
             that.ArtistProfileService.getAllTrack(dataTablesParameters).subscribe(response => {
               that.artisttrack = response['track']['music'];
               if(that.artisttrack.length > 0) {
@@ -195,6 +195,7 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
           setTimeout(() => {
             that.audio_ins = [];
             dataTablesParameters['artist_id'] = params['id'];
+            dataTablesParameters['sort_by'] = this.sort_by;
             that.ArtistProfileService.getAllRanking(dataTablesParameters).subscribe(response => {
               that.rankingtrack = response['track']['music'];
               that.rankingtrack.forEach((ele) => {that.audio_ins.push(false);});
