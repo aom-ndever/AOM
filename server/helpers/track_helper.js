@@ -45,7 +45,7 @@ track_helper.delete_suspend_track = async (track_id) => {
         return { "status": 0, "message": "Error occured while finding track", "error": err }
     }
 };
-track_helper.get_all_track_of_artist = async (artist_id, start, length, sort) => {
+track_helper.get_all_track_of_artist = async (artist_id, start, length, sort_by = {}) => {
 
     try {
 
@@ -58,7 +58,7 @@ track_helper.get_all_track_of_artist = async (artist_id, start, length, sort) =>
         var musics = await Track
             .find({ "artist_id": new ObjectId(artist_id) })
             .populate({ path: 'artist_id', populate: { path: 'music_type' } })
-            .sort(sort)
+            .sort(sort_by)
             .skip(start)
             .limit(length);
 

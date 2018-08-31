@@ -412,58 +412,58 @@ artist_helper.get_artist_by_filter = async (filter, start, length, filters) => {
         //     .populate('state')
         //     .skip(start)
         //     .limit(length)
-        var aggregate = [
-            {
-                "$match": {
-                    "flag": false
-                }
-            },
+        // var aggregate = [
+        //     {
+        //         "$match": {
+        //             "flag": false
+        //         }
+        //     },
 
-            {
-                '$lookup': {
-                    from: 'music_type',
-                    localField: 'music_type',
-                    foreignField: '_id',
-                    as: 'music_type'
-                }
-            },
-            {
-                '$unwind': '$music_type'
-            },
-            {
-                '$lookup': {
-                    from: 'state',
-                    localField: 'state',
-                    foreignField: '_id',
-                    as: 'state'
-                }
-            },
-            {
-                '$unwind': '$state'
-            },
+        //     {
+        //         '$lookup': {
+        //             from: 'music_type',
+        //             localField: 'music_type',
+        //             foreignField: '_id',
+        //             as: 'music_type'
+        //         }
+        //     },
+        //     {
+        //         '$unwind': '$music_type'
+        //     },
+        //     {
+        //         '$lookup': {
+        //             from: 'state',
+        //             localField: 'state',
+        //             foreignField: '_id',
+        //             as: 'state'
+        //         }
+        //     },
+        //     {
+        //         '$unwind': '$state'
+        //     },
 
-            {
-                $skip: start
-            },
-            {
-                $limit: length
-            }
-        ];
+        //     {
+        //         $skip: start
+        //     },
+        //     {
+        //         $limit: length
+        //     }
+        // ];
 
-        if (filter) {
-            aggregate.push({
-                "$match": filter
-            })
-        }
+        // if (filter) {
+        //     aggregate.push({
+        //         "$match": filter
+        //     })
+        // }
 
-        if (filters) {
-            aggregate.push({
-                "$match":
+        // if (filters) {
+        //     aggregate.push({
+        //         "$match":
 
-                    { $or: [{ "artist.first_name": filters }, { "artist.last_name": filters }] }
-            });
-        }
-        let artist = await Artist.aggregate(aggregate);
+        //             { $or: [{ "artist.first_name": filters }, { "artist.last_name": filters }] }
+        //     });
+        // }
+        // let artist = await Artist.aggregate(aggregate);
 
         if (artist) {
             return { "status": 1, "message": "artist details found", "artist": artist };
