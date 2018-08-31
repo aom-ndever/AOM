@@ -631,7 +631,7 @@ router.post('/suspend/:admin_id', async (req, res) => {
         var admin_resp = await admin_helper.update_admin_status(req.params.admin_id, stat);
       }
       logger.trace("Admin Suspended= ", { "admin": admin_resp });
-      res.status(config.OK_STATUS).json({ "admin": admin_resp });
+      res.status(config.OK_STATUS).json({ "message": "Account Suspended" });
     }
   }
   else {
