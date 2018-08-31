@@ -1867,7 +1867,7 @@ a.play-btn{
     padding-left: 5px;
     text-align: left;
 }
-.vote-wrap .track-table{height: 400px;}
+.vote-wrap .track-table{max-height: 400px;}
 .track-pic,.play-option{text-align: center;}
 .track-vote span{display: inline-block; vertical-align: middle; font-size: 12px; color:#9C27B0; font-weight: bold; padding-left: 10px;}
 .track-vote span span{font-weight: 400; padding-left: 0;}
@@ -4820,12 +4820,12 @@ max-height: unset !important;
     }
     .track_head_container{width: 250px !important;}
     .action_div .popover-header{
-            background: transparent;
-    border: none;
-    font-size: 14px;
-    color: #1a1a1a;
-    text-align: center;
-  padding-bottom: 4px;
+        background: transparent;
+        border: none;
+        font-size: 14px;
+        color: #1a1a1a;
+        text-align: center;
+        padding-bottom: 4px;
     }
     .action_div .popover-body .btn-primary{    padding: 0px 12px;
     font-size: 14px;
@@ -4837,7 +4837,39 @@ max-height: unset !important;
     border-color: transparent;
     color: #1a1a1a;
     opacity: .5;}
-    .tracks_dashboard_table{overflow: visible;}
+    .tracks_dashboard_table{
+        overflow: visible;
+    }
+.vote-wrap .final-wrap .img-wrap{     
+  height: 138px;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+  overflow: hidden;
+}
+.vote-wrap .final-wrap .img-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.track-comment-wrap .comments {
+    margin-top: 0;
+}
+.track-comment-wrap .comments .comment_back_btn{  
+    color: #9b26b0;
+    padding-left: 0;
+    margin-bottom: 20px;
+}
+.track-comment-wrap .comments .comment_back_btn i{  
+    color: #9b26b0;
+    margin-right: 11px;
+}
+.track-comment-wrap .comments .comment_back_btn:focus{
+    box-shadow: none;
+}
+.vote-wrap .track-table table thead tr td{
+    border-bottom: none;        
+}
+
 /*MEDIA START*/
 @media screen and (min-width: 768px){
     .content-block{width: 750px;}
