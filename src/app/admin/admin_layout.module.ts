@@ -59,8 +59,7 @@ import { AlertService } from './alerts/alerts.service';
           {path: 'contest', component: ContestComponent,canActivate: [AuthService]},
           {path: 'roles', component: RolesComponent,canActivate: [AuthService]}
         ]
-      },
-      {path : "**", redirectTo : ''}
+      }
     ])
   ],
   declarations: [ 

@@ -70,7 +70,7 @@ export class ForgetPasswordComponent implements OnInit {
       this.ForgetPasswordService.adminChangePassword(data).subscribe(response => {
         this.forget_password = '';
         this.conf = '';
-        this.router.navigate(['']);
+        this.router.navigate(['/admin']);
         this.toastr.success(response['message'], 'Success!');
       }, error => {
         this.toastr.error(error['error'].message, 'Error!');

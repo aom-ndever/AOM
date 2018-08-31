@@ -23,7 +23,8 @@ import { AuthService } from '../shared/auth.service';
     BrowserAnimationsModule,
     ToastrModule.forRoot(),
     RouterModule.forChild([
-      { path: 'forgot_password/:type/:id', component: ForgetPasswordComponent }
+      { path: 'forgot_password/:type/:id', component: ForgetPasswordComponent },
+      {path : "**", redirectTo : ''}
     ])
   ],
   declarations: [ForgetPasswordComponent],
