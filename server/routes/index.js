@@ -1308,7 +1308,7 @@ router.post('/admin_forgot_password', async (req, res) => {
       }
     }
   } else {
-    res.status(config.BAD_REQUEST).json({ message: errors });
+    res.status(config.BAD_REQUEST).json({ "message": "Please enter valid email address" });
   }
 });
 
