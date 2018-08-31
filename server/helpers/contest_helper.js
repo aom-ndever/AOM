@@ -112,5 +112,19 @@ contest_helper.get_all_contests = async (music) => {
     }
 }
 
+contest_helper.get_all_contests_list = async () => {
+    try {
+        var participate = await Contest.find()
+            .populate('music_type')
+        if (participate) {
+            return { "status": 1, "message": "contest details found", "contest": participate };
+        } else {
+            return { "status": 2, "message": "contest not found" };
+        }
+    } catch (err) {
+        return { "status": 0, "message": "Error occured while finding contest", "error": err }
+    }
+}
+
 
 module.exports = contest_helper;

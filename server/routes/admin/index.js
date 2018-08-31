@@ -468,7 +468,9 @@ router.post('/contest', async (req, res) => {
     sort["_id"] = 1;
   }
 
-  var contest = await round_helper.get_all_round(req.body.start, req.body.length, sort);
+  var contest = await contest_helper.get_all_contests_list(req.body.start, req.body.length, sort);
+  console.log('contest', contest);
+
   if (contest.status === 1) {
     logger.trace("got details successfully");
     res.status(config.OK_STATUS).json({ "status": 1, "contest": contest });
