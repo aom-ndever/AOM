@@ -1485,8 +1485,6 @@ router.post("/state", async (req, res) => {
     var artist_ids = [];
     var resp_artist = await artist_helper.get_artist_by_filter(filter, req.body.start, req.body.length, search);
 
-
-
     if (resp_artist.status == 1) {
       resp_artist.artist.forEach(artist => {
         artist_ids.push(new ObjectId(artist._id));
@@ -1545,7 +1543,6 @@ router.post("/mainpage", async (req, res) => {
 
     var resp_track = await track_helper.get_new_uploads(30, req.body.start, req.body.length);
 
-
     if (resp_track.status == 0 && resp_artist.status == 0) {
       logger.error("Error occured while fetching users = ", resp_track);
       res.status(config.INTERNAL_SERVER_ERROR).json(resp_track);
@@ -1593,10 +1590,6 @@ router.post("/artistv1", async (req, res) => {
     filter_for_risingstar.first_name = search;
     filter_for_charttoppers.first_name = search;
   }
-
-
-
-
   req.checkBody(schema);
   var errors = req.validationErrors();
   if (!errors) {
@@ -1659,12 +1652,10 @@ router.post('/get_media', async (req, res) => {
 router.post('/get_track', async (req, res) => {
   artist_id = req.body.artist_id
   var filter = {};
-
   var sort_by = 1;
   if (req.body.sort_by != 1) {
     sort_by = -1;
   }
-
   var sort = { created_at: sort_by }
   var track = await track_helper.get_all_track_of_artist(artist_id, req.body.start, req.body.length, sort);
   if (track.status === 1) {
@@ -1675,7 +1666,6 @@ router.post('/get_track', async (req, res) => {
     res.status(config.INTERNAL_SERVER_ERROR).json(track);
   }
 });
-
 
 
 router.post('/get_track_for_playlist', async (req, res) => {
@@ -1759,6 +1749,7 @@ router.get('/get_featured_artists', async (req, res) => {
     res.status(config.INTERNAL_SERVER_ERROR).json(artist);
   }
 });
+
 /**
  * @api {post} /followers Followers detail by Artist id- Get 
  * @apiName Followers detail by Artist id- Get
