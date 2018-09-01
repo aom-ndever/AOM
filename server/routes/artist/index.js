@@ -744,38 +744,40 @@ router.post("/participate", async (req, res) => {
         };
 
         var contest_data = await contest_helper.get_contest_by_id(obj.contest_id);
-        contest_music = contest_data.contest.music_type._id;
+        contest_music = contest_data.contest.music_type;
 
         var artist_data = await artist_helper.get_artist_by_id(artist_id);
-        console.log('artist_data', artist_data);
-
         artist_music = artist_data.artist.music_type._id;
-        console.log('artist_music', artist_music);
 
         if (contest_music.toString() === artist_music.toString()) {
             var resp_data = await participate_helper.get_participant(obj.artist_id, obj.contest_id, obj.track_id);
-            console.log('resp_data', resp_data);
-
-            if (resp_data && resp_data.participate == 0) {
+            if (resp_data.status == 2) {
                 var resp_datas = await participate_helper.insert_participant(obj);
+                console.log('resp_datas', resp_datas);
+                var resp_part = await participate_helper.get_participant(obj.artist_id, obj.contest_id, obj.track_id);
+                console.log('resp_part', resp_part);
+
                 var round = await round_helper.get_current_round_of_contest(obj.contest_id)
+                console.log('round', round);
 
-                var winner_obj = {
-                    artist_id: req.userInfo.id,
-                    contest_id: req.body.contest_id,
-                    track_id: req.body.track_id,
-                    round_id: round.round._id
-                };
-                var resp = await winner_helper.insert_winner(winner_obj);
-                console.log('resp', resp);
+                if (round.status == 1) {
+                    var winner_obj = {
+                        artist_id: req.userInfo.id,
+                        contest_id: req.body.contest_id,
+                        track_id: req.body.track_id,
+                        round_id: round.round._id
+                    }
 
+                    console.log('winner_obj', winner_obj);
+
+                    var resp = await winner_helper.insert_winner(winner_obj);
+                    console.log('resp', resp);
+                }
                 if (resp_data.status == 0) {
                     logger.error("Error occured while inserting = ", resp_data);
                     res.status(config.INTERNAL_SERVER_ERROR).json(resp_data);
                 } else
-                    console.log('1', 1);
-
-                var resp_data = await round_helper.get_round_by_id(obj.contest_id);
+                    var resp_data = await round_helper.get_round_by_id(obj.contest_id);
                 no_paritipant = resp_data.contest.no_of_participants + 1
                 var resp_data = await round_helper.update_participant(obj.contest_id, no_paritipant);
                 var resp_data = await artist_helper.update_is_submit(obj.track_id, true);

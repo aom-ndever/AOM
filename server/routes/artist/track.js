@@ -391,7 +391,7 @@ router.post("/change_status_of_download", async (req, res) => {
             var stat = "true"
             var artist_resp = await artist_helper.update_download(artist_id, track_id, stat);
 
-            res.status(config.OK_STATUS).json({ "message": "You have turn on the ownload option" });
+            res.status(config.OK_STATUS).json({ "message": "You have turn on the download option" });
         }
         else {
             var stat = "false"
