@@ -131,7 +131,6 @@ router.post("/", async (req, res) => {
                 res.status(config.INTERNAL_SERVER_ERROR).json({ "error": resp.error });
             } else {
                 var resp = await artist_helper.get_artist_by_id(artist_id);
-                console.log('resp', resp);
 
                 no_track = resp.artist.no_of_tracks + 1
                 res.status(config.OK_STATUS).json({ "message": "Track Added Successfully" });

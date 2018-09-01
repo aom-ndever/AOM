@@ -753,12 +753,9 @@ router.post("/participate", async (req, res) => {
             var resp_data = await participate_helper.get_participant(obj.artist_id, obj.contest_id, obj.track_id);
             if (resp_data.status == 2) {
                 var resp_datas = await participate_helper.insert_participant(obj);
-                console.log('resp_datas', resp_datas);
                 var resp_part = await participate_helper.get_participant(obj.artist_id, obj.contest_id, obj.track_id);
-                console.log('resp_part', resp_part);
 
                 var round = await round_helper.get_current_round_of_contest(obj.contest_id)
-                console.log('round', round);
 
                 if (round.status == 1) {
                     var winner_obj = {
@@ -768,10 +765,8 @@ router.post("/participate", async (req, res) => {
                         round_id: round.round._id
                     }
 
-                    console.log('winner_obj', winner_obj);
 
                     var resp = await winner_helper.insert_winner(winner_obj);
-                    console.log('resp', resp);
                 }
                 if (resp_data.status == 0) {
                     logger.error("Error occured while inserting = ", resp_data);

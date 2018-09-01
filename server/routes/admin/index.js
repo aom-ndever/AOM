@@ -410,7 +410,6 @@ router.post("/add_existing_contest", async (req, res) => {
         if (arry.length > 0) {
 
           var roundget = await round_helper.get_rounds({ "_id": new ObjectId(round.round._id) }, { "track_id": null });
-          console.log('roundget.status', roundget.status);
 
           if (roundget.status == 0) {
             var roundAdd = await round_helper.add_participant_in_next_round({ "_id": new ObjectId(round.round._id) }, { "track_id": arry });
@@ -470,7 +469,6 @@ router.post('/contest', async (req, res) => {
   }
 
   var contest = await contest_helper.get_all_contests_list(req.body.start, req.body.length, sort);
-  console.log('contest', contest);
 
   if (contest.status === 1) {
     logger.trace("got details successfully");
