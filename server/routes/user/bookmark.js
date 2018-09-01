@@ -55,7 +55,7 @@ router.post('/add', async (req, res) => {
         res.status(config.INTERNAL_SERVER_ERROR).json(resp_data);
       } else {
         logger.trace("music got successfully = ", resp_data);
-        res.status(config.OK_STATUS).json(resp_data);
+        res.status(config.OK_STATUS).json({ "message": "Bookmark done" });
       }
     }
     else {
@@ -68,7 +68,7 @@ router.post('/add', async (req, res) => {
       } else if (resp_get.status === 2) {
         res.status(config.BAD_REQUEST).json({ "status": 0, "message": "Can't remove bookmark" });
       } else {
-        res.status(config.OK_STATUS).json({ "status": 1, "message": "bookmark has been removed" });
+        res.status(config.OK_STATUS).json({ "status": 1, "message": "Bookmark has been removed" });
       }
     }
   }
