@@ -351,6 +351,9 @@ artist_helper.get_all_artist = async () => {
     try {
         var aggregate = [
             {
+                "$match": { "flag": false }
+            },
+            {
                 $lookup: {
                     from: "state",
                     localField: "state",
@@ -745,7 +748,7 @@ artist_helper.update_artist_password = async (artist_id, password) => {
 artist_helper.get_new_uploads = async (filter = {}) => {
     try {
         var artist = await Artist
-            .find(filter)
+            .find({ "flag": false })
             .populate('music_type')
             .populate('state')
             .populate('region')
