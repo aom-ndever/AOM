@@ -37,7 +37,7 @@ round_helper.get_round_by_id = async (id) => {
 
     try {
         var contest = await Round
-            .find({ "contest_id": new ObjectId(id) })
+            .findOne({ "contest_id": new ObjectId(id) })
         if (contest) {
             return { "status": 1, "message": "contest details found", "contest": contest };
         } else {
