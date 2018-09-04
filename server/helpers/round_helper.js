@@ -152,7 +152,7 @@ round_helper.get_all_contests = async () => {
 
 
 round_helper.get_current_round_of_contest = async (id) => {
-    // try {
+
     let current = moment().toISOString();
     var round = await Round
         .findOne({
@@ -171,9 +171,7 @@ round_helper.get_current_round_of_contest = async (id) => {
         return { "status": 2, "message": "contest not found" };
     }
 
-    //  } catch (err) {
-    //    return { "status": 0, "message": "Error occured while finding contest", "error": err }
-    // }
+
 };
 round_helper.get_finished_round_of_contest = async (id) => {
     // try {
