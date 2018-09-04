@@ -32,9 +32,10 @@ playlist_helper.get_playlist_by_user_id = async (user_id, start, length) => {
             .find({ "user_id": user_id })
             .populate({ path: 'track_id', populate: { path: 'artist_id' } })
             .populate({ path: 'user_id', populate: { path: 'music_type' } })
+            .sort({ 'created_at': -1 })
             .skip(start)
             .limit(length)
-            .sort({ 'created_at': -1 })
+
 
 
         var filter_cnt = playlist.length;
