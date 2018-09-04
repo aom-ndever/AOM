@@ -783,7 +783,7 @@ router.post("/participate", async (req, res) => {
                 var resp_data = await round_helper.update_participant(obj.contest_id, no_paritipant);
                 var resp_data = await artist_helper.update_is_submit(obj.track_id, true);
                 logger.trace(" got successfully = ", resp_datas);
-                res.status(config.OK_STATUS).json(resp_datas);
+                res.status(config.OK_STATUS).json({ "message": "Participated Successfully" });
             }
             else {
                 logger.trace("Already participated for this contest");
