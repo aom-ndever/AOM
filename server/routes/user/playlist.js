@@ -376,7 +376,7 @@ router.delete('/:playlist_id', async (req, res) => {
   } else if (del_resp.status === 2) {
     res.status(config.BAD_REQUEST).json({ "status": 0, "message": "Can't remove playlist" });
   } else {
-    res.status(config.OK_STATUS).json({ "status": 1, "message": "playlist has been removed" });
+    res.status(config.OK_STATUS).json({ "status": 1, "message": "Playlist has been removed" });
   }
 });
 
