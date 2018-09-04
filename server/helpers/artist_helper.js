@@ -83,7 +83,7 @@ artist_helper.insert_user_to_artists = async (object) => {
         let data = await Artist.insertMany([object]);
         return { "status": 1, "message": "Record inserted", "artist": data };
     } catch (err) {
-        return { "status": 0, "message": "Error occured while inserting artist", "error": err };
+        return { "status": 0, "message": "Already Registered by This Email" };
     }
 };
 
