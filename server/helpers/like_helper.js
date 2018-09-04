@@ -11,7 +11,7 @@ like_helper.like_for_track = async (user_id, obj) => {
     let like = new Like(obj)
     try {
         let likes = await like.save();
-        return { "status": 1, "message": "like done", "like": likes };
+        return { "status": 1, "message": "Track liked sccessfully  ", "like": likes };
 
     } catch (err) {
         return { "status": 0, "message": "Error occured while liking ", "error": err };
