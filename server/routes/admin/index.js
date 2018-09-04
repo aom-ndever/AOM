@@ -413,16 +413,14 @@ router.post("/add_existing_contest", async (req, res) => {
 
           if (roundget.status == 0) {
             var roundAdd = await round_helper.add_participant_in_next_round({ "_id": new ObjectId(round.round._id) }, { "track_id": arry });
-            for (let x of track.winner) {
 
+            for (let x of track.winner) {
               var object = {
                 "votes": x.votes,
                 "track_id": x.track_id,
                 "round_id": current_round.round._id
-
               }
             }
-
             var winner = winner_helper.insert_winner(object)
           }
         }
