@@ -188,9 +188,13 @@ router.post('/vote_track', async (req, res) => {
       if (data.status == 2) {
         var data = await vote_track_helper.vote_for_track(user_id, obj);
         var resp_data = await track_helper.get_all_track_by_track_id(obj.track_id);
-
         var no_vote = resp_data.track.no_of_votes + 1;
         resp_data = await track_helper.update_votes(obj.track_id, no_vote);
+
+        var resp_data = await artist_helper.get_artist_by_id(obj.artist_id);
+        var no_vote = resp_data.artist.no_of_votes + 1;
+        resp_data = await artist_helper.update_artist_votes(obj.artist_id, no_vote);
+
         resp_data = await winner_helper.get_qualified_contestant(obj.track_id, obj.round_id);
 
         if (resp_data.status == 2) {

@@ -24,9 +24,7 @@ playlist_helper.get_playlist_by_user_id = async (user_id, start, length) => {
             .populate({ path: 'track_id', populate: { path: 'artist_id' } })
             .populate({ path: 'user_id', populate: { path: 'music_type' } })
 
-
         var tot_cnt = playlists.length;
-
 
         var playlist = await Playlist
             .find({ "user_id": user_id })
@@ -35,8 +33,6 @@ playlist_helper.get_playlist_by_user_id = async (user_id, start, length) => {
             .sort({ 'created_at': -1 })
             .skip(start)
             .limit(length)
-
-
 
         var filter_cnt = playlist.length;
         if (playlist) {

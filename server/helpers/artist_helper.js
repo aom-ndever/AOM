@@ -654,7 +654,7 @@ artist_helper.get_all_artist_by_comment = async () => {
 artist_helper.get_all_active_and_suspend_artist = async (start, length, filter, sort_by = {}) => {
     try {
 
-        var artists = await Artist.find(filter)
+        var artists = await Artist.find()
         var tot_cnt = artists.length;
 
         var artist = await Artist
