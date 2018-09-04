@@ -77,6 +77,7 @@ artist_helper.get_transaction_by_artist_id = async (artist_id, start, length) =>
     }
 };
 
+
 artist_helper.insert_user_to_artists = async (object) => {
 
     try {
@@ -150,6 +151,9 @@ artist_helper.insert_transaction = async (object) => {
 
 artist_helper.delete_bank = async (bank_id, artist_id) => {
     try {
+        console.log('bank_id', bank_id);
+        console.log('artist_id', artist_id);
+
 
         var artist = await Bank.findOneAndRemove({ "_id": new ObjectId(bank_id), "artist_id": new ObjectId(artist_id) })
         if (artist) {
@@ -163,7 +167,19 @@ artist_helper.delete_bank = async (bank_id, artist_id) => {
 };
 
 
+artist_helper.delete_account = async (bank_id, artist_id) => {
+    try {
 
+        var artist = await Account.findOneAndRemove({ "bank_id": new ObjectId(bank_id), "artist_id": new ObjectId(artist_id) })
+        if (artist) {
+            return { "status": 1, "message": "Bank Account Deleted", "artist": artist };
+        } else {
+            return { "status": 2, "message": "bank not found" };
+        }
+    } catch (err) {
+        return { "status": 0, "message": "Error occured while finding bank", "error": err }
+    }
+};
 artist_helper.update_bank = async (artist_id, card_id) => {
     try {
 

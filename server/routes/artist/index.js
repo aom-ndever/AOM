@@ -202,6 +202,10 @@ router.post('/add_bank_details', async (req, res) => {
     var artist_data = await artist_helper.get_artist_by_id(artist_id);
 
     var card_resp = await artist_helper.insert_bank(obj);
+    console.log('card_resp.card', card_resp.card);
+
+    bank_id = card_resp.card._id
+
     if (card_resp.status === 0) {
         res.status(config.INTERNAL_SERVER_ERROR).json(card_resp);
     } else {
@@ -231,7 +235,8 @@ router.post('/add_bank_details', async (req, res) => {
                 });
                 var account_obj = {
                     "artist_id": artist_id,
-                    "account_id": account.id
+                    "account_id": account.id,
+                    "bank_id": bank_id
                 }
                 var card_resp = await artist_helper.insert_account(account_obj);
 
@@ -355,6 +360,7 @@ router.put('/notification_settings', function (req, res) {
 router.delete('/bank/:bank_id', async (req, res) => {
     artist_id = req.userInfo.id;
     var del_resp = await artist_helper.delete_bank(req.params.bank_id, artist_id);
+    var del_resp = await artist_helper.delete_account(req.params.bank_id, artist_id);
     if (del_resp.status === 0) {
         res.status(config.INTERNAL_SERVER_ERROR).json({ "status": 0, "message": "Error occured while deleting artist bank", "error": del_resp.error });
     } else if (del_resp.status === 2) {

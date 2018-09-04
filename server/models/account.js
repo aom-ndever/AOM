@@ -9,6 +9,7 @@ var Schema = mongoose.Schema;
 var AccountModelSchema = new Schema({
     account_id: String,
     artist_id: { type: mongoose.Schema.Types.ObjectId, ref: 'artist' },
+    bank_id: { type: mongoose.Schema.Types.ObjectId, ref: 'bank' },
     created_at: { type: Date, default: Date.now }
 }, { versionKey: false });
 
