@@ -779,6 +779,9 @@ router.post("/participate", async (req, res) => {
                     res.status(config.INTERNAL_SERVER_ERROR).json(resp_data);
                 } else
                     var resp_data = await round_helper.get_round_by_id(obj.contest_id);
+                console.log('resp_data', resp_data);
+                console.log(' resp_data.contest.no_of_participants', resp_data.contest.no_of_participants);
+
                 no_paritipant = resp_data.contest.no_of_participants + 1
                 var resp_data = await round_helper.update_participant(obj.contest_id, no_paritipant);
                 var resp_data = await artist_helper.update_is_submit(obj.track_id, true);
