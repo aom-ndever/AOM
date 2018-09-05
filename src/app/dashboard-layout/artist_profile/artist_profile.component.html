@@ -54,7 +54,7 @@
                 <span>{{artistfollower.length}}</span>
                 <ul>
                   <li *ngFor="let follower of artistfollower;">
-                    <img src="{{follower && follower['user_id'] && follower['user_id'].image ? user_img_url+follower['user_id'].image : 'img/fan1.png'}}" alt="Fan">
+                    <img src="{{follower && follower['user_id'] && follower['user_id'].image ? user_img_url+follower['user_id'].image : 'img/upload1.png'}}" alt="Fan">
                   </li>
                 </ul>
               </div>
@@ -67,7 +67,7 @@
                 <div class="comment-block" *ngFor="let comment of display_comment;">
                   <div class="s-name" *ngIf="comment.track_id">{{comment.track_id.name}}</div>
                   <div class="s-img">
-                    <img src="{{comment &&  comment.user_id && comment.user_id.image ? user_img_url+comment.user_id.image : 'img/fan1.png' }}" alt="img">
+                    <img src="{{comment &&  comment.user_id && comment.user_id.image ? user_img_url+comment.user_id.image : 'img/upload1.png' }}" alt="img">
                   </div>
                   <div class="cm-date-name">
                     <h6>{{comment.user_id && comment.user_id.first_name ? comment.user_id.first_name : '' + ' '+comment && comment.user_id && comment.user_id.last_name ? comment.user_id.last_name : '' }}.</h6>
@@ -140,7 +140,7 @@
                               <td class="track-det" colspan="2">
                                    <div class="track-pic">
                                 <a href="javascript:;">
-                                  <img src="{{artist.image ? track_url+artist.image : 'img/track-img.png'}}" style="height:50px;width:50px;" alt="Track Image">
+                                  <img src="{{artist.image ? track_url+artist.image : 'img/upload1.png'}}" style="height:50px;width:50px;" alt="Track Image">
                                 </a>
                               </div>
                               <div class="track_title">
@@ -240,7 +240,7 @@
                               <td class="track-det" colspan="2">
                                 <div class="track-pic">
                                   <a href="javascript:;">
-                                    <img src="{{rank.image ? track_url+rank.image : 'img/track-img.png'}}" alt="Track Image" style="height: 50px;width: 50px;;">
+                                    <img src="{{rank.image ? track_url+rank.image : 'img/upload1.png'}}" alt="Track Image" style="height: 50px;width: 50px;;">
                                   </a>
                                 </div>
                                 <div class="track_title">

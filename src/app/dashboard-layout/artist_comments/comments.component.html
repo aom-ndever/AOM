@@ -43,7 +43,7 @@
                     </div>
                     <div class="comment_box">
                         <div class="s-name" *ngIf="comment.track_id">{{comment.track_id.name}}</div>
-                      <div class="s-img"><img src="{{comment.user_id.image ? user_img_url+comment.user_id.image : 'img/fan1.png' }}" alt="img"></div>
+                      <div class="s-img"><img src="{{comment.user_id.image ? user_img_url+comment.user_id.image : 'img/upload1.png' }}" alt="img"></div>
                       <div class="cm-date-name">
                         <h6>{{comment.user_id.first_name+ ' '+comment.user_id.last_name}}.</h6>
                         <p>{{comment.created_at | timeAgo}}</p>
