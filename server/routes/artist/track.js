@@ -125,8 +125,18 @@ router.post("/", async (req, res) => {
 
             res.status(config.INTERNAL_SERVER_ERROR).json({ "message": "Please Add bank Details to get money into your Account When Track is being Purchased" });
         } else if (card_resp.status === 1) {
+            var artist = await artist_helper.get_artist_by_id(artist_id),
+                no_track = artist.artist.no_of_tracks + 1;
+            var track = await track_helper.update_artist_for_track(artist_id, no_track)
+
+
+            // var artist = await artist_helper.get_artist_by_id(artist_id),
+            //     no_track = artist.artist.no_of_tracks + 1;
+            // var track = await track_helper.update_artist_for_track(artist_id, no_track)
 
             var resp = await track_helper.insert_track(artist_id, obj);
+
+
             if (resp.status === 0) {
                 res.status(config.INTERNAL_SERVER_ERROR).json({ "error": resp.error });
             } else {
