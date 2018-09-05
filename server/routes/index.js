@@ -1668,6 +1668,26 @@ router.post('/get_track', async (req, res) => {
 });
 
 
+
+
+router.post('/get_tracks', async (req, res) => {
+  artist_id = req.body.artist_id
+  var filter = {};
+  var sort_by = 1;
+  if (req.body.sort_by != 1) {
+    sort_by = -1;
+  }
+  var sort = { created_at: sort_by }
+  var track = await track_helper.get_all_track_of_artists(artist_id, req.body.start, req.body.length, sort);
+  if (track.status === 1) {
+    logger.trace("got details successfully");
+    res.status(config.OK_STATUS).json({ "status": 1, "track": track });
+  } else {
+    logger.error("Error occured while fetching = ", track);
+    res.status(config.INTERNAL_SERVER_ERROR).json(track);
+  }
+});
+
 router.post('/get_track_for_playlist', async (req, res) => {
   artist_id = req.body.artist_id
   var filter = {};
