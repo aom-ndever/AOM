@@ -41,7 +41,7 @@
              
                 <div class="icon_container" *ngIf="user['admin']['account_type'] == 'super_admin' && role['account_type'] != 'super_admin'">
                     <img src="img/suspend.png" >
-                  <a href="javascript:;"  (click)="suspendAdmin(role['_id'], 0)">
+                  <a href="javascript:;"  (click)="suspendAdmin(role['_id'], 0, role['status'])">
                     {{role['status'] == 'suspended' ? 'un-suspend' : 'Suspend'}}
                   </a>
                 

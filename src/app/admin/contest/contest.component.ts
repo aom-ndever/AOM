@@ -207,7 +207,7 @@ export class ContestComponent implements OnInit {
         // //let enddt = new Date(stdt.getTime() + this.contest_detail['duration'] * 24 * 60 * 60 * 1000);
         // console.log(this.getDaysDiff(stdt, new Date()));
         if(stdt.getTime() <= (new Date()).getTime() ) {
-          this.toastr.info('The Date must be Bigger or Equal to today date');
+          this.toastr.info('The date must be bigger or equal to today date');
           return;
         }
         
@@ -244,7 +244,7 @@ export class ContestComponent implements OnInit {
         let stdt = new Date(timestamp);
         //let enddt = new Date(stdt.getTime() + this.contest_detail['duration'] * 24 * 60 * 60 * 1000);
         if(stdt.getTime() <= (new Date()).getTime() ) {
-          this.toastr.info('The Date must be Bigger or Equal to today date');
+          this.toastr.info('The date must be bigger or equal to today date');
           return;
         }
         let data = {
@@ -291,7 +291,7 @@ export class ContestComponent implements OnInit {
     this.contest_detail['day'] = dt.getUTCDate();
     this.contest_detail['month'] = (dt.getUTCMonth() + 1 );
     this.contest_detail['year'] = dt.getUTCFullYear();
-    this.contest_detail['music_type'] = this.contest_detail['contest_id']['music_type'];
+    this.contest_detail['music_type'] = this.contest_detail['contest_id']['music_type']['_id'];
     this.getStateFromRegion(this.contest_detail['region']);
   }
 }

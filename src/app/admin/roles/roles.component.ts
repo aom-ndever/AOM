@@ -267,7 +267,7 @@ export class RolesComponent implements OnInit {
     });
   }
   // suspend admin account
-  suspendAdmin(id : any, idx : any) {
+  suspendAdmin(id : any, idx : any, status) {
     let thi = this;
     swal({
       title: 'Are you sure?',
@@ -276,7 +276,7 @@ export class RolesComponent implements OnInit {
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, suspend it!'
+      confirmButtonText: 'Yes,'+(status == 'suspended' ? ' un-suspend' : ' suspend' )+' it!'
     }).then((flag) => {
       if(flag.value) {
         thi.RolesService.suspendAdmin(id).subscribe(response =>{

@@ -181,17 +181,20 @@
                 <option value="artist">Artist</option>
                 <option value="user">Listener</option>
               </select>
+              <div class="cust_err_msg" *ngIf="forget_validation && !forget_form.controls['type'].valid">
+                <span *ngIf="forget_form.controls['type'].errors['required']" class="text-danger">Type is required.</span>
+              </div>
             </div>
             <div class="form-group">
               <label class="control-label custom_form_label">Email Id</label>
               <input class="form-control custom_form" name="email" formControlName="email" [(ngModel)]="forget_pwd_data.email" placeholder="Enter Email"/>
-              <div *ngIf="!forget_form.controls['email'].valid && forget_form.controls['email'].dirty && forget_form.controls['email'].touched">
+              <div class="cust_err_msg" *ngIf="forget_validation && !forget_form.controls['email'].valid">
                 <span *ngIf="forget_form.controls['email'].errors['required']" class="text-danger">Email is required.</span>
                 <span *ngIf="!forget_form.controls['email'].errors['required'] && forget_form.controls['email'].errors['email']" class="text-danger">Enter valid email.</span>
               </div>
             </div>
             <div class="form-group text-right">
-              <button class="btn forget_btn" (click)="forgetPassword()" [disabled]="!forget_form.valid || show_spinner">Submit <i *ngIf="show_spinner" class="fa fa-spinner fa-spin"></i></button>
+              <button class="btn forget_btn" (click)="forgetPassword(forget_form.valid)" [disabled]="show_spinner">Submit <i *ngIf="show_spinner" class="fa fa-spinner fa-spin"></i></button>
             </div>
           </div>
         </form>

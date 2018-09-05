@@ -330,11 +330,11 @@
                             </div>
                             <div class="cat {{p &&  p['music_type'] ? p['music_type']['alias'] : ''}}">{{p && p['music_type'] ? p['music_type']['name'] : ''}}</div>
                           </div>
-                          <button href="javascript:;" (click)="voteTrack(p['track']['_id'], p['artist']['_id'], i)"  class="add-btn">Vote</button>
+                          <button href="javascript:;" *ngIf="!p['is_voted']" (click)="voteTrack(p['track']['_id'], p['artist']['_id'], i)"  class="add-btn">Vote</button>
                     </div>
                   </div>
                 </div>
-                <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center" *ngIf="!show_loader && participants['length'] > 0">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center" *ngIf="!show_loader && participants['length'] > 12">
                   <button class="btn btn-lg btn-default" (click)="loadMore()" [disabled]="show_spinner">load more <i *ngIf="show_spinner" class="fa fa-spinner fa-spin"></i></button>
                 </div>
               </div>
