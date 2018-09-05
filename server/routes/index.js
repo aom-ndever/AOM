@@ -1471,7 +1471,6 @@ router.post("/state", async (req, res) => {
       $in: tmp
     };
   }
-  console.log('filter', filter);
 
   if (req.body.search) {
     var r = new RegExp(req.body.search);
@@ -1586,7 +1585,7 @@ router.post("/artistv1", async (req, res) => {
   if (req.body.search) {
     var r = new RegExp(req.body.search);
     var search = { "$regex": r, "$options": "i" };
-
+    filter_for_risingstar.first_name = search;
   }
   req.checkBody(schema);
   var errors = req.validationErrors();
@@ -1599,7 +1598,7 @@ router.post("/artistv1", async (req, res) => {
     var resp_artist = await artist_helper.get_new_uploads(filter);
 
     //var resp_track = await artist_helper.get_artist_by_id(filter);
-    var resp_chart = await artist_helper.get_all_artist(search);
+    var resp_chart = await artist_helper.get_all_artist();
 
     if (resp_artist.status == 0 && resp_chart.status == 0) {
       logger.error("Error occured while fetching users = ", resp_artist);
