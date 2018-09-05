@@ -76,7 +76,7 @@
                     </thead>
                     <tbody>
                         <tr *ngFor="let val of flagged_list; let i = index;">
-                            <td>{{i+1}}</td>
+                            <td>{{flag_row_cnt + i}}</td>
                             <td>{{val['first_name']+' '+val['last_name']}}</td>
                             <td>{{val['created_at'] | date:'M d, yyyy'}}May 12, 2018</td>
                             <td class="td_img">

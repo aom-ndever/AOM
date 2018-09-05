@@ -30,6 +30,13 @@ export class WhatsNewComponent implements OnInit, OnDestroy {
   music_type_list : any = [];
   subscription: Subscription;
   featured_artist : any = [];
+  artist_list : any = [];
+  track_list : any = [];
+  artist_start : any = 0;
+  artist_loader : boolean = false;
+  track_start : any = 0;
+  track_loader : boolean = false;
+  length : any = 10;
   constructor(private WhatsNewService : WhatsNewService,
      private toastr: ToastrService,
      private MessageService : MessageService
@@ -82,6 +89,10 @@ export class WhatsNewComponent implements OnInit, OnDestroy {
           this.audio_ins[response['index']] = true;
         }
       }
+      if(response && response['action'] == 'bottom_play' && response['list'] == 1) {
+        this.audio_ins.forEach((ele, idx) => { this.audio_ins[idx] = false; } );
+        this.audio_ins[response['index']] = true;
+      }
     });
   }
 
@@ -102,18 +113,26 @@ export class WhatsNewComponent implements OnInit, OnDestroy {
   
   // Get all whatsnew data
   getAllData() {
-    let data = {
-      "filter" : []
-    };
+    // let data = {
+    //   "filter" : []
+    // };
     
-    data['filter'].push({
-      'field' : 'music_type', value :  this.advance_filter.music_type ? this.advance_filter.music_type : ''
-    });
+    // data['filter'].push({
+    //   'field' : 'music_type', value :  this.advance_filter.music_type ? this.advance_filter.music_type : ''
+    // });
+    let data = {
+      music_type : this.advance_filter.music_type ? this.advance_filter.music_type : '',
+      start : 0,
+      length : this.length
+    };
+    // data['music_type'] = this.advance_filter.music_type ? this.advance_filter.music_type : '';
     
     this.audio_ins = [];
     this.show_loader = true;
     this.WhatsNewService.getWhatsnewData(data).subscribe(response => {
       this.whatsnewdata = response;
+      this.artist_list = response['artist'];
+      this.track_list = response['track'];
       this.show_loader = false;
       if(this.whatsnewdata['track']) {
         this.whatsnewdata['track'].forEach((ele) => {
@@ -163,10 +182,16 @@ export class WhatsNewComponent implements OnInit, OnDestroy {
   filter(e : any) {
     if(e.keyCode == 13) {
       let data = {
-        search : this.search_str
+        search : this.search_str,
+        start : 0,
+        length : this.length
       };
+      this.artist_start = 0;
+      this.track_start = 0;
       this.WhatsNewService.getWhatsnewData(data).subscribe(response => {
         this.whatsnewdata = response;
+        this.artist_list = response['artist'];
+        this.track_list = response['track'];
         this.getAllFollower();
       });
     }
@@ -183,27 +208,29 @@ export class WhatsNewComponent implements OnInit, OnDestroy {
   // Advance filter
   advanceFilter() {
     let data = {
-      "filter" : []
+      start : 0,
+      length : this.length
     };
-    if(this.advance_filter.music_type && this.advance_filter.music_type != "") {
-      data['filter'].push({
-        'field' : 'music_type', value :  this.advance_filter.music_type
-      });
-    }
+    this.artist_start = 0;
+    this.track_start = 0;
     
+    data['music_type'] = this.advance_filter && this.advance_filter.music_type ? this.advance_filter.music_type : '';
+       
     if(this.region_filter.length > 0) {
-      data['filter'].push({
-        'field' : 'state', value :  this.region_filter
-      });
+      // data['filter'].push({
+      //   'field' : 'state', value :  this.region_filter
+      // });
+      data['state'] = this.region_filter;
     }
     this.show_filter = false;
     this.show_loader = true;
     this.WhatsNewService.getWhatsnewData(data).subscribe(response => {
       this.whatsnewdata = response;
+      this.artist_list = response['artist'];
+      this.track_list = response['track'];
       this.getAllFollower();
       this.show_loader = false;
-      if(response['artist'].length <= 0)
-        this.toastr.success('No result found.', 'Success!');
+      
     }, error => {
       this.toastr.error(error['error'].message,'Error!');
     });
@@ -257,6 +284,42 @@ export class WhatsNewComponent implements OnInit, OnDestroy {
   getAllState() {
     this.WhatsNewService.getAllState().subscribe((response) => {
       this.state_list = response['state'];
+    });
+  }
+  // Load more artist
+  loadMoreArtist() {
+    this.artist_start = this.artist_start + this.length;
+    let data = {
+      start : this.artist_start,
+      length : this.length
+    };
+    this.artist_loader = true;
+    this.WhatsNewService.getWhatsnewData(data).subscribe(response => {
+      // this.whatsnewdata = response;
+      this.artist_list = [...this.artist_list,...response['artist']];
+      this.getAllFollower();
+    }, error => {
+      this.toastr.error(error['error'].message,'Error!');
+    }, () => {
+      this.artist_loader = false;
+    });
+  }
+  // Load more track
+  loadMoreTrack() {
+    this.track_start = this.track_start + this.length;
+    let data = {
+      start : this.track_start,
+      length : this.length
+    };
+    this.track_loader = true;
+    this.WhatsNewService.getWhatsnewData(data).subscribe(response => {
+      // this.whatsnewdata = response;
+      this.track_list = [...this.track_list,...response['track']];
+      this.getAllFollower();
+    }, error => {
+      this.toastr.error(error['error'].message,'Error!');
+    }, () => {
+      this.track_loader = false;
     });
   }
 }

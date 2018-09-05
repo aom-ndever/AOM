@@ -51,6 +51,7 @@ export class MyMusicComponent implements OnInit, OnDestroy {
   share_form_validation : boolean = false;
   user : any = '';
   track_data : any = {};
+  track_row_cnt = 1;
   constructor(
     private modalService: NgbModal,
     private MyMusicService : MyMusicService,
@@ -75,6 +76,10 @@ export class MyMusicComponent implements OnInit, OnDestroy {
           this.audio_ins[response['index']] = true;
         }
       }
+      if(response && response['action'] == 'bottom_play' && response['list'] == 1) {
+        this.audio_ins.forEach((ele, idx) => { this.audio_ins[idx] = false; } );
+        this.audio_ins[response['index']] = true;
+      }
     });
     const that = this;
     this.dtOptions = {
@@ -98,6 +103,7 @@ export class MyMusicComponent implements OnInit, OnDestroy {
                 recordsFiltered: response['track']['recordsTotal'],
                 data: []
               });
+              that.track_row_cnt = (dataTablesParameters['start']+1);
             });
           }, 0)
           

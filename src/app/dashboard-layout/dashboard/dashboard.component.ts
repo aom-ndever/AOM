@@ -50,6 +50,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
           this.audio_ins[response['index']] = true;
         }
       }
+      if(response && response['action'] == 'bottom_play' && response['list'] == 2) {
+        this.audio_ins.forEach((ele, idx) => { this.audio_ins[idx] = false; } );
+        this.audio_ins[response['index']] = true;
+      }
     });
   }
 

@@ -25,7 +25,7 @@
               <table datatable [dtOptions]="dtOptions" class="my_track_table">
                 <tbody>
                   <tr *ngFor="let t of tracklist; let i =  index;">
-                    <td class="serial-num">{{i+1}}.</td>
+                    <td class="serial-num">{{track_row_cnt+i}}.</td>
                     <td class="play-option">
                       <a href="javascript:;" [style.display]="!audio_ins[i] ? 'block' : 'none'" (click)="playAudio(t.audio, i, tracklist)" >
                         <img src="img/new-play.png" alt="Play" >
@@ -68,8 +68,8 @@
                           </label>
                       </div>
                       <div class="track-like">
-                        <a href="javascript:;"><img src="img/likehand.png" alt="Like Thumb"></a>
-                        <span class="new-up"></span>
+                        <!-- <a href="javascript:;"><img src="img/likehand.png" alt="Like Thumb"></a>
+                        <span class="new-up"></span> -->
                       </div>
                       <div class="track-comment">
                         <a href="javascript:;" routerLink="/artist_track_comment/{{t._id}}"><img src="img/comment.png" alt="Comment"></a>
@@ -90,10 +90,10 @@
                 <!-- <div class="alert alert-info" *ngIf="tracklist.length == 0">
                   No data available.
                 </div> -->
-              <table>
+              <table datatable [dtOptions]="dtOptions" class="my_track_table">
                 <tbody>
                   <tr *ngFor="let t of tracklist; let i =  index;">
-                    <td class="serial-num">{{i+1}}.</td>
+                    <td class="serial-num">{{track_row_cnt+i}}.</td>
                     <td class="play-option">
                         <a href="javascript:;" [style.display]="!audio_ins[i] ? 'block' : 'none'" (click)="playAudio(t.audio, i, tracklist)" >
                             <img src="img/new-play.png" alt="Play" >
@@ -118,8 +118,8 @@
                     </td>
                     <td class="action" colspan="2">
                       <div class="track-like">
-                        <a href="javascript:;"><img src="img/likehand.png" alt="Like Thumb"></a>
-                        <span class="new-up"></span>
+                        <!-- <a href="javascript:;"><img src="img/likehand.png" alt="Like Thumb"></a>
+                        <span class="new-up"></span> -->
                       </div>
                       <div class="track-comment">
                         <a href="javascript:;" routerLink="/artist_track_comment/{{t._id}}"><img src="img/comment.png" alt="Comment"></a>

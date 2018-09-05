@@ -22,8 +22,10 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
   dtOptions: DataTables.Settings[] = [];
   artistdata : any = {};
   artisttrack : any = [];
+  artist_track_row_cnt = 1;
   artistmedia : any = [];
   rankingtrack : any = [];
+  ranking_track_row_cnt = 1;
   artistfollower : any = {};
   artistcomments : any = [];
   display_comment : any = [];
@@ -93,6 +95,14 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
           this.rank_audio_ins[response['index']] = true;
         }
       }
+      if(response && response['action'] == 'bottom_play' && response['list'] == 1) {
+        this.audio_ins.forEach((ele, idx) => { this.audio_ins[idx] = false; } );
+        this.audio_ins[response['index']] = true;
+      }
+      if(response && response['action'] == 'bottom_play' && response['list'] == 2) {
+        this.rank_audio_ins.forEach((ele, idx) => { this.audio_ins[idx] = false; } );
+        this.rank_audio_ins[response['index']] = true;
+      }
     });
     this.share_form = this.fb.group({
       email : ['', [Validators.required, Validators.email]]
@@ -136,12 +146,15 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
         // scrollCollapse: true,
         ajax: (dataTablesParameters: any, callback) => {
           console.log(dataTablesParameters);
+          
           setTimeout(() => {
+            
             that.audio_ins = [];
             dataTablesParameters['artist_id'] = params['id'];
             dataTablesParameters['sort_by'] = this.sort_by;
-            that.ArtistProfileService.getAllTrack(dataTablesParameters).subscribe(response => {
+            that.ArtistProfileService.getAllTrack(dataTablesParameters).subscribe((response) => {
               that.artisttrack = response['track']['music'];
+              console.log('start count', that.artist_track_row_cnt);
               if(that.artisttrack.length > 0) {
                 that.artisttrack.forEach((ele) => {that.audio_ins.push(false);});
                 // that.artisttrack.forEach((ele) => {ele['is_bookmarked'] = false;});
@@ -168,6 +181,7 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
                 recordsFiltered: response['track']['recordsTotal'],
                 data: []
               });
+              that.artist_track_row_cnt = (dataTablesParameters['start'] + 1);
             });
           }, 0)
         },
@@ -192,11 +206,12 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
         responsive: true,
         ajax: (dataTablesParameters: any, callback) => {
           console.log(dataTablesParameters);
+          
           setTimeout(() => {
             that.audio_ins = [];
             dataTablesParameters['artist_id'] = params['id'];
             dataTablesParameters['sort_by'] = this.sort_by;
-            that.ArtistProfileService.getAllRanking(dataTablesParameters).subscribe(response => {
+            that.ArtistProfileService.getAllRanking(dataTablesParameters).subscribe((response) => {
               that.rankingtrack = response['track']['music'];
               that.rankingtrack.forEach((ele) => {that.audio_ins.push(false);});
               // that.rankingtrack.forEach((ele) => {ele['is_bookmarked'] = false;});
@@ -222,6 +237,7 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
                 recordsFiltered: response['track']['recordsTotal'],
                 data: []
               });
+              that.ranking_track_row_cnt = (dataTablesParameters['start'] + 1);
             });
           }, 0)
           

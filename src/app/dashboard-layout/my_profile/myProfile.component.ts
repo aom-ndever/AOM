@@ -134,6 +134,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
   payment_count : any = 0;
   proceed_chart : any = '';
   procced_count : any = 0;
+  proceed_row_cnt = 1;
 
   constructor(private MyProfileService : MyProfileService, 
     private toastr: ToastrService,
@@ -323,6 +324,10 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
           this.audio_ins[response['index']] = true;
         }
       }
+      if(response && response['action'] == 'bottom_play' && response['list'] == 1) {
+        this.audio_ins.forEach((ele, idx) => { this.audio_ins[idx] = false; } );
+        this.audio_ins[response['index']] = true;
+      }
 
       if(response && response['loggedin_user']) {
         data = response['loggedin_user'];
@@ -436,6 +441,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
               recordsFiltered: response['recordsTotal'],
               data: []
             });
+            that.proceed_row_cnt = (dataTablesParameters['start'] + 1);
           });
           
         },

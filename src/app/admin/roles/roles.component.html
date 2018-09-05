@@ -26,7 +26,7 @@
             </thead>
             <tbody>
             <tr *ngFor="let role of roles_data; let i = index;">
-              <td>{{i+1}}.</td>
+              <td>{{role_row_cnt + i}}.</td>
               <td>{{role['first_name']+' '+role['last_name']}}</td>
               <td>{{role['account_type']}}</td>
               <td>{{role['created_at'] | date : 'MMMM dd, yyyy'}}</td>
@@ -73,7 +73,7 @@
             </thead>
             <tbody>
             <tr *ngFor="let role of request_data; let i = index;">
-              <td>{{i+1}}.</td>
+              <td>{{req_row_cnt + i}}.</td>
               <td>{{role['name']}}</td>
               <td>{{role['created_at'] | date : 'MMMM dd, yyyy'}}</td>
               <td>{{role['admin_id']['first_name']+" "+role['admin_id']['last_name']+ "("+ role['admin_id']['account_type']+")"}}</td>

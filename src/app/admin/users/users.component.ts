@@ -34,6 +34,7 @@ export class UsersComponent implements OnInit {
   user_id : any = '';
   user_img_url : any = environment.API_URL+environment.USER_IMG;
   user_role : any = '';
+  user_row_cnt = 1;
   constructor(private UsersService : UsersService,
     private toastr: ToastrService,
     private modalService: BsModalService
@@ -72,6 +73,7 @@ export class UsersComponent implements OnInit {
                   recordsFiltered: response['user']['recordsTotal'],
                   data: []
                 });
+            that.user_row_cnt = (dataTablesParameters['start'] + 1);
           });
         },0);
       }

@@ -79,6 +79,14 @@ export class VoteComponent implements OnInit {
           this.audio_ins[response['index']] = true;
         }
       }
+      if(response && response['action'] == 'bottom_play' && response['list'] == 1) {
+        this.audio_ins.forEach((ele, idx) => { this.audio_ins[idx] = false; } );
+        this.audio_ins[response['index']] = true;
+      }
+      if(response && response['action'] == 'bottom_play' && response['list'] == 2) {
+        this.audio_ins1.forEach((ele, idx) => { this.audio_ins[idx] = false; } );
+        this.audio_ins1[response['index']] = true;
+      }
     });
   }
 
