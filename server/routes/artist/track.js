@@ -125,8 +125,12 @@ router.post("/", async (req, res) => {
 
             res.status(config.INTERNAL_SERVER_ERROR).json({ "message": "Please Add bank Details to get money into your Account When Track is being Purchased" });
         } else if (card_resp.status === 1) {
-            var artist = await artist_helper.get_artist_by_id(artist_id),
-                no_track = artist.artist.no_of_tracks + 1;
+            var artist = await artist_helper.get_artist_by_id(artist_id)
+            console.log('artist', artist);
+
+            no_track = artist.artist.no_of_tracks + 1;
+            console.log('no_track', no_track);
+
             var track = await track_helper.update_artist_for_track(artist_id, no_track)
 
 
