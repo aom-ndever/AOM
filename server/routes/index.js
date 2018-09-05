@@ -1888,16 +1888,20 @@ router.post('/get_track_for_current_round', async (req, res) => {
       filter["music_type._id"] = new ObjectId(req.body.music_type)
 
     }
+    if (req.body.search) {
+      var r = new RegExp(req.body.search);
+      var search = { "$regex": r, "$options": "i" };
+    }
 
-    var track = await winner_helper.get_qualified(round_id, req.body.start, req.body.length, filter);
+    var track = await winner_helper.get_qualified(round_id, req.body.start, req.body.length, filter, search);
     if (track.status === 1) {
       logger.trace("got details successfully");
       res.status(config.OK_STATUS).json({ "status": 1, "track": track.winner });
     } else {
-      res.status(config.OK_STATUS).json({ "message": "no participants yet for this contest" });
+      res.status(config.OK_STATUS).json({ "message": "No participants yet for this contest" });
     }
   } else {
-    res.status(config.INTERNAL_SERVER_ERROR).json({ "message": "no participants yet for this contest" });
+    res.status(config.INTERNAL_SERVER_ERROR).json({ "message": "No participants yet for this contest" });
   }
 });
 
