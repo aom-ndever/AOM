@@ -774,6 +774,63 @@ artist_helper.get_new_uploads = async (filter = {}) => {
             .populate('region')
             .sort({ "no_of_likes": - 1 })
             .limit(24)
+
+        // var aggregate = [
+        //     {
+        //         "$match": {
+        //             "flag": false
+        //         }
+        //     },
+
+        //     {
+        //         '$lookup': {
+        //             from: 'music_type',
+        //             localField: 'music_type',
+        //             foreignField: '_id',
+        //             as: 'music_type'
+        //         }
+        //     },
+        //     {
+        //         '$unwind': '$music_type'
+        //     },
+        //     {
+        //         '$lookup': {
+        //             from: 'state',
+        //             localField: 'state',
+        //             foreignField: '_id',
+        //             as: 'state'
+        //         }
+        //     },
+        //     {
+        //         '$unwind': '$state'
+        //     },
+
+        //     {
+        //         $skip: start
+        //     },
+        //     {
+        //         $limit: length
+        //     },
+        //     {
+        //         $sort: { "no_of_likes": - 1 }
+        //     }
+        // ];
+
+        // // if (filter) {
+        // //     aggregate.push({
+        // //         "$match": filter
+        // //     })
+        // // }
+
+        // if (filter) {
+        //     aggregate.push({
+        //         "$match":
+
+        //             { $or: [{ "first_name": filter }, { "last_name": filter }] }
+        //     });
+        // }
+        // let artist = await Artist.aggregate(aggregate);
+
         if (artist) {
             return { "status": 1, "message": "artist details found", "results": artist };
         } else {

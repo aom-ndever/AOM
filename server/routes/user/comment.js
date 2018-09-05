@@ -120,7 +120,7 @@ router.post('/', async (req, res) => {
         var resp_data = await user_helper.update_user_for_comments(obj.user_id, no_comment);
 
         logger.trace("music got successfully = ", resp_data);
-        res.status(config.OK_STATUS).json({ "message": "successfully commented" });
+        res.status(config.OK_STATUS).json({ "message": "Comment added Successfully" });
       }
     }
   }
