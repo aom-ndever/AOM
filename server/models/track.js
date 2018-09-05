@@ -12,7 +12,7 @@ var TrackModelSchema = new Schema({
     audio: String,
     name: String,
     price: String,
-    description: String,
+    description: { type: String, default: "" },
     is_suspend: { type: Boolean, default: false },
     is_submit: { type: Boolean, default: false },
     is_downloadable: { type: Boolean, default: false },

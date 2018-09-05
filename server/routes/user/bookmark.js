@@ -95,7 +95,6 @@ router.post("/", async (req, res) => {
   user_id = req.userInfo.id;
   logger.trace("Get all Artist API called");
   var resp_data = await bookmark_helper.get_all_bookmarked_tracks(user_id, req.body.start, req.body.length);
-  console.log('resp_data', resp_data);
 
   if (resp_data.status == 0) {
     logger.error("Error occured while fetching Artist = ", resp_data);
