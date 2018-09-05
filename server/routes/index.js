@@ -1465,7 +1465,7 @@ router.post("/state", async (req, res) => {
     filter["music_type._id"] = new ObjectId(req.body.music_type);
   }
   if (req.body.state) {
-    filter["state._id"] = req.body.state;
+    filter["state._id"] = new ObjectId(req.body.state);
   }
   if (req.body.search) {
     var r = new RegExp(req.body.search);
