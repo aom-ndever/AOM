@@ -37,6 +37,7 @@ export class ArtistComponent implements OnInit {
   artist_img_url : any = environment.API_URL+environment.ARTIST_IMG;
   artist_media_url : any = environment.API_URL+environment.ARTIST_MEDIA;
   user : any = '';
+  artist_row_cnt = 1;
   constructor(
     private ArtistService: ArtistService,
     private toastr: ToastrService,
@@ -84,6 +85,7 @@ export class ArtistComponent implements OnInit {
               recordsFiltered: response['artist']['recordsTotal'],
               data: []
             });
+            that.artist_row_cnt = (dataTablesParameters['start'] + 1);
           });
         }, 0)
         

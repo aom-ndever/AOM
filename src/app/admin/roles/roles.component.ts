@@ -31,6 +31,8 @@ export class RolesComponent implements OnInit {
   add_admin_validation : boolean = false;
   passwordFormGroup: FormGroup;
   user : any = {};
+  role_row_cnt = 1;
+  req_row_cnt = 1;
   constructor(
     private RolesService : RolesService,
     private toastr: ToastrService,
@@ -85,6 +87,7 @@ export class RolesComponent implements OnInit {
               recordsFiltered: response['recordsTotal'],
               data: []
             });
+            that.role_row_cnt = (dataTablesParameters['start'] + 1);
           });
         },0);
       }
@@ -109,6 +112,7 @@ export class RolesComponent implements OnInit {
               recordsFiltered: response['contest']['recordsTotal'],
               data: []
             });
+            that.req_row_cnt = (dataTablesParameters['start'] + 1);
           });
         },0);
       }

@@ -36,7 +36,7 @@
                         <li>
                           <div class="radio">
                               <label>
-                                <input type="radio" value="" name="musicgenre">All styles
+                                <input type="radio" value="" name="musicgenre" [(ngModel)]="advance_filter.music_type">All styles
                                 <div class="radio_check"></div>
                               </label>
                           </div>
@@ -180,7 +180,7 @@
           <div class="alert alert-info col-sm-12" *ngIf="!show_loader && whatsnewdata['artist'].length == 0">
             No data available.
           </div>
-          <div class="col-lg-3 col-md-4 col-sm-6 col-xs-6 " *ngFor="let artist of whatsnewdata['artist']; let i = index;">
+          <div class="col-lg-3 col-md-4 col-sm-6 col-xs-6 " *ngFor="let artist of artist_list; let i = index;">
             <div class="final-wrap ">
               <div class="img-wrap ">
                 <a href="javascript:;" routerLink="/artist_profile/{{artist._id}}">
@@ -199,6 +199,9 @@
                 </div>
               </div>
             </div>
+          </div>
+          <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center" *ngIf="!show_loader && artist_list['length'] > 12">
+              <button class="btn btn-lg btn-default" (click)="loadMoreArtist()" [disabled]="artist_loader">load more <i *ngIf="artist_loader" class="fa fa-spinner fa-spin"></i></button>
           </div>
         </div>
       </div>
@@ -251,7 +254,7 @@
                 No data available.
             </div>
             <div class="row">
-          <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12 " *ngFor="let track of whatsnewdata['track']; let i = index">
+          <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12 " *ngFor="let track of track_list; let i = index">
             <div class="upload ">
               <div class="img-wrap ">
                 <img src="{{track.image ? track_url+track.image : 'img/upload1.png'}}" alt="New Uploads ">
@@ -278,6 +281,9 @@
               </div>
             </div>
           </div>
+        </div>
+        <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center" *ngIf="!show_loader && track_list['length'] > 12">
+            <button class="btn btn-lg btn-default" (click)="loadMoreTrack()" [disabled]="track_loader">load more <i *ngIf="track_loader" class="fa fa-spinner fa-spin"></i></button>
         </div>
       </div>
     </div>

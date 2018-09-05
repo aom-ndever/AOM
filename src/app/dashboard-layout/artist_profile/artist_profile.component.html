@@ -126,7 +126,7 @@
                         <table datatable [dtOptions]="dtOptions[0]">
                           <tbody>
                             <tr *ngFor="let artist of artisttrack;let i=index;">
-                              <td class="serial-num music_numb">{{i+1}}.</td>
+                              <td class="serial-num music_numb">{{(artist_track_row_cnt + i)}}.</td>
                               <td class="music_play">
                                     <div class="artist-profile-custom-action-btn">
                                       <a [style.display]="!audio_ins[i] ? 'block' : 'none'" (click)="playAudio(artist.audio, i, artisttrack)" class="play_img" ><img src="img/play_icon.png"/></a>
@@ -225,7 +225,7 @@
                         <table datatable [dtOptions]="dtOptions[1]">
                           <tbody>
                             <tr *ngFor="let rank of rankingtrack;let i=index;">
-                              <td class="serial-num">{{i+1}}.</td>
+                              <td class="serial-num">{{ranking_track_row_cnt+i}}.</td>
                               <td class="play-option">
                                   <div class="artist-profile-custom-action-btn">
                                       <a [style.display]="!audio_ins[i] ? 'block' : 'none'" (click)="playRankAudio(rank.audio, i, rankingtrack)" class="play_img" ><img src="img/play_icon.png"/></a>

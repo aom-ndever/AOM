@@ -13,6 +13,7 @@ export class AlertsComponent implements OnInit {
   dtElements: QueryList<DataTableDirective>;
   dtOptions: DataTables.Settings[] = [];
   flagged_list : any = [];
+  flag_row_cnt = 1;
   constructor(
     private AlertService : AlertService,
     private toastr: ToastrService,
@@ -51,6 +52,7 @@ export class AlertsComponent implements OnInit {
               recordsFiltered: 0,
               data: []
             });
+            that.flag_row_cnt = (dataTablesParameters['start'] + 1);
           });
         },0);
       }

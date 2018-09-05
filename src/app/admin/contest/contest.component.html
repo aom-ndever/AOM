@@ -24,7 +24,7 @@
                         </thead>
                         <tbody>
                         <tr *ngFor="let contest of contest_data; let i = index;">
-                          <td>{{i+1}}.</td>
+                          <td>{{contest_row_cnt + i}}.</td>
                           <td><a href="javascript:;" (click)="openModal(paricipant, contest['_id'])">{{contest['name']}}</a></td>
                           <td>{{contest['created_at'] | date : 'MMMM d, yyyy':'UTC' }}</td>
                           <td>{{contest && contest['music_type'] ? contest['music_type']['name'] : '' }}</td>

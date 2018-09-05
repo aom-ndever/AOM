@@ -146,6 +146,9 @@ export class DashboardLayoutComponent implements OnInit, AfterViewInit, AfterVie
     try {
       var pButton = document.getElementById('pButton');
       this.audio_ins = this.audio_instance_list[this.song_cnt];
+      if(pButton.className == "play") {
+        this.MessageService.sendMessage({index : this.song_cnt, action : 'bottom_play', list : this.list_no});
+      }
       if(this.audio_instance_list[this.song_cnt] && this.audio_instance_list[this.song_cnt].paused) {
         this.audio_instance_list[this.song_cnt].play();
         pButton.className = "";

@@ -35,6 +35,7 @@ export class ContestComponent implements OnInit {
   contest_validation : FormGroup;
   is_valid : boolean =  false;
   round_list : any = [];
+  contest_row_cnt = 1;
   constructor(
     private ContestService : ContestService,
     private toastr: ToastrService,
@@ -93,6 +94,7 @@ export class ContestComponent implements OnInit {
                   recordsFiltered: response['contest']['recordsTotal'],
                   data: []
                 });
+              that.contest_row_cnt = (dataTablesParameters['start'] + 1);
           });
         },0);
       }
