@@ -82,7 +82,7 @@ track_helper.get_all_track_of_artists = async (artist_id, start, length, sort_by
     try {
 
         var music = await Track
-            .find({ "artist_id": new ObjectId(artist_id), "is_suspend": false })
+            .find({ "artist_id": new ObjectId(artist_id) })
 
         var tot_cnt = music.length;
 
