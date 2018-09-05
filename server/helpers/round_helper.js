@@ -154,6 +154,8 @@ round_helper.get_all_contests = async () => {
 round_helper.get_current_round_of_contest = async (id) => {
     // try {
     let current = moment().toISOString();
+    console.log('id--------->', id);
+
     var round = await Round
         .findOne({
             "contest_id": new ObjectId(id),

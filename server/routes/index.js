@@ -1857,6 +1857,7 @@ router.get('/tracks/:track_id', async (req, res) => {
 router.post('/get_track_for_current_round', async (req, res) => {
 
   var round = await round_helper.get_current_round_of_contest(req.body.contest_id);
+  console.log('round', round);
 
   if (round.status === 1) {
     round_id = round.round._id
@@ -1872,6 +1873,7 @@ router.post('/get_track_for_current_round', async (req, res) => {
 
 
     var track = await winner_helper.get_qualified(round_id, req.body.start, req.body.length, filter);
+    console.log('track', track);
 
     if (track.status === 1) {
       logger.trace("got details successfully");
