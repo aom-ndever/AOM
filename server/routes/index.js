@@ -1598,7 +1598,7 @@ router.post("/artistv1", async (req, res) => {
     var resp_artist = await artist_helper.get_new_uploads(filter);
 
     //var resp_track = await artist_helper.get_artist_by_id(filter);
-    var resp_chart = await artist_helper.get_all_artist();
+    var resp_chart = await artist_helper.get_all_artist(search);
 
     if (resp_artist.status == 0 && resp_chart.status == 0) {
       logger.error("Error occured while fetching users = ", resp_artist);
