@@ -110,6 +110,11 @@ bookmark_helper.get_all_bookmarked_tracks = async (user_id, start, length) => {
                 '$unwind': '$artist'
             },
             {
+                $match: {
+                    "artist.flag": false
+                }
+            },
+            {
                 '$lookup': {
                     from: 'state',
                     localField: 'artist.state',
@@ -159,7 +164,6 @@ bookmark_helper.get_all_bookmarked_tracks = async (user_id, start, length) => {
         var tot_cnt = bookmarks.length;
 
 
-
         var aggregate = [
             {
                 "$match": {
@@ -190,8 +194,14 @@ bookmark_helper.get_all_bookmarked_tracks = async (user_id, start, length) => {
                     as: 'artist'
                 }
             },
+
             {
                 '$unwind': '$artist'
+            },
+            {
+                $match: {
+                    "artist.flag": false
+                }
             },
             {
                 '$lookup': {

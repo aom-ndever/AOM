@@ -86,15 +86,12 @@ track_helper.get_all_track_of_artists = async (artist_id, start, length, sort_by
 
         var tot_cnt = music.length;
 
-
         var musics = await Track
             .find({ "artist_id": new ObjectId(artist_id) })
             .populate({ path: 'artist_id', populate: { path: 'music_type' } })
             .sort(sort_by)
             .skip(start)
             .limit(length);
-
-
 
         var filter_cnt = musics.length;
         if (music) {
@@ -106,7 +103,6 @@ track_helper.get_all_track_of_artists = async (artist_id, start, length, sort_by
         return { "status": 0, "message": "Error occured while finding music", "error": err }
     }
 };
-
 
 
 track_helper.get_all_track_of_artist_by_ranking = async (artist_id, sort_by = {}, start, length) => {
