@@ -580,13 +580,14 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
     textArea.remove();
   }
 
-
+  card_loader : boolean = false;
   // Stripe Credit-Card implementation
   openCardModel(content, index, type) {
     if(this.user && this.user['user']) {
+      this.card_loader = true;
       setTimeout(()=>{
         this.setupStripeFrom();
-      },500);
+      },0);
       if(type == 'track') {
         this.track_data = this.artisttrack[index];
       } else {
@@ -618,6 +619,7 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
     var elements = stripe.elements();
     var card = elements.create('card', { style: this.style });
     card.mount('#card-element');
+    this.card_loader = false;
     // this.registerElements([card], 'ex');
     card.addEventListener('change', function (event) {
       var displayError = document.getElementById('card-errors');

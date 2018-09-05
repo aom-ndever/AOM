@@ -117,10 +117,11 @@
                         <div class="form-group gender-grp">
                           <label for="geder">Gender</label>
                           <select class="form-control" id="gender" formControlName="gender" name="artist_gender" [(ngModel)]="artist_data.gender">
+                              <option value="">Select Gender</option>
                               <option value="male">Male</option>
                               <option value="female">Female</option>
                           </select>
-                          <div class="cust_err_msg" *ngIf="artist_validation[2] && !artist_step3.controls['lname'].valid">
+                          <div class="cust_err_msg" *ngIf="artist_validation[2] && !artist_step3.controls['gender'].valid">
                               <span *ngIf="artist_step3.controls['gender'].errors['required']" class="text-danger">Gender is required</span>
                           </div>
                         </div>
@@ -464,6 +465,7 @@
                     <div class="form-group gender-grp">
                         <label for="geder">Gender</label>
                         <select class="form-control" id="listener_gender" formControlName="gender" name="listener_gender" [(ngModel)]="listener_data.gender">
+                            <option value="">Select Gender</option>
                             <option value="male">Male</option>
                             <option value="female">Female</option>
                         </select>
