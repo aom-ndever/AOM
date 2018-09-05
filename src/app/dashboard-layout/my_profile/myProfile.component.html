@@ -417,8 +417,8 @@
                                                     <tr *ngFor="let t of transaction_data; let i = index;">
                                                         <td>{{i+1}}</td>
                                                         <td>{{t && t['track_id'] ? t['track_id']['name'] : ''}}</td>
-                                                        <td>{{t && t.created_at ? (t.created_at | date : 'MM d, yyyy') : ''}}</td>
-                                                        <td>{{t && t.created_at ? (t.created_at | date : 'H:m:s') : ''}}</td>
+                                                        <td>{{t && t.created_at ? (t.created_at | date : 'MMMM dd, yyyy') : ''}}</td>
+                                                        <td>{{t && t.created_at ? (t.created_at | date : 'HH:mm:ss') : ''}}</td>
                                                         <td>${{t && t['amount'] ?  t['amount'] : ''}}</td>
                                                         <td>{{t && t['status'] ? (t['status'] | titlecase) : ''}}</td>
                                                     </tr>
