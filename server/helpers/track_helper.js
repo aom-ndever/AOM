@@ -159,7 +159,7 @@ track_helper.get_all_audio = async (filter, page_no, page_size) => {
 track_helper.get_track_by_filter = async (id, filter, start, length) => {
     try {
         var track = await Track
-            .find({ "artist_id": { $in: id }, filter })
+            .find({ "artist_id": { $in: id } })
             .populate({ path: 'artist_id', populate: { path: 'music_type' } })
             .populate({ path: 'artist_id', populate: { path: 'state' } })
             .sort({ "no_of_likes": - 1 })
