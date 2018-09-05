@@ -44,15 +44,16 @@ router.post("/", async (req, res) => {
     var obj = {
         artist_id: req.userInfo.id
     };
-    if (req.body.name && req.body.name != null) {
+    if (req.body.name) {
         obj.name = req.body.name;
     }
     if (req.body.description) {
         obj.description = req.body.description;
     }
-    if (req.body.price && req.body.price != null) {
+    if (req.body.price) {
         obj.price = req.body.price;
     }
+    console.log('obj', obj);
 
     async.waterfall([
         function (callback) {
