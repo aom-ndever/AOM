@@ -75,6 +75,40 @@ track_helper.get_all_track_of_artist = async (artist_id, start, length, sort_by 
     }
 };
 
+
+
+track_helper.get_all_track_of_artists = async (artist_id, start, length, sort_by = {}) => {
+
+    try {
+
+        var music = await Track
+            .find({ "artist_id": new ObjectId(artist_id) })
+
+        var tot_cnt = music.length;
+
+
+        var musics = await Track
+            .find({ "artist_id": new ObjectId(artist_id), "is_suspend": false })
+            .populate({ path: 'artist_id', populate: { path: 'music_type' } })
+            .sort(sort_by)
+            .skip(start)
+            .limit(length);
+
+
+
+        var filter_cnt = musics.length;
+        if (music) {
+            return { "status": 1, "message": "music details found", "music": musics, "recordsFiltered": filter_cnt, "recordsTotal": tot_cnt };
+        } else {
+            return { "status": 2, "message": "music not found" };
+        }
+    } catch (err) {
+        return { "status": 0, "message": "Error occured while finding music", "error": err }
+    }
+};
+
+
+
 track_helper.get_all_track_of_artist_by_ranking = async (artist_id, sort_by = {}, start, length) => {
     try {
         var musics = await Track

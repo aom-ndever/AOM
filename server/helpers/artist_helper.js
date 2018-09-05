@@ -426,7 +426,7 @@ artist_helper.get_artist_by_filter = async (filter, start, length, filters) => {
     try {
 
         var artist = await Artist
-            .find({ "flag": false }, filter)
+            .find({ "flag": false })
             .populate('music_type')
             .populate('state')
             .skip(start)
@@ -574,9 +574,11 @@ artist_helper.get_all_artist_by_vote = async () => {
                 "no_of_likes": 1,
                 "no_of_followers": 1,
                 "no_of_comments": 1,
+                "state": 1
             })
             .sort({ "no_of_votes": - 1 })
             .populate('music_type')
+            .populate({ path: 'state', populate: { path: 'region' } })
             .limit(10)
             .lean();
 

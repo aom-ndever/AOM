@@ -55,7 +55,7 @@ artist_playlist_helper.get_playlists = async (artist_id, playlist_id, start, len
         var playlists = await Playlist.aggregate([
             {
                 "$match": {
-
+                    "artist_id": ObjectId(artist_id),
                     "_id": ObjectId(playlist_id)
                 }
             },
@@ -141,6 +141,22 @@ artist_playlist_helper.get_playlists = async (artist_id, playlist_id, start, len
 }
 
 
+artist_playlist_helper.get_playlists_for_push = async (artist_id, playlist_id) => {
+    try {
+
+        var playlist = await Playlist
+            .findOne({ "_id": new ObjectId(playlist_id), "artist_id": artist_id })
+
+        if (playlist) {
+            return { "status": 1, "message": "Track details found", "playlist": playlist };
+        } else {
+            return { "status": 2, "message": "playlist not found" };
+        }
+    } catch (err) {
+        return { "status": 0, "message": "Error occured while finding playlist", "error": err }
+    }
+}
+
 artist_playlist_helper.get_playlists_for_delete = async (artist_id, playlist_id) => {
     try {
 
@@ -171,7 +187,19 @@ artist_playlist_helper.update_playlist = async (artist_id, playlist_id, obj) => 
     }
 };
 
+artist_playlist_helper.update_playlists = async (artist_id, playlist_id, obj) => {
 
+    try {
+        var playlist = await Playlist.findOneAndUpdate({ "artist_id": new ObjectId(artist_id), "_id": new ObjectId(playlist_id) }, { "track_id": obj }, { new: true })
+        if (playlist) {
+            return { "status": 1, "message": "Track Added Successfully", "playlist": playlist };
+        } else {
+            return { "status": 2, "message": "playlist not found" };
+        }
+    } catch (err) {
+        return { "status": 0, "message": "Error occured while finding playlist", "error": err }
+    }
+};
 artist_playlist_helper.delete_playlist = async (artist_id, playlist_id) => {
 
     try {

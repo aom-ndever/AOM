@@ -242,15 +242,26 @@ router.put("/add_track/:playlist_id", async (req, res) => {
 
     track_id: req.body.track_id
   };
-
-  var resp_data = await playlist_helper.update_playlist(artist_id, req.params.playlist_id, obj);
-  if (resp_data.status == 0) {
-    logger.error("Error occured while updating = ", resp_data);
-    res.status(config.INTERNAL_SERVER_ERROR).json(resp_data);
-  } else {
+  var playlist_track = await playlist_helper.get_playlists_for_push(artist_id, req.params.playlist_id)
+  if ((playlist_track.playlist.track_id).length == 0) {
+    var resp_data = await playlist_helper.update_playlist(artist_id, req.params.playlist_id, obj);
+    if (resp_data.status == 0) {
+      logger.error("Error occured while updating = ", resp_data);
+      res.status(config.INTERNAL_SERVER_ERROR).json(resp_data);
+    } else {
+      logger.trace("Updated successfully  = ", resp_data);
+      res.status(config.OK_STATUS).json(resp_data);
+    }
+  }
+  else {
+    var track = playlist_track.playlist.track_id;
+    var tmp = _.map(req.body.track_id, function (id) { return ObjectId(id) });
+    var arry = _.union(track, tmp);
+    var resp_data = await playlist_helper.update_playlists(artist_id, req.params.playlist_id, arry);
     logger.trace("Updated successfully  = ", resp_data);
     res.status(config.OK_STATUS).json(resp_data);
   }
+
 });
 
 
