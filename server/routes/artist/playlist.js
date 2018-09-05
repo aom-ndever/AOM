@@ -242,7 +242,16 @@ router.put("/add_track/:playlist_id", async (req, res) => {
 
     track_id: req.body.track_id
   };
+  var playlist_track = await playlist_helper.get_playlists(artist_id, req.params.playlist_id, req.body.start, req.body.length)
+  console.log('playlist_track', playlist_track);
+  if (playlist_track.playlist.track < 0) {
+    console.log('insert');
 
+  }
+  else {
+    console.log('push');
+
+  }
   var resp_data = await playlist_helper.update_playlist(artist_id, req.params.playlist_id, obj);
   if (resp_data.status == 0) {
     logger.error("Error occured while updating = ", resp_data);
