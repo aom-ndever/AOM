@@ -232,7 +232,7 @@ export class MyProfileService {
   }
   // download the track 
   downloadTrack(id : any) {
-    return this.http.get(`${this.api_host}/user/track/${id}/download`, {headers : this.headers});
+    return this.http.get(`${this.api_host}/user/track/${id}/purchase_track_download`, {headers : this.headers});
   }
   // Get all transaction 
   getAllTransction(data) {
