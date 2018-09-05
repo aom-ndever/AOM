@@ -231,20 +231,20 @@ purchase_helper.get_purchased_track = async (user_id, start, length) => {
     }
 }
 
-/*purchase_helper.get_all_bookmarked_artist = async (user_id) => {
+purchase_helper.get_purchased_track_by_track_id = async (user_id, track_id) => {
     try {
         var artist = await Bookmark
-            .find({ "user_id": new ObjectId(user_id) })
+            .find({ "user_id": new ObjectId(user_id), "track_id": new ObjectId(track_id) })
             .populate('artist')
         if (artist) {
-            return { "status": 1, "message": "Artist details found", "artist": artist };
+            return { "status": 1, "message": "Artist details found", "user": artist };
         } else {
             return { "status": 2, "message": "Artist not found" };
         }
     } catch (err) {
         return { "status": 0, "message": "Error occured while finding artist", "error": err }
     }
-};*/
+};
 
 
 module.exports = purchase_helper;

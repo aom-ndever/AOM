@@ -469,5 +469,51 @@ router.get('/:track_id/download', async (req, res) => {
   }
 });
 
+router.get('/:track_id/purchase_track_download', async (req, res) => {
+  try {
+    var obj = {
+      user_id: req.userInfo.id,
+      track_id: req.params.track_id,
+      artist_id: req.params.artist_id
+    }
 
+    var resp_data = await download_helper.download_track(obj);
+    if (resp_data.status == 0) {
+      logger.error("Error occured while fetching music = ", resp_data);
+      res.status(config.INTERNAL_SERVER_ERROR).json(resp_data);
+    } else {
+      var resp_data = await download_helper.get_all_track_by_track_id(obj.track_id);
+      no_download = resp_data.track.no_of_downloads + 1;
+      var resp_data = await download_helper.update_downloads(obj.track_id, no_download);
+      if (resp_data.status == 1) {
+        logger.trace("music got successfully = ", resp_data);
+        let track_resp = await track_helper.get_all_track_by_track_id(req.params.track_id);
+        if (track_resp.status == 1) {
+
+          var filename = new Date().getTime() + (Math.floor(Math.random() * 90000) + 10000) + '.zip';
+          // create a file to stream archive data to.
+          var output = await fs.createWriteStream(__dirname + '/../../uploads/user/' + filename);
+          var archive = await archiver('zip', {
+            zlib: { level: 9 }
+          });
+
+          archive.pipe(output);
+          archive.append(fs.createReadStream(__dirname + '/../../uploads/track/' + track_resp.track.audio), { name: track_resp.track.audio });
+          archive.finalize();
+          res.status(200).json({ "status": 1, "filename": filename });
+
+        } else {
+          res.status(200).json({ "status": 0, "message": "track not found" });
+        }
+      }
+      else {
+        res.status(200).json({ "status": 0, "message": "track not found" });
+
+      }
+    }
+
+  } catch (err) {
+    res.send(err);
+  }
+});
 module.exports = router;
