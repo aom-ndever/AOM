@@ -1877,8 +1877,6 @@ router.get('/tracks/:track_id', async (req, res) => {
 router.post('/get_track_for_current_round', async (req, res) => {
 
   var round = await round_helper.get_current_round_of_contest(req.body.contest_id);
-  console.log('round', round);
-
   if (round.status === 1) {
     round_id = round.round._id
     var filter = {};
@@ -1891,15 +1889,11 @@ router.post('/get_track_for_current_round', async (req, res) => {
 
     }
 
-
     var track = await winner_helper.get_qualified(round_id, req.body.start, req.body.length, filter);
-    console.log('track', track);
-
     if (track.status === 1) {
       logger.trace("got details successfully");
       res.status(config.OK_STATUS).json({ "status": 1, "track": track.winner });
     } else {
-
       res.status(config.OK_STATUS).json({ "message": "no participants yet for this contest" });
     }
   } else {
@@ -1908,7 +1902,6 @@ router.post('/get_track_for_current_round', async (req, res) => {
 });
 
 router.post('/winners', async (req, res) => {
-
   var round = await round_helper.get_current_round_of_contest(req.body.contest_id);
   round_id = round.round._id
   var filter = {};

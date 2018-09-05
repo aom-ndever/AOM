@@ -53,7 +53,6 @@ router.post("/", async (req, res) => {
     if (req.body.price) {
         obj.price = req.body.price;
     }
-    console.log('obj', obj);
 
     async.waterfall([
         function (callback) {

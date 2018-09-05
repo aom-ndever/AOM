@@ -151,10 +151,6 @@ artist_helper.insert_transaction = async (object) => {
 
 artist_helper.delete_bank = async (bank_id, artist_id) => {
     try {
-        console.log('bank_id', bank_id);
-        console.log('artist_id', artist_id);
-
-
         var artist = await Bank.findOneAndRemove({ "_id": new ObjectId(bank_id), "artist_id": new ObjectId(artist_id) })
         if (artist) {
             return { "status": 1, "message": "Bank Account Deleted", "artist": artist };

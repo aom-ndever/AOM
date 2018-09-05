@@ -200,17 +200,13 @@ router.post('/add_bank_details', async (req, res) => {
 
     };
     var artist_data = await artist_helper.get_artist_by_id(artist_id);
-
     var card_resp = await artist_helper.insert_bank(obj);
-    console.log('card_resp.card', card_resp.card);
-
     bank_id = card_resp.card._id
 
     if (card_resp.status === 0) {
         res.status(config.INTERNAL_SERVER_ERROR).json(card_resp);
     } else {
         try {
-
             let bank_account_token = await stripe.tokens.create({
                 bank_account: {
                     account_number: obj.account_number,
@@ -223,8 +219,6 @@ router.post('/add_bank_details', async (req, res) => {
             });
 
             var card_resp = await artist_helper.get_account_by_artist_id(artist_id);
-
-
             if (card_resp && card_resp.status != 1) {
 
                 var account = await stripe.accounts.create({
@@ -239,14 +233,11 @@ router.post('/add_bank_details', async (req, res) => {
                     "bank_id": bank_id
                 }
                 var card_resp = await artist_helper.insert_account(account_obj);
-
             }
-
             await stripe.accounts.createExternalAccount(
                 card_resp.account.account_id,
                 { external_account: bank_account_token.id }
             );
-
             res.status(config.OK_STATUS).json({ "message": "Account created" });
 
         } catch (error) {
@@ -779,8 +770,6 @@ router.post("/participate", async (req, res) => {
                     res.status(config.INTERNAL_SERVER_ERROR).json(resp_data);
                 } else
                     var resp_data = await round_helper.get_round_by_id(obj.contest_id);
-                console.log('resp_data', resp_data);
-                console.log(' resp_data.contest.no_of_participants', resp_data.contest.no_of_participants);
 
                 no_paritipant = resp_data.contest.no_of_participants + 1
                 var resp_data = await round_helper.update_participant(obj.contest_id, no_paritipant);
