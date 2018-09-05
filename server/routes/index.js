@@ -1239,7 +1239,7 @@ router.post('/admin_login', async (req, res) => {
         res.status(config.OK_STATUS).json({ "status": 1, "message": "Logged in successful", "admin": login_resp.admin, "token": token, "refresh_token": refreshToken });
       }
       else {
-        res.status(config.BAD_REQUEST).json({ "status": 0, "message": "Your Are Account is Suspended Super Admin" });
+        res.status(config.BAD_REQUEST).json({ "status": 0, "message": "Your Account is Suspended, Please Contact Admin" });
       }
     }
 
@@ -1284,7 +1284,7 @@ router.post('/admin_forgot_password', async (req, res) => {
     if (resp.status === 0) {
       res.status(config.INTERNAL_SERVER_ERROR).json({ "status": 0, "message": "Error while finding admin" });
     } else if (resp.status === 2) {
-      res.status(config.BAD_REQUEST).json({ "status": 0, "message": "No admin available with given email" });
+      res.status(config.BAD_REQUEST).json({ "status": 0, "message": "Please Enter Valid Email Id" });
     } else {
       var reset_token = Buffer.from(jwt.sign({ "admin_id": resp.admin._id }, config.ACCESS_TOKEN_SECRET_KEY, {
         expiresIn: 60 * 60 * 2 // expires in 2 hour
@@ -1308,7 +1308,7 @@ router.post('/admin_forgot_password', async (req, res) => {
       }
     }
   } else {
-    res.status(config.BAD_REQUEST).json({ message: errors });
+    res.status(config.BAD_REQUEST).json({ "message": "Please enter valid email address" });
   }
 });
 

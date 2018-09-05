@@ -410,20 +410,17 @@ router.post("/add_existing_contest", async (req, res) => {
         if (arry.length > 0) {
 
           var roundget = await round_helper.get_rounds({ "_id": new ObjectId(round.round._id) }, { "track_id": null });
-          console.log('roundget.status', roundget.status);
 
           if (roundget.status == 0) {
             var roundAdd = await round_helper.add_participant_in_next_round({ "_id": new ObjectId(round.round._id) }, { "track_id": arry });
-            for (let x of track.winner) {
 
+            for (let x of track.winner) {
               var object = {
                 "votes": x.votes,
                 "track_id": x.track_id,
                 "round_id": current_round.round._id
-
               }
             }
-
             var winner = winner_helper.insert_winner(object)
           }
         }
@@ -470,7 +467,6 @@ router.post('/contest', async (req, res) => {
   }
 
   var contest = await contest_helper.get_all_contests_list(req.body.start, req.body.length, sort);
-  console.log('contest', contest);
 
   if (contest.status === 1) {
     logger.trace("got details successfully");
@@ -791,6 +787,11 @@ router.post("/get_artist", async (req, res) => {
     var search = { "$regex": r, "$options": "i" };
     filter.first_name = search;
   }
+  // if (req.body.search) {
+  //   var r = new RegExp(req.body.search);
+  //   var search = { "$regex": r, "$options": "i" };
+  //   filter.last_name = search;
+  // }
   var resp_data = await artist_helper.get_all_active_and_suspend_artist(req.body.start, req.body.length, filter, sort);
   if (resp_data.status == 0) {
     logger.error("Error occured while fetching artist = ", resp_data);
@@ -1225,12 +1226,14 @@ router.post("/get_artist_tracks", async (req, res) => {
  * @apiError (Error 4xx) {String} message Validation or error message.
  */
 router.post("/flag/artist/:artist_id", async (req, res) => {
-  var obj = {
-    from: req.userInfo.id,
-    to: req.params.artist_id
-  }
+
   var resp = await artist_helper.get_artist_by_id(req.params.artist_id);
   type = await admin_helper.get_admin_by_id(req.userInfo.id)
+  var obj = {
+    from: req.userInfo.id,
+    to: req.params.artist_id,
+    account_type: type.admin.account_type
+  }
   if (type.admin.account_type == "super_admin" || type.admin.account_type == "admin") {
     if (resp.status == 0) {
       logger.error("Error occured while fetching artist = ", resp);

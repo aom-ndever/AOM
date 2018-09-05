@@ -21,7 +21,7 @@ participate_helper.insert_participant = async (object) => {
 participate_helper.get_participant = async (id, ids, trackid) => {
     try {
         var participate = await Participate
-            .find({ "artist_id": new ObjectId(id), "contest_id": new ObjectId(ids), "track_id": new ObjectId(trackid) })
+            .findOne({ "artist_id": new ObjectId(id), "contest_id": new ObjectId(ids), "track_id": new ObjectId(trackid) })
         if (participate) {
             return { "status": 1, "message": "comment details found", "participate": participate };
         } else {

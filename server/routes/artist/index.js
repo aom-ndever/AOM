@@ -202,6 +202,10 @@ router.post('/add_bank_details', async (req, res) => {
     var artist_data = await artist_helper.get_artist_by_id(artist_id);
 
     var card_resp = await artist_helper.insert_bank(obj);
+    console.log('card_resp.card', card_resp.card);
+
+    bank_id = card_resp.card._id
+
     if (card_resp.status === 0) {
         res.status(config.INTERNAL_SERVER_ERROR).json(card_resp);
     } else {
@@ -231,7 +235,8 @@ router.post('/add_bank_details', async (req, res) => {
                 });
                 var account_obj = {
                     "artist_id": artist_id,
-                    "account_id": account.id
+                    "account_id": account.id,
+                    "bank_id": bank_id
                 }
                 var card_resp = await artist_helper.insert_account(account_obj);
 
@@ -355,12 +360,13 @@ router.put('/notification_settings', function (req, res) {
 router.delete('/bank/:bank_id', async (req, res) => {
     artist_id = req.userInfo.id;
     var del_resp = await artist_helper.delete_bank(req.params.bank_id, artist_id);
+    var del_resp = await artist_helper.delete_account(req.params.bank_id, artist_id);
     if (del_resp.status === 0) {
         res.status(config.INTERNAL_SERVER_ERROR).json({ "status": 0, "message": "Error occured while deleting artist bank", "error": del_resp.error });
     } else if (del_resp.status === 2) {
         res.status(config.BAD_REQUEST).json({ "status": 0, "message": "Can't delete artist bank" });
     } else {
-        res.status(config.OK_STATUS).json({ "status": 1, "message": "artist bank has been deleted" });
+        res.status(config.OK_STATUS).json({ "status": 1, "message": " Artist bank account has been deleted" });
     }
 });
 
@@ -751,28 +757,36 @@ router.post("/participate", async (req, res) => {
 
         if (contest_music.toString() === artist_music.toString()) {
             var resp_data = await participate_helper.get_participant(obj.artist_id, obj.contest_id, obj.track_id);
-            if (resp_data && resp_data.participate == 0) {
+            if (resp_data.status == 2) {
                 var resp_datas = await participate_helper.insert_participant(obj);
+                var resp_part = await participate_helper.get_participant(obj.artist_id, obj.contest_id, obj.track_id);
+
                 var round = await round_helper.get_current_round_of_contest(obj.contest_id)
 
-                var winner_obj = {
-                    artist_id: req.userInfo.id,
-                    contest_id: req.body.contest_id,
-                    track_id: req.body.track_id,
-                    round_id: round.round._id
-                };
-                var resp = await winner_helper.insert_winner(winner_obj);
+                if (round.status == 1) {
+                    var winner_obj = {
+                        artist_id: req.userInfo.id,
+                        contest_id: req.body.contest_id,
+                        track_id: req.body.track_id,
+                        round_id: round.round._id
+                    }
 
+
+                    var resp = await winner_helper.insert_winner(winner_obj);
+                }
                 if (resp_data.status == 0) {
                     logger.error("Error occured while inserting = ", resp_data);
                     res.status(config.INTERNAL_SERVER_ERROR).json(resp_data);
                 } else
                     var resp_data = await round_helper.get_round_by_id(obj.contest_id);
+                console.log('resp_data', resp_data);
+                console.log(' resp_data.contest.no_of_participants', resp_data.contest.no_of_participants);
+
                 no_paritipant = resp_data.contest.no_of_participants + 1
                 var resp_data = await round_helper.update_participant(obj.contest_id, no_paritipant);
                 var resp_data = await artist_helper.update_is_submit(obj.track_id, true);
                 logger.trace(" got successfully = ", resp_datas);
-                res.status(config.OK_STATUS).json(resp_datas);
+                res.status(config.OK_STATUS).json({ "message": "Participated Successfully" });
             }
             else {
                 logger.trace("Already participated for this contest");

@@ -125,14 +125,29 @@ router.post("/", async (req, res) => {
 
             res.status(config.INTERNAL_SERVER_ERROR).json({ "message": "Please Add bank Details to get money into your Account When Track is being Purchased" });
         } else if (card_resp.status === 1) {
+            var artist = await artist_helper.get_artist_by_id(artist_id)
+            console.log('artist', artist);
+
+            no_track = artist.artist.no_of_tracks + 1;
+            console.log('no_track', no_track);
+
+            var track = await track_helper.update_artist_for_track(artist_id, no_track)
+
+
+            // var artist = await artist_helper.get_artist_by_id(artist_id),
+            //     no_track = artist.artist.no_of_tracks + 1;
+            // var track = await track_helper.update_artist_for_track(artist_id, no_track)
 
             var resp = await track_helper.insert_track(artist_id, obj);
+
+
             if (resp.status === 0) {
                 res.status(config.INTERNAL_SERVER_ERROR).json({ "error": resp.error });
             } else {
                 var resp = await artist_helper.get_artist_by_id(artist_id);
+
                 no_track = resp.artist.no_of_tracks + 1
-                res.status(config.OK_STATUS).json({ "message": "Inserted successfully" });
+                res.status(config.OK_STATUS).json({ "message": "Track Added Successfully" });
             }
         }
         else {
@@ -288,7 +303,7 @@ router.delete('/:track_id', async (req, res) => {
     } else {
 
 
-        res.status(config.OK_STATUS).json({ "status": 1, "message": "track  has been deleted" });
+        res.status(config.OK_STATUS).json({ "status": 1, "message": "Track  has been Deleted" });
     }
 });
 
@@ -389,12 +404,12 @@ router.post("/change_status_of_download", async (req, res) => {
             var stat = "true"
             var artist_resp = await artist_helper.update_download(artist_id, track_id, stat);
 
-            res.status(config.OK_STATUS).json({ "message": " you have turn on the download option" });
+            res.status(config.OK_STATUS).json({ "message": "You have turn on the download option" });
         }
         else {
             var stat = "false"
             var artist_resp = await artist_helper.update_download(artist_id, track_id, stat);
-            res.status(config.OK_STATUS).json({ "message": " you have turn off the download option" });
+            res.status(config.OK_STATUS).json({ "message": "You have turn off the download option" });
         }
 
     }

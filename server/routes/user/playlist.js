@@ -230,7 +230,7 @@ router.put('/track', async (req, res) => {
   } else if (del_resp.status === 2) {
     res.status(config.BAD_REQUEST).json({ "status": 0, "message": "Can't remove playlist" });
   } else {
-    res.status(config.OK_STATUS).json({ "status": 1, "message": "playlist has been removed" });
+    res.status(config.OK_STATUS).json({ "status": 1, "message": "Track has been deleted" });
   }
 });
 
@@ -353,6 +353,8 @@ router.put("/add_track/:playlist_id", async (req, res) => {
 
     track_id: req.body.track_id
   };
+  // var resp_data = await playlist_helper.get_playlists(user_id, req.params.playlist_id, req.body.start, req.body.length);
+  // console.log('resp_data', resp_data);
 
   var resp_data = await playlist_helper.update_playlist(user_id, req.params.playlist_id, obj);
   if (resp_data.status == 0) {
@@ -374,10 +376,9 @@ router.delete('/:playlist_id', async (req, res) => {
   } else if (del_resp.status === 2) {
     res.status(config.BAD_REQUEST).json({ "status": 0, "message": "Can't remove playlist" });
   } else {
-    res.status(config.OK_STATUS).json({ "status": 1, "message": "playlist has been removed" });
+    res.status(config.OK_STATUS).json({ "status": 1, "message": "Playlist has been removed" });
   }
 });
-
 
 
 module.exports = router;

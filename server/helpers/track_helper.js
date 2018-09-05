@@ -50,13 +50,13 @@ track_helper.get_all_track_of_artist = async (artist_id, start, length, sort_by 
     try {
 
         var music = await Track
-            .find({ "artist_id": new ObjectId(artist_id) })
+            .find({ "artist_id": new ObjectId(artist_id), "is_suspend": false })
 
         var tot_cnt = music.length;
 
 
         var musics = await Track
-            .find({ "artist_id": new ObjectId(artist_id) })
+            .find({ "artist_id": new ObjectId(artist_id), "is_suspend": false })
             .populate({ path: 'artist_id', populate: { path: 'music_type' } })
             .sort(sort_by)
             .skip(start)

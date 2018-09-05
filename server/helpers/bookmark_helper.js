@@ -74,8 +74,179 @@ bookmark_helper.get_all_bookmarked_tracks = async (user_id, start, length) => {
             .populate({ path: 'user_id', populate: { path: 'music_type' } })
             .skip(start)
             .limit(length)
-
         var filter_cnt = bookmark.length;
+
+        // var aggregates = [
+        //     {
+        //         "$match": {
+        //             "user_id": new ObjectId(user_id)
+        //         }
+        //     },
+        //     {
+        //         $lookup: {
+        //             from: 'track',
+        //             localField: 'track_id',
+        //             foreignField: '_id',
+        //             as: 'track'
+        //         }
+        //     },
+        //     {
+        //         $unwind: "$track"
+        //     },
+        //     {
+        //         $match: {
+        //             "track.is_suspend": false
+        //         }
+        //     },
+        //     {
+        //         '$lookup': {
+        //             from: 'artist',
+        //             localField: 'track.artist_id',
+        //             foreignField: '_id',
+        //             as: 'artist'
+        //         }
+        //     },
+        //     {
+        //         '$unwind': '$artist'
+        //     },
+        //     {
+        //         '$lookup': {
+        //             from: 'state',
+        //             localField: 'artist.state',
+        //             foreignField: '_id',
+        //             as: 'state'
+        //         }
+        //     },
+        //     {
+        //         '$unwind': '$state'
+        //     },
+        //     {
+        //         '$lookup': {
+        //             from: 'music_type',
+        //             localField: 'artist.music_type',
+        //             foreignField: '_id',
+        //             as: 'music_type'
+        //         }
+        //     },
+        //     {
+        //         '$unwind': '$music_type'
+        //     },
+        //     {
+        //         '$lookup': {
+        //             from: 'user',
+        //             localField: 'user_id',
+        //             foreignField: '_id',
+        //             as: 'user'
+        //         }
+        //     },
+        //     {
+        //         '$unwind': '$user'
+        //     },
+
+        //     {
+        //         '$project': {
+        //             'track_id': 0,
+        //             'user_id': 0,
+        //             'track.artist_id': 0,
+        //             'artist.state': 0,
+        //             'artist.music_type': 0
+        //         }
+        //     },
+        // ];
+
+        // let bookmarks = await Bookmark.aggregate(aggregates);
+
+        // var tot_cnt = bookmarks.length;
+
+
+
+        // var aggregate = [
+        //     {
+        //         "$match": {
+        //             "user_id": new ObjectId(user_id)
+        //         }
+        //     },
+        //     {
+        //         $lookup: {
+        //             from: 'track',
+        //             localField: 'track_id',
+        //             foreignField: '_id',
+        //             as: 'track'
+        //         }
+        //     },
+        //     {
+        //         $unwind: "$track"
+        //     },
+        //     {
+        //         $match: {
+        //             "track.is_suspend": false
+        //         }
+        //     },
+        //     {
+        //         '$lookup': {
+        //             from: 'artist',
+        //             localField: 'track.artist_id',
+        //             foreignField: '_id',
+        //             as: 'artist'
+        //         }
+        //     },
+        //     {
+        //         '$unwind': '$artist'
+        //     },
+        //     {
+        //         '$lookup': {
+        //             from: 'state',
+        //             localField: 'artist.state',
+        //             foreignField: '_id',
+        //             as: 'state'
+        //         }
+        //     },
+        //     {
+        //         '$unwind': '$state'
+        //     },
+        //     {
+        //         '$lookup': {
+        //             from: 'music_type',
+        //             localField: 'artist.music_type',
+        //             foreignField: '_id',
+        //             as: 'music_type'
+        //         }
+        //     },
+        //     {
+        //         '$unwind': '$music_type'
+        //     },
+        //     {
+        //         '$lookup': {
+        //             from: 'user',
+        //             localField: 'user_id',
+        //             foreignField: '_id',
+        //             as: 'user'
+        //         }
+        //     },
+        //     {
+        //         '$unwind': '$user'
+        //     },
+        //     {
+        //         '$project': {
+        //             'track_id': 0,
+        //             'user_id': 0,
+        //             'track.artist_id': 0,
+        //             'artist.state': 0,
+        //             'artist.music_type': 0
+        //         }
+        //     },
+        //     {
+        //         "$skip": start
+        //     },
+        //     {
+        //         "$limit": length
+        //     }
+
+        // ];
+
+        // let bookmark = await Bookmark.aggregate(aggregate);
+
+        // var filter_cnt = bookmark.length;
         if (bookmark) {
             return { "status": 1, "message": "bookmark details found", "bookmark": bookmark, "recordsFiltered": filter_cnt, "recordsTotal": tot_cnt };
         } else {

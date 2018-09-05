@@ -79,17 +79,17 @@ purchase_helper.get_purchased_track = async (user_id, start, length) => {
             {
                 '$unwind': '$user'
             },
-            {
-                '$lookup': {
-                    from: 'music_type',
-                    localField: 'user.music_type',
-                    foreignField: '_id',
-                    as: 'music_type'
-                }
-            },
-            {
-                '$unwind': '$music_type'
-            },
+            // {
+            //     '$lookup': {
+            //         from: 'music_type',
+            //         localField: 'user.music_type',
+            //         foreignField: '_id',
+            //         as: 'music_type'
+            //     }
+            // },
+            // {
+            //     '$unwind': '$music_type'
+            // },
             {
                 '$lookup': {
                     from: 'state',
@@ -118,6 +118,7 @@ purchase_helper.get_purchased_track = async (user_id, start, length) => {
 
 
         var aggregate = [
+
             {
                 "$match": {
                     "user_id": new ObjectId(user_id)
@@ -179,17 +180,17 @@ purchase_helper.get_purchased_track = async (user_id, start, length) => {
             {
                 '$unwind': '$user'
             },
-            {
-                '$lookup': {
-                    from: 'music_type',
-                    localField: 'user.music_type',
-                    foreignField: '_id',
-                    as: 'music_type'
-                }
-            },
-            {
-                '$unwind': '$music_type'
-            },
+            // {
+            //     '$lookup': {
+            //         from: 'music_type',
+            //         localField: 'user.music_type',
+            //         foreignField: '_id',
+            //         as: 'music_type'
+            //     }
+            // },
+            // {
+            //     '$unwind': '$music_type'
+            // },
             {
                 '$lookup': {
                     from: 'state',
@@ -208,6 +209,8 @@ purchase_helper.get_purchased_track = async (user_id, start, length) => {
                     'track.artist_id': 0
                 }
             },
+
+
 
             {
                 $skip: start

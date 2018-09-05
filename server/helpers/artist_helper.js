@@ -77,13 +77,14 @@ artist_helper.get_transaction_by_artist_id = async (artist_id, start, length) =>
     }
 };
 
+
 artist_helper.insert_user_to_artists = async (object) => {
 
     try {
         let data = await Artist.insertMany([object]);
         return { "status": 1, "message": "Record inserted", "artist": data };
     } catch (err) {
-        return { "status": 0, "message": "Error occured while inserting artist", "error": err };
+        return { "status": 0, "message": "Already registered as artist by this email Id" };
     }
 };
 
@@ -150,6 +151,9 @@ artist_helper.insert_transaction = async (object) => {
 
 artist_helper.delete_bank = async (bank_id, artist_id) => {
     try {
+        console.log('bank_id', bank_id);
+        console.log('artist_id', artist_id);
+
 
         var artist = await Bank.findOneAndRemove({ "_id": new ObjectId(bank_id), "artist_id": new ObjectId(artist_id) })
         if (artist) {
@@ -163,7 +167,19 @@ artist_helper.delete_bank = async (bank_id, artist_id) => {
 };
 
 
+artist_helper.delete_account = async (bank_id, artist_id) => {
+    try {
 
+        var artist = await Account.findOneAndRemove({ "bank_id": new ObjectId(bank_id), "artist_id": new ObjectId(artist_id) })
+        if (artist) {
+            return { "status": 1, "message": "Bank Account Deleted", "artist": artist };
+        } else {
+            return { "status": 2, "message": "bank not found" };
+        }
+    } catch (err) {
+        return { "status": 0, "message": "Error occured while finding bank", "error": err }
+    }
+};
 artist_helper.update_bank = async (artist_id, card_id) => {
     try {
 
@@ -351,6 +367,9 @@ artist_helper.get_all_artist = async () => {
     try {
         var aggregate = [
             {
+                "$match": { "flag": false }
+            },
+            {
                 $lookup: {
                     from: "state",
                     localField: "state",
@@ -406,12 +425,12 @@ artist_helper.get_all_artist = async () => {
 artist_helper.get_artist_by_filter = async (filter, start, length, filters) => {
     try {
 
-        // var artist = await Artist
-        //     .find({ "flag": false }, filter)
-        //     .populate('music_type')
-        //     .populate('state')
-        //     .skip(start)
-        //     .limit(length)
+        var artist = await Artist
+            .find({ "flag": false }, filter)
+            .populate('music_type')
+            .populate('state')
+            .skip(start)
+            .limit(length)
         // var aggregate = [
         //     {
         //         "$match": {
@@ -635,7 +654,7 @@ artist_helper.get_all_artist_by_comment = async () => {
 artist_helper.get_all_active_and_suspend_artist = async (start, length, filter, sort_by = {}) => {
     try {
 
-        var artists = await Artist.find(filter)
+        var artists = await Artist.find()
         var tot_cnt = artists.length;
 
         var artist = await Artist
@@ -745,7 +764,7 @@ artist_helper.update_artist_password = async (artist_id, password) => {
 artist_helper.get_new_uploads = async (filter = {}) => {
     try {
         var artist = await Artist
-            .find(filter)
+            .find({ "flag": false })
             .populate('music_type')
             .populate('state')
             .populate('region')

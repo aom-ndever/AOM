@@ -32,6 +32,7 @@ artist_playlist_helper.get_playlist_by_artist_id = async (artist_id, start, leng
             .find({ "artist_id": artist_id })
             .populate({ path: 'track_id', populate: { path: 'artist_id' } })
             .populate({ path: 'user_id', populate: { path: 'music_type' } })
+            .sort({ 'created_at': -1 })
             .skip(start)
             .limit(length)
 
