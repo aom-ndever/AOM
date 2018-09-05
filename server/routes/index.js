@@ -6,6 +6,7 @@ var path = require('path');
 var mongoose = require('mongoose');
 var ObjectId = mongoose.Types.ObjectId;
 var moment = require('moment');
+var _ = require('underscore');
 
 var logger = config.logger;
 var bcrypt = require('bcrypt');
@@ -1451,10 +1452,8 @@ router.post("/state", async (req, res) => {
  * @apiError (Error 4xx) {String} message Validation or error message.
  */router.post("/whatsnew", async (req, res) => {
   var filter = {};
-  var filters = {};
 
   var schema = {
-
   };
   if (req.body.filter) {
     req.body.filter.forEach(filter_criteria => {
@@ -1465,8 +1464,15 @@ router.post("/state", async (req, res) => {
     filter["music_type._id"] = new ObjectId(req.body.music_type);
   }
   if (req.body.state) {
-    filter["state._id"] = new ObjectId(req.body.state);
+    var tmp = _.map(req.body.state, function (id) { return ObjectId(id) });
+    console.log('tmp', tmp);
+
+    filter["state._id"] = {
+      $in: tmp
+    };
   }
+  console.log('filter', filter);
+
   if (req.body.search) {
     var r = new RegExp(req.body.search);
     var search = { "$regex": r, "$options": "i" };

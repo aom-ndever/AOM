@@ -464,7 +464,6 @@ artist_helper.get_artist_by_filter = async (filter, start, length, filters) => {
                 $limit: length
             }
         ];
-        console.log('filter', filter);
 
         if (filter) {
             aggregate.push({
