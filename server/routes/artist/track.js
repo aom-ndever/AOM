@@ -47,7 +47,7 @@ router.post("/", async (req, res) => {
     if (req.body.name && req.body.name != null) {
         obj.name = req.body.name;
     }
-    if (req.body.description && req.body.description != null) {
+    if (req.body.description) {
         obj.description = req.body.description;
     }
     if (req.body.price && req.body.price != null) {
