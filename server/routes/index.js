@@ -1587,7 +1587,7 @@ router.post("/artistv1", async (req, res) => {
     var r = new RegExp(req.body.search);
     var search = { "$regex": r, "$options": "i" };
     filter_for_risingstar.first_name = search;
-    filter_for_charttoppers.first_name = search;
+
   }
   req.checkBody(schema);
   var errors = req.validationErrors();
