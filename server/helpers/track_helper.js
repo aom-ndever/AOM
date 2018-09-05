@@ -158,14 +158,76 @@ track_helper.get_all_audio = async (filter, page_no, page_size) => {
 
 track_helper.get_track_by_filter = async (id, filter, start, length) => {
     try {
-        var track = await Track
-            .find({ "artist_id": { $in: id } })
-            .populate({ path: 'artist_id', populate: { path: 'music_type' } })
-            .populate({ path: 'artist_id', populate: { path: 'state' } })
-            .sort({ "no_of_likes": - 1 })
-            .skip(start)
-            .limit(length)
+        // var track = await Track
+        //     .find({ "artist_id": { $in: id } })
+        //     .populate({ path: 'artist_id', populate: { path: 'music_type' } })
+        //     .populate({ path: 'artist_id', populate: { path: 'state' } })
+        //     .sort({ "no_of_likes": - 1 })
+        //     .skip(start)
+        //     .limit(length)
+        var aggregate = [
+            {
+                "$match": {
+                    "artist_id": { $in: id }
+                }
+            },
+            {
+                '$lookup': {
+                    from: 'artist',
+                    localField: 'artist_id',
+                    foreignField: '_id',
+                    as: 'artist'
+                }
+            },
+            {
+                '$unwind': '$artist'
+            },
 
+            {
+                '$lookup': {
+                    from: 'music_type',
+                    localField: 'artist.music_type',
+                    foreignField: '_id',
+                    as: 'music_type'
+                }
+            },
+            {
+                '$unwind': '$music_type'
+            },
+            {
+                '$lookup': {
+                    from: 'state',
+                    localField: 'artist.state',
+                    foreignField: '_id',
+                    as: 'state'
+                }
+            },
+            {
+                '$unwind': '$state'
+            },
+
+            {
+                $skip: start
+            },
+            {
+                $limit: length
+            }
+        ];
+
+        if (filter) {
+            aggregate.push({
+                "$match": filter
+            })
+        }
+
+        if (filters) {
+            aggregate.push({
+                "$match":
+
+                    { $or: [{ "artist.first_name": filters }, { "artist.last_name": filters }] }
+            });
+        }
+        let artist = await Artist.aggregate(aggregate);
         if (track) {
             return { "status": 1, "message": "user details found", "track": track };
         } else {

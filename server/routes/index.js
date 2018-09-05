@@ -1454,14 +1454,7 @@ router.post("/state", async (req, res) => {
   var filters = {};
 
   var schema = {
-    /* "page_no": {
-       notEmpty: true,
-       errorMessage: "page_no is required"
-     },
-     "page_size": {
-       notEmpty: true,
-       errorMessage: "page_size is required"
-     }*/
+
   };
   if (req.body.filter) {
     req.body.filter.forEach(filter_criteria => {
