@@ -6,6 +6,7 @@ var path = require('path');
 var mongoose = require('mongoose');
 var ObjectId = mongoose.Types.ObjectId;
 var moment = require('moment');
+var _ = require('underscore');
 
 var logger = config.logger;
 var bcrypt = require('bcrypt');
@@ -1451,17 +1452,8 @@ router.post("/state", async (req, res) => {
  * @apiError (Error 4xx) {String} message Validation or error message.
  */router.post("/whatsnew", async (req, res) => {
   var filter = {};
-  var filters = {};
 
   var schema = {
-    /* "page_no": {
-       notEmpty: true,
-       errorMessage: "page_no is required"
-     },
-     "page_size": {
-       notEmpty: true,
-       errorMessage: "page_size is required"
-     }*/
   };
   if (req.body.filter) {
     req.body.filter.forEach(filter_criteria => {
@@ -1472,8 +1464,14 @@ router.post("/state", async (req, res) => {
     filter["music_type._id"] = new ObjectId(req.body.music_type);
   }
   if (req.body.state) {
-    filter["state._id"] = req.body.state;
+    var tmp = _.map(req.body.state, function (id) { return ObjectId(id) });
+    console.log('tmp', tmp);
+
+    filter["state._id"] = {
+      $in: tmp
+    };
   }
+
   if (req.body.search) {
     var r = new RegExp(req.body.search);
     var search = { "$regex": r, "$options": "i" };
@@ -1588,7 +1586,6 @@ router.post("/artistv1", async (req, res) => {
     var r = new RegExp(req.body.search);
     var search = { "$regex": r, "$options": "i" };
     filter_for_risingstar.first_name = search;
-    filter_for_charttoppers.first_name = search;
   }
   req.checkBody(schema);
   var errors = req.validationErrors();
@@ -1598,10 +1595,10 @@ router.post("/artistv1", async (req, res) => {
     var from = moment(to).subtract(30, "days").utcOffset(0);
     filter_for_risingstar.created_at = { "$gt": new Date(from), "$lt": new Date(to) };
 
-    var resp_artist = await artist_helper.get_new_uploads(filter);
+    var resp_artist = await artist_helper.get_new_uploads(filter, search);
 
     //var resp_track = await artist_helper.get_artist_by_id(filter);
-    var resp_chart = await artist_helper.get_all_artist();
+    var resp_chart = await artist_helper.get_all_artist(search);
 
     if (resp_artist.status == 0 && resp_chart.status == 0) {
       logger.error("Error occured while fetching users = ", resp_artist);
@@ -1888,16 +1885,20 @@ router.post('/get_track_for_current_round', async (req, res) => {
       filter["music_type._id"] = new ObjectId(req.body.music_type)
 
     }
+    if (req.body.search) {
+      var r = new RegExp(req.body.search);
+      var search = { "$regex": r, "$options": "i" };
+    }
 
-    var track = await winner_helper.get_qualified(round_id, req.body.start, req.body.length, filter);
+    var track = await winner_helper.get_qualified(round_id, req.body.start, req.body.length, filter, search);
     if (track.status === 1) {
       logger.trace("got details successfully");
       res.status(config.OK_STATUS).json({ "status": 1, "track": track.winner });
     } else {
-      res.status(config.OK_STATUS).json({ "message": "no participants yet for this contest" });
+      res.status(config.OK_STATUS).json({ "message": "No participants yet for this contest" });
     }
   } else {
-    res.status(config.INTERNAL_SERVER_ERROR).json({ "message": "no participants yet for this contest" });
+    res.status(config.INTERNAL_SERVER_ERROR).json({ "message": "No participants yet for this contest" });
   }
 });
 

@@ -230,16 +230,12 @@ router.put('/:playlist_id', function (req, res) {
         }
       }
     );
-
   }
-
 });
 
 router.put("/add_track/:playlist_id", async (req, res) => {
   artist_id = req.userInfo.id;
-
   var obj = {
-
     track_id: req.body.track_id
   };
   var playlist_track = await playlist_helper.get_playlists_for_push(artist_id, req.params.playlist_id)
@@ -261,10 +257,7 @@ router.put("/add_track/:playlist_id", async (req, res) => {
     logger.trace("Updated successfully  = ", resp_data);
     res.status(config.OK_STATUS).json(resp_data);
   }
-
 });
-
-
 
 
 router.delete('/:playlist_id', async (req, res) => {
@@ -280,8 +273,6 @@ router.delete('/:playlist_id', async (req, res) => {
     res.status(config.OK_STATUS).json({ "status": 1, "message": "Playlist has been removed" });
   }
 });
-
-
 
 module.exports = router;
 

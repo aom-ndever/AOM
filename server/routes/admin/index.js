@@ -639,13 +639,16 @@ router.post('/suspend/:admin_id', async (req, res) => {
       if (resp.admin.status == "active") {
         var stat = "suspended"
         var admin_resp = await admin_helper.update_admin_status(req.params.admin_id, stat);
+        logger.trace("Admin Suspended= ", { "admin": admin_resp });
+        res.status(config.OK_STATUS).json({ "message": "Role suspended successfully" });
       }
       else {
         var stat = "active"
         var admin_resp = await admin_helper.update_admin_status(req.params.admin_id, stat);
+        logger.trace("Admin UnSuspended= ", { "admin": admin_resp });
+        res.status(config.OK_STATUS).json({ "message": "Role unsuspended successfully" });
       }
-      logger.trace("Admin Suspended= ", { "admin": admin_resp });
-      res.status(config.OK_STATUS).json({ "message": "Account Suspended" });
+
     }
   }
   else {
