@@ -359,7 +359,7 @@ artist_helper.get_login_by_email = async (email) => {
  *          status 1 - If artist data found, with artist's documents
  *          status 2 - If artist not found, with appropriate message
  */
-artist_helper.get_all_artist = async (filter) => {
+artist_helper.get_all_artist = async () => {
     try {
         var aggregate = [
             {
@@ -406,13 +406,13 @@ artist_helper.get_all_artist = async (filter) => {
             },
         ];
 
-        if (filters) {
-            aggregate.push({
-                "$match":
+        // if (filters) {
+        //     aggregate.push({
+        //         "$match":
 
-                    { $or: [{ "first_name": filters }, { "last_name": filters }] }
-            });
-        }
+        //             { $or: [{ "first_name": filters }, { "last_name": filters }] }
+        //     });
+        // }
         let artist = await Artist.aggregate(aggregate);
         if (artist) {
             return { "status": 1, "message": "artist details found", "artist": artist };
