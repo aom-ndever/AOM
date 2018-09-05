@@ -58,7 +58,7 @@
                           <tr *ngFor="let artist of artist_vote['artist'];let i = index;">
                             <td>{{i+1}}.</td>
                             <td>{{artist.first_name + ' '+ artist.last_name}}</td>
-                            <td>New York</td>
+                            <td>{{artist && artist['state'] ? artist['state']['name'] : ''}}</td>
                             <td>{{artist.gender | titlecase}}</td>
                             <td>{{artist['music_type'] ? artist['music_type']['name'] : ''}}</td>
                             <td>{{artist.no_of_tracks}}</td>

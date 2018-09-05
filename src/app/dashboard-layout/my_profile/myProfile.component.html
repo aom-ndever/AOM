@@ -981,7 +981,6 @@
                                                         <!-- <select class="form-control" id="musictype" formControlName="music_type" multiple name="music_type" [(ngModel)]="userdata.music_type">
                                                             <option *ngFor="let type of music_types" value="{{type._id}}">{{type.name}}</option>
                                                         </select> -->
-
                                                         <p-multiSelect class="form-control" id="musictype" [options]="music_types"  [filter]="false" formControlName="music_type" name="music_type" [(ngModel)]="userdata.music_type" ></p-multiSelect>
                                                         <div class="cust_err_msg" *ngIf="listenerProfileValidation && !listener_profile.controls['music_type'].valid">
                                                             <span *ngIf="listener_profile.controls['music_type'].errors['multiSelectRequired']" class="text-danger">Music type is required.</span>
@@ -1180,33 +1179,30 @@
                                                 <tr *ngFor="let val of bookmark_list; let i = index;">
                                                     <td class="music_play">
                                                         <div class="artist-profile-custom-action-btn">
-                                                            <a [style.display]="!audio_ins[i] ? 'block' : 'none'" (click)="playAudio(val['track_id'].audio, i, bookmark_track_list)" class="play_img" ><img src="img/play_icon.png"/></a>
+                                                            <a [style.display]="!audio_ins[i] ? 'block' : 'none'" (click)="playAudio(val['track'].audio, i, bookmark_track_list)" class="play_img" ><img src="img/play_icon.png"/></a>
                                                             <a [style.display]="audio_ins[i] ? 'block' : 'none'" (click)="stopAudio(i, bookmark_track_list)" class="pause_img"><img src="img/pause_icon.png"/></a>
                                                         </div>
                                                     </td>
                                                     <td class="track-det" colspan="2">
                                                      <div class="track-pic">
                                                         <a href="javascript:;">
-                                                            <img src="{{val['track_id'] && val['track_id'].image ? track_url+val['track_id'].image : 'img/track-img.png'}}" style="height:50px;width:50px;" alt="Track Image">
+                                                            <img src="{{val && val['track'] ? track_url+val['track'].image : 'img/track-img.png'}}" style="height:50px;width:50px;" alt="Track Image">
                                                         </a>
                                                     </div>
                                                     <div class="track_title">
-                                                        <p class="track-name">{{val['track_id'] &&  val['track_id'].name ? val['track_id'].name : '' }}</p>
-                                                        <p class="track-singer">{{(val['track_id'] && val['track_id']['artist_id'] && val['track_id']['artist_id'].first_name )? val['track_id'].artist_id.first_name : '' + ' '+ val && val['track_id'] && val['track_id']['artist_id'] && val['track_id']['artist_id']['last_name'] ? val['track_id']['artist_id']['last_name'] : ''}}</p>
-                                                        <p class="track-year">{{val['track_id'] && val['track_id'].created_at ? (val['track_id'].created_at | date : 'yyyy' ): ''}}</p>
-                                                        <p class="track-date">{{val['track_id'] && val['track_id'].created_at ? (val['track_id'].created_at  | date : 'MMMM dd,yyyy') : ''}}</p>
+                                                        <p class="track-name">{{val &&  val['track'].name ? val['track'].name : '' }}</p>
+                                                        <p class="track-singer">{{(val && val['artist'] && val['artist'].first_name )? val['artist'].first_name : '' + ' '+ val && val['artist'] ? val['artist']['last_name'] : ''}}</p>
+                                                        <p class="track-year">{{val && val['track'] ? (val['track'].created_at | date : 'yyyy' ): ''}}</p>
+                                                        <p class="track-date">{{val && val['track'] ? (val['track'].created_at  | date : 'MMMM dd,yyyy') : ''}}</p>
                                                     </div>
                                                     </td>
                                                     <td class="td track-vote music_vote">
                                                         <img src="img/start.png" alt="start">
-                                                        <span>{{val['track_id'] && val['track_id'].no_of_votes ? val['track_id'].no_of_votes : '' }}
+                                                        <span>{{val && val['track'] ? val['track'].no_of_votes : '' }}
                                                            
                                                             <span>Votes</span>
                                                         </span>
                                                     </td>
-                                                </tr>
-                                                <tr *ngIf="bookmark_list.length == 0">
-                                                    <td colspan="3">No data available.</td>
                                                 </tr>
                                             </tbody>
                                         </table>

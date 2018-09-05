@@ -195,6 +195,7 @@ export class VoteComponent implements OnInit {
   getAllParticipants(data) {
     this.show_loader = true;
     this.participants = [];
+    let user = JSON.parse(localStorage.getItem('user'));
     this.VoteService.getAllParticipants(data).subscribe((response) => {
       this.participants = response['track'];
       this.audio_ins =  [];
@@ -202,6 +203,13 @@ export class VoteComponent implements OnInit {
       this.participants.forEach((ele) => {
         this.audio_ins.push(false)
         this.audio_ins_list.push(ele['track']);
+        if(user && user['user']) {
+          if(ele['votes'].indexOf(user['user']['_id']) != -1) {
+            ele['is_voted'] = true;
+          } else {
+            ele['is_voted'] = false;
+          }
+        }
       });
     }, (error) => {
       this.show_loader = false;
@@ -261,9 +269,10 @@ export class VoteComponent implements OnInit {
       };
       this.vote_spinner = true;
       this.VoteService.giveVoteToTrack(data).subscribe((response) => {
-        if(!(response['message'].toLowerCase() == 'already voted')) {
-          this.participants[index]['track_id']['no_of_votes'] += 1; 
-        }
+        // if(!(response['message'].toLowerCase() == 'already voted')) {
+          this.participants[index]['track']['no_of_votes'] += 1; 
+          this.participants[index]['is_voted'] = true;
+        // }
         this.dtElements.forEach((dtElement: DataTableDirective, index: number) => {
           dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
             dtInstance.draw();
@@ -297,7 +306,7 @@ export class VoteComponent implements OnInit {
         this.audio_ins_list = [];
         this.participants.forEach((ele) => {
           this.audio_ins.push(false)
-          this.audio_ins_list.push(ele['track_id']);
+          this.audio_ins_list.push(ele['track']);
         });
       }
     },(error) => {

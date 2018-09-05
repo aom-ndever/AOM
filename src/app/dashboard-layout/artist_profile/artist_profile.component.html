@@ -95,7 +95,7 @@
 
               <div class="profile-description {{show_more_flag ? 'show_more' : ''}}">
                 <span>{{artistdata.description}}</span>
-                 <a href="javascript:;" (click)="show_more()" class="more" >more...</a>
+                 <a href="javascript:;" (click)="show_more()" *ngIf="artistdata.description" class="more" >more...</a>
               </div>
               <div class="profile-tabs-det">
                 <!-- Nav tabs -->

@@ -34,7 +34,7 @@ export class ArtistService {
   }
   // Get artist track
   getArtistTrack(data : any) {
-    return this.http.post(`${this.api_host}/get_track`, data);
+    return this.http.post(`${this.api_host}/get_tracks`, data);
   }
   // Get Artist flag details
   getArtistFlagDetails(data : any) {

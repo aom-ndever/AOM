@@ -240,19 +240,21 @@
                 <tr *ngFor="let track of artist_track; let i = index;">
                   <td>{{i+1}}</td>
                   <td>{{track['name']}}</td>
-                  <td>{{track['created_at'] | date : 'd M, yyyy'}}</td>
+                  <td>{{track['created_at'] | date : 'dd MM, yyyy'}}</td>
                   <td class="td_img action_div">
                     
                       <ng-template #popTemplate>
                           <button class="btn btn-default" (click)="pop.hide()">No</button>
                           <button class="btn btn-primary" (click)="removeTrack(track['_id']);pop.hide()">Yes</button>
                         </ng-template>
-                        <a href="javascript:;" #pop="bs-popover" [outsideClick]="true" [popover]="popTemplate" popoverTitle="Delete?" ><i class="fa fa-trash"></i> Delete</a>&nbsp;
+                        <a href="javascript:;" *ngIf="user['admin']['account_type'] != 'moderator'" #pop="bs-popover" [outsideClick]="true" [popover]="popTemplate" popoverTitle="Delete?" ><i class="fa fa-trash"></i> Delete</a>&nbsp;
                         <ng-template #myTemplate>
                             <button class="btn btn-default" (click)="mypop.hide()">No</button>
                             <button class="btn btn-primary" (click)="suspendArtistTrack(track['_id']);mypop.hide()">Yes</button>
                         </ng-template>
-                        <a href="javascript:;" #mypop="bs-popover" [outsideClick]="true" [popover]="myTemplate" popoverTitle="{{track['is_suspend'] ? 'Un-suspend' : 'Suspend'}}?" > <img src="img/suspend.png">{{track['is_suspend'] ? 'Suspended' : 'Suspend'}}</a>
+                        <a href="javascript:;" *ngIf="user['admin']['account_type'] != 'moderator'" #mypop="bs-popover" [outsideClick]="true" [popover]="myTemplate" popoverTitle="{{track['is_suspend'] ? 'Un-suspend' : 'Suspend'}}?" > 
+                          <img src="img/suspend.png" style="top:3px !important;">{{track['is_suspend'] ? 'Suspended' : 'Suspend'}}
+                        </a>
       
                     <!-- <a href="javascript:;"> <img src="img/suspend.png">Suspend</a> -->
                   </td>

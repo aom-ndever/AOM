@@ -217,11 +217,11 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
         this.upgrade_artist_img = this.userdata.image;
       }
       let tmp = [];
-      this.userdata['music_type'].forEach((ele) => {
-        if(ele)
-          tmp.push(ele['_id']);
-      });
-      this.userdata['music_type'] = tmp;
+      // this.userdata['music_type'].forEach((ele) => {
+      //   if(ele)
+      //     tmp.push(ele['_id']);
+      // });
+      // this.userdata['music_type'] = tmp;
     }
     this.MyProfileService.getAllMusicType().subscribe(response => {
       this.music_types = response['music'];
@@ -233,8 +233,8 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
         });
         this.music_types = tmp;
       }
-      
     });
+    console.log('music_type', this.music_types);
     this.artist_profile = this.fb.group({
       upload : [''],
       cover : [''],
@@ -367,12 +367,13 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
               this.default_profile_img = environment.API_URL+environment.USER_IMG+this.userdata.image;
             }
           }
-          let tmp = [];
-          this.userdata['music_type'].forEach((ele) => {
-            if(ele)
-              tmp.push(ele['_id']);
-          });
-          this.userdata['music_type'] = tmp;
+          // let tmp = [];
+          // this.userdata['music_type'].forEach((ele) => {
+          //   if(ele)
+          //     // tmp.push(ele['_id']);
+          //     tmp.push(ele['_id']);
+          // });
+          // this.userdata['music_type'] = tmp;
         }
       }
       
@@ -468,7 +469,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
               this.audio_ins = [];
               this.bookmark_track_list = [];
               this.bookmark_list.forEach((ele) => {this.audio_ins.push(false)});
-              this.bookmark_list.forEach((ele) => {this.bookmark_track_list.push(ele['track_id'])});
+              this.bookmark_list.forEach((ele) => {this.bookmark_track_list.push(ele['track'])});
             }
             callback({
               recordsTotal: response['recordsTotal'],
