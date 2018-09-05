@@ -167,8 +167,34 @@ playlist_helper.update_playlist = async (user_id, playlist_id, obj) => {
         return { "status": 0, "message": "Error occured while finding playlist", "error": err }
     }
 };
+playlist_helper.get_playlists_for_push = async (user_id, playlist_id) => {
+    try {
 
+        var playlist = await Playlist
+            .findOne({ "_id": new ObjectId(playlist_id), "user_id": user_id })
 
+        if (playlist) {
+            return { "status": 1, "message": "Track details found", "playlist": playlist };
+        } else {
+            return { "status": 2, "message": "playlist not found" };
+        }
+    } catch (err) {
+        return { "status": 0, "message": "Error occured while finding playlist", "error": err }
+    }
+}
+playlist_helper.update_playlists = async (user_id, playlist_id, obj) => {
+
+    try {
+        var playlist = await Playlist.findOneAndUpdate({ "user_id": new ObjectId(user_id), "_id": new ObjectId(playlist_id) }, { "track_id": obj }, { new: true })
+        if (playlist) {
+            return { "status": 1, "message": "Track Added Successfully", "playlist": playlist };
+        } else {
+            return { "status": 2, "message": "playlist not found" };
+        }
+    } catch (err) {
+        return { "status": 0, "message": "Error occured while finding playlist", "error": err }
+    }
+};
 playlist_helper.delete_playlist = async (user_id, playlist_id) => {
 
     try {
