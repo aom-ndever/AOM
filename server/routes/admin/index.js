@@ -401,7 +401,7 @@ router.post("/add_existing_contest", async (req, res) => {
       state: req.body.state,
       region: req.body.region,
       round: req.body.round,
-      // round_name: contest_response.contest.name + "round" + req.body.round
+      round_name: contest_response.contest.name + "round" + req.body.round
 
     }
     var round = await round_helper.get_finished_round_of_contest(round_obj.contest_id);
