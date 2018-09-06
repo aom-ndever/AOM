@@ -1465,7 +1465,6 @@ router.post("/state", async (req, res) => {
   }
   if (req.body.state) {
     var tmp = _.map(req.body.state, function (id) { return ObjectId(id) });
-    console.log('tmp', tmp);
 
     filter["state._id"] = {
       $in: tmp
