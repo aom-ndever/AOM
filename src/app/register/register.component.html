@@ -117,7 +117,7 @@
                         <div class="form-group gender-grp">
                           <label for="geder">Gender</label>
                           <select class="form-control" id="gender" formControlName="gender" name="artist_gender" [(ngModel)]="artist_data.gender">
-                              <option value="">Select Gender</option>
+                              <option value="" disabled>Select Gender</option>
                               <option value="male">Male</option>
                               <option value="female">Female</option>
                           </select>
@@ -129,7 +129,7 @@
                           <label for="date">Birthday</label>
                           <div class="form-group">
                           <select class="form-control"  formControlName="day" name="artist_day" [(ngModel)]="artist_data.day">
-                              <option value="">Day</option>
+                              <option value="" disabled>Day</option>
                               <option *ngFor="let d of day" [value]="d">{{d}}</option>
                           </select>
                           <div class="terms_error_msg" *ngIf="artist_validation[2] && !artist_step3.controls['day'].valid">
@@ -138,7 +138,7 @@
                         </div>
                         <div class="form-group">
                           <select class="form-control"  formControlName="month" name="artist_month" [(ngModel)]="artist_data.month">
-                              <option value="">Month</option>
+                              <option value="" disabled>Month</option>
                               <option *ngFor="let m of month" [value]="m">{{m}}</option>
                           </select>
                           <div class="terms_error_msg" *ngIf="artist_validation[2] && !artist_step3.controls['month'].valid">
@@ -147,7 +147,7 @@
                         </div>
                         <div class="form-group">
                           <select class="form-control"  formControlName="year" name="artist_year" [(ngModel)]="artist_data.year">
-                              <option value="">Year</option>
+                              <option value="" disabled>Year</option>
                               <option *ngFor="let y of year" [value]="y">{{y}}</option>
                           </select>
                           <div class="terms_error_msg" *ngIf="artist_validation[2] && !artist_step3.controls['year'].valid">
@@ -195,7 +195,7 @@
                       <div class="form-group gender-grp">
                           <label for="region">Region</label>
                           <select formControlName="region" class="form-control" name="artist_region" [(ngModel)]="artist_data.region" (change)="getStateByRegion(artist_data.region)">
-                            <option value="">Select Region</option>
+                            <option value="" disabled>Select Region</option>
                             <option *ngFor="let r of region_list;" [value]="r._id">{{r['name']}}</option>
                           </select>
                           <div class="cust_err_msg" *ngIf="artist_validation[3] && !artist_step4.controls['region'].valid">
@@ -205,7 +205,7 @@
                       <div class="form-group gender-grp">
                           <label for="region">State</label>
                           <select formControlName="state" class="form-control" name="artist_state" [(ngModel)]="artist_data.state" >
-                            <option value="">Select State</option>
+                            <option value="" disabled>Select State</option>
                             <option *ngFor="let s of state_list;" [value]="s._id">{{s['name']}}</option>
                           </select>
                           <div class="cust_err_msg" *ngIf="artist_validation[3] && !artist_step4.controls['state'].valid">
@@ -465,7 +465,7 @@
                     <div class="form-group gender-grp">
                         <label for="geder">Gender</label>
                         <select class="form-control" id="listener_gender" formControlName="gender" name="listener_gender" [(ngModel)]="listener_data.gender">
-                            <option value="">Select Gender</option>
+                            <option value="" disabled>Select Gender</option>
                             <option value="male">Male</option>
                             <option value="female">Female</option>
                         </select>
@@ -477,7 +477,7 @@
                         <label for="date">Birthday</label>
                         <div class="form-group">
                         <select class="form-control" id="day" formControlName="day" name="listener_day" [(ngModel)]="listener_data.day">
-                            <option value="">Day</option>
+                            <option value="" disabled>Day</option>
                             <option *ngFor="let d of day" [value]="d">{{d}}</option>
                         </select>
                         <div class="terms_error_msg" *ngIf="listener_validation[2] && !listener_step3.controls['day'].valid">
@@ -486,7 +486,7 @@
                       </div>
                       <div class="form-group">
                         <select class="form-control" id="month" formControlName="month" name="listener_month" [(ngModel)]="listener_data.month">
-                            <option value="">Month</option>
+                            <option value="" disabled>Month</option>
                             <option *ngFor="let m of month" [value]="m">{{m}}</option>
                         </select>
                         <div class="terms_error_msg" *ngIf="listener_validation[2] && !listener_step3.controls['month'].valid">
@@ -495,7 +495,7 @@
                       </div>
                       <div class="form-group">
                         <select class="form-control" id="year" formControlName="year" name="listener_year" [(ngModel)]="listener_data.year">
-                            <option value="">Year</option>
+                            <option value="" disabled>Year</option>
                             <option *ngFor="let y of year" [value]="y">{{y}}</option>
                         </select>
                         <div class="terms_error_msg" *ngIf="listener_validation[2] && !listener_step3.controls['year'].valid">
@@ -544,7 +544,7 @@
                       <div class="form-group gender-grp">
                         <label for="region">Region</label>
                         <select formControlName="region" class="form-control" name="listener_region" [(ngModel)]="listener_data.region" (change)="getStateByRegion(listener_data.region)">
-                          <option value="">Select Region</option>
+                          <option value="" disabled >Select Region</option>
                           <option *ngFor="let r of region_list;" [value]="r._id">{{r['name']}}</option>
                         </select>
                         <div class="cust_err_msg" *ngIf="listener_validation[3] && !listener_step4.controls['region'].valid">
@@ -554,7 +554,7 @@
                     <div class="form-group gender-grp">
                         <label for="region">State</label>
                         <select formControlName="state" class="form-control" name="listener_state" [(ngModel)]="listener_data.state" >
-                          <option value="">Select State</option>
+                          <option value="" disabled>Select State</option>
                           <option *ngFor="let s of state_list;" [value]="s._id">{{s['name']}}</option>
                         </select>
                         <div class="cust_err_msg" *ngIf="listener_validation[3] && !listener_step4.controls['state'].valid">
