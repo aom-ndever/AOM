@@ -177,7 +177,7 @@ round_helper.get_current_rounds_of_contests = async (id) => {
         .findOne({
             "contest_id": new ObjectId(id),
             "start_date": {
-                $gte: current
+                $lte: current
             },
 
         });
