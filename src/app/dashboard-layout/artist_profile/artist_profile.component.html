@@ -191,6 +191,11 @@
                               </td>
                             </tr>
                           </tbody>
+                          <tbody *ngIf="artisttrack?.length == 0">
+                              <tr>
+                                  <td colspan="10" class="no-data-available">No data available!</td>
+                              </tr>
+                          <tbody>
                         </table>
                       </div>
                     </div>
@@ -202,7 +207,7 @@
                    <div class="media-wrapper">
                         <div class="" *ngFor="let media of artistmedia; let i = index;">
                           <a class="img-wrap" href="javascript:;" data-fancybox="images" data-width="1500" data-height="1000" >
-                            <img src="{{media.image ? artist_media_url+media.image : 'img/media-1.png'}}" alt="Media">
+                            <img src="{{media.image ? artist_media_url+media.image : 'img/no-image.png'}}" alt="Media">
                           </a>
                                <video class="media_video" *ngIf="media.link" width="218" height="138" controls>
                                 <source [src]="media.link" >
@@ -290,6 +295,11 @@
                               </td>
                             </tr>
                           </tbody>
+                          <tbody *ngIf="rankingtrack?.length == 0">
+                              <tr>
+                                  <td colspan="10" class="no-data-available">No data available!</td>
+                              </tr>
+                          <tbody>
                         </table>
                       </div>
                     </div>

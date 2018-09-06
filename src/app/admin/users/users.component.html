@@ -141,6 +141,11 @@
                       </td>                               
                     </tr>                     
                   </tbody>
+                  <tbody *ngIf="user_data?.length == 0">
+                      <tr>
+                          <td colspan="8" class="no-data-available">No data available!</td>
+                      </tr>
+                  <tbody>
                 </table>
           </div>
       </div>

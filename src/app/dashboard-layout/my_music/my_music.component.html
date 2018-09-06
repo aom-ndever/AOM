@@ -82,6 +82,11 @@
                     </td>
                   </tr>
                 </tbody>
+                <tbody *ngIf="tracklist?.length == 0">
+                    <tr>
+                        <td colspan="10" class="no-data-available">No data available!</td>
+                    </tr>
+                <tbody>
               </table>
             </div>
           </div>
@@ -132,6 +137,11 @@
                     </td>
                   </tr>
                 </tbody>
+                <tbody *ngIf="tracklist?.length == 0">
+                    <tr>
+                        <td colspan="10" class="no-data-available">No data available!</td>
+                    </tr>
+                <tbody>
               </table>
             </div>
           </div>

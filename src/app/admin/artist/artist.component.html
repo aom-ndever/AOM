@@ -176,6 +176,11 @@
                         </td>                               
                       </tr>
                     </tbody>
+                    <tbody *ngIf="artist_data?.length == 0">
+                        <tr>
+                            <td colspan="8" class="no-data-available">No data available!</td>
+                        </tr>
+                    <tbody>
                   </table>
            
             </div>
@@ -242,19 +247,19 @@
                   <td>{{track['name']}}</td>
                   <td>{{track['created_at'] | date : 'dd MM, yyyy'}}</td>
                   <td class="td_img action_div">
-                    
-                      <ng-template #popTemplate>
-                          <button class="btn btn-default" (click)="pop.hide()">No</button>
-                          <button class="btn btn-primary" (click)="removeTrack(track['_id']);pop.hide()">Yes</button>
+                        <a href="javascript:;" *ngIf="user['admin']['account_type'] != 'moderator'"  triggers="click"   [outsideClick]="true" [popover]="popTemplate" popoverTitle="Delete?" ><i class="fa fa-trash"></i> Delete</a>&nbsp;
+                        <ng-template #popTemplate >
+                          <button type="submit" class="btn btn-default" (click)="hidePopover()">No</button>
+                          <button class="btn btn-primary" (click)="removeTrack(track['_id']);">Yes</button>
                         </ng-template>
-                        <a href="javascript:;" *ngIf="user['admin']['account_type'] != 'moderator'" #pop="bs-popover" [outsideClick]="true" [popover]="popTemplate" popoverTitle="Delete?" ><i class="fa fa-trash"></i> Delete</a>&nbsp;
-                        <ng-template #myTemplate>
-                            <button class="btn btn-default" (click)="pop.hide()">No</button>
-                            <button class="btn btn-primary" (click)="suspendArtistTrack(track['_id']);pop.hide()">Yes</button>
+                        <a href="javascript:;" *ngIf="user['admin']['account_type'] != 'moderator'"  triggers="click" [outsideClick]="true" [popover]="myTemplate" popoverTitle="{{track['is_suspend'] ? 'Un-suspend' : 'Suspend'}}?" > 
+                            <img src="img/suspend.png" style="top:3px !important;">{{track['is_suspend'] ? 'Suspended' : 'Suspend'}}
+                          </a>
+                        <ng-template #myTemplate >
+                            <button class="btn btn-default" >No</button>
+                            <button class="btn btn-primary" (click)="suspendArtistTrack(track['_id']);">Yes</button>
                         </ng-template>
-                        <a href="javascript:;" *ngIf="user['admin']['account_type'] != 'moderator'" #pop="bs-popover" [outsideClick]="true" [popover]="myTemplate" popoverTitle="{{track['is_suspend'] ? 'Un-suspend' : 'Suspend'}}?" > 
-                          <img src="img/suspend.png" style="top:3px !important;">{{track['is_suspend'] ? 'Suspended' : 'Suspend'}}
-                        </a>
+                        
       
                     <!-- <a href="javascript:;"> <img src="img/suspend.png">Suspend</a> -->
                   </td>
