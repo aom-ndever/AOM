@@ -93,7 +93,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   getAllData(data : any) {
     this.audio_ins = [];
     this.MessageService.sendMessage({'music_flag' : 'yes'});
-    this.show_loader = true;
+    // this.show_loader = true;
     this.DashboardService.getAllData(data).subscribe(response => {
       this.data = response;
       response['new_uploads'].forEach((ele) => {
@@ -101,9 +101,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
       });
       this.InitializeSider(this.data['finalist']);
     }, (error) => {
-      this.show_loader = false;
+      // this.show_loader = false;
     }, () => {
-      this.show_loader = false;
+      // this.show_loader = false;
     });
   }
   // Play audio

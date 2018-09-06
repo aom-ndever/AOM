@@ -102,7 +102,7 @@ var AdminLayoutModule = /** @class */ (function () {
                 __WEBPACK_IMPORTED_MODULE_5__angular_forms__["ReactiveFormsModule"],
                 __WEBPACK_IMPORTED_MODULE_8__angular_platform_browser_animations__["a" /* BrowserAnimationsModule */],
                 __WEBPACK_IMPORTED_MODULE_16__layout_admin_layout_module__["a" /* LayoutModule */],
-                __WEBPACK_IMPORTED_MODULE_6_ngx_toastr__["a" /* ToastrModule */].forRoot(),
+                __WEBPACK_IMPORTED_MODULE_6_ngx_toastr__["a" /* ToastrModule */].forRoot({ preventDuplicates: true }),
                 __WEBPACK_IMPORTED_MODULE_12_ngx_bootstrap__["a" /* BsDropdownModule */].forRoot(),
                 __WEBPACK_IMPORTED_MODULE_12_ngx_bootstrap__["b" /* ModalModule */].forRoot(),
                 __WEBPACK_IMPORTED_MODULE_12_ngx_bootstrap__["c" /* PopoverModule */].forRoot(),
@@ -886,7 +886,7 @@ var ContestComponent = /** @class */ (function () {
                 // let stdt = new Date(timestamp);
                 // //let enddt = new Date(stdt.getTime() + this.contest_detail['duration'] * 24 * 60 * 60 * 1000);
                 // console.log(this.getDaysDiff(stdt, new Date()));
-                if (stdt.getTime() <= (new Date()).getTime()) {
+                if (stdt.getTime() < (new Date()).getTime()) {
                     this.toastr.info('The date must be bigger or equal to today date');
                     return;
                 }
@@ -923,7 +923,7 @@ var ContestComponent = /** @class */ (function () {
                 // let timestamp = Date.UTC(dt.getFullYear(), dt.getMonth(), dt.getDate());
                 // let stdt = new Date(timestamp);
                 //let enddt = new Date(stdt.getTime() + this.contest_detail['duration'] * 24 * 60 * 60 * 1000);
-                if (stdt.getTime() <= (new Date()).getTime()) {
+                if (stdt.getTime() < (new Date()).getTime()) {
                     this.toastr.info('The date must be bigger or equal to today date');
                     return;
                 }
@@ -4397,7 +4397,7 @@ var DashboardComponent = /** @class */ (function () {
         var _this = this;
         this.audio_ins = [];
         this.MessageService.sendMessage({ 'music_flag': 'yes' });
-        this.show_loader = true;
+        // this.show_loader = true;
         this.DashboardService.getAllData(data).subscribe(function (response) {
             _this.data = response;
             response['new_uploads'].forEach(function (ele) {
@@ -4405,9 +4405,9 @@ var DashboardComponent = /** @class */ (function () {
             });
             _this.InitializeSider(_this.data['finalist']);
         }, function (error) {
-            _this.show_loader = false;
+            // this.show_loader = false;
         }, function () {
-            _this.show_loader = false;
+            // this.show_loader = false;
         });
     };
     // Play audio
@@ -5114,7 +5114,7 @@ var LayoutModule = /** @class */ (function () {
                 __WEBPACK_IMPORTED_MODULE_37__angular_forms__["FormsModule"],
                 __WEBPACK_IMPORTED_MODULE_37__angular_forms__["ReactiveFormsModule"],
                 __WEBPACK_IMPORTED_MODULE_41__angular_platform_browser_animations__["a" /* BrowserAnimationsModule */],
-                __WEBPACK_IMPORTED_MODULE_38_ngx_toastr__["a" /* ToastrModule */].forRoot(),
+                __WEBPACK_IMPORTED_MODULE_38_ngx_toastr__["a" /* ToastrModule */].forRoot({ preventDuplicates: true }),
                 __WEBPACK_IMPORTED_MODULE_1_angular_highcharts__["b" /* ChartModule */],
                 __WEBPACK_IMPORTED_MODULE_2__amcharts_amcharts3_angular__["a" /* AmChartsModule */],
                 __WEBPACK_IMPORTED_MODULE_39_angular2_lightbox__["LightboxModule"],
@@ -10885,7 +10885,7 @@ var EamilVarificationModule = /** @class */ (function () {
                 __WEBPACK_IMPORTED_MODULE_3__angular_forms__["ReactiveFormsModule"],
                 __WEBPACK_IMPORTED_MODULE_8_ngx_image_cropper__["a" /* ImageCropperModule */],
                 __WEBPACK_IMPORTED_MODULE_10__angular_platform_browser_animations__["a" /* BrowserAnimationsModule */],
-                __WEBPACK_IMPORTED_MODULE_9_ngx_toastr__["a" /* ToastrModule */].forRoot(),
+                __WEBPACK_IMPORTED_MODULE_9_ngx_toastr__["a" /* ToastrModule */].forRoot({ preventDuplicates: true }),
                 __WEBPACK_IMPORTED_MODULE_2__angular_router__["RouterModule"].forChild([
                     { path: 'email_confirm/:type/:id', component: __WEBPACK_IMPORTED_MODULE_4__email_varification_component__["a" /* EmailVarificationComponent */] }
                 ])
@@ -11133,7 +11133,7 @@ var ForgetPasswordModule = /** @class */ (function () {
                 __WEBPACK_IMPORTED_MODULE_3__angular_forms__["ReactiveFormsModule"],
                 __WEBPACK_IMPORTED_MODULE_8_ngx_image_cropper__["a" /* ImageCropperModule */],
                 __WEBPACK_IMPORTED_MODULE_10__angular_platform_browser_animations__["a" /* BrowserAnimationsModule */],
-                __WEBPACK_IMPORTED_MODULE_9_ngx_toastr__["a" /* ToastrModule */].forRoot(),
+                __WEBPACK_IMPORTED_MODULE_9_ngx_toastr__["a" /* ToastrModule */].forRoot({ preventDuplicates: true }),
                 __WEBPACK_IMPORTED_MODULE_2__angular_router__["RouterModule"].forChild([
                     { path: 'forgot_password/:type/:id', component: __WEBPACK_IMPORTED_MODULE_4__forget_password_component__["a" /* ForgetPasswordComponent */] },
                     { path: "**", redirectTo: '' }
@@ -11757,7 +11757,7 @@ var RegisterModule = /** @class */ (function () {
                 __WEBPACK_IMPORTED_MODULE_12_angular5_social_login__["SocialLoginModule"],
                 __WEBPACK_IMPORTED_MODULE_8_ngx_image_cropper__["a" /* ImageCropperModule */],
                 __WEBPACK_IMPORTED_MODULE_10__angular_platform_browser_animations__["a" /* BrowserAnimationsModule */],
-                __WEBPACK_IMPORTED_MODULE_9_ngx_toastr__["a" /* ToastrModule */].forRoot(),
+                __WEBPACK_IMPORTED_MODULE_9_ngx_toastr__["a" /* ToastrModule */].forRoot({ preventDuplicates: true }),
                 __WEBPACK_IMPORTED_MODULE_2__angular_router__["RouterModule"].forChild([
                     { path: 'register', component: __WEBPACK_IMPORTED_MODULE_4__register_component__["a" /* RegisterComponent */] }
                 ])
