@@ -34,14 +34,18 @@ export class RegisterComponent implements OnInit {
     day : '',
     month : '',
     year : '',
-    gender : ''
+    gender : '',
+    region : '',
+    state : ''
   };
   public listener_data : any = {
     'music_type' : [],
     day : '',
     month : '',
     year : '',
-    gender : ''
+    gender : '',
+    region : '',
+    state : ''
   };
   public user_data : any = {};
   public location : any = '';
@@ -333,7 +337,9 @@ export class RegisterComponent implements OnInit {
         day : '',
         month : '',
         year : '',
-        gender : ''
+        gender : '',
+        region : '',
+        state : ''
       };
       this.toastr.success('Registration done successfully and confirmation email sent to your account please verify to to do login.', 'Success!');
       this.show_spinner = false;
@@ -375,7 +381,9 @@ export class RegisterComponent implements OnInit {
           day : '',
           month : '',
           year : '',
-          gender : ''
+          gender : '',
+          region : '',
+          state : ''
         };
         this.toastr.success('Registration done successfully and confirmation email sent to your account please verify to to do login.', 'Success!');
         this.show_spinner = false;
