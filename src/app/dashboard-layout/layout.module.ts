@@ -58,7 +58,7 @@ import { AuthService } from '../shared/auth.service';
     FormsModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,
-    ToastrModule.forRoot(),
+    ToastrModule.forRoot({preventDuplicates: true}),
     ChartModule,
     AmChartsModule,
     LightboxModule,

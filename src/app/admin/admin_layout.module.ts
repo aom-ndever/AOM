@@ -38,7 +38,7 @@ import { AlertService } from './alerts/alerts.service';
     ReactiveFormsModule,
     BrowserAnimationsModule,
     LayoutModule,
-    ToastrModule.forRoot(),
+    ToastrModule.forRoot({preventDuplicates: true}),
     BsDropdownModule.forRoot(),
     ModalModule.forRoot(),
     PopoverModule.forRoot(),

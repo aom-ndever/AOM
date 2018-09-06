@@ -208,7 +208,7 @@ export class ContestComponent implements OnInit {
         // let stdt = new Date(timestamp);
         // //let enddt = new Date(stdt.getTime() + this.contest_detail['duration'] * 24 * 60 * 60 * 1000);
         // console.log(this.getDaysDiff(stdt, new Date()));
-        if(stdt.getTime() <= (new Date()).getTime() ) {
+        if(stdt.getTime() < (new Date()).getTime() ) {
           this.toastr.info('The date must be bigger or equal to today date');
           return;
         }
@@ -245,7 +245,7 @@ export class ContestComponent implements OnInit {
         // let timestamp = Date.UTC(dt.getFullYear(), dt.getMonth(), dt.getDate());
         // let stdt = new Date(timestamp);
         //let enddt = new Date(stdt.getTime() + this.contest_detail['duration'] * 24 * 60 * 60 * 1000);
-        if(stdt.getTime() <= (new Date()).getTime() ) {
+        if(stdt.getTime() < (new Date()).getTime() ) {
           this.toastr.info('The date must be bigger or equal to today date');
           return;
         }
