@@ -208,10 +208,10 @@ export class ContestComponent implements OnInit {
         // let stdt = new Date(timestamp);
         // //let enddt = new Date(stdt.getTime() + this.contest_detail['duration'] * 24 * 60 * 60 * 1000);
         // console.log(this.getDaysDiff(stdt, new Date()));
-        if(stdt.getTime() < (new Date()).getTime() ) {
-          this.toastr.info('The date must be bigger or equal to today date');
-          return;
-        }
+        // if(stdt.getTime() < (new Date()).getTime() ) {
+        //   this.toastr.info('The date must be bigger or equal to today date');
+        //   return;
+        // }
         
         let data = {
           name : this.contest_detail['name'],
@@ -245,10 +245,10 @@ export class ContestComponent implements OnInit {
         // let timestamp = Date.UTC(dt.getFullYear(), dt.getMonth(), dt.getDate());
         // let stdt = new Date(timestamp);
         //let enddt = new Date(stdt.getTime() + this.contest_detail['duration'] * 24 * 60 * 60 * 1000);
-        if(stdt.getTime() < (new Date()).getTime() ) {
-          this.toastr.info('The date must be bigger or equal to today date');
-          return;
-        }
+        // if(stdt.getTime() < (new Date()).getTime() ) {
+        //   this.toastr.info('The date must be bigger or equal to today date');
+        //   return;
+        // }
         let data = {
           contest_id : this.contest_detail['contest_id']['_id'],
           // music_type : this.contest_detail['music_type'],
