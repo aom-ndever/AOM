@@ -745,7 +745,7 @@ router.post("/participate", async (req, res) => {
 
         var artist_data = await artist_helper.get_artist_by_id(artist_id);
         artist_music = artist_data.artist.music_type._id;
-        var round = await round_helper.get_current_rounds_of_contests(obj.contest_id)
+        var round = await round_helper.get_current_round_of_contest(obj.contest_id)
 
         if (round.status == 1) {
             if (contest_music.toString() === artist_music.toString()) {
