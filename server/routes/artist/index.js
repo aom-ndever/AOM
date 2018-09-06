@@ -784,18 +784,20 @@ router.post("/participate", async (req, res) => {
                     logger.trace("Already participated for this contest");
                     res.status(config.OK_STATUS).json({ "message": "Already participated for this contest" });
                 }
+
+
             }
-
-
             else {
                 logger.trace("You are of Different Genre");
                 res.status(config.OK_STATUS).json({ "message": "You are of Different Genre" });
             }
         }
+
         else {
             res.status(config.OK_STATUS).json({ "message": "Contest is not Yet started" });
 
         }
+
     }
     else {
         logger.error("Validation Error = ", errors);
