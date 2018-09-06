@@ -408,9 +408,9 @@ artist_helper.get_all_artist = async (filter) => {
 
         if (filter) {
             aggregate.push({
-                "$match":
+                "$match": filter
 
-                    { $or: [{ "artist.first_name": filter }, { "artist.last_name": filter }] }
+                //  { $or: [{ "artist.first_name": filter }, { "artist.last_name": filter }] }
             });
         }
         let artist = await Artist.aggregate(aggregate);
