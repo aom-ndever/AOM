@@ -170,8 +170,12 @@ round_helper.get_current_round_of_contest = async (id) => {
         return { "status": 2, "message": "contest not found" };
     }
 };
+
+
+
+
 round_helper.get_finished_round_of_contest = async (id) => {
-   
+
     let current = moment().toISOString();
     var round = await Round
         .findOne({

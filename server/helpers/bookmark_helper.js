@@ -160,9 +160,7 @@ bookmark_helper.get_all_bookmarked_tracks = async (user_id, start, length) => {
         ];
 
         let bookmarks = await Bookmark.aggregate(aggregates);
-
         var tot_cnt = bookmarks.length;
-
 
         var aggregate = [
             {
@@ -251,11 +249,8 @@ bookmark_helper.get_all_bookmarked_tracks = async (user_id, start, length) => {
             {
                 "$limit": length
             }
-
         ];
-
         let bookmark = await Bookmark.aggregate(aggregate);
-
         var filter_cnt = bookmark.length;
         if (bookmark) {
             return { "status": 1, "message": "bookmark details found", "bookmark": bookmark, "recordsFiltered": filter_cnt, "recordsTotal": tot_cnt };
@@ -300,4 +295,5 @@ bookmark_helper.get_all_bookmarked = async (track_id) => {
         return { "status": 0, "message": "Error occured while finding bookmark", "error": err }
     }
 };
+
 module.exports = bookmark_helper;
