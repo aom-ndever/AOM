@@ -785,14 +785,16 @@ router.post("/participate", async (req, res) => {
                     res.status(config.OK_STATUS).json({ "message": "Already participated for this contest" });
                 }
             }
-            else {
-                res.status(config.OK_STATUS).json({ "message": "Contest is not Yet started" });
 
+
+            else {
+                logger.trace("You are of Different Genre");
+                res.status(config.OK_STATUS).json({ "message": "You are of Different Genre" });
             }
         }
         else {
-            logger.trace("You are of Different Genre");
-            res.status(config.OK_STATUS).json({ "message": "You are of Different Genre" });
+            res.status(config.OK_STATUS).json({ "message": "Contest is not Yet started" });
+
         }
     }
     else {
