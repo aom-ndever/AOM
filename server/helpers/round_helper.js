@@ -179,9 +179,7 @@ round_helper.get_current_rounds_of_contests = async (id) => {
             "start_date": {
                 $gte: current
             },
-            "end_date": {
-                $gte: current
-            }
+
         });
 
     if (round) {
