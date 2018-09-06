@@ -170,8 +170,28 @@ round_helper.get_current_round_of_contest = async (id) => {
         return { "status": 2, "message": "contest not found" };
     }
 };
+
+round_helper.get_current_rounds_of_contests = async (id) => {
+    let current = moment().toISOString();
+    var round = await Round
+        .findOne({
+            "contest_id": new ObjectId(id),
+            "start_date": {
+                $lte: current
+            },
+
+        });
+
+    if (round) {
+        return { "status": 1, "message": "round details found", "round": round };
+    } else {
+        return { "status": 2, "message": "contest not found" };
+    }
+};
+
+
 round_helper.get_finished_round_of_contest = async (id) => {
-   
+
     let current = moment().toISOString();
     var round = await Round
         .findOne({
