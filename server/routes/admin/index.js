@@ -216,7 +216,7 @@ router.post("/add_contest", async (req, res) => {
         {
           year: req.body.year,
           month: (parseInt(req.body.month) - 1),
-          date: (parseInt(req.body.day) + 1),
+          date: (parseInt(req.body.day)),
         }
       );
       var round_obj = {
