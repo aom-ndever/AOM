@@ -4,6 +4,7 @@ import { DataTableDirective } from 'angular-datatables';
 import { ToastrService } from 'ngx-toastr';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
+
 import { environment } from '../../../environments/environment';
 import swal from 'sweetalert2';
 class DataTablesResponse {
@@ -21,6 +22,8 @@ class DataTablesResponse {
 export class ArtistComponent implements OnInit {
   @ViewChild(DataTableDirective)
   datatableElement: DataTableDirective;
+  
+  
   modalRef: BsModalRef;
   dtOptions: DataTables.Settings = {};
   artist_data: any = [];
@@ -102,6 +105,7 @@ export class ArtistComponent implements OnInit {
     };
   }
 
+  
   // get all artist data
   getAllArtistData(data: any) {
     this.ArtistService.getAllArtist(data).subscribe(response => {
@@ -210,10 +214,10 @@ export class ArtistComponent implements OnInit {
   suspendArtistTrack(id : any) {
     this.ArtistService.suspendArtistTrack(id).subscribe((response) => {
       let data = {artist_id : this.artist_id};
-          this.ArtistService.getArtistTrack(data).subscribe((response) => {
-            this.artist_track = response['track']['music'];
-          });
-          this.toastr.success(response['message'], 'Success!');
+      this.ArtistService.getArtistTrack(data).subscribe((response) => {
+        this.artist_track = response['track']['music'];
+      });
+      this.toastr.success(response['message'], 'Success!');
     }, (error) => {
       this.toastr.error(error['error'].message, 'Error!');
     });
@@ -252,6 +256,13 @@ export class ArtistComponent implements OnInit {
     }
     this.datatableElement.dtInstance.then((dtInstance: DataTables.Api) => {
       dtInstance.draw();
+    });
+  }
+  // Hide popover
+  hidePopover() {
+    let data = {artist_id : this.artist_id};
+    this.ArtistService.getArtistTrack(data).subscribe((response) => {
+      this.artist_track = response['track']['music'];
     });
   }
 }

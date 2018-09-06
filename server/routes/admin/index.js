@@ -203,81 +203,90 @@ router.post("/add_contest", async (req, res) => {
 
   if (!errors) {
     type = await admin_helper.get_admin_by_id(req.userInfo.id)
-    if (type.admin.account_type == "super_admin" || type.admin.account_type == "admin") {
-      var contest_obj = {
-        admin_id: req.userInfo.id,
-        music_type: req.body.music_type,
-        name: req.body.name,
+    var start_date = moment(
+      {
+        year: req.body.year,
+        month: (parseInt(req.body.month) - 1),
+        date: (parseInt(req.body.day)),
       }
+    );
+    let today = moment().startOf("day");
 
-      var resp_data = await contest_helper.insert_contest(contest_obj);
-
-      var start_date = moment(
-        {
-          year: req.body.year,
-          month: (parseInt(req.body.month) - 1),
-          date: (parseInt(req.body.day) + 1),
-        }
-      );
-      var round_obj = {
-        contest_id: resp_data.contest._id,
-        start_date: start_date,
-        state: req.body.state,
-        region: req.body.region,
-        duration: req.body.duration,
-        end_date: moment(start_date).add((req.body.duration * 7), 'days'),
-        round: req.body.round,
-        round_name: contest_obj.name + " " + "round" + req.body.round
-      };
-
-
-      var resp_data = await round_helper.insert_round(round_obj);
-
-      if (resp_data.status == 0) {
-        logger.error("Error occured while inserting = ", resp_data);
-        res.status(config.INTERNAL_SERVER_ERROR).json(resp_data);
-      } else {
-
-        var resp_music = await artist_helper.get_artist_by_music_id(contest_obj.music_type);
-        if (resp_music.status == 1) {
-
-          logger.trace("sending mail");
-          let mail_resp = await mail_helper.send("contest", {
-            "to": resp_music.artist.email,
-            "subject": "Contest Creation"
-          }, {
-              "Note": "new contest has been created named :" + contest_obj.name,
-            });
+    if (start_date.format('YYYY-MM-DD') >= today.format('YYYY-MM-DD')) {
+      if (type.admin.account_type == "super_admin" || type.admin.account_type == "admin") {
+        var contest_obj = {
+          admin_id: req.userInfo.id,
+          music_type: req.body.music_type,
+          name: req.body.name,
         }
 
-        logger.trace(" got successfully = ", resp_data);
-        res.status(config.OK_STATUS).json(resp_data);
-      }
-    }
-    else {
-      var obj = {
-        admin_id: req.userInfo.id,
-        name: req.body.name,
-        start_date: start_date,
-        duration: req.body.duration,
-        end_date: moment(start_date).utc().add((req.body.duration * 7), 'days'),
-        music_type: req.body.music_type,
-        state: req.body.state,
-        region: req.body.region,
-        round: req.body.round,
-        round_name: req.body.name + " " + "round" + req.body.round
+        var resp_data = await contest_helper.insert_contest(contest_obj);
 
-      };
-      var resp_data = await contest_request_helper.insert_contest_request(obj);
-      if (resp_data.status == 0) {
-        logger.error("Error occured while inserting = ", resp_data);
-        res.status(config.INTERNAL_SERVER_ERROR).json(resp_data);
-      } else {
+        var round_obj = {
+          contest_id: resp_data.contest._id,
+          start_date: start_date,
+          state: req.body.state,
+          region: req.body.region,
+          duration: req.body.duration,
+          end_date: moment(start_date).add((req.body.duration * 7), 'days'),
+          round: req.body.round,
+          round_name: contest_obj.name + " " + "round" + req.body.round
+        };
 
-        logger.trace(" got successfully = ", resp_data);
-        res.status(config.OK_STATUS).json(resp_data);
+
+        var resp_data = await round_helper.insert_round(round_obj);
+
+        if (resp_data.status == 0) {
+          logger.error("Error occured while inserting = ", resp_data);
+          res.status(config.INTERNAL_SERVER_ERROR).json(resp_data);
+        } else {
+
+          var resp_music = await artist_helper.get_artist_by_music_id(contest_obj.music_type);
+          if (resp_music.status == 1) {
+
+            logger.trace("sending mail");
+            let mail_resp = await mail_helper.send("contest", {
+              "to": resp_music.artist.email,
+              "subject": "Contest Creation"
+            }, {
+                "Note": "new contest has been created named :" + contest_obj.name,
+              });
+          }
+
+          logger.trace(" got successfully = ", resp_data);
+          res.status(config.OK_STATUS).json(resp_data);
+        }
       }
+      else {
+        var obj = {
+          admin_id: req.userInfo.id,
+          name: req.body.name,
+          start_date: start_date,
+          duration: req.body.duration,
+          end_date: moment(start_date).utc().add((req.body.duration * 7), 'days'),
+          music_type: req.body.music_type,
+          state: req.body.state,
+          region: req.body.region,
+          round: req.body.round,
+          round_name: req.body.name + " " + "round" + req.body.round
+
+        };
+        var resp_data = await contest_request_helper.insert_contest_request(obj);
+        if (resp_data.status == 0) {
+          logger.error("Error occured while inserting = ", resp_data);
+          res.status(config.INTERNAL_SERVER_ERROR).json(resp_data);
+        } else {
+
+          logger.trace(" got successfully = ", resp_data);
+          res.status(config.OK_STATUS).json(resp_data);
+        }
+      }
+    } else {
+      res.status(config.BAD_REQUEST).json({ "message": "Date must be greater or equal to today's date" });
+
     }
+
+
   }
   else {
     logger.error("Validation Error = ", errors);
@@ -396,47 +405,64 @@ router.post("/add_existing_contest", async (req, res) => {
 
     }
     var round = await round_helper.get_finished_round_of_contest(round_obj.contest_id);
+    var start_date = moment(
+      {
+        year: req.body.year,
+        month: (parseInt(req.body.month) - 1),
+        date: (parseInt(req.body.day)),
+      }
+    );
+    let today = moment().startOf("day");
 
-    if (round.status === 1) {
+    if (start_date.format('YYYY-MM-DD') >= today.format('YYYY-MM-DD')) {
+      if (round.status === 1) {
 
-      var track = await winner_helper.get_qualifiedss(round.round._id);
-      if (track.status === 1) {
+        var track = await winner_helper.get_qualifiedss(round.round._id);
+        if (track.status === 1) {
 
-        var arry = [];
-        for (let x of track.winner) {
-          var winner = x.track_id;
-          arry.push(ObjectId(winner));
-        }
-        if (arry.length > 0) {
+          var arry = [];
+          for (let x of track.winner) {
+            var winner = x.track_id;
+            arry.push(ObjectId(winner));
+          }
+          if (arry.length > 0) {
 
-          var roundget = await round_helper.get_rounds({ "_id": new ObjectId(round.round._id) }, { "track_id": null });
+            var roundget = await round_helper.get_rounds({ "_id": new ObjectId(round.round._id) }, { "track_id": null });
 
-          if (roundget.status == 0) {
-            var roundAdd = await round_helper.add_participant_in_next_round({ "_id": new ObjectId(round.round._id) }, { "track_id": arry });
+            if (roundget.status == 0) {
+              var roundAdd = await round_helper.add_participant_in_next_round({ "_id": new ObjectId(round.round._id) }, { "track_id": arry });
 
-            for (let x of track.winner) {
-              var object = {
-                "votes": x.votes,
-                "track_id": x.track_id,
-                "round_id": current_round.round._id
+              for (let x of track.winner) {
+                var object = {
+                  "votes": x.votes,
+                  "track_id": x.track_id,
+                  "round_id": current_round.round._id
+                }
               }
+              var winner = winner_helper.insert_winner(object)
             }
-            var winner = winner_helper.insert_winner(object)
           }
         }
       }
+
+      var resp_data = await round_helper.insert_round(round_obj);
+
+      if (resp_data.status === 0) {
+
+        logger.error("Error occured while inserting = ", resp_data);
+        res.status(config.INTERNAL_SERVER_ERROR).json(resp_data);
+      }
+      logger.trace(" got successfully = ", resp_data);
+      res.status(config.OK_STATUS).json(resp_data);
     }
 
-    var resp_data = await round_helper.insert_round(round_obj);
+    else {
+      res.status(config.BAD_REQUEST).json({ "message": "Date must be greater or equal to today's date" });
 
-    if (resp_data.status === 0) {
-
-      logger.error("Error occured while inserting = ", resp_data);
-      res.status(config.INTERNAL_SERVER_ERROR).json(resp_data);
     }
-    logger.trace(" got successfully = ", resp_data);
-    res.status(config.OK_STATUS).json(resp_data);
+
   }
+
   else {
     logger.error("Validation Error = ", errors);
     res.status(config.BAD_REQUEST).json({ message: errors });

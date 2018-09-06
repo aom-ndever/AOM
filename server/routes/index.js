@@ -1465,7 +1465,6 @@ router.post("/state", async (req, res) => {
   }
   if (req.body.state) {
     var tmp = _.map(req.body.state, function (id) { return ObjectId(id) });
-    console.log('tmp', tmp);
 
     filter["state._id"] = {
       $in: tmp
@@ -1585,7 +1584,7 @@ router.post("/artistv1", async (req, res) => {
   if (req.body.search) {
     var r = new RegExp(req.body.search);
     var search = { "$regex": r, "$options": "i" };
-    filter_for_risingstar.first_name = search;
+    filter.first_name = search;
   }
   req.checkBody(schema);
   var errors = req.validationErrors();
@@ -1595,7 +1594,7 @@ router.post("/artistv1", async (req, res) => {
     var from = moment(to).subtract(30, "days").utcOffset(0);
     filter_for_risingstar.created_at = { "$gt": new Date(from), "$lt": new Date(to) };
 
-    var resp_artist = await artist_helper.get_new_uploads(filter, search);
+    var resp_artist = await artist_helper.get_new_uploads(filter);
 
     //var resp_track = await artist_helper.get_artist_by_id(filter);
     var resp_chart = await artist_helper.get_all_artist(search);

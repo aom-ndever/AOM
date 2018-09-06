@@ -150,7 +150,16 @@ export class DashboardLayoutComponent implements OnInit, AfterViewInit, AfterVie
         this.MessageService.sendMessage({index : this.song_cnt, action : 'bottom_play', list : this.list_no});
       }
       if(this.audio_instance_list[this.song_cnt] && this.audio_instance_list[this.song_cnt].paused) {
-        this.audio_instance_list[this.song_cnt].play();
+        let playPromise = this.audio_instance_list[this.song_cnt].play();
+        if (playPromise !== undefined) {
+          playPromise.then(() => {
+            // Automatic playback started!
+          }).catch((error) => {
+            this.toastr.info('This audio type is not supported in this browser.', 'Information!');
+            // Automatic playback failed.
+            // Show a UI element to let the user manually start playback.
+          });
+        }
         pButton.className = "";
         pButton.className = "pause";
       } else {

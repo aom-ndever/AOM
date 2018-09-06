@@ -221,7 +221,7 @@ export class VoteComponent implements OnInit {
       });
     }, (error) => {
       this.show_loader = false;
-      this.toastr.error(error['error'].message, 'Error!');
+      // this.toastr.error(error['error'].message, 'Error!');
     }, () => {
       this.show_loader = false;
     });

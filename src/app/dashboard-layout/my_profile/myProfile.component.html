@@ -423,6 +423,11 @@
                                                         <td>{{t && t['status'] ? (t['status'] | titlecase) : ''}}</td>
                                                     </tr>
                                                 </tbody>
+                                                <tbody *ngIf="transaction_data?.length == 0">
+                                                    <tr>
+                                                        <td colspan="6" class="no-data-available">No data available!</td>
+                                                    </tr>
+                                                <tbody>
                                             </table>
                                         </div>
                                         <div class="proceeds">
@@ -817,10 +822,12 @@
                                                             <a class="track_plalist_link" href="javascript:;" (click)="getPlaylistTrack(val['_id'], i)"><i aria-hidden="true" class="fa fa-music"></i></a>
                                                         </td>
                                                     </tr>
-                                                    <tr *ngIf="playlist.length == 0">
-                                                        <td colspan="2">No Data available.</td>
-                                                    </tr>
                                                 </tbody>
+                                                <tbody *ngIf="playlist?.length == 0">
+                                                    <tr>
+                                                        <td colspan="2" class="no-data-available">No data available!</td>
+                                                    </tr>
+                                                <tbody>
                                             </table>
                                         </div>
                                     </div>
@@ -867,6 +874,11 @@
                                                         </td>
                                                     </tr>
                                                 </tbody>
+                                                <tbody *ngIf="playlist_track?.length == 0">
+                                                    <tr>
+                                                        <td colspan="10" class="no-data-available">No data available!</td>
+                                                    </tr>
+                                                <tbody>
                                             </table>
                                         </div>
                                     </div>
@@ -1205,6 +1217,11 @@
                                                     </td>
                                                 </tr>
                                             </tbody>
+                                            <tbody *ngIf="bookmark_list?.length == 0">
+                                                <tr>
+                                                    <td colspan="3" class="no-data-available">No data available!</td>
+                                                </tr>
+                                            <tbody>
                                         </table>
                                     </div>
                                 </div>
@@ -1232,10 +1249,12 @@
                                                         <a class="track_plalist_link" href="javascript:;" (click)="getPlaylistTrack(val['_id'], i)"><i class="fa fa-music" aria-hidden="true"></i></a>
                                                     </td>
                                                 </tr>
-                                                <tr *ngIf="playlist.length == 0">
-                                                    <td colspan="2">No data available.</td>
-                                                </tr>
                                             </tbody>
+                                            <tbody *ngIf="playlist?.length == 0">
+                                                <tr>
+                                                    <td colspan="2" class="no-data-available">No data available!</td>
+                                                </tr>
+                                            <tbody>
                                         </table>
                                     </div>
                                 </div>
@@ -1281,6 +1300,11 @@
                                                     </td>
                                                 </tr>
                                             </tbody>
+                                            <tbody *ngIf="playlist_track?.length == 0">
+                                                <tr>
+                                                    <td colspan="10" class="no-data-available">No data available!</td>
+                                                </tr>
+                                            <tbody>
                                         </table>
                                     </div>
                                 </div>
@@ -1301,7 +1325,7 @@
                                                         <a data-fancybox data-animation-duration="700" data-src="#delete" *ngIf="userdata.image" href="javascript:;" class="delete" (click)="removeArtistImage()"><i class="fa fa-trash"></i></a>
                                                     </div>
                                                     <div class="cust_err_msg" *ngIf="upgrade_artist_validation && upgrade_artist_img == ''">
-                                                        <span  class="text-danger">Profile image is required is required.</span>
+                                                        <span  class="text-danger">Profile image is required.</span>
                                                     </div>
                                                 </div>
                                             </div>
@@ -1516,10 +1540,12 @@
                                                         </a>
                                                     </td>
                                                 </tr>
-                                                <tr >
-                                                    <td colspan="5">No data available.</td>
-                                                </tr>
                                             </tbody>
+                                            <tbody *ngIf="purchased_track?.length == 0">
+                                                <tr>
+                                                    <td colspan="10" class="no-data-available">No data available!</td>
+                                                </tr>
+                                            <tbody>
                                         </table>
                                     </div>
                                 </div>

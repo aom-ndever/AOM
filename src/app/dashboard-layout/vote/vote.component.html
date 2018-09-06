@@ -13,7 +13,7 @@
                           <form>
                             <div class="mobile-search" (click)="toggleSearch()"><i class="fa fa-search" aria-hidden="true"></i></div>
                             <div class="search-input" [style]="toggSearch ? 'block' : 'none'">
-                              <input type="text" placeholder="Search by Artist Name" (keyup)="filter($event)" name="search" [(ngModel)]="search_str" />
+                              <input type="text" placeholder="Search by Artist name or track" (keyup)="filter($event)" name="search" [(ngModel)]="search_str" />
                             </div>
                           </form>
                         </div>
@@ -235,6 +235,11 @@
                         </tr>
                         
                       </tbody>
+                      <tbody *ngIf="winner_list?.length == 0">
+                          <tr>
+                              <td colspan="8" class="no-data-available">No data available!</td>
+                          </tr>
+                      <tbody>
                     </table>
                   </div>
                   <div class="track-table mCustomScrollbar vote_infographic_table" data-mcs-theme="dark-3" [style.display]="table_flag ? 'block' : 'none' ">
@@ -282,6 +287,11 @@
                           </td>
                         </tr>
                       </tbody>
+                      <tbody *ngIf="winner_list?.length == 0">
+                          <tr>
+                              <td colspan="8" class="no-data-available">No data available!</td>
+                          </tr>
+                      <tbody>
                     </table>
                   </div>
                 </div>

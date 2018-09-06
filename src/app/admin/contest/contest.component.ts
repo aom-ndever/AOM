@@ -203,15 +203,15 @@ export class ContestComponent implements OnInit {
     if(flag) { 
       this.is_valid = !flag;
       if(this.is_new_or_existing == 1) {
-        let stdt = new Date(this.contest_detail['year'], this.contest_detail['month'], this.contest_detail['day']);
+        let stdt = new Date(this.contest_detail['year']+'-'+ this.contest_detail['month']+'-'+ this.contest_detail['day']);
         // let timestamp = Date.UTC(dt.getFullYear(), dt.getMonth(), dt.getDate());
         // let stdt = new Date(timestamp);
         // //let enddt = new Date(stdt.getTime() + this.contest_detail['duration'] * 24 * 60 * 60 * 1000);
         // console.log(this.getDaysDiff(stdt, new Date()));
-        if(stdt.getTime() <= (new Date()).getTime() ) {
-          this.toastr.info('The date must be bigger or equal to today date');
-          return;
-        }
+        // if(stdt.getTime() < (new Date()).getTime() ) {
+        //   this.toastr.info('The date must be bigger or equal to today date');
+        //   return;
+        // }
         
         let data = {
           name : this.contest_detail['name'],
@@ -241,14 +241,14 @@ export class ContestComponent implements OnInit {
           this.show_spinner = false;
         });
       } else {
-        let dt = new Date(this.contest_detail['year'], this.contest_detail['month'], this.contest_detail['day']);
-        let timestamp = Date.UTC(dt.getFullYear(), dt.getMonth(), dt.getDate());
-        let stdt = new Date(timestamp);
+        let stdt = new Date(this.contest_detail['year']+'-'+ this.contest_detail['month']+'-'+ this.contest_detail['day']);
+        // let timestamp = Date.UTC(dt.getFullYear(), dt.getMonth(), dt.getDate());
+        // let stdt = new Date(timestamp);
         //let enddt = new Date(stdt.getTime() + this.contest_detail['duration'] * 24 * 60 * 60 * 1000);
-        if(stdt.getTime() <= (new Date()).getTime() ) {
-          this.toastr.info('The date must be bigger or equal to today date');
-          return;
-        }
+        // if(stdt.getTime() < (new Date()).getTime() ) {
+        //   this.toastr.info('The date must be bigger or equal to today date');
+        //   return;
+        // }
         let data = {
           contest_id : this.contest_detail['contest_id']['_id'],
           // music_type : this.contest_detail['music_type'],

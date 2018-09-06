@@ -36,7 +36,7 @@ export function getAuthServiceConfigs() {
     SocialLoginModule,
     ImageCropperModule,
     BrowserAnimationsModule,
-    ToastrModule.forRoot(),
+    ToastrModule.forRoot({preventDuplicates: true}),
     RouterModule.forChild([
       { path: 'register', component: RegisterComponent }
     ])

@@ -21,7 +21,7 @@ import { AuthService } from '../shared/auth.service';
     ReactiveFormsModule,
     ImageCropperModule,
     BrowserAnimationsModule,
-    ToastrModule.forRoot(),
+    ToastrModule.forRoot({preventDuplicates: true}),
     RouterModule.forChild([
       { path: 'email_confirm/:type/:id', component: EmailVarificationComponent }
     ])
