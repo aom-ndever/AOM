@@ -5365,6 +5365,7 @@ var DashboardLayoutComponent = /** @class */ (function () {
         }
     };
     DashboardLayoutComponent.prototype.play = function () {
+        var _this = this;
         try {
             var pButton = document.getElementById('pButton');
             this.audio_ins = this.audio_instance_list[this.song_cnt];
@@ -5377,7 +5378,11 @@ var DashboardLayoutComponent = /** @class */ (function () {
                     playPromise.then(function () {
                         // Automatic playback started!
                     }).catch(function (error) {
-                        // this.toastr.info('This audio type is not supported in this browser.', 'Information!');
+                        _this.toastr.info('This audio type is not supported in this browser.', 'Information!');
+                        _this.audio_instance_list[_this.song_cnt].pause();
+                        _this.MessageService.sendMessage({ index: _this.song_cnt, action: 'stop', list: _this.list_no });
+                        pButton.className = "";
+                        pButton.className = "play";
                         // Automatic playback failed.
                         // Show a UI element to let the user manually start playback.
                     });
