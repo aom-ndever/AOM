@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import 'rxjs/add/operator/do';
-import { LoginService } from '../../login/login.service';
+// import { LoginService } from '../../login/login.service';
 import {
   HttpRequest,
   HttpHandler,
@@ -14,7 +14,7 @@ import { Router } from '@angular/router';
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
 
-  constructor(private router: Router, private loginservice: LoginService) { }
+  constructor(private router: Router) { }
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const token = localStorage.getItem('auth');
     let islogin = false;
@@ -47,7 +47,7 @@ export class TokenInterceptor implements HttpInterceptor {
         if (err.status === 401) {
           // redirect to the login route
           // or show a modal
-          this.loginservice.logout();
+          // this.loginservice.logout();
           // localStorage.clear();
           this.router.navigate(['/login']);
           return false;
