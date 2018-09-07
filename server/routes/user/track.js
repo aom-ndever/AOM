@@ -92,7 +92,7 @@ router.post('/purchase', async (req, res) => {
           var obj = {
             "transfer_id": transfer.id,
             "to_account": transfer.destination,
-            "amount": (transfer.amount) / 10,
+            "amount": (transfer.amount) / 100,
             "artist_id": artist_id,
             "track_id": obj.track_id,
             "status": "finised"
