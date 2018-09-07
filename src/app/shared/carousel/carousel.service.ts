@@ -18,5 +18,10 @@ export class CarouselService {
     this.headers = new HttpHeaders({ 'x-access-token' : this.user.token });  
     return this.http.post(`${this.api_host}/user/artist/follow`, data, {headers : this.headers});
   }
-  
+   // Get followers
+   getFollower() {
+    this.user = JSON.parse(localStorage.getItem('user'));
+    this.headers = new HttpHeaders({ 'x-access-token' : this.user.token });  
+    return this.http.get(`${this.api_host}/user/artist/followed`, {headers : this.headers});
+  }
 }

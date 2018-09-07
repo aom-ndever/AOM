@@ -104,6 +104,6 @@ export class ArtistProfileService {
   getUserFollowing() {
     this.user = JSON.parse(localStorage.getItem('user'));
     this.headers = new HttpHeaders({ 'x-access-token' : this.user.token });
-    return this.http.get(`${this.api_host}/user/artist/get_followers`, {headers : this.headers});
+    return this.http.get(`${this.api_host}/user/artist/followed`, {headers : this.headers});
   }
 }

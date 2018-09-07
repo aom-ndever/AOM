@@ -52,6 +52,8 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
   user : any = '';
   show_spinner : boolean = false;
   track_data : any = {};
+  // Artist following
+  artist_following : boolean = false;
   constructor(
     private ArtistProfileService : ArtistProfileService,
     private toastr: ToastrService,
@@ -110,10 +112,7 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
     this.share_form_phone = this.fb.group({
       phone : ['', [Validators.required, Validators.maxLength(10), Validators.minLength(10)]]
     });
-    if(this.user && this.user['user']) {
-      this.ArtistProfileService.getUserFollowing().subscribe((response) => {
-      });
-    }
+    
     
   }
 
@@ -257,6 +256,13 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
           { data: '' }
         ]
       };
+      if(this.user && this.user['user']) {
+        this.ArtistProfileService.getUserFollowing().subscribe((response) => {
+          if(response['artist'] && response['artist'].indexOf(params['id']) != -1)  {
+            this.artist_following = true;
+          }
+        });
+      }
     });
   }
 
@@ -357,6 +363,7 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
       };
       this.ArtistProfileService.followArtist(data).subscribe(response => {
         this.toastr.success(response['message'], 'Success!');
+        this.artist_following = true;
       }, error => {
         this.toastr.error(error['error'].message, 'Error!');
       });

@@ -63,7 +63,7 @@ export class ArtistComponent implements OnInit {
       this.artistv1 = response;
       this.show_filter = false;
       this.show_loader = false;
-      //this.getAllFollower();
+      this.getAllFollower();
     });
   }
   // Play audio
@@ -91,12 +91,13 @@ export class ArtistComponent implements OnInit {
       let data = {
         artist_id : id
       };
-      this.artistdata['artist'][index]['is_followed'] = true;
+      // this.artistdata['artist'][index]['is_followed'] = true;
       this.ArtistService.followArtist(data).subscribe(response => {
         this.toastr.success(response['message'], 'Success!');
+        this.getAllFollower();
         this.getMyFollower();
       }, error => {
-        this.artistdata['artist'][index]['is_followed'] = false;
+        // this.artistdata['artist'][index]['is_followed'] = false;
         this.toastr.error(error['error'].message, 'Error!');
       });
     } else {
@@ -105,24 +106,26 @@ export class ArtistComponent implements OnInit {
   }
   // get All follower
   getAllFollower() {
-    // let user = JSON.parse(localStorage.getItem('user'));
-    // if(user && user.artsit) {
-    //   this.ArtistService.getFollower().subscribe(response => {
-    //     let flag = false;
-    //     this.artistdata['artist'].forEach(obj => {
-    //       response['user'].forEach(data => {
-    //         if(obj._id == data['artist_id']._id) {
-    //           flag = true;
-    //         }
-    //       });
-    //       if(flag) {
-    //         obj['is_followed'] = true;
-    //       } else {
-    //         obj['is_followed'] = false;
-    //       }
-    //     });
-    //   });
-    // }
+    let user = JSON.parse(localStorage.getItem('user'));
+    if(user && user['user']) {
+      this.ArtistService.getFollower().subscribe(response => {
+        
+        this.artistv1['rising_stars'].forEach((ele) => {
+          if(response['artist'] && response['artist'].indexOf(ele['_id']) != -1) {
+            ele['is_followed'] = true;
+          } else {
+            ele['is_followed'] = false;
+          }
+        });
+        this.artistv1['chart_toppers'].forEach((ele) => {
+          if(response['artist'] && response['artist'].indexOf(ele['artist']['_id']) != -1) {
+            ele['artist']['is_followed'] = true;
+          } else {
+            ele['artist']['is_followed'] = false;
+          }
+        });
+      });
+    }
   }
   // Get all music list
   getAllMusicType() {
