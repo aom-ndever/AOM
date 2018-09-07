@@ -10,7 +10,7 @@
         <div class="img-wrap">
           <img src="{{image.source}}" alt="Finalists">
           <a href="javascript:void(0)" class="fan" (click)="followArtist(image['artist_id'])">
-            <i class="fa fa-heart-o" aria-hidden="true"></i>
+            <i class="fa fa-{{image['is_followed'] ? 'heart' : 'heart-o'}}" aria-hidden="true"></i>
           </a>
         </div>
         <div class="content-wrap">

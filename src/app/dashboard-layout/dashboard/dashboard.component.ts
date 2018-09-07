@@ -127,8 +127,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   InitializeSider(data : any) {
     this.images = [];
     
-    data.forEach(ele => {
-      
+    data.forEach(ele => { 
       this.images.push({
         "source": ele.image ? this.track_url+ele.image : 'img/finalist1.png',
         "alt": "",
@@ -142,6 +141,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
         "artist_id" : ele['artist_id'] ? ele['artist_id']['_id'] : null
       });
     });
+    this.getAllFollower();
     this.MessageService.sendMessage({'music_flag' : 'no'});
   }
   // Get All music type
@@ -158,6 +158,22 @@ export class DashboardComponent implements OnInit, OnDestroy {
         music_type : this.music_type_index != -1 ?  this.music_type_list[this.music_type_index]._id : ''
       };
       this.getAllData(data);
+    }
+  }
+  // get All follower
+  getAllFollower() {
+    let user = JSON.parse(localStorage.getItem('user'));
+    if(user && user['user']) {
+      console.log('dgdfgdfg',this.images);
+      this.DashboardService.getFollower().subscribe(response => {
+        this.images.forEach((ele) => {
+          if(response['artist'] && response['artist'].indexOf(ele['artist_id']) != -1) {
+            ele['is_followed'] = true;
+          } else {
+            ele['is_followed'] = false;
+          }
+        });
+      });
     }
   }
 }

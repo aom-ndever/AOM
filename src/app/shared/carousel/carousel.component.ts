@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy, AfterViewInit } from '@angular/core';
 import { NgxCarousel } from 'ngx-carousel';
 import { environment } from '../../../environments/environment';
 import { MessageService } from '../message.service';
@@ -12,7 +12,7 @@ import { ToastrService } from 'ngx-toastr';
   templateUrl: './carousel.component.html',
   styleUrls: ['./carousel.component.scss']
 })
-export class CarouselComponent implements OnInit, OnDestroy {
+export class CarouselComponent implements OnInit, OnDestroy, AfterViewInit {
   @Input() images: any[];
   @Input() showFavourit: boolean;
   @Input() carouselType : any;
@@ -52,6 +52,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
         this.flag = response['music_flag'] == 'yes' ? true : false;
       }
     });
+    
   }
   onChange(index: any) {
     if (this.images[index]['enable']) {
@@ -94,11 +95,16 @@ export class CarouselComponent implements OnInit, OnDestroy {
     this.images.forEach((ele) => {
       this.audio_ins.push(false);
     });
+    
   }
 
   ngOnDestroy() {
     // unsubscribe to ensure no memory leaks
       this.subscription.unsubscribe();
+  }
+
+  ngAfterViewInit() {
+    this.getAllFollower();
   }
 
   // Play audio
@@ -133,6 +139,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
       };
       this.CarouselService.followArtist(data).subscribe((response) => {
         this.toastr.success(response['message'], 'Success!');
+        this.getAllFollower();
       },(error) => {
         this.toastr.error(error['error'].message, 'Error!');
       });
@@ -140,5 +147,21 @@ export class CarouselComponent implements OnInit, OnDestroy {
       this.toastr.info('Please login first to follow the artist', 'Information!');
     }
     
+  }
+   // get All follower
+   getAllFollower() {
+    let user = JSON.parse(localStorage.getItem('user'));
+    if(user && user['user']) {
+      console.log('dgdfgdfg',this.images);
+      this.CarouselService.getFollower().subscribe(response => {
+        this.images.forEach((ele) => {
+          if(response['artist'] && response['artist'].indexOf(ele['artist_id']) != -1) {
+            ele['is_followed'] = true;
+          } else {
+            ele['is_followed'] = false;
+          }
+        });
+      });
+    }
   }
 }
