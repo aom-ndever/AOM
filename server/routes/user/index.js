@@ -317,7 +317,7 @@ router.delete('/image/:user_id', async (req, res) => {
     } else if (del_resp.status === 2) {
         res.status(config.BAD_REQUEST).json({ "status": 0, "message": "Can't delete user image" });
     } else {
-        res.status(config.OK_STATUS).json({ "status": 1, "message": "user image has been deleted" });
+        res.status(config.OK_STATUS).json({ "status": 1, "message": "User image has been deleted" });
     }
 });
 
