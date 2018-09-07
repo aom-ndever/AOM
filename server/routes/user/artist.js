@@ -122,10 +122,10 @@ router.get('/followed', async (req, res) => {
 
   if (user.status === 1) {
     logger.trace("got details successfully");
-    res.status(config.OK_STATUS).json(user);
+    res.status(config.OK_STATUS).json({ "artist": artisIds });
   } else {
     logger.error("Error occured while fetching = ", user);
-    res.status(config.INTERNAL_SERVER_ERROR).json(artisIds);
+    res.status(config.INTERNAL_SERVER_ERROR).json(error);
   }
 });
 
