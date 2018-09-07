@@ -38,7 +38,7 @@
                     <td class="track-det" colspan="2">
                       <div class="track-pic">
                         <a href="javascript:;">
-                          <img src="{{track_url+t.image}}" *ngIf="t.image" width="50" height="50" alt="Track Image">
+                          <img defaultImage="img/loader.gif" offset="100" lazyLoad="{{track_url+t.image}}" *ngIf="t.image" width="50" height="50" alt="Track Image">
                           <img src="img/upload1.png" *ngIf="!t.image" alt="Track Image">
                         </a>
                       </div>
@@ -109,7 +109,7 @@
                         
                     </td>
                     <td class="track-pic"><a href="javascript:;">
-                        <img src="{{track_url+t.image}}" *ngIf="t.image" width="50" height="50" alt="Track Image">
+                        <img defaultImage="img/loader.gif" offset="100" lazyLoad="{{track_url+t.image}}" *ngIf="t.image" width="50" height="50" alt="Track Image">
                         <img src="img/upload1.png" *ngIf="!t.image" alt="Track Image">
                     </a></td>
                     <td class="track-det" colspan="2">
