@@ -184,7 +184,7 @@ export class MyProfileService {
   }
   // update artist playlist
   updateArtistPlaylist(data, id) {
-    return this.http.post(`${this.api_host}/artist/playlist/${id}`, data, {headers : this.headers});
+    return this.http.put(`${this.api_host}/artist/playlist/${id}`, data, {headers : this.headers});
   }
   // Remove artist playlist
   removeArtistPlaylist(id) {

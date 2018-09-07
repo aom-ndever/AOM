@@ -1324,8 +1324,9 @@
                                                         <input type="file" formControlName="upload" name="upload" id="up_cover_upload" (change)="changeUpgradeArtistImage($event)">
                                                         <a data-fancybox data-animation-duration="700" data-src="#delete" *ngIf="userdata.image" href="javascript:;" class="delete" (click)="removeArtistImage()"><i class="fa fa-trash"></i></a>
                                                     </div>
-                                                    <div class="cust_err_msg" *ngIf="upgrade_artist_validation && upgrade_artist_img == ''">
-                                                        <span  class="text-danger">Profile image is required.</span>
+                                                    <!-- <div class="cust_err_msg" *ngIf="upgrade_artist_validation &&  upgrade_artist_img == ''"> -->
+                                                    <div class="cust_err_msg" *ngIf="upgrade_artist_validation">
+                                                        <span class="text-danger">Profile image is required.</span>
                                                     </div>
                                                 </div>
                                             </div>
