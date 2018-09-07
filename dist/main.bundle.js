@@ -3348,8 +3348,10 @@ var ArtistProfileComponent = /** @class */ (function () {
         this.share_form_phone = this.fb.group({
             phone: ['', [__WEBPACK_IMPORTED_MODULE_9__angular_forms__["Validators"].required, __WEBPACK_IMPORTED_MODULE_9__angular_forms__["Validators"].maxLength(10), __WEBPACK_IMPORTED_MODULE_9__angular_forms__["Validators"].minLength(10)]]
         });
-        this.ArtistProfileService.getUserFollowing().subscribe(function (response) {
-        });
+        if (this.user && this.user['user']) {
+            this.ArtistProfileService.getUserFollowing().subscribe(function (response) {
+            });
+        }
     }
     ArtistProfileComponent.prototype.ngOnInit = function () {
         var _this = this;
