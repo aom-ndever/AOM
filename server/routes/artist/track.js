@@ -291,6 +291,7 @@ router.delete('/:track_id', async (req, res) => {
     var comment_del = await comment_helper.delete_comment_by_track(track_id);
     var playlist_del = await playlist_helper.delete_playlist_by_track(track_id);
     var artist_playlist_del = await artist_playlist_helper.delete_playlist_by_track(track_id);
+    var transaction_del = await artist_helper.delete_transaction_track(track_id)
 
     var del_resp = await track_helper.delete_track_by_id(artist_id, track_id);
     if (del_resp.status === 0) {
