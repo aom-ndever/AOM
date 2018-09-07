@@ -405,6 +405,7 @@ artist_helper.get_all_artist = async (search, filter) => {
                 }
             },
         ];
+        console.log('filter', filter);
 
         if (filter) {
             aggregate.push({
