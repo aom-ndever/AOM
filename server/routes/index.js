@@ -1928,9 +1928,13 @@ router.post('/winners', async (req, res) => {
   round_id = round.round._id
   var filter = {};
   var filters = {};
-  if (req.body.state) {
-    filter["state._id"] = new ObjectId(req.body.state)
 
+  if (req.body.state) {
+    var tmp = _.map(req.body.state, function (id) { return ObjectId(id) });
+
+    filter["state._id"] = {
+      $in: tmp
+    };
   }
   if (req.body.music_type) {
     filter["music_type._id"] = new ObjectId(req.body.music_type)

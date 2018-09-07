@@ -153,6 +153,7 @@ round_helper.get_all_contests = async () => {
 
 round_helper.get_current_round_of_contest = async (id) => {
     let current = moment().toISOString();
+
     var round = await Round
         .findOne({
             "contest_id": new ObjectId(id),
@@ -163,7 +164,6 @@ round_helper.get_current_round_of_contest = async (id) => {
                 $gte: current
             }
         });
-
     if (round) {
         return { "status": 1, "message": "round details found", "round": round };
     } else {

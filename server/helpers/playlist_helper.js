@@ -204,8 +204,6 @@ playlist_helper.get_playlists_for_push = async (user_id, playlist_id) => {
     }
 }
 playlist_helper.update_playlists = async (user_id, playlist_id, obj) => {
-    console.log('1', 1);
-
     try {
         var playlist = await Playlist.findOneAndUpdate({ "user_id": new ObjectId(user_id), "_id": new ObjectId(playlist_id) }, { "track_id": obj }, { new: true })
         if (playlist) {
