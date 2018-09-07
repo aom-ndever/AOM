@@ -369,7 +369,11 @@ artist_helper.get_artists = async (filter, search) => {
                 }
             });
         }
-
+        if (filter) {
+            aggregate.push({
+                "$match": filter
+            })
+        }
 
         let artist = await Artist.aggregate(aggregate);
         if (artist) {
@@ -476,7 +480,6 @@ artist_helper.get_all_artist = async (search, filter) => {
                 }
             },
         ];
-        console.log('filter', filter);
 
         if (filter) {
             aggregate.push({
