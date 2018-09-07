@@ -132,7 +132,7 @@ artist_playlist_helper.get_playlists = async (artist_id, playlist_id, start, len
                 $match: {
                     "artist.flag": false
                 }
-            }
+            },
             {
                 "$skip": start
             },
