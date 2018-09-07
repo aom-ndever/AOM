@@ -99,7 +99,7 @@ export class WhatsNewComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.getAllData();
     this.getAllMusicType();
-    this.getAllFeaturedArtist();
+    this.getAllFeaturedArtist({});
   }
 
   ngOnDestroy() {
@@ -141,11 +141,12 @@ export class WhatsNewComponent implements OnInit, OnDestroy {
       }
       this.getAllFollower(); 
     });
+    
   }
   // Get all featured artist
-  getAllFeaturedArtist() {
+  getAllFeaturedArtist(data) {
     this.feature_loader = true;
-    this.WhatsNewService.getAllFeaturedArtist().subscribe((response) => {
+    this.WhatsNewService.getAllFeaturedArtist(data).subscribe((response) => {
       this.featured_artist = response['artist'];
       console.log(this.featured_artist);
       this.feature_loader = false;
@@ -194,6 +195,7 @@ export class WhatsNewComponent implements OnInit, OnDestroy {
         this.track_list = response['track'];
         this.getAllFollower();
       });
+      this.getAllFeaturedArtist(data);
     }
   }
   // Add region for filtering
@@ -234,6 +236,7 @@ export class WhatsNewComponent implements OnInit, OnDestroy {
     }, error => {
       this.toastr.error(error['error'].message,'Error!');
     });
+    this.getAllFeaturedArtist(data);
   }
   // Get all music type
   getAllMusicType() {

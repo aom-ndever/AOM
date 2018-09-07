@@ -254,7 +254,7 @@
                       </thead>
                       <tbody>
                         <tr *ngFor="let p of winner_list; let i = index;">
-                          <td class="serial-num">1.</td>
+                          <td class="serial-num">{{i+1}}.</td>
                           <td>
                             <div class="music_play">
                               <div class="artist-profile-custom-action-btn">       
@@ -289,7 +289,7 @@
                       </tbody>
                       <tbody *ngIf="winner_list?.length == 0">
                           <tr>
-                              <td colspan="8" class="no-data-available">No data available!</td>
+                              <td colspan="4" style="text-align: center !important;" class="no-data-available">No data available!</td>
                           </tr>
                       <tbody>
                     </table>

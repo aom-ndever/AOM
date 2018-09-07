@@ -39,7 +39,7 @@ export class WhatsNewService {
     return this.http.post(`${this.api_host}/state`, null);
   }
   // get all featured artist
-  getAllFeaturedArtist() {
-    return this.http.get(`${this.api_host}/get_featured_artists`);
+  getAllFeaturedArtist(data : any) {
+    return this.http.post(`${this.api_host}/get_featured_artists`, data);
   }
 }
