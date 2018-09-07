@@ -1760,7 +1760,7 @@ router.post('/get_artist', async (req, res) => {
   }
 });
 
-router.get('/get_featured_artists', async (req, res) => {
+router.post('/get_featured_artists', async (req, res) => {
   var artist = await artist_helper.get_artists();
   if (artist.status === 1) {
     logger.trace("got details successfully");

@@ -311,9 +311,73 @@ artist_helper.get_artist_by_music_id = async (id) => {
 };
 artist_helper.get_artists = async () => {
     try {
-        var artist = await Artist.find({ "featured": true, "flag": false })
-            .populate('state')
-            .populate('music_type');
+        // var artist = await Artist.find({ "featured": true, "flag": false })
+        //     .populate('state')
+        //     .populate('music_type');
+        var aggregate = [
+            {
+                "$match": {
+                    "flag": false,
+                    "featured": true
+                }
+            },
+            {
+                $lookup: {
+                    from: "state",
+                    localField: "state",
+                    foreignField: "_id",
+                    as: "state"
+                }
+            },
+            {
+                $unwind: "$state"
+            },
+
+            {
+                $lookup: {
+                    from: "music_type",
+                    localField: "music_type",
+                    foreignField: "_id",
+                    as: "music_type"
+                }
+            },
+            {
+                $unwind: "$music_type"
+            },
+
+        ];
+
+        if (filter) {
+            aggregate.push({
+                "$match": filter
+            })
+        }
+
+        aggregate.push({
+            $addFields: {
+                fullName: {
+                    $concat: [{
+                        $ifNull: ["$first_name", ""]
+                    },
+                        " ",
+                    {
+                        $ifNull: ["$last_name", ""]
+                    }
+                    ]
+                },
+            }
+        })
+
+        if (filters) {
+            aggregate.push({
+                "$match": {
+                    "fullName": filters
+                }
+            });
+        }
+
+
+        let artist = await Artist.aggregate(aggregate);
         if (artist) {
             return { "status": 1, "message": "Artist details found", "artist": artist };
         } else {
