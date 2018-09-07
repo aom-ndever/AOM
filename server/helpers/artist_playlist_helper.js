@@ -104,7 +104,7 @@ artist_playlist_helper.get_playlists = async (artist_id, playlist_id, start, len
         var playlist = await Playlist.aggregate([
             {
                 "$match": {
-
+                    "artist_id": ObjectId(artist_id),
                     "_id": ObjectId(playlist_id)
                 }
             },
