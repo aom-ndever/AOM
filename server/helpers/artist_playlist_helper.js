@@ -41,7 +41,7 @@ artist_playlist_helper.get_playlist_by_artist_id = async (artist_id, start, leng
 
 
         if (playlist) {
-            return { "status": 1, "message": "Track details found", "playlist": playlist };
+            return { "status": 1, "message": "Track details found", "playlist": playlist, "recordsFiltered": filter_cnt, "recordsTotal": tot_cnt };
             //"recordsFiltered": filter_cnt, "recordsTotal": tot_cnt
         } else {
             return { "status": 2, "message": "playlist not found" };
