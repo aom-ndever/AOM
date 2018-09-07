@@ -123,7 +123,7 @@ router.post("/", async (req, res) => {
 
         if (card_resp.status === 2) {
 
-            res.status(config.INTERNAL_SERVER_ERROR).json({ "message": "Please Add bank Details to get money into your Account When Track is being Purchased" });
+            res.status(config.INTERNAL_SERVER_ERROR).json({ "message": "Please add bank details to get money into your account when track is being purchased" });
         } else if (card_resp.status === 1) {
             var artist = await artist_helper.get_artist_by_id(artist_id)
 

@@ -1573,18 +1573,17 @@ router.post("/artistv1", async (req, res) => {
     });
   }
   var schema = {};
-  if (req.body.music_type) {
-    filter_for_risingstar.music_type = {
-      _id: new ObjectId(req.body.music_type)
-    }
+  // if (req.body.music_type) {
+  //   filter_for_risingstar.music_type = {
+  //     _id: new ObjectId(req.body.music_type)
+  //   }
 
-    filter_for_charttoppers["music_type._id"] = new ObjectId(req.body.music_type)
+  //   filter["music_type._id"] = new ObjectId(req.body.music_type)
 
-  }
+  // }
   if (req.body.search) {
     var r = new RegExp(req.body.search);
     var search = { "$regex": r, "$options": "i" };
-    filter.first_name = search;
   }
   req.checkBody(schema);
   var errors = req.validationErrors();
@@ -1594,10 +1593,10 @@ router.post("/artistv1", async (req, res) => {
     var from = moment(to).subtract(30, "days").utcOffset(0);
     filter_for_risingstar.created_at = { "$gt": new Date(from), "$lt": new Date(to) };
 
-    var resp_artist = await artist_helper.get_new_uploads(filter);
+    var resp_artist = await artist_helper.get_new_uploads(search, filter);
 
     //var resp_track = await artist_helper.get_artist_by_id(filter);
-    var resp_chart = await artist_helper.get_all_artist(search);
+    var resp_chart = await artist_helper.get_all_artist(search, filter);
 
     if (resp_artist.status == 0 && resp_chart.status == 0) {
       logger.error("Error occured while fetching users = ", resp_artist);
