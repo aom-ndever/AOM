@@ -309,7 +309,7 @@ artist_helper.get_artist_by_music_id = async (id) => {
         return { "status": 0, "message": "Error occured while finding artist", "error": err }
     }
 };
-artist_helper.get_artists = async () => {
+artist_helper.get_artists = async (filter, search) => {
     try {
         // var artist = await Artist.find({ "featured": true, "flag": false })
         //     .populate('state')
@@ -347,12 +347,6 @@ artist_helper.get_artists = async () => {
 
         ];
 
-        if (filter) {
-            aggregate.push({
-                "$match": filter
-            })
-        }
-
         aggregate.push({
             $addFields: {
                 fullName: {
@@ -368,10 +362,10 @@ artist_helper.get_artists = async () => {
             }
         })
 
-        if (filters) {
+        if (search) {
             aggregate.push({
                 "$match": {
-                    "fullName": filters
+                    "fullName": search
                 }
             });
         }
