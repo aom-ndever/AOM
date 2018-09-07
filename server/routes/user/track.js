@@ -99,7 +99,6 @@ router.post('/purchase', async (req, res) => {
           }
           var transfer_resp = await artist_helper.insert_transaction(obj);
 
-
         } else {
           res.status(config.BAD_REQUEST).json({ "message": "Artist doesn't have bank account" });
         }
