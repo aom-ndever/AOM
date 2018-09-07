@@ -4916,8 +4916,8 @@ top: 40px!important;
     border-top-color: rgba(0,0,0,.25);
     transform: rotate(180deg);  
 }
-.vote_infographic_table  table thead tr td{
-    text-align: left;
+.vote_infographic_table table thead tr td, .vote_infographic_table table tbody tr td{
+    text-align: left !important;
 }
 
 /*MEDIA START*/

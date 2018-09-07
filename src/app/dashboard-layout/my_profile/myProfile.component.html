@@ -455,7 +455,7 @@
                                     <div class="col-md-4 col-sm-6 col-xs-12 uploaded-img" *ngFor="let obj of media_list; let i=index;" >
 										<div *ngIf="obj.image">
                                         <!-- <a class="img-wrap" href="{{artist_media_url+obj.image}}" *ngIf="obj.image" data-fancybox="images" data-width="1500" data-height="1000"> -->
-                                            <img src="{{obj ? artist_media_url+obj.image : 'img/upload1.png'}}" alt="Media" (click)="open(i)">
+                                            <img defaultImage="img/loader.gif" offset="100" lazyLoad="{{obj ? artist_media_url+obj.image : 'img/upload1.png'}}" alt="Media" (click)="open(i)">
                                         <!-- </a> -->
 										</div>
 										<div *ngIf="obj.link">
@@ -768,7 +768,7 @@
                                                 <tr *ngFor="let download of download_analytic_data['track']; let i=index;">
                                                     <td class="serial-num">{{i+1}}.</td>
                                                     <td class="track-pic">
-                                                        <a href="javascript:;"><img style="height: 50px;width:50px;" src="{{download.image ? track_url+download.image : 'img/track-img.png'}}" alt="Track Image"></a>
+                                                        <a href="javascript:;"><img style="height: 50px;width:50px;" defaultImage="img/loader.gif" offset="100" lazyLoad="{{download.image ? track_url+download.image : 'img/track-img.png'}}" alt="Track Image"></a>
                                                     </td>
                                                     <td class="track-det" colspan="2">
                                                         <p class="track-name">{{download.name}}</p>
@@ -852,7 +852,7 @@
                                                         <div class="custom_music_container">
                                                             <div class="track-pic">
                                                                 <a href="javascript:;">
-                                                                    <img src="{{val['track'] && val['track'].image ? track_url+val['track'].image : 'img/track-img.png'}}" style="height:50px;width:50px;" alt="Track Image">
+                                                                    <img defaultImage="img/loader.gif" offset="100" lazyLoad="{{val['track'] && val['track'].image ? track_url+val['track'].image : 'img/track-img.png'}}" style="height:50px;width:50px;" alt="Track Image">
                                                                 </a>
                                                             </div>
                                                             <div class="custom_music_content">
@@ -917,7 +917,7 @@
                                             <div class="col-md-3 col-sm-12 col-xs-12">
                                                 <div class="edit-profile-picture">
                                                     <div class="upload-cover">
-                                                        <img src="{{default_profile_img}}" alt="Edit cover Image">
+                                                        <img defaultImage="img/loader.gif" offset="100" lazyLoad="{{default_profile_img}}" alt="Edit cover Image">
                                                         <span class="up_text">Update Photo</span>
                                                         <input type="file" name="upload"  id="cover_upload" (change)="updateProfileImage($event)">
                                                         <a data-fancybox data-animation-duration="700" data-src="#delete" *ngIf="userdata.image" (click)="removeUserImage()" href="javascript:;" class="delete"><i class="fa fa-trash"></i></a>
@@ -1198,7 +1198,7 @@
                                                     <td class="track-det" colspan="2">
                                                      <div class="track-pic">
                                                         <a href="javascript:;">
-                                                            <img src="{{val && val['track'] ? track_url+val['track'].image : 'img/upload1.png'}}" style="height:50px;width:50px;" alt="Track Image">
+                                                            <img defaultImage="img/loader.gif" offset="100" lazyLoad="{{val && val['track'] ? track_url+val['track'].image : 'img/upload1.png'}}" style="height:50px;width:50px;" alt="Track Image">
                                                         </a>
                                                     </div>
                                                     <div class="track_title">
@@ -1278,7 +1278,7 @@
                                                     <td class="track-det custom_music_container" colspan="2">
                                                         <div class="track-pic">
                                                             <a href="javascript:;">
-                                                                <img src="{{val['track'] && val['track'].image ? track_url+val['track'].image : 'img/track-img.png'}}" style="height:50px;width:50px;" alt="Track Image">
+                                                                <img defaultImage="img/loader.gif" offset="100" lazyLoad="{{val['track'] && val['track'].image ? track_url+val['track'].image : 'img/track-img.png'}}" style="height:50px;width:50px;" alt="Track Image">
                                                             </a>
                                                         </div>
                                                         <div class="custom_music_content">
@@ -1516,7 +1516,7 @@
                                                     <td class="track-det" colspan="2">
                                                         <div class="track-pic">
                                                             <a href="javascript:;">
-                                                                <img src="{{val['track'] && val['track'].image ? track_url+val['track'].image : 'img/upload1.png'}}" style="height:50px;width:50px;" alt="Track Image">
+                                                                <img defaultImage="img/loader.gif" offset="100" lazyLoad="{{val['track'] && val['track'].image ? track_url+val['track'].image : 'img/upload1.png'}}" style="height:50px;width:50px;" alt="Track Image">
                                                             </a>
                                                         </div>
                                                         <div class="track_title">
