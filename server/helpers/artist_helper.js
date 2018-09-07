@@ -77,6 +77,19 @@ artist_helper.get_transaction_by_artist_id = async (artist_id, start, length) =>
     }
 };
 
+artist_helper.delete_transaction_track = async (track_id) => {
+    try {
+        var account = await Transaction
+            .findOneAndRemove({ "track_id": ObjectId(track_id) })
+        if (account) {
+            return { "status": 1, "message": "transaction details found" };
+        } else {
+            return { "status": 2, "message": "transaction not found" };
+        }
+    } catch (err) {
+        return { "status": 0, "message": "Error occured while finding transaction", "error": err }
+    }
+};
 
 artist_helper.insert_user_to_artists = async (object) => {
 
