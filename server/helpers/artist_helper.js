@@ -477,7 +477,6 @@ artist_helper.get_artist_by_filter = async (filter, start, length, filters) => {
             {
                 '$unwind': '$state'
             },
-
             {
                 $skip: start
             },
@@ -491,12 +490,26 @@ artist_helper.get_artist_by_filter = async (filter, start, length, filters) => {
                 "$match": filter
             })
         }
+        aggregate.push({
+            $addFields: {
+                fullName: {
+                    $concat: [{
+                        $ifNull: ["$first_name", ""]
+                    },
+                        " ",
+                    {
+                        $ifNull: ["$last_name", ""]
+                    }
+                    ]
+                },
+            }
+        })
 
         if (filters) {
             aggregate.push({
                 "$match":
+                    fullName
 
-                    { $or: [{ "artist.first_name": filters }, { "artist.last_name": filters }] }
             });
         }
         let artist = await Artist.aggregate(aggregate);
