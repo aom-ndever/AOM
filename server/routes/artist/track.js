@@ -204,16 +204,16 @@ router.put("/:track_id", async (req, res) => {
     track_id = req.params.track_id;
     var obj = {
     };
-    if (req.body.name && req.body.name != null) {
+    if (req.body.name) {
         obj.name = req.body.name;
     }
-    if (req.body.price && req.body.price != null) {
+    if (req.body.price) {
         obj.price = req.body.price;
     }
-    if (req.body.description && req.body.description != null) {
+    if (req.body.description) {
         obj.description = req.body.description;
     }
-    if (req.body.music_type && req.body.music_type != null) {
+    if (req.body.music_type) {
         obj.music_type = req.body.music_type;
     }
     var filename;

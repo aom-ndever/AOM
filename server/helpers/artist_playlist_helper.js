@@ -174,6 +174,10 @@ artist_playlist_helper.get_playlists_for_delete = async (artist_id, playlist_id)
 }
 
 artist_playlist_helper.update_playlist = async (artist_id, playlist_id, obj) => {
+    console.log('artist_id', artist_id);
+    console.log('playlist_id', playlist_id);
+    console.log('obj', obj);
+
 
     try {
         var playlist = await Playlist.findOneAndUpdate({ "artist_id": new ObjectId(artist_id), "_id": new ObjectId(playlist_id) }, obj, { new: true })
