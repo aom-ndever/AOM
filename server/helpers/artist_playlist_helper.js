@@ -129,6 +129,11 @@ artist_playlist_helper.get_playlists = async (artist_id, playlist_id, start, len
                 "$unwind": "$artist"
             },
             {
+                $match: {
+                    "artist.flag": false
+                }
+            }
+            {
                 "$skip": start
             },
             {
