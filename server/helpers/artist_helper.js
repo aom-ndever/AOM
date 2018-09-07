@@ -498,7 +498,7 @@ artist_helper.get_artist_by_filter = async (filter, start, length, filters) => {
                     },
                         " ",
                     {
-                        $ifNull: ["$last_Name", ""]
+                        $ifNull: ["$last_name", ""]
                     }
                     ]
                 },
