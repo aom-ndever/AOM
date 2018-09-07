@@ -210,9 +210,8 @@ router.put("/:track_id", async (req, res) => {
     if (req.body.price) {
         obj.price = req.body.price;
     }
-    if (req.body.description) {
-        obj.description = req.body.description;
-    }
+    obj.description = req.body.description;
+
     if (req.body.music_type) {
         obj.music_type = req.body.music_type;
     }
