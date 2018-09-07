@@ -139,7 +139,7 @@ router.put('/track', async (req, res) => {
  * @apiError (Error 4xx) {String} message Validation or error message.
  */
 router.put('/:playlist_id', function (req, res) {
-  user_id = req.userInfo.id;
+  artist_id = req.userInfo.id;
   playlist_id = req.params.playlist_id;
   var schema = {
 
@@ -148,10 +148,10 @@ router.put('/:playlist_id', function (req, res) {
   var errors = req.validationErrors();
   if (!errors) {
     var obj = {
-      user_id: req.userInfo.id,
+      artist_id: req.userInfo.id,
 
     };
-    if (req.body.name && req.body.name != null) {
+    if (req.body.name) {
       obj.name = req.body.name;
     }
 
@@ -222,15 +222,17 @@ router.put('/:playlist_id', function (req, res) {
       async (err, file_path_array) => {
         //End image upload
         obj.audio = file_path_array;
-        let data = await playlist_helper.update_playlist(user_id, playlist_id, obj);
+        let data = await playlist_helper.update_playlist(artist_id, playlist_id, obj);
         if (data.status === 0) {
           return res.status(config.BAD_REQUEST).json({ data });
         } else {
-          return res.status(config.OK_STATUS).json(data);
+          return res.status(config.OK_STATUS).json({ "message": "Playlist updated successfully" });
         }
       }
     );
+
   }
+
 });
 
 router.put("/add_track/:playlist_id", async (req, res) => {

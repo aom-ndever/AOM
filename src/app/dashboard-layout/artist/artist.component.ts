@@ -163,15 +163,17 @@ export class ArtistComponent implements OnInit {
       "filter" : []
     };
     if(this.adv_filter.music_type && this.adv_filter.music_type != "") {
-      data['filter'].push({
-        'field' : 'music_type', value :  this.adv_filter.music_type
-      });
+      data['music_type'] = this.adv_filter.music_type;
+      // data['filter'].push({
+      //   'field' : 'music_type', value :  this.adv_filter.music_type
+      // });
     }
     
     if(this.region_filter.length > 0) {
-      data['filter'].push({
-        'field' : 'state', value :  this.region_filter
-      });
+      data['state'] = this.region_filter;
+      // data['filter'].push({
+      //   'field' : 'state', value :  this.region_filter
+      // });
     }
     this.show_filter = false;
     this.getAllArtistV1Data(data);

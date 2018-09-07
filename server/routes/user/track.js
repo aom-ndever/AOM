@@ -220,7 +220,7 @@ router.post('/vote_track', async (req, res) => {
 
         }
         logger.trace("voting done successfully = ", data);
-        res.status(config.OK_STATUS).json({ "message": "voting done successfully" });
+        res.status(config.OK_STATUS).json({ "message": "Voting done successfully" });
       }
       else {
         res.status(config.OK_STATUS).json({ "message": "Already Voted" });

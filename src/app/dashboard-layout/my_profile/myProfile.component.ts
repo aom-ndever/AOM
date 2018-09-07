@@ -2219,7 +2219,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
   }
   // upgrade to artist
   upgradeToArtist(flag, profile_img) {
-    if(flag && profile_img != '') {
+    if(flag && profile_img) {
       this.upgrade_artist_validation = !flag;
       swal({
         title: 'Upgrade to Artist',
@@ -2259,7 +2259,13 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
         }
       })
     } else {
-      this.upgrade_artist_validation = !flag;
+      console.log('flag', flag, 'profile image', typeof profile_img);
+      if(profile_img == '') {
+        this.upgrade_artist_validation = true;
+      } else {
+        this.upgrade_artist_validation = !flag;
+      }
+      console.log('upgrade artist flag', this.upgrade_artist_validation);
     }
   }
 

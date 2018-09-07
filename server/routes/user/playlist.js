@@ -263,7 +263,7 @@ router.put('/:playlist_id', function (req, res) {
       user_id: req.userInfo.id,
 
     };
-    if (req.body.name && req.body.name != null) {
+    if (req.body.name) {
       obj.name = req.body.name;
     }
 
@@ -338,7 +338,7 @@ router.put('/:playlist_id', function (req, res) {
         if (data.status === 0) {
           return res.status(config.BAD_REQUEST).json({ data });
         } else {
-          return res.status(config.OK_STATUS).json(data);
+          return res.status(config.OK_STATUS).json({ "message": "Playlist updated successfully" });
         }
       }
     );

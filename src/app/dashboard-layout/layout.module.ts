@@ -6,6 +6,7 @@ import { RouterModule } from '@angular/router';
 import { DataTablesModule } from 'angular-datatables';
 import { SlimScroll } from 'angular-io-slimscroll';
 import {AutoCompleteModule, MultiSelectModule} from 'primeng/primeng';
+import { LazyLoadImageModule } from 'ng-lazyload-image';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { DashboardLayoutComponent } from './layout/dashboard-layout.component';
 import { DashboardLayoutService } from './layout/dashboard-layout.service';
@@ -65,6 +66,7 @@ import { AuthService } from '../shared/auth.service';
     DataTablesModule,
     AutoCompleteModule,
     MultiSelectModule,
+    LazyLoadImageModule,
     RouterModule.forChild([
       {
         path: '',
