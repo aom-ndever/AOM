@@ -5,6 +5,7 @@ var logger = config.logger;
 var bcrypt = require('bcrypt');
 var jwt = require('jsonwebtoken');
 var async = require('async');
+var _ = require('underscore');
 
 var follower_helper = require('../../helpers/follower_helper');
 var vote_track_helper = require('../../helpers/vote_track_helper');
@@ -113,6 +114,20 @@ router.get('/followers', async (req, res) => {
   }
 });
 
+
+router.get('/followed', async (req, res) => {
+  user_id = req.userInfo.id
+  var user = await follower_helper.get_all_followers_of_user(user_id);
+  var artisIds = _.pluck(user.artist, 'artist_id');
+
+  if (user.status === 1) {
+    logger.trace("got details successfully");
+    res.status(config.OK_STATUS).json(user);
+  } else {
+    logger.error("Error occured while fetching = ", user);
+    res.status(config.INTERNAL_SERVER_ERROR).json(artisIds);
+  }
+});
 
 router.get('/get_followers', async (req, res) => {
   user_id = req.userInfo.id
