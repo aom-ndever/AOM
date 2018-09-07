@@ -143,11 +143,11 @@ winner_helper.get_qualified = async (round_id, start, length, filter, filters) =
             {
                 '$unwind': '$artist'
             },
-            {
-                '$match': {
-                    "artist.flag": false
-                }
-            },
+            // {
+            //     '$match': {
+            //         "artist.flag": false
+            //     }
+            // },
             {
                 '$lookup': {
                     from: 'state',
