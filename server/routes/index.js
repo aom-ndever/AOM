@@ -1463,6 +1463,8 @@ router.post("/state", async (req, res) => {
   if (req.body.music_type) {
     filter["music_type._id"] = new ObjectId(req.body.music_type);
   }
+
+
   if (req.body.state) {
     var tmp = _.map(req.body.state, function (id) { return ObjectId(id) });
 
@@ -1487,7 +1489,7 @@ router.post("/state", async (req, res) => {
         artist_ids.push(new ObjectId(artist._id));
 
       });
-      var resp_track = await track_helper.get_track_by_filter(artist_ids, filter, req.body.start, req.body.length);
+      var resp_track = await track_helper.get_track_by_filter(artist_ids, filter);
       if (resp_track.status == 0 && resp_artist.status == 0) {
         logger.error("Error occured while fetching users = ", resp_track);
         res.status(config.INTERNAL_SERVER_ERROR).json(resp_track);

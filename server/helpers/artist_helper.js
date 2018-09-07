@@ -434,12 +434,7 @@ artist_helper.get_all_artist = async (search, filter) => {
 artist_helper.get_artist_by_filter = async (filter, start, length, filters) => {
     try {
 
-        // var artist = await Artist
-        //     .find({ "flag": false })
-        //     .populate('music_type')
-        //     .populate('state')
-        //     .skip(start)
-        //     .limit(length)
+
         var aggregate = [
             {
                 "$match": {
@@ -618,6 +613,7 @@ artist_helper.get_all_artist_by_likes = async () => {
             })
             .sort({ "no_of_likes": - 1 })
             .populate('music_type')
+            .populate('state')
             .limit(10)
             .lean();
 
@@ -648,6 +644,7 @@ artist_helper.get_all_artist_by_comment = async () => {
             })
             .sort({ "no_of_comments": - 1 })
             .populate('music_type')
+            .populate('state')
             .limit(10)
             .lean();
 
