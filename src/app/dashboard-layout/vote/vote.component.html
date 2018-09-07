@@ -195,9 +195,9 @@
                           <td class="track_head_container">Track, Artist</td>
                           <td>Music Genre</td>
                           <td>Location</td>
-                          <td>Round 1</td>
+                          <!-- <td>Round 1</td>
                           <td>Round 2</td>
-                          <td>Round 3</td>
+                          <td>Round 3</td> -->
                           <td>Number of Votes</td>
                         </tr>
                       </thead>
@@ -225,9 +225,9 @@
                             <span class="tag {{p && p['music_type'] ? p['music_type']['alias'] : ''}}">{{p && p['music_type'] ? p['music_type']['name'] : ''}}</span>
                           </td>
                           <td class="location"><p><i class="fa fa-map-marker" aria-hidden="true"></i><span>{{p && p['state'] ? p['state']['name'] : '' }}</span></p></td>
+                          <!-- <td class="rounds"><p>2 <img src="img/top-arrow.png" alt=""></p></td>
                           <td class="rounds"><p>2 <img src="img/top-arrow.png" alt=""></p></td>
-                          <td class="rounds"><p>2 <img src="img/top-arrow.png" alt=""></p></td>
-                          <td class="rounds"><p>2 <img src="img/top-arrow.png" alt=""></p></td>
+                          <td class="rounds"><p>2 <img src="img/top-arrow.png" alt=""></p></td> -->
                           <td class="td track-vote">
                             <img src="img/start.png" alt="start">
                             <span>{{p && p['track'] ? p['track']['no_of_votes'] : '0' }}</span>
@@ -237,7 +237,7 @@
                       </tbody>
                       <tbody *ngIf="winner_list?.length == 0">
                           <tr>
-                              <td colspan="8" class="no-data-available">No data available!</td>
+                              <td colspan="5" class="no-data-available">No data available!</td>
                           </tr>
                       <tbody>
                     </table>

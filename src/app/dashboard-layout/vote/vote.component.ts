@@ -105,9 +105,11 @@ export class VoteComponent implements OnInit {
       ajax: (dataTablesParameters: any, callback) => {
         setTimeout(() => {
           dataTablesParameters['contest_id'] = this.contest_data;
-          dataTablesParameters['search'] = that.search_str;
-          dataTablesParameters['music_type'] = that.advance_filter.music_type;
-          dataTablesParameters['state'] = that.region_filter;
+          if(that.search_str)
+            dataTablesParameters['search'] = that.search_str;
+          dataTablesParameters['music_type'] = that.advance_filter.music_type ;
+          if(that.region_filter.length > 0) 
+            dataTablesParameters['state'] =  that.region_filter;
           that.VoteService.getWinnersData(dataTablesParameters).subscribe((response) => {
             this.winner_list = response['track']['winner'];
               this.audio_ins1 = [];
@@ -145,9 +147,11 @@ export class VoteComponent implements OnInit {
       ajax: (dataTablesParameters: any, callback) => {
         setTimeout(() => {
           dataTablesParameters['contest_id'] = this.contest_data;
-          dataTablesParameters['search'] = that.search_str;
-          dataTablesParameters['music_type'] = that.advance_filter.music_type;
-          dataTablesParameters['state'] = that.region_filter;
+          if(that.search_str)
+            dataTablesParameters['search'] = that.search_str;
+          dataTablesParameters['music_type'] = that.advance_filter.music_type ;
+          if(that.region_filter.length > 0) 
+            dataTablesParameters['state'] =  that.region_filter;
           
           that.VoteService.getWinnersData(dataTablesParameters).subscribe((response) => {
             this.winner_list = response['track']['winner'];
