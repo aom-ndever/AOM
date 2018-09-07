@@ -107,12 +107,7 @@ export class VoteComponent implements OnInit {
           dataTablesParameters['contest_id'] = this.contest_data;
           dataTablesParameters['search'] = that.search_str;
           dataTablesParameters['music_type'] = that.advance_filter.music_type;
-          dataTablesParameters['filter'] = [];
-          if(that.region_filter.length) {
-            dataTablesParameters['filter'].push(
-              {'field' : 'state', value :  this.region_filter}
-            );
-          }
+          dataTablesParameters['state'] = that.region_filter;
           that.VoteService.getWinnersData(dataTablesParameters).subscribe((response) => {
             this.winner_list = response['track']['winner'];
               this.audio_ins1 = [];
@@ -152,12 +147,8 @@ export class VoteComponent implements OnInit {
           dataTablesParameters['contest_id'] = this.contest_data;
           dataTablesParameters['search'] = that.search_str;
           dataTablesParameters['music_type'] = that.advance_filter.music_type;
-          dataTablesParameters['filter'] = [];
-          if(that.region_filter.length) {
-            dataTablesParameters['filter'].push(
-              {'field' : 'state', value :  this.region_filter}
-            );
-          }
+          dataTablesParameters['state'] = that.region_filter;
+          
           that.VoteService.getWinnersData(dataTablesParameters).subscribe((response) => {
             this.winner_list = response['track']['winner'];
               this.audio_ins1 = [];
@@ -402,6 +393,7 @@ export class VoteComponent implements OnInit {
           dtInstance.draw();
         });
       });
+      this.start = 0;
       let obj = {
         start : this.start,
         length : this.length,
@@ -413,8 +405,12 @@ export class VoteComponent implements OnInit {
   }
   // Advance filter
   advanceFilter() {
+    this.start = 0;
     let data = {
-      "filter" : []
+      "filter" : [],
+      start : this.start,
+      length : this.length,
+      contest_id : this.contest_data
     };
     console.log('type', this.advance_filter.music_type);
     if(this.advance_filter.music_type && this.advance_filter.music_type != "") {
@@ -422,9 +418,10 @@ export class VoteComponent implements OnInit {
     }
     
     if(this.region_filter.length > 0) {
-      data['filter'].push({
-        'field' : 'state', value :  this.region_filter
-      });
+      data['state'] = this.region_filter;
+      // data['filter'].push({
+      //   'field' : 'state', value :  this.region_filter
+      // });
     }
     this.show_spinner = true;
     
@@ -456,7 +453,15 @@ export class VoteComponent implements OnInit {
       this.show_spinner = false;
     });
   }
-
+  // Add region for filtering
+  addRegionForFilter(flag : any, val : any) {
+    if(flag) {
+      this.region_filter.push(val);
+    } else {
+      let index = this.region_filter.indexOf(val);
+      this.region_filter.splice(index, 1);
+    }
+  }
   // toggle table and graphical view for winner
   toggleTable(flag) {
     this.table_flag = flag;
