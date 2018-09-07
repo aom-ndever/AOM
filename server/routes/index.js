@@ -1789,6 +1789,7 @@ router.post('/followers', async (req, res) => {
 });
 
 
+
 /**
  * @api {post} /comment Comment detail by Artist id- Get 
  * @apiName Comment detail by Artist id - Get

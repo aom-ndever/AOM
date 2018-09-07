@@ -183,6 +183,7 @@ playlist_helper.get_playlists_for_push = async (user_id, playlist_id) => {
     }
 }
 playlist_helper.update_playlists = async (user_id, playlist_id, obj) => {
+    console.log('1', 1);
 
     try {
         var playlist = await Playlist.findOneAndUpdate({ "user_id": new ObjectId(user_id), "_id": new ObjectId(playlist_id) }, { "track_id": obj }, { new: true })
@@ -225,6 +226,7 @@ playlist_helper.delete_track_playlist = async (user_id, playlist_id, newData) =>
         return { "status": 0, "message": "Error occured while finding playlist", "error": err }
     }
 };
+
 playlist_helper.delete_playlist_by_track = async (track_id) => {
 
     try {
