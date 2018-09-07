@@ -359,7 +359,7 @@ artist_helper.get_login_by_email = async (email) => {
  *          status 1 - If artist data found, with artist's documents
  *          status 2 - If artist not found, with appropriate message
  */
-artist_helper.get_all_artist = async (filter) => {
+artist_helper.get_all_artist = async (search, filter) => {
     try {
         var aggregate = [
             {
@@ -405,10 +405,19 @@ artist_helper.get_all_artist = async (filter) => {
                 }
             },
         ];
+        console.log('filter', filter);
 
         if (filter) {
             aggregate.push({
-                "$match": { $or: [{ "artist.first_name": filter }, { "artist.last_name": filter }] }
+                "$match": filter
+            })
+        }
+
+        if (search) {
+            aggregate.push({
+                "$match":
+
+                    { $or: [{ "artist.first_name": search }, { "artist.last_name": search }] }
             });
         }
         let artist = await Artist.aggregate(aggregate);
@@ -763,71 +772,71 @@ artist_helper.update_artist_password = async (artist_id, password) => {
 };
 
 
-artist_helper.get_new_uploads = async (filter = {}) => {
+artist_helper.get_new_uploads = async (search, filter = {}) => {
     try {
-        var artist = await Artist
-            .find({ "flag": false })
-            .populate('music_type')
-            .populate('state')
-            .populate('region')
-            .sort({ "no_of_likes": - 1 })
-            .limit(24)
+        // var artist = await Artist
+        //     .find({ "flag": false })
+        //     .populate('music_type')
+        //     .populate('state')
+        //     .populate('region')
+        //     .sort({ "no_of_likes": - 1 })
+        //     .limit(24)
 
-        // var aggregate = [
-        //     {
-        //         "$match": {
-        //             "flag": false
-        //         }
-        //     },
+        var aggregate = [
+            {
+                "$match": {
+                    "flag": false
+                }
+            },
 
-        //     {
-        //         '$lookup': {
-        //             from: 'music_type',
-        //             localField: 'music_type',
-        //             foreignField: '_id',
-        //             as: 'music_type'
-        //         }
-        //     },
-        //     {
-        //         '$unwind': '$music_type'
-        //     },
-        //     {
-        //         '$lookup': {
-        //             from: 'state',
-        //             localField: 'state',
-        //             foreignField: '_id',
-        //             as: 'state'
-        //         }
-        //     },
-        //     {
-        //         '$unwind': '$state'
-        //     },
+            {
+                '$lookup': {
+                    from: 'music_type',
+                    localField: 'music_type',
+                    foreignField: '_id',
+                    as: 'music_type'
+                }
+            },
+            {
+                '$unwind': '$music_type'
+            },
+            {
+                '$lookup': {
+                    from: 'state',
+                    localField: 'state',
+                    foreignField: '_id',
+                    as: 'state'
+                }
+            },
+            {
+                '$unwind': '$state'
+            },
 
-        //     {
-        //         $skip: start
-        //     },
-        //     {
-        //         $limit: length
-        //     },
-        //     {
-        //         $sort: { "no_of_likes": - 1 }
-        //     }
-        // ];
+            // {
+            //     $skip: start
+            // },
+            // {
+            //     $limit: length
+            // },
+            {
+                $sort: { "no_of_likes": - 1 }
+            }
+        ];
 
-        // // if (filter) {
-        // //     aggregate.push({
-        // //         "$match": filter
-        // //     })
-        // // }
+        if (filter) {
+            aggregate.push({
+                "$match": filter
+            })
+        }
 
-        // if (filter) {
-        //     aggregate.push({
-        //         "$match":
+        if (search) {
+            aggregate.push({
+                "$match":
 
-        //             { $or: [{ "first_name": filter }, { "last_name": filter }] }
-        //     });
-        // }
-        // let artist = await Artist.aggregate(aggregate);
+                    { $or: [{ "first_name": search }, { "last_name": search }] }
+            });
+        }
+        let artist = await Artist.aggregate(aggregate);
 
         if (artist) {
             return { "status": 1, "message": "artist details found", "results": artist };

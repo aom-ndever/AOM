@@ -1564,23 +1564,26 @@ router.post("/artistv1", async (req, res) => {
 
 
   var filter = {};
+  var filters = {};
   var page_no = {};
   var page_size = {};
 
-  if (req.body.filter) {
-    req.body.filter.forEach(filter_criteria => {
-      filter[filter_criteria.field] = filter_criteria.value;
-    });
-  }
+
   var schema = {};
   if (req.body.music_type) {
-    filter_for_risingstar.music_type = {
-      _id: new ObjectId(req.body.music_type)
-    }
-
-    filter_for_charttoppers["music_type._id"] = new ObjectId(req.body.music_type)
-
+    filter["music_type._id"] = new ObjectId(req.body.music_type);
   }
+  if (req.body.music_type) {
+    filters["artist.music_type._id"] = new ObjectId(req.body.music_type);
+  }
+  if (req.body.state) {
+    filter["state._id"] = new ObjectId(req.body.state);
+  }
+  if (req.body.state) {
+    filters["artist.state._id"] = new ObjectId(req.body.state);
+  }
+
+
   if (req.body.search) {
     var r = new RegExp(req.body.search);
     var search = { "$regex": r, "$options": "i" };
@@ -1594,10 +1597,10 @@ router.post("/artistv1", async (req, res) => {
     var from = moment(to).subtract(30, "days").utcOffset(0);
     filter_for_risingstar.created_at = { "$gt": new Date(from), "$lt": new Date(to) };
 
-    var resp_artist = await artist_helper.get_new_uploads(filter);
+    var resp_artist = await artist_helper.get_new_uploads(search, filter);
 
     //var resp_track = await artist_helper.get_artist_by_id(filter);
-    var resp_chart = await artist_helper.get_all_artist(search);
+    var resp_chart = await artist_helper.get_all_artist(search, filters);
 
     if (resp_artist.status == 0 && resp_chart.status == 0) {
       logger.error("Error occured while fetching users = ", resp_artist);
