@@ -1577,12 +1577,12 @@ router.post("/artistv1", async (req, res) => {
     filters["artist.music_type._id"] = new ObjectId(req.body.music_type);
   }
   if (req.body.state) {
-    var tmp = _.map(req.body.state, function (id) { return ObjectId(id) });
-
-    filter["state._id"] = {
-      $in: tmp
-    };
+    filter["state._id"] = new ObjectId(req.body.state);
   }
+  if (req.body.state) {
+    filters["artist.state._id"] = new ObjectId(req.body.state);
+  }
+
 
   if (req.body.search) {
     var r = new RegExp(req.body.search);
