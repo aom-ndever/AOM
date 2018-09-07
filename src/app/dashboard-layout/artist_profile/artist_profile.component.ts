@@ -110,6 +110,8 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
     this.share_form_phone = this.fb.group({
       phone : ['', [Validators.required, Validators.maxLength(10), Validators.minLength(10)]]
     });
+    this.ArtistProfileService.getUserFollowing().subscribe((response) => {
+    });
   }
 
   ngOnInit() {
