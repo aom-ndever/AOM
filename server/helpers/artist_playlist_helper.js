@@ -118,6 +118,11 @@ artist_playlist_helper.get_playlists = async (artist_id, playlist_id, start, len
                 "$unwind": "$track"
             },
             {
+                $match: {
+                    "track.flag": false
+                }
+            },
+            {
                 "$lookup": {
                     "from": "artist",
                     "foreignField": "_id",
