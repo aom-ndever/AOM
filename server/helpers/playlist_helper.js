@@ -71,6 +71,11 @@ playlist_helper.get_playlists = async (user_id, playlist_id, start, length) => {
                 "$unwind": "$track"
             },
             {
+                $match: {
+                    "track.is_suspend": false
+                }
+            },
+            {
                 "$lookup": {
                     "from": "artist",
                     "foreignField": "_id",
@@ -81,6 +86,11 @@ playlist_helper.get_playlists = async (user_id, playlist_id, start, length) => {
             {
                 "$unwind": "$artist"
             },
+            {
+                $match: {
+                    "artist.flag": false
+                }
+            }
 
         ]);
         var tot_cnt = playlists.length
@@ -88,7 +98,7 @@ playlist_helper.get_playlists = async (user_id, playlist_id, start, length) => {
         var playlist = await Playlist.aggregate([
             {
                 "$match": {
-
+                    "user_id": ObjectId(user_id),
                     "_id": ObjectId(playlist_id)
                 }
             },
@@ -107,6 +117,11 @@ playlist_helper.get_playlists = async (user_id, playlist_id, start, length) => {
                 "$unwind": "$track"
             },
             {
+                $match: {
+                    "track.is_suspend": false
+                }
+            },
+            {
                 "$lookup": {
                     "from": "artist",
                     "foreignField": "_id",
@@ -118,6 +133,11 @@ playlist_helper.get_playlists = async (user_id, playlist_id, start, length) => {
                 "$unwind": "$artist"
             },
             {
+                $match: {
+                    "artist.flag": false
+                }
+            },
+            {
                 "$skip": start
             },
             {
@@ -126,6 +146,7 @@ playlist_helper.get_playlists = async (user_id, playlist_id, start, length) => {
 
         ]);
         var filter_cnt = playlist.length
+
 
         if (playlist) {
             return { "status": 1, "message": "Track details found", "playlist": playlist, "recordsFiltered": filter_cnt, "recordsTotal": tot_cnt };

@@ -309,11 +309,73 @@ artist_helper.get_artist_by_music_id = async (id) => {
         return { "status": 0, "message": "Error occured while finding artist", "error": err }
     }
 };
-artist_helper.get_artists = async () => {
+artist_helper.get_artists = async (filter, search) => {
     try {
-        var artist = await Artist.find({ "featured": true, "flag": false })
-            .populate('state')
-            .populate('music_type');
+        // var artist = await Artist.find({ "featured": true, "flag": false })
+        //     .populate('state')
+        //     .populate('music_type');
+        var aggregate = [
+            {
+                "$match": {
+                    "flag": false,
+                    "featured": true
+                }
+            },
+            {
+                $lookup: {
+                    from: "state",
+                    localField: "state",
+                    foreignField: "_id",
+                    as: "state"
+                }
+            },
+            {
+                $unwind: "$state"
+            },
+
+            {
+                $lookup: {
+                    from: "music_type",
+                    localField: "music_type",
+                    foreignField: "_id",
+                    as: "music_type"
+                }
+            },
+            {
+                $unwind: "$music_type"
+            },
+
+        ];
+
+        aggregate.push({
+            $addFields: {
+                fullName: {
+                    $concat: [{
+                        $ifNull: ["$first_name", ""]
+                    },
+                        " ",
+                    {
+                        $ifNull: ["$last_name", ""]
+                    }
+                    ]
+                },
+            }
+        })
+
+        if (search) {
+            aggregate.push({
+                "$match": {
+                    "fullName": search
+                }
+            });
+        }
+        if (filter) {
+            aggregate.push({
+                "$match": filter
+            })
+        }
+
+        let artist = await Artist.aggregate(aggregate);
         if (artist) {
             return { "status": 1, "message": "Artist details found", "artist": artist };
         } else {
@@ -418,7 +480,6 @@ artist_helper.get_all_artist = async (search, filter) => {
                 }
             },
         ];
-        console.log('filter', filter);
 
         if (filter) {
             aggregate.push({
@@ -498,7 +559,7 @@ artist_helper.get_artist_by_filter = async (filter, start, length, filters) => {
                     },
                         " ",
                     {
-                        $ifNull: ["$last_Name", ""]
+                        $ifNull: ["$last_name", ""]
                     }
                     ]
                 },
