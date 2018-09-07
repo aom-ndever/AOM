@@ -213,6 +213,19 @@ follower_helper.get_all_followers = async (id) => {
     }
 };
 
+follower_helper.get_all_followers_of_user = async (id) => {
+    try {
+        var artist = await Followers
+            .find({ "user_id": id }, { artist_id: 1 })
+        if (artist) {
+            return { "status": 1, "message": "artist details found", "artist": artist };
+        } else {
+            return { "status": 2, "message": "artist not found" };
+        }
+    } catch (err) {
+        return { "status": 0, "message": "Error occured while finding artist", "error": err }
+    }
+};
 
 follower_helper.get_all_follows = async (id, userid) => {
     try {

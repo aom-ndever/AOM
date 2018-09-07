@@ -92,7 +92,7 @@ router.post('/purchase', async (req, res) => {
           var obj = {
             "transfer_id": transfer.id,
             "to_account": transfer.destination,
-            "amount": transfer.amount,
+            "amount": (transfer.amount) / 100,
             "artist_id": artist_id,
             "track_id": obj.track_id,
             "status": "finised"
@@ -220,7 +220,7 @@ router.post('/vote_track', async (req, res) => {
 
         }
         logger.trace("voting done successfully = ", data);
-        res.status(config.OK_STATUS).json({ "message": "voting done successfully" });
+        res.status(config.OK_STATUS).json({ "message": "Voting done successfully" });
       }
       else {
         res.status(config.OK_STATUS).json({ "message": "Already Voted" });

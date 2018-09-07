@@ -77,6 +77,19 @@ artist_helper.get_transaction_by_artist_id = async (artist_id, start, length) =>
     }
 };
 
+artist_helper.delete_transaction_track = async (track_id) => {
+    try {
+        var account = await Transaction
+            .findOneAndRemove({ "track_id": ObjectId(track_id) })
+        if (account) {
+            return { "status": 1, "message": "transaction details found" };
+        } else {
+            return { "status": 2, "message": "transaction not found" };
+        }
+    } catch (err) {
+        return { "status": 0, "message": "Error occured while finding transaction", "error": err }
+    }
+};
 
 artist_helper.insert_user_to_artists = async (object) => {
 
@@ -434,12 +447,7 @@ artist_helper.get_all_artist = async (search, filter) => {
 artist_helper.get_artist_by_filter = async (filter, start, length, filters) => {
     try {
 
-        // var artist = await Artist
-        //     .find({ "flag": false })
-        //     .populate('music_type')
-        //     .populate('state')
-        //     .skip(start)
-        //     .limit(length)
+
         var aggregate = [
             {
                 "$match": {
@@ -618,6 +626,7 @@ artist_helper.get_all_artist_by_likes = async () => {
             })
             .sort({ "no_of_likes": - 1 })
             .populate('music_type')
+            .populate('state')
             .limit(10)
             .lean();
 
@@ -648,6 +657,7 @@ artist_helper.get_all_artist_by_comment = async () => {
             })
             .sort({ "no_of_comments": - 1 })
             .populate('music_type')
+            .populate('state')
             .limit(10)
             .lean();
 
