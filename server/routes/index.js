@@ -1573,14 +1573,14 @@ router.post("/artistv1", async (req, res) => {
     });
   }
   var schema = {};
-  // if (req.body.music_type) {
-  //   filter_for_risingstar.music_type = {
-  //     _id: new ObjectId(req.body.music_type)
-  //   }
+  if (req.body.music_type) {
+    filter_for_risingstar.music_type = {
+      _id: new ObjectId(req.body.music_type)
+    }
 
-  //   filter["music_type._id"] = new ObjectId(req.body.music_type)
+    filter_for_charttoppers["music_type._id"] = new ObjectId(req.body.music_type)
 
-  // }
+  }
   if (req.body.search) {
     var r = new RegExp(req.body.search);
     var search = { "$regex": r, "$options": "i" };
