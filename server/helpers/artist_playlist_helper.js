@@ -38,8 +38,11 @@ artist_playlist_helper.get_playlist_by_artist_id = async (artist_id, start, leng
 
 
         var filter_cnt = playlist.length;
+
+
         if (playlist) {
             return { "status": 1, "message": "Track details found", "playlist": playlist, "recordsFiltered": filter_cnt, "recordsTotal": tot_cnt };
+            //"recordsFiltered": filter_cnt, "recordsTotal": tot_cnt
         } else {
             return { "status": 2, "message": "playlist not found" };
         }
@@ -74,6 +77,11 @@ artist_playlist_helper.get_playlists = async (artist_id, playlist_id, start, len
                 "$unwind": "$track"
             },
             {
+                $match: {
+                    "track.is_suspend": false
+                }
+            },
+            {
                 "$lookup": {
                     "from": "artist",
                     "foreignField": "_id",
@@ -84,6 +92,11 @@ artist_playlist_helper.get_playlists = async (artist_id, playlist_id, start, len
             {
                 "$unwind": "$artist"
             },
+            {
+                $match: {
+                    "artist.flag": false
+                }
+            }
 
         ]);
         var tot_cnt = playlists.length
@@ -91,7 +104,7 @@ artist_playlist_helper.get_playlists = async (artist_id, playlist_id, start, len
         var playlist = await Playlist.aggregate([
             {
                 "$match": {
-
+                    "artist_id": ObjectId(artist_id),
                     "_id": ObjectId(playlist_id)
                 }
             },
@@ -110,6 +123,11 @@ artist_playlist_helper.get_playlists = async (artist_id, playlist_id, start, len
                 "$unwind": "$track"
             },
             {
+                $match: {
+                    "track.is_suspend": false
+                }
+            },
+            {
                 "$lookup": {
                     "from": "artist",
                     "foreignField": "_id",
@@ -119,6 +137,11 @@ artist_playlist_helper.get_playlists = async (artist_id, playlist_id, start, len
             },
             {
                 "$unwind": "$artist"
+            },
+            {
+                $match: {
+                    "artist.flag": false
+                }
             },
             {
                 "$skip": start
@@ -174,10 +197,6 @@ artist_playlist_helper.get_playlists_for_delete = async (artist_id, playlist_id)
 }
 
 artist_playlist_helper.update_playlist = async (artist_id, playlist_id, obj) => {
-    console.log('artist_id', artist_id);
-    console.log('playlist_id', playlist_id);
-    console.log('obj', obj);
-
 
     try {
         var playlist = await Playlist.findOneAndUpdate({ "artist_id": new ObjectId(artist_id), "_id": new ObjectId(playlist_id) }, obj, { new: true })

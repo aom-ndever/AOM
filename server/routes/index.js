@@ -1760,8 +1760,24 @@ router.post('/get_artist', async (req, res) => {
   }
 });
 
-router.get('/get_featured_artists', async (req, res) => {
-  var artist = await artist_helper.get_artists();
+router.post('/get_featured_artists', async (req, res) => {
+  var filter = {};
+  if (req.body.music_type) {
+    filter["music_type._id"] = new ObjectId(req.body.music_type);
+  }
+
+  if (req.body.music_type) {
+    filter["state._id"] = {
+      $in: tmp
+    };
+  }
+
+  if (req.body.search) {
+    var r = new RegExp(req.body.search);
+    var search = { "$regex": r, "$options": "i" };
+
+  }
+  var artist = await artist_helper.get_artists(filter, search);
   if (artist.status === 1) {
     logger.trace("got details successfully");
     res.status(config.OK_STATUS).json({ "status": 1, "artist": artist.artist });
@@ -1912,9 +1928,13 @@ router.post('/winners', async (req, res) => {
   round_id = round.round._id
   var filter = {};
   var filters = {};
-  if (req.body.state) {
-    filter["state._id"] = new ObjectId(req.body.state)
 
+  if (req.body.state) {
+    var tmp = _.map(req.body.state, function (id) { return ObjectId(id) });
+
+    filter["state._id"] = {
+      $in: tmp
+    };
   }
   if (req.body.music_type) {
     filter["music_type._id"] = new ObjectId(req.body.music_type)

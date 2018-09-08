@@ -99,7 +99,7 @@ export class WhatsNewComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.getAllData();
     this.getAllMusicType();
-    this.getAllFeaturedArtist();
+    this.getAllFeaturedArtist({});
   }
 
   ngOnDestroy() {
@@ -141,11 +141,12 @@ export class WhatsNewComponent implements OnInit, OnDestroy {
       }
       this.getAllFollower(); 
     });
+    
   }
   // Get all featured artist
-  getAllFeaturedArtist() {
+  getAllFeaturedArtist(data) {
     this.feature_loader = true;
-    this.WhatsNewService.getAllFeaturedArtist().subscribe((response) => {
+    this.WhatsNewService.getAllFeaturedArtist(data).subscribe((response) => {
       this.featured_artist = response['artist'];
       console.log(this.featured_artist);
       this.feature_loader = false;
@@ -194,6 +195,7 @@ export class WhatsNewComponent implements OnInit, OnDestroy {
         this.track_list = response['track'];
         this.getAllFollower();
       });
+      this.getAllFeaturedArtist(data);
     }
   }
   // Add region for filtering
@@ -234,6 +236,7 @@ export class WhatsNewComponent implements OnInit, OnDestroy {
     }, error => {
       this.toastr.error(error['error'].message,'Error!');
     });
+    this.getAllFeaturedArtist(data);
   }
   // Get all music type
   getAllMusicType() {
@@ -248,11 +251,10 @@ export class WhatsNewComponent implements OnInit, OnDestroy {
       let data = {
         artist_id : id
       };
-      this.whatsnewdata['artist'][index]['is_followed'] = false;
       this.WhatsNewService.followArtist(data).subscribe(response => {
         this.toastr.success(response['message'], 'Success!');
+        this.getAllFollower();
       }, error => {
-        this.whatsnewdata['artist'][index]['is_followed'] = false;
         this.toastr.error(error['error'].message, 'Error!');
       });
     } else {
@@ -261,24 +263,26 @@ export class WhatsNewComponent implements OnInit, OnDestroy {
   }
   // get All follower
   getAllFollower() {
-    // let user = JSON.parse(localStorage.getItem('user'));
-    // if(user) {
-    //   this.WhatsNewService.getFollower().subscribe(response => {
-    //     let flag = false;
-    //     this.whatsnewdata['artist'].forEach(obj => {
-    //       response['user'].forEach(data => {
-    //         if(obj._id == data['artist_id']._id) {
-    //           flag = true;
-    //         }
-    //       });
-    //       if(flag) {
-    //         obj['is_followed'] = true;
-    //       } else {
-    //         obj['is_followed'] = false;
-    //       }
-    //     });
-    //   });
-    // }
+    let user = JSON.parse(localStorage.getItem('user'));
+    if(user && user['user']) {
+      this.WhatsNewService.getFollower().subscribe(response => {
+        
+        this.artist_list.forEach((ele) => {
+          if(response['artist'] && response['artist'].indexOf(ele['_id']) != -1) {
+            ele['is_followed'] = true;
+          } else {
+            ele['is_followed'] = false;
+          }
+        });
+        this.featured_artist.forEach((ele) => {
+          if(response['artist'] && response['artist'].indexOf(ele['_id']) != -1) {
+            ele['is_followed'] = true;
+          } else {
+            ele['is_followed'] = false;
+          }
+        });
+      });
+    }
   }
   // get all state
   getAllState() {

@@ -75,7 +75,7 @@
           <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12" *ngFor="let nupload of data['new_uploads']; let i = index;">
             <div class="upload">
               <div class="img-wrap">
-                <img src="{{nupload ? track_url+nupload.image : 'img/upload1.png'}}" alt="New Uploads">
+                <img lazyLoad="{{nupload ? track_url+nupload.image : 'img/upload1.png'}}" defaultImage="img/loader.gif" offset="100" alt="New Uploads">
               </div>
               <div class="content-wrap">
                 <div class="player">

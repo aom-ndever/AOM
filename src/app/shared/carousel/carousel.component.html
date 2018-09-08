@@ -8,9 +8,9 @@
   <ngx-tile NgxCarouselItem *ngFor="let image of images; let i = index">
       <div class="final-wrap">
         <div class="img-wrap">
-          <img src="{{image.source}}" alt="Finalists">
+          <img lazyLoad="{{image.source}}" defaultImage="img/loader.gif" offset="100" alt="Finalists">
           <a href="javascript:void(0)" class="fan" (click)="followArtist(image['artist_id'])">
-            <i class="fa fa-heart-o" aria-hidden="true"></i>
+            <i class="fa fa-{{image['is_followed'] ? 'heart' : 'heart-o'}}" aria-hidden="true"></i>
           </a>
         </div>
         <div class="content-wrap">

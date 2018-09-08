@@ -143,6 +143,11 @@ winner_helper.get_qualified = async (round_id, start, length, filter, filters) =
             {
                 '$unwind': '$artist'
             },
+            // {
+            //     '$match': {
+            //         "artist.flag": false
+            //     }
+            // },
             {
                 '$lookup': {
                     from: 'state',
@@ -197,6 +202,8 @@ winner_helper.get_qualified = async (round_id, start, length, filter, filters) =
         }
 
         let winner = await Winner.aggregate(aggregate);
+        console.log('winner', winner);
+
         var filter_cnt = winner.length;
 
         if (winner) {

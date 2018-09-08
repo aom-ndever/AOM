@@ -105,9 +105,11 @@ export class VoteComponent implements OnInit {
       ajax: (dataTablesParameters: any, callback) => {
         setTimeout(() => {
           dataTablesParameters['contest_id'] = this.contest_data;
-          dataTablesParameters['search'] = that.search_str;
-          dataTablesParameters['music_type'] = that.advance_filter.music_type;
-          dataTablesParameters['state'] = that.region_filter;
+          if(that.search_str)
+            dataTablesParameters['search'] = that.search_str;
+          dataTablesParameters['music_type'] = that.advance_filter.music_type ;
+          if(that.region_filter.length > 0) 
+            dataTablesParameters['state'] =  that.region_filter;
           that.VoteService.getWinnersData(dataTablesParameters).subscribe((response) => {
             this.winner_list = response['track']['winner'];
               this.audio_ins1 = [];
@@ -145,9 +147,11 @@ export class VoteComponent implements OnInit {
       ajax: (dataTablesParameters: any, callback) => {
         setTimeout(() => {
           dataTablesParameters['contest_id'] = this.contest_data;
-          dataTablesParameters['search'] = that.search_str;
-          dataTablesParameters['music_type'] = that.advance_filter.music_type;
-          dataTablesParameters['state'] = that.region_filter;
+          if(that.search_str)
+            dataTablesParameters['search'] = that.search_str;
+          dataTablesParameters['music_type'] = that.advance_filter.music_type ;
+          if(that.region_filter.length > 0) 
+            dataTablesParameters['state'] =  that.region_filter;
           
           that.VoteService.getWinnersData(dataTablesParameters).subscribe((response) => {
             this.winner_list = response['track']['winner'];
@@ -251,6 +255,7 @@ export class VoteComponent implements OnInit {
       };  
       this.VoteService.followArtist(data).subscribe(response => {
         this.toastr.success(response['message'], 'Success!'); 
+        this.getAllFollower();
       }, error => {
         this.toastr.error(error['error'].message, 'Error!');
       });
@@ -465,5 +470,21 @@ export class VoteComponent implements OnInit {
   // toggle table and graphical view for winner
   toggleTable(flag) {
     this.table_flag = flag;
+  }
+   // get All follower
+   getAllFollower() {
+    let user = JSON.parse(localStorage.getItem('user'));
+    if(user && user['user']) {
+      this.VoteService.getFollower().subscribe(response => {
+        
+        this.participants.forEach((ele) => {
+          if(response['artist'] && response['artist'].indexOf(ele['artist']['_id']) != -1) {
+            ele['artist']['is_followed'] = true;
+          } else {
+            ele['artist']['is_followed'] = false;
+          }
+        });
+      });
+    }
   }
 }

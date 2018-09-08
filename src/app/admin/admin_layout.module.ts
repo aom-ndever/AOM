@@ -28,6 +28,7 @@ import { UsersService } from './users/users.service';
 import { ContestService } from './contest/contest.service';
 import { RolesService } from './roles/roles.service';
 import { AlertService } from './alerts/alerts.service';
+import { LazyLoadImageModule } from 'ng-lazyload-image';
 
 @NgModule({
   imports: [
@@ -46,6 +47,7 @@ import { AlertService } from './alerts/alerts.service';
     ChartModule,
     AmChartsModule,
     DataTablesModule,
+    LazyLoadImageModule,
     RouterModule.forChild([
       {
         path: 'admin',

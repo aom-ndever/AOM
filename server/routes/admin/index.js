@@ -593,8 +593,8 @@ router.delete('/delete_track/:track_id', async (req, res) => {
       var like_del = await like_helper.delete_like(track_id);
       var comment_del = await comment_helper.delete_comment_by_track(track_id);
       var playlist_del = await playlist_helper.delete_playlist_by_track(track_id);
-
-      res.status(config.OK_STATUS).json({ "status": 1, "message": "track has been deleted" });
+      var transaction_del = await artist_helper.delete_transaction_track(track_id)
+      res.status(config.OK_STATUS).json({ "status": 1, "message": "Track has been deleted" });
     }
   }
   else {

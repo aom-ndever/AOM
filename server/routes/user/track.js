@@ -92,13 +92,12 @@ router.post('/purchase', async (req, res) => {
           var obj = {
             "transfer_id": transfer.id,
             "to_account": transfer.destination,
-            "amount": transfer.amount,
+            "amount": (transfer.amount) / 100,
             "artist_id": artist_id,
             "track_id": obj.track_id,
             "status": "finised"
           }
           var transfer_resp = await artist_helper.insert_transaction(obj);
-
 
         } else {
           res.status(config.BAD_REQUEST).json({ "message": "Artist doesn't have bank account" });
