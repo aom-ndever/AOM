@@ -247,11 +247,14 @@
                   <td>{{track['name']}}</td>
                   <td>{{track['created_at'] | date : 'dd MM, yyyy'}}</td>
                   <td class="td_img action_div">
+                    <div class="popup_container">
                         <a href="javascript:;" *ngIf="user['admin']['account_type'] != 'moderator'"  triggers="click"   [outsideClick]="true" [popover]="popTemplate" popoverTitle="Delete?" ><i class="fa fa-trash"></i> Delete</a>&nbsp;
                         <ng-template #popTemplate >
                           <button type="submit" class="btn btn-default" (click)="hidePopover()">No</button>
                           <button class="btn btn-primary" (click)="removeTrack(track['_id']);">Yes</button>
                         </ng-template>
+                      </div>
+                       <div class="popup_container">
                         <a href="javascript:;" *ngIf="user['admin']['account_type'] != 'moderator'"  triggers="click" [outsideClick]="true" [popover]="myTemplate" popoverTitle="{{track['is_suspend'] ? 'Un-suspend' : 'Suspend'}}?" > 
                             <img src="img/suspend.png" style="top:3px !important;">{{track['is_suspend'] ? 'Suspended' : 'Suspend'}}
                           </a>
@@ -259,6 +262,7 @@
                             <button class="btn btn-default" >No</button>
                             <button class="btn btn-primary" (click)="suspendArtistTrack(track['_id']);">Yes</button>
                         </ng-template>
+                      </div>
                         
       
                     <!-- <a href="javascript:;"> <img src="img/suspend.png">Suspend</a> -->
