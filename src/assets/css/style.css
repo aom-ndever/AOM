@@ -1182,9 +1182,11 @@ span.up_text {
 .date-of-birth .form-group:nth-child(3){padding-right: 0 !important;}
 .date-of-birth .form-group:last-child {padding-right: 0 !important;}
 
-.date-of-birth .form-group .form-control{    padding: 0 15px;
-    margin-top: 9px;    font-weight: 300;
-    color: #8e8e8e;}
+.date-of-birth .form-group .form-control{        padding: 0 15px;
+    margin-top: 9px;
+    font-weight: 400;
+    color: #000000;}
+    .cat.latin{    background-color: #00bcd4;}
 
 /*Register Page*/
 
@@ -2595,11 +2597,11 @@ input:checked + .slider:before {
     margin-bottom: 0;
 }
 ul.ana-tabs.nav.nav-tabs {
-    -webkit-flex: 0 0 79%;
-    -moz-flex: 0 0 79%;
-    -ms-flex: 0 0 79%;
-    -o-flex: 0 0 79%;
-    flex: 0 0 79%;
+    -webkit-flex: 0 0 90%;
+    -moz-flex: 0 0 90%;
+    -ms-flex: 0 0 90%;
+    -o-flex: 0 0 90%;
+    flex: 0 0 90%;
     max-width: 90%;
     padding-left: 30px;
 }
@@ -4928,10 +4930,26 @@ max-height: unset !important;
     position: relative;
         display: inline-block;
 }
-.vote-wrap .days-grp{    flex: unset;max-width: 100%;}
-.vote-wrap  .ana-header #days-select {
-    width: auto !important;
+.vote_infographic_table table thead tr td:first-child{width: 99px !important;}
+.vote_infographic_table table thead tr td:nth-child(2){    width: 245px!important;}
+.vote_infographic_table table thead tr td:nth-child(3){    width: 103px!important;    text-align: center !important;}
+.vote_infographic_table .download-graph ul li .d-num {
+    display: inline-block;
+    border-radius: 6px;
+    background-image: -webkit-gradient(linear, left top, right top, from(rgba(203, 79, 216, 0)), to(#9c27b0));
+    background-image: linear-gradient(to right, rgba(203, 79, 216, 0), #9c27b0);
+    float: right;
+    text-align: right;
+    padding: 5px 10px;
+    margin-left: auto;
+    max-width: 100%;
+    -moz-flex: 0 0 50%;
+    -ms-flex: 0 0 50%;
+    -o-flex: 0 0 50%;
+    -webkit-box-flex: 0;
+    flex: 0 0 100%;
 }
+
 /*MEDIA START*/
 @media screen and (min-width: 768px){
     .content-block{width: 750px;}
