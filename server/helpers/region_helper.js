@@ -8,9 +8,7 @@ var ObjectId = mongoose.Types.ObjectId;
 Region_helper.get_all_region = async () => {
     try {
         var region = await Region
-            .find()
-
-
+            .find().sort({ "name": 1 })
         if (region) {
             return { "status": 1, "message": "Region details found", "Region": region };
         } else {

@@ -7,7 +7,7 @@ console.log("DB = ", config.database);
 //Set up default mongoose connection
 var mongoDB = config.database;
 // mongoose.connect(mongoDB, { auth: { authdb: "admin" }, useMongoClient: true });
-mongoose.connect(mongoDB);
+mongoose.connect(mongoDB, { useNewUrlParser: true });
 
 //Get the default connection
 var db = mongoose.connection;

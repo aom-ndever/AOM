@@ -113,7 +113,29 @@ input[type="range"]:focus{
   .player-wrapper .progress-bar{    background-color: #9b26b0;}
   .cust_err_msg{display: block;font-size: 13px;margin-left: 12px;}
 
+  .fa-facebook-square:hover {
+        color: #3b5998;
+        -o-transition:.5s;
+        -ms-transition:.5s;
+        -moz-transition:.5s;
+        -webkit-transition:.5s;
+        transition:.5s;
+    }
 
+   .fa-facebook-square{
+        -o-transition:.5s;
+        -ms-transition:.5s;
+        -moz-transition:.5s;
+        -webkit-transition:.5s;
+        transition:.5s;
+    }
+img.social_icons{
+  filter: grayscale(100%);
+}
+img.social_icons:hover{
+  filter: grayscale(0%);
+}
+    
   @media(max-width:580px){
     #audioplayer{    position: relative;}
     

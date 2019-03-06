@@ -120,6 +120,7 @@ router.post("/", async (req, res) => {
         }
 
         var card_resp = await artist_helper.get_account_by_artist_id(artist_id);
+        console.log('card_resp', card_resp);
 
         if (card_resp.status === 2) {
 

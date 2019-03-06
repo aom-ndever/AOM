@@ -7,7 +7,7 @@ var ObjectId = mongoose.Types.ObjectId;
 state_helper.get_all_state = async () => {
     try {
         var state = await State
-            .find()
+            .find().sort({ "name": 1 })
             .populate('region')
 
         if (state) {

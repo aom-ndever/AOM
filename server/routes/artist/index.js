@@ -181,7 +181,6 @@ router.put('/bank/:bank_id', async (req, res) => {
     var obj = {
     };
     var user_resp = await artist_helper.update_bank(req.userInfo.id, req.params.bank_id);
-
     if (user_resp.status === 0) {
         res.status(config.INTERNAL_SERVER_ERROR).json(user_resp);
     } else {
@@ -189,6 +188,7 @@ router.put('/bank/:bank_id', async (req, res) => {
     }
 
 });
+
 router.post('/add_bank_details', async (req, res) => {
     artist_id = req.userInfo.id;
     var obj = {
@@ -392,7 +392,7 @@ router.put('/update_image', function (req, res) {
                         fs.mkdirSync(dir);
                     }
                     //var extention = path.extname(file.name);
-                    var extension = '.jpg';
+                    var extension = '.pdf';
                     var filename = "artist_" + new Date().getTime() + (Math.floor(Math.random() * 90000) + 10000) + extension;
                     file.mv(dir + '/' + filename, async (err) => {
                         if (err) {
