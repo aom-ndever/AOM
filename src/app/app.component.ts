@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { setTheme } from 'ngx-bootstrap/utils';
 import { Location } from '@angular/common';
-import { Router, NavigationStart, NavigationCancel, NavigationEnd, NavigationError,Event as RouterEvent, } from '@angular/router';
+import { Router, NavigationStart, NavigationCancel, NavigationEnd, NavigationError, Event as RouterEvent, } from '@angular/router';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -9,8 +9,8 @@ import { Router, NavigationStart, NavigationCancel, NavigationEnd, NavigationErr
 })
 export class AppComponent {
   title = 'app';
-  loading : boolean = true;
-  url : any = '';
+  loading: boolean = true;
+  url: any = '';
   constructor(
     private router: Router,
     private location: Location
@@ -52,7 +52,7 @@ export class AppComponent {
   //     });
   //   }
 
-    // Shows and hides the loading spinner during RouterEvent changes
+  // Shows and hides the loading spinner during RouterEvent changes
   navigationInterceptor(event: RouterEvent): void {
     if (event instanceof NavigationStart) {
       this.loading = true

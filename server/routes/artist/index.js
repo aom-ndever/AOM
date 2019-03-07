@@ -7,6 +7,7 @@ var jwt = require('jsonwebtoken');
 var async = require('async');
 const saltRounds = 10;
 var media_helper = require('../../helpers/media_helper');
+var Account = require('../../models/account');
 var track_helper = require('../../helpers/track_helper');
 var artist_helper = require('../../helpers/artist_helper');
 var follower_helper = require('../../helpers/follower_helper');
@@ -201,6 +202,8 @@ router.post('/add_bank_details', async (req, res) => {
     };
     var artist_data = await artist_helper.get_artist_by_id(artist_id);
     var card_resp = await artist_helper.insert_bank(obj);
+    console.log('card_resp', card_resp);
+
     bank_id = card_resp.card._id
 
     if (card_resp.status === 0) {
@@ -219,7 +222,7 @@ router.post('/add_bank_details', async (req, res) => {
             });
 
             var card_resp = await artist_helper.get_account_by_artist_id(artist_id);
-            console.log('card_resp', card_resp);
+            console.log('card_resp', card_resp.status);
 
             if (card_resp && card_resp.status != 1) {
                 var account = await stripe.accounts.create({
@@ -233,16 +236,23 @@ router.post('/add_bank_details', async (req, res) => {
                     "account_id": account.id,
                     "bank_id": bank_id
                 }
-                var card_resp = await artist_helper.insert_account(account_obj);
+                var card_resps = await artist_helper.insert_account(account_obj);
+                console.log('card_resps', card_resps);
+
             }
             await stripe.accounts.createExternalAccount(
-                card_resp.account.account_id,
+                card_resps.account.account_id,
                 { external_account: bank_account_token.id }
             );
             res.status(config.OK_STATUS).json({ "message": "Account created" });
 
         } catch (error) {
-            res.status(config.OK_STATUS).json({ "message": "Account not created" });
+            //var delete_data = await Account.findOneAndRemove({ "_id": new ObjectId(card_resp.card._id) })
+            var del_resp = await artist_helper.delete_bank(card_resp.card._id, req.userInfo.id);
+
+            console.log('delete_data', del_resp);
+
+            res.status(config.BAD_REQUEST).json({ "message": "Account not created. Please add valid details" });
 
         }
 

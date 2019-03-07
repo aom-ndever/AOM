@@ -4,12 +4,18 @@
             <div class="col-lg-2 col-md-3 col-sm-3 col-xs-3">
                 <div class="profile-tabs">
                     <ul class="nav nav-tabs" id="myTab">
-                        <li class="nav-item"><a class="nav-link {{tab_cnt == 1 ? 'active' : '' }}" (click)="tabChange(1)" data-toggle="tab" href="javascript:;">Profile</a></li>
-                        <li class="nav-item"><a class="nav-link {{tab_cnt == 2 ? 'active' : '' }}" data-toggle="tab" (click)="tabChange(2)" href="javascript:;">Settings</a></li>
-                        <li class="nav-item"><a class="nav-link {{tab_cnt == 3 ? 'active' : '' }}" data-toggle="tab" (click)="tabChange(3)" href="javascript:;">Payments</a></li>
-                        <li class="nav-item"><a class="nav-link {{tab_cnt == 4 ? 'active' : '' }}" data-toggle="tab" (click)="tabChange(4)" href="javascript:;">Media</a></li>
-                        <li class="nav-item"><a class="nav-link {{tab_cnt == 5 ? 'active' : '' }}" data-toggle="tab" (click)="tabChange(5)" href="javascript:;">Analytics</a></li>
-                        <li class="nav-item"><a class="nav-link {{tab_cnt == 6 ? 'active' : '' }}" data-toggle="tab" (click)="tabChange(6)" href="javascript:;">Playlist</a></li>
+                        <li class="nav-item"><a class="nav-link {{tab_cnt == 1 ? 'active' : '' }}" (click)="tabChange(1)"
+                                data-toggle="tab" href="javascript:;">Profile</a></li>
+                        <li class="nav-item"><a class="nav-link {{tab_cnt == 2 ? 'active' : '' }}" data-toggle="tab"
+                                (click)="tabChange(2)" href="javascript:;">Settings</a></li>
+                        <li class="nav-item"><a class="nav-link {{tab_cnt == 3 ? 'active' : '' }}" data-toggle="tab"
+                                (click)="tabChange(3)" href="javascript:;">Payments</a></li>
+                        <li class="nav-item"><a class="nav-link {{tab_cnt == 4 ? 'active' : '' }}" data-toggle="tab"
+                                (click)="tabChange(4)" href="javascript:;">Media</a></li>
+                        <li class="nav-item"><a class="nav-link {{tab_cnt == 5 ? 'active' : '' }}" data-toggle="tab"
+                                (click)="tabChange(5)" href="javascript:;">Analytics</a></li>
+                        <li class="nav-item"><a class="nav-link {{tab_cnt == 6 ? 'active' : '' }}" data-toggle="tab"
+                                (click)="tabChange(6)" href="javascript:;">Playlist</a></li>
                     </ul>
                 </div>
             </div>
@@ -22,19 +28,24 @@
                                     <div class="upload-cover">
                                         <img [src]="default_cover_img" alt="Edit cover Image">
                                         <span class="up_text">Update Photo</span>
-                                        <input type="file" name="my_doc_upload"  id="cover_upload1" multiple="false" (change)="updateCoverImage($event)">
-                                        <a data-fancybox data-animation-duration="700" data-src="#delete" href="javascript:;" *ngIf="userdata.cover_image" (click)="removeArtistCoverImage()" class="delete"><i class="fa fa-trash"></i></a>
+                                        <input type="file" name="my_doc_upload" id="cover_upload1" multiple="false"
+                                            (change)="updateCoverImage($event)">
+                                        <a data-fancybox data-animation-duration="700" data-src="#delete" href="javascript:;"
+                                            *ngIf="userdata.cover_image" (click)="removeArtistCoverImage()" class="delete"><i
+                                                class="fa fa-trash"></i></a>
                                     </div>
                                     <div class="edit-details">
-                                        <div class="edit-head" >Your Details</div>
+                                        <div class="edit-head">Your Details</div>
                                         <div class="row">
                                             <div class="col-md-3 col-sm-12 col-xs-12">
                                                 <div class="edit-profile-picture">
                                                     <div class="upload-cover">
                                                         <img [src]="default_profile_img" alt="Edit cover Image">
                                                         <span class="up_text">Update Photo</span>
-                                                        <input type="file"  name="upload" id="cover_upload" (change)="updateProfileImage($event)">
-                                                        <a data-fancybox data-animation-duration="700" data-src="#delete" *ngIf="userdata.image" href="javascript:;" class="delete" (click)="removeArtistImage()"><i class="fa fa-trash"></i></a>
+                                                        <input type="file" name="upload" id="cover_upload" (change)="updateProfileImage($event)">
+                                                        <a data-fancybox data-animation-duration="700" data-src="#delete"
+                                                            *ngIf="userdata.image" href="javascript:;" class="delete"
+                                                            (click)="removeArtistImage()"><i class="fa fa-trash"></i></a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -43,60 +54,82 @@
 
                                                     <div class="form-group">
                                                         <label for="fname">First Name</label>
-                                                        <input type="text" class="form-control" formControlName="fname" id="fname5" name="fname" [(ngModel)]="userdata.first_name" placeholder="First Name">
+                                                        <input type="text" class="form-control" formControlName="fname"
+                                                            id="fname5" name="fname" [(ngModel)]="userdata.first_name"
+                                                            placeholder="First Name">
                                                         <div class="cust_err_msg" *ngIf="artistProfileValidation && !artist_profile.controls['fname'].valid">
-                                                            <span *ngIf="artist_profile.controls['fname'].errors['required']" class="text-danger">First name is required.</span>
-                                                            <span *ngIf="!artist_profile.controls['fname'].errors['required'] && artist_profile.controls['fname'].errors['whitespace']" class="text-danger">Please enter valid data.</span>
+                                                            <span *ngIf="artist_profile.controls['fname'].errors['required']"
+                                                                class="text-danger">First name is required.</span>
+                                                            <span *ngIf="!artist_profile.controls['fname'].errors['required'] && artist_profile.controls['fname'].errors['whitespace']"
+                                                                class="text-danger">Please enter valid data.</span>
+                                                            <span *ngIf="(artist_profile.controls['fname'].dirty)"
+                                                                class="text-danger">Please
+                                                                enter only alphabets.</span>
                                                         </div>
                                                     </div>
 
                                                     <div class="form-group pwd-grp">
                                                         <label for="lanem">Last Name</label>
-                                                        <input type="text" class="form-control" id="lname2" formControlName="lname" name="lname" [(ngModel)]="userdata.last_name" placeholder="Last Name">
+                                                        <input type="text" class="form-control" id="lname2"
+                                                            formControlName="lname" name="lname" [(ngModel)]="userdata.last_name"
+                                                            placeholder="Last Name">
                                                         <div class="cust_err_msg" *ngIf="artistProfileValidation && !artist_profile.controls['lname'].valid">
-                                                            <span *ngIf="artist_profile.controls['lname'].errors['required']" class="text-danger">Last name is required.</span>
-                                                            <span *ngIf="!artist_profile.controls['lname'].errors['required'] && artist_profile.controls['lname'].errors['whitespace']" class="text-danger">Please enter valid data.</span>
+                                                            <span *ngIf="artist_profile.controls['lname'].errors['required']"
+                                                                class="text-danger">Last name is required.</span>
+                                                            <span *ngIf="!artist_profile.controls['lname'].errors['required'] && artist_profile.controls['lname'].errors['whitespace']"
+                                                                class="text-danger">Please enter valid data.</span>
+                                                            <span *ngIf="(artist_profile.controls['lname'].dirty)"
+                                                                class="text-danger">Please
+                                                                enter only alphabets.</span>
                                                         </div>
                                                     </div>
 
                                                     <div class="form-group gender-grp">
                                                         <label for="geder">Gender</label>
-                                                        <select class="form-control" id="gender" formControlName="gender" name="gender" [(ngModel)]="userdata.gender">
+                                                        <select class="form-control" id="gender" formControlName="gender"
+                                                            name="gender" [(ngModel)]="userdata.gender">
                                                             <option value="male">Male</option>
                                                             <option value="female">Female</option>
                                                         </select>
                                                         <div class="cust_err_msg" *ngIf="artistProfileValidation && !artist_profile.controls['gender'].valid">
-                                                            <span *ngIf="artist_profile.controls['gender'].errors['required']" class="text-danger">Gender is required.</span>
+                                                            <span *ngIf="artist_profile.controls['gender'].errors['required']"
+                                                                class="text-danger">Gender is required.</span>
                                                         </div>
                                                     </div>
                                                     <div class="form-group">
                                                         <div class="date-of-birth">
                                                             <label for="date">Birthday Date</label>
                                                             <div class="form-group">
-                                                                <select class="form-control" id="day" formControlName="day" name="day" [(ngModel)]="userdata.day">
+                                                                <select class="form-control" id="day" formControlName="day"
+                                                                    name="day" [(ngModel)]="userdata.day">
                                                                     <option value="">Day</option>
                                                                     <option *ngFor="let d of day" value="{{d}}">{{d}}</option>
                                                                 </select>
                                                                 <div class="cust_err_msg" *ngIf="artistProfileValidation && !artist_profile.controls['day'].valid">
-                                                                    <span *ngIf="artist_profile.controls['day'].errors['required']" class="text-danger">Day is required.</span>
+                                                                    <span *ngIf="artist_profile.controls['day'].errors['required']"
+                                                                        class="text-danger">Day is required.</span>
                                                                 </div>
                                                             </div>
                                                             <div class="form-group">
-                                                                <select class="form-control" id="month" formControlName="month" name="month" [(ngModel)]="userdata.month">
+                                                                <select class="form-control" id="month" formControlName="month"
+                                                                    name="month" [(ngModel)]="userdata.month">
                                                                     <option value="">Month</option>
                                                                     <option *ngFor="let m of month" value="{{m}}">{{m}}</option>
                                                                 </select>
                                                                 <div class="cust_err_msg" *ngIf="artistProfileValidation && !artist_profile.controls['month'].valid">
-                                                                    <span *ngIf="artist_profile.controls['month'].errors['required']" class="text-danger">Month is required.</span>
+                                                                    <span *ngIf="artist_profile.controls['month'].errors['required']"
+                                                                        class="text-danger">Month is required.</span>
                                                                 </div>
                                                             </div>
                                                             <div class="form-group">
-                                                                <select class="form-control" id="year" formControlName="year" name="year" [(ngModel)]="userdata.year">
+                                                                <select class="form-control" id="year" formControlName="year"
+                                                                    name="year" [(ngModel)]="userdata.year">
                                                                     <option value="">Year</option>
                                                                     <option *ngFor="let y of year" value="{{y}}">{{y}}</option>
                                                                 </select>
                                                                 <div class="cust_err_msg" *ngIf="artistProfileValidation && !artist_profile.controls['year'].valid">
-                                                                    <span *ngIf="artist_profile.controls['year'].errors['required']" class="text-danger">Year is required.</span>
+                                                                    <span *ngIf="artist_profile.controls['year'].errors['required']"
+                                                                        class="text-danger">Year is required.</span>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -104,32 +137,41 @@
 
                                                     <div class="form-group music-grp">
                                                         <label for="musictype">Music Type</label>
-                                                        <select class="form-control" id="musictype" formControlName="music_type" name="music_type" [(ngModel)]="userdata.music_type['_id']">
+                                                        <select class="form-control" id="musictype" formControlName="music_type"
+                                                            name="music_type" [(ngModel)]="userdata.music_type['_id']">
                                                             <option *ngFor="let type of music_types" value="{{type._id}}">{{type.name}}</option>
                                                         </select>
-                                                        
+
 
                                                         <div class="cust_err_msg" *ngIf="artistProfileValidation && !artist_profile.controls['music_type'].valid">
-                                                            <span *ngIf="artist_profile.controls['music_type'].errors['required']" class="text-danger">Music is required.</span>
+                                                            <span *ngIf="artist_profile.controls['music_type'].errors['required']"
+                                                                class="text-danger">Music is required.</span>
                                                         </div>
                                                     </div>
-                                                    
+
                                                     <div class="form-group home-grp">
                                                         <label for="hometown">Home Town</label>
-                                                        <input class="form-control" placeholder="zipcode" formControlName="zipcode" name="zipcode" [(ngModel)]="userdata.zipcode" />
+                                                        <input class="form-control" placeholder="zipcode"
+                                                            formControlName="zipcode" name="zipcode" [(ngModel)]="userdata.zipcode" />
                                                         <div class="cust_err_msg" *ngIf="artistProfileValidation && !artist_profile.controls['zipcode'].valid">
-                                                            <span *ngIf="artist_profile.controls['zipcode'].errors['required']" class="text-danger">Zipcode is required.</span>
-                                                            <span *ngIf="!artist_profile.controls['zipcode'].errors['required'] && artist_profile.controls['zipcode'].errors['whitespace']" class="text-danger">Please enter valid data.</span>
+                                                            <span *ngIf="artist_profile.controls['zipcode'].errors['required']"
+                                                                class="text-danger">Zipcode is required.</span>
+                                                            <span *ngIf="!artist_profile.controls['zipcode'].errors['required'] && artist_profile.controls['zipcode'].errors['whitespace']"
+                                                                class="text-danger">Please enter valid data.</span>
                                                         </div>
                                                     </div>
 
                                                     <div class="form-group home-grp">
                                                         <label for="hometown">Phone Number</label>
-                                                        <input class="form-control" placeholder="phone number" formControlName="phone" name="phone" [(ngModel)]="userdata.phone_no" />
+                                                        <input class="form-control" placeholder="phone number"
+                                                            formControlName="phone" name="phone" [(ngModel)]="userdata.phone_no" />
                                                         <div class="cust_err_msg" *ngIf="artistProfileValidation && !artist_profile.controls['phone'].valid">
-                                                            <span *ngIf="artist_profile.controls['phone'].errors['required']" class="text-danger">Phone Number is required.</span>
-                                                            <span *ngIf="!artist_profile.controls['phone'].errors['required'] && artist_profile.controls['phone'].errors['whitespace']" class="text-danger">Please enter valid data.</span>
-                                                            <span *ngIf="(artist_profile.controls['phone'].errors['maxlength'] || artist_profile.controls['phone'].errors['minlength'])  && artist_profile.controls['phone'].dirty" class="text-danger">Please enter valid phone number.</span>
+                                                            <span *ngIf="artist_profile.controls['phone'].errors['required']"
+                                                                class="text-danger">Phone Number is required.</span>
+                                                            <span *ngIf="!artist_profile.controls['phone'].errors['required'] && artist_profile.controls['phone'].errors['whitespace']"
+                                                                class="text-danger">Please enter valid data.</span>
+                                                            <span *ngIf="(artist_profile.controls['phone'].errors['maxlength'] || artist_profile.controls['phone'].errors['minlength'])  && artist_profile.controls['phone'].dirty"
+                                                                class="text-danger">Please enter valid phone number.</span>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -140,7 +182,8 @@
                                         <div class="edit-head">Additional Information</div>
                                         <div class="about-you">
                                             <label for="fname">Describe Yourself</label>
-                                            <textarea class="form-control" name="description" formControlName="description" [(ngModel)]="userdata.description" placeholder="Add about yourself..."></textarea>
+                                            <textarea class="form-control" name="description" formControlName="description"
+                                                [(ngModel)]="userdata.description" placeholder="Add about yourself..."></textarea>
                                         </div>
                                     </div>
                                     <div class="social-details">
@@ -149,35 +192,40 @@
                                             <div class="social-block">
                                                 <div class="form-group">
                                                     <label for="facebook">Facebook</label>
-                                                    <input type="text" class="form-control" id="fb" formControlName="share_url_fb" placeholder="Add Account" name="fb" [(ngModel)]="userdata.social_media['facebook']">
+                                                    <input type="text" class="form-control" id="fb" formControlName="share_url_fb"
+                                                        placeholder="Add Account" name="fb" [(ngModel)]="userdata.social_media['facebook']">
                                                     <img src="img/fb.png" alt="Facebook">
                                                 </div>
                                             </div>
                                             <div class="social-block">
                                                 <div class="form-group">
                                                     <label for="inst">Instagram</label>
-                                                    <input type="text" class="form-control" id="fname" formControlName="share_url_insta" placeholder="Add Account" name="insta" [(ngModel)]="userdata.social_media['instagram']">
+                                                    <input type="text" class="form-control" id="fname" formControlName="share_url_insta"
+                                                        placeholder="Add Account" name="insta" [(ngModel)]="userdata.social_media['instagram']">
                                                     <img src="img/inst.png" alt="Facebook">
                                                 </div>
                                             </div>
                                             <div class="social-block">
                                                 <div class="form-group">
                                                     <label for="facebook">Twitter</label>
-                                                    <input type="text" class="form-control" id="fb1" formControlName="share_url_twit" placeholder="Add Account" name="twit" [(ngModel)]="userdata.social_media['twitter']">
-                                                    <img src="img/twitter.png" alt="Facebook">
+                                                    <input type="text" class="form-control" id="fb1" formControlName="share_url_twit"
+                                                        placeholder="Add Account" name="twit" [(ngModel)]="userdata.social_media['twitter']">
+                                                    <img src="img/twitt.png" alt="Facebook">
                                                 </div>
                                             </div>
                                             <div class="social-block">
                                                 <div class="form-group">
                                                     <label for="inst">Youtube</label>
-                                                    <input type="text" class="form-control" id="fname1" formControlName="share_url_youtube" placeholder="Add Account" name="youtube" [(ngModel)]="userdata.social_media['youtube']">
+                                                    <input type="text" class="form-control" id="fname1" formControlName="share_url_youtube"
+                                                        placeholder="Add Account" name="youtube" [(ngModel)]="userdata.social_media['youtube']">
                                                     <img src="img/youtube.png" alt="Facebook">
                                                 </div>
                                             </div>
                                             <div class="social-block">
                                                 <div class="form-group">
                                                     <label for="inst">Soundcloud</label>
-                                                    <input type="text" class="form-control" id="fname2" formControlName="share_url_sound" placeholder="Add Account" name="sound" [(ngModel)]="userdata.social_media['sound_cloud']">
+                                                    <input type="text" class="form-control" id="fname2" formControlName="share_url_sound"
+                                                        placeholder="Add Account" name="sound" [(ngModel)]="userdata.social_media['sound_cloud']">
                                                     <img src="img/soundcloud.png" alt="Facebook">
                                                 </div>
                                             </div>
@@ -186,7 +234,8 @@
                                     </div>
                                     <div class="button_group">
                                         <a href="#" class="cancel-btn">Cancel</a>
-                                        <button type="submit" (click)="update(artist_profile.valid)" [disabled]="show_spinner" class="save-btn btn btn-primary">Save <i *ngIf="show_spinner" class="fa fa-spinner fa-spin"></i></button>
+                                        <button type="submit" (click)="update(artist_profile.valid)" [disabled]="show_spinner"
+                                            class="save-btn btn btn-primary">Save <i *ngIf="show_spinner" class="fa fa-spinner fa-spin"></i></button>
                                     </div>
                                 </form>
                             </div>
@@ -199,18 +248,22 @@
                                     <form (ngSubmit)="changeEmail()">
                                         <div class="form-group">
                                             <label for="yemail">Your Email</label>
-                                            <input type="email" name="old" [(ngModel)]="change_email.old" class="form-control" id="yemail" placeholder="Your Email" required>
+                                            <input type="email" name="old" [(ngModel)]="change_email.old" class="form-control"
+                                                id="yemail" placeholder="Your Email" required>
                                         </div>
                                         <div class="form-group">
                                             <label for="nemail">New Email</label>
-                                            <input type="email" name="new" [(ngModel)]="change_email.new" class="form-control" id="nemail" placeholder="New Name" required>
+                                            <input type="email" name="new" [(ngModel)]="change_email.new" class="form-control"
+                                                id="nemail" placeholder="New Name" required>
                                         </div>
                                         <div class="form-group">
                                             <label for="remail">Repeat New Email</label>
-                                            <input type="email" name="repeat" [(ngModel)]="change_email.repeat" class="form-control" id="remail" placeholder="Repeat Email" required>
+                                            <input type="email" name="repeat" [(ngModel)]="change_email.repeat" class="form-control"
+                                                id="remail" placeholder="Repeat Email" required>
                                         </div>
                                         <div class="button_group">
-                                            <button type="submit" [disabled]="show_spinner" class="update-btn">update <i *ngIf="show_spinner" class="fa fa-spinner fa-spin"></i></button>
+                                            <button type="submit" [disabled]="show_spinner" class="update-btn">update
+                                                <i *ngIf="show_spinner" class="fa fa-spinner fa-spin"></i></button>
                                         </div>
                                     </form>
                                 </div>
@@ -219,7 +272,8 @@
                                     <form (ngSubmit)="changePassword()">
                                         <div class="form-group">
                                             <label for="ypwd">Your Password</label>
-                                            <input type="password" class="form-control" id="ypwd" name="old" [(ngModel)]="change_pwd.old" placeholder="Your Password">
+                                            <input type="password" class="form-control" id="ypwd" name="old"
+                                                [(ngModel)]="change_pwd.old" placeholder="Your Password">
                                             <div class="pwd-icon">
                                                 <!-- <i class="fa fa-eye" aria-hidden="true"></i> -->
                                                 <!-- <i class="fa fa-eye-slash" aria-hidden="true"></i> -->
@@ -227,7 +281,8 @@
                                         </div>
                                         <div class="form-group">
                                             <label for="npwd">New Password</label>
-                                            <input type="password" class="form-control" name="old" [(ngModel)]="change_pwd.new" id="npwd" placeholder="New Password">
+                                            <input type="password" class="form-control" name="old" [(ngModel)]="change_pwd.new"
+                                                id="npwd" placeholder="New Password">
                                             <div class="pwd-icon">
                                                 <!-- <i class="fa fa-eye" aria-hidden="true"></i> -->
                                                 <!-- <i class="fa fa-eye-slash" aria-hidden="true"></i> -->
@@ -235,7 +290,8 @@
                                         </div>
                                         <div class="form-group">
                                             <label for="rpwd">Repeat New Password</label>
-                                            <input type="password" class="form-control" id="rpwd" name="old" [(ngModel)]="change_pwd.repeat" placeholder="Repeat Password">
+                                            <input type="password" class="form-control" id="rpwd" name="old"
+                                                [(ngModel)]="change_pwd.repeat" placeholder="Repeat Password">
                                             <div class="pwd-icon">
                                                 <!-- <i class="fa fa-eye " aria-hidden="true"></i> -->
                                                 <!-- <i class="fa fa-eye-slash" aria-hidden="true"></i> -->
@@ -255,7 +311,8 @@
                                                 <p>New Followers</p>
                                                 <div class="f-toggle">
                                                     <label class="switch">
-                                                        <input type="checkbox" (click)="updateNotificationSetting('like_by_email', $event.target.checked)" [checked]="userdata['notification_settings']['like_by_email']">
+                                                        <input type="checkbox" (click)="updateNotificationSetting('like_by_email', $event.target.checked)"
+                                                            [checked]="userdata['notification_settings']['like_by_email']">
                                                         <span class="slider round"></span>
                                                     </label>
                                                 </div>
@@ -264,7 +321,8 @@
                                                 <p>Comments</p>
                                                 <div class="f-toggle">
                                                     <label class="switch">
-                                                        <input type="checkbox" (click)="updateNotificationSetting('comment_by_email', $event.target.checked)" [checked]="userdata['notification_settings']['comment_by_email']">
+                                                        <input type="checkbox" (click)="updateNotificationSetting('comment_by_email', $event.target.checked)"
+                                                            [checked]="userdata['notification_settings']['comment_by_email']">
                                                         <span class="slider round"></span>
                                                     </label>
                                                 </div>
@@ -287,7 +345,8 @@
                                                 <p>New Followers</p>
                                                 <div class="f-toggle">
                                                     <label class="switch">
-                                                        <input type="checkbox" (click)="updateNotificationSetting('like_by_sms', $event.target.checked)" [checked]="userdata['notification_settings']['like_by_sms']">
+                                                        <input type="checkbox" (click)="updateNotificationSetting('like_by_sms', $event.target.checked)"
+                                                            [checked]="userdata['notification_settings']['like_by_sms']">
                                                         <span class="slider round"></span>
                                                     </label>
                                                 </div>
@@ -296,7 +355,8 @@
                                                 <p>Comments</p>
                                                 <div class="f-toggle">
                                                     <label class="switch">
-                                                        <input type="checkbox" (click)="updateNotificationSetting('comment_by_sms', $event.target.checked)" [checked]="userdata['notification_settings']['comment_by_sms']">
+                                                        <input type="checkbox" (click)="updateNotificationSetting('comment_by_sms', $event.target.checked)"
+                                                            [checked]="userdata['notification_settings']['comment_by_sms']">
                                                         <span class="slider round"></span>
                                                     </label>
                                                 </div>
@@ -351,8 +411,12 @@
                         <div class="tab-pane fade {{tab_cnt == 3 ? 'show active' : '' }}" id="payment">
 
                             <ul class="nav nav-tabs">
-                                <li class="nav-item"><a class="nav-link {{payment_tab_cnt == 0 ? 'active' : ''}}" (click)="paymentTabChange(0)" data-toggle="tab" href="javascript:;">Payment Method</a></li>
-                                <li class="nav-item"><a class="nav-link {{payment_tab_cnt == 1 ? 'active' : ''}}" (click)="paymentTabChange(1)" data-toggle="tab" href="javascript:;">Your Proceeds</a></li>
+                                <li class="nav-item"><a class="nav-link {{payment_tab_cnt == 0 ? 'active' : ''}}"
+                                        (click)="paymentTabChange(0)" data-toggle="tab" href="javascript:;">Payment
+                                        Method</a></li>
+                                <li class="nav-item"><a class="nav-link {{payment_tab_cnt == 1 ? 'active' : ''}}"
+                                        (click)="paymentTabChange(1)" data-toggle="tab" href="javascript:;">Your
+                                        Proceeds</a></li>
                             </ul>
                             <div class="tab-content">
                                 <div id="paymentmethod" class="tab-pane fade {{payment_tab_cnt == 0 ? 'show active' : ''}}">
@@ -364,7 +428,8 @@
                                                     <td>
                                                         <div class="radio" style="margin-right:0px;">
                                                             <label>
-                                                                <input type="radio" value="" name="musicgenre" [checked]="card['status']" (click)="markAsDefault(card['_id'])">
+                                                                <input type="radio" value="" name="musicgenre"
+                                                                    [checked]="card['status']" (click)="markAsDefault(card['_id'])">
                                                                 <div class="radio_check"></div>
                                                             </label>
                                                         </div>
@@ -391,18 +456,20 @@
                                                     <td colspan="5">No data available.</td>
                                                 </tr>
                                             </table>
-                                            <a data-fancybox data-animation-duration="700" data-src="#addpayment" (click)="openCardModel(addCard)" href="javascript:;" class="add-payment">
+                                            <a data-fancybox data-animation-duration="700" data-src="#addpayment"
+                                                (click)="openCardModel(addCard)" href="javascript:;" class="add-payment">
                                                 <img src="img/icons8-plus_mathNormal.png" alt=""> Add Bank
                                             </a>
                                         </div>
                                     </div>
-                                    
+
                                 </div>
                                 <div id="proceeds" class="tab-pane fade {{payment_tab_cnt == 1 ? 'show active' : ''}}">
                                     <div class="trans-history">
                                         <div class="edit-head">Transaction History</div>
-                                        <div class="artists_table copyright_table table-responsive mCustomScrollbar Transaction_table" data-mcs-theme="dark-3">
-                                            <table datatable [dtOptions]="dtOptions[1]" >
+                                        <div class="artists_table copyright_table table-responsive mCustomScrollbar Transaction_table"
+                                            data-mcs-theme="dark-3">
+                                            <table datatable [dtOptions]="dtOptions[1]">
                                                 <thead>
                                                     <tr>
                                                         <th>N°</th>
@@ -417,9 +484,11 @@
                                                     <tr *ngFor="let t of transaction_data; let i = index;">
                                                         <td>{{proceed_row_cnt+i}}</td>
                                                         <td>{{t && t['track_id'] ? t['track_id']['name'] : ''}}</td>
-                                                        <td>{{t && t.created_at ? (t.created_at | date : 'MMMM dd, yyyy') : ''}}</td>
-                                                        <td>{{t && t.created_at ? (t.created_at | date : 'HH:mm:ss') : ''}}</td>
-                                                        <td>${{t && t['amount'] ?  t['amount'] : ''}}</td>
+                                                        <td>{{t && t.created_at ? (t.created_at | date : 'MMMM dd,
+                                                            yyyy') : ''}}</td>
+                                                        <td>{{t && t.created_at ? (t.created_at | date : 'HH:mm:ss') :
+                                                            ''}}</td>
+                                                        <td>${{t && t['amount'] ? t['amount'] : ''}}</td>
                                                         <td>{{t && t['status'] ? (t['status'] | titlecase) : ''}}</td>
                                                     </tr>
                                                 </tbody>
@@ -445,25 +514,29 @@
                                         <div class="edit-head top_label_pd0">Your Media</div>
                                     </div>
                                     <div class="col-md-12">
-                                        <a data-fancybox data-animation-duration="700" data-src="#addmedia" (click)="openAddMediaModal(content)" href="javascript:;" class="add-payment"><img src="img/icons8-plus_mathNormal.png" alt="">Add Media</a>
+                                        <a data-fancybox data-animation-duration="700" data-src="#addmedia" (click)="openAddMediaModal(content)"
+                                            href="javascript:;" class="add-payment"><img src="img/icons8-plus_mathNormal.png"
+                                                alt="">Add Media</a>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="alert alert-info col-sm-12" *ngIf="media_list.length == 0">
                                         No data available.
                                     </div>
-                                    <div class="col-md-4 col-sm-6 col-xs-12 uploaded-img" *ngFor="let obj of media_list; let i=index;" >
-										<div *ngIf="obj.image">
-                                        <!-- <a class="img-wrap" href="{{artist_media_url+obj.image}}" *ngIf="obj.image" data-fancybox="images" data-width="1500" data-height="1000"> -->
-                                            <img defaultImage="img/loader.gif" offset="100" lazyLoad="{{obj ? artist_media_url+obj.image : 'img/upload1.png'}}" alt="Media" (click)="open(i)">
-                                        <!-- </a> -->
-										</div>
-										<div *ngIf="obj.link">
+                                    <div class="col-md-4 col-sm-6 col-xs-12 uploaded-img" *ngFor="let obj of media_list; let i=index;">
+                                        <div *ngIf="obj.image">
+                                            <!-- <a class="img-wrap" href="{{artist_media_url+obj.image}}" *ngIf="obj.image" data-fancybox="images" data-width="1500" data-height="1000"> -->
+                                            <img defaultImage="img/loader.gif" offset="100" lazyLoad="{{obj ? artist_media_url+obj.image : 'img/upload1.png'}}"
+                                                alt="Media" (click)="open(i)">
+                                            <!-- </a> -->
+                                        </div>
+                                        <div *ngIf="obj.link">
                                             <video width="400" controls>
-                                                <source [src]="obj.link" >
+                                                <source [src]="obj.link">
                                             </video>
-										</div>
-										<a data-fancybox data-animation-duration="700" data-src="#delete" (click)="removeMedia(obj._id)" href="javascript:;" class="delete"><i class="fa fa-trash"></i></a>
+                                        </div>
+                                        <a data-fancybox data-animation-duration="700" data-src="#delete" (click)="removeMedia(obj._id)"
+                                            href="javascript:;" class="delete"><i class="fa fa-trash"></i></a>
                                     </div>
                                 </div>
                             </div>
@@ -472,7 +545,8 @@
                         <div class="tab-pane fade {{tab_cnt == 5 ? 'show active' : '' }}" id="analytics">
                             <div class="ana-header">
                                 <div class="form-group days-grp">
-                                    <select class="form-control" id="days-select" name="analytics_day" (change)="changeAnalyticsDays()" [(ngModel)]="analytics_days">
+                                    <select class="form-control" id="days-select" name="analytics_day" (change)="changeAnalyticsDays()"
+                                        [(ngModel)]="analytics_days">
                                         <option value="7">7 Days</option>
                                         <option value="14">14 Days</option>
                                         <option value="30">1 Month</option>
@@ -480,10 +554,14 @@
 
                                 </div>
                                 <ul class="ana-tabs nav nav-tabs">
-                                    <li class="nav-item"><a class="{{analytic_tab == 1 ? 'active' : ''}}" (click)="changeAnlyticTab(1)" data-toggle="tab" href="javascript:;">Overview</a></li>
-                                    <li class="nav-item"><a class="{{analytic_tab == 2 ? 'active' : ''}}" (click)="changeAnlyticTab(2)" data-toggle="tab" href="javascript:;">Followers</a></li>
-                                    <li class="nav-item"><a class="{{analytic_tab == 3 ? 'active' : ''}}" (click)="changeAnlyticTab(3)" data-toggle="tab" href="javascript:;">Tracks/Contents</a></li>
-                                    <li class="nav-item"><a class="{{analytic_tab == 4 ? 'active' : ''}}" (click)="changeAnlyticTab(4)" data-toggle="tab" href="javascript:;">Downloads</a></li>
+                                    <li class="nav-item"><a class="{{analytic_tab == 1 ? 'active' : ''}}" (click)="changeAnlyticTab(1)"
+                                            data-toggle="tab" href="javascript:;">Overview</a></li>
+                                    <li class="nav-item"><a class="{{analytic_tab == 2 ? 'active' : ''}}" (click)="changeAnlyticTab(2)"
+                                            data-toggle="tab" href="javascript:;">Followers</a></li>
+                                    <li class="nav-item"><a class="{{analytic_tab == 3 ? 'active' : ''}}" (click)="changeAnlyticTab(3)"
+                                            data-toggle="tab" href="javascript:;">Tracks/Contents</a></li>
+                                    <li class="nav-item"><a class="{{analytic_tab == 4 ? 'active' : ''}}" (click)="changeAnlyticTab(4)"
+                                            data-toggle="tab" href="javascript:;">Downloads</a></li>
                                 </ul>
                                 <div class="time-frame">
                                     <h3>Last {{analytics_days}} Days: {{show_duration_date}}</h3>
@@ -507,10 +585,10 @@
                                                      <span>other</span>
                                                 </li>
                                             </ul-->
-                                            <div  [chart]="overview_gender_chart"></div>
+                                            <div [chart]="overview_gender_chart"></div>
                                         </div>
                                         <div class="graph-states">
-                                             <ul>
+                                            <ul>
                                                 <li class="state-women">
                                                     <p>{{overview_female_per}}%</p>
                                                     <span>Women</span>
@@ -523,7 +601,7 @@
                                                     <p>2%</p>
                                                     <span>Other</span>
                                                 </li> -->
-                                            </ul> 
+                                            </ul>
                                         </div>
                                     </div>
                                     <div class="artist-vote">
@@ -540,7 +618,8 @@
                                                 <li *ngFor="let track of overview_analytic_data['track']">
                                                     <span>{{track.name}}</span>
                                                     <div class="d-num">
-                                                        <p>{{track.no_of_downloads}}</p> <span>Downloads</span></div>
+                                                        <p>{{track.no_of_downloads}}</p> <span>Downloads</span>
+                                                    </div>
                                                 </li>
                                             </ul>
                                         </div>
@@ -548,11 +627,14 @@
                                     <div class="location-downloads">
                                         <div class="edit-head">Top Locations</div>
                                         <div class="loc-icon-group">
-                                            <a href="javascript:;" (click)="togglelocBarChart(false)"><img src="img/top-location-icon.png" alt="top-location-icon.png" ></a>
-                                            <a href="javascript:;" (click)="togglelocBarChart(true)"><img src="img/infographic-not-active.png" alt="infographic-not-active.png" ></a>
+                                            <a href="javascript:;" (click)="togglelocBarChart(false)"><img src="img/top-location-icon.png"
+                                                    alt="top-location-icon.png"></a>
+                                            <a href="javascript:;" (click)="togglelocBarChart(true)"><img src="img/infographic-not-active.png"
+                                                    alt="infographic-not-active.png"></a>
                                         </div>
                                         <div class="loc-graph">
-                                            <div id="overviewLoc" [style.display]="!location_flag ? 'block' : 'none'" [style.height.px]="229.42" [style.width.%]="100"></div>
+                                            <div id="overviewLoc" [style.display]="!location_flag ? 'block' : 'none'"
+                                                [style.height.px]="229.42" [style.width.%]="100"></div>
                                             <div [style.display]="location_flag ? 'block' : 'none'" [chart]="location_bar_chart"></div>
                                         </div>
                                     </div>
@@ -562,10 +644,10 @@
                                         <div class="edit-head">New Followers</div>
                                         <div class="progress-bar-chart">
                                             <!-- <span class="inner-text"><p>45</p><span>New Followers</span></span> -->
-                                            
+
                                             <div [chart]="follower_gender_chart"></div>
-                                        </div>  
-                            
+                                        </div>
+
                                         <div class="graph-states">
                                             <ul>
                                                 <li class="state-women">
@@ -598,11 +680,14 @@
                                     <div class="location-downloads">
                                         <div class="edit-head">Top Locations</div>
                                         <div class="loc-icon-group">
-                                            <a href="javascript:;" (click)="togglelocBarChart(false)"><img src="img/top-location-icon.png" alt="top-location-icon.png" ></a>
-                                            <a href="javascript:;" (click)="togglelocBarChart(true)"><img src="img/infographic-not-active.png" alt="infographic-not-active.png" ></a>
+                                            <a href="javascript:;" (click)="togglelocBarChart(false)"><img src="img/top-location-icon.png"
+                                                    alt="top-location-icon.png"></a>
+                                            <a href="javascript:;" (click)="togglelocBarChart(true)"><img src="img/infographic-not-active.png"
+                                                    alt="infographic-not-active.png"></a>
                                         </div>
-                                        <div class="loc-graph" >
-                                            <div id="followLoc" [style.display]="!location_flag ? 'block' : 'none'" [style.height.px]="229.42" [style.width.%]="100"></div>
+                                        <div class="loc-graph">
+                                            <div id="followLoc" [style.display]="!location_flag ? 'block' : 'none'"
+                                                [style.height.px]="229.42" [style.width.%]="100"></div>
                                             <div [style.display]="location_flag ? 'block' : 'none'" [chart]="follower_location_bar_chart"></div>
                                         </div>
                                     </div>
@@ -615,11 +700,14 @@
                                                 <tr *ngFor="let track of track_analytic['track']; let i=index;">
                                                     <td class="serial-num">{{i+1}}.</td>
                                                     <td class="track-pic">
-                                                        <a href="javascript:;"><img style="height: 50px;width:50px;" src="{{track.image ? track_url+track.image : 'img/track-img.png' }}" alt="Track Image"></a>
+                                                        <a href="javascript:;"><img style="height: 50px;width:50px;"
+                                                                src="{{track.image ? track_url+track.image : 'img/track-img.png' }}"
+                                                                alt="Track Image"></a>
                                                     </td>
                                                     <td class="track-det" colspan="2">
                                                         <p class="track-name">{{track.name}}</p>
-                                                        <p class="track-singer">{{track['artist_id']['first_name']+' '+track['artist_id']['last_name']}}</p>
+                                                        <p class="track-singer">{{track['artist_id']['first_name']+'
+                                                            '+track['artist_id']['last_name']}}</p>
                                                         <p class="track-year">{{track['created_at'] | date : 'yyyy'}}</p>
                                                     </td>
                                                     <td class="track-download">{{track['no_of_downloads']}} <span>Downloads</span></td>
@@ -637,7 +725,9 @@
                                     <div class="new-follow">
                                         <div class="edit-head">New Followers</div>
                                         <div class="progress-bar-chart">
-                                            <span class="inner-text"><p>{{track_vote_count}}</p><span>New Followers</span></span>
+                                            <span class="inner-text">
+                                                <p>{{track_vote_count}}</p><span>New Followers</span>
+                                            </span>
                                             <div [chart]="track_gender_chart"></div>
                                         </div>
                                         <div class="graph-states">
@@ -661,7 +751,8 @@
                                     </div>
                                     <div class="artist-downloads">
                                         <div class="edit-head">Rank</div>
-                                        <div class="transaction-table mCustomScrollbar table-responsive " data-mcs-theme="dark-3">
+                                        <div class="transaction-table mCustomScrollbar table-responsive "
+                                            data-mcs-theme="dark-3">
                                             <table>
                                                 <thead>
                                                     <tr>
@@ -751,11 +842,14 @@
                                     <div class="location-downloads">
                                         <div class="edit-head">Top Locations</div>
                                         <div class="loc-icon-group">
-                                            <a href="javascript:;" (click)="togglelocBarChart(false)"><img src="img/top-location-icon.png" alt="top-location-icon.png" ></a>
-                                            <a href="javascript:;" (click)="togglelocBarChart(true)"><img src="img/infographic-not-active.png" alt="infographic-not-active.png" ></a>
+                                            <a href="javascript:;" (click)="togglelocBarChart(false)"><img src="img/top-location-icon.png"
+                                                    alt="top-location-icon.png"></a>
+                                            <a href="javascript:;" (click)="togglelocBarChart(true)"><img src="img/infographic-not-active.png"
+                                                    alt="infographic-not-active.png"></a>
                                         </div>
                                         <div class="loc-graph">
-                                            <div id="trackLoc" [style.display]="!location_flag ? 'block' : 'none'" [style.height.px]="229.42" [style.width.%]="100"></div>
+                                            <div id="trackLoc" [style.display]="!location_flag ? 'block' : 'none'"
+                                                [style.height.px]="229.42" [style.width.%]="100"></div>
                                             <div [style.display]="location_flag ? 'block' : 'none'" [chart]="track_location_bar_chart"></div>
                                         </div>
                                     </div>
@@ -768,14 +862,17 @@
                                                 <tr *ngFor="let download of download_analytic_data['track']; let i=index;">
                                                     <td class="serial-num">{{i+1}}.</td>
                                                     <td class="track-pic">
-                                                        <a href="javascript:;"><img style="height: 50px;width:50px;" defaultImage="img/loader.gif" offset="100" lazyLoad="{{download.image ? track_url+download.image : 'img/track-img.png'}}" alt="Track Image"></a>
+                                                        <a href="javascript:;"><img style="height: 50px;width:50px;"
+                                                                defaultImage="img/loader.gif" offset="100" lazyLoad="{{download.image ? track_url+download.image : 'img/track-img.png'}}"
+                                                                alt="Track Image"></a>
                                                     </td>
                                                     <td class="track-det" colspan="2">
                                                         <p class="track-name">{{download.name}}</p>
                                                         <p class="track-singer">{{download['artist_id']['name']}}</p>
                                                         <p class="track-year">{{download.created_at | date : 'yyyy'}}</p>
                                                     </td>
-                                                    <td class="track-date">{{download.created_at | date : 'MMMM dd, yyyy'}}</td>
+                                                    <td class="track-date">{{download.created_at | date : 'MMMM dd,
+                                                        yyyy'}}</td>
                                                     <td class="track-download">{{download.no_of_downloads}} <span>Downloads</span></td>
 
                                                     <td class="track-share">{{download.no_of_shares}} <span>Shares</span></td>
@@ -801,94 +898,117 @@
                         </div>
 
                         <div class="tab-pan fade {{tab_cnt == 6 ? 'show active' : ''}}" id="playlist">
-                                <div class="row" *ngIf="!track_flag">
-                                    <div class="col-sm-12 col-md-12 col-12">
-                                        <div class="edit-head top_label_pd0">Playlist</div>
-                                        <a href="javascript:;" class="btn btn-primary playlist_add_btn" (click)="openAddPlaylistModel(addplaylist)">Add <i class="fa fa-plus"></i></a>
-                                        <div class="track-table playlist_table table_design">
-                                            <table datatable [dtOptions]="dtOptions[0]">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Name</th>
-                                                        <th class="action_thead">Actions</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr *ngFor="let val of playlist;let i = index;">
-                                                        <td>{{val['name']}}</td>
-                                                        <td>
-                                                            <a class="edit_plalist_link" href="javascript:;" (click)="openEditPlaylistModel(editplaylist, i)"><i class="fa fa-pencil"></i></a>
-                                                            <a class="delete_plalist_link" href="javascript:;" (click)="removePlaylist(val['_id'])"><i class="fa fa-trash"></i></a>
-                                                            <a class="track_plalist_link" href="javascript:;" (click)="getPlaylistTrack(val['_id'], i)"><i aria-hidden="true" class="fa fa-music"></i></a>
-                                                        </td>
-                                                    </tr>
-                                                </tbody>
-                                                <tbody *ngIf="playlist?.length == 0">
-                                                    <tr>
-                                                        <td colspan="2" class="no-data-available">No data available!</td>
-                                                    </tr>
-                                                <tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row" *ngIf="track_flag">
-                                    <div class="col-sm-12 col-md-12 col-12">
-                                        <div class="edit-head top_label_pd0">"{{playlist_data['name']}}" - Tracks</div>
-                                        <a href="javascript:;" class="btn btn-primary playlist_add_btn" (click)="openPlaylistTrackModel(addtrackplaylist)" >Add <i class="fa fa-plus"></i></a>&nbsp;
-                                        <a href="javascript:;" class="btn btn-primary playlist_add_btn" (click)="tabChange(6)" >Back <i class="fa fa-arrow-left"></i></a>&nbsp;&nbsp;
-                                        <div class="track-table custom_track_table" [style.display]="playlist_track.length != 0 ? 'block' : 'none'">
-                                            <table datatable [dtOptions]="dtOptions[1]">
-                                                <tbody>
-                                                    <tr *ngFor="let val of playlist_track;let i = index;">
-                                                        <td class="music_play">
-                                                            <div class="artist-profile-custom-action-btn">
-                                                                <a [style.display]="!audio_ins[i] ? 'block' : 'none'" (click)="playAudio(val['track'].audio, i, playlist_track_list)" class="play_img" ><img src="img/play_icon.png"/></a>
-                                                                <a [style.display]="audio_ins[i] ? 'block' : 'none'" (click)="stopAudio(i, playlist_track_list)" class="pause_img"><img src="img/pause_icon.png"/></a>
-                                                            </div>
-                                                        </td>
-
-                                                        <td class="track-det" colspan="2">
-                                                        <div class="custom_music_container">
-                                                            <div class="track-pic">
-                                                                <a href="javascript:;">
-                                                                    <img defaultImage="img/loader.gif" offset="100" lazyLoad="{{val['track'] && val['track'].image ? track_url+val['track'].image : 'img/track-img.png'}}" style="height:50px;width:50px;" alt="Track Image">
-                                                                </a>
-                                                            </div>
-                                                            <div class="custom_music_content">
-                                                                <p class="track-name">{{val['track'] &&  val['track'].name ? val['track'].name : '' }}</p>
-                                                                <p class="track-singer">{{val['artist'] && val['artist'].first_name ? val.artist.first_name : '' + ' '+ val['artist'] && val['artist']['last_name'] ? val['artist']['last_name'] : ''}}</p>
-                                                                <p class="track-year">{{val['track'] && val['track'].created_at ? (val['track'].created_at | date : 'yyyy' ): ''}}</p>
-                                                                <p class="track-date">{{val['track'] && val['track'].created_at ? (val['track'].created_at  | date : 'MMMM dd,yyyy') : ''}}</p>
-                                                            </div>
-                                                    </div>
-                                                        </td>
-                                                        <td class="td track-vote music_vote">
-                                                            <img src="img/start.png" alt="start">
-                                                            <span>{{val['track'] && val['track'].no_of_votes ? val['track'].no_of_votes : '' }}                                                            
-                                                                <span class="votes_label">Votes</span>
-                                                            </span>
-                                                        </td>
-                                                        <td class="action_thead text-right">
-                                                            <a class="delete_plalist_link" href="javascript:;" (click)="removeTrackFromPlaylist(val['track']['_id'])"><i class="fa fa-trash"></i></a>
-                                                        </td>
-                                                    </tr>
-                                                </tbody>
-                                                <tbody *ngIf="playlist_track?.length == 0">
-                                                    <tr>
-                                                        <td colspan="10" class="no-data-available">No data available!</td>
-                                                    </tr>
-                                                <tbody>
-                                            </table>
-                                        </div>
+                            <div class="row" *ngIf="!track_flag">
+                                <div class="col-sm-12 col-md-12 col-12">
+                                    <div class="edit-head top_label_pd0">Playlist</div>
+                                    <a href="javascript:;" class="btn btn-primary playlist_add_btn" (click)="openAddPlaylistModel(addplaylist)">Add
+                                        <i class="fa fa-plus"></i></a>
+                                    <div class="track-table playlist_table table_design">
+                                        <table datatable [dtOptions]="dtOptions[0]">
+                                            <thead>
+                                                <tr>
+                                                    <th>Name</th>
+                                                    <th class="action_thead">Actions</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr *ngFor="let val of playlist;let i = index;">
+                                                    <td>{{val['name']}}</td>
+                                                    <td>
+                                                        <a class="edit_plalist_link" href="javascript:;" (click)="openEditPlaylistModel(editplaylist, i)"><i
+                                                                class="fa fa-pencil"></i></a>
+                                                        <a class="delete_plalist_link" href="javascript:;" (click)="removePlaylist(val['_id'])"><i
+                                                                class="fa fa-trash"></i></a>
+                                                        <a class="track_plalist_link" href="javascript:;" (click)="getPlaylistTrack(val['_id'], i)"><i
+                                                                aria-hidden="true" class="fa fa-music"></i></a>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                            <tbody *ngIf="playlist?.length == 0">
+                                                <tr>
+                                                    <td colspan="2" class="no-data-available">No data available!</td>
+                                                </tr>
+                                            <tbody>
+                                        </table>
                                     </div>
                                 </div>
                             </div>
+                            <div class="row" *ngIf="track_flag">
+                                <div class="col-sm-12 col-md-12 col-12">
+                                    <div class="edit-head top_label_pd0">"{{playlist_data['name']}}" - Tracks</div>
+                                    <a href="javascript:;" class="btn btn-primary playlist_add_btn" (click)="openPlaylistTrackModel(addtrackplaylist)">Add
+                                        <i class="fa fa-plus"></i></a>&nbsp;
+                                    <a href="javascript:;" class="btn btn-primary playlist_add_btn" (click)="tabChange(6)">Back
+                                        <i class="fa fa-arrow-left"></i></a>&nbsp;&nbsp;
+                                    <div class="track-table custom_track_table" [style.display]="playlist_track.length != 0 ? 'block' : 'none'">
+                                        <table datatable [dtOptions]="dtOptions[1]">
+                                            <tbody>
+                                                <tr *ngFor="let val of playlist_track;let i = index;">
+                                                    <td class="music_play">
+                                                        <div class="artist-profile-custom-action-btn">
+                                                            <a [style.display]="!audio_ins[i] ? 'block' : 'none'"
+                                                                (click)="playAudio(val['track'].audio, i, playlist_track_list)"
+                                                                class="play_img"><img src="img/play_icon.png" /></a>
+                                                            <a [style.display]="audio_ins[i] ? 'block' : 'none'"
+                                                                (click)="stopAudio(i, playlist_track_list)" class="pause_img"><img
+                                                                    src="img/pause_icon.png" /></a>
+                                                        </div>
+                                                    </td>
+
+                                                    <td class="track-det" colspan="2">
+                                                        <div class="custom_music_container">
+                                                            <div class="track-pic">
+                                                                <a href="javascript:;">
+                                                                    <img defaultImage="img/loader.gif" offset="100"
+                                                                        lazyLoad="{{val['track'] && val['track'].image ? track_url+val['track'].image : 'img/track-img.png'}}"
+                                                                        style="height:50px;width:50px;" alt="Track Image">
+                                                                </a>
+                                                            </div>
+                                                            <div class="custom_music_content">
+                                                                <p class="track-name">{{val['track'] &&
+                                                                    val['track'].name ? val['track'].name : '' }}</p>
+                                                                <p class="track-singer">{{val['artist'] &&
+                                                                    val['artist'].first_name ? val.artist.first_name :
+                                                                    '' + ' '+ val['artist'] &&
+                                                                    val['artist']['last_name'] ?
+                                                                    val['artist']['last_name'] : ''}}</p>
+                                                                <p class="track-year">{{val['track'] &&
+                                                                    val['track'].created_at ? (val['track'].created_at
+                                                                    | date : 'yyyy' ): ''}}</p>
+                                                                <p class="track-date">{{val['track'] &&
+                                                                    val['track'].created_at ? (val['track'].created_at
+                                                                    | date : 'MMMM dd,yyyy') : ''}}</p>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td class="td track-vote music_vote">
+                                                        <img src="img/start.png" alt="start">
+                                                        <span>{{val['track'] && val['track'].no_of_votes ?
+                                                            val['track'].no_of_votes : '' }}
+                                                            <span class="votes_label">Votes</span>
+                                                        </span>
+                                                    </td>
+                                                    <td class="action_thead text-right">
+                                                        <a class="delete_plalist_link" href="javascript:;" (click)="removeTrackFromPlaylist(val['track']['_id'])"><i
+                                                                class="fa fa-trash"></i></a>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                            <tbody *ngIf="playlist_track?.length == 0">
+                                                <tr>
+                                                    <td colspan="10" class="no-data-available">No data available!</td>
+                                                </tr>
+                                            <tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-		</div>
-	</div>
+        </div>
+    </div>
 </section>
 <section class="edit-profile-wrap" *ngIf="userdata.type == 'user'">
     <div class="container">
@@ -896,12 +1016,18 @@
             <div class="col-lg-2 col-md-3 col-sm-3 col-xs-3">
                 <div class="profile-tabs">
                     <ul class="nav nav-tabs" id="myTab">
-                        <li class="nav-item"><a class="nav-link {{tab_cnt == 1 ? 'active' : '' }}" (click)="tabChange(1)" data-toggle="tab" href="javascript:;">Profile</a></li>
-                        <li class="nav-item"><a class="nav-link {{tab_cnt == 2 ? 'active' : '' }}" data-toggle="tab" (click)="tabChange(2)" href="javascript:;">Settings</a></li>
-                        <li class="nav-item"><a class="nav-link {{tab_cnt == 3 ? 'active' : '' }}" data-toggle="tab" (click)="tabChange(3)" href="javascript:;">Bookmarked</a></li>
-                        <li class="nav-item"><a class="nav-link {{tab_cnt == 4 ? 'active' : '' }}" data-toggle="tab" (click)="tabChange(4)" href="javascript:;">Playlist</a></li>
-                        <li class="nav-item"><a class="nav-link {{tab_cnt == 5 ? 'active' : '' }}" data-toggle="tab" (click)="tabChange(5)" href="javascript:;">Upgrade to Artist</a></li>
-                        <li class="nav-item"><a class="nav-link {{tab_cnt == 6 ? 'active' : '' }}" data-toggle="tab" (click)="tabChange(6)" href="javascript:;">Purchase Track</a></li>
+                        <li class="nav-item"><a class="nav-link {{tab_cnt == 1 ? 'active' : '' }}" (click)="tabChange(1)"
+                                data-toggle="tab" href="javascript:;">Profile</a></li>
+                        <li class="nav-item"><a class="nav-link {{tab_cnt == 2 ? 'active' : '' }}" data-toggle="tab"
+                                (click)="tabChange(2)" href="javascript:;">Settings</a></li>
+                        <li class="nav-item"><a class="nav-link {{tab_cnt == 3 ? 'active' : '' }}" data-toggle="tab"
+                                (click)="tabChange(3)" href="javascript:;">Bookmarked</a></li>
+                        <li class="nav-item"><a class="nav-link {{tab_cnt == 4 ? 'active' : '' }}" data-toggle="tab"
+                                (click)="tabChange(4)" href="javascript:;">Playlist</a></li>
+                        <li class="nav-item"><a class="nav-link {{tab_cnt == 5 ? 'active' : '' }}" data-toggle="tab"
+                                (click)="tabChange(5)" href="javascript:;">Upgrade to Artist</a></li>
+                        <li class="nav-item"><a class="nav-link {{tab_cnt == 6 ? 'active' : '' }}" data-toggle="tab"
+                                (click)="tabChange(6)" href="javascript:;">Purchase Track</a></li>
                     </ul>
                 </div>
             </div>
@@ -917,10 +1043,13 @@
                                             <div class="col-md-3 col-sm-12 col-xs-12">
                                                 <div class="edit-profile-picture">
                                                     <div class="upload-cover">
-                                                        <img defaultImage="img/loader.gif" offset="100" lazyLoad="{{default_profile_img}}" alt="Edit cover Image">
+                                                        <img defaultImage="img/loader.gif" offset="100" lazyLoad="{{default_profile_img}}"
+                                                            alt="Edit cover Image">
                                                         <span class="up_text">Update Photo</span>
-                                                        <input type="file" name="upload"  id="cover_upload" (change)="updateProfileImage($event)">
-                                                        <a data-fancybox data-animation-duration="700" data-src="#delete" *ngIf="userdata.image" (click)="removeUserImage()" href="javascript:;" class="delete"><i class="fa fa-trash"></i></a>
+                                                        <input type="file" name="upload" id="cover_upload" (change)="updateProfileImage($event)">
+                                                        <a data-fancybox data-animation-duration="700" data-src="#delete"
+                                                            *ngIf="userdata.image" (click)="removeUserImage()" href="javascript:;"
+                                                            class="delete"><i class="fa fa-trash"></i></a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -929,60 +1058,76 @@
 
                                                     <div class="form-group">
                                                         <label for="fname">First Name</label>
-                                                        <input type="text" class="form-control" id="fname5" formControlName="fname" name="fname" [(ngModel)]="userdata.first_name" placeholder="First Name">
+                                                        <input type="text" class="form-control" id="fname5"
+                                                            formControlName="fname" name="fname" [(ngModel)]="userdata.first_name"
+                                                            placeholder="First Name">
                                                         <div class="cust_err_msg" *ngIf="listenerProfileValidation && !listener_profile.controls['fname'].valid">
-                                                            <span *ngIf="listener_profile.controls['fname'].errors['required']" class="text-danger">First name is required.</span>
-                                                            <span *ngIf="!listener_profile.controls['fname'].errors['required'] && listener_profile.controls['fname'].errors['whitespace']" class="text-danger">Please enter valid data.</span>
+                                                            <span *ngIf="listener_profile.controls['fname'].errors['required']"
+                                                                class="text-danger">First name is required.</span>
+                                                            <span *ngIf="!listener_profile.controls['fname'].errors['required'] && listener_profile.controls['fname'].errors['whitespace']"
+                                                                class="text-danger">Please enter valid data.</span>
                                                         </div>
                                                     </div>
 
                                                     <div class="form-group pwd-grp">
                                                         <label for="lanem">Last Name</label>
-                                                        <input type="text" class="form-control" id="lname2" formControlName="lname" name="lname" [(ngModel)]="userdata.last_name" placeholder="Last Name">
+                                                        <input type="text" class="form-control" id="lname2"
+                                                            formControlName="lname" name="lname" [(ngModel)]="userdata.last_name"
+                                                            placeholder="Last Name">
                                                         <div class="cust_err_msg" *ngIf="listenerProfileValidation && !listener_profile.controls['lname'].valid">
-                                                            <span *ngIf="listener_profile.controls['lname'].errors['required']" class="text-danger">Last name is required.</span>
-                                                            <span *ngIf="!listener_profile.controls['lname'].errors['required'] && listener_profile.controls['lname'].errors['whitespace']" class="text-danger">Please enter valid data.</span>
+                                                            <span *ngIf="listener_profile.controls['lname'].errors['required']"
+                                                                class="text-danger">Last name is required.</span>
+                                                            <span *ngIf="!listener_profile.controls['lname'].errors['required'] && listener_profile.controls['lname'].errors['whitespace']"
+                                                                class="text-danger">Please enter valid data.</span>
                                                         </div>
                                                     </div>
 
                                                     <div class="form-group gender-grp">
                                                         <label for="geder">Gender</label>
-                                                        <select class="form-control" id="gender" name="gender" formControlName="gender" [(ngModel)]="userdata.gender">
+                                                        <select class="form-control" id="gender" name="gender"
+                                                            formControlName="gender" [(ngModel)]="userdata.gender">
                                                             <option value="male">Male</option>
                                                             <option value="female">Female</option>
                                                         </select>
                                                         <div class="cust_err_msg" *ngIf="listenerProfileValidation && !listener_profile.controls['gender'].valid">
-                                                            <span *ngIf="listener_profile.controls['gender'].errors['required']" class="text-danger">Gender is required.</span>
+                                                            <span *ngIf="listener_profile.controls['gender'].errors['required']"
+                                                                class="text-danger">Gender is required.</span>
                                                         </div>
                                                     </div>
                                                     <div class="form-group">
                                                         <div class="date-of-birth">
                                                             <label for="date">Birthday Date</label>
                                                             <div class="form-group">
-                                                                <select class="form-control" id="day" formControlName="day" name="day" [(ngModel)]="userdata.day">
+                                                                <select class="form-control" id="day" formControlName="day"
+                                                                    name="day" [(ngModel)]="userdata.day">
                                                                     <option value="">Day</option>
                                                                     <option *ngFor="let d of day" value="{{d}}">{{d}}</option>
                                                                 </select>
                                                                 <div class="cust_err_msg" *ngIf="listenerProfileValidation && !listener_profile.controls['day'].valid">
-                                                                    <span *ngIf="listener_profile.controls['day'].errors['required']" class="text-danger">Day is required.</span>
+                                                                    <span *ngIf="listener_profile.controls['day'].errors['required']"
+                                                                        class="text-danger">Day is required.</span>
                                                                 </div>
                                                             </div>
                                                             <div class="form-group">
-                                                                <select class="form-control" id="month" formControlName="month" name="month" [(ngModel)]="userdata.month">
+                                                                <select class="form-control" id="month" formControlName="month"
+                                                                    name="month" [(ngModel)]="userdata.month">
                                                                     <option value="">Month</option>
                                                                     <option *ngFor="let m of month" value="{{m}}">{{m}}</option>
                                                                 </select>
                                                                 <div class="cust_err_msg" *ngIf="listenerProfileValidation && !listener_profile.controls['month'].valid">
-                                                                    <span *ngIf="listener_profile.controls['month'].errors['required']" class="text-danger">Month is required.</span>
+                                                                    <span *ngIf="listener_profile.controls['month'].errors['required']"
+                                                                        class="text-danger">Month is required.</span>
                                                                 </div>
                                                             </div>
                                                             <div class="form-group">
-                                                                <select class="form-control" id="year" formControlName="year" name="year" [(ngModel)]="userdata.year">
+                                                                <select class="form-control" id="year" formControlName="year"
+                                                                    name="year" [(ngModel)]="userdata.year">
                                                                     <option value="">Year</option>
                                                                     <option *ngFor="let y of year" value="{{y}}">{{y}}</option>
                                                                 </select>
                                                                 <div class="cust_err_msg" *ngIf="listenerProfileValidation && !listener_profile.controls['year'].valid">
-                                                                    <span *ngIf="listener_profile.controls['year'].errors['required']" class="text-danger">Year is required.</span>
+                                                                    <span *ngIf="listener_profile.controls['year'].errors['required']"
+                                                                        class="text-danger">Year is required.</span>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -993,30 +1138,43 @@
                                                         <!-- <select class="form-control" id="musictype" formControlName="music_type" multiple name="music_type" [(ngModel)]="userdata.music_type">
                                                             <option *ngFor="let type of music_types" value="{{type._id}}">{{type.name}}</option>
                                                         </select> -->
-                                                        <p-multiSelect class="form-control" id="musictype" [options]="music_types"  [filter]="false" formControlName="music_type" name="music_type" [(ngModel)]="userdata.music_type" ></p-multiSelect>
+                                                        <p-multiSelect class="form-control" id="musictype" [options]="music_types"
+                                                            [filter]="false" formControlName="music_type" name="music_type"
+                                                            [(ngModel)]="userdata.music_type"></p-multiSelect>
                                                         <div class="cust_err_msg" *ngIf="listenerProfileValidation && !listener_profile.controls['music_type'].valid">
-                                                            <span *ngIf="listener_profile.controls['music_type'].errors['multiSelectRequired']" class="text-danger">Music type is required.</span>
+                                                            <span *ngIf="listener_profile.controls['music_type'].errors['multiSelectRequired']"
+                                                                class="text-danger">Music type is required.</span>
                                                         </div>
                                                     </div>
                                                     <div class="form-group home-grp">
                                                         <label for="hometown">Home Town</label>
-                                                        <input class="form-control" placeholder="zipcode" formControlName="zipcode" name="listener_zipcode" [(ngModel)]="userdata.zipcode" />
+                                                        <input class="form-control" placeholder="zipcode"
+                                                            formControlName="zipcode" name="listener_zipcode"
+                                                            [(ngModel)]="userdata.zipcode" />
                                                         <div class="cust_err_msg" *ngIf="listenerProfileValidation && !listener_profile.controls['zipcode'].valid">
-                                                            <span *ngIf="listener_profile.controls['zipcode'].errors['required']" class="text-danger">Zipcode is required.</span>
-                                                            <span *ngIf="!listener_profile.controls['zipcode'].errors['required'] && listener_profile.controls['zipcode'].errors['whitespace']" class="text-danger">Please enter valid data.</span>
+                                                            <span *ngIf="listener_profile.controls['zipcode'].errors['required']"
+                                                                class="text-danger">Zipcode is required.</span>
+                                                            <span *ngIf="!listener_profile.controls['zipcode'].errors['required'] && listener_profile.controls['zipcode'].errors['whitespace']"
+                                                                class="text-danger">Please enter valid data.</span>
                                                         </div>
                                                     </div>
                                                     <div class="form-group home-grp">
                                                         <label for="hometown">Phone Number</label>
-                                                        <input class="form-control" placeholder="phone number"  formControlName="phone" name="phone" [(ngModel)]="userdata.phone_no" />
+                                                        <input class="form-control" placeholder="phone number"
+                                                            formControlName="phone" name="phone" [(ngModel)]="userdata.phone_no" />
                                                         <div class="cust_err_msg" *ngIf="listenerProfileValidation && !listener_profile.controls['phone'].valid">
-                                                            <span *ngIf="listener_profile.controls['phone'].errors['required']" class="text-danger">Phone Number is required.</span>
-                                                            <span *ngIf="!listener_profile.controls['phone'].errors['required'] && listener_profile.controls['phone'].errors['whitespace']" class="text-danger">Please enter valid data.</span>
-                                                            <span *ngIf="(listener_profile.controls['phone'].errors['maxlength'] || listener_profile.controls['phone'].errors['minlength'])  && listener_profile.controls['phone'].dirty" class="text-danger">Please enter valid phone number.</span>
+                                                            <span *ngIf="listener_profile.controls['phone'].errors['required']"
+                                                                class="text-danger">Phone Number is required.</span>
+                                                            <span *ngIf="!listener_profile.controls['phone'].errors['required'] && listener_profile.controls['phone'].errors['whitespace']"
+                                                                class="text-danger">Please enter valid data.</span>
+                                                            <span *ngIf="(listener_profile.controls['phone'].errors['maxlength'] || listener_profile.controls['phone'].errors['minlength'])  && listener_profile.controls['phone'].dirty"
+                                                                class="text-danger">Please enter valid phone number.</span>
                                                         </div>
                                                     </div>
                                                     <div class="button_group edit_save_btn">
-                                                        <button type="submit" (click)="update(listener_profile.valid)" [disabled]="show_spinner" class="save-btn btn btn-primary">Save <i *ngIf="show_spinner" class="fa fa-spinner fa-spin"></i></button>
+                                                        <button type="submit" (click)="update(listener_profile.valid)"
+                                                            [disabled]="show_spinner" class="save-btn btn btn-primary">Save
+                                                            <i *ngIf="show_spinner" class="fa fa-spinner fa-spin"></i></button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -1027,159 +1185,166 @@
                             </div>
                         </div>
                         <div class="tab-pane fade {{tab_cnt == 2 ? 'show active' : '' }}" id="settings">
-								<div class="update-email">
-									<div class="email-form">
-										<div class="edit-head">Update Your Email</div>
-										<form (ngSubmit)="changeEmail()">
-											<div class="form-group">
-												<label for="yemail">Your Email</label>
-												<input type="email" name="old" [(ngModel)]="change_email.old" class="form-control" id="yemail" placeholder="Your Email" required>
-											</div>
-											<div class="form-group">
-												<label for="nemail">New Email</label>
-												<input type="email" name="new" [(ngModel)]="change_email.new" class="form-control" id="nemail" placeholder="New Name" required>
-											</div>
-											<div class="form-group">
-												<label for="remail">Repeat New Email</label>
-												<input type="email" name="repeat" [(ngModel)]="change_email.repeat" class="form-control" id="remail" placeholder="Repeat Email" required>
-											</div>
-											<div class="button_group">
-												<button type="submit" [disabled]="show_spinner" class="update-btn">update <i *ngIf="show_spinner" class="fa fa-spinner fa-spin"></i></button>
-											</div>
-										</form>
-									</div>
-									<div class="password-form">
-										<div class="edit-head">Update Password</div>
-										<form (ngSubmit)="changePassword()">
-											<div class="form-group">
-												<label for="ypwd">Your Password</label>
-												<input type="password" class="form-control" id="ypwd" name="old" [(ngModel)]="change_pwd.old" placeholder="Your Password">
-												<div class="pwd-icon">
-													<!-- <i class="fa fa-eye" aria-hidden="true"></i> -->
-													<!-- <i class="fa fa-eye-slash" aria-hidden="true"></i> -->
-												</div>
-											</div>
-											<div class="form-group">
-												<label for="npwd">New Password</label>
-												<input type="password" class="form-control" name="old" [(ngModel)]="change_pwd.new" id="npwd" placeholder="New Password">
-												<div class="pwd-icon">
-													<!-- <i class="fa fa-eye" aria-hidden="true"></i> -->
-													<!-- <i class="fa fa-eye-slash" aria-hidden="true"></i> -->
-												</div>
-											</div>
-											<div class="form-group">
-												<label for="rpwd">Repeat New Password</label>
-												<input type="password" class="form-control" id="rpwd" name="old" [(ngModel)]="change_pwd.repeat" placeholder="Repeat Password">
-												<div class="pwd-icon">
-													<!-- <i class="fa fa-eye " aria-hidden="true"></i> -->
-													<!-- <i class="fa fa-eye-slash" aria-hidden="true"></i> -->
-												</div>
-											</div>
-											<div class="button_group">
-												<button type="submit" class="update-btn">update</button>
-											</div>
-										</form>
-									</div>
-									<div class="notification">
-										<div class="edit-head">Notifications</div>
-										<div class="notify-by-email">
-											<div class="edit-head">Notifications by Email</div>
-											<ul>
-												<li class="followers">
-													<p>New Followers</p>
-													<div class="f-toggle">
-														<label class="switch">
-															<input type="checkbox" checked>
-															<span class="slider round"></span>
-														</label>
-													</div>
-												</li>
-												<li class="comments">
-													<p>Comments</p>
-													<div class="f-toggle">
-														<label class="switch">
-															<input type="checkbox">
-															<span class="slider round"></span>
-														</label>
-													</div>
-												</li>
-												<li class="message">
-													<p>Message</p>
-													<div class="f-toggle">
-														<label class="switch">
-															<input type="checkbox" checked>
-															<span class="slider round"></span>
-														</label>
-													</div>
-												</li>
-											</ul>
-										</div>
-										<div class="notify-by-sms">
-											<div class="edit-head">Notifications by SMS</div>
-											<ul>
-												<li class="followers">
-													<p>New Followers</p>
-													<div class="f-toggle">
-														<label class="switch">
-															<input type="checkbox" checked>
-															<span class="slider round"></span>
-														</label>
-													</div>
-												</li>
-												<li class="comments">
-													<p>Comments</p>
-													<div class="f-toggle">
-														<label class="switch">
-															<input type="checkbox">
-															<span class="slider round"></span>
-														</label>
-													</div>
-												</li>
-												<li class="message">
-													<p>Message</p>
-													<div class="f-toggle">
-														<label class="switch">
-															<input type="checkbox" checked>
-															<span class="slider round"></span>
-														</label>
-													</div>
-												</li>
-											</ul>
-										</div>
-										<div class="on-side-alert">
-											<div class="edit-head">On Side Alerts</div>
-											<ul>
-												<li class="followers">
-													<p>New Followers</p>
-													<div class="f-toggle">
-														<label class="switch">
-															<input type="checkbox" checked>
-															<span class="slider round"></span>
-														</label>
-													</div>
-												</li>
-												<li class="comments">
-													<p>Comments</p>
-													<div class="f-toggle">
-														<label class="switch">
-															<input type="checkbox">
-															<span class="slider round"></span>
-														</label>
-													</div>
-												</li>
-												<li class="message">
-													<p>Message</p>
-													<div class="f-toggle">
-														<label class="switch">
-															<input type="checkbox" checked>
-															<span class="slider round"></span>
-														</label>
-													</div>
-												</li>
-											</ul>
-										</div>
-									</div>
-								</div>
+                            <div class="update-email">
+                                <div class="email-form">
+                                    <div class="edit-head">Update Your Email</div>
+                                    <form (ngSubmit)="changeEmail()">
+                                        <div class="form-group">
+                                            <label for="yemail">Your Email</label>
+                                            <input type="email" name="old" [(ngModel)]="change_email.old" class="form-control"
+                                                id="yemail" placeholder="Your Email" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="nemail">New Email</label>
+                                            <input type="email" name="new" [(ngModel)]="change_email.new" class="form-control"
+                                                id="nemail" placeholder="New Name" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="remail">Repeat New Email</label>
+                                            <input type="email" name="repeat" [(ngModel)]="change_email.repeat" class="form-control"
+                                                id="remail" placeholder="Repeat Email" required>
+                                        </div>
+                                        <div class="button_group">
+                                            <button type="submit" [disabled]="show_spinner" class="update-btn">update
+                                                <i *ngIf="show_spinner" class="fa fa-spinner fa-spin"></i></button>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="password-form">
+                                    <div class="edit-head">Update Password</div>
+                                    <form (ngSubmit)="changePassword()">
+                                        <div class="form-group">
+                                            <label for="ypwd">Your Password</label>
+                                            <input type="password" class="form-control" id="ypwd" name="old"
+                                                [(ngModel)]="change_pwd.old" placeholder="Your Password">
+                                            <div class="pwd-icon">
+                                                <!-- <i class="fa fa-eye" aria-hidden="true"></i> -->
+                                                <!-- <i class="fa fa-eye-slash" aria-hidden="true"></i> -->
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="npwd">New Password</label>
+                                            <input type="password" class="form-control" name="old" [(ngModel)]="change_pwd.new"
+                                                id="npwd" placeholder="New Password">
+                                            <div class="pwd-icon">
+                                                <!-- <i class="fa fa-eye" aria-hidden="true"></i> -->
+                                                <!-- <i class="fa fa-eye-slash" aria-hidden="true"></i> -->
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="rpwd">Repeat New Password</label>
+                                            <input type="password" class="form-control" id="rpwd" name="old"
+                                                [(ngModel)]="change_pwd.repeat" placeholder="Repeat Password">
+                                            <div class="pwd-icon">
+                                                <!-- <i class="fa fa-eye " aria-hidden="true"></i> -->
+                                                <!-- <i class="fa fa-eye-slash" aria-hidden="true"></i> -->
+                                            </div>
+                                        </div>
+                                        <div class="button_group">
+                                            <button type="submit" class="update-btn">update</button>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="notification">
+                                    <div class="edit-head">Notifications</div>
+                                    <div class="notify-by-email">
+                                        <div class="edit-head">Notifications by Email</div>
+                                        <ul>
+                                            <li class="followers">
+                                                <p>New Followers</p>
+                                                <div class="f-toggle">
+                                                    <label class="switch">
+                                                        <input type="checkbox" checked>
+                                                        <span class="slider round"></span>
+                                                    </label>
+                                                </div>
+                                            </li>
+                                            <li class="comments">
+                                                <p>Comments</p>
+                                                <div class="f-toggle">
+                                                    <label class="switch">
+                                                        <input type="checkbox">
+                                                        <span class="slider round"></span>
+                                                    </label>
+                                                </div>
+                                            </li>
+                                            <li class="message">
+                                                <p>Message</p>
+                                                <div class="f-toggle">
+                                                    <label class="switch">
+                                                        <input type="checkbox" checked>
+                                                        <span class="slider round"></span>
+                                                    </label>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="notify-by-sms">
+                                        <div class="edit-head">Notifications by SMS</div>
+                                        <ul>
+                                            <li class="followers">
+                                                <p>New Followers</p>
+                                                <div class="f-toggle">
+                                                    <label class="switch">
+                                                        <input type="checkbox" checked>
+                                                        <span class="slider round"></span>
+                                                    </label>
+                                                </div>
+                                            </li>
+                                            <li class="comments">
+                                                <p>Comments</p>
+                                                <div class="f-toggle">
+                                                    <label class="switch">
+                                                        <input type="checkbox">
+                                                        <span class="slider round"></span>
+                                                    </label>
+                                                </div>
+                                            </li>
+                                            <li class="message">
+                                                <p>Message</p>
+                                                <div class="f-toggle">
+                                                    <label class="switch">
+                                                        <input type="checkbox" checked>
+                                                        <span class="slider round"></span>
+                                                    </label>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="on-side-alert">
+                                        <div class="edit-head">On Side Alerts</div>
+                                        <ul>
+                                            <li class="followers">
+                                                <p>New Followers</p>
+                                                <div class="f-toggle">
+                                                    <label class="switch">
+                                                        <input type="checkbox" checked>
+                                                        <span class="slider round"></span>
+                                                    </label>
+                                                </div>
+                                            </li>
+                                            <li class="comments">
+                                                <p>Comments</p>
+                                                <div class="f-toggle">
+                                                    <label class="switch">
+                                                        <input type="checkbox">
+                                                        <span class="slider round"></span>
+                                                    </label>
+                                                </div>
+                                            </li>
+                                            <li class="message">
+                                                <p>Message</p>
+                                                <div class="f-toggle">
+                                                    <label class="switch">
+                                                        <input type="checkbox" checked>
+                                                        <span class="slider round"></span>
+                                                    </label>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <div class="tab-pane fade {{tab_cnt == 3 ? 'show active' : ''}}" id="bookmarked_track">
                             <div class="row">
@@ -1191,27 +1356,40 @@
                                                 <tr *ngFor="let val of bookmark_list; let i = index;">
                                                     <td class="music_play">
                                                         <div class="artist-profile-custom-action-btn">
-                                                            <a [style.display]="!audio_ins[i] ? 'block' : 'none'" (click)="playAudio(val['track'].audio, i, bookmark_track_list)" class="play_img" ><img src="img/play_icon.png"/></a>
-                                                            <a [style.display]="audio_ins[i] ? 'block' : 'none'" (click)="stopAudio(i, bookmark_track_list)" class="pause_img"><img src="img/pause_icon.png"/></a>
+                                                            <a [style.display]="!audio_ins[i] ? 'block' : 'none'"
+                                                                (click)="playAudio(val['track'].audio, i, bookmark_track_list)"
+                                                                class="play_img"><img src="img/play_icon.png" /></a>
+                                                            <a [style.display]="audio_ins[i] ? 'block' : 'none'"
+                                                                (click)="stopAudio(i, bookmark_track_list)" class="pause_img"><img
+                                                                    src="img/pause_icon.png" /></a>
                                                         </div>
                                                     </td>
                                                     <td class="track-det" colspan="2">
-                                                     <div class="track-pic">
-                                                        <a href="javascript:;">
-                                                            <img defaultImage="img/loader.gif" offset="100" lazyLoad="{{val && val['track'] ? track_url+val['track'].image : 'img/upload1.png'}}" style="height:50px;width:50px;" alt="Track Image">
-                                                        </a>
-                                                    </div>
-                                                    <div class="track_title">
-                                                        <p class="track-name">{{val &&  val['track'].name ? val['track'].name : '' }}</p>
-                                                        <p class="track-singer">{{(val && val['artist'] && val['artist'].first_name )? val['artist'].first_name : '' + ' '+ val && val['artist'] ? val['artist']['last_name'] : ''}}</p>
-                                                        <p class="track-year">{{val && val['track'] ? (val['track'].created_at | date : 'yyyy' ): ''}}</p>
-                                                        <p class="track-date">{{val && val['track'] ? (val['track'].created_at  | date : 'MMMM dd,yyyy') : ''}}</p>
-                                                    </div>
+                                                        <div class="track-pic">
+                                                            <a href="javascript:;">
+                                                                <img defaultImage="img/loader.gif" offset="100"
+                                                                    lazyLoad="{{val && val['track'] ? track_url+val['track'].image : 'img/upload1.png'}}"
+                                                                    style="height:50px;width:50px;" alt="Track Image">
+                                                            </a>
+                                                        </div>
+                                                        <div class="track_title">
+                                                            <p class="track-name">{{val && val['track'].name ?
+                                                                val['track'].name : '' }}</p>
+                                                            <p class="track-singer">{{(val && val['artist'] &&
+                                                                val['artist'].first_name )? val['artist'].first_name :
+                                                                '' + ' '+ val && val['artist'] ?
+                                                                val['artist']['last_name'] : ''}}</p>
+                                                            <p class="track-year">{{val && val['track'] ?
+                                                                (val['track'].created_at | date : 'yyyy' ): ''}}</p>
+                                                            <p class="track-date">{{val && val['track'] ?
+                                                                (val['track'].created_at | date : 'MMMM dd,yyyy') :
+                                                                ''}}</p>
+                                                        </div>
                                                     </td>
                                                     <td class="td track-vote music_vote">
                                                         <img src="img/start.png" alt="start">
                                                         <span>{{val && val['track'] ? val['track'].no_of_votes : '' }}
-                                                           
+
                                                             <span>Votes</span>
                                                         </span>
                                                     </td>
@@ -1231,7 +1409,8 @@
                             <div class="row" *ngIf="!track_flag">
                                 <div class="col-sm-12 col-md-12 col-12">
                                     <div class="edit-head top_label_pd0">Playlist</div>
-                                    <a href="javascript:;" class="btn btn-primary playlist_add_btn" (click)="openAddPlaylistModel(addplaylist)">Add <i class="fa fa-plus"></i></a>
+                                    <a href="javascript:;" class="btn btn-primary playlist_add_btn" (click)="openAddPlaylistModel(addplaylist)">Add
+                                        <i class="fa fa-plus"></i></a>
                                     <div class="track-table playlist_table table_design">
                                         <table datatable [dtOptions]="dtOptions[1]">
                                             <thead>
@@ -1244,9 +1423,12 @@
                                                 <tr *ngFor="let val of playlist;let i = index;">
                                                     <td>{{val['name']}}</td>
                                                     <td class="action_playlist">
-                                                        <a class="edit_plalist_link" href="javascript:;" (click)="openEditPlaylistModel(editplaylist, i)"><i class="fa fa-pencil"></i></a>
-                                                        <a class="delete_plalist_link" href="javascript:;" (click)="removePlaylist(val['_id'])"><i class="fa fa-trash"></i></a>
-                                                        <a class="track_plalist_link" href="javascript:;" (click)="getPlaylistTrack(val['_id'], i)"><i class="fa fa-music" aria-hidden="true"></i></a>
+                                                        <a class="edit_plalist_link" href="javascript:;" (click)="openEditPlaylistModel(editplaylist, i)"><i
+                                                                class="fa fa-pencil"></i></a>
+                                                        <a class="delete_plalist_link" href="javascript:;" (click)="removePlaylist(val['_id'])"><i
+                                                                class="fa fa-trash"></i></a>
+                                                        <a class="track_plalist_link" href="javascript:;" (click)="getPlaylistTrack(val['_id'], i)"><i
+                                                                class="fa fa-music" aria-hidden="true"></i></a>
                                                     </td>
                                                 </tr>
                                             </tbody>
@@ -1262,41 +1444,59 @@
                             <div class="row" *ngIf="track_flag">
                                 <div class="col-sm-12 col-md-12 col-12">
                                     <div class="edit-head top_label_pd0">"{{playlist_data['name']}}" - Tracks</div>
-                                    <a href="javascript:;" class="btn btn-primary playlist_add_btn" (click)="openPlaylistTrackModel(addtrackplaylist)" >Add <i class="fa fa-plus"></i></a>
-                                    <a href="javascript:;" class="btn btn-primary playlist_add_btn" (click)="tabChange(4)" >Back <i class="fa fa-arrow-left"></i></a>&nbsp;&nbsp;
+                                    <a href="javascript:;" class="btn btn-primary playlist_add_btn" (click)="openPlaylistTrackModel(addtrackplaylist)">Add
+                                        <i class="fa fa-plus"></i></a>
+                                    <a href="javascript:;" class="btn btn-primary playlist_add_btn" (click)="tabChange(4)">Back
+                                        <i class="fa fa-arrow-left"></i></a>&nbsp;&nbsp;
                                     <div class="track-table track_play">
                                         <table datatable [dtOptions]="dtOptions[2]">
                                             <tbody>
                                                 <tr *ngFor="let val of playlist_track;let i = index;">
                                                     <td class="music_play">
                                                         <div class="artist-profile-custom-action-btn">
-                                                            <a [style.display]="!audio_ins[i] ? 'block' : 'none'" (click)="playAudio(val['track'].audio, i, playlist_track_list)" class="play_img" ><img src="img/play_icon.png"/></a>
-                                                            <a [style.display]="audio_ins[i] ? 'block' : 'none'" (click)="stopAudio(i, playlist_track_list)" class="pause_img"><img src="img/pause_icon.png"/></a>
+                                                            <a [style.display]="!audio_ins[i] ? 'block' : 'none'"
+                                                                (click)="playAudio(val['track'].audio, i, playlist_track_list)"
+                                                                class="play_img"><img src="img/play_icon.png" /></a>
+                                                            <a [style.display]="audio_ins[i] ? 'block' : 'none'"
+                                                                (click)="stopAudio(i, playlist_track_list)" class="pause_img"><img
+                                                                    src="img/pause_icon.png" /></a>
                                                         </div>
                                                     </td>
 
                                                     <td class="track-det custom_music_container" colspan="2">
                                                         <div class="track-pic">
                                                             <a href="javascript:;">
-                                                                <img defaultImage="img/loader.gif" offset="100" lazyLoad="{{val['track'] && val['track'].image ? track_url+val['track'].image : 'img/track-img.png'}}" style="height:50px;width:50px;" alt="Track Image">
+                                                                <img defaultImage="img/loader.gif" offset="100"
+                                                                    lazyLoad="{{val['track'] && val['track'].image ? track_url+val['track'].image : 'img/track-img.png'}}"
+                                                                    style="height:50px;width:50px;" alt="Track Image">
                                                             </a>
                                                         </div>
                                                         <div class="custom_music_content">
-                                                            <p class="track-name">{{val['track'] &&  val['track'].name ? val['track'].name : '' }}</p>
-                                                            <p class="track-singer">{{val['artist'] && val['artist'].first_name ? val.artist.first_name : '' + ' '+ val['artist'] && val['artist']['last_name'] ? val['artist']['last_name'] : ''}}</p>
-                                                            <p class="track-year">{{val['track'] && val['track'].created_at ? (val['track'].created_at | date : 'yyyy' ): ''}}</p>
-                                                            <p class="track-date">{{val['track'] && val['track'].created_at ? (val['track'].created_at  | date : 'MMMM dd,yyyy') : ''}}</p>
+                                                            <p class="track-name">{{val['track'] && val['track'].name ?
+                                                                val['track'].name : '' }}</p>
+                                                            <p class="track-singer">{{val['artist'] &&
+                                                                val['artist'].first_name ? val.artist.first_name : '' +
+                                                                ' '+ val['artist'] && val['artist']['last_name'] ?
+                                                                val['artist']['last_name'] : ''}}</p>
+                                                            <p class="track-year">{{val['track'] &&
+                                                                val['track'].created_at ? (val['track'].created_at |
+                                                                date : 'yyyy' ): ''}}</p>
+                                                            <p class="track-date">{{val['track'] &&
+                                                                val['track'].created_at ? (val['track'].created_at |
+                                                                date : 'MMMM dd,yyyy') : ''}}</p>
                                                         </div>
                                                     </td>
                                                     <td class="td track-vote music_vote">
                                                         <img src="img/start.png" alt="start">
-                                                        <span>{{val['track'] && val['track'].no_of_votes ? val['track'].no_of_votes : '' }}
-                                        
+                                                        <span>{{val['track'] && val['track'].no_of_votes ?
+                                                            val['track'].no_of_votes : '' }}
+
                                                             <span>Votes</span>
                                                         </span>
                                                     </td>
                                                     <td>
-                                                        <a href="javascript:;" (click)="removeTrackFromPlaylist(val['track']['_id'])"><i class="fa fa-trash"></i></a>
+                                                        <a href="javascript:;" (click)="removeTrackFromPlaylist(val['track']['_id'])"><i
+                                                                class="fa fa-trash"></i></a>
                                                     </td>
                                                 </tr>
                                             </tbody>
@@ -1321,8 +1521,11 @@
                                                     <div class="upload-cover">
                                                         <img [src]="default_profile_img" alt="Edit cover Image">
                                                         <span class="up_text">Update Photo</span>
-                                                        <input type="file" formControlName="upload" name="upload" id="up_cover_upload" (change)="changeUpgradeArtistImage($event)">
-                                                        <a data-fancybox data-animation-duration="700" data-src="#delete" *ngIf="userdata.image" href="javascript:;" class="delete" (click)="removeArtistImage()"><i class="fa fa-trash"></i></a>
+                                                        <input type="file" formControlName="upload" name="upload" id="up_cover_upload"
+                                                            (change)="changeUpgradeArtistImage($event)">
+                                                        <a data-fancybox data-animation-duration="700" data-src="#delete"
+                                                            *ngIf="userdata.image" href="javascript:;" class="delete"
+                                                            (click)="removeArtistImage()"><i class="fa fa-trash"></i></a>
                                                     </div>
                                                     <!-- <div class="cust_err_msg" *ngIf="upgrade_artist_validation &&  upgrade_artist_img == ''"> -->
                                                     <div class="cust_err_msg" *ngIf="upgrade_artist_validation">
@@ -1335,60 +1538,76 @@
 
                                                     <div class="form-group">
                                                         <label for="fname">First Name</label>
-                                                        <input type="text" class="form-control" formControlName="fname" id="up_fname5" name="fname" [(ngModel)]="upgrade_artist_data.first_name" placeholder="First Name">
+                                                        <input type="text" class="form-control" formControlName="fname"
+                                                            id="up_fname5" name="fname" [(ngModel)]="upgrade_artist_data.first_name"
+                                                            placeholder="First Name">
                                                         <div class="cust_err_msg" *ngIf="upgrade_artist_validation && !upgrade_artist.controls['fname'].valid">
-                                                            <span *ngIf="upgrade_artist.controls['fname'].errors['required']" class="text-danger">First name is required.</span>
-                                                            <span *ngIf="!upgrade_artist.controls['fname'].errors['required'] && upgrade_artist.controls['fname'].errors['whitespace']" class="text-danger">Please enter valid data.</span>
+                                                            <span *ngIf="upgrade_artist.controls['fname'].errors['required']"
+                                                                class="text-danger">First name is required.</span>
+                                                            <span *ngIf="!upgrade_artist.controls['fname'].errors['required'] && upgrade_artist.controls['fname'].errors['whitespace']"
+                                                                class="text-danger">Please enter valid data.</span>
                                                         </div>
                                                     </div>
 
                                                     <div class="form-group pwd-grp">
                                                         <label for="lanem">Last Name</label>
-                                                        <input type="text" class="form-control" id="up_lname2" formControlName="lname" name="lname" [(ngModel)]="upgrade_artist_data.last_name" placeholder="Last Name">
+                                                        <input type="text" class="form-control" id="up_lname2"
+                                                            formControlName="lname" name="lname" [(ngModel)]="upgrade_artist_data.last_name"
+                                                            placeholder="Last Name">
                                                         <div class="cust_err_msg" *ngIf="upgrade_artist_validation && !upgrade_artist.controls['lname'].valid">
-                                                            <span *ngIf="upgrade_artist.controls['lname'].errors['required']" class="text-danger">Last name is required.</span>
-                                                            <span *ngIf="!upgrade_artist.controls['lname'].errors['required'] && upgrade_artist.controls['lname'].errors['whitespace']" class="text-danger">Please enter valid data.</span>
+                                                            <span *ngIf="upgrade_artist.controls['lname'].errors['required']"
+                                                                class="text-danger">Last name is required.</span>
+                                                            <span *ngIf="!upgrade_artist.controls['lname'].errors['required'] && upgrade_artist.controls['lname'].errors['whitespace']"
+                                                                class="text-danger">Please enter valid data.</span>
                                                         </div>
                                                     </div>
 
                                                     <div class="form-group gender-grp">
                                                         <label for="geder">Gender</label>
-                                                        <select class="form-control" id="up_gender" formControlName="gender" name="gender" [(ngModel)]="upgrade_artist_data.gender">
+                                                        <select class="form-control" id="up_gender" formControlName="gender"
+                                                            name="gender" [(ngModel)]="upgrade_artist_data.gender">
                                                             <option value="male">Male</option>
                                                             <option value="female">Female</option>
                                                         </select>
                                                         <div class="cust_err_msg" *ngIf="upgrade_artist_validation && !upgrade_artist.controls['gender'].valid">
-                                                            <span *ngIf="upgrade_artist.controls['gender'].errors['required']" class="text-danger">Gender is required.</span>
+                                                            <span *ngIf="upgrade_artist.controls['gender'].errors['required']"
+                                                                class="text-danger">Gender is required.</span>
                                                         </div>
                                                     </div>
                                                     <div class="form-group">
                                                         <div class="date-of-birth">
                                                             <label for="date">Birthday Date</label>
                                                             <div class="form-group">
-                                                                <select class="form-control" id="up_day" formControlName="day" name="up_day" [(ngModel)]="upgrade_artist_data.day">
+                                                                <select class="form-control" id="up_day"
+                                                                    formControlName="day" name="up_day" [(ngModel)]="upgrade_artist_data.day">
                                                                     <option value="">Day</option>
                                                                     <option *ngFor="let d of day" value="{{d}}">{{d}}</option>
                                                                 </select>
                                                                 <div class="cust_err_msg" *ngIf="upgrade_artist_validation && !upgrade_artist.controls['day'].valid">
-                                                                    <span *ngIf="upgrade_artist.controls['day'].errors['required']" class="text-danger">Day is required.</span>
+                                                                    <span *ngIf="upgrade_artist.controls['day'].errors['required']"
+                                                                        class="text-danger">Day is required.</span>
                                                                 </div>
                                                             </div>
                                                             <div class="form-group">
-                                                                <select class="form-control" id="up_month" formControlName="month" name="up_month" [(ngModel)]="upgrade_artist_data.month">
+                                                                <select class="form-control" id="up_month"
+                                                                    formControlName="month" name="up_month" [(ngModel)]="upgrade_artist_data.month">
                                                                     <option value="">Month</option>
                                                                     <option *ngFor="let m of month" value="{{m}}">{{m}}</option>
                                                                 </select>
                                                                 <div class="cust_err_msg" *ngIf="upgrade_artist_validation && !upgrade_artist.controls['month'].valid">
-                                                                    <span *ngIf="upgrade_artist.controls['month'].errors['required']" class="text-danger">Month is required.</span>
+                                                                    <span *ngIf="upgrade_artist.controls['month'].errors['required']"
+                                                                        class="text-danger">Month is required.</span>
                                                                 </div>
                                                             </div>
                                                             <div class="form-group">
-                                                                <select class="form-control" id="up_year" formControlName="year" name="up_year" [(ngModel)]="upgrade_artist_data.year">
+                                                                <select class="form-control" id="up_year"
+                                                                    formControlName="year" name="up_year" [(ngModel)]="upgrade_artist_data.year">
                                                                     <option value="">Year</option>
                                                                     <option *ngFor="let y of year" value="{{y}}">{{y}}</option>
                                                                 </select>
                                                                 <div class="cust_err_msg" *ngIf="upgrade_artist_validation && !upgrade_artist.controls['year'].valid">
-                                                                    <span *ngIf="upgrade_artist.controls['year'].errors['required']" class="text-danger">Year is required.</span>
+                                                                    <span *ngIf="upgrade_artist.controls['year'].errors['required']"
+                                                                        class="text-danger">Year is required.</span>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -1396,49 +1615,64 @@
 
                                                     <div class="form-group music-grp">
                                                         <label for="musictype">Music Type</label>
-                                                        <select class="form-control" id="up_musictype" formControlName="music_type" name="music_type" [(ngModel)]="upgrade_artist_data.music_type">
-                                                            <option *ngFor="let type of upgrade_artist_music_type" value="{{type._id}}">{{type.name}}</option>
+                                                        <select class="form-control" id="up_musictype" formControlName="music_type"
+                                                            name="music_type" [(ngModel)]="upgrade_artist_data.music_type">
+                                                            <option *ngFor="let type of upgrade_artist_music_type"
+                                                                value="{{type._id}}">{{type.name}}</option>
                                                         </select>
                                                         <div class="cust_err_msg" *ngIf="upgrade_artist_validation && !upgrade_artist.controls['music_type'].valid">
-                                                            <span *ngIf="upgrade_artist.controls['music_type'].errors['required']" class="text-danger">Music is required.</span>
+                                                            <span *ngIf="upgrade_artist.controls['music_type'].errors['required']"
+                                                                class="text-danger">Music is required.</span>
                                                         </div>
                                                     </div>
-                                                    
+
                                                     <div class="form-group home-grp">
                                                         <label for="hometown">Home Town</label>
-                                                        <input class="form-control" placeholder="zipcode" formControlName="zipcode" name="zipcode" [(ngModel)]="upgrade_artist_data.zipcode" />
+                                                        <input class="form-control" placeholder="zipcode"
+                                                            formControlName="zipcode" name="zipcode" [(ngModel)]="upgrade_artist_data.zipcode" />
                                                         <div class="cust_err_msg" *ngIf="upgrade_artist_validation && !upgrade_artist.controls['zipcode'].valid">
-                                                            <span *ngIf="upgrade_artist.controls['zipcode'].errors['required']" class="text-danger">Zipcode is required.</span>
-                                                            <span *ngIf="!upgrade_artist.controls['zipcode'].errors['required'] && upgrade_artist.controls['zipcode'].errors['whitespace']" class="text-danger">Please enter valid data.</span>
+                                                            <span *ngIf="upgrade_artist.controls['zipcode'].errors['required']"
+                                                                class="text-danger">Zipcode is required.</span>
+                                                            <span *ngIf="!upgrade_artist.controls['zipcode'].errors['required'] && upgrade_artist.controls['zipcode'].errors['whitespace']"
+                                                                class="text-danger">Please enter valid data.</span>
                                                         </div>
                                                     </div>
                                                     <div class="form-group">
                                                         <label>Region</label>
-                                                        <select class="form-control" id="up_region" formControlName="region" name="region" [(ngModel)]="upgrade_artist_data.region" (change)="getStateByRegion(upgrade_artist_data.region)">
+                                                        <select class="form-control" id="up_region" formControlName="region"
+                                                            name="region" [(ngModel)]="upgrade_artist_data.region"
+                                                            (change)="getStateByRegion(upgrade_artist_data.region)">
                                                             <option value="">Select Region</option>
                                                             <option *ngFor="let r of region_list" value="{{r._id}}">{{r.name}}</option>
                                                         </select>
                                                         <div class="cust_err_msg" *ngIf="upgrade_artist_validation && !upgrade_artist.controls['region'].valid">
-                                                            <span *ngIf="upgrade_artist.controls['region'].errors['required']" class="text-danger">Region is required.</span>
+                                                            <span *ngIf="upgrade_artist.controls['region'].errors['required']"
+                                                                class="text-danger">Region is required.</span>
                                                         </div>
                                                     </div>
                                                     <div class="form-group">
                                                         <label>State</label>
-                                                        <select class="form-control" id="up_state" formControlName="state" name="state" [(ngModel)]="upgrade_artist_data.state" >
+                                                        <select class="form-control" id="up_state" formControlName="state"
+                                                            name="state" [(ngModel)]="upgrade_artist_data.state">
                                                             <option value="">Select State</option>
                                                             <option *ngFor="let s of state_list" value="{{s._id}}">{{s.name}}</option>
                                                         </select>
                                                         <div class="cust_err_msg" *ngIf="upgrade_artist_validation && !upgrade_artist.controls['state'].valid">
-                                                            <span *ngIf="upgrade_artist.controls['state'].errors['required']" class="text-danger">State is required.</span>
+                                                            <span *ngIf="upgrade_artist.controls['state'].errors['required']"
+                                                                class="text-danger">State is required.</span>
                                                         </div>
                                                     </div>
                                                     <div class="form-group home-grp">
                                                         <label for="hometown">Phone Number</label>
-                                                        <input class="form-control" placeholder="phone number" formControlName="phone" name="phone" [(ngModel)]="upgrade_artist_data.phone_no" />
+                                                        <input class="form-control" placeholder="phone number"
+                                                            formControlName="phone" name="phone" [(ngModel)]="upgrade_artist_data.phone_no" />
                                                         <div class="cust_err_msg" *ngIf="upgrade_artist_validation && !upgrade_artist.controls['phone'].valid">
-                                                            <span *ngIf="upgrade_artist.controls['phone'].errors['required']" class="text-danger">Phone Number is required.</span>
-                                                            <span *ngIf="!upgrade_artist.controls['phone'].errors['required'] && upgrade_artist.controls['phone'].errors['whitespace']" class="text-danger">Please enter valid data.</span>
-                                                            <span *ngIf="(upgrade_artist.controls['phone'].errors['maxlength'] || upgrade_artist.controls['phone'].errors['minlength'])  && upgrade_artist.controls['phone'].dirty" class="text-danger">Please enter valid phone number.</span>
+                                                            <span *ngIf="upgrade_artist.controls['phone'].errors['required']"
+                                                                class="text-danger">Phone Number is required.</span>
+                                                            <span *ngIf="!upgrade_artist.controls['phone'].errors['required'] && upgrade_artist.controls['phone'].errors['whitespace']"
+                                                                class="text-danger">Please enter valid data.</span>
+                                                            <span *ngIf="(upgrade_artist.controls['phone'].errors['maxlength'] || upgrade_artist.controls['phone'].errors['minlength'])  && upgrade_artist.controls['phone'].dirty"
+                                                                class="text-danger">Please enter valid phone number.</span>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -1449,7 +1683,8 @@
                                         <div class="edit-head">Additional Information</div>
                                         <div class="about-you">
                                             <label for="fname">Describe Yourself</label>
-                                            <textarea class="form-control" name="description" formControlName="description" [(ngModel)]="upgrade_artist_data.description" placeholder="Add about yourself..."></textarea>
+                                            <textarea class="form-control" name="description" formControlName="description"
+                                                [(ngModel)]="upgrade_artist_data.description" placeholder="Add about yourself..."></textarea>
                                         </div>
                                     </div>
                                     <div class="social-details">
@@ -1458,35 +1693,44 @@
                                             <div class="social-block">
                                                 <div class="form-group">
                                                     <label for="facebook">Facebook</label>
-                                                    <input type="text" class="form-control" id="up_fb" formControlName="share_url_fb" placeholder="Add Account" name="fb" [(ngModel)]="upgrade_artist_data.share_url['facebook']">
+                                                    <input type="text" class="form-control" id="up_fb" formControlName="share_url_fb"
+                                                        placeholder="Add Account" name="fb" [(ngModel)]="upgrade_artist_data.share_url['facebook']">
                                                     <img src="img/fb.png" alt="Facebook">
                                                 </div>
                                             </div>
                                             <div class="social-block">
                                                 <div class="form-group">
                                                     <label for="inst">Instagram</label>
-                                                    <input type="text" class="form-control" id="up_insta" formControlName="share_url_insta" placeholder="Add Account" name="insta" [(ngModel)]="upgrade_artist_data.share_url['instagram']">
+                                                    <input type="text" class="form-control" id="up_insta"
+                                                        formControlName="share_url_insta" placeholder="Add Account"
+                                                        name="insta" [(ngModel)]="upgrade_artist_data.share_url['instagram']">
                                                     <img src="img/inst.png" alt="Facebook">
                                                 </div>
                                             </div>
                                             <div class="social-block">
                                                 <div class="form-group">
                                                     <label for="facebook">Twitter</label>
-                                                    <input type="text" class="form-control" id="up_twit" formControlName="share_url_twit" placeholder="Add Account" name="twit" [(ngModel)]="upgrade_artist_data.share_url['twitter']">
+                                                    <input type="text" class="form-control" id="up_twit"
+                                                        formControlName="share_url_twit" placeholder="Add Account" name="twit"
+                                                        [(ngModel)]="upgrade_artist_data.share_url['twitter']">
                                                     <img src="img/twitter.png" alt="Facebook">
                                                 </div>
                                             </div>
                                             <div class="social-block">
                                                 <div class="form-group">
                                                     <label for="inst">Youtube</label>
-                                                    <input type="text" class="form-control" id="up_youtube" formControlName="share_url_youtube" placeholder="Add Account" name="youtube" [(ngModel)]="upgrade_artist_data.share_url['youtube']">
+                                                    <input type="text" class="form-control" id="up_youtube"
+                                                        formControlName="share_url_youtube" placeholder="Add Account"
+                                                        name="youtube" [(ngModel)]="upgrade_artist_data.share_url['youtube']">
                                                     <img src="img/youtube.png" alt="Facebook">
                                                 </div>
                                             </div>
                                             <div class="social-block">
                                                 <div class="form-group">
                                                     <label for="inst">Soundcloud</label>
-                                                    <input type="text" class="form-control" id="up_sound" formControlName="share_url_sound" placeholder="Add Account" name="sound" [(ngModel)]="upgrade_artist_data.share_url['sound_cloud']">
+                                                    <input type="text" class="form-control" id="up_sound"
+                                                        formControlName="share_url_sound" placeholder="Add Account"
+                                                        name="sound" [(ngModel)]="upgrade_artist_data.share_url['sound_cloud']">
                                                     <img src="img/soundcloud.png" alt="Facebook">
                                                 </div>
                                             </div>
@@ -1494,7 +1738,9 @@
                                         </div>
                                     </div>
                                     <div class="button_group">
-                                        <button type="submit" (click)="upgradeToArtist(upgrade_artist.valid, upgrade_artist_img)" [disabled]="show_spinner" class="save-btn btn btn-primary">Save <i *ngIf="show_spinner" class="fa fa-spinner fa-spin"></i></button>
+                                        <button type="submit" (click)="upgradeToArtist(upgrade_artist.valid, upgrade_artist_img)"
+                                            [disabled]="show_spinner" class="save-btn btn btn-primary">Save <i *ngIf="show_spinner"
+                                                class="fa fa-spinner fa-spin"></i></button>
                                     </div>
                                 </form>
                             </div>
@@ -1509,35 +1755,53 @@
                                                 <tr *ngFor="let val of purchased_track; let i = index;">
                                                     <td class="music_play">
                                                         <div class="artist-profile-custom-action-btn">
-                                                            <a [style.display]="!audio_ins[i] ? 'block' : 'none'" (click)="playAudio(val['track'].audio, i, purchased_track_list)" class="play_img" ><img src="img/play_icon.png"/></a>
-                                                            <a [style.display]="audio_ins[i] ? 'block' : 'none'" (click)="stopAudio(i, purchased_track_list)" class="pause_img"><img src="img/pause_icon.png"/></a>
+                                                            <a [style.display]="!audio_ins[i] ? 'block' : 'none'"
+                                                                (click)="playAudio(val['track'].audio, i, purchased_track_list)"
+                                                                class="play_img"><img src="img/play_icon.png" /></a>
+                                                            <a [style.display]="audio_ins[i] ? 'block' : 'none'"
+                                                                (click)="stopAudio(i, purchased_track_list)" class="pause_img"><img
+                                                                    src="img/pause_icon.png" /></a>
                                                         </div>
                                                     </td>
                                                     <td class="track-det" colspan="2">
                                                         <div class="track-pic">
                                                             <a href="javascript:;">
-                                                                <img defaultImage="img/loader.gif" offset="100" lazyLoad="{{val['track'] && val['track'].image ? track_url+val['track'].image : 'img/upload1.png'}}" style="height:50px;width:50px;" alt="Track Image">
+                                                                <img defaultImage="img/loader.gif" offset="100"
+                                                                    lazyLoad="{{val['track'] && val['track'].image ? track_url+val['track'].image : 'img/upload1.png'}}"
+                                                                    style="height:50px;width:50px;" alt="Track Image">
                                                             </a>
                                                         </div>
                                                         <div class="track_title">
-                                                            <p class="track-name">{{val['track'] &&  val['track'].name ? val['track'].name : '' }}</p>
-                                                            <p class="track-singer">{{(val && val['artist'] && val['artist'].first_name )? val.artist.first_name : '' + ' '+ val && val['artist'] && val['artist']['last_name'] ? val['artist']['last_name'] : ''}}</p>
-                                                            <p class="track-year">{{val['track'] && val['track'].created_at ? (val['track'].created_at | date : 'yyyy' ): ''}}</p>
-                                                            <p class="track-date">{{val['track'] && val['track'].created_at ? (val['track'].created_at  | date : 'MMMM dd,yyyy') : ''}}</p>
+                                                            <p class="track-name">{{val['track'] && val['track'].name ?
+                                                                val['track'].name : '' }}</p>
+                                                            <p class="track-singer">{{(val && val['artist'] &&
+                                                                val['artist'].first_name )? val.artist.first_name : ''
+                                                                + ' '+ val && val['artist'] &&
+                                                                val['artist']['last_name'] ? val['artist']['last_name']
+                                                                : ''}}</p>
+                                                            <p class="track-year">{{val['track'] &&
+                                                                val['track'].created_at ? (val['track'].created_at |
+                                                                date : 'yyyy' ): ''}}</p>
+                                                            <p class="track-date">{{val['track'] &&
+                                                                val['track'].created_at ? (val['track'].created_at |
+                                                                date : 'MMMM dd,yyyy') : ''}}</p>
                                                         </div>
                                                     </td>
                                                     <td>
-                                                        ${{val && val['track'] && val['track']['price'] ? val['track']['price'] : '0' }}
+                                                        ${{val && val['track'] && val['track']['price'] ?
+                                                        val['track']['price'] : '0' }}
                                                     </td>
                                                     <td class="td track-vote music_vote">
                                                         <img src="img/start.png" alt="start">
-                                                        <span>{{val['track'] && val['track'].no_of_votes ? val['track'].no_of_votes : '' }}
+                                                        <span>{{val['track'] && val['track'].no_of_votes ?
+                                                            val['track'].no_of_votes : '' }}
                                                             <span>Votes</span>
                                                         </span>
                                                     </td>
-                                                    <td >
+                                                    <td>
                                                         <a href="javascript:;" title="Download">
-                                                            <img src="img/download.png"  (click)="downloadTrack(val['track']['_id'])" alt="">
+                                                            <img src="img/download.png" (click)="downloadTrack(val['track']['_id'])"
+                                                                alt="">
                                                         </a>
                                                     </td>
                                                 </tr>
@@ -1562,18 +1826,18 @@
     <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
         <span aria-hidden="true">&times;</span>
     </button>
-	<div class="modal-body">
-		<div class="media-modal">
-			<h3>Add Media</h3>
-			<p>Upload Photo</p>
-			<div class="media-upload-btn" *ngIf="!show_progress"> 
-				<span class="upl-img"><i class="fa fa-cloud-upload" aria-hidden="true"></i></span> 
-				<span class="up_text">Upload Photo</span> 
-				<input type="file" name="my_doc_upload" id="my_doc_upload" (change)="uploadImage($event)" multiple="false"> 
-				<p class="instrution">320x320px .png, .jpg 5MB or less</p>
-			</div>
-			<div *ngIf="show_progress" class="text-center">
-				<!-- <div class="det">
+    <div class="modal-body">
+        <div class="media-modal">
+            <h3>Add Media</h3>
+            <p>Upload Photo</p>
+            <div class="media-upload-btn" *ngIf="!show_progress">
+                <span class="upl-img"><i class="fa fa-cloud-upload" aria-hidden="true"></i></span>
+                <span class="up_text">Upload Photo</span>
+                <input type="file" name="my_doc_upload" id="my_doc_upload" (change)="uploadImage($event)" multiple="false">
+                <p class="instrution">320x320px .png, .jpg 5MB or less</p>
+            </div>
+            <div *ngIf="show_progress" class="text-center">
+                <!-- <div class="det">
 					<div class="upl-file-name">IMG20185.JPG</div>
 					<div class="upl-time-rem">5 sec remaining</div>
 					<div class="close-btn"><img src="img/closeNormal.png" alt="Close-btn"></div>
@@ -1584,17 +1848,19 @@
 					</div>
                 </div> -->
                 <i class="fa fa-spinner fa-spin fa-3x"></i>
-			</div>
-			<p class="or">Or Add Video Link</p>
-			<div class="form-group">
-				<label for="vlink">Video Link</label>
-				<input type="text" class="form-control" id="vlink" placeholder="Video Link" name="video_link" [(ngModel)]="video_url">
-			</div>
-		</div>
-		<div class="button_group">
-			<button  class="add-btn" (click)="addLink()" [disabled]="show_spinner">Add Media <i *ngIf="show_spinner" class="fa fa-spinner fa-spin"></i></button>
-		</div>
-	</div>
+            </div>
+            <p class="or">Or Add Video Link</p>
+            <div class="form-group">
+                <label for="vlink">Video Link</label>
+                <input type="text" class="form-control" id="vlink" placeholder="Video Link" name="video_link"
+                    [(ngModel)]="video_url">
+            </div>
+        </div>
+        <div class="button_group">
+            <button class="add-btn" (click)="addLink()" [disabled]="show_spinner">Add Media <i *ngIf="show_spinner"
+                    class="fa fa-spinner fa-spin"></i></button>
+        </div>
+    </div>
 </ng-template>
 
 <ng-template #addplaylist let-c="close" let-d="dismiss">
@@ -1607,15 +1873,19 @@
                 <h3>Add New Playlist</h3>
                 <div class="form-group">
                     <label for="vlink">Name</label>
-                    <input type="text" class="form-control"  formControlName="name" placeholder="Playlist name" name="playlist" [(ngModel)]="playlist_data.name">
+                    <input type="text" class="form-control" formControlName="name" placeholder="Playlist name" name="playlist"
+                        [(ngModel)]="playlist_data.name">
                     <div class="cust_err_msg" *ngIf="playlist_validation && !playlist_fg.controls['name'].valid">
-                        <span *ngIf="playlist_fg.controls['name'].errors['required']" class="text-danger">Playlist name is required.</span>
-                        <span *ngIf="!playlist_fg.controls['name'].errors['required'] && playlist_fg.controls['name'].errors['whitespace'] " class="text-danger">Enter valid data.</span>
+                        <span *ngIf="playlist_fg.controls['name'].errors['required']" class="text-danger">Playlist name
+                            is required.</span>
+                        <span *ngIf="!playlist_fg.controls['name'].errors['required'] && playlist_fg.controls['name'].errors['whitespace'] "
+                            class="text-danger">Enter valid data.</span>
                     </div>
                 </div>
             </div>
             <div class="button_group">
-                <button type="submit" class="add-btn" (click)="addNewPlaylist(playlist_fg.valid)" [disabled]="show_spinner">Add Playlist <i *ngIf="show_spinner" class="fa fa-spinner fa-spin"></i></button>
+                <button type="submit" class="add-btn" (click)="addNewPlaylist(playlist_fg.valid)" [disabled]="show_spinner">Add
+                    Playlist <i *ngIf="show_spinner" class="fa fa-spinner fa-spin"></i></button>
             </div>
         </form>
     </div>
@@ -1631,15 +1901,19 @@
                 <h3>Edit New Playlist</h3>
                 <div class="form-group">
                     <label for="vlink">Name</label>
-                    <input type="text" class="form-control"  formControlName="name" placeholder="Playlist name" name="playlist" [(ngModel)]="playlist_data.name">
+                    <input type="text" class="form-control" formControlName="name" placeholder="Playlist name" name="playlist"
+                        [(ngModel)]="playlist_data.name">
                     <div class="cust_err_msg" *ngIf="playlist_validation && !playlist_fg.controls['name'].valid">
-                        <span *ngIf="playlist_fg.controls['name'].errors['required']" class="text-danger">Playlist name is required.</span>
-                        <span *ngIf="!playlist_fg.controls['name'].errors['required'] && playlist_fg.controls['name'].errors['whitespace'] " class="text-danger">Enter valid data.</span>
+                        <span *ngIf="playlist_fg.controls['name'].errors['required']" class="text-danger">Playlist name
+                            is required.</span>
+                        <span *ngIf="!playlist_fg.controls['name'].errors['required'] && playlist_fg.controls['name'].errors['whitespace'] "
+                            class="text-danger">Enter valid data.</span>
                     </div>
                 </div>
             </div>
             <div class="button_group">
-                <button type="submit" class="add-btn" (click)="editPlaylist(playlist_fg.valid)" [disabled]="show_spinner">Save <i *ngIf="show_spinner" class="fa fa-spinner fa-spin"></i></button>
+                <button type="submit" class="add-btn" (click)="editPlaylist(playlist_fg.valid)" [disabled]="show_spinner">Save
+                    <i *ngIf="show_spinner" class="fa fa-spinner fa-spin"></i></button>
             </div>
         </form>
     </div>
@@ -1655,16 +1929,20 @@
                 <h3>Add Track</h3>
                 <div class="form-group add_track_form">
                     <label for="vlink">Name</label>
-                    <p-autoComplete class="add_track_autocomplete" [(ngModel)]="search_track" formControlName="name" name="search_track" field="name" [multiple]="true" [suggestions]="serach_track_list" [dataKey]="_id" (completeMethod)="search($event)"></p-autoComplete>
+                    <p-autoComplete class="add_track_autocomplete" [(ngModel)]="search_track" formControlName="name"
+                        name="search_track" field="name" [multiple]="true" [suggestions]="serach_track_list" [dataKey]="_id"
+                        (completeMethod)="search($event)"></p-autoComplete>
                     <div class="cust_err_msg" *ngIf="track_validation && !track_fg.controls['name'].valid">
                         <span *ngIf="track_fg.controls['name'].errors['required']" class="text-danger">Track required.</span>
-                        <span *ngIf="!track_fg.controls['name'].errors['required'] && track_fg.controls['name'].errors['whitespace'] " class="text-danger">Enter valid data.</span>
+                        <span *ngIf="!track_fg.controls['name'].errors['required'] && track_fg.controls['name'].errors['whitespace'] "
+                            class="text-danger">Enter valid data.</span>
                     </div>
                     <!--input type="text" class="form-control" placeholder="Playlist name" name="playlist" [(ngModel)]="playlist_data.name"-->
                 </div>
             </div>
             <div class="button_group">
-                <button type="submit" class="add-btn" (click)="addTrackPlaylist(track_fg.valid)" [disabled]="show_spinner">Add <i *ngIf="show_spinner" class="fa fa-spinner fa-spin"></i></button>
+                <button type="submit" class="add-btn" (click)="addTrackPlaylist(track_fg.valid)" [disabled]="show_spinner">Add
+                    <i *ngIf="show_spinner" class="fa fa-spinner fa-spin"></i></button>
             </div>
         </form>
     </div>
@@ -1682,37 +1960,47 @@
                     <label class="label-control">Bank Name</label>
                     <input class="form-control" formControlName="bname" id="bname" [(ngModel)]="bank_data.name" />
                     <div class="cust_err_msg" *ngIf="bank_validation && !bank_fg.controls['bname'].valid">
-                        <span *ngIf="bank_fg.controls['bname'].errors['required']" class="text-danger">Bank name is required.</span>
-                        <span *ngIf="!bank_fg.controls['bname'].errors['required'] && bank_fg.controls['bname'].errors['whitespace'] " class="text-danger">Enter valid data.</span>
+                        <span *ngIf="bank_fg.controls['bname'].errors['required']" class="text-danger">Bank name is
+                            required.</span>
+                        <span *ngIf="!bank_fg.controls['bname'].errors['required'] && bank_fg.controls['bname'].errors['whitespace'] "
+                            class="text-danger">Enter valid data.</span>
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="label-control">Account holder Name</label>
-                    <input class="form-control" formControlName="hname" id="ahname" [(ngModel)]="bank_data.holder_name"/>
+                    <input class="form-control" formControlName="hname" id="ahname" [(ngModel)]="bank_data.holder_name" />
                     <div class="cust_err_msg" *ngIf="bank_validation && !bank_fg.controls['hname'].valid">
-                        <span *ngIf="bank_fg.controls['hname'].errors['required']" class="text-danger">Account holder name is required.</span>
-                        <span *ngIf="!bank_fg.controls['hname'].errors['required'] && bank_fg.controls['hname'].errors['whitespace']" class="text-danger">Enter valid data.</span>
+                        <span *ngIf="bank_fg.controls['hname'].errors['required']" class="text-danger">Account holder
+                            name is required.</span>
+                        <span *ngIf="!bank_fg.controls['hname'].errors['required'] && bank_fg.controls['hname'].errors['whitespace']"
+                            class="text-danger">Enter valid data.</span>
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="label-control">Account Number</label>
-                    <input class="form-control" formControlName="acno" id="acnumber" [(ngModel)]="bank_data.account_number"/>
+                    <input class="form-control" formControlName="acno" id="acnumber" [(ngModel)]="bank_data.account_number" />
                     <div class="cust_err_msg" *ngIf="bank_validation && !bank_fg.controls['acno'].valid">
-                        <span *ngIf="bank_fg.controls['acno'].errors['required']" class="text-danger">Account Number is required.</span>
-                        <span *ngIf="!bank_fg.controls['acno'].errors['required'] && bank_fg.controls['acno'].errors['whitespace']" class="text-danger">Enter valid data.</span>
-                        <span *ngIf="!bank_fg.controls['acno'].errors['required'] && bank_fg.controls['acno'].errors['minlength'] || bank_fg.controls['acno'].errors['maxlength'] " class="text-danger">Enter valid Account Number.</span>
+                        <span *ngIf="bank_fg.controls['acno'].errors['required']" class="text-danger">Account Number is
+                            required.</span>
+                        <span *ngIf="!bank_fg.controls['acno'].errors['required'] && bank_fg.controls['acno'].errors['whitespace']"
+                            class="text-danger">Enter valid data.</span>
+                        <span *ngIf="!bank_fg.controls['acno'].errors['required'] && bank_fg.controls['acno'].errors['minlength'] || bank_fg.controls['acno'].errors['maxlength'] "
+                            class="text-danger">Enter valid Account Number.</span>
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="label-control">Routing Number</label>
-                    <input class="form-control"formControlName="rno"  id="routinnumber" [(ngModel)]="bank_data.bsb"/>
+                    <input class="form-control" formControlName="rno" id="routinnumber" [(ngModel)]="bank_data.bsb" />
                     <div class="cust_err_msg" *ngIf="bank_validation && !bank_fg.controls['rno'].valid">
-                        <span *ngIf="bank_fg.controls['rno'].errors['required']" class="text-danger">Routing Number is required.</span>
-                        <span *ngIf="!bank_fg.controls['rno'].errors['required'] && bank_fg.controls['rno'].errors['whitespace']" class="text-danger">Enter valid data.</span>
+                        <span *ngIf="bank_fg.controls['rno'].errors['required']" class="text-danger">Routing Number is
+                            required.</span>
+                        <span *ngIf="!bank_fg.controls['rno'].errors['required'] && bank_fg.controls['rno'].errors['whitespace']"
+                            class="text-danger">Enter valid data.</span>
                     </div>
                 </div>
                 <div class="form-group text-right">
-                    <button class="btn forget_btn" (click)="addBank(bank_fg.valid)" [disabled]="show_spinner">Save <i *ngIf="show_spinner" class="fa fa-spinner fa-spin"></i></button>
+                    <button class="btn forget_btn" (click)="addBank(bank_fg.valid)" [disabled]="show_spinner">Save <i
+                            *ngIf="show_spinner" class="fa fa-spinner fa-spin"></i></button>
                 </div>
             </form>
         </div>
