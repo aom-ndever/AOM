@@ -219,8 +219,9 @@ router.post('/add_bank_details', async (req, res) => {
             });
 
             var card_resp = await artist_helper.get_account_by_artist_id(artist_id);
-            if (card_resp && card_resp.status != 1) {
+            console.log('card_resp', card_resp);
 
+            if (card_resp && card_resp.status != 1) {
                 var account = await stripe.accounts.create({
                     type: 'custom',
                     country: 'US',
@@ -241,7 +242,6 @@ router.post('/add_bank_details', async (req, res) => {
             res.status(config.OK_STATUS).json({ "message": "Account created" });
 
         } catch (error) {
-
             res.status(config.OK_STATUS).json({ "message": "Account not created" });
 
         }
