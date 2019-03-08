@@ -5,7 +5,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { DataTablesModule } from 'angular-datatables';
 import { SlimScroll } from 'angular-io-slimscroll';
-import {AutoCompleteModule, MultiSelectModule} from 'primeng/primeng';
+import { AutoCompleteModule, MultiSelectModule } from 'primeng/primeng';
 import { LazyLoadImageModule } from 'ng-lazyload-image';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { DashboardLayoutComponent } from './layout/dashboard-layout.component';
@@ -33,7 +33,7 @@ import { TrackCommentsService } from './track_comments/track_comments.service';
 import { ArtistTrackCommentsService } from './artist_track_comments/artist_track_comments.service';
 import { ArtistProfileService } from './artist_profile/artist_profile.service';
 import { VoteService } from './vote/vote.service';
-import { 
+import {
   ArtistProfileResolve,
   ArtistTrackResolve,
   ArtistMediaResolve,
@@ -41,12 +41,12 @@ import {
   ArtistFollowerResolve,
   ArtistRankingResolve
 } from './resolve/artist_resolve';
-import {TrackCommentResolve, TrackArtistProfileResolve, TrackDetailResolve} from './resolve/track_comment_resolve';
+import { TrackCommentResolve, TrackArtistProfileResolve, TrackDetailResolve } from './resolve/track_comment_resolve';
 import { DashboardService } from './dashboard/dashboard.service';
-import { FormsModule, ReactiveFormsModule  } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ToastrModule } from 'ngx-toastr';
 import { LightboxModule } from 'angular2-lightbox';
-import {TimeAgoPipe} from 'time-ago-pipe';
+import { TimeAgoPipe } from 'time-ago-pipe';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AuthService } from '../shared/auth.service';
 @NgModule({
@@ -59,7 +59,7 @@ import { AuthService } from '../shared/auth.service';
     FormsModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,
-    ToastrModule.forRoot({preventDuplicates: true}),
+    ToastrModule.forRoot({ preventDuplicates: true }),
     ChartModule,
     AmChartsModule,
     LightboxModule,
@@ -70,57 +70,57 @@ import { AuthService } from '../shared/auth.service';
     RouterModule.forChild([
       {
         path: '',
-        component:DashboardLayoutComponent, 
+        component: DashboardLayoutComponent,
         children: [
-          {path: '', component: DashboardComponent},
-          {path: 'whats-new', component: WhatsNewComponent},
-          {path: 'artist', component: ArtistComponent},
-          {path: 'artist_track_comment/:id', component: ArtistTrackConmmentsComponent, canActivate: [AuthService]},
-          {path: 'artist_profile/:artist_id/track/:id/comments', component: TrackConmmentsComponent, resolve : {comment : TrackCommentResolve, artist : TrackArtistProfileResolve, track : TrackDetailResolve}},
-          {path: 'artist_profile/:id/comments', component: ConmmentsComponent, resolve: { artist: ArtistProfileResolve, comments : ArtistCommentsResolve}},
-          {path: 'artist_profile/:id', component: ArtistProfileComponent, resolve: { artist: ArtistProfileResolve, media : ArtistMediaResolve, follower : ArtistFollowerResolve, comments : ArtistCommentsResolve }},
-          {path: 'vote', component: VoteComponent},
-          {path: 'my-music', component: MyMusicComponent, canActivate: [AuthService]},
-          {path: 'my-profile', component: MyProfileComponent, canActivate: [AuthService]}
+          { path: '', component: DashboardComponent },
+          { path: 'whats-new', component: WhatsNewComponent, data: { title: "AOM | Whats New", edit: false } },
+          { path: 'artist', component: ArtistComponent, data: { title: "AOM | Artist", edit: false } },
+          { path: 'artist_track_comment/:id', component: ArtistTrackConmmentsComponent, canActivate: [AuthService], data: { title: "AOM | Artist", edit: false } },
+          { path: 'artist_profile/:artist_id/track/:id/comments', component: TrackConmmentsComponent, resolve: { comment: TrackCommentResolve, artist: TrackArtistProfileResolve, track: TrackDetailResolve }, data: { title: "AOM | Track comment", edit: false } },
+          { path: 'artist_profile/:id/comments', component: ConmmentsComponent, resolve: { artist: ArtistProfileResolve, comments: ArtistCommentsResolve }, data: { title: "AOM | Comment", edit: false } },
+          { path: 'artist_profile/:id', component: ArtistProfileComponent, resolve: { artist: ArtistProfileResolve, media: ArtistMediaResolve, follower: ArtistFollowerResolve, comments: ArtistCommentsResolve }, data: { title: "AOM | Profile", edit: false } },
+          { path: 'vote', component: VoteComponent, data: { title: "AOM | Vote", edit: false } },
+          { path: 'my-music', component: MyMusicComponent, canActivate: [AuthService], data: { title: "AOM | My music", edit: false } },
+          { path: 'my-profile', component: MyProfileComponent, canActivate: [AuthService], data: { title: "AOM | My profile", edit: false } }
         ]
       }
     ])
   ],
-  declarations: [ DashboardComponent, 
-                  WhatsNewComponent, 
-                  ArtistComponent, 
-                  ConmmentsComponent,
-                  VoteComponent, 
-                  MyProfileComponent, 
-                  MyMusicComponent, 
-                  SlimScroll, 
-                  ArtistProfileComponent,
-                  TrackConmmentsComponent,
-                  ArtistTrackConmmentsComponent,
-                  TimeAgoPipe
-                ],
-  providers : [HeaderService,
-     AuthService, 
-     MyProfileService, 
-     MyMusicService, 
-     WhatsNewService, 
-     ArtistService,
-     CommentsService,
-     DashboardService,
-     ArtistTrackCommentsService,
-     ArtistProfileService,
-     ArtistProfileResolve,
-     ArtistTrackResolve,
-     ArtistMediaResolve,
-     ArtistCommentsResolve,
-     ArtistFollowerResolve,
-     ArtistRankingResolve,
-     TrackCommentsService,
-     TrackCommentResolve,
-     TrackArtistProfileResolve,
-     TrackDetailResolve,
-     DashboardLayoutService,
-     VoteService
-    ]
+  declarations: [DashboardComponent,
+    WhatsNewComponent,
+    ArtistComponent,
+    ConmmentsComponent,
+    VoteComponent,
+    MyProfileComponent,
+    MyMusicComponent,
+    SlimScroll,
+    ArtistProfileComponent,
+    TrackConmmentsComponent,
+    ArtistTrackConmmentsComponent,
+    TimeAgoPipe
+  ],
+  providers: [HeaderService,
+    AuthService,
+    MyProfileService,
+    MyMusicService,
+    WhatsNewService,
+    ArtistService,
+    CommentsService,
+    DashboardService,
+    ArtistTrackCommentsService,
+    ArtistProfileService,
+    ArtistProfileResolve,
+    ArtistTrackResolve,
+    ArtistMediaResolve,
+    ArtistCommentsResolve,
+    ArtistFollowerResolve,
+    ArtistRankingResolve,
+    TrackCommentsService,
+    TrackCommentResolve,
+    TrackArtistProfileResolve,
+    TrackDetailResolve,
+    DashboardLayoutService,
+    VoteService
+  ]
 })
 export class LayoutModule { }

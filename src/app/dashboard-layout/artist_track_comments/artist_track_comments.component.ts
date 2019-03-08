@@ -1,32 +1,34 @@
 import { Component, OnInit } from '@angular/core';
 import { ArtistTrackCommentsService } from './artist_track_comments.service';
 import { ToastrService } from 'ngx-toastr';
-import { environment } from '../../../environments/environment' ;
-import {ActivatedRoute} from "@angular/router";
+import { environment } from '../../../environments/environment';
+import { ActivatedRoute } from "@angular/router";
 import swal from 'sweetalert2';
+import { Title } from '@angular/platform-browser';
 @Component({
   selector: 'app-track-comments',
   templateUrl: './artist_track_comments.component.html',
   styleUrls: []
 })
 export class ArtistTrackConmmentsComponent implements OnInit {
-  artistdata : any = {};
-  track : any = {};
-  trackcomments : any = [];
-  artist_img_url : any = environment.API_URL+environment.ARTIST_IMG;
-  track_url : any = environment.API_URL+environment.ARTIST_TRACK;
-  user_img_url : any = environment.API_URL+environment.USER_IMG;
-  user : any;
-  audio_ins : any = [];
-  comment_txt : any = '';
-  show_spinner : boolean = false;
-  track_id : any = '';
+  artistdata: any = {};
+  track: any = {};
+  trackcomments: any = [];
+  artist_img_url: any = environment.API_URL + environment.ARTIST_IMG;
+  track_url: any = environment.API_URL + environment.ARTIST_TRACK;
+  user_img_url: any = environment.API_URL + environment.USER_IMG;
+  user: any;
+  audio_ins: any = [];
+  comment_txt: any = '';
+  show_spinner: boolean = false;
+  track_id: any = '';
   constructor(
-    private ArtistTrackCommentsService : ArtistTrackCommentsService,
+    private ArtistTrackCommentsService: ArtistTrackCommentsService,
     private toastr: ToastrService,
+    private titleService: Title,
     private route: ActivatedRoute
   ) {
-    
+    this.titleService.setTitle(this.route.snapshot.data['title']);
     this.route.params.subscribe(params => {
       this.track_id = params['id'];
     });
@@ -34,16 +36,16 @@ export class ArtistTrackConmmentsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getAllTrackComment({track_id : this.track_id});
+    this.getAllTrackComment({ track_id: this.track_id });
   }
 
-   // Play audio
-   playAudio(name : any, index : any){
+  // Play audio
+  playAudio(name: any, index: any) {
     let audio = new Audio();
-    audio.src = this.track_url+name;
+    audio.src = this.track_url + name;
     audio.load();
     audio.play();
-    if(!this.audio_ins.hasOwnProperty(index)) {
+    if (!this.audio_ins.hasOwnProperty(index)) {
       this.audio_ins[index] = audio;
     }
   }
@@ -55,7 +57,7 @@ export class ArtistTrackConmmentsComponent implements OnInit {
     // this.audio_ins[index].stop();
     delete this.audio_ins[index];
   }
-  
+
   // Get all comment of track
   getAllTrackComment(data) {
     this.ArtistTrackCommentsService.getAllTrackComment(data).subscribe(response => {
@@ -63,7 +65,7 @@ export class ArtistTrackConmmentsComponent implements OnInit {
     });
   }
   // Remove comment
-  removeComment(id : any) {
+  removeComment(id: any) {
     const thi = this;
     swal({
       title: 'Are you sure?',
@@ -74,10 +76,10 @@ export class ArtistTrackConmmentsComponent implements OnInit {
       cancelButtonColor: '#d33',
       confirmButtonText: 'Yes, delete it!'
     }).then((flag) => {
-      if(flag.value) {
+      if (flag.value) {
         thi.ArtistTrackCommentsService.removeTrackComment(id).subscribe(response => {
           thi.toastr.success(response['message'], 'Success!');
-          thi.getAllTrackComment({track_id : thi.track_id});
+          thi.getAllTrackComment({ track_id: thi.track_id });
         }, error => {
           thi.toastr.error(error['error'].message, 'Error!');
         });
@@ -85,12 +87,12 @@ export class ArtistTrackConmmentsComponent implements OnInit {
     });
   }
   // Block or unblock the user
-  blockUnblockUser(id : any) {
+  blockUnblockUser(id: any) {
     this.ArtistTrackCommentsService.blockUser(id).subscribe(response => {
       this.toastr.success(response['message'], 'Success!');
-      this.getAllTrackComment({track_id : this.track_id});
+      this.getAllTrackComment({ track_id: this.track_id });
     }, error => {
-      this.toastr.error(error['error'].message,  'Error!');
+      this.toastr.error(error['error'].message, 'Error!');
     });
   }
 }

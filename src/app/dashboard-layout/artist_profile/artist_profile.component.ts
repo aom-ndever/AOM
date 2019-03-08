@@ -1,15 +1,16 @@
 import { Component, OnInit, OnDestroy, QueryList, ViewChildren } from '@angular/core';
 import { ArtistProfileService } from './artist_profile.service';
 import { ToastrService } from 'ngx-toastr';
-import { environment } from '../../../environments/environment' ;
+import { environment } from '../../../environments/environment';
 import { DataTableDirective } from 'angular-datatables';
-import {ActivatedRoute, Router} from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { Lightbox } from 'angular2-lightbox';
 import { MessageService } from '../../shared/message.service';
 import { Subscription } from 'rxjs/Subscription';
-import {NgbModal, ModalDismissReasons, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, ModalDismissReasons, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { FormGroup, FormBuilder, Validators, FormControl, AbstractControl, NG_VALIDATORS, Validator } from '@angular/forms';
-declare var FB : any;
+import { Title } from '@angular/platform-browser';
+declare var FB: any;
 declare let Stripe: any;
 @Component({
   selector: 'app-artist_profile',
@@ -17,103 +18,105 @@ declare let Stripe: any;
   styleUrls: []
 })
 export class ArtistProfileComponent implements OnInit, OnDestroy {
-  @ViewChildren(DataTableDirective) 
+  @ViewChildren(DataTableDirective)
   dtElements: QueryList<DataTableDirective>;
   dtOptions: DataTables.Settings[] = [];
-  artistdata : any = {};
-  artisttrack : any = [];
+  artistdata: any = {};
+  artisttrack: any = [];
   artist_track_row_cnt = 1;
-  artistmedia : any = [];
-  rankingtrack : any = [];
+  artistmedia: any = [];
+  rankingtrack: any = [];
   ranking_track_row_cnt = 1;
-  artistfollower : any = {};
-  artistcomments : any = [];
-  display_comment : any = [];
-  sort_artist_track : any = '';
-  sort_ranking_tack : any = '';
-  artist_img_url : any = environment.API_URL+environment.ARTIST_IMG;
-  track_url : any = environment.API_URL+environment.ARTIST_TRACK;
-  artist_media_url : any = environment.API_URL+environment.ARTIST_MEDIA;
-  user_img_url : any = environment.API_URL+environment.USER_IMG;
-  audio_ins : any = [];
-  rank_audio_ins : any = [];
-  active_tab_index : any = 1;
-  media_list : any = [];
+  artistfollower: any = {};
+  artistcomments: any = [];
+  display_comment: any = [];
+  sort_artist_track: any = '';
+  sort_ranking_tack: any = '';
+  artist_img_url: any = environment.API_URL + environment.ARTIST_IMG;
+  track_url: any = environment.API_URL + environment.ARTIST_TRACK;
+  artist_media_url: any = environment.API_URL + environment.ARTIST_MEDIA;
+  user_img_url: any = environment.API_URL + environment.USER_IMG;
+  audio_ins: any = [];
+  rank_audio_ins: any = [];
+  active_tab_index: any = 1;
+  media_list: any = [];
   private _albums: any = [];
   subscription: Subscription;
-  sort_by : any = '';
+  sort_by: any = '';
   private modalRef: NgbModalRef;
   private emailmodalRef: NgbModalRef;
   private phonemodalRef: NgbModalRef;
-  share_data : any = {};
-  share_form : FormGroup;
-  share_form_phone : FormGroup;
-  share_form_validation : boolean = false;
-  user : any = '';
-  show_spinner : boolean = false;
-  track_data : any = {};
+  share_data: any = {};
+  share_form: FormGroup;
+  share_form_phone: FormGroup;
+  share_form_validation: boolean = false;
+  user: any = '';
+  show_spinner: boolean = false;
+  track_data: any = {};
   // Artist following
-  artist_following : boolean = false;
+  artist_following: boolean = false;
   constructor(
-    private ArtistProfileService : ArtistProfileService,
+    private ArtistProfileService: ArtistProfileService,
     private toastr: ToastrService,
     private route: ActivatedRoute,
     private router: Router,
     private lightbox: Lightbox,
-    private MessageService : MessageService,
+    private MessageService: MessageService,
     private modalService: NgbModal,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private titleService: Title,
   ) {
+    this.titleService.setTitle(this.route.snapshot.data['title']);
     this.user = JSON.parse(localStorage.getItem('user'));
     // this.getAllData();
     this.subscription = this.MessageService.getMessage().subscribe((response) => {
-      if(response && response['list'] != 1) {
-        this.audio_ins.forEach((ele, idx) => { this.audio_ins[idx] = false; } );
+      if (response && response['list'] != 1) {
+        this.audio_ins.forEach((ele, idx) => { this.audio_ins[idx] = false; });
       }
-      if(response && response['list'] != 2) {
-        this.rank_audio_ins.forEach((ele, idx) => { this.rank_audio_ins[idx] = false; } );
+      if (response && response['list'] != 2) {
+        this.rank_audio_ins.forEach((ele, idx) => { this.rank_audio_ins[idx] = false; });
       }
-      if(response && response['action'] == 'stop' && response['list'] == 1) {
+      if (response && response['action'] == 'stop' && response['list'] == 1) {
         this.audio_ins[response['index']] = false;
       }
-      if(response && response['action'] == 'stop' && response['list'] == 2) {
+      if (response && response['action'] == 'stop' && response['list'] == 2) {
         this.rank_audio_ins[response['index']] = false;
       }
-      if(response && response['action'] == 'start' && response['list'] == 1) {
+      if (response && response['action'] == 'start' && response['list'] == 1) {
         this.audio_ins[response['index']] = true;
       }
-      if(response && response['action'] == 'start' && response['list'] == 2) {
+      if (response && response['action'] == 'start' && response['list'] == 2) {
         this.rank_audio_ins[response['index']] = true;
       }
-      if(response && response['list'] == 1 && response['action'] == 'next' || response['action'] == 'prev' ) {
-        if(response['track_action'] && response['track_action'] == 'pause') {
-          this.audio_ins.forEach((ele, idx) => { this.audio_ins[idx] = false; } );
+      if (response && response['list'] == 1 && response['action'] == 'next' || response['action'] == 'prev') {
+        if (response['track_action'] && response['track_action'] == 'pause') {
+          this.audio_ins.forEach((ele, idx) => { this.audio_ins[idx] = false; });
           this.audio_ins[response['index']] = true;
         }
       }
-      if(response && response['list'] == 2 && response['action'] == 'next' || response['action'] == 'prev' ) {
-        if(response['track_action'] && response['track_action'] == 'pause') {
-          this.rank_audio_ins.forEach((ele, idx) => { this.rank_audio_ins[idx] = false; } );
+      if (response && response['list'] == 2 && response['action'] == 'next' || response['action'] == 'prev') {
+        if (response['track_action'] && response['track_action'] == 'pause') {
+          this.rank_audio_ins.forEach((ele, idx) => { this.rank_audio_ins[idx] = false; });
           this.rank_audio_ins[response['index']] = true;
         }
       }
-      if(response && response['action'] == 'bottom_play' && response['list'] == 1) {
-        this.audio_ins.forEach((ele, idx) => { this.audio_ins[idx] = false; } );
+      if (response && response['action'] == 'bottom_play' && response['list'] == 1) {
+        this.audio_ins.forEach((ele, idx) => { this.audio_ins[idx] = false; });
         this.audio_ins[response['index']] = true;
       }
-      if(response && response['action'] == 'bottom_play' && response['list'] == 2) {
-        this.rank_audio_ins.forEach((ele, idx) => { this.audio_ins[idx] = false; } );
+      if (response && response['action'] == 'bottom_play' && response['list'] == 2) {
+        this.rank_audio_ins.forEach((ele, idx) => { this.audio_ins[idx] = false; });
         this.rank_audio_ins[response['index']] = true;
       }
     });
     this.share_form = this.fb.group({
-      email : ['', [Validators.required, Validators.email]]
+      email: ['', [Validators.required, Validators.email]]
     });
     this.share_form_phone = this.fb.group({
-      phone : ['', [Validators.required, Validators.maxLength(10), Validators.minLength(10)]]
+      phone: ['', [Validators.required, Validators.maxLength(10), Validators.minLength(10)]]
     });
-    
-    
+
+
   }
 
   ngOnInit() {
@@ -123,16 +126,16 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
     this.artistfollower = this.route.snapshot.data['follower'].artist;
     this.artistcomments = this.route.snapshot.data['comments'].comment;
     // this.rankingtrack = this.route.snapshot.data['ranking'].track;
-    if(this.artistcomments.length > 3) {
-      this.display_comment = this.artistcomments.slice(0,3).map(i => {
+    if (this.artistcomments.length > 3) {
+      this.display_comment = this.artistcomments.slice(0, 3).map(i => {
         return i;
       });
     } else {
       this.display_comment = this.artistcomments;
     }
-    for(let i=0; i<this.artistmedia.length; i++) {
-      if(this.artistmedia[i].image)
-        this._albums.push({src : this.artist_media_url+this.artistmedia[i].image});
+    for (let i = 0; i < this.artistmedia.length; i++) {
+      if (this.artistmedia[i].image)
+        this._albums.push({ src: this.artist_media_url + this.artistmedia[i].image });
     }
     console.log(this.artistfollower);
     const that = this;
@@ -150,26 +153,26 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
         // scrollCollapse: true,
         ajax: (dataTablesParameters: any, callback) => {
           console.log(dataTablesParameters);
-          
+
           setTimeout(() => {
-            
+
             that.audio_ins = [];
             dataTablesParameters['artist_id'] = params['id'];
             dataTablesParameters['sort_by'] = this.sort_by;
             that.ArtistProfileService.getAllTrack(dataTablesParameters).subscribe((response) => {
               that.artisttrack = response['track']['music'];
               console.log('start count', that.artist_track_row_cnt);
-              if(that.artisttrack.length > 0) {
-                that.artisttrack.forEach((ele) => {that.audio_ins.push(false);});
+              if (that.artisttrack.length > 0) {
+                that.artisttrack.forEach((ele) => { that.audio_ins.push(false); });
                 // that.artisttrack.forEach((ele) => {ele['is_bookmarked'] = false;});
-                if(that.user && that.user['user']) {
+                if (that.user && that.user['user']) {
                   that.ArtistProfileService.getBookmarkedTrackList().subscribe((response) => {
                     console.log('bookmarked', response);
                     let bookmark_list = response['bookmark'];
                     that.artisttrack.forEach((ele) => {
                       let flag = false;
                       bookmark_list.forEach((bookmark) => {
-                        if(bookmark['track_id']['_id'] == ele['_id']) {
+                        if (bookmark['track_id']['_id'] == ele['_id']) {
                           flag = true;
                           return;
                         }
@@ -178,7 +181,7 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
                     });
                   });
                 }
-                
+
               }
               callback({
                 recordsTotal: response['track']['recordsTotal'],
@@ -210,23 +213,23 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
         responsive: true,
         ajax: (dataTablesParameters: any, callback) => {
           console.log(dataTablesParameters);
-          
+
           setTimeout(() => {
             that.audio_ins = [];
             dataTablesParameters['artist_id'] = params['id'];
             dataTablesParameters['sort_by'] = this.sort_by;
             that.ArtistProfileService.getAllRanking(dataTablesParameters).subscribe((response) => {
               that.rankingtrack = response['track']['music'];
-              that.rankingtrack.forEach((ele) => {that.audio_ins.push(false);});
+              that.rankingtrack.forEach((ele) => { that.audio_ins.push(false); });
               // that.rankingtrack.forEach((ele) => {ele['is_bookmarked'] = false;});
-              if(that.user && that.user['user']) {
+              if (that.user && that.user['user']) {
                 that.ArtistProfileService.getBookmarkedTrackList().subscribe((response) => {
                   console.log('bookmarked', response);
                   let bookmark_list = response['bookmark'];
                   that.rankingtrack.forEach((ele) => {
                     let flag = false;
                     bookmark_list.forEach((bookmark) => {
-                      if(bookmark['track_id']['_id'] == ele['_id']) {
+                      if (bookmark['track_id']['_id'] == ele['_id']) {
                         flag = true;
                         return;
                       }
@@ -235,7 +238,7 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
                   });
                 });
               }
-              
+
               callback({
                 recordsTotal: response['track']['recordsTotal'],
                 recordsFiltered: response['track']['recordsTotal'],
@@ -244,7 +247,7 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
               that.ranking_track_row_cnt = (dataTablesParameters['start'] + 1);
             });
           }, 0)
-          
+
         },
         columns: [
           { data: '' },
@@ -256,9 +259,9 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
           { data: '' }
         ]
       };
-      if(this.user && this.user['user']) {
+      if (this.user && this.user['user']) {
         this.ArtistProfileService.getUserFollowing().subscribe((response) => {
-          if(response['artist'] && response['artist'].indexOf(params['id']) != -1)  {
+          if (response['artist'] && response['artist'].indexOf(params['id']) != -1) {
             this.artist_following = true;
           }
         });
@@ -268,40 +271,40 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     // unsubscribe to ensure no memory leaks
-      this.subscription.unsubscribe();
+    this.subscription.unsubscribe();
   }
 
-  openShareTrackModel(content, index : any, type : any) {
-    if(type == 'track') {
+  openShareTrackModel(content, index: any, type: any) {
+    if (type == 'track') {
       this.track_data = this.artisttrack[index];
     } else {
       this.track_data = this.rankingtrack[index];
     }
-    this.modalRef = this.modalService.open(content, { centered: true, windowClass : 'modal-wrapper', backdrop : true });
+    this.modalRef = this.modalService.open(content, { centered: true, windowClass: 'modal-wrapper', backdrop: true });
   }
   openEmailShareTrackModel(content) {
-    if(this.user) {
+    if (this.user) {
       this.share_data = {};
-      this.emailmodalRef = this.modalService.open(content, { centered: true, backdrop : true });
+      this.emailmodalRef = this.modalService.open(content, { centered: true, backdrop: true });
     } else {
       this.toastr.info('Login first to share track via email', 'Information!');
     }
   }
   openPhoneShareTrackModel(content) {
-    if(this.user) {
+    if (this.user) {
       this.share_data = {};
-      this.phonemodalRef = this.modalService.open(content, { centered: true, backdrop : true });
+      this.phonemodalRef = this.modalService.open(content, { centered: true, backdrop: true });
     } else {
       this.toastr.info('Login first to share track via sms', 'Information!');
     }
   }
 
-  manageTabChange(index : any) {
+  manageTabChange(index: any) {
     this.active_tab_index = index;
   }
 
   // Play audio
-  playAudio(name : any, index : any, data : any){
+  playAudio(name: any, index: any, data: any) {
     // let audio = new Audio();
     // audio.src = this.track_url+name;
     // audio.load();
@@ -313,10 +316,10 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
       this.audio_ins[idx] = false;
     });
     this.audio_ins[index] = true;
-    this.MessageService.sendMessage({data : data, index : index, action : 'start', list : 1});
+    this.MessageService.sendMessage({ data: data, index: index, action: 'start', list: 1 });
   }
   // Stop audio
-  stopAudio(index, data : any) {
+  stopAudio(index, data: any) {
     // console.log(this.audio_ins[index]);
     // this.audio_ins[index].pause();
     // this.audio_ins[index].currentTime = 0;
@@ -325,10 +328,10 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
     data.forEach((ele, idx) => {
       this.audio_ins[idx] = false;
     });
-    this.MessageService.sendMessage({data : data, index : index, action : 'stop', list : 1});
+    this.MessageService.sendMessage({ data: data, index: index, action: 'stop', list: 1 });
   }
   // Play audio
-  playRankAudio(name : any, index : any, data : any){
+  playRankAudio(name: any, index: any, data: any) {
     // let audio = new Audio();
     // audio.src = this.track_url+name;
     // audio.load();
@@ -340,10 +343,10 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
       this.rank_audio_ins[idx] = false;
     });
     this.rank_audio_ins[index] = true;
-    this.MessageService.sendMessage({data : data, index : index, action : 'start', list : 2});
+    this.MessageService.sendMessage({ data: data, index: index, action: 'start', list: 2 });
   }
   // Stop audio
-  stopRankAudio(index, data : any) {
+  stopRankAudio(index, data: any) {
     // console.log(this.audio_ins[index]);
     // this.rank_audio_ins[index].pause();
     // this.rank_audio_ins[index].currentTime = 0;
@@ -352,14 +355,14 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
     data.forEach((ele, idx) => {
       this.rank_audio_ins[idx] = false;
     });
-    this.MessageService.sendMessage({data : data, index : index, action : 'stop', list : 2});
+    this.MessageService.sendMessage({ data: data, index: index, action: 'stop', list: 2 });
   }
   // Follow artist
-  followArtist(id : any, index : any) {
+  followArtist(id: any, index: any) {
     let data = JSON.parse(localStorage.getItem('user'));
-    if(data) {
+    if (data) {
       let data = {
-        artist_id : id
+        artist_id: id
       };
       this.ArtistProfileService.followArtist(data).subscribe(response => {
         this.toastr.success(response['message'], 'Success!');
@@ -377,68 +380,68 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
     this.lightbox.open(this._albums, index);
   }
   // Like the track
-  likeTrack(track_id : any, index : any) {
+  likeTrack(track_id: any, index: any) {
     let user = JSON.parse(localStorage.getItem('user'));
-    if(user && user.user) {
+    if (user && user.user) {
       this.artisttrack[index].no_of_likes += 1;
       let data = {
         "track_id": track_id,
-        "artist_id" : this.artistdata._id,
-        "status" :true
+        "artist_id": this.artistdata._id,
+        "status": true
       };
       this.ArtistProfileService.trackLike(data).subscribe(response => {
-        if(response['message'] == 'Already liked'){
+        if (response['message'] == 'Already liked') {
           this.artisttrack[index].no_of_likes -= 1;
         }
         this.toastr.success(response['message'], 'Success!');
       }, error => {
         this.artisttrack[index].no_of_likes -= 1;
         this.toastr.error(error['error'].message, 'Error!');
-      } );
+      });
     } else {
       this.toastr.info('Please login to like the track.');
     }
-    
+
   }
   // Like the track
-  likeRankTrack(track_id : any, index : any) {
+  likeRankTrack(track_id: any, index: any) {
     let user = JSON.parse(localStorage.getItem('user'));
-    if(user && user.user) {
+    if (user && user.user) {
       this.rankingtrack[index].no_of_likes += 1;
       let data = {
         "track_id": track_id,
-        "artist_id" : this.artistdata._id,
-        "status" :true
+        "artist_id": this.artistdata._id,
+        "status": true
       };
       this.ArtistProfileService.trackLike(data).subscribe(response => {
-        if(response['message'] == 'Already liked'){
+        if (response['message'] == 'Already liked') {
           this.rankingtrack[index].no_of_likes -= 1;
         }
         this.toastr.success(response['message'], 'Success!');
       }, error => {
         this.rankingtrack[index].no_of_likes -= 1;
         this.toastr.error(error['error'].message, 'Error!');
-      } );
+      });
     } else {
       this.toastr.info('Please login to like the track.');
-    } 
+    }
   }
   // Vist track comment page
-  goToComment(artist_id : any, id : any) {
-    this.router.navigate(['artist_profile/'+artist_id+'/track/'+id+'/comments']);
+  goToComment(artist_id: any, id: any) {
+    this.router.navigate(['artist_profile/' + artist_id + '/track/' + id + '/comments']);
   }
   // sortArtistTrack
-  sortArtistTrack(idx : any, sortBy : any) {
+  sortArtistTrack(idx: any, sortBy: any) {
     // let data = {
     //   "artist_id": artist_id,
-	  //   "sort_by" : sortBy
+    //   "sort_by" : sortBy
     // };
     // this.ArtistProfileService.getAllTrack(data).subscribe(response => {
     //   this.artisttrack = response['track'];
     // });
     this.sort_by = sortBy;
     this.dtElements.forEach((dtElement: DataTableDirective, index: number) => {
-      if(idx == index) {
+      if (idx == index) {
         dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
           dtInstance.draw();
         });
@@ -447,17 +450,17 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
   }
 
   // sortRankingTrack
-  sortRankingTrack(idx : any, sortBy : any) {
+  sortRankingTrack(idx: any, sortBy: any) {
     // let data = {
     //   "artist_id": artist_id,
-	  //   "sort_by" : sortBy
+    //   "sort_by" : sortBy
     // };
     // this.ArtistProfileService.getAllRanking(data).subscribe(response => {
     //   this.rankingtrack = response['track'];
     // });
     this.sort_by = sortBy;
     this.dtElements.forEach((dtElement: DataTableDirective, index: number) => {
-      if(idx == index) {
+      if (idx == index) {
         dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
           dtInstance.draw();
         });
@@ -465,48 +468,48 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
     });
   }
   // Download track
-  downloadTrack(id : any) {
+  downloadTrack(id: any) {
     let user = JSON.parse(localStorage.getItem('user'));
-    if(user && user.user) {
+    if (user && user.user) {
       this.ArtistProfileService.downloadTrack(id).subscribe(response => {
         console.log(response);
-        window.location.href = this.user_img_url+response['filename'];
+        window.location.href = this.user_img_url + response['filename'];
       }, error => {
         this.toastr.error(error['error'].message, 'Error!');
       });
-    } else if(user && user.artist) {
+    } else if (user && user.artist) {
       this.toastr.info('Only listenr can download this track.', 'Info!');
-    } 
+    }
     else {
       this.toastr.info('Please login to download this track.', 'Info!');
     }
   }
 
   // Bookmark particular track
-  bookMarkTrack(id : any, index : any, type : any) {
-    if(this.user && this.user['user']) {
-      if(type == 'track') {
+  bookMarkTrack(id: any, index: any, type: any) {
+    if (this.user && this.user['user']) {
+      if (type == 'track') {
         this.artisttrack[index]['is_bookmarked'] = !this.artisttrack[index]['is_bookmarked'];
         let data = {
-          track_id : id
+          track_id: id
         };
         this.ArtistProfileService.bookmarkTrack(data).subscribe((response) => {
-          this.toastr.success(response['message'],'Success!');
+          this.toastr.success(response['message'], 'Success!');
         }, (error) => {
           this.artisttrack[index]['is_bookmarked'] = !this.artisttrack[index]['is_bookmarked'];
-          this.toastr.error(error['error'].message,'Error!');
+          this.toastr.error(error['error'].message, 'Error!');
         });
-        
+
       } else {
         this.rankingtrack[index]['is_bookmarked'] = !this.rankingtrack[index]['is_bookmarked'];
         let data = {
-          track_id : id
+          track_id: id
         };
         this.ArtistProfileService.bookmarkTrack(data).subscribe((response) => {
-          this.toastr.success(response['message'],'Success!');
+          this.toastr.success(response['message'], 'Success!');
         }, (error) => {
           this.rankingtrack[index]['is_bookmarked'] = !this.rankingtrack[index]['is_bookmarked'];
-          this.toastr.error(error['error'].message,'Error!');
+          this.toastr.error(error['error'].message, 'Error!');
         });
       }
     } else {
@@ -518,42 +521,42 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
   shareOnFacebook() {
     let track = this.track_data;
     console.log(track);
-    let url = 'http://'+window.location.host+'/artist_profile/'+track['artist_id']['_id']+'/track/'+track['_id']+'/comments';
-    let str = "Track Name: "+track['name']+"\nArtist: "+track['artist_id']['first_name']+' '+track['artist_id']['last_name']+'\nDescription: '+track['description'];
+    let url = 'http://' + window.location.host + '/artist_profile/' + track['artist_id']['_id'] + '/track/' + track['_id'] + '/comments';
+    let str = "Track Name: " + track['name'] + "\nArtist: " + track['artist_id']['first_name'] + ' ' + track['artist_id']['last_name'] + '\nDescription: ' + track['description'];
     // var facebookWindow = window.open('https://www.facebook.com/sharer.php?s=100&p[summary]='+encodeURIComponent(str)+"&p[url]="+encodeURIComponent(url), 'facebook-popup', 'height=350,width=600');
     // if(facebookWindow.focus) { facebookWindow.focus(); }
     FB.ui({
       method: 'share_open_graph',
       action_type: 'og.likes',
-      action_properties : JSON.stringify({
-        object : {
-          'og:url' : url,
-          'og:title' : 'AOM',
-          'og:description' : str
+      action_properties: JSON.stringify({
+        object: {
+          'og:url': url,
+          'og:title': 'AOM',
+          'og:description': str
         }
       })
-    }, function(response){});
+    }, function (response) { });
   }
   // share on twitter
   shareOnTwitter() {
     let track = this.track_data;
     console.log(track);
-    let url = 'http://'+window.location.host+'/artist_profile/'+track['artist_id']['_id']+'/track/'+track['_id']+'/comments';
-    let str = "Track Name: "+track['name']+"\nArtist: "+track['artist_id']['first_name']+' '+track['artist_id']['last_name']+'\nDescription: '+track['description'];
-    var twitterWindow = window.open('https://twitter.com/share?url=' +encodeURIComponent(url)+'&text='+encodeURIComponent(str), 'twitter-popup', 'height=350,width=600');
-    if(twitterWindow.focus) { twitterWindow.focus(); }
+    let url = 'http://' + window.location.host + '/artist_profile/' + track['artist_id']['_id'] + '/track/' + track['_id'] + '/comments';
+    let str = "Track Name: " + track['name'] + "\nArtist: " + track['artist_id']['first_name'] + ' ' + track['artist_id']['last_name'] + '\nDescription: ' + track['description'];
+    var twitterWindow = window.open('https://twitter.com/share?url=' + encodeURIComponent(url) + '&text=' + encodeURIComponent(str), 'twitter-popup', 'height=350,width=600');
+    if (twitterWindow.focus) { twitterWindow.focus(); }
   }
   // share track via email
-  share_via_email(flag : boolean) {
-    if(flag) {
+  share_via_email(flag: boolean) {
+    if (flag) {
       this.share_form_validation = !flag;
       this.show_spinner = true;
       let track = this.track_data;
-      let url = 'http://'+window.location.host+'/artist_profile/'+track['artist_id']['_id']+'/track/'+track['_id']+'/comments';
+      let url = 'http://' + window.location.host + '/artist_profile/' + track['artist_id']['_id'] + '/track/' + track['_id'] + '/comments';
       let data = {
-        email : this.share_data['email'],
-        track_id : track['_id'],
-        url : url
+        email: this.share_data['email'],
+        track_id: track['_id'],
+        url: url
       };
       this.ArtistProfileService.shareTrackViaEmail(data).subscribe((response) => {
         this.toastr.success(response['message'], 'Success!');
@@ -569,16 +572,16 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
     }
   }
   // share via sms
-  share_via_sms(flag : boolean) {
-    if(flag) {
+  share_via_sms(flag: boolean) {
+    if (flag) {
       this.share_form_validation = !flag;
       this.show_spinner = true;
       let track = this.track_data;
-      let url = 'http://'+window.location.host+'/artist_profile/'+track['artist_id']['_id']+'/track/'+track['_id']+'/comments';
+      let url = 'http://' + window.location.host + '/artist_profile/' + track['artist_id']['_id'] + '/track/' + track['_id'] + '/comments';
       let data = {
-        phone_no : this.share_data['phone_no'],
-        track_id : track['_id'],
-        url : url
+        phone_no: this.share_data['phone_no'],
+        track_id: track['_id'],
+        url: url
       };
       this.ArtistProfileService.shareTrackViaSms(data).subscribe((response) => {
         this.toastr.success(response['message'], 'Success!');
@@ -598,7 +601,7 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
   copy_link() {
     let track = this.track_data;
     console.log(track);
-    let url = 'http://'+window.location.host+'/artist_profile/'+track['artist_id']['_id']+'/track/'+track['_id']+'/comments';
+    let url = 'http://' + window.location.host + '/artist_profile/' + track['artist_id']['_id'] + '/track/' + track['_id'] + '/comments';
     var textArea = document.createElement("textarea");
     textArea.value = url;
     document.body.appendChild(textArea);
@@ -608,20 +611,20 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
     textArea.remove();
   }
 
-  card_loader : boolean = false;
+  card_loader: boolean = false;
   // Stripe Credit-Card implementation
   openCardModel(content, index, type) {
-    if(this.user && this.user['user']) {
+    if (this.user && this.user['user']) {
       this.card_loader = true;
-      setTimeout(()=>{
+      setTimeout(() => {
         this.setupStripeFrom();
-      },0);
-      if(type == 'track') {
+      }, 0);
+      if (type == 'track') {
         this.track_data = this.artisttrack[index];
       } else {
         this.track_data = this.rankingtrack[index];
       }
-      this.modalRef = this.modalService.open(content, { centered: true, backdrop : true });
+      this.modalRef = this.modalService.open(content, { centered: true, backdrop: true });
     } else {
       this.toastr.info('Please sign-in as listener to purchase track.', 'Info!');
     }
@@ -659,7 +662,7 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
     });
 
     var form = document.getElementById('payment-form');
-    
+
     form.addEventListener('submit', (event) => {
       event.preventDefault();
       this.show_spinner = true;
@@ -673,8 +676,8 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
           // Send the token to your server.
           console.log(result.token);
           let data = {
-            track_id : this.track_data['_id'],
-            card_id : result['token']['id']
+            track_id: this.track_data['_id'],
+            card_id: result['token']['id']
           };
           this.ArtistProfileService.purchaseTrack(data).subscribe((response) => {
             this.toastr.success(response['message'], 'Success!');
@@ -691,7 +694,7 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
     });
   }
   // manage show more for artist description
-  show_more_flag : boolean = false;
+  show_more_flag: boolean = false;
   show_more() {
     this.show_more_flag = !this.show_more_flag;
   }

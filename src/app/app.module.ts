@@ -6,7 +6,7 @@ import { AppComponent } from './app.component';
 import { ChartModule } from 'angular2-highcharts';
 import { DashboardLayoutComponent } from './dashboard-layout/layout/dashboard-layout.component';
 import { DataTablesModule } from 'angular-datatables';
-import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { LayoutModule } from './dashboard-layout/layout.module';
 import { AdminLayoutModule } from './admin/admin_layout.module';
 import { RegisterModule } from './register/register.module';
@@ -18,6 +18,7 @@ import { MessageService } from './shared/message.service';
 
 import { PLATFORM_ID, APP_ID, Inject } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
+import { HighchartsStatic } from 'angular2-highcharts/dist/HighchartsService';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,7 @@ import { isPlatformBrowser } from '@angular/common';
     AdminLayoutModule,
     ForgetPasswordModule,
     NgbModule.forRoot(),
-    ChartModule.forRoot(require('highcharts/highmaps')),
+    ChartModule.forRoot(require('highcharts/highstock'), require('highcharts/modules/drilldown')),
     DataTablesModule,
     RouterModule.forRoot([
 
@@ -51,10 +52,11 @@ import { isPlatformBrowser } from '@angular/common';
       // }
     ], { useHash: false })
   ],
-  providers: [AuthService, MessageService],
+  providers: [AuthService, MessageService,
+  ],
   bootstrap: [AppComponent]
 })
-export class AppModule { 
+export class AppModule {
   constructor(
     @Inject(PLATFORM_ID) private platformId: Object,
     @Inject(APP_ID) private appId: string) {

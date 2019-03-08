@@ -13,6 +13,8 @@ import { MessageService } from '../../shared/message.service';
 import { Subscription } from 'rxjs/Subscription';
 import { DataTableDirective } from 'angular-datatables';
 import swal from 'sweetalert2';
+import { Title } from '@angular/platform-browser';
+import { ActivatedRoute } from '@angular/router';
 declare let Stripe: any;
 @Component({
   selector: 'app-myProfile',
@@ -143,8 +145,11 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
     private lightbox: Lightbox,
     private MessageService: MessageService,
     private AmCharts: AmChartsService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private titleService: Title,
+    private route: ActivatedRoute
   ) {
+    this.titleService.setTitle(this.route.snapshot.data['title']);
     let data = JSON.parse(localStorage.getItem('user'));
     this.day = [];
     this.month = [];
