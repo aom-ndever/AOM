@@ -6,21 +6,21 @@ import { environment } from '../../environments/environment';
 import { dashCaseToCamelCase } from '@angular/compiler/src/util';
 @Injectable()
 export class RegisterService {
-  private api_host : any = environment.API_URL;
+  private api_host: any = environment.API_URL;
   constructor(private http: HttpClient) { }
 
   private headers = new Headers();
 
-  getLocationFromZipCode (code : any) {
-    return this.http.get('https://maps.googleapis.com/maps/api/geocode/json?address='+code+'&key='+environment.GMAP_KEY);
+  getLocationFromZipCode(code: any) {
+    return this.http.get('https://maps.googleapis.com/maps/api/geocode/json?address=' + code + '&key=' + environment.GMAP_KEY);
   }
   // Artist Registration service
-  artistRegistration(data : any) {
+  artistRegistration(data: any) {
     return this.http.post(`${this.api_host}/artist_registration`, data);
   }
 
   // Listener Registration service
-  listenerRegistration(data : any) {
+  listenerRegistration(data: any) {
     return this.http.post(`${this.api_host}/user_registration`, data);
   }
 
@@ -34,15 +34,15 @@ export class RegisterService {
     return this.http.get(`${this.api_host}/region`);
   }
   // Get state based on region
-  getStateByRegion(data : any) {
+  getStateByRegion(data: any) {
     return this.http.post(`${this.api_host}/state_by_region`, data);
   }
   // Facebook login
-  userFacebookLogin(data : any) {
+  userFacebookLogin(data: any) {
     return this.http.post(`${this.api_host}/user_registration_facebook`, data);
   }
   // Google login
-  userGoogleLogin(data : any) {
+  userGoogleLogin(data: any) {
     return this.http.post(`${this.api_host}/user_registration_gmail`, data);
   }
 }

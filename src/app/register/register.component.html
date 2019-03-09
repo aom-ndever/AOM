@@ -327,7 +327,8 @@
                       <span class="up_text">Upload Photo</span>
                       <input type="file" name="my_doc_upload" (change)="fileChangeEvent($event)" id="my_doc_upload"
                         multiple="false">
-                      <p class="instrution">320x320px .png, .jpg 5MB or less</p>
+                      <p class="instrution"></p>
+                      <!-- <p class="instrution">320x320px .png, .jpg 5MB or less</p> -->
                     </div>
                     <div [style.display]="cropperReady ? null : 'none'">
                       <image-cropper [imageChangedEvent]="imageChangedEvent" [maintainAspectRatio]="true" [aspectRatio]="1 / 1"

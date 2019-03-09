@@ -21,8 +21,16 @@ declare let Stripe: any;
   templateUrl: './myProfile.component.html',
   styleUrls: []
 })
+
 export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChildren(DataTableDirective)
+
+  artist_validation = [false, false, false, false, false, false, false];
+  imageChangedEvent: any = '';
+  croppedImage: any = '';
+  cropperReady = false;
+
+
   dtElements: QueryList<DataTableDirective>;
   dtOptions: DataTables.Settings[] = [];
   subscription: Subscription;
@@ -214,6 +222,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
         this.upgrade_artist_data['year'] = dt.getFullYear();
       }
       if (this.userdata.image) {
+        console.log("image=====>", this.userdata.image);
         if (this.userdata.provider && this.userdata.provider == 'facebook' && this.userdata['image'].includes('graph.facebook.com') || (this.userdata.provider == "gmail" && this.userdata['image'].includes('lh3.googleusercontent.com'))) {
           this.default_profile_img = this.userdata.image;
 
@@ -251,8 +260,11 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
       month: ['', [Validators.required]],
       year: ['', [Validators.required]],
       phone: ['', [Validators.required, Validators.pattern('[0-9]+'), Validators.minLength(10), Validators.maxLength(10), , this.noWhitespaceValidator]],
+      account_number: ['', [Validators.required, Validators.pattern('[0-9]+'), this.noWhitespaceValidator]],
+      holder_name: ['', [Validators.required, Validators.pattern('[A_Za-z]+'), this.noWhitespaceValidator]],
       music_type: ['', [Validators.required]],
       zipcode: ['', [Validators.required, this.noWhitespaceValidator]],
+
       description: [''],
       share_url_fb: [''],
       share_url_insta: [''],
@@ -296,10 +308,10 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
     });
 
     this.bank_fg = this.fb.group({
-      bname: ['', [Validators.required, this.noWhitespaceValidator]],
-      hname: ['', [Validators.required, this.noWhitespaceValidator]],
-      acno: ['', [Validators.required, this.noWhitespaceValidator]],
-      rno: ['', [Validators.required, this.noWhitespaceValidator]]
+      bname: ['', [Validators.required, Validators.pattern('[A-Za-z]+'), this.noWhitespaceValidator]],
+      hname: ['', [Validators.required, Validators.pattern('[A-Za-z]+'), this.noWhitespaceValidator]],
+      acno: ['', [Validators.required, Validators.pattern('[0-9]+'), this.noWhitespaceValidator]],
+      rno: ['', [Validators.required, Validators.pattern('[0-9]+'), this.noWhitespaceValidator]]
     });
 
     this.playlist_fg = this.fb.group({
@@ -699,7 +711,9 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   updateProfileImage(event: any) {
-    const fileList: FileList = event.target.files;
+    console.log("update profile image");
+    var fileList: FileList = event.target.files;
+    const file = event.target.files[0];
     if (event.target.files.length > 0) {
       const allow_types = ['image/png', 'image/jpg', 'image/jpeg'];
       if (allow_types.indexOf(fileList[0].type) == -1) {
@@ -730,16 +744,76 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
         });
       }
       if (fileList.length > 0) {
-        const fileExtention = fileList[0].name.split('.');
-        const file: File = fileList[0];
-        const reader = new FileReader();
-        reader.onload = (e: any) => {
-          const data = {};
-          let imageBuffer = e.target.result;
-          this.default_profile_img = imageBuffer;
+        console.log("1")
+        // const fileExtention = fileList[0].name.split('.');
+        // const file: File = fileList[0];
+        // const reader = new FileReader();
+        // reader.onload = (e: any) => {
+        //   const data = {};
+        //   let imageBuffer = e.target.result;
+        //   this.default_profile_img = imageBuffer;
+        // };
+        // reader.readAsDataURL(event.target.files[0]);
+        let flag;
+        let res;
+        let fr = new FileReader();
+        fr.onload = (e: any) => {
+          console.log("e", e);
+          res = e.target.result;
+          const uint = new Uint8Array(res.slice(0, 4));
+          const bytes = [];
+          uint.forEach((byte) => {
+            bytes.push(byte.toString(16));
+          });
+
+          const hex = bytes.join('').toUpperCase();
+          const binaryFileType = this.getImageMimetype(hex);
+          console.log(binaryFileType + ' ' + hex);
+          if (binaryFileType === 'Unknown filetype') {
+            //if (allow_types.indexOf(file.type) == -1) {
+            this.toastr.error('Invalid file format.', 'Error!');
+            return;
+            // }
+          } else {
+            // const file = new Blob([new Uint8Array(res)], { type: binaryFileType });
+            this.default_profile_img = file;
+          }
+
         };
-        reader.readAsDataURL(event.target.files[0]);
+        fr.readAsArrayBuffer(file);
       }
+    }
+  }
+
+  getImageMimetype = (signature) => {
+    switch (signature) {
+      case '89504E47':
+        return 'image/png';
+      case '47494638':
+        return 'image/gif';
+      case 'FFD8FFDB':
+      case 'FFD8FFE0':
+      case 'FFD8FFE1':
+        return 'image/jpeg';
+      case '3C3F786D':
+        return 'image/svg+xml';
+      case '00018':
+      case '0001C':
+      case '00020':
+      //   return 'video/mp4';
+      // case '1A45DFA3':
+      //   return 'video/webm';
+      // case '4944333':
+      //   return 'audio/mp3';
+      // case '4357539':
+      //   return 'application/x-shockwave-flash';
+      // case '504B0304':
+      // case '504B34':
+      //   return 'application/zip';
+      // case '25504446':
+      //   return 'application/pdf';
+      default:
+        return 'Unknown filetype';
     }
   }
 
@@ -2346,5 +2420,37 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
     }, error => {
       this.toastr.error(error['error'].message, 'Error!');
     });
+  }
+
+
+
+
+
+
+
+  fileChangeEvent(event: any) {
+    const fileList: FileList = event.target.files;
+    console.log(event.target.files);
+    if (event.target.files.length > 0) {
+      this.artist_validation[5] = false;
+      const allow_types = ['image/png', 'image/jpg', 'image/jpeg'];
+      if (allow_types.indexOf(fileList[0].type) == -1) {
+        this.toastr.error('Invalid file format.', 'Error!');
+        return false;
+      }
+      this.imageChangedEvent = event;
+      if (event.target.files.length <= 0) {
+        this.cropperReady = false;
+      }
+    }
+  }
+  imageCropped(image: string) {
+    this.croppedImage = image;
+  }
+  imageLoaded() {
+    this.cropperReady = true;
+  }
+  imageLoadFailed() {
+    console.log('Load failed');
   }
 }

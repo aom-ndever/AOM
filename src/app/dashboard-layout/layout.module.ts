@@ -49,8 +49,11 @@ import { LightboxModule } from 'angular2-lightbox';
 import { TimeAgoPipe } from 'time-ago-pipe';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AuthService } from '../shared/auth.service';
+
+import { ImageCropperModule } from 'ngx-image-cropper';
 @NgModule({
   imports: [
+    ImageCropperModule,
     CommonModule,
     DashboardLayoutModule,
     CarouselModule,

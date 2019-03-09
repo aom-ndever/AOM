@@ -174,7 +174,6 @@ export class MyMusicComponent implements OnInit, OnDestroy {
 
   changeAudio(event: any) {
     const file = event.target.files[0];
-    console.log('audio file', file);
     let flag;
     let res;
     let fr = new FileReader();
@@ -192,43 +191,52 @@ export class MyMusicComponent implements OnInit, OnDestroy {
       console.log(binaryFileType + ' ' + hex);
       if (binaryFileType === 'Unknown filetype') {
         //if (allow_types.indexOf(file.type) == -1) {
+        this.toastr.error('Invalid file format.', 'Error!');
+        return false;
+        // }
+      } else {
+        // const file = new Blob([new Uint8Array(res)], { type: binaryFileType });
+        this.audio_file = file;
+      }
+
+    };
+    fr.readAsArrayBuffer(file);
+    const allow_types = ['audio/mpeg', 'audio/x-aiff', 'audio/vnd.wav', "audio/mp3", "audio/wav", "audio/aiff"];
+  }
+
+  changeFile(event: any) {
+    const file = event.target.files[0];
+    console.log('change file', file);
+    let flag;
+    let res;
+    let fr = new FileReader();
+    fr.onload = (e: any) => {
+      console.log("e", e);
+      res = e.target.result;
+      const uint = new Uint8Array(res.slice(0, 4));
+      const bytes = [];
+      uint.forEach((byte) => {
+        bytes.push(byte.toString(16));
+      });
+
+      const hex = bytes.join('').toUpperCase();
+      const binaryFileType = this.getImageMimetype(hex);
+      console.log(binaryFileType + ' ' + hex);
+      if (binaryFileType === 'Unknown filetype') {
+        //if (allow_types.indexOf(file.type) == -1) {
         console.log("1");
         this.toastr.error('Invalid file format.', 'Error!');
         return false;
         // }
       } else {
         // const file = new Blob([new Uint8Array(res)], { type: binaryFileType });
-        console.log("2");
-        this.audio_file = file;
+        this.image_upload = file;
       }
 
     };
     fr.readAsArrayBuffer(file);
 
-
-    const allow_types = ['audio/mpeg', 'audio/x-aiff', 'audio/vnd.wav', "audio/mp3", "audio/wav", "audio/aiff"];
-
-
-
-  }
-
-  changeFile(event: any) {
-    let file = event.target.files[0];
-    if (event.target.files.length > 0) {
-      const allow_types = ['image/png', 'image/jpg', 'image/jpeg'];
-      if (allow_types.indexOf(file.type) == -1) {
-        this.toastr.error('Invalid file format.', 'Error!');
-        return false;
-      }
-      this.image_upload = file;
-      const reader = new FileReader();
-      reader.onload = (e: any) => {
-        const data = {};
-        let imageBuffer = e.target.result;
-        this.add_track_img = imageBuffer;
-      };
-      reader.readAsDataURL(event.target.files[0]);
-    }
+    const allow_types = ['image/png', 'image/jpg', 'image/jpeg'];
   }
 
 

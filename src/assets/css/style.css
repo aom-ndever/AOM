@@ -1616,7 +1616,7 @@ height: 30px;
     font-size: 14px;
 }
 .mymusic-wrap > .container{
-        padding: 0 75px;
+        padding: 0 15px;
 }
 .like_active{
     display: none;
@@ -1955,7 +1955,7 @@ input#cover_upload , input#up_cover_upload{
 }
 .rofile-tab-content,.profile-tabs {padding: 50px 0;}
 .rofile-tab-content{
-    padding-top:55px;
+    padding-top:50px;
 }
 .delete i {color: #fff;}
 .profile-tabs ul {
