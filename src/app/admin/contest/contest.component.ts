@@ -15,29 +15,29 @@ export class ContestComponent implements OnInit {
   @ViewChild(DataTableDirective)
   datatableElement: DataTableDirective;
   modalRef: BsModalRef;
-  contestModelRef : BsModalRef;
+  contestModelRef: BsModalRef;
   dtOptions: DataTables.Settings = {};
-  is_new_or_existing : any = 1;
-  contest_data : any = [];
-  existing_contest_list : any = [];
-  exist_contest : any = {};
-  region_list : any = [];
-  state_list : any = [];
-  search_str : any = '';
-  sort : any = -1;
-  participant_data : any = [];
-  day : any = [];
-  month : any = [];
-  year : any = [];
-  music_type : any = [];
-  contest_detail : any = {};
-  show_spinner : boolean = false;
-  contest_validation : FormGroup;
-  is_valid : boolean =  false;
-  round_list : any = [];
+  is_new_or_existing: any = 1;
+  contest_data: any = [];
+  existing_contest_list: any = [];
+  exist_contest: any = {};
+  region_list: any = [];
+  state_list: any = [];
+  search_str: any = '';
+  sort: any = -1;
+  participant_data: any = [];
+  day: any = [];
+  month: any = [];
+  year: any = [];
+  music_type: any = [];
+  contest_detail: any = {};
+  show_spinner: boolean = false;
+  contest_validation: FormGroup;
+  is_valid: boolean = false;
+  round_list: any = [];
   contest_row_cnt = 1;
   constructor(
-    private ContestService : ContestService,
+    private ContestService: ContestService,
     private toastr: ToastrService,
     private modalService: BsModalService,
     private fb: FormBuilder
@@ -45,26 +45,27 @@ export class ContestComponent implements OnInit {
     this.day = [];
     this.month = [];
     this.year = [];
-    for(let i = 1; i<= 31; i++ ) {
+    for (let i = 1; i <= 31; i++) {
       this.day.push(i);
     }
-    for(let i = 1; i<= 12; i++ ) {
+    for (let i = 1; i <= 12; i++) {
       this.month.push(i);
     }
-    for(let i = (new Date()).getFullYear(); i<= 2100; i++ ) {
+    for (let i = (new Date()).getFullYear(); i <= 2100; i++) {
       this.year.push(i);
     }
     this.contest_validation = this.fb.group({
-      type : ['', [Validators.required]],
-      name : ['', [Validators.required, this.noWhitespaceValidator]],
-      day : ['', [Validators.required]],
-      month : ['', [Validators.required]],
-      year : ['', [Validators.required]],
-      duration : ['', [Validators.required]],
-      round : [],
-      music_type : ['', [Validators.required]],
-      region : ['', [Validators.required]],
-      state : ['', [Validators.required]]
+      type: ['', [Validators.required]],
+      name: ['', [Validators.required, this.noWhitespaceValidator]],
+      day: ['', [Validators.required]],
+      month: ['', [Validators.required]],
+      year: ['', [Validators.required]],
+      duration: ['', [Validators.required]],
+      round: [],
+      contest_type: [],
+      music_type: ['', [Validators.required]],
+      region: ['', [Validators.required]],
+      state: ['', [Validators.required]]
     });
   }
 
@@ -83,20 +84,20 @@ export class ContestComponent implements OnInit {
       ajax: (dataTablesParameters: any, callback) => {
         setTimeout(() => {
           dataTablesParameters['search'] = that.search_str;
-          dataTablesParameters['sort'] = [this.sort == -1 ? {"field" : "end_date", value : -1} : {"field" : "start_date", value : 1}];
+          dataTablesParameters['sort'] = [this.sort == -1 ? { "field": "end_date", value: -1 } : { "field": "start_date", value: 1 }];
           that.ContestService.getAllContest(dataTablesParameters).subscribe(response => {
             that.contest_data = response['contest']['contest'];
             // that.contest_data.forEach((ele) => {
             //   ele['days'] = that.getDaysDiff(ele['start_date'], new Date());
             // });
-                callback({
-                  recordsTotal: response['contest']['recordsTotal'],
-                  recordsFiltered: response['contest']['recordsTotal'],
-                  data: []
-                });
-              that.contest_row_cnt = (dataTablesParameters['start'] + 1);
+            callback({
+              recordsTotal: response['contest']['recordsTotal'],
+              recordsFiltered: response['contest']['recordsTotal'],
+              data: []
+            });
+            that.contest_row_cnt = (dataTablesParameters['start'] + 1);
           });
-        },0);
+        }, 0);
       }
     };
     this.getAllMusicTypes();
@@ -105,50 +106,50 @@ export class ContestComponent implements OnInit {
   }
 
   noWhitespaceValidator(control: FormControl) {
-      if(typeof (control.value || '') === 'string' || (control.value || '') instanceof String) {
-        let isWhitespace = (control.value || '').trim().length === 0;
-        let isValid = !isWhitespace;
-        return isValid ? null : { 'whitespace': true }
-      }
+    if (typeof (control.value || '') === 'string' || (control.value || '') instanceof String) {
+      let isWhitespace = (control.value || '').trim().length === 0;
+      let isValid = !isWhitespace;
+      return isValid ? null : { 'whitespace': true }
+    }
   }
 
   // Get day difference between dates
-  getDaysDiff(dt1 : any, dt2 : any) {
+  getDaysDiff(dt1: any, dt2: any) {
     let date1 = new Date(dt1);
     let date2 = new Date(dt2);
     let timeDiff = Math.abs(date2.getTime() - date1.getTime());
-    let diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
+    let diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
     return diffDays;
   }
 
-  openModal(template: any, id : any) {
+  openModal(template: any, id: any) {
     let data = {
-      contest_id : id
+      contest_id: id
     };
     this.ContestService.getContestParticipants(data).subscribe((response) => {
-      this.participant_data =  response['artist'];
+      this.participant_data = response['artist'];
     });
     this.is_valid = false;
-    this.modalRef = this.modalService.show(template, { backdrop : 'static' });
+    this.modalRef = this.modalService.show(template, { backdrop: 'static' });
   }
 
-  openContestModel(template : any) {
-    this.is_valid = false;
+  openContestModel(template: any) {
+    //this.is_valid = false;
     this.contest_detail = {
-      no_of_round : 0
+      // no_of_round: 0
     };
     this.is_new_or_existing = 1;
-    this.contestModelRef = this.modalService.show(template, {backdrop : 'static'});
+    this.contestModelRef = this.modalService.show(template, { backdrop: 'static' });
   }
 
-  openRoundModel(template: any, id : any) {
+  openRoundModel(template: any, id: any) {
     this.getContestRound(id);
-    this.modalRef = this.modalService.show(template, { backdrop : 'static' });
+    this.modalRef = this.modalService.show(template, { backdrop: 'static' });
   }
 
   getContestRound(id) {
     let data = {
-      contest_id : id
+      contest_id: id
     };
     this.ContestService.getContestRound(data).subscribe((response) => {
       this.round_list = response['contest']['contest'];
@@ -183,14 +184,14 @@ export class ContestComponent implements OnInit {
   }
 
   // Get state from region
-  getStateFromRegion(id : any) {
-    if(id && id != '') {
+  getStateFromRegion(id: any) {
+    if (id && id != '') {
       let data = {
-        region : id
+        region: id
       };
       this.ContestService.getStateByRegion(data).subscribe((response) => {
         this.state_list = response['state'];
-        if(this.contest_detail) {
+        if (this.contest_detail) {
           console.log(this.contest_detail);
           this.contest_detail['state'] = this.contest_detail['state'] ? this.contest_detail['state']['_id'] : '';
         }
@@ -199,91 +200,92 @@ export class ContestComponent implements OnInit {
   }
 
   // Add new contest 
-  saveContest(flag : boolean) {
-    if(flag) { 
-      this.is_valid = !flag;
-      if(this.is_new_or_existing == 1) {
-        let stdt = new Date(this.contest_detail['year']+'-'+ this.contest_detail['month']+'-'+ this.contest_detail['day']);
-        // let timestamp = Date.UTC(dt.getFullYear(), dt.getMonth(), dt.getDate());
-        // let stdt = new Date(timestamp);
-        // //let enddt = new Date(stdt.getTime() + this.contest_detail['duration'] * 24 * 60 * 60 * 1000);
-        // console.log(this.getDaysDiff(stdt, new Date()));
-        // if(stdt.getTime() < (new Date()).getTime() ) {
-        //   this.toastr.info('The date must be bigger or equal to today date');
-        //   return;
-        // }
-        
-        let data = {
-          name : this.contest_detail['name'],
-          music_type : this.contest_detail['music_type'],
-          region : this.contest_detail['region'],
-          state : this.contest_detail['state'],
-          round : this.contest_detail['no_of_round'],
-          day : this.contest_detail['day'],
-          month : this.contest_detail['month'],
-          year : this.contest_detail['year'],
-          duration : this.contest_detail['duration']
-        };
-        console.log(data);
-        this.show_spinner = true;
-        this.ContestService.addNewContest(data).subscribe((response) => {
-          this.datatableElement.dtInstance.then((dtInstance: DataTables.Api) => {
-            dtInstance.draw();
-          });
-          this.contest_detail = {};
-          this.contestModelRef.hide();
-          this.getAllExistingContest();
-          this.toastr.success(response['message'], 'Success!');
-        }, (error) => {
-          this.toastr.error(error['error'].message,  'Error!');
-          this.show_spinner = false;
-        }, () => {
-          this.show_spinner = false;
-        });
-      } else {
-        let stdt = new Date(this.contest_detail['year']+'-'+ this.contest_detail['month']+'-'+ this.contest_detail['day']);
-        // let timestamp = Date.UTC(dt.getFullYear(), dt.getMonth(), dt.getDate());
-        // let stdt = new Date(timestamp);
-        //let enddt = new Date(stdt.getTime() + this.contest_detail['duration'] * 24 * 60 * 60 * 1000);
-        // if(stdt.getTime() < (new Date()).getTime() ) {
-        //   this.toastr.info('The date must be bigger or equal to today date');
-        //   return;
-        // }
-        let data = {
-          contest_id : this.contest_detail['contest_id']['_id'],
-          // music_type : this.contest_detail['music_type'],
-          region : this.contest_detail['region'],
-          state : this.contest_detail['state'],
-          round : this.contest_detail['no_of_round'],
-          day : this.contest_detail['day'],
-          month : this.contest_detail['month'],
-          year : this.contest_detail['year'],
-          duration : +this.contest_detail['duration']
-        };
-        this.show_spinner = true;
-        this.ContestService.addExistingContest(data).subscribe((response) => {
-          this.datatableElement.dtInstance.then((dtInstance: DataTables.Api) => {
-            dtInstance.draw();
-          });
-          this.contest_detail = {};
-          this.contestModelRef.hide();
-          this.getAllExistingContest();
-          this.toastr.success(response['message'], 'Success!');
-        }, (error) => {
-          this.toastr.error(error['error'].message,  'Error!');
-          this.show_spinner = false;
-        }, () => {
-          this.show_spinner = false;
-        });
-      }
-    } else {
-      this.is_valid = !flag;
-    }
-    
+  saveContest() {
+    // if (flag) {
+    //   this.is_valid = !flag;
+    //if (this.is_new_or_existing == 1) {
+    //let stdt = new Date(this.contest_detail['year'] + '-' + this.contest_detail['month'] + '-' + this.contest_detail['day']);
+    // let timestamp = Date.UTC(dt.getFullYear(), dt.getMonth(), dt.getDate());
+    // let stdt = new Date(timestamp);
+    // //let enddt = new Date(stdt.getTime() + this.contest_detail['duration'] * 24 * 60 * 60 * 1000);
+    // console.log(this.getDaysDiff(stdt, new Date()));
+    // if(stdt.getTime() < (new Date()).getTime() ) {
+    //   this.toastr.info('The date must be bigger or equal to today date');
+    //   return;
+    // }
+
+    let data = {
+      name: this.contest_detail['name'],
+      contest_type: this.contest_detail['contest_type'],
+      music_type: this.contest_detail['music_type'],
+      region: this.contest_detail['region'],
+      state: this.contest_detail['state'],
+      round: this.contest_detail['no_of_round'],
+      day: this.contest_detail['day'],
+      month: this.contest_detail['month'],
+      year: this.contest_detail['year'],
+      duration: this.contest_detail['duration']
+    };
+    console.log(data);
+    this.show_spinner = true;
+    this.ContestService.addNewContest(data).subscribe((response) => {
+      this.datatableElement.dtInstance.then((dtInstance: DataTables.Api) => {
+        dtInstance.draw();
+      });
+      this.contest_detail = {};
+      this.contestModelRef.hide();
+      this.getAllExistingContest();
+      this.toastr.success(response['message'], 'Success!');
+    }, (error) => {
+      this.toastr.error(error['error'].message, 'Error!');
+      this.show_spinner = false;
+    }, () => {
+      this.show_spinner = false;
+    });
+    // } else {
+    //   //let stdt = new Date(this.contest_detail['year'] + '-' + this.contest_detail['month'] + '-' + this.contest_detail['day']);
+    //   // let timestamp = Date.UTC(dt.getFullYear(), dt.getMonth(), dt.getDate());
+    //   // let stdt = new Date(timestamp);
+    //   //let enddt = new Date(stdt.getTime() + this.contest_detail['duration'] * 24 * 60 * 60 * 1000);
+    //   // if(stdt.getTime() < (new Date()).getTime() ) {
+    //   //   this.toastr.info('The date must be bigger or equal to today date');
+    //   //   return;
+    //   // }
+    //   let data = {
+    //     contest_id: this.contest_detail['contest_id']['_id'],
+    //     // music_type : this.contest_detail['music_type'],
+    //     region: this.contest_detail['region'],
+    //     state: this.contest_detail['state'],
+    //     round: this.contest_detail['no_of_round'],
+    //     day: this.contest_detail['day'],
+    //     month: this.contest_detail['month'],
+    //     year: this.contest_detail['year'],
+    //     duration: +this.contest_detail['duration']
+    //   };
+    //   this.show_spinner = true;
+    //   this.ContestService.addExistingContest(data).subscribe((response) => {
+    //     this.datatableElement.dtInstance.then((dtInstance: DataTables.Api) => {
+    //       dtInstance.draw();
+    //     });
+    //     this.contest_detail = {};
+    //     this.contestModelRef.hide();
+    //     this.getAllExistingContest();
+    //     this.toastr.success(response['message'], 'Success!');
+    //   }, (error) => {
+    //     this.toastr.error(error['error'].message, 'Error!');
+    //     this.show_spinner = false;
+    //   }, () => {
+    //     this.show_spinner = false;
+    //   });
+    // }
+    // } else {
+    //   this.is_valid = !flag;
+    // }
+
   }
 
   // Select exisiting contest
-  selectContest(idx : any) {
+  selectContest(idx: any) {
     this.contest_detail = this.existing_contest_list[idx];
     console.log(this.contest_detail);
     console.log(this.contest_detail['start_date']);
@@ -291,7 +293,7 @@ export class ContestComponent implements OnInit {
     console.log(dt);
     this.contest_detail['no_of_round'] = this.contest_detail['round'] + 1;
     this.contest_detail['day'] = dt.getUTCDate();
-    this.contest_detail['month'] = (dt.getUTCMonth() + 1 );
+    this.contest_detail['month'] = (dt.getUTCMonth() + 1);
     this.contest_detail['year'] = dt.getUTCFullYear();
     this.contest_detail['music_type'] = this.contest_detail['contest_id']['music_type']['_id'];
     this.getStateFromRegion(this.contest_detail['region']);

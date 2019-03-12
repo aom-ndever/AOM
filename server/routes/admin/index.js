@@ -190,101 +190,120 @@ router.post("/add_contest", async (req, res) => {
       errorMessage: "name is required"
     },
 
-    "music_type": {
-      notEmpty: true,
-      errorMessage: "Music Type is required"
-    },
+    // "music_type": {
+    //   notEmpty: true,
+    //   errorMessage: "Music Type is required"
+    // },
 
   };
 
 
   req.checkBody(schema);
   var errors = req.validationErrors();
-
   if (!errors) {
     type = await admin_helper.get_admin_by_id(req.userInfo.id)
-    var start_date = moment(
-      {
-        year: req.body.year,
-        month: (parseInt(req.body.month) - 1),
-        date: (parseInt(req.body.day)),
-      }
-    );
+    if (req.body.start_date) {
+      var start_date = moment(
+        {
+          year: req.body.year,
+          month: (parseInt(req.body.month) - 1),
+          date: (parseInt(req.body.day)),
+        }
+      );
+    }
+
     let today = moment().startOf("day");
 
-    if (start_date.format('YYYY-MM-DD') >= today.format('YYYY-MM-DD')) {
-      if (type.admin.account_type == "super_admin" || type.admin.account_type == "admin") {
-        var contest_obj = {
-          admin_id: req.userInfo.id,
-          music_type: req.body.music_type,
-          name: req.body.name,
-        }
+    // if (req.body.start_date && start_date.format('YYYY-MM-DD') >= today.format('YYYY-MM-DD')) {
+    if (type.admin.account_type == "super_admin" || type.admin.account_type == "admin") {
+      var duration;
+      var max_participation;
+      var round;
 
-        var resp_data = await contest_helper.insert_contest(contest_obj);
+      if (req.body.contest_type == "beta") {
+        duration = 24,
+          max_participation = 6000,
+          round = "preliminary"
+      }
+      else if (req.body.contest_type == "standard") {
+        console.log('2', 2);
 
-        var round_obj = {
-          contest_id: resp_data.contest._id,
-          start_date: start_date,
-          state: req.body.state,
-          region: req.body.region,
-          duration: req.body.duration,
-          end_date: moment(start_date).add((req.body.duration * 7), 'days'),
-          round: req.body.round,
-          round_name: contest_obj.name + " " + "round" + req.body.round
-        };
+        duration = 32,
+          max_participation = 12000,
+          round = "preliminary1"
+      }
+      var contest_obj = {
+        admin_id: req.userInfo.id,
+        music_type: req.body.music_type,
+        name: req.body.name,
+        contest_type: req.body.contest_type,
+        duration: duration,
+        max_participation: max_participation,
+        contest_type: req.body.contest_type,
+        round: round
+      }
 
+      var resp_data = await contest_helper.insert_contest(contest_obj);
 
-        var resp_data = await round_helper.insert_round(round_obj);
+      var round_obj = {
+        contest_id: resp_data.contest._id,
+        // start_date: start_date,
+        // state: req.body.state,
+        // region: req.body.region,
+        // duration: req.body.duration,
+        // end_date: moment(start_date).add((req.body.duration * 7), 'days'),
+        round: round,
+        round_name: contest_obj.name + " " + "round" + req.body.round
+      };
 
-        if (resp_data.status == 0) {
-          logger.error("Error occured while inserting = ", resp_data);
-          res.status(config.INTERNAL_SERVER_ERROR).json(resp_data);
-        } else {
-
-          var resp_music = await artist_helper.get_artist_by_music_id(contest_obj.music_type);
-          if (resp_music.status == 1) {
-
+      var resp_data = await round_helper.insert_round(round_obj);
+      if (resp_data.status == 0) {
+        logger.error("Error occured while inserting = ", resp_data);
+        res.status(config.INTERNAL_SERVER_ERROR).json(resp_data);
+      } else {
+        var resp_music = await artist_helper.get_all_artist_for_email();
+        if (resp_music.status == 1) {
+          for (const a of resp_music.artist) {
             logger.trace("sending mail");
-            let mail_resp = await mail_helper.send("contest", {
-              "to": resp_music.artist.email,
+            var mail_resp = await mail_helper.send("contest", {
+              "to": a.email,
               "subject": "Contest Creation"
             }, {
-                "Note": "new contest has been created named :" + contest_obj.name,
+                "Note": "New contest has been created named :" + contest_obj.name,
               });
           }
-
-          logger.trace(" got successfully = ", resp_data);
-          res.status(config.OK_STATUS).json(resp_data);
         }
+        logger.trace(" got successfully = ", resp_data);
+        res.status(config.OK_STATUS).json(resp_data);
       }
-      else {
-        var obj = {
-          admin_id: req.userInfo.id,
-          name: req.body.name,
-          start_date: start_date,
-          duration: req.body.duration,
-          end_date: moment(start_date).utc().add((req.body.duration * 7), 'days'),
-          music_type: req.body.music_type,
-          state: req.body.state,
-          region: req.body.region,
-          round: req.body.round,
-          round_name: req.body.name + " " + "round" + req.body.round
-
-        };
-        var resp_data = await contest_request_helper.insert_contest_request(obj);
-        if (resp_data.status == 0) {
-          logger.error("Error occured while inserting = ", resp_data);
-          res.status(config.INTERNAL_SERVER_ERROR).json(resp_data);
-        } else {
-
-          logger.trace(" got successfully = ", resp_data);
-          res.status(config.OK_STATUS).json(resp_data);
-        }
-      }
-    } else {
-      res.status(config.BAD_REQUEST).json({ "message": "Date must be greater or equal to today's date" });
-
     }
+    // else {
+    //   var obj = {
+    //     admin_id: req.userInfo.id,
+    //     name: req.body.name,
+    //     start_date: start_date,
+    //     duration: req.body.duration,
+    //     end_date: moment(start_date).utc().add((req.body.duration * 7), 'days'),
+    //     music_type: req.body.music_type,
+    //     state: req.body.state,
+    //     region: req.body.region,
+    //     round: req.body.round,
+    //     round_name: req.body.name + " " + "round" + req.body.round
+
+    //   };
+    //   var resp_data = await contest_request_helper.insert_contest_request(obj);
+    //   if (resp_data.status == 0) {
+    //     logger.error("Error occured while inserting = ", resp_data);
+    //     res.status(config.INTERNAL_SERVER_ERROR).json(resp_data);
+    //   } else {
+    //     logger.trace(" got successfully = ", resp_data);
+    //     res.status(config.OK_STATUS).json(resp_data);
+    //   }
+    // }
+    // } else {
+    //   res.status(config.BAD_REQUEST).json({ "message": "Date must be greater or equal to today's date" });
+
+    // }
 
 
   }
@@ -1438,6 +1457,261 @@ router.put("/featured_artist", async (req, res) => {
 //    var nextround = await winner_helper.get_qualified(round_id);
 
 // });
+
+
+cron.schedule('* * * * *', async () => {
+  console.log("create round");
+  var contest = await contest_helper.get_all_contest();
+
+  if (contest.status == 1) {
+    for (const cont of contest.contest) {
+      if (cont.contest_type == "beta") {
+        var round = await round_helper.get_last_round(cont._id);
+        if (round.contest.round == "preliminary") {
+          var startdate = round.contest.created_at;
+          var new_date = moment(startdate).add(28)
+          if (new_date > Date.now()) {
+            let next_round = "1"
+            var obj = {
+              contest_id: round.contest.contest_id,
+              round: next_round,
+              track_id: []
+            }
+            var resp_data = await round_helper.insert_round(obj);
+          }
+          else {
+            console.log('continue with same round');
+          }
+        }
+        else if (round.contest.round == "1") {
+          var startdate = round.contest.created_at;
+          var new_date = moment(startdate).add(28)
+          if (new_date > Date.now()) {
+            let next_round = "2"
+            var obj = {
+              contest_id: round.contest.contest_id,
+              round: next_round,
+              track_id: []
+            }
+            var resp_data = await round_helper.insert_round(obj);
+          }
+          else {
+            console.log('continue with same round');
+          }
+        }
+        else if (round.contest.round == "2") {
+          var startdate = round.contest.created_at;
+          var new_date = moment(startdate).add(28)
+          if (new_date > Date.now()) {
+            let next_round = "3"
+            var obj = {
+              contest_id: round.contest.contest_id,
+              round: next_round,
+              track_id: []
+            }
+            var resp_data = await round_helper.insert_round(obj);
+          }
+          else {
+
+          }
+        }
+        else if (round.contest.round == "3") {
+          var startdate = round.contest.created_at;
+          var new_date = moment(startdate).add(28)
+          if (new_date > Date.now()) {
+            var next_round_artist = await track_helper.get_new_round_contestant(round.contest.contest_id, round.contest.round)
+            console.log('next_round_artist', next_round_artist);
+            let next_round = "4"
+            var obj = {
+              contest_id: round.contest.contest_id,
+              round: next_round,
+              track_id: []
+            }
+            var resp_data = await round_helper.insert_round(obj);
+
+          }
+          else {
+            console.log('continue with same round');
+
+          }
+        }
+        else if (round.contest.round == "4") {
+          var startdate = round.contest.created_at;
+          var new_date = moment(startdate).add(28)
+          if (new_date > Date.now()) {
+            let next_round = "semi_final"
+            var obj = {
+              contest_id: round.contest.contest_id,
+              round: next_round,
+              track_id: []
+            }
+            var resp_data = await round_helper.insert_round(obj);
+          }
+          else {
+            console.log('continue with same round');
+          }
+        }
+        else if (round.contest.round == "semi_final") {
+          var startdate = round.contest.created_at;
+          var new_date = moment(startdate).add(28)
+          if (new_date > Date.now()) {
+            let next_round = "final"
+            var obj = {
+              contest_id: round.contest.contest_id,
+              round: next_round,
+              track_id: []
+            }
+            var resp_data = await round_helper.insert_round(obj);
+          }
+          else {
+            console.log('continue with same round');
+
+          }
+        }
+      }
+      else if (cont.contest_type == "standard") {
+        var round = await round_helper.get_last_round(cont._id);
+        if (round.contest.round == "preliminary1") {
+          var startdate = round.contest.created_at;
+          var new_date = moment(startdate).add(28)
+          if (new_date > Date.now()) {
+            let next_round = "preliminary2"
+            var obj = {
+              contest_id: round.contest.contest_id,
+              round: next_round,
+              track_id: []
+            }
+            var resp_data = await round_helper.insert_round(obj);
+          }
+          else {
+            console.log('continue with same round');
+          }
+        }
+        if (round.contest.round == "preliminary2") {
+          var startdate = round.contest.created_at;
+          var new_date = moment(startdate).add(28)
+          if (new_date > Date.now()) {
+            let next_round = "preliminary3"
+            var obj = {
+              contest_id: round.contest.contest_id,
+              round: next_round,
+              track_id: []
+            }
+            var resp_data = await round_helper.insert_round(obj);
+          }
+          else {
+            console.log('continue with same round');
+          }
+        }
+        if (round.contest.round == "preliminary3") {
+          var startdate = round.contest.created_at;
+          var new_date = moment(startdate).add(28)
+          if (new_date > Date.now()) {
+            let next_round = "1"
+            var obj = {
+              contest_id: round.contest.contest_id,
+              round: next_round,
+              track_id: []
+            }
+            var resp_data = await round_helper.insert_round(obj);
+
+          }
+          else {
+            console.log('continue with same round');
+          }
+        }
+        else if (round.contest.round == "1") {
+          var startdate = round.contest.created_at;
+          var new_date = moment(startdate).add(28)
+          if (new_date > Date.now()) {
+            let next_round = "1"
+            var obj = {
+              contest_id: round.contest.contest_id,
+              round: next_round,
+              track_id: []
+            }
+            var resp_data = await round_helper.insert_round(obj);
+
+          }
+          else {
+            console.log('continue with same round');
+          }
+        }
+        else if (round.contest.round == "2") {
+          var startdate = round.contest.created_at;
+          var new_date = moment(startdate).add(28)
+          if (new_date > Date.now()) {
+            let next_round = "3"
+            var obj = {
+              contest_id: round.contest.contest_id,
+              round: next_round,
+              track_id: []
+            }
+            var resp_data = await round_helper.insert_round(obj);
+
+          }
+          else {
+            console.log('continue with same round');
+          }
+        }
+        else if (round.contest.round == "3") {
+          var startdate = round.contest.created_at;
+          var new_date = moment(startdate).add(28)
+          if (new_date > Date.now()) {
+            let next_round = "4"
+            var obj = {
+              contest_id: round.contest.contest_id,
+              round: next_round,
+              track_id: []
+            }
+            var resp_data = await round_helper.insert_round(obj);
+
+          }
+          else {
+            console.log('continue with same round');
+          }
+        }
+        else if (round.contest.round == "4") {
+          var startdate = round.contest.created_at;
+          var new_date = moment(startdate).add(28)
+          if (new_date > Date.now()) {
+            let next_round = "semi_final"
+            var obj = {
+              contest_id: round.contest.contest_id,
+              round: next_round,
+              track_id: []
+            }
+            var resp_data = await round_helper.insert_round(obj);
+
+          }
+          else {
+            console.log('continue with same round');
+          }
+        }
+        else if (round.contest.round == "semi_final") {
+          var startdate = round.contest.created_at;
+          var new_date = moment(startdate).add(28)
+          if (new_date > Date.now()) {
+            let next_round = "final"
+            var obj = {
+              contest_id: round.contest.contest_id,
+              round: next_round,
+              track_id: []
+            }
+            var resp_data = await round_helper.insert_round(obj);
+
+          }
+          else {
+            console.log('continue with same round');
+          }
+        }
+        else {
+          console.log('Contest Over');
+        }
+      }
+    }
+  }
+});
 
 
 

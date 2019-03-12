@@ -78,6 +78,23 @@ round_helper.get_rounds_by_contestid = async (id) => {
         return { "status": 0, "message": "Error occured while finding contest", "error": err }
     }
 };
+round_helper.get_last_round = async (id) => {
+
+    try {
+        var contest = await Round
+            .findOne({ "contest_id": new ObjectId(id) }).sort({ "created_at": 1 })
+            .populate({ path: 'contest_id', populate: { path: 'music_type' } })
+            .populate('region')
+            .populate('state')
+        if (contest) {
+            return { "status": 1, "message": "contest details found", "contest": contest };
+        } else {
+            return { "status": 2, "message": "contest not found" };
+        }
+    } catch (err) {
+        return { "status": 0, "message": "Error occured while finding contest", "error": err }
+    }
+};
 round_helper.update_participant = async (id, no_participants) => {
     try {
         var contest = await Round.findOneAndUpdate({ "contest_id": new ObjectId(id) }, { "no_of_participants": no_participants })

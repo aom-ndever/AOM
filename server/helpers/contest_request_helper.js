@@ -18,7 +18,6 @@ contest_request_helper.insert_contest_request = async (object) => {
 
 
 contest_request_helper.get_contest_request = async (start, length) => {
-
     try {
         var contests = await Contest
             .find()
@@ -43,7 +42,6 @@ contest_request_helper.get_contest_request = async (start, length) => {
 };
 
 contest_request_helper.get_contest_by_id = async (id) => {
-
     try {
         var contest = await Contest
             .findOne({ "_id": new ObjectId(id) })
