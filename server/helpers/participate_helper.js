@@ -103,6 +103,9 @@ participate_helper.get_participated_artist = async (ids) => {
             .populate('track_id')
 
 
+
+
+
         participate = _.sortBy(participate, function (p) {
 
             return p.artist_id.no_of_votes;
