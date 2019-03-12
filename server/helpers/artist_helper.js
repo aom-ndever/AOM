@@ -235,9 +235,10 @@ artist_helper.insert_notification = async (object) => {
  *          status  2 - If artist not found, with appropriate error message
  * 
  */
-artist_helper.get_artist_by_email = async (email) => {
+
+artist_helper.get_all_artist_for_email = async () => {
     try {
-        var artist = await Artist.findOne({ "email": email }).lean();
+        var artist = await Artist.find()
         if (artist) {
             return { "status": 1, "message": "artist details found", "artist": artist };
         } else {
@@ -247,7 +248,6 @@ artist_helper.get_artist_by_email = async (email) => {
         return { "status": 0, "message": "Error occured while finding artist", "error": err }
     }
 };
-
 /*
  * get_artist_by_id is used to fetch artist details by artist id
  * 

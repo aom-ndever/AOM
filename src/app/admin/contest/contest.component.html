@@ -1,128 +1,131 @@
- <!-- Page Content -->
- <div id="page-content-wrapper">  
+<div id="page-content-wrapper">
   <div class="text-right">
     <button class="create_contest_btn btn" (click)="openContestModel(contest)">Create Contest</button>
-  </div>         
-           <div>
-                <h3 class="Audience-Overview">Contests </h3>
-                <div class="dropdown table_dropdown custom_dropdown">
-                  <select class="form-control custom_drop_btn" id="sort" name="sort_by" [(ngModel)]="sort" (change)="sortArtist()">
-                    <option value="-1">Sort By End Date</option>
-                    <option value="1">Sort By Start Date</option>
-                  </select>
-                </div> 
-                <div class="artists_table contest_table table-responsive table_max_height">
-                  <table class="table" datatable [dtOptions]="dtOptions">
-                        <thead>
-                          <tr>
-                            <th>N<sup>O</sup></th>
-                            <th>Contest Name</th>
-                            <th>Created Date</th>
-                            <th>Music Genre</th>
-                            <th>Actions</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                        <tr *ngFor="let contest of contest_data; let i = index;">
-                          <td>{{contest_row_cnt + i}}.</td>
-                          <td><a href="javascript:;" (click)="openModal(paricipant, contest['_id'])">{{contest['name']}}</a></td>
-                          <td>{{contest['created_at'] | date : 'MMMM d, yyyy':'UTC' }}</td>
-                          <td>{{contest && contest['music_type'] ? contest['music_type']['name'] : '' }}</td>
-                          <td>
-                            <a href="javascript:;" (click)="openRoundModel(round,contest['_id'])" title="view rounds"><i class="fa fa-television"></i></a>
-                          </td>
-                        </tr>
-                        </tbody>
-                        <tbody *ngIf="contest_data?.length == 0">
-                            <tr>
-                                <td colspan="5" class="no-data-available">No data available!</td>
-                            </tr>
-                        <tbody>
-                      </table>
-                </div>
-            </div>
+  </div>
+  <div>
+    <h3 class="Audience-Overview">Contests </h3>
+    <div class="dropdown table_dropdown custom_dropdown">
+      <select class="form-control custom_drop_btn" id="sort" name="sort_by" [(ngModel)]="sort" (change)="sortArtist()">
+        <option value="-1">Sort By End Date</option>
+        <option value="1">Sort By Start Date</option>
+      </select>
     </div>
-    <!-- /#page-content-wrapper -->
+    <div class="artists_table contest_table table-responsive table_max_height">
+      <table class="table" datatable [dtOptions]="dtOptions">
+        <thead>
+          <tr>
+            <th>N<sup>O</sup></th>
+            <th>Contest Name</th>
+            <th>Created Date</th>
+            <th>Music Genre</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let contest of contest_data; let i = index;">
+            <td>{{contest_row_cnt + i}}.</td>
+            <td><a href="javascript:;" (click)="openModal(paricipant, contest['_id'])">{{contest['name']}}</a></td>
+            <td>{{contest['created_at'] | date : 'MMMM d, yyyy':'UTC' }}</td>
+            <td>{{contest && contest['music_type'] ? contest['music_type']['name'] : '' }}</td>
+            <td>
+              <a href="javascript:;" (click)="openRoundModel(round,contest['_id'])" title="view rounds"><i class="fa fa-television"></i></a>
+            </td>
+          </tr>
+        </tbody>
+        <tbody *ngIf="contest_data?.length == 0">
+          <tr>
+            <td colspan="5" class="no-data-available">No data available!</td>
+          </tr>
+        <tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<!-- /#page-content-wrapper -->
 <ng-template #paricipant>
   <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
     <span aria-hidden="true">&times;</span>
   </button>
   <div class="modal-body">
     <div class="custom_modal">
-        <div class="row">
-            <div class="col-sm-12">
-                <b class="template_modal_name">Participants</b>
-              </div>
-          <div class="artists_table copyright_table table-responsive col-sm-12 table_max_height">
-            <table class="table">
-                <thead>
-                  <tr>
-                    <th>Rank</th>
-                    <th>Artist Name</th>
-                    <th>Track Name</th>
-                    <th>Votes</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let contest of participant_data; let i = index;">
-                    <td>{{i+1}}</td>
-                    <td>{{contest['artist_id'] != null && contest['artist_id']['first_name'] != '' ? contest['artist_id']['first_name'] : '' +' '+contest['artist_id'] != null && contest['artist_id']['last_name'] != '' ? contest['artist_id']['last_name'] : ''}}</td>
-                    <td>{{contest['track_id'] != null && contest['track_id']['name'] != '' ? contest['track_id']['name'] : '' }}</td>
-                    <td>{{contest['artist_id'] != null && contest['artist_id']['no_of_votes'] ? contest['artist_id']['no_of_votes'] : '0' }}</td>
-                  </tr>
-                  <tr *ngIf="participant_data?.length == 0">
-                    <td colspan="4">No data available.</td>
-                  </tr>
-                </tbody>
-            </table>
-          </div>
+      <div class="row">
+        <div class="col-sm-12">
+          <b class="template_modal_name">Participants</b>
+        </div>
+        <div class="artists_table copyright_table table-responsive col-sm-12 table_max_height">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Rank</th>
+                <th>Artist Name</th>
+                <th>Track Name</th>
+                <th>Votes</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let contest of participant_data; let i = index;">
+                <td>{{i+1}}</td>
+                <td>{{contest['artist_id'] != null && contest['artist_id']['first_name'] != '' ?
+                  contest['artist_id']['first_name'] : '' +' '+contest['artist_id'] != null &&
+                  contest['artist_id']['last_name'] != '' ? contest['artist_id']['last_name'] : ''}}</td>
+                <td>{{contest['track_id'] != null && contest['track_id']['name'] != '' ? contest['track_id']['name'] :
+                  '' }}</td>
+                <td>{{contest['artist_id'] != null && contest['artist_id']['no_of_votes'] ?
+                  contest['artist_id']['no_of_votes'] : '0' }}</td>
+              </tr>
+              <tr *ngIf="participant_data?.length == 0">
+                <td colspan="4">No data available.</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
+    </div>
   </div>
 </ng-template>
 <ng-template #round>
-    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
-      <span aria-hidden="true">&times;</span>
-    </button>
-    <div class="modal-body">
-      <div class="custom_modal">
-          <div class="row">
-              <div class="col-sm-12">
-                  <b class="template_modal_name">Rounds</b>
-                </div>
-            <div class="artists_table copyright_table table-responsive col-sm-12 table_max_height">
-              <table class="table">
-                  <thead>
-                    <tr>
-                      <th>N<sup>o</sup></th>
-                      <th>Name</th>
-                      <th>Start Date</th>
-                      <th>End Date</th>
-                      <th>Participants</th>
-                      <th>Region</th>
-                      <th>State</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr *ngFor="let r of round_list; let i = index;">
-                      <td>{{i}}</td>
-                      <td>{{r['round_name']}}</td>
-                      <td>{{r['start_date'] | date : 'MMMM dd, yyyy'}}</td>
-                      <td>{{r['end_date'] | date : 'MMMM dd, yyyy' }}</td>
-                      <td>{{r['no_of_participants']}}</td>
-                      <td>{{r['region']['name']}}</td>
-                      <td>{{r['state']['name']}}</td>
-                    </tr>
-                    <tr *ngIf="round_list.length == 0">
-                      <td colspan="7">No data available.</td>
-                    </tr>
-                  </tbody>
-              </table>
-            </div>
-          </div>
+  <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+  <div class="modal-body">
+    <div class="custom_modal">
+      <div class="row">
+        <div class="col-sm-12">
+          <b class="template_modal_name">Rounds</b>
         </div>
+        <div class="artists_table copyright_table table-responsive col-sm-12 table_max_height">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>N<sup>o</sup></th>
+                <th>Name</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Participants</th>
+                <th>Region</th>
+                <th>State</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let r of round_list; let i = index;">
+                <td>{{i}}</td>
+                <td>{{r['round_name']}}</td>
+                <td>{{r['start_date'] | date : 'MMMM dd, yyyy'}}</td>
+                <td>{{r['end_date'] | date : 'MMMM dd, yyyy' }}</td>
+                <td>{{r['no_of_participants']}}</td>
+                <td>{{r['region']['name']}}</td>
+                <td>{{r['state']['name']}}</td>
+              </tr>
+              <tr *ngIf="round_list.length == 0">
+                <td colspan="7">No data available.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
-  </ng-template>
+  </div>
+</ng-template>
 <ng-template #contest>
   <button type="button" class="close pull-right" aria-label="Close" (click)="contestModelRef.hide()">
     <span aria-hidden="true">&times;</span>
@@ -130,153 +133,170 @@
   <form [formGroup]="contest_validation">
     <div class="modal-body">
       <div class="creat_contest_body">
-          <div class="col-sm-12 text-center">
-            <h4 class="custom_modal_head">Create Contest</h4>
+        <div class="col-sm-12 text-center">
+          <h4 class="custom_modal_head">Create Contest</h4>
+        </div>
+        <div class="form-group custom_modal_form">
+          <!-- <div class="radio">
+            <label class="radio-inline">
+              <input name="type" formControlName="type" type="radio" [checked]="is_new_or_existing == 1 ? true : false"
+                [(ngModel)]="is_new_or_existing" value="1">New
+              <div class="radio_check"></div>
+            </label>
+            <label class="radio-inline">
+              <input name="type" formControlName="type" type="radio" [checked]="is_new_or_existing == 2 ? true : false"
+                [(ngModel)]="is_new_or_existing" value="2">Existing
+              <div class="radio_check"></div>
+            </label>
+          </div> -->
+          <!-- <div class="terms_error_msg" *ngIf="is_valid && !contest_validation.controls['type'].valid">
+            <span *ngIf="contest_validation.controls['type'].errors['required']" class="text-danger">Contest type is
+              required.</span>
+          </div> -->
+        </div>
+        <div class="form-group custom_modal_form">
+          <label class="control-label">Contest Name</label>
+          <input name="name" formControlName="name" class="form-control" [(ngModel)]="contest_detail['name']" />
+          <div class="terms_error_msg" *ngIf="is_valid && !contest_validation.controls['name'].valid">
+            <span *ngIf="contest_validation.controls['name'].errors['required']" class="text-danger">Contest Name is
+              required.</span>
+            <span *ngIf="!contest_validation.controls['name'].errors['required'] && contest_validation.controls['name'].errors['whitespace']"
+              class="text-danger">Please enter valid detail.</span>
           </div>
-          <div class="form-group custom_modal_form">
-            <div class="radio">
-                <label class="radio-inline">
-                  <input name="type" formControlName="type" type="radio" [checked]="is_new_or_existing == 1 ? true : false" [(ngModel)]="is_new_or_existing" value="1">New
-                  <div class="radio_check"></div>
-                </label>
-                <label class="radio-inline">
-                  <input name="type" formControlName="type" type="radio" [checked]="is_new_or_existing == 2 ? true : false" [(ngModel)]="is_new_or_existing" value="2">Existing
-                  <div class="radio_check"></div>
-                </label>
-            </div>
-            <div class="terms_error_msg" *ngIf="is_valid && !contest_validation.controls['type'].valid">
-                <span *ngIf="contest_validation.controls['type'].errors['required']" class="text-danger">Contest type is required.</span>
-            </div>
+        </div>
+        <!-- <div class="form-group custom_modal_form" *ngIf="is_new_or_existing == 2">
+          <label class="control-label">Contest Name</label>
+          <select class="form-control" name="existing_contest" formControlName="name" (change)="selectContest($event.target.value)">
+            <option value="">Select Contest</option>
+            <option *ngFor="let c of existing_contest_list; let i = index;" value="{{i}}">{{c['round_name']}}</option>
+          </select>
+          <div class="terms_error_msg" *ngIf="is_valid && !contest_validation.controls['name'].valid">
+            <span *ngIf="contest_validation.controls['name'].errors['required']" class="text-danger">Contest Name is
+              required.</span>
+
           </div>
-          <div class="form-group custom_modal_form" *ngIf="is_new_or_existing == 1">
-            <label class="control-label">Contest Name</label>
-            <input name="name" formControlName="name" class="form-control" [(ngModel)]="contest_detail['name']" />
-            <div class="terms_error_msg" *ngIf="is_valid && !contest_validation.controls['name'].valid">
-              <span *ngIf="contest_validation.controls['name'].errors['required']" class="text-danger">Contest Name is required.</span>
-              <span *ngIf="!contest_validation.controls['name'].errors['required'] && contest_validation.controls['name'].errors['whitespace']" class="text-danger">Please enter valid detail.</span>
-            </div>
-          </div>
-          <div class="form-group custom_modal_form" *ngIf="is_new_or_existing == 2">
-            <label class="control-label">Contest Name</label>
-            <select class="form-control" name="existing_contest" formControlName="name"  (change)="selectContest($event.target.value)">
-              <option value="">Select Contest</option>
-              <option *ngFor="let c of existing_contest_list; let i = index;" value="{{i}}">{{c['round_name']}}</option>
-            </select>
-            <div class="terms_error_msg" *ngIf="is_valid && !contest_validation.controls['name'].valid">
-              <span *ngIf="contest_validation.controls['name'].errors['required']" class="text-danger">Contest Name is required.</span>
-              
-            </div>
-          </div>
-          <div class="custom_modal_form">
-              <div class="date-of-birth row">
-                  <label  for="date">Start Date</label>
-                  <div class="form-group custom_modal_form">
-                      <select class="form-control" id="day" formControlName="day" name="day" [(ngModel)]="contest_detail['day']">
-                          <option value="">Day</option>
-                          <option *ngFor="let d of day" value="{{d}}">{{d}}</option>
-                      </select>
-                      <div class="terms_error_msg" *ngIf="is_valid && !contest_validation.controls['day'].valid">
-                        <span *ngIf="contest_validation.controls['day'].errors['required']" class="text-danger">Day is required.</span>
-                      </div>
-                  </div>
-                  <div class="form-group custom_modal_form">
-                      <select class="form-control" id="month" name="month" formControlName="month" [(ngModel)]="contest_detail['month']">
-                          <option value="">Month</option>
-                          <option *ngFor="let m of month" value="{{m}}">{{m}}</option>
-                      </select>
-                      <div class="terms_error_msg" *ngIf="is_valid && !contest_validation.controls['month'].valid">
-                        <span *ngIf="contest_validation.controls['month'].errors['required']" class="text-danger">Month is required.</span>
-                      </div>
-                  </div>
-                  <div class="form-group custom_modal_form">
-                      <select class="form-control" id="year" name="year" formControlName="year" [(ngModel)]="contest_detail['year']">
-                          <option value="">Year</option>
-                          <option *ngFor="let y of year" value="{{y}}">{{y}}</option>
-                      </select>
-                      <div class="terms_error_msg" *ngIf="is_valid && !contest_validation.controls['year'].valid">
-                        <span *ngIf="contest_validation.controls['year'].errors['required']" class="text-danger">Year is required.</span>
-                      </div>
-                  </div>
+        </div> -->
+        <!-- <div class="custom_modal_form">
+          <div class="date-of-birth row">
+            <label for="date">Start Date</label>
+            <div class="form-group custom_modal_form">
+              <select class="form-control" id="day" formControlName="day" name="day" [(ngModel)]="contest_detail['day']">
+                <option value="">Day</option>
+                <option *ngFor="let d of day" value="{{d}}">{{d}}</option>
+              </select>
+              <div class="terms_error_msg" *ngIf="is_valid && !contest_validation.controls['day'].valid">
+                <span *ngIf="contest_validation.controls['day'].errors['required']" class="text-danger">Day is
+                  required.</span>
               </div>
+            </div>
+            <div class="form-group custom_modal_form">
+              <select class="form-control" id="month" name="month" formControlName="month" [(ngModel)]="contest_detail['month']">
+                <option value="">Month</option>
+                <option *ngFor="let m of month" value="{{m}}">{{m}}</option>
+              </select>
+              <div class="terms_error_msg" *ngIf="is_valid && !contest_validation.controls['month'].valid">
+                <span *ngIf="contest_validation.controls['month'].errors['required']" class="text-danger">Month is
+                  required.</span>
+              </div>
+            </div>
+            <div class="form-group custom_modal_form">
+              <select class="form-control" id="year" name="year" formControlName="year" [(ngModel)]="contest_detail['year']">
+                <option value="">Year</option>
+                <option *ngFor="let y of year" value="{{y}}">{{y}}</option>
+              </select>
+              <div class="terms_error_msg" *ngIf="is_valid && !contest_validation.controls['year'].valid">
+                <span *ngIf="contest_validation.controls['year'].errors['required']" class="text-danger">Year is
+                  required.</span>
+              </div>
+            </div>
           </div>
-          <div >
-            <div class="row">
+        </div> -->
+        <div>
+          <div class="row">
             <div class="col-sm-6">
               <div class="form-group custom_modal_form">
-                <label class="control-label">Duration</label>
-                <select class="form-control" name="duration" formControlName="duration" [(ngModel)]="contest_detail['duration']">
-                  <option value="">Select Duration</option>
-                  <option value="1">1 weeks</option>
-                  <option value="2">2 weeks</option>
-                  <option value="3">3 weeks</option>
-                  <option value="4">4 weeks</option>
-                  <option value="8">8 weeks</option>
+                <label class="control-label">Contest Type</label>
+                <select class="form-control" name="contest_type" formControlName="contest_type" [(ngModel)]="contest_detail['contest_type']">
+                  <option value="">Select Contest Type</option>
+                  <option value="beta">Beta</option>
+                  <option value="standard">Standard</option>
+
                 </select>
-                <div class="terms_error_msg" *ngIf="is_valid && !contest_validation.controls['duration'].valid">
-                  <span *ngIf="contest_validation.controls['duration'].errors['required']" class="text-danger">Duration is required.</span>
+                <!-- <div class="terms_error_msg" *ngIf="is_valid && !contest_validation.controls['duration'].valid">
+                  <span *ngIf="contest_validation.controls['duration'].errors['required']" class="text-danger">Duration
+                    is required.</span>
+                </div> -->
+              </div>
+            </div>
+            <!-- <div class="col-sm-6">
+              <div class="form-group custom_modal_form">
+                <label class="control-label">Round Number</label>
+                <input type="number" name="rounds" max="8" min="1" value="1" readonly formControlName="round"
+                  [(ngModel)]="contest_detail['no_of_round']" class="form-control" />
+                <div class="terms_error_msg" *ngIf="is_valid && !contest_validation.controls['round'].valid">
+                  <span *ngIf="contest_validation.controls['round'].errors['required']" class="text-danger">Number of
+                    round is required.</span>
                 </div>
-            </div>
-            </div>
-            <div class="col-sm-6">
-                <div class="form-group custom_modal_form">
-                  <label class="control-label">Round Number</label>
-                  <input type="number" name="rounds" max="8" min="1" value="1" readonly formControlName="round" [(ngModel)]="contest_detail['no_of_round']" class="form-control" />
-                  <div class="terms_error_msg" *ngIf="is_valid && !contest_validation.controls['round'].valid">
-                    <span *ngIf="contest_validation.controls['round'].errors['required']" class="text-danger">Number of round is required.</span>
-                  </div>
-                </div>
-            </div>
-            </div>
-          </div>
-          <div class="form-group">
-            <div class="form-group custom_modal_form">
-              <label class="control-label">Music Genre</label>
-              <select name="music_type" class="form-control" formControlName="music_type" [(ngModel)]="contest_detail['music_type']" *ngIf="is_new_or_existing == 1">
-                <option value="">Select Music Gener</option>
-                <option *ngFor="let music of music_type;" value="{{music['_id']}}">{{music['name']}}</option>
-              </select>
-              <select name="music_type" class="form-control" formControlName="music_type" [(ngModel)]="contest_detail['music_type']" *ngIf="is_new_or_existing == 2" disabled>
-                <option value="">Select Music Gener</option>
-                <option *ngFor="let music of music_type;" value="{{music['_id']}}">{{music['name']}}</option>
-              </select>
-              <div class="terms_error_msg" *ngIf="is_valid && !contest_validation.controls['music_type'].valid">
-                <span *ngIf="contest_validation.controls['music_type'].errors['required']" class="text-danger">Music type is required.</span>
               </div>
-            </div>
+            </div> -->
           </div>
-          <div class="form-group">
-            <div class="form-group custom_modal_form">
-              <label class="control-label">Region</label>
-              <select class="form-control" name="region" formControlName="region" [(ngModel)]="contest_detail['region']" (change)="getStateFromRegion($event.target.value)">
-                <option value="">Select Region</option>
-                <option [value]="r['_id']" *ngFor="let r of region_list;">{{r['name']}}</option>
-              </select>
-              <div class="terms_error_msg" *ngIf="is_valid && !contest_validation.controls['region'].valid">
-                <span *ngIf="contest_validation.controls['region'].errors['required']" class="text-danger">Region is required.</span>
-              </div>
-            </div>
-          </div>
-          <div class="form-group">
-            <div class="form-group custom_modal_form">
-              <label class="control-label">State</label>
-              <select class="form-control" name="state" formControlName="state" [(ngModel)]="contest_detail['state']">
-                <option value="">Select State</option>
-                <option [value]="s['_id']" *ngFor="let s of state_list;">{{s['name']}}</option>
-              </select>
-              <div class="terms_error_msg" *ngIf="is_valid && !contest_validation.controls['state'].valid">
-                <span *ngIf="contest_validation.controls['state'].errors['required']" class="text-danger">State is required.</span>
-              </div>
-            </div>
-          </div>
-          <div class="row modal_btns">
-            <div class="col-sm-6">
-                <button class="custom_cancel_btn btn" (click)="contestModelRef.hide()">Cancel</button>
-            </div>
-            <div class="col-sm-6 text-right">
-                <button type="submit" class="custom_save btn" (click)="saveContest(contest_validation.valid)" [disabled]="show_spinner">Create <i *ngIf="show_spinner" class="fa fa-spinner fa-spin"></i></button>
+        </div>
+        <div class="form-group">
+          <div class="form-group custom_modal_form">
+            <label class="control-label">Music Genre</label>
+            <select name="music_type" class="form-control" formControlName="music_type" [(ngModel)]="contest_detail['music_type']"
+              *ngIf="is_new_or_existing == 1">
+              <option value="">Select Music Gener</option>
+              <option *ngFor="let music of music_type;" value="{{music['_id']}}">{{music['name']}}</option>
+            </select>
+            <select name="music_type" class="form-control" formControlName="music_type" [(ngModel)]="contest_detail['music_type']"
+              *ngIf="is_new_or_existing == 2" disabled>
+              <option value="">Select Music Gener</option>
+              <option *ngFor="let music of music_type;" value="{{music['_id']}}">{{music['name']}}</option>
+            </select>
+            <div class="terms_error_msg" *ngIf="is_valid && !contest_validation.controls['music_type'].valid">
+              <span *ngIf="contest_validation.controls['music_type'].errors['required']" class="text-danger">Music type
+                is required.</span>
             </div>
           </div>
         </div>
+        <div class="form-group">
+          <div class="form-group custom_modal_form">
+            <label class="control-label">Region</label>
+            <select class="form-control" name="region" formControlName="region" [(ngModel)]="contest_detail['region']"
+              (change)="getStateFromRegion($event.target.value)">
+              <option value="">Select Region</option>
+              <option [value]="r['_id']" *ngFor="let r of region_list;">{{r['name']}}</option>
+            </select>
+            <div class="terms_error_msg" *ngIf="is_valid && !contest_validation.controls['region'].valid">
+              <span *ngIf="contest_validation.controls['region'].errors['required']" class="text-danger">Region is
+                required.</span>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="form-group custom_modal_form">
+            <label class="control-label">State</label>
+            <select class="form-control" name="state" formControlName="state" [(ngModel)]="contest_detail['state']">
+              <option value="">Select State</option>
+              <option [value]="s['_id']" *ngFor="let s of state_list;">{{s['name']}}</option>
+            </select>
+            <div class="terms_error_msg" *ngIf="is_valid && !contest_validation.controls['state'].valid">
+              <span *ngIf="contest_validation.controls['state'].errors['required']" class="text-danger">State is
+                required.</span>
+            </div>
+          </div>
+        </div>
+        <div class="row modal_btns">
+          <div class="col-sm-6">
+            <button class="custom_cancel_btn btn" (click)="contestModelRef.hide()">Cancel</button>
+          </div>
+          <div class="col-sm-6 text-right">
+            <button type="submit" class="custom_save btn" (click)="saveContest(contest_validation.valid)" [disabled]="show_spinner">Create
+              <i *ngIf="show_spinner" class="fa fa-spinner fa-spin"></i></button>
+          </div>
+        </div>
+      </div>
     </div>
   </form>
 </ng-template>

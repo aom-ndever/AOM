@@ -47,7 +47,6 @@ contest_helper.get_all_contest_and_participant = async (start, length, sort = {}
     try {
         var contests = await Contest.find()
         var tot_cnt = contests.length;
-
         var participate = await Contest.find()
             .populate('music_type')
             .populate('region')
@@ -112,7 +111,41 @@ contest_helper.get_all_contests = async (music) => {
     }
 }
 
-contest_helper.get_all_contests_list = async (start, length, sort) => {
+contest_helper.get_current_contest_round = async (music) => {
+    try {
+        var participate = await Contest.find({ "created_at": 1 })
+            .populate('music_type')
+        if (participate) {
+            return { "status": 1, "message": "contest details found", "contest": participate };
+        } else {
+            return { "status": 2, "message": "contest not found" };
+        }
+    } catch (err) {
+        return { "status": 0, "message": "Error occured while finding contest", "error": err }
+    }
+}
+
+contest_helper.get_all_contest = async () => {
+    try {
+        var participates = await Contest.find({ "status": { $ne: "complete" } })
+            .populate('music_type')
+        var tot_cnt = participates.length;
+
+        var participate = await Contest.find()
+            .populate('music_type')
+
+        var filter_cnt = participate.length
+        if (participate) {
+            return { "status": 1, "message": "contest details found", "contest": participate, "recordsFiltered": filter_cnt, "recordsTotal": tot_cnt };
+        } else {
+            return { "status": 2, "message": "contest not found" };
+        }
+    } catch (err) {
+        return { "status": 0, "message": "Error occured while finding contest", "error": err }
+    }
+}
+
+contest_helper.get_all_contests_list = async () => {
     try {
         var participates = await Contest.find()
             .populate('music_type')
@@ -120,9 +153,7 @@ contest_helper.get_all_contests_list = async (start, length, sort) => {
 
         var participate = await Contest.find()
             .populate('music_type')
-            .skip(start)
-            .limit(length)
-            .sort(sort)
+
         var filter_cnt = participate.length
         if (participate) {
             return { "status": 1, "message": "contest details found", "contest": participate, "recordsFiltered": filter_cnt, "recordsTotal": tot_cnt };
