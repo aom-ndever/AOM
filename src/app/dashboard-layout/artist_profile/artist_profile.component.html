@@ -103,7 +103,8 @@
                 </span>
                 <span *ngIf="show_more_flag">{{artistdata.description}}
                 </span>
-                <a href="javascript:;" (click)="show_more()" *ngIf="artistdata.description.length > 50" class="more">{{show_more_flag
+                <a href="javascript:;" (click)="show_more()" *ngIf="artistdata.description && artistdata.description.length > 50"
+                  class="more">{{show_more_flag
                   ? 'less...' : 'more...'}}</a>
               </div>
               <div class="profile-tabs-det">
