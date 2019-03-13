@@ -736,10 +736,26 @@ router.post("/participate", async (req, res) => {
             notEmpty: true,
             errorMessage: "Contest Id is required"
         },
-        "track_id": {
+        // "track_id": {
+        //     notEmpty: true,
+        //     errorMessage: "Track Id is required"
+        // },
+        "round1_track": {
             notEmpty: true,
-            errorMessage: "Track Id is required"
+            errorMessage: "Track is required"
         },
+        "round2_track": {
+            notEmpty: true,
+            errorMessage: "Track is required"
+        },
+        "round3_track": {
+            notEmpty: true,
+            errorMessage: "Track is required"
+        },
+        "round4_track": {
+            notEmpty: true,
+            errorMessage: "Track is required"
+        }
     };
     req.checkBody(schema);
     var errors = req.validationErrors();
@@ -747,7 +763,10 @@ router.post("/participate", async (req, res) => {
         var obj = {
             artist_id: req.userInfo.id,
             contest_id: req.body.contest_id,
-            track_id: req.body.track_id
+            round1_track: req.body.round1_track,
+            round2_track: req.body.round2_track,
+            round3_track: req.body.round3_track,
+            round4_track: req.body.round4_track
         };
 
         var contest_data = await contest_helper.get_contest_by_id(obj.contest_id);

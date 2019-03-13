@@ -107,6 +107,8 @@ router.post('/artist_registration', async (req, res) => {
       reg_obj.social_media = JSON.parse(req.body.share_url)
     }
     let artist = await artist_helper.get_artist_by_email(req.body.email)
+    console.log('artist', artist);
+
     if (artist.status === 2) {
 
 

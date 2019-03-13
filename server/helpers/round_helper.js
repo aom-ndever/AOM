@@ -1,4 +1,5 @@
 var Round = require("./../models/round");
+var RoundTracks = require("./../models/round_tracks");
 var round_helper = {};
 var mongoose = require('mongoose');
 var _ = require('underscore');
@@ -82,7 +83,7 @@ round_helper.get_last_round = async (id) => {
 
     try {
         var contest = await Round
-            .findOne({ "contest_id": new ObjectId(id) }).sort({ "created_at": 1 })
+            .findOne({ "contest_id": new ObjectId(id) }).sort({ "created_at": -1 })
             .populate({ path: 'contest_id', populate: { path: 'music_type' } })
             .populate('region')
             .populate('state')
@@ -153,6 +154,23 @@ round_helper.get_all_contests = async () => {
     try {
 
         var participate = await Round.find()
+            .populate({ path: 'contest_id', populate: { path: 'music_type' } })
+            .populate('state')
+
+
+        if (participate) {
+            return { "status": 1, "message": "contest details found", "contest": participate };
+        } else {
+            return { "status": 2, "message": "contest not found" };
+        }
+    } catch (err) {
+        return { "status": 0, "message": "Error occured while finding contest", "error": err }
+    }
+}
+
+round_helper.get_all_round_tracks = async (round) => {
+    try {
+        var participate = await RoundTracks.find({}, { "round1": round })
             .populate({ path: 'contest_id', populate: { path: 'music_type' } })
             .populate('state')
 

@@ -248,6 +248,20 @@ artist_helper.get_all_artist_for_email = async () => {
         return { "status": 0, "message": "Error occured while finding artist", "error": err }
     }
 };
+
+
+artist_helper.get_artist_by_email = async (email) => {
+    try {
+        var artist = await Artist.findOne({ "email": email })
+        if (artist) {
+            return { "status": 1, "message": "artist details found", "artist": artist };
+        } else {
+            return { "status": 2, "message": "artist not found" };
+        }
+    } catch (err) {
+        return { "status": 0, "message": "Error occured while finding artist", "error": err }
+    }
+};
 /*
  * get_artist_by_id is used to fetch artist details by artist id
  * 
