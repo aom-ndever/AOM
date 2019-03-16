@@ -1051,7 +1051,7 @@ var ContestService = /** @class */ (function () {
     };
     // Get existing contest
     ContestService.prototype.getExistingContest = function () {
-        return this.http.get(this.api_host + "/admin/get_contest", { headers: this.headers });
+        return this.http.get(this.api_host + "/admin/get_all_contests_for_vote", { headers: this.headers });
     };
     // get all region
     ContestService.prototype.getAllRegion = function () {
@@ -12706,8 +12706,8 @@ var environment = {
     GMAP_KEY: 'AIzaSyD6DEW05AQ8M_hrpSI7eTE3jbZB9k7c0Oc',
     GOOGLE_CLIENT_ID: '112936390114-hb3eeajuhemp9ls1n4i7cag8apf07mf8.apps.googleusercontent.com',
     GOOGLE_CLIENT_SECRET: 'bohGfi5VZz7Yd4kGgWkUJimF',
-    API_URL: 'http://localhost:3000',
-    //API_URL: 'http://18.211.240.89:3000',
+    //API_URL: 'http://localhost:3000',
+    API_URL: 'http://18.211.240.89:3000',
     ARTIST_IMG: '/uploads/artist/',
     USER_IMG: '/uploads/user/',
     ARTIST_MEDIA: '/uploads/media/',

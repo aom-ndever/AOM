@@ -77,16 +77,10 @@ contest_helper.get_all_contest_and_participant = async (start, length, sort = {}
 contest_helper.get_all_contests_for_vote = async (filter) => {
     var aggregate = [
         {
-            '$lookup': {
-                from: 'music_type',
-                localField: 'music_type',
-                foreignField: '_id',
-                as: 'music_type'
+            $project: {
+                "name": 1
             }
-        },
-        {
-            '$unwind': '$music_type'
-        },
+        }
     ];
     if (filter) {
         aggregate.push({
