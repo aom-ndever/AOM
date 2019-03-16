@@ -28,8 +28,9 @@ var RoundModelSchema = new Schema({
     rb_track: [{ type: String }],
     country_track: [{ type: String }],
     rock_track: [{ type: String }],
-    latin_track: { type: String },
+    latin_track: [{ type: String }],
     track_id: [{ type: mongoose.Schema.Types.ObjectId, ref: 'track' }],
+    artist_id: [{ type: mongoose.Schema.Types.ObjectId, ref: 'artist' }],
     created_at: { type: Date, default: Date.now }
 }, { versionKey: false });
 

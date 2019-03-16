@@ -96,9 +96,73 @@ round_helper.get_last_round = async (id) => {
         return { "status": 0, "message": "Error occured while finding contest", "error": err }
     }
 };
-round_helper.update_participant = async (id, no_participants) => {
+round_helper.update_hip_hop_participant = async (id, no_participants) => {
     try {
-        var contest = await Round.findOneAndUpdate({ "contest_id": new ObjectId(id) }, { "no_of_participants": no_participants })
+        console.log('no_participants', no_participants);
+
+        var contest = await Round.update({ "contest_id": new ObjectId(id) }, { $set: { "hip_hop_participants": no_participants } })
+        if (contest) {
+            return { "status": 1, "message": "contest updated", };
+        } else {
+            return { "status": 2, "message": "contest not found" };
+        }
+    } catch (err) {
+        return { "status": 0, "message": "Error occured while finding contest", "error": err }
+    }
+};
+
+
+round_helper.update_pop_participant = async (id, no_participants) => {
+    try {
+        var contest = await Round.update({ "contest_id": new ObjectId(id) }, { $set: { "pop_participants": no_participants } })
+        if (contest) {
+            return { "status": 1, "message": "contest updated", };
+        } else {
+            return { "status": 2, "message": "contest not found" };
+        }
+    } catch (err) {
+        return { "status": 0, "message": "Error occured while finding contest", "error": err }
+    }
+};
+round_helper.update_rb_participant = async (id, no_participants) => {
+    try {
+        var contest = await Round.update({ "contest_id": new ObjectId(id) }, { $set: { "rb_participants": no_participants } })
+        if (contest) {
+            return { "status": 1, "message": "contest updated", };
+        } else {
+            return { "status": 2, "message": "contest not found" };
+        }
+    } catch (err) {
+        return { "status": 0, "message": "Error occured while finding contest", "error": err }
+    }
+};
+round_helper.update_ele_participant = async (id, no_participants) => {
+    try {
+        var contest = await Round.update({ "contest_id": new ObjectId(id) }, { $set: { "country_participants:": no_participants } })
+        if (contest) {
+            return { "status": 1, "message": "contest updated", };
+        } else {
+            return { "status": 2, "message": "contest not found" };
+        }
+    } catch (err) {
+        return { "status": 0, "message": "Error occured while finding contest", "error": err }
+    }
+};
+round_helper.update_latin_participant = async (id, no_participants) => {
+    try {
+        var contest = await Round.update({ "contest_id": new ObjectId(id) }, { $set: { "latin_participants:": no_participants } })
+        if (contest) {
+            return { "status": 1, "message": "contest updated", };
+        } else {
+            return { "status": 2, "message": "contest not found" };
+        }
+    } catch (err) {
+        return { "status": 0, "message": "Error occured while finding contest", "error": err }
+    }
+};
+round_helper.update_rock_participant = async (id, no_participants) => {
+    try {
+        var contest = await Round.update({ "contest_id": new ObjectId(id) }, { $set: { "rock_participants::": no_participants } })
         if (contest) {
             return { "status": 1, "message": "contest updated", };
         } else {
@@ -152,11 +216,9 @@ round_helper.get_all_round = async (start, length, sort = {}) => {
 
 round_helper.get_all_contests = async () => {
     try {
-
         var participate = await Round.find()
             .populate({ path: 'contest_id', populate: { path: 'music_type' } })
             .populate('state')
-
 
         if (participate) {
             return { "status": 1, "message": "contest details found", "contest": participate };
@@ -173,8 +235,6 @@ round_helper.get_all_round_tracks = async (round) => {
         var participate = await RoundTracks.find({}, { "round1": round })
             .populate({ path: 'contest_id', populate: { path: 'music_type' } })
             .populate('state')
-
-
         if (participate) {
             return { "status": 1, "message": "contest details found", "contest": participate };
         } else {
@@ -187,18 +247,17 @@ round_helper.get_all_round_tracks = async (round) => {
 
 
 round_helper.get_current_round_of_contest = async (id) => {
-    let current = moment().toISOString();
 
-    var round = await Round
-        .findOne({
-            "contest_id": new ObjectId(id),
-            "start_date": {
-                $lte: current
-            },
-            "end_date": {
-                $gte: current
+    var round = await Round.aggregate([
+        {
+            $sort: {
+                "created_at": -1
             }
-        });
+        },
+        {
+            $limit: 1
+        }
+    ])
     if (round) {
         return { "status": 1, "message": "round details found", "round": round };
     } else {
@@ -206,23 +265,8 @@ round_helper.get_current_round_of_contest = async (id) => {
     }
 };
 
-round_helper.get_current_rounds_of_contests = async (id) => {
-    let current = moment().toISOString();
-    var round = await Round
-        .findOne({
-            "contest_id": new ObjectId(id),
-            "start_date": {
-                $lte: current
-            },
 
-        });
 
-    if (round) {
-        return { "status": 1, "message": "round details found", "round": round };
-    } else {
-        return { "status": 2, "message": "contest not found" };
-    }
-};
 
 
 round_helper.get_finished_round_of_contest = async (id) => {
@@ -239,6 +283,153 @@ round_helper.get_finished_round_of_contest = async (id) => {
         return { "status": 1, "message": "round details found", "round": round };
     } else {
         return { "status": 2, "message": "contest not found" };
+    }
+};
+
+
+round_helper.get_track_selected = async (music_type) => {
+    try {
+        var aggregate = [
+            {
+                $lookup:
+                {
+                    from: "track",
+                    localField: "round1_track",
+                    foreignField: "_id",
+                    as: "track"
+                }
+            },
+
+            {
+                $unwind: '$track'
+            },
+            {
+                $lookup:
+                {
+                    from: "artist",
+                    localField: "track.artist_id",
+                    foreignField: "_id",
+                    as: "artist"
+                }
+            }, {
+                $unwind: '$artist'
+            },
+            {
+                $lookup:
+                {
+                    from: "music_type",
+                    localField: "artist.music_type",
+                    foreignField: "_id",
+                    as: "music_type"
+                }
+            }, {
+                $unwind: '$music_type'
+            },
+            {
+                $match: {
+                    "music_type.alias": music_type
+                }
+            },
+            {
+                $sort: {
+                    "track.no_of_votes": -1
+                }
+            },
+            {
+                $limit: 51
+            },
+            {
+                $project: {
+                    'artist._id': 1,
+                    'track._id': 1
+                }
+            }
+        ];
+        let data = await RoundTracks.aggregate(aggregate);
+        var filter_cnt = data.length;
+        if (data) {
+            return { "status": 1, "message": "data details found", "data": data };
+        } else {
+            return { "status": 2, "message": "data not found" };
+        }
+    } catch (err) {
+        return { "status": 0, "message": "Error occured while finding data", "error": err }
+    }
+};
+round_helper.get_tracks_selected = async (artist_id, music_type, round) => {
+    try {
+        var aggregate = [
+            {
+                $match: {
+                    "artist_id": { $in: (artist_id) }
+                }
+            },
+            {
+                $lookup:
+                {
+                    from: "track",
+                    localField: round,
+                    foreignField: "_id",
+                    as: "track"
+                }
+            },
+            {
+                $unwind: "$track"
+            },
+            {
+                $lookup:
+                {
+                    from: "artist",
+                    localField: "artist_id",
+                    foreignField: "_id",
+                    as: "artist"
+                }
+            },
+            {
+                $unwind: "$artist"
+            },
+            {
+                $lookup:
+                {
+                    from: "music_type",
+                    localField: "artist.music_type",
+                    foreignField: "_id",
+                    as: "music_type"
+                }
+            }, {
+                $unwind: '$music_type'
+            },
+            {
+                $match: {
+                    "music_type.alias": music_type
+                }
+            },
+            {
+                $project: {
+                    "track._id": 1,
+                    "artist._id": 1
+                }
+            },
+            {
+                $sort:
+                {
+                    "track.no_of_votes": -1
+                }
+            },
+            {
+                $limit: 1
+            }
+
+        ];
+        let data = await RoundTracks.aggregate(aggregate);
+        var filter_cnt = data.length;
+        if (data) {
+            return { "status": 1, "message": "data details found", "data": data };
+        } else {
+            return { "status": 2, "message": "data not found" };
+        }
+    } catch (err) {
+        return { "status": 0, "message": "Error occured while finding data", "error": err }
     }
 };
 

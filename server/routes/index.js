@@ -31,6 +31,7 @@ var participate_helper = require('./../helpers/participate_helper');
 var vote_track_helper = require('./../helpers/vote_track_helper');
 var round_helper = require('./../helpers/round_helper');
 var winner_helper = require('./../helpers/winner_helper');
+var Track = require('./../models/track');
 
 /**
  * @api {post} /artist_registration Artist Registration
@@ -1896,33 +1897,58 @@ router.get('/tracks/:track_id', async (req, res) => {
 
 router.post('/get_track_for_current_round', async (req, res) => {
 
-  var round = await round_helper.get_current_round_of_contest(req.body.contest_id);
-  if (round.status === 1) {
-    round_id = round.round._id
-    var filter = {};
-    if (req.body.state) {
-      filter["state._id"] = new ObjectId(req.body.state)
-
+  var round = await round_helper.get_current_round_of_contest(req.body.contest_id)
+  console.log('round', round);
+  var arr = [];
+  for (const data of round.round) {
+    for (const track of data.hip_hop_track) {
+      var trk = track.toString();
+      arr.push(trk)
     }
-    if (req.body.music_type) {
-      filter["music_type._id"] = new ObjectId(req.body.music_type)
-
+    for (const track of data.country_track) {
+      var trk = track.toString();
+      arr.push(trk)
     }
-    if (req.body.search) {
-      var r = new RegExp(req.body.search);
-      var search = { "$regex": r, "$options": "i" };
+    for (const track of data.pop_track) {
+      var trk = track.toString();
+      arr.push(trk)
     }
-
-    var track = await winner_helper.get_qualified(round_id, req.body.start, req.body.length, filter, search);
-    if (track.status === 1) {
-      logger.trace("got details successfully");
-      res.status(config.OK_STATUS).json({ "status": 1, "track": track.winner });
-    } else {
-      res.status(config.OK_STATUS).json({ "message": "No participants yet for this contest" });
+    for (const track of data.rock_track) {
+      var trk = track.toString();
+      arr.push(trk)
     }
-  } else {
-    res.status(config.INTERNAL_SERVER_ERROR).json({ "message": "No participants yet for this contest" });
+    for (const track of data.rb_track) {
+      var trk = track.toString();
+      arr.push(trk)
+    }
+    for (const track of data.latin_track) {
+      var trk = track.toString();
+      arr.push(trk)
+    }
   }
+
+  var track = await Track.find({ "_id": { $in: arr } })
+  res.status(config.OK_STATUS).json({ "data": track });
+
+  // if (track.status === 1) {
+  //   logger.trace("got details successfully");
+  // } else {
+  // }
+
+  // var filter = {};
+  // if (req.body.state) {
+  //   filter["state._id"] = new ObjectId(req.body.state)
+
+  // }
+  // if (req.body.music_type) {
+  //   filter["music_type._id"] = new ObjectId(req.body.music_type)
+
+  // }
+  // if (req.body.search) {
+  //   var r = new RegExp(req.body.search);
+  //   var search = { "$regex": r, "$options": "i" };
+  // }
+  //}
 });
 
 router.post('/winners', async (req, res) => {
@@ -1974,12 +2000,10 @@ router.post('/get_contest', async (req, res) => {
   if (req.body.music_type) {
     filter["music_type._id"] = new ObjectId(req.body.music_type);
   }
-
-
   var contest = await contest_helper.get_all_contests_for_vote(filter);
   if (contest.status === 1) {
     logger.trace("got details successfully");
-    res.status(config.OK_STATUS).json({ "status": 1, "contest": contest });
+    res.status(config.OK_STATUS).json({ "status": 1, "contest": round });
   } else {
     res.status(config.INTERNAL_SERVER_ERROR).json(contest);
   }

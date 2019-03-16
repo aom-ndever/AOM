@@ -1,4 +1,5 @@
 var Contest = require("./../models/contest");
+var RoundTracks = require("./../models/round_tracks");
 var contest_helper = {};
 var mongoose = require('mongoose');
 var _ = require('underscore');
@@ -29,9 +30,13 @@ contest_helper.get_contest_by_id = async (id) => {
     }
 };
 
+
+
 contest_helper.update_participant = async (id, no_participants) => {
     try {
-        var contest = await Contest.findOneAndUpdate({ "_id": new ObjectId(id) }, { "no_of_participants": no_participants })
+        console.log('no_participants', no_participants);
+
+        var contest = await Contest.update({ "_id": new ObjectId(id) }, { $set: { "no_of_participant": no_participants } })
         if (contest) {
             return { "status": 1, "message": "contest updated", };
         } else {

@@ -145,7 +145,6 @@ artist_helper.get_payment_by_day = async (artist_id, day) => {
     } else {
         return { "status": 2, "message": "No  available Track" }
     }
-
 };
 
 
@@ -262,6 +261,8 @@ artist_helper.get_artist_by_email = async (email) => {
         return { "status": 0, "message": "Error occured while finding artist", "error": err }
     }
 };
+
+
 /*
  * get_artist_by_id is used to fetch artist details by artist id
  * 
@@ -273,7 +274,6 @@ artist_helper.get_artist_by_email = async (email) => {
  */
 artist_helper.get_artist_by_id = async (artist_id) => {
     try {
-
         var artist = await Artist.findOne({ "_id": { "$eq": artist_id } }).populate('music_type').populate({ path: 'state', populate: { path: 'region' } })
             ;
         if (artist) {
