@@ -29,7 +29,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
   imageChangedEvent: any = '';
   croppedImage: any = '';
   cropperReady = false;
-
+  public card_list: any = [];
 
   dtElements: QueryList<DataTableDirective>;
   dtOptions: DataTables.Settings[] = [];
@@ -2359,9 +2359,10 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
   addBank(flag) {
     if (flag) {
       this.show_spinner = true;
-      this.MyProfileService.addNewPaymentMethod(this.bank_data).subscribe((response) => {
+      this.MyProfileService.addNewPaymentMethod(this.bank_data).subscribe(async (response) => {
         this.toastr.success(response['message'], 'Success!');
-        this.getAllCard();
+        await this.getAllCard();
+        this.show_spinner = false;
         this.media_modal_ref.close();
       }, (error) => {
         this.toastr.error(error['error'].message, 'Error!');
@@ -2373,10 +2374,10 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
     this.bank_validation = !flag;
   }
   // get all card
-  card_list: any = [];
   getAllCard() {
     this.MyProfileService.getAllBank().subscribe((response) => {
       this.card_list = response['bank'];
+      console.log('here in list Data', this.card_list);
       this.card_list.forEach((ele) => {
         ele['account_number'] = ele['account_number'].toString().replace(/.(?=.{4})/g, 'X');
       });
