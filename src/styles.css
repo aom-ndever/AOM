@@ -1,3 +1,9 @@
+#up_twit img {
+
+  width: 14px;
+
+}
+
 /* You can add global styles to this file, and also import other style files */
 .terms_condition_block p {max-height: 140px;overflow: auto;}
 .artist-highlight .highlights-wrap {max-height: 600px;overflow: auto;width: 100%;}
@@ -140,5 +146,17 @@ img.social_icons:hover{
     #audioplayer{    position: relative;}
     
   }
+  text.highcharts-credits {
+    display: none;
+}
+
+
+
+
+.social-block .imginsta{
+  height:20px;
+
+}
+
 
 

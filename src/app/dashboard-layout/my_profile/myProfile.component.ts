@@ -15,6 +15,7 @@ import { DataTableDirective } from 'angular-datatables';
 import swal from 'sweetalert2';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
+// import { ImageCroppedEvent } from 'ngx-image-cropper';
 declare let Stripe: any;
 @Component({
   selector: 'app-myProfile',
@@ -23,6 +24,17 @@ declare let Stripe: any;
 })
 
 export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
+
+  // public config = {
+  //    ImageName: 'Some image',
+  //    AspectRatios: ["4:3", "16:9"],
+  // ImageUrl: 'https://static.pexels.com/photos/248797/pexels-photo-248797.jpeg',
+  //   ImageType: 'image/jpeg'
+  //  }
+  // public getEditedFile(file: File) {
+   
+   
+  // }
   @ViewChildren(DataTableDirective)
 
   artist_validation = [false, false, false, false, false, false, false];
@@ -41,6 +53,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
     month: '',
     year: ''
   };
+  
   public default_profile_img: any = 'img/profile-img.png';
   public default_cover_img: any = 'img/edit-cover.jpg';
   public day: any = [];
@@ -404,6 +417,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
 
   }
 
+
   ngOnInit() {
     if (this.userdata['type'] == 'artist') {
       this.getMediaList();
@@ -709,11 +723,16 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
       }
     }
   }
+//   imageCropped(event: ImageCroppedEvent) {
+//     this.croppedImage = event.base64;
+// }
+ 
 
   updateProfileImage(event: any) {
+    this.imageChangedEvent=event;
     console.log("update profile image");
     var fileList: FileList = event.target.files;
-    const file = event.target.files[0];
+    const file = <File>event.target.files[0];
     if (event.target.files.length > 0) {
       const allow_types = ['image/png', 'image/jpg', 'image/jpeg'];
       if (allow_types.indexOf(fileList[0].type) == -1) {
@@ -783,6 +802,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
         fr.readAsArrayBuffer(file);
       }
     }
+    
   }
 
   getImageMimetype = (signature) => {
@@ -845,6 +865,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
   updateCoverImage(event: any) {
+    // this.imageChangedEvent = event;
     const fileList: FileList = event.target.files;
     console.log(fileList);
     if (event.target.files.length > 0) {
@@ -876,6 +897,9 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
       }
     }
   }
+//   imageCropped(event: ImageCroppedEvent) {
+//     this.croppedImage = event.base64;
+// }
 
   updateLocalStorage() {
     if (this.userdata.type == 'artist') {

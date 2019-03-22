@@ -141,7 +141,7 @@
                       <div class="form-group col-md-6">
                         <label for="fname">First Name</label>
                         <input type="text" class="form-control" formControlName="fname" name="artist_fname" [(ngModel)]="artist_data.fname"
-                          placeholder="First Name">
+                          placeholder="First Name" required>
                         <div class="cust_err_msg" *ngIf="artist_validation[2] && !artist_step3.controls['fname'].valid">
                           <span *ngIf="artist_step3.controls['fname'].errors['required']" class="text-danger">First
                             name is required</span>
@@ -150,7 +150,7 @@
                       <div class="form-group col-md-6 pwd-grp">
                         <label for="lanem">Last Name</label>
                         <input type="text" class="form-control" formControlName="lname" [(ngModel)]="artist_data.lname"
-                          name="artist_lname" placeholder="Last Name">
+                          name="artist_lname" placeholder="Last Name" required>
                         <div class="cust_err_msg" *ngIf="artist_validation[2] && !artist_step3.controls['lname'].valid">
                           <span *ngIf="artist_step3.controls['lname'].errors['required']" class="text-danger">First
                             name is required</span>

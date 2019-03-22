@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+
 import { ChartModule } from 'angular-highcharts';
 import { AmChartsModule } from "@amcharts/amcharts3-angular";
 import { CommonModule } from '@angular/common';
@@ -51,10 +52,14 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AuthService } from '../shared/auth.service';
 
 import { ImageCropperModule } from 'ngx-image-cropper';
+
 @NgModule({
   imports: [
     ImageCropperModule,
     CommonModule,
+  
+  
+ 
     DashboardLayoutModule,
     CarouselModule,
     HttpModule,
