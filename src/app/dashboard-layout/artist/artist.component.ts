@@ -148,7 +148,7 @@ export class ArtistComponent implements OnInit {
     }
   }
   // filter artistv1
-  filterArtistv1(e: any) {
+  filterArtistv1(e: any) {  
     if (e.keyCode == 13) {
       let data = {
         search: this.search_str

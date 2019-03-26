@@ -3,6 +3,13 @@
   width: 14px;
 
 }
+.header_search.search-input input[type="text"]{
+  color:black;
+}
+
+.ng-valid ng-dirty ng-touched{
+color:black;
+}
 
 /* You can add global styles to this file, and also import other style files */
 .terms_condition_block p {max-height: 140px;overflow: auto;}
@@ -149,7 +156,9 @@ img.social_icons:hover{
   text.highcharts-credits {
     display: none;
 }
-
+.header_search.search-input input[type="text"]{
+  color:black;
+}
 
 
 
@@ -157,6 +166,7 @@ img.social_icons:hover{
   height:20px;
 
 }
+
 
 
 

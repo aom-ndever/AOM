@@ -81,7 +81,7 @@ import { ImageCropperModule } from 'ngx-image-cropper';
         component: DashboardLayoutComponent,
         children: [
           { path: '', component: DashboardComponent },
-          { path: 'whats-new', component: WhatsNewComponent, data: { title: "AOM | Whats New", edit: false } },
+          { path: 'whats-new', component: WhatsNewComponent, data: { title: "AOM | What's New", edit: false } },
           { path: 'artist', component: ArtistComponent, data: { title: "AOM | Artist", edit: false } },
           { path: 'artist_track_comment/:id', component: ArtistTrackConmmentsComponent, canActivate: [AuthService], data: { title: "AOM | Artist", edit: false } },
           { path: 'artist_profile/:artist_id/track/:id/comments', component: TrackConmmentsComponent, resolve: { comment: TrackCommentResolve, artist: TrackArtistProfileResolve, track: TrackDetailResolve }, data: { title: "AOM | Track comment", edit: false } },

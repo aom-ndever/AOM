@@ -13,7 +13,8 @@
                   <form>
                     <div class="mobile-search" (click)="toggleSearch()"><i class="fa fa-search" aria-hidden="true"></i></div>
                     <div class="search-input" [style]="toggSearch ? 'block' : 'none'">
-                      <input type="text" placeholder="Search by Artist Name" (keyup)="filterArtistv1($event)" name="search" [(ngModel)]="search_str" />
+                      <input type="text" placeholder="Search by Artist Name" (keyup)="filterArtistv1($event)" name="search" [(ngModel)]="search_str"/>
+                      
                     </div>
                   </form>
                 </div>

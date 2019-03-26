@@ -519,7 +519,7 @@ router.post('/artist_login', async (req, res) => {
 
 
         } else {
-          res.status(config.BAD_REQUEST).json({ message: "You Are Account is Suspended by Admin" });
+          res.status(config.BAD_REQUEST).json({ message: "Your account is suspended by admin" });
 
         }
       } else {
@@ -775,7 +775,7 @@ router.post('/user_login', async (req, res) => {
 
 
         } else {
-          res.status(config.BAD_REQUEST).json({ message: "You Are Account is Suspended by Admin" });
+          res.status(config.BAD_REQUEST).json({ message: "Your account is suspended by admin" });
 
         }
       } else {

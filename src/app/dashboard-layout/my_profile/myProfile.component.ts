@@ -321,8 +321,8 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
     });
 
     this.bank_fg = this.fb.group({
-      bname: ['', [Validators.required, Validators.pattern('[A-Za-z]+'), this.noWhitespaceValidator]],
-      hname: ['', [Validators.required, Validators.pattern('[A-Za-z]+'), this.noWhitespaceValidator]],
+      bname: ['', [Validators.required, Validators.pattern('[A-Za-z]+')]],
+      hname: ['', [Validators.required, Validators.pattern('[A-Za-z]+')]],
       acno: ['', [Validators.required, Validators.pattern('[0-9]+'), this.noWhitespaceValidator]],
       rno: ['', [Validators.required, Validators.pattern('[0-9]+'), this.noWhitespaceValidator]]
     });
@@ -2381,6 +2381,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
   }
   // Add new bank
   addBank(flag) {
+    console.log(flag);
     if (flag) {
       this.show_spinner = true;
       this.MyProfileService.addNewPaymentMethod(this.bank_data).subscribe(async (response) => {
@@ -2389,6 +2390,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
         this.show_spinner = false;
         this.media_modal_ref.close();
       }, (error) => {
+        console.log(error);
         this.toastr.error(error['error'].message, 'Error!');
         this.show_spinner = false;
       }, () => {
