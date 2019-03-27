@@ -43,7 +43,7 @@ export class VoteService {
   }
   // get winners data
   getWinnersData(data) {
-    return this.http.post(`${this.api_host}/winners`, data);
+    return this.http.post(`${this.api_host}/get_track_for_current_round`, data);
   }
   // Get followers
   getFollower() {

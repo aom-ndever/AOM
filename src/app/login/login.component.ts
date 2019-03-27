@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { MessageService } from '../shared/message.service';
 
 @Component({
   selector: 'app-login',
@@ -7,7 +8,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LoginComponent implements OnInit {
 
-  constructor() { }
+  constructor(private MessageService: MessageService) {
+    console.log('here in login====>');
+    var cnt = {
+      count: 0
+    };
+    this.MessageService.checkCount(cnt);
+  }
 
   ngOnInit() {
   }

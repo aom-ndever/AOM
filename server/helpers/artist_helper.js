@@ -629,7 +629,7 @@ artist_helper.update_featured_artist = async (artist_id, feature) => {
 
 artist_helper.update_artist_votes = async (artist_id, no_votes) => {
     try {
-        var vote = await Artist.findOneAndUpdate({ "_id": new ObjectId(artist_id) }, { "no_of_votes": no_votes })
+        var vote = await Artist.update({ "_id": new ObjectId(artist_id) }, { $set: { "no_of_votes": no_votes } })
         if (vote) {
             return { "status": 1, "message": "voting updated", };
         } else {

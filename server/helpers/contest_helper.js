@@ -16,6 +16,7 @@ contest_helper.insert_contest = async (object) => {
     }
 };
 
+
 contest_helper.get_contest_by_id = async (id) => {
     try {
         var contest = await Contest
@@ -29,7 +30,6 @@ contest_helper.get_contest_by_id = async (id) => {
         return { "status": 0, "message": "Error occured while finding contest", "error": err }
     }
 };
-
 
 
 contest_helper.update_participant = async (id, no_participants) => {
@@ -88,6 +88,7 @@ contest_helper.get_all_contests_for_vote = async (filter) => {
         })
     }
     let winner = await Contest.aggregate(aggregate);
+
     if (winner) {
         return { "status": 1, "message": "Artist  found", "winner": winner }
     } else {

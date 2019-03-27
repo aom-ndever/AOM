@@ -21,7 +21,8 @@ var ObjectId = mongoose.Types.ObjectId;
 var fs = require('fs');
 var archiver = require('archiver');
 var stripe = require("stripe")("sk_test_FUsMHGCLfkGJmKEbW0aiRATb");
-
+var global_helper = require('../../helpers/global_helper');
+var socket = require("../../socket/socketServer");
 var cron = require('node-cron');
 
 
@@ -158,7 +159,6 @@ router.post("/purchased", async (req, res) => {
  */
 router.post('/vote_track', async (req, res) => {
   user_id = req.userInfo.id;
-
   var data = await vote_track_helper.get_all_voted_artist(user_id, obj.track_id, obj.contest_id);
   if (data.status == 2) {
     var obj = {
@@ -178,8 +178,8 @@ router.post('/vote_track', async (req, res) => {
   } else {
     res.status(config.OK_STATUS).json({ "message": "Already Voted" });
   }
-
 });
+
 // router.post('/vote_track', async (req, res) => {
 //   user_id = req.userInfo.id;
 //   var schema = {
@@ -342,6 +342,14 @@ router.post('/like_track', async (req, res) => {
           .then(message => console.log(message.sid))
           .done();
       }
+      var notificationObj = {
+        sender: req.userInfo.id,
+        receiver: req.body.artist_id,
+        type: "comment",
+        body: "Got like on" + req.body.track_id + "from" + " " + response.user.first_name,
+      }
+      var notification_data = await global_helper.send_notification(notificationObj, socket);
+      console.log('notification_data', notification_data);
       logger.trace("like done successfully = ", data);
       res.status(config.OK_STATUS).json(data);
     }

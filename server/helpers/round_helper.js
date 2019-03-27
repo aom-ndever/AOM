@@ -247,8 +247,12 @@ round_helper.get_all_round_tracks = async (round) => {
 
 
 round_helper.get_current_round_of_contest = async (id) => {
-
     var round = await Round.aggregate([
+        {
+            $match: {
+                "contest_id": new ObjectId(id)
+            }
+        },
         {
             $sort: {
                 "created_at": -1
@@ -264,8 +268,6 @@ round_helper.get_current_round_of_contest = async (id) => {
         return { "status": 2, "message": "contest not found" };
     }
 };
-
-
 
 
 
@@ -356,6 +358,8 @@ round_helper.get_track_selected = async (music_type) => {
         return { "status": 0, "message": "Error occured while finding data", "error": err }
     }
 };
+
+
 round_helper.get_tracks_selected = async (artist_id, music_type, round) => {
     try {
         var aggregate = [

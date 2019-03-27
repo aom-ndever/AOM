@@ -1424,7 +1424,6 @@ router.put("/featured_artist", async (req, res) => {
     if (resp.artist.featured == false) {
       var feature = true
       if (featured_artist.artist.length <= 24) {
-
         var artist_resp = await artist_helper.update_featured_artist(artist_id, feature);
         logger.trace("Artist selected as featured artist = ");
         res.status(config.OK_STATUS).json({ "message": "Artist selected as featured artist" });
@@ -1443,837 +1442,824 @@ router.put("/featured_artist", async (req, res) => {
 });
 
 
-
 // cron.schedule('* * * * *', async () => {
-//      contest_id = req.body.contest_id
-//      contest_id = "5b8379ceefeb26718f02923b";
-//     var round = await round_helper.get_current_round_of_contest(contest_id);
+//   console.log("create round");
+//   var artist_id = [];
+//   var track_id = [];
 
-//      var round_id = round.round
+//   var contest = await round_helper.get_all_round_tracks(1);
+//   if (contest.status == 1) {
+//     for (const cont of contest.contest) {
+//       if (cont.contest_id.contest_type == "beta") {
+//         var round = await round_helper.get_last_round(cont.contest_id._id);
+//         if (round.contest.round == "preliminary") {
+//           var startdate = round.contest.start_date;
+//           var new_date = moment(startdate).add(28)
+//           if (new_date <= Date.now() &&
+//             round.contest.hip_hop_participants >= 51 &&
+//             round.contest.pop_participants >= 51 &&
+//             round.contest.rb_participants >= 51 &&
+//             round.contest.country_participants >= 51 &&
+//             round.contest.rock_participants >= 51 &&
+//             round.contest.latin_participants >= 51) {
+//             let next_round = "1"
+//             var hiphop_data = await round_helper.get_track_selected("hiphop");
+//             var pop_data = await round_helper.get_track_selected("pop");
+//             var rb_data = await round_helper.get_track_selected("rb");
+//             var latin_data = await round_helper.get_track_selected("latin");
+//             var country_data = await round_helper.get_track_selected("ele");
+//             var rock_data = await round_helper.get_track_selected("rock");
 
-//    var nextround = await winner_helper.get_qualified(round_id);
+//             var hiphop_track_id = [];
+//             var pop_track_id = [];
+//             var rb_track_id = [];
+//             var latin_track_id = [];
+//             var rock_track_id = [];
+//             var country_track_id = [];
+
+
+//             for (const hiphop of hiphop_data.data) {
+//               artist_id.push(hiphop.artist._id)
+//               hiphop_track_id.push(hiphop.track._id)
+//             }
+//             for (const hiphop of pop_data.data) {
+//               artist_id.push(hiphop.artist._id)
+//               pop_track_id.push(hiphop.track._id)
+//             }
+//             for (const hiphop of rb_data.data) {
+//               artist_id.push(hiphop.artist._id)
+//               rb_track_id.push(hiphop.track._id)
+//             }
+//             for (const hiphop of country_data.data) {
+//               artist_id.push(hiphop.artist._id)
+//               country_track_id.push(hiphop.track._id)
+//             }
+//             for (const hiphop of rock_data.data) {
+//               artist_id.push(hiphop.artist._id)
+//               rock_track_id.push(hiphop.track._id)
+//             }
+//             for (const hiphop of latin_data.data) {
+//               artist_id.push(hiphop.artist._id)
+//               latin_track_id.push(hiphop.track._id)
+//             }
+
+//             var obj = {
+//               contest_id: round.contest.contest_id,
+//               round: next_round,
+//               track_id: track_id,
+//               artist_id: artist_id,
+//               hip_hop_track: hiphop_track_id,
+//               pop_track: pop_track_id,
+//               rb_track: rb_track_id,
+//               country_track: country_track_id,
+//               rock_track: rock_track_id,
+//               latin_track: latin_track_id,
+//             }
+//             var resp_data = await round_helper.insert_round(obj);
+//           }
+//           else {
+//             console.log('continue with same round');
+//           }
+//         }
+//         else if (round.contest.round == "1") {
+//           var startdate = round.contest.created_at;
+//           var new_date = moment(startdate).add(28)
+//           if (new_date >= Date.now()) {
+//             let next_round = "2"
+//             var hiphop_data = await round_helper.get_tracks_selected(round.contest.artist_id, "hiphop", "round2_track");
+//             var pop_data = await round_helper.get_tracks_selected(round.contest.artist_id, "pop", "round2_track");
+//             var rb_data = await round_helper.get_tracks_selected(round.contest.artist_id, "rb", "round2_track");
+//             var latin_data = await round_helper.get_tracks_selected(round.contest.artist_id, "latin", "round2_track");
+//             var country_data = await round_helper.get_tracks_selected(round.contest.artist_id, "ele", "round2_track");
+//             var rock_data = await round_helper.get_tracks_selected(round.contest.artist_id, "rock", "round2_track");
+
+//             var hiphop_track_id = [];
+//             var pop_track_id = [];
+//             var rb_track_id = [];
+//             var latin_track_id = [];
+//             var rock_track_id = [];
+//             var country_track_id = [];
+
+
+//             for (const hiphop of hiphop_data.data) {
+//               artist_id.push(hiphop.artist._id)
+//               hiphop_track_id.push(hiphop.track._id)
+//             }
+//             for (const hiphop of pop_data.data) {
+//               artist_id.push(hiphop.artist._id)
+//               pop_track_id.push(hiphop.track._id)
+//             }
+//             for (const hiphop of rb_data.data) {
+//               artist_id.push(hiphop.artist._id)
+//               rb_track_id.push(hiphop.track._id)
+//             }
+//             for (const hiphop of country_data.data) {
+//               artist_id.push(hiphop.artist._id)
+//               country_track_id.push(hiphop.track._id)
+//             }
+//             for (const hiphop of rock_data.data) {
+//               artist_id.push(hiphop.artist._id)
+//               rock_track_id.push(hiphop.track._id)
+//             }
+//             for (const hiphop of latin_data.data) {
+//               artist_id.push(hiphop.artist._id)
+//               latin_track_id.push(hiphop.track._id)
+//             }
+
+//             var obj = {
+//               contest_id: round.contest.contest_id,
+//               round: next_round,
+//               track_id: track_id,
+//               artist_id: artist_id,
+//               hip_hop_track: hiphop_track_id,
+//               pop_track: pop_track_id,
+//               rb_track: rb_track_id,
+//               country_track: country_track_id,
+//               rock_track: rock_track_id,
+//               latin_track: latin_track_id,
+//             }
+
+
+//             var resp_data = await round_helper.insert_round(obj);
+//           }
+//           else {
+//             console.log('continue with same round');
+//           }
+
+//         }
+//         else if (round.contest.round == "2") {
+//           var startdate = round.contest.created_at;
+//           var new_date = moment(startdate).add(28)
+//           if (new_date > Date.now()) {
+//             let next_round = "3"
+//             var hiphop_data = await round_helper.get_tracks_selected(round.contest.artist_id, "hiphop", "round3_track");
+//             var pop_data = await round_helper.get_tracks_selected(round.contest.artist_id, "pop", "round3_track");
+//             var rb_data = await round_helper.get_tracks_selected(round.contest.artist_id, "rb", "round3_track");
+//             var latin_data = await round_helper.get_tracks_selected(round.contest.artist_id, "latin", "round3_track");
+//             var country_data = await round_helper.get_tracks_selected(round.contest.artist_id, "ele", "round3_track");
+//             var rock_data = await round_helper.get_tracks_selected(round.contest.artist_id, "rock", "round3_track");
+
+//             var hiphop_track_id = [];
+//             var pop_track_id = [];
+//             var rb_track_id = [];
+//             var latin_track_id = [];
+//             var rock_track_id = [];
+//             var country_track_id = [];
+
+
+//             for (const hiphop of hiphop_data.data) {
+//               artist_id.push(hiphop.artist._id)
+//               hiphop_track_id.push(hiphop.track._id)
+//             }
+//             for (const hiphop of pop_data.data) {
+//               artist_id.push(hiphop.artist._id)
+//               pop_track_id.push(hiphop.track._id)
+//             }
+//             for (const hiphop of rb_data.data) {
+//               artist_id.push(hiphop.artist._id)
+//               rb_track_id.push(hiphop.track._id)
+//             }
+//             for (const hiphop of country_data.data) {
+//               artist_id.push(hiphop.artist._id)
+//               country_track_id.push(hiphop.track._id)
+//             }
+//             for (const hiphop of rock_data.data) {
+//               artist_id.push(hiphop.artist._id)
+//               rock_track_id.push(hiphop.track._id)
+//             }
+//             for (const hiphop of latin_data.data) {
+//               artist_id.push(hiphop.artist._id)
+//               latin_track_id.push(hiphop.track._id)
+//             }
+
+//             var obj = {
+//               contest_id: round.contest.contest_id,
+//               round: next_round,
+//               track_id: track_id,
+//               artist_id: artist_id,
+//               hip_hop_track: hiphop_track_id,
+//               pop_track: pop_track_id,
+//               rb_track: rb_track_id,
+//               country_track: country_track_id,
+//               rock_track: rock_track_id,
+//               latin_track: latin_track_id,
+//             }
+//             var resp_data = await round_helper.insert_round(obj);
+//           }
+//           else {
+
+//           }
+//         }
+//         else if (round.contest.round == "3") {
+//           var startdate = round.contest.created_at;
+//           var new_date = moment(startdate).add(28)
+//           if (new_date > Date.now()) {
+//             var next_round_artist = await track_helper.get_new_round_contestant(round.contest.contest_id, round.contest.round)
+//             console.log('next_round_artist', next_round_artist);
+//             let next_round = "semi_final"
+//             var hiphop_data = await round_helper.get_tracks_selected(round.contest.artist_id, "hiphop", "semi_final_track");
+//             var pop_data = await round_helper.get_tracks_selected(round.contest.artist_id, "pop", "semi_final_track");
+//             var rb_data = await round_helper.get_tracks_selected(round.contest.artist_id, "rb", "semi_final_track");
+//             var latin_data = await round_helper.get_tracks_selected(round.contest.artist_id, "latin", "semi_final_track");
+//             var country_data = await round_helper.get_tracks_selected(round.contest.artist_id, "ele", "semi_final_track");
+//             var rock_data = await round_helper.get_tracks_selected(round.contest.artist_id, "rock", "semi_final_track");
+
+//             var hiphop_track_id = [];
+//             var pop_track_id = [];
+//             var rb_track_id = [];
+//             var latin_track_id = [];
+//             var rock_track_id = [];
+//             var country_track_id = [];
+
+
+//             for (const hiphop of hiphop_data.data) {
+//               artist_id.push(hiphop.artist._id)
+//               hiphop_track_id.push(hiphop.track._id)
+//             }
+//             for (const hiphop of pop_data.data) {
+//               artist_id.push(hiphop.artist._id)
+//               pop_track_id.push(hiphop.track._id)
+//             }
+//             for (const hiphop of rb_data.data) {
+//               artist_id.push(hiphop.artist._id)
+//               rb_track_id.push(hiphop.track._id)
+//             }
+//             for (const hiphop of country_data.data) {
+//               artist_id.push(hiphop.artist._id)
+//               country_track_id.push(hiphop.track._id)
+//             }
+//             for (const hiphop of rock_data.data) {
+//               artist_id.push(hiphop.artist._id)
+//               rock_track_id.push(hiphop.track._id)
+//             }
+//             for (const hiphop of latin_data.data) {
+//               artist_id.push(hiphop.artist._id)
+//               latin_track_id.push(hiphop.track._id)
+//             }
+
+//             var obj = {
+//               contest_id: round.contest.contest_id,
+//               round: next_round,
+//               track_id: track_id,
+//               artist_id: artist_id,
+//               hip_hop_track: hiphop_track_id,
+//               pop_track: pop_track_id,
+//               rb_track: rb_track_id,
+//               country_track: country_track_id,
+//               rock_track: rock_track_id,
+//               latin_track: latin_track_id,
+//             }
+
+
+//             var resp_data = await round_helper.insert_round(obj);
+
+//           }
+//           else {
+//             console.log('continue with same round');
+
+//           }
+//         }
+//         else if (round.contest.round == "semi_final") {
+//           var startdate = round.contest.created_at;
+//           var new_date = moment(startdate).add(28)
+//           if (new_date > Date.now()) {
+//             let next_round = "final"
+//             var hiphop_data = await round_helper.get_tracks_selected(round.contest.artist_id, "hiphop", "final_track");
+//             var pop_data = await round_helper.get_tracks_selected(round.contest.artist_id, "pop", "final_track");
+//             var rb_data = await round_helper.get_tracks_selected(round.contest.artist_id, "rb", "final_track");
+//             var latin_data = await round_helper.get_tracks_selected(round.contest.artist_id, "latin", "final_track");
+//             var country_data = await round_helper.get_tracks_selected(round.contest.artist_id, "ele", "final_track");
+//             var rock_data = await round_helper.get_tracks_selected(round.contest.artist_id, "rock", "final_track");
+
+//             var hiphop_track_id = [];
+//             var pop_track_id = [];
+//             var rb_track_id = [];
+//             var latin_track_id = [];
+//             var rock_track_id = [];
+//             var country_track_id = [];
+
+
+//             for (const hiphop of hiphop_data.data) {
+//               artist_id.push(hiphop.artist._id)
+//               hiphop_track_id.push(hiphop.track._id)
+//             }
+//             for (const hiphop of pop_data.data) {
+//               artist_id.push(hiphop.artist._id)
+//               pop_track_id.push(hiphop.track._id)
+//             }
+//             for (const hiphop of rb_data.data) {
+//               artist_id.push(hiphop.artist._id)
+//               rb_track_id.push(hiphop.track._id)
+//             }
+//             for (const hiphop of country_data.data) {
+//               artist_id.push(hiphop.artist._id)
+//               country_track_id.push(hiphop.track._id)
+//             }
+//             for (const hiphop of rock_data.data) {
+//               artist_id.push(hiphop.artist._id)
+//               rock_track_id.push(hiphop.track._id)
+//             }
+//             for (const hiphop of latin_data.data) {
+//               artist_id.push(hiphop.artist._id)
+//               latin_track_id.push(hiphop.track._id)
+//             }
+
+//             var obj = {
+//               contest_id: round.contest.contest_id,
+//               round: next_round,
+//               track_id: track_id,
+//               artist_id: artist_id,
+//               hip_hop_track: hiphop_track_id,
+//               pop_track: pop_track_id,
+//               rb_track: rb_track_id,
+//               country_track: country_track_id,
+//               rock_track: rock_track_id,
+//               latin_track: latin_track_id,
+//             }
+
+
+//             var resp_data = await round_helper.insert_round(obj);
+//           }
+//           else {
+//             console.log('continue with same round');
+//           }
+//         }
+
+//       }
+//       else if (cont.contest_type == "standard") {
+//         var round = await round_helper.get_last_round(cont.contest_id._id);
+//         if (round.contest.round == "preliminary1") {
+//           var startdate = round.contest.start_date;
+//           var new_date = moment(startdate).add(28)
+//           if (new_date <= Date.now() &&
+//             round.contest.hip_hop_participants >= 51 &&
+//             round.contest.pop_participants >= 51 &&
+//             round.contest.rb_participants >= 51 &&
+//             round.contest.country_participants >= 51 &&
+//             round.contest.rock_participants >= 51 &&
+//             round.contest.latin_participants >= 51) {
+//             let next_round = "preliminary2"
+//             var hiphop_data = await round_helper.get_track_selected("hiphop");
+//             var pop_data = await round_helper.get_track_selected("pop");
+//             var rb_data = await round_helper.get_track_selected("rb");
+//             var latin_data = await round_helper.get_track_selected("latin");
+//             var country_data = await round_helper.get_track_selected("ele");
+//             var rock_data = await round_helper.get_track_selected("rock");
+
+//             var hiphop_track_id = [];
+//             var pop_track_id = [];
+//             var rb_track_id = [];
+//             var latin_track_id = [];
+//             var rock_track_id = [];
+//             var country_track_id = [];
+
+
+//             for (const hiphop of hiphop_data.data) {
+//               artist_id.push(hiphop.artist._id)
+//               hiphop_track_id.push(hiphop.track._id)
+//             }
+//             for (const hiphop of pop_data.data) {
+//               artist_id.push(hiphop.artist._id)
+//               pop_track_id.push(hiphop.track._id)
+//             }
+//             for (const hiphop of rb_data.data) {
+//               artist_id.push(hiphop.artist._id)
+//               rb_track_id.push(hiphop.track._id)
+//             }
+//             for (const hiphop of country_data.data) {
+//               artist_id.push(hiphop.artist._id)
+//               country_track_id.push(hiphop.track._id)
+//             }
+//             for (const hiphop of rock_data.data) {
+//               artist_id.push(hiphop.artist._id)
+//               rock_track_id.push(hiphop.track._id)
+//             }
+//             for (const hiphop of latin_data.data) {
+//               artist_id.push(hiphop.artist._id)
+//               latin_track_id.push(hiphop.track._id)
+//             }
+
+//             var obj = {
+//               contest_id: round.contest.contest_id,
+//               round: next_round,
+//               track_id: track_id,
+//               artist_id: artist_id,
+//               hip_hop_track: hiphop_track_id,
+//               pop_track: pop_track_id,
+//               rb_track: rb_track_id,
+//               country_track: country_track_id,
+//               rock_track: rock_track_id,
+//               latin_track: latin_track_id,
+//             }
+//             var resp_data = await round_helper.insert_round(obj);
+//           }
+//           else {
+//             console.log('continue with same round');
+//           }
+//         }
+//         else if (round.contest.round == "preliminary2") {
+//           var startdate = round.contest.created_at;
+//           var new_date = moment(startdate).add(28)
+//           if (new_date >= Date.now()) {
+//             let next_round = "preliminary3"
+//             var hiphop_data = await round_helper.get_tracks_selected(round.contest.artist_id, "hiphop", "preliminary2_track");
+//             var pop_data = await round_helper.get_tracks_selected(round.contest.artist_id, "pop", "preliminary2_track");
+//             var rb_data = await round_helper.get_tracks_selected(round.contest.artist_id, "rb", "preliminary2_track");
+//             var latin_data = await round_helper.get_tracks_selected(round.contest.artist_id, "latin", "preliminary2_track");
+//             var country_data = await round_helper.get_tracks_selected(round.contest.artist_id, "ele", "preliminary2_track");
+//             var rock_data = await round_helper.get_tracks_selected(round.contest.artist_id, "rock", "preliminary2_track");
+
+//             var hiphop_track_id = [];
+//             var pop_track_id = [];
+//             var rb_track_id = [];
+//             var latin_track_id = [];
+//             var rock_track_id = [];
+//             var country_track_id = [];
+
+
+//             for (const hiphop of hiphop_data.data) {
+//               artist_id.push(hiphop.artist._id)
+//               hiphop_track_id.push(hiphop.track._id)
+//             }
+//             for (const hiphop of pop_data.data) {
+//               artist_id.push(hiphop.artist._id)
+//               pop_track_id.push(hiphop.track._id)
+//             }
+//             for (const hiphop of rb_data.data) {
+//               artist_id.push(hiphop.artist._id)
+//               rb_track_id.push(hiphop.track._id)
+//             }
+//             for (const hiphop of country_data.data) {
+//               artist_id.push(hiphop.artist._id)
+//               country_track_id.push(hiphop.track._id)
+//             }
+//             for (const hiphop of rock_data.data) {
+//               artist_id.push(hiphop.artist._id)
+//               rock_track_id.push(hiphop.track._id)
+//             }
+//             for (const hiphop of latin_data.data) {
+//               artist_id.push(hiphop.artist._id)
+//               latin_track_id.push(hiphop.track._id)
+//             }
+
+//             var obj = {
+//               contest_id: round.contest.contest_id,
+//               round: next_round,
+//               track_id: track_id,
+//               artist_id: artist_id,
+//               hip_hop_track: hiphop_track_id,
+//               pop_track: pop_track_id,
+//               rb_track: rb_track_id,
+//               country_track: country_track_id,
+//               rock_track: rock_track_id,
+//               latin_track: latin_track_id,
+//             }
+
+
+//             var resp_data = await round_helper.insert_round(obj);
+//           }
+//           else {
+//             console.log('continue with same round');
+//           }
+
+//         }
+//         else if (round.contest.round == "preliminary3") {
+//           var startdate = round.contest.created_at;
+//           var new_date = moment(startdate).add(28)
+//           if (new_date >= Date.now()) {
+//             let next_round = "1"
+//             var hiphop_data = await round_helper.get_tracks_selected(round.contest.artist_id, "hiphop", "round2_track");
+//             var pop_data = await round_helper.get_tracks_selected(round.contest.artist_id, "pop", "round2_track");
+//             var rb_data = await round_helper.get_tracks_selected(round.contest.artist_id, "rb", "round2_track");
+//             var latin_data = await round_helper.get_tracks_selected(round.contest.artist_id, "latin", "round2_track");
+//             var country_data = await round_helper.get_tracks_selected(round.contest.artist_id, "ele", "round2_track");
+//             var rock_data = await round_helper.get_tracks_selected(round.contest.artist_id, "rock", "round2_track");
+
+//             var hiphop_track_id = [];
+//             var pop_track_id = [];
+//             var rb_track_id = [];
+//             var latin_track_id = [];
+//             var rock_track_id = [];
+//             var country_track_id = [];
+
+
+//             for (const hiphop of hiphop_data.data) {
+//               artist_id.push(hiphop.artist._id)
+//               hiphop_track_id.push(hiphop.track._id)
+//             }
+//             for (const hiphop of pop_data.data) {
+//               artist_id.push(hiphop.artist._id)
+//               pop_track_id.push(hiphop.track._id)
+//             }
+//             for (const hiphop of rb_data.data) {
+//               artist_id.push(hiphop.artist._id)
+//               rb_track_id.push(hiphop.track._id)
+//             }
+//             for (const hiphop of country_data.data) {
+//               artist_id.push(hiphop.artist._id)
+//               country_track_id.push(hiphop.track._id)
+//             }
+//             for (const hiphop of rock_data.data) {
+//               artist_id.push(hiphop.artist._id)
+//               rock_track_id.push(hiphop.track._id)
+//             }
+//             for (const hiphop of latin_data.data) {
+//               artist_id.push(hiphop.artist._id)
+//               latin_track_id.push(hiphop.track._id)
+//             }
+
+//             var obj = {
+//               contest_id: round.contest.contest_id,
+//               round: next_round,
+//               track_id: track_id,
+//               artist_id: artist_id,
+//               hip_hop_track: hiphop_track_id,
+//               pop_track: pop_track_id,
+//               rb_track: rb_track_id,
+//               country_track: country_track_id,
+//               rock_track: rock_track_id,
+//               latin_track: latin_track_id,
+//             }
+
+
+//             var resp_data = await round_helper.insert_round(obj);
+//           }
+//           else {
+//             console.log('continue with same round');
+//           }
+
+//         }
+//         else if (round.contest.round == "1") {
+//           var startdate = round.contest.created_at;
+//           var new_date = moment(startdate).add(28)
+//           if (new_date >= Date.now()) {
+//             let next_round = "2"
+//             var hiphop_data = await round_helper.get_tracks_selected(round.contest.artist_id, "hiphop", "round2_track");
+//             var pop_data = await round_helper.get_tracks_selected(round.contest.artist_id, "pop", "round2_track");
+//             var rb_data = await round_helper.get_tracks_selected(round.contest.artist_id, "rb", "round2_track");
+//             var latin_data = await round_helper.get_tracks_selected(round.contest.artist_id, "latin", "round2_track");
+//             var country_data = await round_helper.get_tracks_selected(round.contest.artist_id, "ele", "round2_track");
+//             var rock_data = await round_helper.get_tracks_selected(round.contest.artist_id, "rock", "round2_track");
+
+//             var hiphop_track_id = [];
+//             var pop_track_id = [];
+//             var rb_track_id = [];
+//             var latin_track_id = [];
+//             var rock_track_id = [];
+//             var country_track_id = [];
+
+
+//             for (const hiphop of hiphop_data.data) {
+//               artist_id.push(hiphop.artist._id)
+//               hiphop_track_id.push(hiphop.track._id)
+//             }
+//             for (const hiphop of pop_data.data) {
+//               artist_id.push(hiphop.artist._id)
+//               pop_track_id.push(hiphop.track._id)
+//             }
+//             for (const hiphop of rb_data.data) {
+//               artist_id.push(hiphop.artist._id)
+//               rb_track_id.push(hiphop.track._id)
+//             }
+//             for (const hiphop of country_data.data) {
+//               artist_id.push(hiphop.artist._id)
+//               country_track_id.push(hiphop.track._id)
+//             }
+//             for (const hiphop of rock_data.data) {
+//               artist_id.push(hiphop.artist._id)
+//               rock_track_id.push(hiphop.track._id)
+//             }
+//             for (const hiphop of latin_data.data) {
+//               artist_id.push(hiphop.artist._id)
+//               latin_track_id.push(hiphop.track._id)
+//             }
+
+//             var obj = {
+//               contest_id: round.contest.contest_id,
+//               round: next_round,
+//               track_id: track_id,
+//               artist_id: artist_id,
+//               hip_hop_track: hiphop_track_id,
+//               pop_track: pop_track_id,
+//               rb_track: rb_track_id,
+//               country_track: country_track_id,
+//               rock_track: rock_track_id,
+//               latin_track: latin_track_id,
+//             }
+
+
+//             var resp_data = await round_helper.insert_round(obj);
+//           }
+//           else {
+//             console.log('continue with same round');
+//           }
+
+//         }
+//         else if (round.contest.round == "2") {
+//           var startdate = round.contest.created_at;
+//           var new_date = moment(startdate).add(28)
+//           if (new_date > Date.now()) {
+//             let next_round = "3"
+//             var hiphop_data = await round_helper.get_tracks_selected(round.contest.artist_id, "hiphop", "round3_track");
+//             var pop_data = await round_helper.get_tracks_selected(round.contest.artist_id, "pop", "round3_track");
+//             var rb_data = await round_helper.get_tracks_selected(round.contest.artist_id, "rb", "round3_track");
+//             var latin_data = await round_helper.get_tracks_selected(round.contest.artist_id, "latin", "round3_track");
+//             var country_data = await round_helper.get_tracks_selected(round.contest.artist_id, "ele", "round3_track");
+//             var rock_data = await round_helper.get_tracks_selected(round.contest.artist_id, "rock", "round3_track");
+
+//             var hiphop_track_id = [];
+//             var pop_track_id = [];
+//             var rb_track_id = [];
+//             var latin_track_id = [];
+//             var rock_track_id = [];
+//             var country_track_id = [];
+
+
+//             for (const hiphop of hiphop_data.data) {
+//               artist_id.push(hiphop.artist._id)
+//               hiphop_track_id.push(hiphop.track._id)
+//             }
+//             for (const hiphop of pop_data.data) {
+//               artist_id.push(hiphop.artist._id)
+//               pop_track_id.push(hiphop.track._id)
+//             }
+//             for (const hiphop of rb_data.data) {
+//               artist_id.push(hiphop.artist._id)
+//               rb_track_id.push(hiphop.track._id)
+//             }
+//             for (const hiphop of country_data.data) {
+//               artist_id.push(hiphop.artist._id)
+//               country_track_id.push(hiphop.track._id)
+//             }
+//             for (const hiphop of rock_data.data) {
+//               artist_id.push(hiphop.artist._id)
+//               rock_track_id.push(hiphop.track._id)
+//             }
+//             for (const hiphop of latin_data.data) {
+//               artist_id.push(hiphop.artist._id)
+//               latin_track_id.push(hiphop.track._id)
+//             }
+
+//             var obj = {
+//               contest_id: round.contest.contest_id,
+//               round: next_round,
+//               track_id: track_id,
+//               artist_id: artist_id,
+//               hip_hop_track: hiphop_track_id,
+//               pop_track: pop_track_id,
+//               rb_track: rb_track_id,
+//               country_track: country_track_id,
+//               rock_track: rock_track_id,
+//               latin_track: latin_track_id,
+//             }
+//             var resp_data = await round_helper.insert_round(obj);
+//           }
+//           else {
+
+//           }
+//         }
+//         else if (round.contest.round == "3") {
+//           var startdate = round.contest.created_at;
+//           var new_date = moment(startdate).add(28)
+//           if (new_date > Date.now()) {
+//             var next_round_artist = await track_helper.get_new_round_contestant(round.contest.contest_id, round.contest.round)
+//             console.log('next_round_artist', next_round_artist);
+//             let next_round = "semi_final"
+//             var hiphop_data = await round_helper.get_tracks_selected(round.contest.artist_id, "hiphop", "semi_final_track");
+//             var pop_data = await round_helper.get_tracks_selected(round.contest.artist_id, "pop", "semi_final_track");
+//             var rb_data = await round_helper.get_tracks_selected(round.contest.artist_id, "rb", "semi_final_track");
+//             var latin_data = await round_helper.get_tracks_selected(round.contest.artist_id, "latin", "semi_final_track");
+//             var country_data = await round_helper.get_tracks_selected(round.contest.artist_id, "ele", "semi_final_track");
+//             var rock_data = await round_helper.get_tracks_selected(round.contest.artist_id, "rock", "semi_final_track");
+
+//             var hiphop_track_id = [];
+//             var pop_track_id = [];
+//             var rb_track_id = [];
+//             var latin_track_id = [];
+//             var rock_track_id = [];
+//             var country_track_id = [];
+
+
+//             for (const hiphop of hiphop_data.data) {
+//               artist_id.push(hiphop.artist._id)
+//               hiphop_track_id.push(hiphop.track._id)
+//             }
+//             for (const hiphop of pop_data.data) {
+//               artist_id.push(hiphop.artist._id)
+//               pop_track_id.push(hiphop.track._id)
+//             }
+//             for (const hiphop of rb_data.data) {
+//               artist_id.push(hiphop.artist._id)
+//               rb_track_id.push(hiphop.track._id)
+//             }
+//             for (const hiphop of country_data.data) {
+//               artist_id.push(hiphop.artist._id)
+//               country_track_id.push(hiphop.track._id)
+//             }
+//             for (const hiphop of rock_data.data) {
+//               artist_id.push(hiphop.artist._id)
+//               rock_track_id.push(hiphop.track._id)
+//             }
+//             for (const hiphop of latin_data.data) {
+//               artist_id.push(hiphop.artist._id)
+//               latin_track_id.push(hiphop.track._id)
+//             }
+
+//             var obj = {
+//               contest_id: round.contest.contest_id,
+//               round: next_round,
+//               track_id: track_id,
+//               artist_id: artist_id,
+//               hip_hop_track: hiphop_track_id,
+//               pop_track: pop_track_id,
+//               rb_track: rb_track_id,
+//               country_track: country_track_id,
+//               rock_track: rock_track_id,
+//               latin_track: latin_track_id,
+//             }
+
+
+//             var resp_data = await round_helper.insert_round(obj);
+
+//           }
+//           else {
+//             console.log('continue with same round');
+
+//           }
+//         }
+//         else if (round.contest.round == "semi_final") {
+//           var startdate = round.contest.created_at;
+//           var new_date = moment(startdate).add(28)
+//           if (new_date > Date.now()) {
+//             let next_round = "final"
+//             var hiphop_data = await round_helper.get_tracks_selected(round.contest.artist_id, "hiphop", "final_track");
+//             var pop_data = await round_helper.get_tracks_selected(round.contest.artist_id, "pop", "final_track");
+//             var rb_data = await round_helper.get_tracks_selected(round.contest.artist_id, "rb", "final_track");
+//             var latin_data = await round_helper.get_tracks_selected(round.contest.artist_id, "latin", "final_track");
+//             var country_data = await round_helper.get_tracks_selected(round.contest.artist_id, "ele", "final_track");
+//             var rock_data = await round_helper.get_tracks_selected(round.contest.artist_id, "rock", "final_track");
+
+//             var hiphop_track_id = [];
+//             var pop_track_id = [];
+//             var rb_track_id = [];
+//             var latin_track_id = [];
+//             var rock_track_id = [];
+//             var country_track_id = [];
+
+
+//             for (const hiphop of hiphop_data.data) {
+//               artist_id.push(hiphop.artist._id)
+//               hiphop_track_id.push(hiphop.track._id)
+//             }
+//             for (const hiphop of pop_data.data) {
+//               artist_id.push(hiphop.artist._id)
+//               pop_track_id.push(hiphop.track._id)
+//             }
+//             for (const hiphop of rb_data.data) {
+//               artist_id.push(hiphop.artist._id)
+//               rb_track_id.push(hiphop.track._id)
+//             }
+//             for (const hiphop of country_data.data) {
+//               artist_id.push(hiphop.artist._id)
+//               country_track_id.push(hiphop.track._id)
+//             }
+//             for (const hiphop of rock_data.data) {
+//               artist_id.push(hiphop.artist._id)
+//               rock_track_id.push(hiphop.track._id)
+//             }
+//             for (const hiphop of latin_data.data) {
+//               artist_id.push(hiphop.artist._id)
+//               latin_track_id.push(hiphop.track._id)
+//             }
+
+//             var obj = {
+//               contest_id: round.contest.contest_id,
+//               round: next_round,
+//               track_id: track_id,
+//               artist_id: artist_id,
+//               hip_hop_track: hiphop_track_id,
+//               pop_track: pop_track_id,
+//               rb_track: rb_track_id,
+//               country_track: country_track_id,
+//               rock_track: rock_track_id,
+//               latin_track: latin_track_id,
+//             }
+
+
+//             var resp_data = await round_helper.insert_round(obj);
+//           }
+//           else {
+//             console.log('continue with same round');
+//           }
+//         }
+//         else {
+//           console.log('Contest Over');
+//         }
+//       }
+//     }
+//   }
 
 // });
-
-
-cron.schedule('* * * * *', async () => {
-  console.log("create round");
-  var artist_id = [];
-  var track_id = [];
-
-  var contest = await round_helper.get_all_round_tracks(1);
-  if (contest.status == 1) {
-    for (const cont of contest.contest) {
-      if (cont.contest_id.contest_type == "beta") {
-        var round = await round_helper.get_last_round(cont.contest_id._id);
-        if (round.contest.round == "preliminary") {
-          var startdate = round.contest.start_date;
-          var new_date = moment(startdate).add(28)
-          if (new_date <= Date.now() &&
-            round.contest.hip_hop_participants >= 51 &&
-            round.contest.pop_participants >= 51 &&
-            round.contest.rb_participants >= 51 &&
-            round.contest.country_participants >= 51 &&
-            round.contest.rock_participants >= 51 &&
-            round.contest.latin_participants >= 51) {
-            let next_round = "1"
-            var hiphop_data = await round_helper.get_track_selected("hiphop");
-            var pop_data = await round_helper.get_track_selected("pop");
-            var rb_data = await round_helper.get_track_selected("rb");
-            var latin_data = await round_helper.get_track_selected("latin");
-            var country_data = await round_helper.get_track_selected("ele");
-            var rock_data = await round_helper.get_track_selected("rock");
-
-            var hiphop_track_id = [];
-            var pop_track_id = [];
-            var rb_track_id = [];
-            var latin_track_id = [];
-            var rock_track_id = [];
-            var country_track_id = [];
-
-
-            for (const hiphop of hiphop_data.data) {
-              artist_id.push(hiphop.artist._id)
-              hiphop_track_id.push(hiphop.track._id)
-            }
-            for (const hiphop of pop_data.data) {
-              artist_id.push(hiphop.artist._id)
-              pop_track_id.push(hiphop.track._id)
-            }
-            for (const hiphop of rb_data.data) {
-              artist_id.push(hiphop.artist._id)
-              rb_track_id.push(hiphop.track._id)
-            }
-            for (const hiphop of country_data.data) {
-              artist_id.push(hiphop.artist._id)
-              country_track_id.push(hiphop.track._id)
-            }
-            for (const hiphop of rock_data.data) {
-              artist_id.push(hiphop.artist._id)
-              rock_track_id.push(hiphop.track._id)
-            }
-            for (const hiphop of latin_data.data) {
-              artist_id.push(hiphop.artist._id)
-              latin_track_id.push(hiphop.track._id)
-            }
-
-            var obj = {
-              contest_id: round.contest.contest_id,
-              round: next_round,
-              track_id: track_id,
-              artist_id: artist_id,
-              hip_hop_track: hiphop_track_id,
-              pop_track: pop_track_id,
-              rb_track: rb_track_id,
-              country_track: country_track_id,
-              rock_track: rock_track_id,
-              latin_track: latin_track_id,
-            }
-            var resp_data = await round_helper.insert_round(obj);
-          }
-          else {
-            console.log('continue with same round');
-          }
-        }
-        else if (round.contest.round == "1") {
-          var startdate = round.contest.created_at;
-          var new_date = moment(startdate).add(28)
-          if (new_date >= Date.now()) {
-            let next_round = "2"
-            var hiphop_data = await round_helper.get_tracks_selected(round.contest.artist_id, "hiphop", "round2_track");
-            var pop_data = await round_helper.get_tracks_selected(round.contest.artist_id, "pop", "round2_track");
-            var rb_data = await round_helper.get_tracks_selected(round.contest.artist_id, "rb", "round2_track");
-            var latin_data = await round_helper.get_tracks_selected(round.contest.artist_id, "latin", "round2_track");
-            var country_data = await round_helper.get_tracks_selected(round.contest.artist_id, "ele", "round2_track");
-            var rock_data = await round_helper.get_tracks_selected(round.contest.artist_id, "rock", "round2_track");
-
-            var hiphop_track_id = [];
-            var pop_track_id = [];
-            var rb_track_id = [];
-            var latin_track_id = [];
-            var rock_track_id = [];
-            var country_track_id = [];
-
-
-            for (const hiphop of hiphop_data.data) {
-              artist_id.push(hiphop.artist._id)
-              hiphop_track_id.push(hiphop.track._id)
-            }
-            for (const hiphop of pop_data.data) {
-              artist_id.push(hiphop.artist._id)
-              pop_track_id.push(hiphop.track._id)
-            }
-            for (const hiphop of rb_data.data) {
-              artist_id.push(hiphop.artist._id)
-              rb_track_id.push(hiphop.track._id)
-            }
-            for (const hiphop of country_data.data) {
-              artist_id.push(hiphop.artist._id)
-              country_track_id.push(hiphop.track._id)
-            }
-            for (const hiphop of rock_data.data) {
-              artist_id.push(hiphop.artist._id)
-              rock_track_id.push(hiphop.track._id)
-            }
-            for (const hiphop of latin_data.data) {
-              artist_id.push(hiphop.artist._id)
-              latin_track_id.push(hiphop.track._id)
-            }
-
-            var obj = {
-              contest_id: round.contest.contest_id,
-              round: next_round,
-              track_id: track_id,
-              artist_id: artist_id,
-              hip_hop_track: hiphop_track_id,
-              pop_track: pop_track_id,
-              rb_track: rb_track_id,
-              country_track: country_track_id,
-              rock_track: rock_track_id,
-              latin_track: latin_track_id,
-            }
-
-
-            var resp_data = await round_helper.insert_round(obj);
-          }
-          else {
-            console.log('continue with same round');
-          }
-
-        }
-        else if (round.contest.round == "2") {
-          var startdate = round.contest.created_at;
-          var new_date = moment(startdate).add(28)
-          if (new_date > Date.now()) {
-            let next_round = "3"
-            var hiphop_data = await round_helper.get_tracks_selected(round.contest.artist_id, "hiphop", "round3_track");
-            var pop_data = await round_helper.get_tracks_selected(round.contest.artist_id, "pop", "round3_track");
-            var rb_data = await round_helper.get_tracks_selected(round.contest.artist_id, "rb", "round3_track");
-            var latin_data = await round_helper.get_tracks_selected(round.contest.artist_id, "latin", "round3_track");
-            var country_data = await round_helper.get_tracks_selected(round.contest.artist_id, "ele", "round3_track");
-            var rock_data = await round_helper.get_tracks_selected(round.contest.artist_id, "rock", "round3_track");
-
-            var hiphop_track_id = [];
-            var pop_track_id = [];
-            var rb_track_id = [];
-            var latin_track_id = [];
-            var rock_track_id = [];
-            var country_track_id = [];
-
-
-            for (const hiphop of hiphop_data.data) {
-              artist_id.push(hiphop.artist._id)
-              hiphop_track_id.push(hiphop.track._id)
-            }
-            for (const hiphop of pop_data.data) {
-              artist_id.push(hiphop.artist._id)
-              pop_track_id.push(hiphop.track._id)
-            }
-            for (const hiphop of rb_data.data) {
-              artist_id.push(hiphop.artist._id)
-              rb_track_id.push(hiphop.track._id)
-            }
-            for (const hiphop of country_data.data) {
-              artist_id.push(hiphop.artist._id)
-              country_track_id.push(hiphop.track._id)
-            }
-            for (const hiphop of rock_data.data) {
-              artist_id.push(hiphop.artist._id)
-              rock_track_id.push(hiphop.track._id)
-            }
-            for (const hiphop of latin_data.data) {
-              artist_id.push(hiphop.artist._id)
-              latin_track_id.push(hiphop.track._id)
-            }
-
-            var obj = {
-              contest_id: round.contest.contest_id,
-              round: next_round,
-              track_id: track_id,
-              artist_id: artist_id,
-              hip_hop_track: hiphop_track_id,
-              pop_track: pop_track_id,
-              rb_track: rb_track_id,
-              country_track: country_track_id,
-              rock_track: rock_track_id,
-              latin_track: latin_track_id,
-            }
-            var resp_data = await round_helper.insert_round(obj);
-          }
-          else {
-
-          }
-        }
-        else if (round.contest.round == "3") {
-          var startdate = round.contest.created_at;
-          var new_date = moment(startdate).add(28)
-          if (new_date > Date.now()) {
-            var next_round_artist = await track_helper.get_new_round_contestant(round.contest.contest_id, round.contest.round)
-            console.log('next_round_artist', next_round_artist);
-            let next_round = "semi_final"
-            var hiphop_data = await round_helper.get_tracks_selected(round.contest.artist_id, "hiphop", "semi_final_track");
-            var pop_data = await round_helper.get_tracks_selected(round.contest.artist_id, "pop", "semi_final_track");
-            var rb_data = await round_helper.get_tracks_selected(round.contest.artist_id, "rb", "semi_final_track");
-            var latin_data = await round_helper.get_tracks_selected(round.contest.artist_id, "latin", "semi_final_track");
-            var country_data = await round_helper.get_tracks_selected(round.contest.artist_id, "ele", "semi_final_track");
-            var rock_data = await round_helper.get_tracks_selected(round.contest.artist_id, "rock", "semi_final_track");
-
-            var hiphop_track_id = [];
-            var pop_track_id = [];
-            var rb_track_id = [];
-            var latin_track_id = [];
-            var rock_track_id = [];
-            var country_track_id = [];
-
-
-            for (const hiphop of hiphop_data.data) {
-              artist_id.push(hiphop.artist._id)
-              hiphop_track_id.push(hiphop.track._id)
-            }
-            for (const hiphop of pop_data.data) {
-              artist_id.push(hiphop.artist._id)
-              pop_track_id.push(hiphop.track._id)
-            }
-            for (const hiphop of rb_data.data) {
-              artist_id.push(hiphop.artist._id)
-              rb_track_id.push(hiphop.track._id)
-            }
-            for (const hiphop of country_data.data) {
-              artist_id.push(hiphop.artist._id)
-              country_track_id.push(hiphop.track._id)
-            }
-            for (const hiphop of rock_data.data) {
-              artist_id.push(hiphop.artist._id)
-              rock_track_id.push(hiphop.track._id)
-            }
-            for (const hiphop of latin_data.data) {
-              artist_id.push(hiphop.artist._id)
-              latin_track_id.push(hiphop.track._id)
-            }
-
-            var obj = {
-              contest_id: round.contest.contest_id,
-              round: next_round,
-              track_id: track_id,
-              artist_id: artist_id,
-              hip_hop_track: hiphop_track_id,
-              pop_track: pop_track_id,
-              rb_track: rb_track_id,
-              country_track: country_track_id,
-              rock_track: rock_track_id,
-              latin_track: latin_track_id,
-            }
-
-
-            var resp_data = await round_helper.insert_round(obj);
-
-          }
-          else {
-            console.log('continue with same round');
-
-          }
-        }
-        else if (round.contest.round == "semi_final") {
-          var startdate = round.contest.created_at;
-          var new_date = moment(startdate).add(28)
-          if (new_date > Date.now()) {
-            let next_round = "final"
-            var hiphop_data = await round_helper.get_tracks_selected(round.contest.artist_id, "hiphop", "final_track");
-            var pop_data = await round_helper.get_tracks_selected(round.contest.artist_id, "pop", "final_track");
-            var rb_data = await round_helper.get_tracks_selected(round.contest.artist_id, "rb", "final_track");
-            var latin_data = await round_helper.get_tracks_selected(round.contest.artist_id, "latin", "final_track");
-            var country_data = await round_helper.get_tracks_selected(round.contest.artist_id, "ele", "final_track");
-            var rock_data = await round_helper.get_tracks_selected(round.contest.artist_id, "rock", "final_track");
-
-            var hiphop_track_id = [];
-            var pop_track_id = [];
-            var rb_track_id = [];
-            var latin_track_id = [];
-            var rock_track_id = [];
-            var country_track_id = [];
-
-
-            for (const hiphop of hiphop_data.data) {
-              artist_id.push(hiphop.artist._id)
-              hiphop_track_id.push(hiphop.track._id)
-            }
-            for (const hiphop of pop_data.data) {
-              artist_id.push(hiphop.artist._id)
-              pop_track_id.push(hiphop.track._id)
-            }
-            for (const hiphop of rb_data.data) {
-              artist_id.push(hiphop.artist._id)
-              rb_track_id.push(hiphop.track._id)
-            }
-            for (const hiphop of country_data.data) {
-              artist_id.push(hiphop.artist._id)
-              country_track_id.push(hiphop.track._id)
-            }
-            for (const hiphop of rock_data.data) {
-              artist_id.push(hiphop.artist._id)
-              rock_track_id.push(hiphop.track._id)
-            }
-            for (const hiphop of latin_data.data) {
-              artist_id.push(hiphop.artist._id)
-              latin_track_id.push(hiphop.track._id)
-            }
-
-            var obj = {
-              contest_id: round.contest.contest_id,
-              round: next_round,
-              track_id: track_id,
-              artist_id: artist_id,
-              hip_hop_track: hiphop_track_id,
-              pop_track: pop_track_id,
-              rb_track: rb_track_id,
-              country_track: country_track_id,
-              rock_track: rock_track_id,
-              latin_track: latin_track_id,
-            }
-
-
-            var resp_data = await round_helper.insert_round(obj);
-          }
-          else {
-            console.log('continue with same round');
-          }
-        }
-
-      }
-      else if (cont.contest_type == "standard") {
-        var round = await round_helper.get_last_round(cont.contest_id._id);
-        if (round.contest.round == "preliminary1") {
-          var startdate = round.contest.start_date;
-          var new_date = moment(startdate).add(28)
-          if (new_date <= Date.now() &&
-            round.contest.hip_hop_participants >= 51 &&
-            round.contest.pop_participants >= 51 &&
-            round.contest.rb_participants >= 51 &&
-            round.contest.country_participants >= 51 &&
-            round.contest.rock_participants >= 51 &&
-            round.contest.latin_participants >= 51) {
-            let next_round = "preliminary2"
-            var hiphop_data = await round_helper.get_track_selected("hiphop");
-            var pop_data = await round_helper.get_track_selected("pop");
-            var rb_data = await round_helper.get_track_selected("rb");
-            var latin_data = await round_helper.get_track_selected("latin");
-            var country_data = await round_helper.get_track_selected("ele");
-            var rock_data = await round_helper.get_track_selected("rock");
-
-            var hiphop_track_id = [];
-            var pop_track_id = [];
-            var rb_track_id = [];
-            var latin_track_id = [];
-            var rock_track_id = [];
-            var country_track_id = [];
-
-
-            for (const hiphop of hiphop_data.data) {
-              artist_id.push(hiphop.artist._id)
-              hiphop_track_id.push(hiphop.track._id)
-            }
-            for (const hiphop of pop_data.data) {
-              artist_id.push(hiphop.artist._id)
-              pop_track_id.push(hiphop.track._id)
-            }
-            for (const hiphop of rb_data.data) {
-              artist_id.push(hiphop.artist._id)
-              rb_track_id.push(hiphop.track._id)
-            }
-            for (const hiphop of country_data.data) {
-              artist_id.push(hiphop.artist._id)
-              country_track_id.push(hiphop.track._id)
-            }
-            for (const hiphop of rock_data.data) {
-              artist_id.push(hiphop.artist._id)
-              rock_track_id.push(hiphop.track._id)
-            }
-            for (const hiphop of latin_data.data) {
-              artist_id.push(hiphop.artist._id)
-              latin_track_id.push(hiphop.track._id)
-            }
-
-            var obj = {
-              contest_id: round.contest.contest_id,
-              round: next_round,
-              track_id: track_id,
-              artist_id: artist_id,
-              hip_hop_track: hiphop_track_id,
-              pop_track: pop_track_id,
-              rb_track: rb_track_id,
-              country_track: country_track_id,
-              rock_track: rock_track_id,
-              latin_track: latin_track_id,
-            }
-            var resp_data = await round_helper.insert_round(obj);
-          }
-          else {
-            console.log('continue with same round');
-          }
-        }
-        else if (round.contest.round == "preliminary2") {
-          var startdate = round.contest.created_at;
-          var new_date = moment(startdate).add(28)
-          if (new_date >= Date.now()) {
-            let next_round = "preliminary3"
-            var hiphop_data = await round_helper.get_tracks_selected(round.contest.artist_id, "hiphop", "preliminary2_track");
-            var pop_data = await round_helper.get_tracks_selected(round.contest.artist_id, "pop", "preliminary2_track");
-            var rb_data = await round_helper.get_tracks_selected(round.contest.artist_id, "rb", "preliminary2_track");
-            var latin_data = await round_helper.get_tracks_selected(round.contest.artist_id, "latin", "preliminary2_track");
-            var country_data = await round_helper.get_tracks_selected(round.contest.artist_id, "ele", "preliminary2_track");
-            var rock_data = await round_helper.get_tracks_selected(round.contest.artist_id, "rock", "preliminary2_track");
-
-            var hiphop_track_id = [];
-            var pop_track_id = [];
-            var rb_track_id = [];
-            var latin_track_id = [];
-            var rock_track_id = [];
-            var country_track_id = [];
-
-
-            for (const hiphop of hiphop_data.data) {
-              artist_id.push(hiphop.artist._id)
-              hiphop_track_id.push(hiphop.track._id)
-            }
-            for (const hiphop of pop_data.data) {
-              artist_id.push(hiphop.artist._id)
-              pop_track_id.push(hiphop.track._id)
-            }
-            for (const hiphop of rb_data.data) {
-              artist_id.push(hiphop.artist._id)
-              rb_track_id.push(hiphop.track._id)
-            }
-            for (const hiphop of country_data.data) {
-              artist_id.push(hiphop.artist._id)
-              country_track_id.push(hiphop.track._id)
-            }
-            for (const hiphop of rock_data.data) {
-              artist_id.push(hiphop.artist._id)
-              rock_track_id.push(hiphop.track._id)
-            }
-            for (const hiphop of latin_data.data) {
-              artist_id.push(hiphop.artist._id)
-              latin_track_id.push(hiphop.track._id)
-            }
-
-            var obj = {
-              contest_id: round.contest.contest_id,
-              round: next_round,
-              track_id: track_id,
-              artist_id: artist_id,
-              hip_hop_track: hiphop_track_id,
-              pop_track: pop_track_id,
-              rb_track: rb_track_id,
-              country_track: country_track_id,
-              rock_track: rock_track_id,
-              latin_track: latin_track_id,
-            }
-
-
-            var resp_data = await round_helper.insert_round(obj);
-          }
-          else {
-            console.log('continue with same round');
-          }
-
-        }
-        else if (round.contest.round == "preliminary3") {
-          var startdate = round.contest.created_at;
-          var new_date = moment(startdate).add(28)
-          if (new_date >= Date.now()) {
-            let next_round = "1"
-            var hiphop_data = await round_helper.get_tracks_selected(round.contest.artist_id, "hiphop", "round2_track");
-            var pop_data = await round_helper.get_tracks_selected(round.contest.artist_id, "pop", "round2_track");
-            var rb_data = await round_helper.get_tracks_selected(round.contest.artist_id, "rb", "round2_track");
-            var latin_data = await round_helper.get_tracks_selected(round.contest.artist_id, "latin", "round2_track");
-            var country_data = await round_helper.get_tracks_selected(round.contest.artist_id, "ele", "round2_track");
-            var rock_data = await round_helper.get_tracks_selected(round.contest.artist_id, "rock", "round2_track");
-
-            var hiphop_track_id = [];
-            var pop_track_id = [];
-            var rb_track_id = [];
-            var latin_track_id = [];
-            var rock_track_id = [];
-            var country_track_id = [];
-
-
-            for (const hiphop of hiphop_data.data) {
-              artist_id.push(hiphop.artist._id)
-              hiphop_track_id.push(hiphop.track._id)
-            }
-            for (const hiphop of pop_data.data) {
-              artist_id.push(hiphop.artist._id)
-              pop_track_id.push(hiphop.track._id)
-            }
-            for (const hiphop of rb_data.data) {
-              artist_id.push(hiphop.artist._id)
-              rb_track_id.push(hiphop.track._id)
-            }
-            for (const hiphop of country_data.data) {
-              artist_id.push(hiphop.artist._id)
-              country_track_id.push(hiphop.track._id)
-            }
-            for (const hiphop of rock_data.data) {
-              artist_id.push(hiphop.artist._id)
-              rock_track_id.push(hiphop.track._id)
-            }
-            for (const hiphop of latin_data.data) {
-              artist_id.push(hiphop.artist._id)
-              latin_track_id.push(hiphop.track._id)
-            }
-
-            var obj = {
-              contest_id: round.contest.contest_id,
-              round: next_round,
-              track_id: track_id,
-              artist_id: artist_id,
-              hip_hop_track: hiphop_track_id,
-              pop_track: pop_track_id,
-              rb_track: rb_track_id,
-              country_track: country_track_id,
-              rock_track: rock_track_id,
-              latin_track: latin_track_id,
-            }
-
-
-            var resp_data = await round_helper.insert_round(obj);
-          }
-          else {
-            console.log('continue with same round');
-          }
-
-        }
-        else if (round.contest.round == "1") {
-          var startdate = round.contest.created_at;
-          var new_date = moment(startdate).add(28)
-          if (new_date >= Date.now()) {
-            let next_round = "2"
-            var hiphop_data = await round_helper.get_tracks_selected(round.contest.artist_id, "hiphop", "round2_track");
-            var pop_data = await round_helper.get_tracks_selected(round.contest.artist_id, "pop", "round2_track");
-            var rb_data = await round_helper.get_tracks_selected(round.contest.artist_id, "rb", "round2_track");
-            var latin_data = await round_helper.get_tracks_selected(round.contest.artist_id, "latin", "round2_track");
-            var country_data = await round_helper.get_tracks_selected(round.contest.artist_id, "ele", "round2_track");
-            var rock_data = await round_helper.get_tracks_selected(round.contest.artist_id, "rock", "round2_track");
-
-            var hiphop_track_id = [];
-            var pop_track_id = [];
-            var rb_track_id = [];
-            var latin_track_id = [];
-            var rock_track_id = [];
-            var country_track_id = [];
-
-
-            for (const hiphop of hiphop_data.data) {
-              artist_id.push(hiphop.artist._id)
-              hiphop_track_id.push(hiphop.track._id)
-            }
-            for (const hiphop of pop_data.data) {
-              artist_id.push(hiphop.artist._id)
-              pop_track_id.push(hiphop.track._id)
-            }
-            for (const hiphop of rb_data.data) {
-              artist_id.push(hiphop.artist._id)
-              rb_track_id.push(hiphop.track._id)
-            }
-            for (const hiphop of country_data.data) {
-              artist_id.push(hiphop.artist._id)
-              country_track_id.push(hiphop.track._id)
-            }
-            for (const hiphop of rock_data.data) {
-              artist_id.push(hiphop.artist._id)
-              rock_track_id.push(hiphop.track._id)
-            }
-            for (const hiphop of latin_data.data) {
-              artist_id.push(hiphop.artist._id)
-              latin_track_id.push(hiphop.track._id)
-            }
-
-            var obj = {
-              contest_id: round.contest.contest_id,
-              round: next_round,
-              track_id: track_id,
-              artist_id: artist_id,
-              hip_hop_track: hiphop_track_id,
-              pop_track: pop_track_id,
-              rb_track: rb_track_id,
-              country_track: country_track_id,
-              rock_track: rock_track_id,
-              latin_track: latin_track_id,
-            }
-
-
-            var resp_data = await round_helper.insert_round(obj);
-          }
-          else {
-            console.log('continue with same round');
-          }
-
-        }
-        else if (round.contest.round == "2") {
-          var startdate = round.contest.created_at;
-          var new_date = moment(startdate).add(28)
-          if (new_date > Date.now()) {
-            let next_round = "3"
-            var hiphop_data = await round_helper.get_tracks_selected(round.contest.artist_id, "hiphop", "round3_track");
-            var pop_data = await round_helper.get_tracks_selected(round.contest.artist_id, "pop", "round3_track");
-            var rb_data = await round_helper.get_tracks_selected(round.contest.artist_id, "rb", "round3_track");
-            var latin_data = await round_helper.get_tracks_selected(round.contest.artist_id, "latin", "round3_track");
-            var country_data = await round_helper.get_tracks_selected(round.contest.artist_id, "ele", "round3_track");
-            var rock_data = await round_helper.get_tracks_selected(round.contest.artist_id, "rock", "round3_track");
-
-            var hiphop_track_id = [];
-            var pop_track_id = [];
-            var rb_track_id = [];
-            var latin_track_id = [];
-            var rock_track_id = [];
-            var country_track_id = [];
-
-
-            for (const hiphop of hiphop_data.data) {
-              artist_id.push(hiphop.artist._id)
-              hiphop_track_id.push(hiphop.track._id)
-            }
-            for (const hiphop of pop_data.data) {
-              artist_id.push(hiphop.artist._id)
-              pop_track_id.push(hiphop.track._id)
-            }
-            for (const hiphop of rb_data.data) {
-              artist_id.push(hiphop.artist._id)
-              rb_track_id.push(hiphop.track._id)
-            }
-            for (const hiphop of country_data.data) {
-              artist_id.push(hiphop.artist._id)
-              country_track_id.push(hiphop.track._id)
-            }
-            for (const hiphop of rock_data.data) {
-              artist_id.push(hiphop.artist._id)
-              rock_track_id.push(hiphop.track._id)
-            }
-            for (const hiphop of latin_data.data) {
-              artist_id.push(hiphop.artist._id)
-              latin_track_id.push(hiphop.track._id)
-            }
-
-            var obj = {
-              contest_id: round.contest.contest_id,
-              round: next_round,
-              track_id: track_id,
-              artist_id: artist_id,
-              hip_hop_track: hiphop_track_id,
-              pop_track: pop_track_id,
-              rb_track: rb_track_id,
-              country_track: country_track_id,
-              rock_track: rock_track_id,
-              latin_track: latin_track_id,
-            }
-            var resp_data = await round_helper.insert_round(obj);
-          }
-          else {
-
-          }
-        }
-        else if (round.contest.round == "3") {
-          var startdate = round.contest.created_at;
-          var new_date = moment(startdate).add(28)
-          if (new_date > Date.now()) {
-            var next_round_artist = await track_helper.get_new_round_contestant(round.contest.contest_id, round.contest.round)
-            console.log('next_round_artist', next_round_artist);
-            let next_round = "semi_final"
-            var hiphop_data = await round_helper.get_tracks_selected(round.contest.artist_id, "hiphop", "semi_final_track");
-            var pop_data = await round_helper.get_tracks_selected(round.contest.artist_id, "pop", "semi_final_track");
-            var rb_data = await round_helper.get_tracks_selected(round.contest.artist_id, "rb", "semi_final_track");
-            var latin_data = await round_helper.get_tracks_selected(round.contest.artist_id, "latin", "semi_final_track");
-            var country_data = await round_helper.get_tracks_selected(round.contest.artist_id, "ele", "semi_final_track");
-            var rock_data = await round_helper.get_tracks_selected(round.contest.artist_id, "rock", "semi_final_track");
-
-            var hiphop_track_id = [];
-            var pop_track_id = [];
-            var rb_track_id = [];
-            var latin_track_id = [];
-            var rock_track_id = [];
-            var country_track_id = [];
-
-
-            for (const hiphop of hiphop_data.data) {
-              artist_id.push(hiphop.artist._id)
-              hiphop_track_id.push(hiphop.track._id)
-            }
-            for (const hiphop of pop_data.data) {
-              artist_id.push(hiphop.artist._id)
-              pop_track_id.push(hiphop.track._id)
-            }
-            for (const hiphop of rb_data.data) {
-              artist_id.push(hiphop.artist._id)
-              rb_track_id.push(hiphop.track._id)
-            }
-            for (const hiphop of country_data.data) {
-              artist_id.push(hiphop.artist._id)
-              country_track_id.push(hiphop.track._id)
-            }
-            for (const hiphop of rock_data.data) {
-              artist_id.push(hiphop.artist._id)
-              rock_track_id.push(hiphop.track._id)
-            }
-            for (const hiphop of latin_data.data) {
-              artist_id.push(hiphop.artist._id)
-              latin_track_id.push(hiphop.track._id)
-            }
-
-            var obj = {
-              contest_id: round.contest.contest_id,
-              round: next_round,
-              track_id: track_id,
-              artist_id: artist_id,
-              hip_hop_track: hiphop_track_id,
-              pop_track: pop_track_id,
-              rb_track: rb_track_id,
-              country_track: country_track_id,
-              rock_track: rock_track_id,
-              latin_track: latin_track_id,
-            }
-
-
-            var resp_data = await round_helper.insert_round(obj);
-
-          }
-          else {
-            console.log('continue with same round');
-
-          }
-        }
-        else if (round.contest.round == "semi_final") {
-          var startdate = round.contest.created_at;
-          var new_date = moment(startdate).add(28)
-          if (new_date > Date.now()) {
-            let next_round = "final"
-            var hiphop_data = await round_helper.get_tracks_selected(round.contest.artist_id, "hiphop", "final_track");
-            var pop_data = await round_helper.get_tracks_selected(round.contest.artist_id, "pop", "final_track");
-            var rb_data = await round_helper.get_tracks_selected(round.contest.artist_id, "rb", "final_track");
-            var latin_data = await round_helper.get_tracks_selected(round.contest.artist_id, "latin", "final_track");
-            var country_data = await round_helper.get_tracks_selected(round.contest.artist_id, "ele", "final_track");
-            var rock_data = await round_helper.get_tracks_selected(round.contest.artist_id, "rock", "final_track");
-
-            var hiphop_track_id = [];
-            var pop_track_id = [];
-            var rb_track_id = [];
-            var latin_track_id = [];
-            var rock_track_id = [];
-            var country_track_id = [];
-
-
-            for (const hiphop of hiphop_data.data) {
-              artist_id.push(hiphop.artist._id)
-              hiphop_track_id.push(hiphop.track._id)
-            }
-            for (const hiphop of pop_data.data) {
-              artist_id.push(hiphop.artist._id)
-              pop_track_id.push(hiphop.track._id)
-            }
-            for (const hiphop of rb_data.data) {
-              artist_id.push(hiphop.artist._id)
-              rb_track_id.push(hiphop.track._id)
-            }
-            for (const hiphop of country_data.data) {
-              artist_id.push(hiphop.artist._id)
-              country_track_id.push(hiphop.track._id)
-            }
-            for (const hiphop of rock_data.data) {
-              artist_id.push(hiphop.artist._id)
-              rock_track_id.push(hiphop.track._id)
-            }
-            for (const hiphop of latin_data.data) {
-              artist_id.push(hiphop.artist._id)
-              latin_track_id.push(hiphop.track._id)
-            }
-
-            var obj = {
-              contest_id: round.contest.contest_id,
-              round: next_round,
-              track_id: track_id,
-              artist_id: artist_id,
-              hip_hop_track: hiphop_track_id,
-              pop_track: pop_track_id,
-              rb_track: rb_track_id,
-              country_track: country_track_id,
-              rock_track: rock_track_id,
-              latin_track: latin_track_id,
-            }
-
-
-            var resp_data = await round_helper.insert_round(obj);
-          }
-          else {
-            console.log('continue with same round');
-          }
-        }
-        else {
-          console.log('Contest Over');
-        }
-      }
-    }
-  }
-
-});
 
 
 

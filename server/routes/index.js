@@ -32,6 +32,8 @@ var vote_track_helper = require('./../helpers/vote_track_helper');
 var round_helper = require('./../helpers/round_helper');
 var winner_helper = require('./../helpers/winner_helper');
 var Track = require('./../models/track');
+var ArtistNotification = require('./../models/artist_notification')
+
 
 /**
  * @api {post} /artist_registration Artist Registration
@@ -505,9 +507,12 @@ router.post('/artist_login', async (req, res) => {
               delete login_resp.artist.refresh_token;
               delete login_resp.artist.last_login_date;
               delete login_resp.artist.created_at;
+              console.log('login_resp.artist._id', login_resp.artist._id);
 
               logger.info("Token generated");
-              res.status(config.OK_STATUS).json({ "status": 1, "message": "Logged in successful", "artist": login_resp.artist, "token": token, "refresh_token": refreshToken });
+              var count = await ArtistNotification.countDocuments({ "isSeen": 0, "receiver": new ObjectId(login_resp.artist._id) })
+
+              res.status(config.OK_STATUS).json({ "status": 1, "message": "Logged in successful", "artist": login_resp.artist, "token": token, "refresh_token": refreshToken, "count": count });
             }
             else {
               res.status(config.BAD_REQUEST).json({ "status": 0, "message": "Email not verified" });
@@ -1896,38 +1901,38 @@ router.get('/tracks/:track_id', async (req, res) => {
 
 
 router.post('/get_track_for_current_round', async (req, res) => {
-
   var round = await round_helper.get_current_round_of_contest(req.body.contest_id)
   console.log('round', round);
   var arr = [];
-  for (const data of round.round) {
-    for (const track of data.hip_hop_track) {
-      var trk = track.toString();
-      arr.push(trk)
-    }
-    for (const track of data.country_track) {
-      var trk = track.toString();
-      arr.push(trk)
-    }
-    for (const track of data.pop_track) {
-      var trk = track.toString();
-      arr.push(trk)
-    }
-    for (const track of data.rock_track) {
-      var trk = track.toString();
-      arr.push(trk)
-    }
-    for (const track of data.rb_track) {
-      var trk = track.toString();
-      arr.push(trk)
-    }
-    for (const track of data.latin_track) {
-      var trk = track.toString();
-      arr.push(trk)
-    }
+  var data = round.round[0]
+  for (const track of data.hip_hop_track) {
+    var trk = track.toString();
+    arr.push(trk)
+  }
+  for (const track of data.country_track) {
+    var trk = track.toString();
+    arr.push(trk)
+  }
+  for (const track of data.pop_track) {
+    var trk = track.toString();
+    arr.push(trk)
+  }
+  for (const track of data.rock_track) {
+    var trk = track.toString();
+    arr.push(trk)
+  }
+  for (const track of data.rb_track) {
+    var trk = track.toString();
+    arr.push(trk)
+  }
+  for (const track of data.latin_track) {
+    var trk = track.toString();
+    arr.push(trk)
   }
 
-  var track = await Track.find({ "_id": { $in: arr } })
+
+  var track = await Track.find({ "_id": { $in: arr } }).populate({ path: 'artist_id', populate: { path: 'music_type' } }).populate({ path: 'artist_id', populate: { path: 'state' } })
+
   res.status(config.OK_STATUS).json({ "data": track });
 
   // if (track.status === 1) {
@@ -1966,7 +1971,6 @@ router.post('/winners', async (req, res) => {
   }
   if (req.body.music_type) {
     filter["music_type._id"] = new ObjectId(req.body.music_type)
-
   }
 
   if (req.body.search) {
@@ -1979,8 +1983,6 @@ router.post('/winners', async (req, res) => {
     var length = x.votes.length;
     x.totalVotes = length;
   }
-
-
   if (track.status === 1) {
     logger.trace("got details successfully");
     res.status(config.OK_STATUS).json({ "status": 1, "track": track });
@@ -2003,10 +2005,10 @@ router.post('/get_contest', async (req, res) => {
   var contest = await contest_helper.get_all_contests_for_vote(filter);
   if (contest.status === 1) {
     logger.trace("got details successfully");
-    res.status(config.OK_STATUS).json({ "status": 1, "contest": round });
+    res.status(config.OK_STATUS).json({ "status": 1, "contest": contest });
   } else {
     res.status(config.INTERNAL_SERVER_ERROR).json(contest);
   }
-
 });
+
 module.exports = router;

@@ -7,6 +7,7 @@
 var app = require('../app');
 var debug = require('debug')('music-social-voting-api:server');
 var http = require('http');
+var socket = require('../socket/socketServer');
 
 /**
  * Get port from environment and store in Express.
@@ -87,4 +88,5 @@ function onListening() {
     ? 'pipe ' + addr
     : 'port ' + addr.port;
   debug('Listening on ' + bind);
+  socket.init(server);
 }
