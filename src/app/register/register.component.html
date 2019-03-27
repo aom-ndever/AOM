@@ -141,7 +141,7 @@
                       <div class="form-group col-md-6">
                         <label for="fname">First Name</label>
                         <input type="text" class="form-control" formControlName="fname" name="artist_fname" [(ngModel)]="artist_data.fname"
-                          placeholder="First Name">
+                          placeholder="First Name" required>
                         <div class="cust_err_msg" *ngIf="artist_validation[2] && !artist_step3.controls['fname'].valid">
                           <span *ngIf="artist_step3.controls['fname'].errors['required']" class="text-danger">First
                             name is required</span>
@@ -150,7 +150,7 @@
                       <div class="form-group col-md-6 pwd-grp">
                         <label for="lanem">Last Name</label>
                         <input type="text" class="form-control" formControlName="lname" [(ngModel)]="artist_data.lname"
-                          name="artist_lname" placeholder="Last Name">
+                          name="artist_lname" placeholder="Last Name" required>
                         <div class="cust_err_msg" *ngIf="artist_validation[2] && !artist_step3.controls['lname'].valid">
                           <span *ngIf="artist_step3.controls['lname'].errors['required']" class="text-danger">First
                             name is required</span>
@@ -540,8 +540,9 @@
                 <a class="back-btn main_step_back" href="javascript:;" routerLink="">
                   ×
                 </a>
+                
                 <div class="heading">
-                  <h3>Create User Name</h3>
+                  <h3>Tell Us About Yourself</h3>
                 </div>
                 <div class="progress_bar fill14"></div>
                 <form [formGroup]="listener_step3">
@@ -554,6 +555,12 @@
                         <div class="terms_error_msg" *ngIf="listener_validation[2] && !listener_step3.controls['fname'].valid">
                           <span *ngIf="listener_step3.controls['fname'].errors['required']" class="text-danger">First
                             Name is required</span>
+                            <span
+                            *ngIf="!listener_step3.controls['fname'].errors['required'] && listener_step3.controls['fname'].errors['whitespace']"
+                            class="text-danger">Enter valid data.</span>
+                        <span *ngIf="(listener_step3.controls['fname'].dirty)" class="text-danger">Please
+                            enter only alphabets.</span>
+
                         </div>
                       </div>
                       <div class="form-group pwd-grp col-md-6 pr0">
@@ -563,6 +570,12 @@
                         <div class="terms_error_msg" *ngIf="listener_validation[2] && !listener_step3.controls['lname'].valid">
                           <span *ngIf="listener_step3.controls['lname'].errors['required']" class="text-danger">Last
                             Name is required</span>
+                            <span
+                            *ngIf="!listener_step3.controls['lname'].errors['required'] && listener_step3.controls['lname'].errors['whitespace']"
+                            class="text-danger">Enter valid data.</span>
+                        <span *ngIf="(listener_step3.controls['lname'].dirty)" class="text-danger">Please
+                            enter only alphabets.</span>
+
                         </div>
                       </div>
                     </div>

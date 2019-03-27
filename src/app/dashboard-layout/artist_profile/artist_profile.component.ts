@@ -371,7 +371,7 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
         this.toastr.error(error['error'].message, 'Error!');
       });
     } else {
-      this.toastr.info('Please signin as listener follow the artist.', 'Info!');
+      this.toastr.info('Please Sign in as listener to follow the artist.', 'Info!');
     }
   }
   // Open artist media in lightbox
