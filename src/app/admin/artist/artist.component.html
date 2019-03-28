@@ -1,190 +1,193 @@
- <!-- Page Content -->
- <div id="page-content-wrapper">           
-    <div class="artist_content" style="display: block;">
-      <div>
-        <h3 class="Audience-Overview">Search Artist </h3>
-        <div class="search-input header_search">
-          <input type="text" name="search" [(ngModel)]="search_str" (keyup)="filterBasedOnSearch($event)" placeholder="Search by Artist Name or Song Title">
-        </div>
-        <div class="row top_header_filter">
-          <div class="col-lg-2 col-md-3 col-sm-6 col-xs-6">
-            <div>
-              <div class="artist_heading">Music Genre</div>
-              <ul>
-                <li>
-                  <div class="radio">
-                      <label>
-                        <input name="musicgenre" type="radio" value="" [(ngModel)]="music_type_id" (click)="filterByMusicType('')">All styles
-                        <div class="radio_check"></div>
-                      </label>
-                  </div>
-                </li>
-                <li *ngFor="let music of music_type;">
-                    <div class="radio">
-                        <label>
-                          <input name="musicgenre" type="radio" [value]="music._id" [(ngModel)]="music_type_id" (click)="filterByMusicType(music._id)">{{music['name']}}
-                          <div class="radio_check"></div>
-                        </label>
-                    </div>
-                </li>
-              </ul>
-            </div>
-            
-          </div>
-          
-          <div class="col-lg-10 col-md-9 col-sm-12 col-xs-12">
-            <div class="sub-menu-filter">
-            <div class="artist_heading">Region</div>
-              <div class="row">
-                  <div class="col-lg-2 col-md-4 col-sm-4 col-xs-4">
-                    <div class="filter-subhead">Northeast</div>
-                    <ul>
-                      <li *ngFor="let s of state_list;" [style.display]="s['region']['name'] == 'northeast' ? 'block' : 'none'">
-                        <div class="checkbox">
-                            <label>
-                              <input type="checkbox" [value]="s._id" (click)="addRegionForFilter($event.target.checked, $event.target.value)">
-                              <div class="chk_check"></div>
-                              <span>{{s.name}}</span>
-                            </label>
-                        </div>
-                      </li>
-                    </ul>
-                  </div>
-                  <div class="col-lg-2 col-md-4 col-sm-4 col-xs-4">
-                    <div class="filter-subhead">southeast</div>
-                    <ul>
-                      <li *ngFor="let s of state_list;" [style.display]="s['region']['name'] == 'southeast' ? 'block' : 'none'">
-                        <div class="checkbox">
-                            <label>
-                              <input type="checkbox" [value]="s._id" (click)="addRegionForFilter($event.target.checked, $event.target.value)">
-                              <div class="chk_check"></div>
-                              <span>{{s.name}}</span>
-                            </label>
-                        </div>
-                      </li>
-                    </ul>
-                  </div>
-                  <div class="col-lg-2 col-md-4 col-sm-4 col-xs-4">
-                    <div class="filter-subhead">Midwest</div>
-                    <ul>
-                      <li *ngFor="let s of state_list;" [style.display]="s['region']['name'] == 'midwest' ? 'block' : 'none'">
-                        <div class="checkbox">
-                            <label>
-                              <input type="checkbox" [value]="s._id" (click)="addRegionForFilter($event.target.checked, $event.target.value)">
-                              <div class="chk_check"></div>
-                              <span>{{s.name}}</span>
-                            </label>
-                        </div>
-                      </li>
-                    </ul>
-                  </div>
-                  <div class="col-lg-2 col-md-4 col-sm-4 col-xs-4">
-                    <div class="filter-subhead">Southwest</div>
-                    <ul>
-                      <li *ngFor="let s of state_list;" [style.display]="s['region']['name'] == 'southwest' ? 'block' : 'none'">
-                        <div class="checkbox">
-                            <label>
-                              <input type="checkbox" [value]="s._id" (click)="addRegionForFilter($event.target.checked, $event.target.value)">
-                              <div class="chk_check"></div>
-                              <span>{{s.name}}</span>
-                            </label>
-                        </div>
-                      </li>
-                    </ul>
-                  </div>
-                  <div class="col-lg-2 col-md-4 col-sm-4 col-xs-4">
-                    <div class="filter-subhead">West</div>
-                    <ul>
-                      <li *ngFor="let s of state_list;" [style.display]="s['region']['name'] == 'west' ? 'block' : 'none'">
-                        <div class="checkbox">
-                            <label>
-                              <input type="checkbox" [value]="s._id" (click)="addRegionForFilter($event.target.checked, $event.target.value)">
-                              <div class="chk_check"></div>
-                              <span>{{s.name}}</span>
-                            </label>
-                        </div>
-                      </li>
-                    </ul>
-                  </div>
-                  <div class="col-lg-2 col-md-4 col-sm-4 col-xs-4">
-                    <div class="filter-subhead">other</div>
-                    <ul>
-                      <li *ngFor="let s of state_list;" [style.display]="s['region']['name'] == 'other' ? 'block' : 'none'">
-                        <div class="checkbox">
-                            <label>
-                              <input type="checkbox" [value]="s._id" (click)="addRegionForFilter($event.target.checked, $event.target.value)">
-                              <div class="chk_check"></div>
-                              <span>{{s.name}}</span>
-                            </label>
-                        </div>
-                      </li>
-                    </ul>
-                  </div>
+<!-- Page Content -->
+<div id="page-content-wrapper">
+  <div class="artist_content" style="display: block;">
+    <div>
+      <h3 class="Audience-Overview">Search Artist </h3>
+      <div class="search-input header_search">
+        <input type="text" name="search" [(ngModel)]="search_str" (keyup)="filterBasedOnSearch($event)" placeholder="Search by Artist Name or Song Title">
+      </div>
+      <div class="row top_header_filter">
+        <div class="col-lg-2 col-md-3 col-sm-6 col-xs-6">
+          <div>
+            <div class="artist_heading">Music Genre</div>
+            <ul>
+              <li>
+                <div class="radio">
+                  <label>
+                    <input name="musicgenre" type="radio" value="" [(ngModel)]="music_type_id" (click)="filterByMusicType('')">All
+                    styles
+                    <div class="radio_check"></div>
+                  </label>
                 </div>
+              </li>
+              <li *ngFor="let music of music_type;">
+                <div class="radio">
+                  <label>
+                    <input name="musicgenre" type="radio" [value]="music._id" [(ngModel)]="music_type_id" (click)="filterByMusicType(music._id)">{{music['name']}}
+                    <div class="radio_check"></div>
+                  </label>
+                </div>
+              </li>
+            </ul>
+          </div>
+
+        </div>
+
+        <div class="col-lg-10 col-md-9 col-sm-12 col-xs-12">
+          <div class="sub-menu-filter">
+            <div class="artist_heading">Region</div>
+            <div class="row">
+              <div class="col-lg-2 col-md-4 col-sm-4 col-xs-4">
+                <div class="filter-subhead">Northeast</div>
+                <ul>
+                  <li *ngFor="let s of state_list;" [style.display]="s['region']['name'] == 'northeast' ? 'block' : 'none'">
+                    <div class="checkbox">
+                      <label>
+                        <input type="checkbox" [value]="s._id" (click)="addRegionForFilter($event.target.checked, $event.target.value)">
+                        <div class="chk_check"></div>
+                        <span>{{s.name}}</span>
+                      </label>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+              <div class="col-lg-2 col-md-4 col-sm-4 col-xs-4">
+                <div class="filter-subhead">southeast</div>
+                <ul>
+                  <li *ngFor="let s of state_list;" [style.display]="s['region']['name'] == 'southeast' ? 'block' : 'none'">
+                    <div class="checkbox">
+                      <label>
+                        <input type="checkbox" [value]="s._id" (click)="addRegionForFilter($event.target.checked, $event.target.value)">
+                        <div class="chk_check"></div>
+                        <span>{{s.name}}</span>
+                      </label>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+              <div class="col-lg-2 col-md-4 col-sm-4 col-xs-4">
+                <div class="filter-subhead">Midwest</div>
+                <ul>
+                  <li *ngFor="let s of state_list;" [style.display]="s['region']['name'] == 'midwest' ? 'block' : 'none'">
+                    <div class="checkbox">
+                      <label>
+                        <input type="checkbox" [value]="s._id" (click)="addRegionForFilter($event.target.checked, $event.target.value)">
+                        <div class="chk_check"></div>
+                        <span>{{s.name}}</span>
+                      </label>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+              <div class="col-lg-2 col-md-4 col-sm-4 col-xs-4">
+                <div class="filter-subhead">Southwest</div>
+                <ul>
+                  <li *ngFor="let s of state_list;" [style.display]="s['region']['name'] == 'southwest' ? 'block' : 'none'">
+                    <div class="checkbox">
+                      <label>
+                        <input type="checkbox" [value]="s._id" (click)="addRegionForFilter($event.target.checked, $event.target.value)">
+                        <div class="chk_check"></div>
+                        <span>{{s.name}}</span>
+                      </label>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+              <div class="col-lg-2 col-md-4 col-sm-4 col-xs-4">
+                <div class="filter-subhead">West</div>
+                <ul>
+                  <li *ngFor="let s of state_list;" [style.display]="s['region']['name'] == 'west' ? 'block' : 'none'">
+                    <div class="checkbox">
+                      <label>
+                        <input type="checkbox" [value]="s._id" (click)="addRegionForFilter($event.target.checked, $event.target.value)">
+                        <div class="chk_check"></div>
+                        <span>{{s.name}}</span>
+                      </label>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+              <div class="col-lg-2 col-md-4 col-sm-4 col-xs-4">
+                <div class="filter-subhead">other</div>
+                <ul>
+                  <li *ngFor="let s of state_list;" [style.display]="s['region']['name'] == 'other' ? 'block' : 'none'">
+                    <div class="checkbox">
+                      <label>
+                        <input type="checkbox" [value]="s._id" (click)="addRegionForFilter($event.target.checked, $event.target.value)">
+                        <div class="chk_check"></div>
+                        <span>{{s.name}}</span>
+                      </label>
+                    </div>
+                  </li>
+                </ul>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-       <div>
-            <h3 class="Audience-Overview">Artists </h3>
-            <div class="dropdown table_dropdown custom_dropdown">
-              <select class="form-control custom_drop_btn" id="sort" name="sort_by" [(ngModel)]="sort_by" (change)="sortArtist($event.target.value)">
-                <option value="-1">Newest First</option>
-                <option value="1">Newest Last</option>
-              </select>
-            </div> 
-            <div class="artists_table copyright_table table-responsive table_max_height ">
-        
-              <table class="table" datatable [dtOptions]="dtOptions">
-                    <thead>
-                      <tr>
-                        <th>N<sup>O</sup></th>
-                        <th>Artist Name</th>
-                        <th>Status</th>
-                        <th>Votes</th>
-                        <th>Likes</th>
-                        <th>Followers</th>
-                        <th>Comments</th>
-                        <th class="action_div">Actions</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr *ngFor="let artist of artist_data; let i = index;">
-                        <td>{{i+1}}.</td>
-                        <td><a href="javascript:;" (click)="openModal(template, artist['_id'])">{{artist['first_name']+' '+artist['last_name']}}</a></td>
-                        <td class="status {{artist['flag'] ? 'suspended_status' : 'active_status' }}">
-                          <span>{{artist['flag'] ? 'Suspended' : 'Active'}}</span>
-                        </td>                               
-                        <td class="td_img">
-                          <div class="icon_container"><img src="img/vote.png"/>{{artist['no_of_votes']}}</div>
-                        </td>
-                        <td class="td_img">
-                          <div class="icon_container"><img src="img/likes.png"/>{{artist['no_of_likes']}}</div>
-                      </td>
-                        <td class="td_img">
-                          <div class="icon_container"><img src="img/followers.png"/>{{artist['no_of_followers']}}</div>
-                        </td>
-                        <td class="td_img">
-                          <div class="icon_container"><img src="img/comments.png"/>{{artist['no_of_comments']}}</div>
-                        </td> 
-                        <td class="td_img action_div">
-                          <div class="icon_container">
-                            <img src="img/suspend.png" *ngIf="user['admin']['account_type'] != 'moderator'">
-                          <a href="javascript:;" *ngIf="user['admin']['account_type'] != 'moderator'" (click)="suspendArtist(artist['_id'])">{{artist['flag'] ? 'Un-suspend' : 'Suspend'}}</a>
-                        </div>
-                        </td>                               
-                      </tr>
-                    </tbody>
-                    <tbody *ngIf="artist_data?.length == 0">
-                        <tr>
-                            <td colspan="8" class="no-data-available">No data available!</td>
-                        </tr>
-                    <tbody>
-                  </table>
-           
-            </div>
-        </div>
+  </div>
+  <div>
+    <h3 class="Audience-Overview">Artists </h3>
+    <div class="dropdown table_dropdown custom_dropdown">
+      <select class="form-control custom_drop_btn" id="sort" name="sort_by" [(ngModel)]="sort_by" (change)="sortArtist($event.target.value)">
+        <option value="-1">Newest First</option>
+        <option value="1">Newest Last</option>
+      </select>
+    </div>
+    <div class="artists_table copyright_table table-responsive table_max_height ">
+
+      <table class="table" datatable [dtOptions]="dtOptions">
+        <thead>
+          <tr>
+            <th>N<sup>O</sup></th>
+            <th>Artist Name</th>
+            <th>Status</th>
+            <th>Votes</th>
+            <th>Likes</th>
+            <th>Followers</th>
+            <th>Comments</th>
+            <th class="action_div">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let artist of artist_data; let i = index;">
+            <td>{{artist_row_cnt +i}}.</td>
+            <td><a href="javascript:;" (click)="openModal(template, artist['_id'])">{{artist['first_name']+'
+                '+artist['last_name']}}</a></td>
+            <td class="status {{artist['flag'] ? 'suspended_status' : 'active_status' }}">
+              <span>{{artist['flag'] ? 'Suspended' : 'Active'}}</span>
+            </td>
+            <td class="td_img">
+              <div class="icon_container"><img src="img/vote.png" />{{artist['no_of_votes']}}</div>
+            </td>
+            <td class="td_img">
+              <div class="icon_container"><img src="img/likes.png" />{{artist['no_of_likes']}}</div>
+            </td>
+            <td class="td_img">
+              <div class="icon_container"><img src="img/followers.png" />{{artist['no_of_followers']}}</div>
+            </td>
+            <td class="td_img">
+              <div class="icon_container"><img src="img/comments.png" />{{artist['no_of_comments']}}</div>
+            </td>
+            <td class="td_img action_div">
+              <div class="icon_container">
+                <img src="img/suspend.png" *ngIf="user['admin']['account_type'] != 'moderator'">
+                <a href="javascript:;" *ngIf="user['admin']['account_type'] != 'moderator'" (click)="suspendArtist(artist['_id'])">{{artist['flag']
+                  ? 'Un-suspend' : 'Suspend'}}</a>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+        <tbody *ngIf="artist_data?.length == 0">
+          <tr>
+            <td colspan="8" class="no-data-available">No data available!</td>
+          </tr>
+        <tbody>
+      </table>
+
+    </div>
+  </div>
 </div>
 <!-- /#page-content-wrapper -->
 <!-- /#page-content-wrapper -->
@@ -194,7 +197,7 @@
   </button>
   <div class="modal-body">
     <div class="custom_modal artist_view_modal">
-      <div class="row" style="padding: 5px;" >
+      <div class="row" style="padding: 5px;">
         <div class="col-sm-4 artist_img">
           <img defaultImage="img/loader.gif" offset="100" lazyLoad="{{artist_detail['image'] ? artist_img_url+artist_detail['image'] : 'img/profile-img.png'}}" />
         </div>
@@ -202,13 +205,13 @@
           <span class="pull-right">{{artist_detail['flag'] ? 'Suspend' : 'Active'}}</span>
           <h3>{{artist_detail['first_name']+' '+artist_detail['last_name']}}</h3>
           <div class="checkbox custom_check_box">
-              <label>
-                <input [checked]="artist_detail['featured']" type="checkbox" (click)="markAsFeatured()"> 
-                <div class="chk_check"></div>
-                <span>Featured Artist</span>
-              </label>
+            <label>
+              <input [checked]="artist_detail['featured']" type="checkbox" (click)="markAsFeatured()">
+              <div class="chk_check"></div>
+              <span>Featured Artist</span>
+            </label>
           </div>
- 
+
           <div class="gray_font">
             <span class="cap">{{artist_detail['gender']}}</span>
             <span>{{artist_detail['old'] }} y.o.</span>
@@ -231,8 +234,8 @@
           <b class="template_modal_name">Tracks</b>
         </div>
         <div class="artists_table copyright_table table-responsive col-sm-12 table_max_height">
-                        <div class="table_container">
-          <table class="table">
+          <div class="table_container">
+            <table class="table">
               <thead>
                 <tr>
                   <th>N<sup>O</sup></th>
@@ -248,23 +251,27 @@
                   <td>{{track['created_at'] | date : 'dd MM, yyyy'}}</td>
                   <td class="td_img action_div">
                     <div class="popup_container">
-                        <a href="javascript:;" *ngIf="user['admin']['account_type'] != 'moderator'"  triggers="click"   [outsideClick]="true" [popover]="popTemplate" popoverTitle="Delete?" ><i class="fa fa-trash"></i> Delete</a>&nbsp;
-                        <ng-template #popTemplate >
-                          <button type="submit" class="btn btn-default" (click)="hidePopover()">No</button>
-                          <button class="btn btn-primary" (click)="removeTrack(track['_id']);">Yes</button>
-                        </ng-template>
-                      </div>
-                       <div class="popup_container">
-                        <a href="javascript:;" *ngIf="user['admin']['account_type'] != 'moderator'"  triggers="click" [outsideClick]="true" [popover]="myTemplate" popoverTitle="{{track['is_suspend'] ? 'Un-suspend' : 'Suspend'}}?" > 
-                            <img src="img/suspend.png" style="top:3px !important;">{{track['is_suspend'] ? 'Suspended' : 'Suspend'}}
-                          </a>
-                        <ng-template #myTemplate >
-                            <button class="btn btn-default" >No</button>
-                            <button class="btn btn-primary" (click)="suspendArtistTrack(track['_id']);">Yes</button>
-                        </ng-template>
-                      </div>
-                        
-      
+                      <a href="javascript:;" *ngIf="user['admin']['account_type'] != 'moderator'" triggers="click"
+                        [outsideClick]="true" [popover]="popTemplate" popoverTitle="Delete?"><i class="fa fa-trash"></i>
+                        Delete</a>&nbsp;
+                      <ng-template #popTemplate>
+                        <button type="submit" class="btn btn-default" (click)="hidePopover()">No</button>
+                        <button class="btn btn-primary" (click)="removeTrack(track['_id']);">Yes</button>
+                      </ng-template>
+                    </div>
+                    <div class="popup_container">
+                      <a href="javascript:;" *ngIf="user['admin']['account_type'] != 'moderator'" triggers="click"
+                        [outsideClick]="true" [popover]="myTemplate" popoverTitle="{{track['is_suspend'] ? 'Un-suspend' : 'Suspend'}}?">
+                        <img src="img/suspend.png" style="top:3px !important;">{{track['is_suspend'] ? 'Suspended' :
+                        'Suspend'}}
+                      </a>
+                      <ng-template #myTemplate>
+                        <button class="btn btn-default">No</button>
+                        <button class="btn btn-primary" (click)="suspendArtistTrack(track['_id']);">Yes</button>
+                      </ng-template>
+                    </div>
+
+
                     <!-- <a href="javascript:;"> <img src="img/suspend.png">Suspend</a> -->
                   </td>
                 </tr>
@@ -272,8 +279,8 @@
                   <td colspan="4">No data available.</td>
                 </tr>
               </tbody>
-          </table>
-        </div>
+            </table>
+          </div>
         </div>
       </div>
       <div class="row">
@@ -281,8 +288,8 @@
           <b class="template_modal_name">Flags</b>
         </div>
         <div class="artists_table table-responsive col-sm-12 table_max_height artist_modal_table">
-                <div class="table_container">
-          <table class="table">
+          <div class="table_container">
+            <table class="table">
               <thead>
                 <tr>
                   <th>Date</th>
@@ -297,8 +304,8 @@
                   <td>Suspended by {{val['from']['account_type']}}</td>
                 </tr>
               </tbody>
-          </table>
-       </div>
+            </table>
+          </div>
         </div>
       </div>
     </div>

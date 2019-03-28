@@ -4818,6 +4818,12 @@ max-height: unset !important;
 .Transaction_table table{
     width: 100% !important;
 }
+
+
+ul.custem-side-bar{top:6px;}
+ul.sidebar-nav.custem-side-bar li a{padding: 15px 15px 6px 42px;}
+
+
 .new-add-track-popup .contest-table input[type="radio"]:checked + .radio_check:after {
     top: 5px;
     }

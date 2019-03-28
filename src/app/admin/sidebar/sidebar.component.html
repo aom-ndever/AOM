@@ -6,13 +6,14 @@
                 <span class="user_profile">
                     <img src="img/user_profile.jpg" />
                 </span>
-                <h3 class="user_name">{{user['admin'] ? user['admin']['first_name']+' '+user['admin']['last_name'] : ''}}</h3>
-                <h5 class="user_profession">{{user['admin'] ? user['admin']['account_type']  : '' | titlecase}}</h5>
+                <h3 class="user_name">{{user['admin'] ? user['admin']['first_name']+' '+user['admin']['last_name'] :
+                    ''}}</h3>
+                <h5 class="user_profession">{{user['admin'] ? user['admin']['account_type'] : '' | titlecase}}</h5>
                 <div class="dropdown" dropdown>
                     <a href="javascript:;" id="button-basic" dropdownToggle class="dropdown-toggle drop_icon">
-                            <span class="caret"></span>
+                        <span class="caret"></span>
                     </a>
-                    <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu" >
+                    <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu">
                         <li role="menuitem" (click)="logout()">
                             <a class="dropdown-item" href="javascript:;">Logout</a>
                         </li>
@@ -27,7 +28,7 @@
 </div>
 <div id="sidebar-wrapper">
 
-    <ul class="sidebar-nav">
+    <ul class="sidebar-nav custem-side-bar">
         <li class="home" routerLinkActive="active">
             <a href="javascript:;" routerLink="/admin/home">
                 <i></i>Home</a>
@@ -45,7 +46,7 @@
                 <i></i>Users</a>
         </li>
         <li>
-            <hr/>
+            <hr />
         </li>
         <li class="contest" routerLinkActive="active">
             <a href="javascript:;" routerLink="/admin/contest">
@@ -55,9 +56,9 @@
             <a href="javascript:;" routerLink="/admin/roles">
                 <i></i>Roles</a>
         </li>
-        <li class="log_out" >
+        <li class="log_out">
             <a href="javascript:;" (click)="logout()">
-            <i class="fa fa-sign-out" aria-hidden="true"></i>Logout</a>
+                <i class="fa fa-sign-out" aria-hidden="true"></i>Logout</a>
         </li>
     </ul>
 </div>

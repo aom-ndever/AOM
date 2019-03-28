@@ -191,6 +191,7 @@ comment_helper.get_all_comment_by_artist_id = async (artist_id) => {
             .populate({ path: 'artist_id', populate: { path: 'music_type' } })
             .populate({ path: 'user_id', populate: { path: 'music_type' } })
             .populate('track_id')
+            .sort({ "created_at": -1 })
             .lean()
         if (comment) {
             return { "status": 1, "message": "comment details found", "comment": comment };

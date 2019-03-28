@@ -32,8 +32,8 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
   //   ImageType: 'image/jpeg'
   //  }
   // public getEditedFile(file: File) {
-   
-   
+
+
   // }
   @ViewChildren(DataTableDirective)
 
@@ -53,7 +53,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
     month: '',
     year: ''
   };
-  
+
   public default_profile_img: any = 'img/profile-img.png';
   public default_cover_img: any = 'img/edit-cover.jpg';
   public day: any = [];
@@ -723,13 +723,13 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
       }
     }
   }
-//   imageCropped(event: ImageCroppedEvent) {
-//     this.croppedImage = event.base64;
-// }
- 
+  //   imageCropped(event: ImageCroppedEvent) {
+  //     this.croppedImage = event.base64;
+  // }
+
 
   updateProfileImage(event: any) {
-    this.imageChangedEvent=event;
+    this.imageChangedEvent = event;
     console.log("update profile image");
     var fileList: FileList = event.target.files;
     const file = <File>event.target.files[0];
@@ -802,7 +802,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
         fr.readAsArrayBuffer(file);
       }
     }
-    
+
   }
 
   getImageMimetype = (signature) => {
@@ -897,9 +897,9 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
       }
     }
   }
-//   imageCropped(event: ImageCroppedEvent) {
-//     this.croppedImage = event.base64;
-// }
+  //   imageCropped(event: ImageCroppedEvent) {
+  //     this.croppedImage = event.base64;
+  // }
 
   updateLocalStorage() {
     if (this.userdata.type == 'artist') {

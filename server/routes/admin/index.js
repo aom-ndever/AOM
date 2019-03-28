@@ -211,97 +211,106 @@ router.post("/add_contest", async (req, res) => {
 
 
     let today = moment().startOf("day");
-
-    //if (req.body.start_date && start_date.format('YYYY-MM-DD') >= today.format('YYYY-MM-DD')) {
-    if (type.admin.account_type == "super_admin" || type.admin.account_type == "admin") {
-      var duration;
-      var max_participation;
-      var round;
-
-      if (req.body.contest_type == "beta") {
-        duration = 24,
-          max_participation = 6000,
-          round = "preliminary"
-      }
-      else if (req.body.contest_type == "standard") {
-        console.log('2', 2);
-
-        duration = 32,
-          max_participation = 12000,
-          round = "preliminary1"
-      }
-      var contest_obj = {
-        admin_id: req.userInfo.id,
-        music_type: req.body.music_type,
-        name: req.body.name,
-        contest_type: req.body.contest_type,
-        duration: duration,
-        max_participation: max_participation,
-        contest_type: req.body.contest_type,
-        round: round
-      }
-
-      var resp_data = await contest_helper.insert_contest(contest_obj);
-
-      var round_obj = {
-        contest_id: resp_data.contest._id,
-        start_date: start_date,
-        // state: req.body.state,
-        // region: req.body.region,
-        // duration: req.body.duration,
-        // end_date: moment(start_date).add((req.body.duration * 7), 'days'),
-        round: round,
-        round_name: contest_obj.name + " " + "round" + req.body.round
-      };
-
-      var resp_data = await round_helper.insert_round(round_obj);
-      if (resp_data.status == 0) {
-        logger.error("Error occured while inserting = ", resp_data);
-        res.status(config.INTERNAL_SERVER_ERROR).json(resp_data);
-      } else {
-        var resp_music = await artist_helper.get_all_artist_for_email();
-        if (resp_music.status == 1) {
-          for (const a of resp_music.artist) {
-            logger.trace("sending mail");
-            var mail_resp = await mail_helper.send("contest", {
-              "to": a.email,
-              "subject": "Contest Creation"
-            }, {
-                "Note": "New contest has been created named :" + contest_obj.name,
-              });
-          }
-        }
-        logger.trace(" got successfully = ", resp_data);
-        res.status(config.OK_STATUS).json(resp_data);
-      }
+    console.log('today', today);
+    console.log('start_date.format', start_date.format('YYYY-MM-DD'));
+    console.log('today.format', today.format('YYYY-MM-DD'));
+    if (start_date.format('YYYY-MM-DD') > today.format('YYYY-MM-DD')) {
+      console.log("greater");
     }
-    // else {
-    //   var obj = {
-    //     admin_id: req.userInfo.id,
-    //     name: req.body.name,
-    //     start_date: start_date,
-    //     duration: req.body.duration,
-    //     end_date: moment(start_date).utc().add((req.body.duration * 7), 'days'),
-    //     music_type: req.body.music_type,
-    //     state: req.body.state,
-    //     region: req.body.region,
-    //     round: req.body.round,
-    //     round_name: req.body.name + " " + "round" + req.body.round
+    if (start_date.format('YYYY-MM-DD') < today.format('YYYY-MM-DD')) {
+      console.log("smaller");
+    }
 
-    //   };
-    //   var resp_data = await contest_request_helper.insert_contest_request(obj);
-    //   if (resp_data.status == 0) {
-    //     logger.error("Error occured while inserting = ", resp_data);
-    //     res.status(config.INTERNAL_SERVER_ERROR).json(resp_data);
-    //   } else {
-    //     logger.trace(" got successfully = ", resp_data);
-    //     res.status(config.OK_STATUS).json(resp_data);
-    //   }
-    // }
-    // } else {
-    //   res.status(config.BAD_REQUEST).json({ "message": "Date must be greater or equal to today's date" });
+    if (start_date.format('YYYY-MM-DD') >= today.format('YYYY-MM-DD')) {
+      if (type.admin.account_type == "super_admin" || type.admin.account_type == "admin") {
+        var duration;
+        var max_participation;
+        var round;
 
-    // }
+        if (req.body.contest_type == "beta") {
+          duration = 24,
+            max_participation = 6000,
+            round = "preliminary"
+        }
+        else if (req.body.contest_type == "standard") {
+          console.log('2', 2);
+
+          duration = 32,
+            max_participation = 12000,
+            round = "preliminary1"
+        }
+        var contest_obj = {
+          admin_id: req.userInfo.id,
+          music_type: req.body.music_type,
+          name: req.body.name,
+          contest_type: req.body.contest_type,
+          duration: duration,
+          max_participation: max_participation,
+          contest_type: req.body.contest_type,
+          round: round
+        }
+
+        var resp_data = await contest_helper.insert_contest(contest_obj);
+
+        var round_obj = {
+          contest_id: resp_data.contest._id,
+          start_date: start_date,
+          // state: req.body.state,
+          // region: req.body.region,
+          // duration: req.body.duration,
+          // end_date: moment(start_date).add((req.body.duration * 7), 'days'),
+          round: round,
+          round_name: contest_obj.name + " " + "round" + req.body.round
+        };
+
+        var resp_data = await round_helper.insert_round(round_obj);
+        if (resp_data.status == 0) {
+          logger.error("Error occured while inserting = ", resp_data);
+          res.status(config.INTERNAL_SERVER_ERROR).json(resp_data);
+        } else {
+          var resp_music = await artist_helper.get_all_artist_for_email();
+          if (resp_music.status == 1) {
+            for (const a of resp_music.artist) {
+              logger.trace("sending mail");
+              var mail_resp = await mail_helper.send("contest", {
+                "to": a.email,
+                "subject": "Contest Creation"
+              }, {
+                  "Note": "New contest has been created named :" + contest_obj.name,
+                });
+            }
+          }
+          logger.trace(" got successfully = ", resp_data);
+          res.status(config.OK_STATUS).json(resp_data);
+        }
+      }
+      // else {
+      //   var obj = {
+      //     admin_id: req.userInfo.id,
+      //     name: req.body.name,
+      //     start_date: start_date,
+      //     duration: req.body.duration,
+      //     end_date: moment(start_date).utc().add((req.body.duration * 7), 'days'),
+      //     music_type: req.body.music_type,
+      //     state: req.body.state,
+      //     region: req.body.region,
+      //     round: req.body.round,
+      //     round_name: req.body.name + " " + "round" + req.body.round
+
+      //   };
+      //   var resp_data = await contest_request_helper.insert_contest_request(obj);
+      //   if (resp_data.status == 0) {
+      //     logger.error("Error occured while inserting = ", resp_data);
+      //     res.status(config.INTERNAL_SERVER_ERROR).json(resp_data);
+      //   } else {
+      //     logger.trace(" got successfully = ", resp_data);
+      //     res.status(config.OK_STATUS).json(resp_data);
+      //   }
+      // }
+    } else {
+      res.status(config.BAD_REQUEST).json({ "message": "Date must be greater or equal to today's date" });
+
+    }
 
 
   }

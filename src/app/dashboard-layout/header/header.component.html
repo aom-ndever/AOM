@@ -164,7 +164,10 @@
             </div>
             <div class="login-btn"><button (click)="login(login_form.valid)" [disabled]="show_spinner">Log In <i *ngIf="show_spinner"
                   class="fa fa-spinner fa-spin"></i></button></div>
-            <div class="forgot-link"><a href="javascript:;" (click)="openForgetPasswordModal(forget)">Forgot Password</a></div>
+            <!-- <div class="forgot-link"><a href="javascript:;" (click)="openForgetPasswordModal(forget)">Forgot Password</a></div> -->
+            <div class="forget_password">
+              <a class="" href="javascript:;" (click)="openForgetPasswordModal(forget)">Forget Password</a>
+            </div>
             <div class="register-link">Don't have an account yet? <a href="javascript:;" routerLink="/register">Register</a></div>
           </form>
         </div>
