@@ -32,8 +32,8 @@ export class CommentsService {
   }
 
   // Get all comments by artist id
-  getAllCommentsByArtist(data : any) {
-    return this.http.post(`${this.api_host}/comment`, data);
+  getAllCommentsByArtist(sort:-1,data : any) {
+    return this.http.post(`${this.api_host}/${sort}/comment`, data);
   }
 
   // upvote comment

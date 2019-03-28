@@ -37,7 +37,7 @@ export class ConmmentsComponent implements OnInit {
     let data = {
       artist_id: this.artistdata['_id']
     };
-    this.CommentsService.getAllCommentsByArtist(data).subscribe((response) => {
+    this.CommentsService.getAllCommentsByArtist(-1,data).subscribe((response) => {
       this.artistcomments = response['comment'];
     });
   }

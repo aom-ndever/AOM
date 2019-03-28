@@ -15,6 +15,7 @@ import { DataTableDirective } from 'angular-datatables';
 import swal from 'sweetalert2';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
+// import { ImageCroppedEvent } from 'ngx-image-cropper';
 declare let Stripe: any;
 @Component({
   selector: 'app-myProfile',
@@ -23,13 +24,24 @@ declare let Stripe: any;
 })
 
 export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
+
+  // public config = {
+  //    ImageName: 'Some image',
+  //    AspectRatios: ["4:3", "16:9"],
+  // ImageUrl: 'https://static.pexels.com/photos/248797/pexels-photo-248797.jpeg',
+  //   ImageType: 'image/jpeg'
+  //  }
+  // public getEditedFile(file: File) {
+
+
+  // }
   @ViewChildren(DataTableDirective)
 
   artist_validation = [false, false, false, false, false, false, false];
   imageChangedEvent: any = '';
   croppedImage: any = '';
   cropperReady = false;
-
+  public card_list: any = [];
 
   dtElements: QueryList<DataTableDirective>;
   dtOptions: DataTables.Settings[] = [];
@@ -41,6 +53,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
     month: '',
     year: ''
   };
+
   public default_profile_img: any = 'img/profile-img.png';
   public default_cover_img: any = 'img/edit-cover.jpg';
   public day: any = [];
@@ -308,8 +321,8 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
     });
 
     this.bank_fg = this.fb.group({
-      bname: ['', [Validators.required, Validators.pattern('[A-Za-z]+'), this.noWhitespaceValidator]],
-      hname: ['', [Validators.required, Validators.pattern('[A-Za-z]+'), this.noWhitespaceValidator]],
+      bname: ['', [Validators.required, Validators.pattern('[A-Za-z]+')]],
+      hname: ['', [Validators.required, Validators.pattern('[A-Za-z]+')]],
       acno: ['', [Validators.required, Validators.pattern('[0-9]+'), this.noWhitespaceValidator]],
       rno: ['', [Validators.required, Validators.pattern('[0-9]+'), this.noWhitespaceValidator]]
     });
@@ -403,6 +416,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
   }
+
 
   ngOnInit() {
     if (this.userdata['type'] == 'artist') {
@@ -709,11 +723,16 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
       }
     }
   }
+  //   imageCropped(event: ImageCroppedEvent) {
+  //     this.croppedImage = event.base64;
+  // }
+
 
   updateProfileImage(event: any) {
+    this.imageChangedEvent = event;
     console.log("update profile image");
     var fileList: FileList = event.target.files;
-    const file = event.target.files[0];
+    const file = <File>event.target.files[0];
     if (event.target.files.length > 0) {
       const allow_types = ['image/png', 'image/jpg', 'image/jpeg'];
       if (allow_types.indexOf(fileList[0].type) == -1) {
@@ -783,6 +802,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
         fr.readAsArrayBuffer(file);
       }
     }
+
   }
 
   getImageMimetype = (signature) => {
@@ -845,6 +865,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
   updateCoverImage(event: any) {
+    // this.imageChangedEvent = event;
     const fileList: FileList = event.target.files;
     console.log(fileList);
     if (event.target.files.length > 0) {
@@ -876,6 +897,9 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
       }
     }
   }
+  //   imageCropped(event: ImageCroppedEvent) {
+  //     this.croppedImage = event.base64;
+  // }
 
   updateLocalStorage() {
     if (this.userdata.type == 'artist') {
@@ -2357,13 +2381,16 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
   }
   // Add new bank
   addBank(flag) {
+    console.log(flag);
     if (flag) {
       this.show_spinner = true;
-      this.MyProfileService.addNewPaymentMethod(this.bank_data).subscribe((response) => {
+      this.MyProfileService.addNewPaymentMethod(this.bank_data).subscribe(async (response) => {
         this.toastr.success(response['message'], 'Success!');
-        this.getAllCard();
+        await this.getAllCard();
+        this.show_spinner = false;
         this.media_modal_ref.close();
       }, (error) => {
+        console.log(error);
         this.toastr.error(error['error'].message, 'Error!');
         this.show_spinner = false;
       }, () => {
@@ -2373,10 +2400,10 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
     this.bank_validation = !flag;
   }
   // get all card
-  card_list: any = [];
   getAllCard() {
     this.MyProfileService.getAllBank().subscribe((response) => {
       this.card_list = response['bank'];
+      console.log('here in list Data', this.card_list);
       this.card_list.forEach((ele) => {
         ele['account_number'] = ele['account_number'].toString().replace(/.(?=.{4})/g, 'X');
       });

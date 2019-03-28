@@ -7,6 +7,8 @@ import { NgbModal, ModalDismissReasons, NgbModalRef } from '@ng-bootstrap/ng-boo
 import { FormGroup, FormBuilder, Validators, FormControl, AbstractControl, NG_VALIDATORS, Validator } from '@angular/forms';
 import { Title } from '@angular/platform-browser';
 declare var FB: any;
+import * as socketClient from 'socket.io-client'
+import { MyMusicComponent } from '../my_music/my_music.component';
 
 @Component({
   selector: 'app-track-comments',
@@ -24,6 +26,8 @@ export class TrackConmmentsComponent implements OnInit {
   audio_ins: any = [];
   comment_txt: any = '';
   show_spinner: boolean = false;
+  private socket;
+
   constructor(
     private TrackCommentsService: TrackCommentsService,
     private toastr: ToastrService,
@@ -39,7 +43,8 @@ export class TrackConmmentsComponent implements OnInit {
   }
 
   ngOnInit() {
-
+    this.socket = socketClient(environment.socketUrl);
+    console.log("environment.socketUr", environment.socketUrl)
   }
 
   // Play audio

@@ -33,7 +33,6 @@ track_helper.insert_suspend_track = async (object) => {
 };
 
 track_helper.delete_suspend_track = async (track_id) => {
-
     try {
         var track = await Track_suspend.findOneAndRemove({ "track_id": (track_id) })
         if (track) {
@@ -46,9 +45,7 @@ track_helper.delete_suspend_track = async (track_id) => {
     }
 };
 track_helper.get_all_track_of_artist = async (artist_id, start, length, sort_by = {}) => {
-
     try {
-
         var music = await Track
             .find({ "artist_id": new ObjectId(artist_id), "is_suspend": false })
 
@@ -287,7 +284,7 @@ track_helper.get_all_track = async () => {
 
 track_helper.update_votes = async (track_id, no_votes) => {
     try {
-        var vote = await Track.findOneAndUpdate({ "_id": new ObjectId(track_id) }, { "no_of_votes": no_votes })
+        var vote = await Track.update({ "_id": new ObjectId(track_id) }, { $set: { "no_of_votes": no_votes } })
         if (vote) {
             return { "status": 1, "message": "voting updated", };
         } else {
@@ -351,6 +348,7 @@ track_helper.update_artist_for_likes = async (id, no_like) => {
         return { "status": 0, "message": "Error occured while finding contest", "error": err }
     }
 };
+
 track_helper.update_track_for_likes = async (id, no_like) => {
     try {
         var contest = await Track.findOneAndUpdate({ "_id": new ObjectId(id) }, { "no_of_likes": no_like })

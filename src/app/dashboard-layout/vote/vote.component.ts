@@ -7,6 +7,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { DataTableDirective } from 'angular-datatables';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
+import { MyMusicComponent } from '../my_music/my_music.component';
 @Component({
   selector: 'app-vote',
   templateUrl: './vote.component.html',
@@ -116,7 +117,8 @@ export class VoteComponent implements OnInit {
           if (that.region_filter.length > 0)
             dataTablesParameters['state'] = that.region_filter;
           that.VoteService.getWinnersData(dataTablesParameters).subscribe((response) => {
-            this.winner_list = response['track']['winner'];
+            this.winner_list = response['data'];
+            //console.log('dsbdthj', this.winner_list[0].artist_id.music_type.name);
             this.audio_ins1 = [];
             this.audio_ins_list1 = [];
             this.winner_list.forEach((ele) => {
@@ -205,7 +207,8 @@ export class VoteComponent implements OnInit {
     this.participants = [];
     let user = JSON.parse(localStorage.getItem('user'));
     this.VoteService.getAllParticipants(data).subscribe((response) => {
-      this.participants = response['track'];
+      this.participants = response['data'];
+      console.log(this.participants);
       this.audio_ins = [];
       this.audio_ins_list = [];
       this.participants.forEach((ele) => {

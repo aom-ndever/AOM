@@ -5,6 +5,7 @@ import { environment } from '../../../environments/environment';
 import { MessageService } from '../../shared/message.service';
 import { Subscription } from 'rxjs/Subscription';
 import { element } from '../../../../node_modules/protractor';
+import * as socketClient from 'socket.io-client'
 
 @Component({
   selector: 'app-dashboard',
@@ -26,6 +27,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
   toggSearch: boolean = false;
   show_loader: boolean = false;
   search_str: any = '';
+  private socket;
+  user: any;
+
   subscription: Subscription;
   constructor(
     private DashboardService: DashboardService,
@@ -34,6 +38,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   ) {
     this.getAllData({});
     this.getAllMusicType();
+    this.user = JSON.parse(localStorage.getItem('user'));
     this.subscription = this.MessageService.getMessage().subscribe((response) => {
       if (response && response['list'] != 2) {
         this.audio_ins.forEach((ele, idx) => { this.audio_ins[idx] = false; });
@@ -58,6 +63,12 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.socket = socketClient(environment.socketUrl);
+    this.socket.emit("join", this.user.token);
+    this.socket.on("receive_artist_notification_count", (data) => {
+      console.log("socket data", data)
+      this.MessageService.checkCount(data);
+    });
     console.log('Dashboard componenet is running');
   }
 
@@ -144,7 +155,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.getAllFollower();
     this.MessageService.sendMessage({ 'music_flag': 'no' });
   }
-  // Get All music type
+  // Get All music type  
   getAllMusicType() {
     this.DashboardService.getAllMusicType().subscribe(response => {
       this.music_type_list = response['music'];

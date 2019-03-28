@@ -3,7 +3,7 @@
     <div class="row" *ngIf="!user || user.admin">
       <div class="col-md-3 col-sm-3 col-xs-3">
         <div class="logo-wrap">
-          <a href="javascript:;" routerLink="">
+          <a href="javascript:;" routerLink="/whats-new">
             <img src="img/logo.png" alt="">
           </a>
         </div>
@@ -17,7 +17,7 @@
         <nav class="navigation" [style.display]="toggleMenu ? 'block' : 'none'">
           <ul>
             <li routerLinkActive="active">
-              <a href="javascript:;" routerLink="/whats-new">Whats new</a>
+              <a href="javascript:;" routerLink="/whats-new">What's new</a>
             </li>
             <li routerLinkActive="active">
               <a href="javascript:;" routerLink="/artist">Artists</a>
@@ -57,7 +57,7 @@
             <ul class="update-option">
               <li class="message"><a href="javascript:;"><i class="fa fa-envelope-o" aria-hidden="true"></i> <span
                     class="new-up"></span></a></li>
-              <li class="notification"><a href="javascript:;"><i class="fa fa-bell" aria-hidden="true"></i> <span class="new-up"></span></a></li>
+              <li class="notification"><a href="javascript:;"><i class="fa fa-bell" aria-hidden="true"></i> <span class="new-up">{{count}}</span></a></li>
             </ul>
             <div class="profile-picture" ngbDropdown>
               <a href="javascirpt:;" ngbDropdownToggle>
@@ -87,7 +87,7 @@
           <div class="mobile-nav" (click)="toggleMainMenu()"><a href="javascript:;"><i class="fa fa-bars"></i></a></div>
           <nav class="navigation" [style.display]="toggleMenu ? 'block' : 'none'">
             <ul>
-              <li routerLinkActive="active"><a href="javascript:;" routerLink="/whats-new">Whats new</a></li>
+              <li routerLinkActive="active"><a href="javascript:;" routerLink="/whats-new">What's new</a></li>
               <li routerLinkActive="active"><a href="javascript:;" routerLink="/artist">Artists</a></li>
               <li routerLinkActive="active"><a href="javascript:;" routerLink="/vote">Vote</a></li>
               <li routerLinkActive="active"><a href="javascript:;" routerLink="/my-profile">My Profile</a></li>
@@ -164,7 +164,10 @@
             </div>
             <div class="login-btn"><button (click)="login(login_form.valid)" [disabled]="show_spinner">Log In <i *ngIf="show_spinner"
                   class="fa fa-spinner fa-spin"></i></button></div>
-            <div class="forgot-link"><a href="javascript:;" (click)="openForgetPasswordModal(forget)">Forgot Password</a></div>
+            <!-- <div class="forgot-link"><a href="javascript:;" (click)="openForgetPasswordModal(forget)">Forgot Password</a></div> -->
+            <div class="forget_password">
+              <a class="" href="javascript:;" (click)="openForgetPasswordModal(forget)">Forget Password</a>
+            </div>
             <div class="register-link">Don't have an account yet? <a href="javascript:;" routerLink="/register">Register</a></div>
           </form>
         </div>

@@ -5,11 +5,11 @@ import { environment } from '../../../environments/environment';
 import { dashCaseToCamelCase } from '@angular/compiler/src/util';
 @Injectable()
 export class VoteService {
-  private api_host : any = environment.API_URL;
-  private user : any = '';
-  private headers : any = '';
+  private api_host: any = environment.API_URL;
+  private user: any = '';
+  private headers: any = '';
 
-  constructor(private http: HttpClient) { 
+  constructor(private http: HttpClient) {
     // this.user = JSON.parse(localStorage.getItem('user'));
     // this.headers = new HttpHeaders({ 'x-access-token' : this.user.token });  
   }
@@ -23,19 +23,19 @@ export class VoteService {
   }
   // get all participants
   getAllParticipants(data) {
-      return this.http.post(`${this.api_host}/get_track_for_current_round`, data);
+    return this.http.post(`${this.api_host}/get_track_for_current_round`, data);
   }
   // Follow the artist 
-  followArtist(data : any) {
+  followArtist(data: any) {
     this.user = JSON.parse(localStorage.getItem('user'));
-    this.headers = new HttpHeaders({ 'x-access-token' : this.user.token });  
-    return this.http.post(`${this.api_host}/user/artist/follow`, data, {headers : this.headers});
+    this.headers = new HttpHeaders({ 'x-access-token': this.user.token });
+    return this.http.post(`${this.api_host}/user/artist/follow`, data, { headers: this.headers });
   }
   // vote to artist track
   giveVoteToTrack(data) {
     this.user = JSON.parse(localStorage.getItem('user'));
-    this.headers = new HttpHeaders({ 'x-access-token' : this.user.token });  
-    return this.http.post(`${this.api_host}/user/track/vote_track`, data, {headers : this.headers});
+    this.headers = new HttpHeaders({ 'x-access-token': this.user.token });
+    return this.http.post(`${this.api_host}/user/track/vote_track`, data, { headers: this.headers });
   }
   // Get all contest
   getAllContest(data) {
@@ -43,12 +43,12 @@ export class VoteService {
   }
   // get winners data
   getWinnersData(data) {
-    return this.http.post(`${this.api_host}/winners`, data);
+    return this.http.post(`${this.api_host}/get_track_for_current_round`, data);
   }
   // Get followers
   getFollower() {
     this.user = JSON.parse(localStorage.getItem('user'));
-    this.headers = new HttpHeaders({ 'x-access-token' : this.user.token });  
-    return this.http.get(`${this.api_host}/user/artist/followed`, {headers : this.headers});
+    this.headers = new HttpHeaders({ 'x-access-token': this.user.token });
+    return this.http.get(`${this.api_host}/user/artist/followed`, { headers: this.headers });
   }
 }

@@ -42,7 +42,66 @@
                                                     <div class="upload-cover">
                                                         <img [src]="default_profile_img" alt="Edit cover Image">
                                                         <span class="up_text">Update Photo</span>
-                                                        <input type="file" name="upload" id="cover_upload" (change)="updateProfileImage($event)">
+                                                        <input type="file" name="upload" id="cover_upload" data-toggle="modal"
+                                                            data-target="#cropImagePop" (change)="updateProfileImage($event)"
+                                                            accept="image/png,image/jpg,image/jpeg">
+
+                                                        <!-- <div class="modal fade" id="cropImagePop" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                                                <div class="modal-dialog">
+                                                                  <div class="modal-content">
+                                                                  <div class="modal-header">
+                                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                                    <h4 class="modal-title" id="myModalLabel">
+                                                                        <?=multiLanguage( "Edit Foto" , "Edit Photo" )?></h4>
+                                                                  </div>
+                                                                  <div class="modal-body">
+                                                                  <div id="upload-demo" class="center-block"></div>
+                                                            </div>
+                                                                   <div class="modal-footer">
+                                              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                              <button type="button" id="cropImageBtn" class="btn btn-primary">Crop</button>
+                                            </div>
+                                                                  </div>
+                                                                </div>
+                                                              </div> -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                        <!-- <div>
+                                                            <image-cropper
+                                                            [imageChangedEvent]="imageChangedEvent"
+                                                            [maintainAspectRatio]="true"
+                                                            [aspectRatio]="4 / 3"
+                                                            [resizeToWidth]="128"
+                                                            format="png"
+                                                            (imageCropped)="imageCropped($event)"
+                                                            (imageLoaded)="imageLoaded()"
+                                                            (loadImageFailed)="loadImageFailed()"
+                                                        ></image-cropper>
+                                                           <img [src]="croppedImage" />
+                                                    </div> -->
+
+
+
                                                         <a data-fancybox data-animation-duration="700" data-src="#delete"
                                                             *ngIf="userdata.image" href="javascript:;" class="delete"
                                                             (click)="removeArtistImage()"><i class="fa fa-trash"></i></a>
@@ -103,7 +162,8 @@
                                                                 <select class="form-control" id="day" formControlName="day"
                                                                     name="day" [(ngModel)]="userdata.day">
                                                                     <option value="">Day</option>
-                                                                    <option *ngFor="let d of day" value="{{d}}">{{d}}</option>
+                                                                    <option *ngFor="let d of day" value="{{d}}">{{d}}
+                                                                    </option>
                                                                 </select>
                                                                 <div class="cust_err_msg" *ngIf="artistProfileValidation && !artist_profile.controls['day'].valid">
                                                                     <span *ngIf="artist_profile.controls['day'].errors['required']"
@@ -114,7 +174,8 @@
                                                                 <select class="form-control" id="month" formControlName="month"
                                                                     name="month" [(ngModel)]="userdata.month">
                                                                     <option value="">Month</option>
-                                                                    <option *ngFor="let m of month" value="{{m}}">{{m}}</option>
+                                                                    <option *ngFor="let m of month" value="{{m}}">{{m}}
+                                                                    </option>
                                                                 </select>
                                                                 <div class="cust_err_msg" *ngIf="artistProfileValidation && !artist_profile.controls['month'].valid">
                                                                     <span *ngIf="artist_profile.controls['month'].errors['required']"
@@ -125,7 +186,8 @@
                                                                 <select class="form-control" id="year" formControlName="year"
                                                                     name="year" [(ngModel)]="userdata.year">
                                                                     <option value="">Year</option>
-                                                                    <option *ngFor="let y of year" value="{{y}}">{{y}}</option>
+                                                                    <option *ngFor="let y of year" value="{{y}}">{{y}}
+                                                                    </option>
                                                                 </select>
                                                                 <div class="cust_err_msg" *ngIf="artistProfileValidation && !artist_profile.controls['year'].valid">
                                                                     <span *ngIf="artist_profile.controls['year'].errors['required']"
@@ -145,7 +207,7 @@
 
                                                         <div class="cust_err_msg" *ngIf="artistProfileValidation && !artist_profile.controls['music_type'].valid">
                                                             <span *ngIf="artist_profile.controls['music_type'].errors['required']"
-                                                                class="text-danger">Music is required.</span>
+                                                                class="text-danger">Music type is required.</span>
                                                         </div>
                                                     </div>
 
@@ -171,7 +233,8 @@
                                                             <span *ngIf="!artist_profile.controls['phone'].errors['required'] && artist_profile.controls['phone'].errors['whitespace']"
                                                                 class="text-danger">Please enter valid data.</span>
                                                             <span *ngIf="(artist_profile.controls['phone'].errors['maxlength'] || artist_profile.controls['phone'].errors['minlength'])  && artist_profile.controls['phone'].dirty"
-                                                                class="text-danger">Please enter valid phone number.</span>
+                                                                class="text-danger">Please enter valid phone
+                                                                number.</span>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -210,7 +273,7 @@
                                                     <label for="facebook">Twitter</label>
                                                     <input type="text" class="form-control" id="fb1" formControlName="share_url_twit"
                                                         placeholder="Add Account" name="twit" [(ngModel)]="userdata.social_media['twitter']">
-                                                    <img src="img/twitt.png" alt="Facebook">
+                                                    <img class="imginsta" src="img/twitter.png" alt="Facebook" height="20">
                                                 </div>
                                             </div>
                                             <div class="social-block">
@@ -218,7 +281,7 @@
                                                     <label for="inst">Youtube</label>
                                                     <input type="text" class="form-control" id="fname1" formControlName="share_url_youtube"
                                                         placeholder="Add Account" name="youtube" [(ngModel)]="userdata.social_media['youtube']">
-                                                    <img src="img/youtube.png" alt="Facebook">
+                                                    <img src="img/youtube.png" alt="Facebook" style="height:20px;">
                                                 </div>
                                             </div>
                                             <div class="social-block">
@@ -494,7 +557,8 @@
                                                 </tbody>
                                                 <tbody *ngIf="transaction_data?.length == 0">
                                                     <tr>
-                                                        <td colspan="6" class="no-data-available">No data available!</td>
+                                                        <td colspan="6" class="no-data-available">No data available!
+                                                        </td>
                                                     </tr>
                                                 <tbody>
                                             </table>
@@ -516,7 +580,8 @@
                                     <div class="col-md-12">
                                         <a data-fancybox data-animation-duration="700" data-src="#addmedia" (click)="openAddMediaModal(content)"
                                             href="javascript:;" class="add-payment"><img src="img/icons8-plus_mathNormal.png"
-                                                alt="">Add Media</a>
+                                                alt="">Add
+                                            Media</a>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -707,12 +772,17 @@
                                                         <p class="track-name">{{track.name}}</p>
                                                         <p class="track-singer">{{track['artist_id']['first_name']+'
                                                             '+track['artist_id']['last_name']}}</p>
-                                                        <p class="track-year">{{track['created_at'] | date : 'yyyy'}}</p>
+                                                        <p class="track-year">{{track['created_at'] | date : 'yyyy'}}
+                                                        </p>
                                                     </td>
-                                                    <td class="track-download">{{track['no_of_downloads']}} <span>Downloads</span></td>
-                                                    <td class="track-share">{{track['no_of_shares']}} <span>Shares</span></td>
-                                                    <td class="track-likes">{{track['no_of_likes']}} <span>Likes</span></td>
-                                                    <td class="track-comment">{{track['no_of_comments']}}<span>Comments</span></td>
+                                                    <td class="track-download">{{track['no_of_downloads']}}
+                                                        <span>Downloads</span></td>
+                                                    <td class="track-share">{{track['no_of_shares']}}
+                                                        <span>Shares</span></td>
+                                                    <td class="track-likes">{{track['no_of_likes']}} <span>Likes</span>
+                                                    </td>
+                                                    <td class="track-comment">
+                                                        {{track['no_of_comments']}}<span>Comments</span></td>
                                                     <td class="td track-vote">
                                                         <img src="img/start.png" alt="start">
                                                         <span>{{track['no_of_votes']}} <br> <span>Votes</span></span>
@@ -868,13 +938,16 @@
                                                     <td class="track-det" colspan="2">
                                                         <p class="track-name">{{download.name}}</p>
                                                         <p class="track-singer">{{download['artist_id']['name']}}</p>
-                                                        <p class="track-year">{{download.created_at | date : 'yyyy'}}</p>
+                                                        <p class="track-year">{{download.created_at | date : 'yyyy'}}
+                                                        </p>
                                                     </td>
                                                     <td class="track-date">{{download.created_at | date : 'MMMM dd,
                                                         yyyy'}}</td>
-                                                    <td class="track-download">{{download.no_of_downloads}} <span>Downloads</span></td>
+                                                    <td class="track-download">{{download.no_of_downloads}}
+                                                        <span>Downloads</span></td>
 
-                                                    <td class="track-share">{{download.no_of_shares}} <span>Shares</span></td>
+                                                    <td class="track-share">{{download.no_of_shares}}
+                                                        <span>Shares</span></td>
                                                 </tr>
                                             </tbody>
                                         </table>
@@ -1026,7 +1099,7 @@
                         <li class="nav-item"><a class="nav-link {{tab_cnt == 5 ? 'active' : '' }}" data-toggle="tab"
                                 (click)="tabChange(5)" href="javascript:;">Upgrade to Artist</a></li>
                         <li class="nav-item"><a class="nav-link {{tab_cnt == 6 ? 'active' : '' }}" data-toggle="tab"
-                                (click)="tabChange(6)" href="javascript:;">Purchase Track</a></li>
+                                (click)="tabChange(6)" href="javascript:;">Purchased Track</a></li>
                     </ul>
                 </div>
             </div>
@@ -1100,7 +1173,8 @@
                                                                 <select class="form-control" id="day" formControlName="day"
                                                                     name="day" [(ngModel)]="userdata.day">
                                                                     <option value="">Day</option>
-                                                                    <option *ngFor="let d of day" value="{{d}}">{{d}}</option>
+                                                                    <option *ngFor="let d of day" value="{{d}}">{{d}}
+                                                                    </option>
                                                                 </select>
                                                                 <div class="cust_err_msg" *ngIf="listenerProfileValidation && !listener_profile.controls['day'].valid">
                                                                     <span *ngIf="listener_profile.controls['day'].errors['required']"
@@ -1111,7 +1185,8 @@
                                                                 <select class="form-control" id="month" formControlName="month"
                                                                     name="month" [(ngModel)]="userdata.month">
                                                                     <option value="">Month</option>
-                                                                    <option *ngFor="let m of month" value="{{m}}">{{m}}</option>
+                                                                    <option *ngFor="let m of month" value="{{m}}">{{m}}
+                                                                    </option>
                                                                 </select>
                                                                 <div class="cust_err_msg" *ngIf="listenerProfileValidation && !listener_profile.controls['month'].valid">
                                                                     <span *ngIf="listener_profile.controls['month'].errors['required']"
@@ -1122,7 +1197,8 @@
                                                                 <select class="form-control" id="year" formControlName="year"
                                                                     name="year" [(ngModel)]="userdata.year">
                                                                     <option value="">Year</option>
-                                                                    <option *ngFor="let y of year" value="{{y}}">{{y}}</option>
+                                                                    <option *ngFor="let y of year" value="{{y}}">{{y}}
+                                                                    </option>
                                                                 </select>
                                                                 <div class="cust_err_msg" *ngIf="listenerProfileValidation && !listener_profile.controls['year'].valid">
                                                                     <span *ngIf="listener_profile.controls['year'].errors['required']"
@@ -1167,7 +1243,8 @@
                                                             <span *ngIf="!listener_profile.controls['phone'].errors['required'] && listener_profile.controls['phone'].errors['whitespace']"
                                                                 class="text-danger">Please enter valid data.</span>
                                                             <span *ngIf="(listener_profile.controls['phone'].errors['maxlength'] || listener_profile.controls['phone'].errors['minlength'])  && listener_profile.controls['phone'].dirty"
-                                                                class="text-danger">Please enter valid phone number.</span>
+                                                                class="text-danger">Please enter valid phone
+                                                                number.</span>
                                                         </div>
                                                     </div>
                                                     <div class="button_group edit_save_btn">
@@ -1580,7 +1657,8 @@
                                                                 <select class="form-control" id="up_day"
                                                                     formControlName="day" name="up_day" [(ngModel)]="upgrade_artist_data.day">
                                                                     <option value="">Day</option>
-                                                                    <option *ngFor="let d of day" value="{{d}}">{{d}}</option>
+                                                                    <option *ngFor="let d of day" value="{{d}}">{{d}}
+                                                                    </option>
                                                                 </select>
                                                                 <div class="cust_err_msg" *ngIf="upgrade_artist_validation && !upgrade_artist.controls['day'].valid">
                                                                     <span *ngIf="upgrade_artist.controls['day'].errors['required']"
@@ -1591,7 +1669,8 @@
                                                                 <select class="form-control" id="up_month"
                                                                     formControlName="month" name="up_month" [(ngModel)]="upgrade_artist_data.month">
                                                                     <option value="">Month</option>
-                                                                    <option *ngFor="let m of month" value="{{m}}">{{m}}</option>
+                                                                    <option *ngFor="let m of month" value="{{m}}">{{m}}
+                                                                    </option>
                                                                 </select>
                                                                 <div class="cust_err_msg" *ngIf="upgrade_artist_validation && !upgrade_artist.controls['month'].valid">
                                                                     <span *ngIf="upgrade_artist.controls['month'].errors['required']"
@@ -1602,7 +1681,8 @@
                                                                 <select class="form-control" id="up_year"
                                                                     formControlName="year" name="up_year" [(ngModel)]="upgrade_artist_data.year">
                                                                     <option value="">Year</option>
-                                                                    <option *ngFor="let y of year" value="{{y}}">{{y}}</option>
+                                                                    <option *ngFor="let y of year" value="{{y}}">{{y}}
+                                                                    </option>
                                                                 </select>
                                                                 <div class="cust_err_msg" *ngIf="upgrade_artist_validation && !upgrade_artist.controls['year'].valid">
                                                                     <span *ngIf="upgrade_artist.controls['year'].errors['required']"
@@ -1621,7 +1701,7 @@
                                                         </select>
                                                         <div class="cust_err_msg" *ngIf="upgrade_artist_validation && !upgrade_artist.controls['music_type'].valid">
                                                             <span *ngIf="upgrade_artist.controls['music_type'].errors['required']"
-                                                                class="text-danger">Music is required.</span>
+                                                                class="text-danger">Music type is required.</span>
                                                         </div>
                                                     </div>
 
@@ -1642,7 +1722,8 @@
                                                             name="region" [(ngModel)]="upgrade_artist_data.region"
                                                             (change)="getStateByRegion(upgrade_artist_data.region)">
                                                             <option value="">Select Region</option>
-                                                            <option *ngFor="let r of region_list" value="{{r._id}}">{{r.name}}</option>
+                                                            <option *ngFor="let r of region_list" value="{{r._id}}">
+                                                                {{r.name}}</option>
                                                         </select>
                                                         <div class="cust_err_msg" *ngIf="upgrade_artist_validation && !upgrade_artist.controls['region'].valid">
                                                             <span *ngIf="upgrade_artist.controls['region'].errors['required']"
@@ -1654,7 +1735,8 @@
                                                         <select class="form-control" id="up_state" formControlName="state"
                                                             name="state" [(ngModel)]="upgrade_artist_data.state">
                                                             <option value="">Select State</option>
-                                                            <option *ngFor="let s of state_list" value="{{s._id}}">{{s.name}}</option>
+                                                            <option *ngFor="let s of state_list" value="{{s._id}}">
+                                                                {{s.name}}</option>
                                                         </select>
                                                         <div class="cust_err_msg" *ngIf="upgrade_artist_validation && !upgrade_artist.controls['state'].valid">
                                                             <span *ngIf="upgrade_artist.controls['state'].errors['required']"
@@ -1671,7 +1753,8 @@
                                                             <span *ngIf="!upgrade_artist.controls['phone'].errors['required'] && upgrade_artist.controls['phone'].errors['whitespace']"
                                                                 class="text-danger">Please enter valid data.</span>
                                                             <span *ngIf="(upgrade_artist.controls['phone'].errors['maxlength'] || upgrade_artist.controls['phone'].errors['minlength'])  && upgrade_artist.controls['phone'].dirty"
-                                                                class="text-danger">Please enter valid phone number.</span>
+                                                                class="text-danger">Please enter valid phone
+                                                                number.</span>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -1712,7 +1795,9 @@
                                                     <input type="text" class="form-control" id="up_twit"
                                                         formControlName="share_url_twit" placeholder="Add Account" name="twit"
                                                         [(ngModel)]="upgrade_artist_data.share_url['twitter']">
-                                                    <img src="img/twitter.png" alt="Facebook">
+                                                    <!-- <img class="imginsta" src="img/social-networking-twitter_318-8427.jpg" alt="Facebook" height="20"> -->
+
+                                                    <img alt="Facebook" class="imginsta" height="20" src="img/twitter.png">
                                                 </div>
                                             </div>
                                             <div class="social-block">
@@ -1897,7 +1982,7 @@
     <div class="modal-body">
         <form [formGroup]="playlist_fg">
             <div class="media-modal">
-                <h3>Edit New Playlist</h3>
+                <h3>Edit Playlist</h3>
                 <div class="form-group">
                     <label for="vlink">Name</label>
                     <input type="text" class="form-control" formControlName="name" placeholder="Playlist name" name="playlist"
@@ -1932,7 +2017,8 @@
                         name="search_track" field="name" [multiple]="true" [suggestions]="serach_track_list" [dataKey]="_id"
                         (completeMethod)="search($event)"></p-autoComplete>
                     <div class="cust_err_msg" *ngIf="track_validation && !track_fg.controls['name'].valid">
-                        <span *ngIf="track_fg.controls['name'].errors['required']" class="text-danger">Track required.</span>
+                        <span *ngIf="track_fg.controls['name'].errors['required']" class="text-danger">Track
+                            required.</span>
                         <span *ngIf="!track_fg.controls['name'].errors['required'] && track_fg.controls['name'].errors['whitespace'] "
                             class="text-danger">Enter valid data.</span>
                     </div>

@@ -201,7 +201,7 @@ export class MyMusicComponent implements OnInit, OnDestroy {
 
     };
     fr.readAsArrayBuffer(file);
-    const allow_types = ['audio/mpeg', 'audio/x-aiff', 'audio/vnd.wav', "audio/mp3", "audio/wav", "audio/aiff"];
+    const allow_types = ["audio/mp3"];
   }
 
   changeFile(event: any) {

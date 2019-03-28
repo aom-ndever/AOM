@@ -13,7 +13,8 @@ var track_helper = require('../../helpers/track_helper');
 var artist_helper = require('../../helpers/artist_helper');
 var user_helper = require('../../helpers/user_helper');
 var mail_helper = require('../../helpers/mail_helper');
-
+var global_helper = require('../../helpers/global_helper');
+var socket = require("../../socket/socketServer");
 var mongoose = require('mongoose');
 var ObjectId = mongoose.Types.ObjectId;
 var fs = require('fs');
@@ -51,9 +52,9 @@ router.post('/follow', async (req, res) => {
       user_id: req.userInfo.id,
       artist_id: req.body.artist_id
     };
-    var resp_data = await follower_helper.get_all_follows(obj.artist_id, obj.user_id);
+    var resp_datas = await follower_helper.get_all_follows(obj.artist_id, obj.user_id);
 
-    if (resp_data && resp_data.user == 0) {
+    if (resp_datas && resp_datas.user == 0) {
 
       var resp_data = await follower_helper.follow_artist(obj);
       if (resp_data.status == 0) {
@@ -75,7 +76,14 @@ router.post('/follow', async (req, res) => {
           "subject": "Music Social Voting - Email confirmation"
         })
 
-
+        var notificationObj = {
+          sender: req.userInfo.id,
+          receiver: req.body.artist_id,
+          type: "follow",
+          body: response.user.first_name + " " + "is following you",
+        }
+        var notification_data = await global_helper.send_notification(notificationObj, socket);
+        console.log('notification_data', notification_data);
         logger.trace("followed successfully = ", resp_data);
         res.status(config.OK_STATUS).json(resp_data);
       }

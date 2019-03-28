@@ -1,4 +1,5 @@
 var Contest = require("./../models/contest");
+var RoundTracks = require("./../models/round_tracks");
 var contest_helper = {};
 var mongoose = require('mongoose');
 var _ = require('underscore');
@@ -15,6 +16,7 @@ contest_helper.insert_contest = async (object) => {
     }
 };
 
+
 contest_helper.get_contest_by_id = async (id) => {
     try {
         var contest = await Contest
@@ -29,9 +31,12 @@ contest_helper.get_contest_by_id = async (id) => {
     }
 };
 
+
 contest_helper.update_participant = async (id, no_participants) => {
     try {
-        var contest = await Contest.findOneAndUpdate({ "_id": new ObjectId(id) }, { "no_of_participants": no_participants })
+        console.log('no_participants', no_participants);
+
+        var contest = await Contest.update({ "_id": new ObjectId(id) }, { $set: { "no_of_participant": no_participants } })
         if (contest) {
             return { "status": 1, "message": "contest updated", };
         } else {
@@ -72,16 +77,10 @@ contest_helper.get_all_contest_and_participant = async (start, length, sort = {}
 contest_helper.get_all_contests_for_vote = async (filter) => {
     var aggregate = [
         {
-            '$lookup': {
-                from: 'music_type',
-                localField: 'music_type',
-                foreignField: '_id',
-                as: 'music_type'
+            $project: {
+                "name": 1
             }
-        },
-        {
-            '$unwind': '$music_type'
-        },
+        }
     ];
     if (filter) {
         aggregate.push({
@@ -89,6 +88,7 @@ contest_helper.get_all_contests_for_vote = async (filter) => {
         })
     }
     let winner = await Contest.aggregate(aggregate);
+
     if (winner) {
         return { "status": 1, "message": "Artist  found", "winner": winner }
     } else {

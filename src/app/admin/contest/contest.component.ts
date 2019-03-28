@@ -55,14 +55,14 @@ export class ContestComponent implements OnInit {
       this.year.push(i);
     }
     this.contest_validation = this.fb.group({
-      type: ['', [Validators.required]],
+      //type: ['', [Validators.required]],
       name: ['', [Validators.required, this.noWhitespaceValidator]],
       day: ['', [Validators.required]],
       month: ['', [Validators.required]],
       year: ['', [Validators.required]],
-      duration: ['', [Validators.required]],
-      round: [],
-      contest_type: [],
+      //duration: ['', [Validators.required]],
+      //round: [],
+      contest_type: ['', [Validators.required]],
       music_type: ['', [Validators.required]],
       region: ['', [Validators.required]],
       state: ['', [Validators.required]]
@@ -200,7 +200,7 @@ export class ContestComponent implements OnInit {
   }
 
   // Add new contest 
-  saveContest() {
+  saveContest(flag) {
     // if (flag) {
     //   this.is_valid = !flag;
     //if (this.is_new_or_existing == 1) {
@@ -213,75 +213,78 @@ export class ContestComponent implements OnInit {
     //   this.toastr.info('The date must be bigger or equal to today date');
     //   return;
     // }
+    this.is_valid = !flag;
+    console.log("flag", flag)
+    if (flag) {
+      this.show_spinner = true;
+      let data = {
+        name: this.contest_detail['name'],
+        contest_type: this.contest_detail['contest_type'],
+        music_type: this.contest_detail['music_type'],
+        region: this.contest_detail['region'],
+        state: this.contest_detail['state'],
+        //round: this.contest_detail['no_of_round'],
+        day: this.contest_detail['day'],
+        month: this.contest_detail['month'],
+        year: this.contest_detail['year'],
+        //duration: this.contest_detail['duration']
+      };
+      console.log(data);
 
-    let data = {
-      name: this.contest_detail['name'],
-      contest_type: this.contest_detail['contest_type'],
-      music_type: this.contest_detail['music_type'],
-      region: this.contest_detail['region'],
-      state: this.contest_detail['state'],
-      round: this.contest_detail['no_of_round'],
-      day: this.contest_detail['day'],
-      month: this.contest_detail['month'],
-      year: this.contest_detail['year'],
-      duration: this.contest_detail['duration']
-    };
-    console.log(data);
-    this.show_spinner = true;
-    this.ContestService.addNewContest(data).subscribe((response) => {
-      this.datatableElement.dtInstance.then((dtInstance: DataTables.Api) => {
-        dtInstance.draw();
+      this.ContestService.addNewContest(data).subscribe((response) => {
+        this.datatableElement.dtInstance.then((dtInstance: DataTables.Api) => {
+          dtInstance.draw();
+        });
+        this.contest_detail = {};
+        this.contestModelRef.hide();
+        this.getAllExistingContest();
+        this.toastr.success(response['message'], 'Success!');
+      }, (error) => {
+        this.toastr.error(error['error'].message, 'Error!');
+        this.show_spinner = false;
+      }, () => {
+        this.show_spinner = false;
       });
-      this.contest_detail = {};
-      this.contestModelRef.hide();
-      this.getAllExistingContest();
-      this.toastr.success(response['message'], 'Success!');
-    }, (error) => {
-      this.toastr.error(error['error'].message, 'Error!');
-      this.show_spinner = false;
-    }, () => {
-      this.show_spinner = false;
-    });
-    // } else {
-    //   //let stdt = new Date(this.contest_detail['year'] + '-' + this.contest_detail['month'] + '-' + this.contest_detail['day']);
-    //   // let timestamp = Date.UTC(dt.getFullYear(), dt.getMonth(), dt.getDate());
-    //   // let stdt = new Date(timestamp);
-    //   //let enddt = new Date(stdt.getTime() + this.contest_detail['duration'] * 24 * 60 * 60 * 1000);
-    //   // if(stdt.getTime() < (new Date()).getTime() ) {
-    //   //   this.toastr.info('The date must be bigger or equal to today date');
-    //   //   return;
-    //   // }
-    //   let data = {
-    //     contest_id: this.contest_detail['contest_id']['_id'],
-    //     // music_type : this.contest_detail['music_type'],
-    //     region: this.contest_detail['region'],
-    //     state: this.contest_detail['state'],
-    //     round: this.contest_detail['no_of_round'],
-    //     day: this.contest_detail['day'],
-    //     month: this.contest_detail['month'],
-    //     year: this.contest_detail['year'],
-    //     duration: +this.contest_detail['duration']
-    //   };
-    //   this.show_spinner = true;
-    //   this.ContestService.addExistingContest(data).subscribe((response) => {
-    //     this.datatableElement.dtInstance.then((dtInstance: DataTables.Api) => {
-    //       dtInstance.draw();
-    //     });
-    //     this.contest_detail = {};
-    //     this.contestModelRef.hide();
-    //     this.getAllExistingContest();
-    //     this.toastr.success(response['message'], 'Success!');
-    //   }, (error) => {
-    //     this.toastr.error(error['error'].message, 'Error!');
-    //     this.show_spinner = false;
-    //   }, () => {
-    //     this.show_spinner = false;
-    //   });
-    // }
-    // } else {
-    //   this.is_valid = !flag;
-    // }
-
+      // } else {
+      //   //let stdt = new Date(this.contest_detail['year'] + '-' + this.contest_detail['month'] + '-' + this.contest_detail['day']);
+      //   // let timestamp = Date.UTC(dt.getFullYear(), dt.getMonth(), dt.getDate());
+      //   // let stdt = new Date(timestamp);
+      //   //let enddt = new Date(stdt.getTime() + this.contest_detail['duration'] * 24 * 60 * 60 * 1000);
+      //   // if(stdt.getTime() < (new Date()).getTime() ) {
+      //   //   this.toastr.info('The date must be bigger or equal to today date');
+      //   //   return;
+      //   // }
+      //   let data = {
+      //     contest_id: this.contest_detail['contest_id']['_id'],
+      //     // music_type : this.contest_detail['music_type'],
+      //     region: this.contest_detail['region'],
+      //     state: this.contest_detail['state'],
+      //     round: this.contest_detail['no_of_round'],
+      //     day: this.contest_detail['day'],
+      //     month: this.contest_detail['month'],
+      //     year: this.contest_detail['year'],
+      //     duration: +this.contest_detail['duration']
+      //   };
+      //   this.show_spinner = true;
+      //   this.ContestService.addExistingContest(data).subscribe((response) => {
+      //     this.datatableElement.dtInstance.then((dtInstance: DataTables.Api) => {
+      //       dtInstance.draw();
+      //     });
+      //     this.contest_detail = {};
+      //     this.contestModelRef.hide();
+      //     this.getAllExistingContest();
+      //     this.toastr.success(response['message'], 'Success!');
+      //   }, (error) => {
+      //     this.toastr.error(error['error'].message, 'Error!');
+      //     this.show_spinner = false;
+      //   }, () => {
+      //     this.show_spinner = false;
+      //   });
+      // }
+      // } else {
+      //   this.is_valid = !flag;
+      // }
+    }
   }
 
   // Select exisiting contest

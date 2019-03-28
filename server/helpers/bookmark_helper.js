@@ -244,6 +244,11 @@ bookmark_helper.get_all_bookmarked_tracks = async (user_id, start, length) => {
                 }
             },
             {
+                $sort: {
+                    "created_at": -1
+                }
+            },
+            {
                 "$skip": start
             },
             {

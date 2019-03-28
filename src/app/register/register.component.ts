@@ -136,8 +136,8 @@ export class RegisterComponent implements OnInit {
     });
 
     this.listener_step3 = this.fb.group({
-      fname: ['', [Validators.required]],
-      lname: ['', [Validators.required]],
+      fname: ['', [Validators.required,Validators.pattern('[A-Za-z]+')]],
+      lname: ['', [Validators.required,Validators.pattern('[A-Za-z]+')]],
       day: ['', [Validators.required]],
       month: ['', [Validators.required]],
       year: ['', [Validators.required]],

@@ -145,7 +145,6 @@ artist_helper.get_payment_by_day = async (artist_id, day) => {
     } else {
         return { "status": 2, "message": "No  available Track" }
     }
-
 };
 
 
@@ -248,6 +247,22 @@ artist_helper.get_all_artist_for_email = async () => {
         return { "status": 0, "message": "Error occured while finding artist", "error": err }
     }
 };
+
+
+artist_helper.get_artist_by_email = async (email) => {
+    try {
+        var artist = await Artist.findOne({ "email": email })
+        if (artist) {
+            return { "status": 1, "message": "artist details found", "artist": artist };
+        } else {
+            return { "status": 2, "message": "artist not found" };
+        }
+    } catch (err) {
+        return { "status": 0, "message": "Error occured while finding artist", "error": err }
+    }
+};
+
+
 /*
  * get_artist_by_id is used to fetch artist details by artist id
  * 
@@ -259,7 +274,6 @@ artist_helper.get_all_artist_for_email = async () => {
  */
 artist_helper.get_artist_by_id = async (artist_id) => {
     try {
-
         var artist = await Artist.findOne({ "_id": { "$eq": artist_id } }).populate('music_type').populate({ path: 'state', populate: { path: 'region' } })
             ;
         if (artist) {
@@ -615,7 +629,7 @@ artist_helper.update_featured_artist = async (artist_id, feature) => {
 
 artist_helper.update_artist_votes = async (artist_id, no_votes) => {
     try {
-        var vote = await Artist.findOneAndUpdate({ "_id": new ObjectId(artist_id) }, { "no_of_votes": no_votes })
+        var vote = await Artist.update({ "_id": new ObjectId(artist_id) }, { $set: { "no_of_votes": no_votes } })
         if (vote) {
             return { "status": 1, "message": "voting updated", };
         } else {

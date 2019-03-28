@@ -13,6 +13,9 @@ var artist_helper = require('../../helpers/artist_helper');
 var track_helper = require('../../helpers/track_helper');
 var user_helper = require('../../helpers/user_helper');
 var mail_helper = require('../../helpers/mail_helper');
+var notification_helper = require('../../helpers/notification_helper');
+var global_helper = require('../../helpers/global_helper');
+var socket = require("../../socket/socketServer");
 
 var mongoose = require('mongoose');
 var ObjectId = mongoose.Types.ObjectId;
@@ -62,13 +65,29 @@ router.post('/', async (req, res) => {
       comment: req.body.comment
 
     };
+
+
+
     var resp = await user_helper.get_user_by_id(obj.user_id);
     if (resp.user.status == 'suspended') {
       logger.trace("you are blocked to comment = ");
       res.status(config.OK_STATUS).json({ "message": "you are blocked to comment" });
     }
     else {
+
+      var notificationObj = {
+        sender: req.userInfo.id,
+        receiver: req.body.artist_id,
+        type: "comment",
+        body: "Got comment from" + " " + resp.user.first_name,
+      }
       var resp_data = await comment_helper.insert_comment_on_artist(obj);
+      // var notification_data = await notification_helper.insert_comment_on_artist(notification_obj);
+      console.log('socket.user==========>', socket.socketToUsers);
+
+      var notification_data = await global_helper.send_notification(notificationObj, socket);
+      // console.log('notification_data', notification_data);
+
       if (resp_data.status == 0) {
         logger.error("Error occured while fetching music = ", resp_data);
         res.status(config.INTERNAL_SERVER_ERROR).json(resp_data);

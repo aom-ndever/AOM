@@ -7,7 +7,8 @@ var SALT_WORK_FACTOR = 10;
 var Schema = mongoose.Schema;
 
 var MusicModelSchema = new Schema({
-    name :String,
+    name: String,
+    alias: String,
     created_at: { type: Date, default: Date.now }
 }, { versionKey: false });
 
