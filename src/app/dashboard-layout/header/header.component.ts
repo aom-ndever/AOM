@@ -8,7 +8,6 @@ import { HeaderService } from './header.service';
 import { environment } from '../../../environments/environment';
 import { MessageService } from '../../shared/message.service';
 import { AuthService, FacebookLoginProvider } from 'angular5-social-login';
-import * as socketClient from 'socket.io-client'
 declare var FB: any;
 declare const gapi: any;
 @Component({
@@ -30,8 +29,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
   toggleMenu: boolean = false;
   private modalRef: NgbModalRef;
   private modalForgetRef: NgbModalRef;
-
-  private socket;
   constructor(private modalService: NgbModal,
     private fb: FormBuilder,
     private HeaderService: HeaderService,
@@ -136,13 +133,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
         console.log(JSON.stringify(error, undefined, 2));
       });
   }
-  count;
   ngOnInit() {
-    this.MessageService.change.subscribe(data => {
-      console.log('here in subscribe====>', data);
-      this.count = data;
-    });
-    this.socket = socketClient(environment.socketUrl);
+
   }
 
   ngOnDestroy() {
@@ -173,17 +165,12 @@ export class HeaderComponent implements OnInit, OnDestroy {
     console.log('login', this.userdata);
 
     if (this.userdata['type'] == 'artist' && flag) {
-      var cnt = {
-        count: 0
-      };
       this.show_spinner = true;
       this.login_validation = !flag;
       this.HeaderService.artist_login(this.userdata).subscribe(response => {
-        console.log('reponse=====>', response);
+        console.log(response);
         localStorage.setItem('user', JSON.stringify(response));
         this.toastr.success('Login Done', 'Success!');
-        cnt.count = response['count'];
-        this.MessageService.checkCount(cnt);
         this.modalRef.close();
         this.user = JSON.parse(localStorage.getItem('user'));
         if (this.user && this.user.artist) {
@@ -191,7 +178,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
         } else if (this.user && this.user.user) {
           this.user.user['image'] = typeof this.user.user['image'] != 'undefined' ? environment.API_URL + environment.USER_IMG + this.user.user['image'] : '';
         }
-        console.log('here in login====>');
         this.MessageService.sendMessage({ 'loggedin_user': this.user });
         this.router.navigate(['']);
       }, error => {
