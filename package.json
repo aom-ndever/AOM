@@ -27,7 +27,7 @@
     "@ng-bootstrap/ng-bootstrap": "^2.0.0",
     "@nguniversal/express-engine": "^6.0.0",
     "@nguniversal/module-map-ngfactory-loader": "^6.0.0",
-    "angular-datatables": "^6.0.0",
+    "angular-datatables": "^6.0.1",
     "angular-highcharts": "^5.2.13",
     "angular-io-slimscroll": "^2.3.3",
     "angular2-highcharts": "^0.5.5",
