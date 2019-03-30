@@ -6,7 +6,8 @@
                 <a href="javascript:;"><img src="{{artistdata.image ? artist_img_url+artistdata.image : 'img/profile-img.png'}}" alt="Profile Images"></a>
             </div>
           </div>
-          <div class="col-md-10 col-sm-8 col-xs-6">
+          <div   class="col-md-10 col-sm-8 col-xs-6">
+          
             <div class="abt-tr">
               <div class="play-btn">
                   <div class="artist-profile-custom-action-btn">       
@@ -24,9 +25,10 @@
             <div class="action">
                 <div class="cmt-like"><a href="javascript:;" class="liked"><img src="img/likehand.png" alt="">{{track.no_of_likes}}</a></div>
                 <div class="download"><a href="javascript:;"><img src="img/download.png" alt="">${{track.price}}</a></div>
-                <div class="share"><a href="javascript:;"><img src="img/share.png" alt=""></a></div>
+                <div  class="share"><a href="javascript:;"  title="Share" (click)="openShareTrackModel(shareTrack, i, 'rank')"><img src="img/share.png" alt=""></a></div>
   
               </div>
+            
             <div class="profile-location"><i class="fa fa-map-marker" aria-hidden="true"></i> <span>{{artistdata && artistdata['state'] ? artistdata['state']['name'] : '' }}</span>
             <p class="{{artistdata['music_type']['alias']}} tag">{{artistdata['music_type']['name']}}</p></div>
   
@@ -105,7 +107,7 @@
       <div class="shared_popup">
           <div class="col-12 text-center shared_popup_header">
               <h4>Share This Track</h4>
-              <span>You are Sharing the "{{track_data && track_data['name'] ? track_data['name'] : '' }}" Track</span>
+              <span>You are Sharing the "{{track && track['name'] ? track['name'] : '' }}" Track</span>
           </div>
           <div class="row">
               <div class="col-sm-6">

@@ -43,10 +43,11 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
   private _albums: any = [];
   subscription: Subscription;
   sort_by: any = '';
-  private modalRef: NgbModalRef;
+  
   private emailmodalRef: NgbModalRef;
   private phonemodalRef: NgbModalRef;
   share_data: any = {};
+  private modalRef: NgbModalRef;
   share_form: FormGroup;
   share_form_phone: FormGroup;
   share_form_validation: boolean = false;

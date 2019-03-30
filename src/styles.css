@@ -163,9 +163,14 @@ img.social_icons:hover{
 
 
 .social-block .imginsta{
-  height:20px;
+  height:15px;
 
 }
+.social-block .utube{
+  height:15px;
+
+}
+
 
 .social-acc .form-group .utube {
   position: absolute;
