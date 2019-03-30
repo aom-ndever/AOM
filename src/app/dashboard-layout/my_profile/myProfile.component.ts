@@ -729,7 +729,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
   updateProfileImage(event: any) {
-    this.imageChangedEvent = event;
+   
     console.log("update profile image");
     var fileList: FileList = event.target.files;
     const file = <File>event.target.files[0];
@@ -739,6 +739,11 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
         this.toastr.error('Invalid file format.', 'Error!');
         return false;
       }
+      this.imageChangedEvent = event;
+      if (event.target.files.length <= 0) {
+        this.cropperReady = false;
+      }
+  
       console.log(fileList);
       let formData: FormData = new FormData();
       formData.append('image', fileList[0]);
@@ -803,6 +808,15 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
       }
     }
 
+  }
+  imageCropped(image: string) {
+    this.croppedImage = image;
+  }
+  imageLoaded() {
+    this.cropperReady = true;
+  }
+  imageLoadFailed() {
+    console.log('Load failed');
   }
 
   getImageMimetype = (signature) => {
@@ -874,6 +888,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
         this.toastr.error('Invalid file format.', 'Error!');
         return false;
       }
+    
       const formData: FormData = new FormData();
       formData.append('cover_image', fileList[0], fileList[0]['name']);
       this.MyProfileService.updateCoverImage(formData).subscribe(response => {
@@ -897,6 +912,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
       }
     }
   }
+
   //   imageCropped(event: ImageCroppedEvent) {
   //     this.croppedImage = event.base64;
   // }
@@ -1121,7 +1137,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
         this.toastr.error('New and repeat password must be same');
       }
     } else {
-      this.toastr.error('Please enter old password', 'Error!');
+      this.toastr.error('Please enter existing password', 'Error!');
     }
   }
 
@@ -2465,19 +2481,8 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
         this.toastr.error('Invalid file format.', 'Error!');
         return false;
       }
-      this.imageChangedEvent = event;
-      if (event.target.files.length <= 0) {
-        this.cropperReady = false;
-      }
+    
     }
   }
-  imageCropped(image: string) {
-    this.croppedImage = image;
-  }
-  imageLoaded() {
-    this.cropperReady = true;
-  }
-  imageLoadFailed() {
-    console.log('Load failed');
-  }
+
 }

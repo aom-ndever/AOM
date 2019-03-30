@@ -23,7 +23,7 @@ export class EmailVarificationComponent implements OnInit {
     this.route.params.subscribe(res =>  {
       if(res.type && res.type == 'artist') {
         this.EamilVarificationService.artistEmailVarification(res.id).subscribe(response => {
-          console.log('varification done artist', response);
+          console.log('verification done artist', response);
           this.toastr.success(response['message'], 'Success!');
           this.router.navigate(['']);
         }, error => {
@@ -32,7 +32,7 @@ export class EmailVarificationComponent implements OnInit {
         });
       } else {
         this.EamilVarificationService.userEmailVarification(res.id).subscribe(response => {
-          console.log('varification done user', response);
+          console.log('verification done user', response);
           this.toastr.success(response['message'], 'Success!');
           this.router.navigate(['']);
         }, error => {

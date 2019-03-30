@@ -341,7 +341,7 @@ export class RegisterComponent implements OnInit {
         region: '',
         state: ''
       };
-      this.toastr.success('Registration done successfully and confirmation email sent to your account please verify to to do login.', 'Success!');
+      this.toastr.success('Registration done successfully and confirmation email sent to your account please verify to do login.', 'Success!');
       this.show_spinner = false;
       this.router.navigate(['']);
     }, error => {
@@ -385,7 +385,7 @@ export class RegisterComponent implements OnInit {
           region: '',
           state: ''
         };
-        this.toastr.success('Registration done successfully and confirmation email sent to your account please verify to to do login.', 'Success!');
+        this.toastr.success('Registration done successfully and confirmation email sent to your account please verify to do login.', 'Success!');
         this.show_spinner = false;
         this.router.navigate(['']);
       }, error => {
