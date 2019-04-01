@@ -112,8 +112,8 @@ export class RegisterComponent implements OnInit {
       passwordFormGroup1: this.passwordFormGroup1
     });
     this.artist_step3 = this.fb.group({
-      fname: ['', [Validators.required]],
-      lname: ['', [Validators.required]],
+      fname: ['', [Validators.required, this.noWhitespaceValidator, Validators.pattern('[A-Za-z]+')]],
+      lname: ['', [Validators.required, this.noWhitespaceValidator, Validators.pattern('[A-Za-z]+')]],
       gender: ['', [Validators.required]],
       day: ['', [Validators.required]],
       month: ['', [Validators.required]],
@@ -136,8 +136,8 @@ export class RegisterComponent implements OnInit {
     });
 
     this.listener_step3 = this.fb.group({
-      fname: ['', [Validators.required,Validators.pattern('[A-Za-z]+')]],
-      lname: ['', [Validators.required,Validators.pattern('[A-Za-z]+')]],
+      fname: ['', [Validators.required, Validators.pattern('[A-Za-z]+')]],
+      lname: ['', [Validators.required, Validators.pattern('[A-Za-z]+')]],
       day: ['', [Validators.required]],
       month: ['', [Validators.required]],
       year: ['', [Validators.required]],
@@ -156,7 +156,13 @@ export class RegisterComponent implements OnInit {
     });
     this.getRegionList();
   }
-
+  noWhitespaceValidator(control: FormControl) {
+    if (typeof (control.value || '') === 'string' || (control.value || '') instanceof String) {
+      let isWhitespace = (control.value || '').trim().length === 0;
+      let isValid = !isWhitespace;
+      return isValid ? null : { 'whitespace': true }
+    }
+  }
   // Code for initialize google login button
   public googleInit() {
     gapi.load('auth2', () => {
