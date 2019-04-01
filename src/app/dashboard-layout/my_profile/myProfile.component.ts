@@ -273,8 +273,8 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
       month: ['', [Validators.required]],
       year: ['', [Validators.required]],
       phone: ['', [Validators.required, Validators.pattern('[0-9]+'), Validators.minLength(10), Validators.maxLength(10), , this.noWhitespaceValidator]],
-      account_number: ['', [Validators.required, Validators.pattern('[0-9]+'), this.noWhitespaceValidator]],
-      holder_name: ['', [Validators.required, Validators.pattern('[A_Za-z]+'), this.noWhitespaceValidator]],
+      //  account_number: ['', [Validators.required, Validators.pattern('[0-9]+'), this.noWhitespaceValidator]],
+      // holder_name: ['', [Validators.required, Validators.pattern('[A_Za-z]+'), this.noWhitespaceValidator]],
       music_type: ['', [Validators.required]],
       zipcode: ['', [Validators.required, this.noWhitespaceValidator]],
 
@@ -682,6 +682,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
   // Update user profile
   update(flag: boolean) {
     if (this.userdata.type == 'artist') {
+      console.log("flag--------------->", flag)
       if (flag) {
         this.artistProfileValidation = !flag;
         this.show_spinner = true;
@@ -729,7 +730,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
   updateProfileImage(event: any) {
-   
+
     console.log("update profile image");
     var fileList: FileList = event.target.files;
     const file = <File>event.target.files[0];
@@ -743,7 +744,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
       if (event.target.files.length <= 0) {
         this.cropperReady = false;
       }
-  
+
       console.log(fileList);
       let formData: FormData = new FormData();
       formData.append('image', fileList[0]);
@@ -888,7 +889,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
         this.toastr.error('Invalid file format.', 'Error!');
         return false;
       }
-    
+
       const formData: FormData = new FormData();
       formData.append('cover_image', fileList[0], fileList[0]['name']);
       this.MyProfileService.updateCoverImage(formData).subscribe(response => {
@@ -2481,7 +2482,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
         this.toastr.error('Invalid file format.', 'Error!');
         return false;
       }
-    
+
     }
   }
 
