@@ -8,6 +8,7 @@ import { NgbModal, ModalDismissReasons, NgbModalRef } from '@ng-bootstrap/ng-boo
 import { FormGroup, FormBuilder, Validators, FormControl, AbstractControl, NG_VALIDATORS, Validator } from '@angular/forms';
 import { Title } from '@angular/platform-browser';
 declare var FB: any;
+declare let Stripe: any;
 import * as socketClient from 'socket.io-client'
 import { MyMusicComponent } from '../my_music/my_music.component';
 
@@ -53,7 +54,7 @@ export class TrackConmmentsComponent implements OnInit {
     this.trackcomments = this.route.snapshot.data['comment'].comment;
     this.track = this.route.snapshot.data['track'].track;
     this.user = JSON.parse(localStorage.getItem('user'));
-    console.log(this.track);
+    console.log('it is track',this.track);
     this.share_form_phone = this.fb.group({
       phone: ['', [Validators.required, Validators.maxLength(10), Validators.minLength(10)]]
     });
@@ -69,15 +70,15 @@ export class TrackConmmentsComponent implements OnInit {
   }
   openShareTrackModel(content, index: any, type: any) {
     if (type == 'track') {
-      this.track_data = this.artisttrack[index];
+      this.track = this.artisttrack[index];
     } else {
-      this.track_data = this.rankingtrack[index];
+      this.track = this.rankingtrack[index];
     }
     this.modalRef = this.modalService.open(content, { centered: true, windowClass: 'modal-wrapper', backdrop: true });
   }
    // share on facebook
    shareOnFacebook() {
-    let track = this.track_data;
+    let track = this.track;
     console.log(track);
     let url = 'http://' + window.location.host + '/artist_profile/' + track['artist_id']['_id'] + '/track/' + track['_id'] + '/comments';
     let str = "Track Name: " + track['name'] + "\nArtist: " + track['artist_id']['first_name'] + ' ' + track['artist_id']['last_name'] + '\nDescription: ' + track['description'];
@@ -95,6 +96,89 @@ export class TrackConmmentsComponent implements OnInit {
       })
     }, function (response) { });
   }
+  card_loader: boolean = false;
+    // Stripe Credit-Card implementation
+    openCardModel(content, index, type) {
+      if (this.user && this.user['user']) {
+        this.card_loader = true;
+        setTimeout(() => {
+          this.setupStripeFrom();
+        }, 0);
+        if (type == 'track') {
+          this.track= this.artisttrack[index];
+        } else {
+          this.track= this.rankingtrack[index];
+        }
+        this.modalRef = this.modalService.open(content, { centered: true, backdrop: true });
+      } else {
+        this.toastr.info('Please sign-in as listener to purchase track.', 'Info!');
+      }
+    }
+    style = {
+      base: {
+        color: '#32325d',
+        lineHeight: '18px',
+        fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
+        fontSmoothing: 'antialiased',
+        fontSize: '16px',
+        '::placeholder': {
+          color: '#aab7c4'
+        }
+      },
+      invalid: {
+        color: '#fa755a',
+        iconColor: '#fa755a'
+      }
+    };
+    setupStripeFrom() {
+      var stripe = Stripe(environment.STRIPE_PUB_KEY);
+      var elements = stripe.elements();
+      var card = elements.create('card', { style: this.style });
+      card.mount('#card-element');
+      this.card_loader = false;
+      // this.registerElements([card], 'ex');
+      card.addEventListener('change', function (event) {
+        var displayError = document.getElementById('card-errors');
+        if (event.error) {
+          displayError.textContent = event.error.message;
+        } else {
+          displayError.textContent = '';
+        }
+      });
+  
+      var form = document.getElementById('payment-form');
+  
+      form.addEventListener('submit', (event) => {
+        event.preventDefault();
+        this.show_spinner = true;
+        stripe.createToken(card).then((result) => {
+          if (result.error) {
+            // Inform the customer that there was an error.
+            var errorElement = document.getElementById('card-errors');
+            errorElement.textContent = result.error.message;
+            this.show_spinner = false;
+          } else {
+            // Send the token to your server.
+            console.log(result.token);
+            let data = {
+              track_id: this.track_data['_id'],
+              card_id: result['token']['id']
+            };
+            this.TrackCommentsService.purchaseTrack(data).subscribe((response) => {
+              this.toastr.success(response['message'], 'Success!');
+              this.modalRef.close();
+            }, (error) => {
+              this.toastr.error(error['error'].message, 'Error!');
+              this.show_spinner = false;
+            }, () => {
+              this.show_spinner = false;
+            });
+            //this.stripeTokenHandler(result.token);
+          }
+        });
+      });
+    }
+   
   openPhoneShareTrackModel(content) {
     if (this.user) {
       this.share_data = {};
@@ -112,7 +196,7 @@ export class TrackConmmentsComponent implements OnInit {
     }
   }
   shareOnTwitter() {
-    let track = this.track_data;
+    let track = this.track;
     console.log(track);
     let url = 'http://' + window.location.host + '/artist_profile/' + track['artist_id']['_id'] + '/track/' + track['_id'] + '/comments';
     let str = "Track Name: " + track['name'] + "\nArtist: " + track['artist_id']['first_name'] + ' ' + track['artist_id']['last_name'] + '\nDescription: ' + track['description'];
@@ -120,7 +204,7 @@ export class TrackConmmentsComponent implements OnInit {
     if (twitterWindow.focus) { twitterWindow.focus(); }
   }
   copy_link() {
-    let track = this.track_data;
+    let track = this.track;
     console.log(track);
     let url = 'http://' + window.location.host + '/artist_profile/' + track['artist_id']['_id'] + '/track/' + track['_id'] + '/comments';
     var textArea = document.createElement("textarea");
@@ -136,14 +220,14 @@ export class TrackConmmentsComponent implements OnInit {
     if (flag) {
       this.share_form_validation = !flag;
       this.show_spinner = true;
-      let track = this.track_data;
+      let track = this.track;
       let url = 'http://' + window.location.host + '/artist_profile/' + track['artist_id']['_id'] + '/track/' + track['_id'] + '/comments';
       let data = {
         email: this.share_data['email'],
         track_id: track['_id'],
         url: url
       };
-      this.ArtistProfileService.shareTrackViaEmail(data).subscribe((response) => {
+      this.TrackCommentsService.shareTrackViaEmail(data).subscribe((response) => {
         this.toastr.success(response['message'], 'Success!');
         this.emailmodalRef.close();
       }, (error) => {
@@ -161,14 +245,14 @@ export class TrackConmmentsComponent implements OnInit {
     if (flag) {
       this.share_form_validation = !flag;
       this.show_spinner = true;
-      let track = this.track_data;
+      let track = this.track;
       let url = 'http://' + window.location.host + '/artist_profile/' + track['artist_id']['_id'] + '/track/' + track['_id'] + '/comments';
       let data = {
         phone_no: this.share_data['phone_no'],
         track_id: track['_id'],
         url: url
       };
-      this.ArtistProfileService.shareTrackViaSms(data).subscribe((response) => {
+      this.TrackCommentsService.shareTrackViaSms(data).subscribe((response) => {
         this.toastr.success(response['message'], 'Success!');
         this.emailmodalRef.close();
         this.share_data = {};
@@ -231,6 +315,49 @@ export class TrackConmmentsComponent implements OnInit {
     } else {
       this.toastr.error('Comment shouldn\'t be empty.', 'Error!');
     }
+  }
+    // Download track
+    downloadTrack(id: any) {
+      let user = JSON.parse(localStorage.getItem('user'));
+      if (user && user.user) {
+        this.TrackCommentsService.downloadTrack(id).subscribe(response => {
+          console.log(response);
+          window.location.href = this.user_img_url + response['filename'];
+        }, error => {
+          this.toastr.error(error['error'].message, 'Error!');
+        });
+      } else if (user && user.artist) {
+        this.toastr.info('Only listenr can download this track.', 'Info!');
+      }
+      else {
+        this.toastr.info('Please login to download this track.', 'Info!');
+      }
+    }
+  
+  likeTrack(track_id: any, index: any) {
+    let user = JSON.parse(localStorage.getItem('user'));
+    if (user && user.user) {
+      console.log('likes counter==> ',this.track);
+      
+      this.track.no_of_likes += 1;
+      let data = {
+        "track_id": track_id,
+        "artist_id": this.artistdata._id,
+        "status": true
+      };
+      this.TrackCommentsService.trackLike(data).subscribe(response => {
+        if (response['message'] == 'Already liked') {
+          this.track.no_of_likes -= 1;
+        }
+        this.toastr.success(response['message'], 'Success!');
+      }, error => {
+        this.track.no_of_likes -= 1;
+        this.toastr.error(error['error'].message, 'Error!');
+      });
+    } else {
+      this.toastr.info('Please login to like the track.');
+    }
+
   }
   // Get all comment of track
   getAllTrackComment() {

@@ -125,7 +125,12 @@ input[type="range"]:focus{
   }
   .player-wrapper .progress-bar{    background-color: #9b26b0;}
   .cust_err_msg{display: block;font-size: 13px;margin-left: 12px;}
-
+  cust_err_msg span{
+    font-size: 13px;
+  }
+  .text-danger{
+    font-size: 13px;
+  }
   .fa-facebook-square:hover {
         color: #3b5998;
         -o-transition:.5s;

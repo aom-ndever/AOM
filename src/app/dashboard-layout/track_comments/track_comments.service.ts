@@ -13,6 +13,26 @@ export class TrackCommentsService {
     // this.user = JSON.parse(localStorage.getItem('user'));
     // this.headers = new HttpHeaders({ 'x-access-token' : this.user.token });  
   }
+  shareTrackViaEmail(data: any) {
+    this.user = JSON.parse(localStorage.getItem('user'));
+    this.headers = new HttpHeaders({ 'x-access-token': this.user.token });
+    return this.http.post(`${this.api_host}/user/track/share_track_by_mail`, data, { headers: this.headers });
+  }
+  shareTrackViaSms(data: any) {
+    this.user = JSON.parse(localStorage.getItem('user'));
+    this.headers = new HttpHeaders({ 'x-access-token': this.user.token });
+    return this.http.post(`${this.api_host}/user/track/share_track_by_sms`, data, { headers: this.headers });
+  }
+  downloadTrack(id: any) {
+    this.user = JSON.parse(localStorage.getItem('user'));
+    this.headers = new HttpHeaders({ 'x-access-token': this.user.token });
+    return this.http.get(`${this.api_host}/user/track/${id}/download`, { headers: this.headers });
+  }
+  trackLike(data: any) {
+    this.user = JSON.parse(localStorage.getItem('user'));
+    this.headers = new HttpHeaders({ 'x-access-token': this.user.token });
+    return this.http.post(`${this.api_host}/user/track/like_track`, data, { headers: this.headers });
+  }
   
   // Get Artist and track
   getArtistData (data : any) {
@@ -29,6 +49,11 @@ export class TrackCommentsService {
     this.user = JSON.parse(localStorage.getItem('user'));
     this.headers = new HttpHeaders({ 'x-access-token' : this.user.token });  
     return this.http.get(`${this.api_host}/user/artist/followers`, {headers : this.headers});
+  }
+  purchaseTrack(data) {
+    this.user = JSON.parse(localStorage.getItem('user'));
+    this.headers = new HttpHeaders({ 'x-access-token': this.user.token });
+    return this.http.post(`${this.api_host}/user/track/purchase`, data, { headers: this.headers });
   }
   // Post a comment on track
   addCommentToTrack(data :  any) {

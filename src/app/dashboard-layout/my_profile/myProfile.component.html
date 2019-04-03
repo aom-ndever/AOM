@@ -977,7 +977,7 @@
                             <div class="row" *ngIf="!track_flag">
                                 <div class="col-sm-12 col-md-12 col-12">
                                     <div class="edit-head top_label_pd0">Playlist</div>
-                                    <a href="javascript:;" class="btn btn-primary playlist_add_btn" (click)="openAddPlaylistModel(addplaylist)">Add
+                                    <a href="javascript:;" title="Add Playlist" class="btn btn-primary playlist_add_btn" (click)="openAddPlaylistModel(addplaylist)">Add
                                         <i class="fa fa-plus"></i></a>
                                     <div class="track-table playlist_table table_design">
                                         <table datatable [dtOptions]="dtOptions[0]">
@@ -991,11 +991,11 @@
                                                 <tr *ngFor="let val of playlist;let i = index;">
                                                     <td>{{val['name']}}</td>
                                                     <td>
-                                                        <a class="edit_plalist_link" href="javascript:;" (click)="openEditPlaylistModel(editplaylist, i)"><i
+                                                        <a class="edit_plalist_link" title="Edit" href="javascript:;" (click)="openEditPlaylistModel(editplaylist, i)"><i
                                                                 class="fa fa-pencil"></i></a>
-                                                        <a class="delete_plalist_link" href="javascript:;" (click)="removePlaylist(val['_id'])"><i
+                                                        <a class="delete_plalist_link" title="Delete" href="javascript:;" (click)="removePlaylist(val['_id'])"><i
                                                                 class="fa fa-trash"></i></a>
-                                                        <a class="track_plalist_link" href="javascript:;" (click)="getPlaylistTrack(val['_id'], i)"><i
+                                                        <a class="track_plalist_link" title="Music" href="javascript:;" (click)="getPlaylistTrack(val['_id'], i)"><i
                                                                 aria-hidden="true" class="fa fa-music"></i></a>
                                                     </td>
                                                 </tr>
@@ -1489,7 +1489,7 @@
                             <div class="row" *ngIf="!track_flag">
                                 <div class="col-sm-12 col-md-12 col-12">
                                     <div class="edit-head top_label_pd0">Playlist</div>
-                                    <a href="javascript:;" class="btn btn-primary playlist_add_btn" (click)="openAddPlaylistModel(addplaylist)">Add
+                                    <a href="javascript:;" title="Add Playlist" class="btn btn-primary playlist_add_btn" (click)="openAddPlaylistModel(addplaylist)">Add
                                         <i class="fa fa-plus"></i></a>
                                     <div class="track-table playlist_table table_design">
                                         <table datatable [dtOptions]="dtOptions[1]">
@@ -1503,11 +1503,11 @@
                                                 <tr *ngFor="let val of playlist;let i = index;">
                                                     <td>{{val['name']}}</td>
                                                     <td class="action_playlist">
-                                                        <a class="edit_plalist_link" href="javascript:;" (click)="openEditPlaylistModel(editplaylist, i)"><i
+                                                        <a class="edit_plalist_link" title="Edit" href="javascript:;" (click)="openEditPlaylistModel(editplaylist, i)"><i
                                                                 class="fa fa-pencil"></i></a>
-                                                        <a class="delete_plalist_link" href="javascript:;" (click)="removePlaylist(val['_id'])"><i
-                                                                class="fa fa-trash"></i></a>
-                                                        <a class="track_plalist_link" href="javascript:;" (click)="getPlaylistTrack(val['_id'], i)"><i
+                                                        <a class="delete_plalist_link" title="Delete"href="javascript:;" (click)="removePlaylist(val['_id'])"><i
+                                                                class="fa fa-trash" aria-hidden="true"></i></a>
+                                                        <a class="track_plalist_link" title="Music" href="javascript:;" (click)="getPlaylistTrack(val['_id'], i)"><i
                                                                 class="fa fa-music" aria-hidden="true"></i></a>
                                                     </td>
                                                 </tr>
@@ -1524,7 +1524,7 @@
                             <div class="row" *ngIf="track_flag">
                                 <div class="col-sm-12 col-md-12 col-12">
                                     <div class="edit-head top_label_pd0">"{{playlist_data['name']}}" - Tracks</div>
-                                    <a href="javascript:;" class="btn btn-primary playlist_add_btn" (click)="openPlaylistTrackModel(addtrackplaylist)">Add
+                                    <a href="javascript:;"  class="btn btn-primary playlist_add_btn" (click)="openPlaylistTrackModel(addtrackplaylist)">Add
                                         <i class="fa fa-plus"></i></a>
                                     <a href="javascript:;" class="btn btn-primary playlist_add_btn" (click)="tabChange(4)">Back
                                         <i class="fa fa-arrow-left"></i></a>&nbsp;&nbsp;

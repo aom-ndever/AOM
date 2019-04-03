@@ -58,10 +58,10 @@ import { ImageCropperModule } from 'ngx-image-cropper';
   imports: [
     ImageCropperModule,
     CommonModule,
-   
-  
-  
- 
+
+
+
+
     DashboardLayoutModule,
     CarouselModule,
     HttpModule,

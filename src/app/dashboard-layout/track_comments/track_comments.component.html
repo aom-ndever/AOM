@@ -11,8 +11,8 @@
             <div class="abt-tr">
               <div class="play-btn">
                   <div class="artist-profile-custom-action-btn">       
-                      <a [style.display]="!audio_ins[1] ? 'block' : 'none'" (click)="playAudio(track.audio, 1)" class="play_img" ><img src="img/play_icon.png"/></a>
-                      <a [style.display]="audio_ins[1] ? 'block' : 'none'" (click)="stopAudio(1)" class="pause_img"><img src="img/pause_icon.png"/></a>
+                      <a [style.display]="!audio_ins[1] ? 'block' : 'none'" (click)="playAudio(track.audio,track)" class="play_img" ><img src="img/play_icon.png"/></a>
+                      <a [style.display]="audio_ins[1] ? 'block' : 'none'" (click)="stopAudio(track)" class="pause_img"><img src="img/pause_icon.png"/></a>
                   </div>
                 <!-- <a href="javascript:;">
                   <img src="img/play.png" alt="" (click)="playAudio(track.audio, 1)" [style.display]="audio_ins.length == 0 && !audio_ins[1] ? 'block' : 'none'">
@@ -23,9 +23,14 @@
               <div class="artist-name"><h2><a href="javascript:;">{{artistdata.first_name+' '+artistdata.last_name}}</a></h2></div>
             </div>
             <div class="action">
-                <div class="cmt-like"><a href="javascript:;" class="liked"><img src="img/likehand.png" alt="">{{track.no_of_likes}}</a></div>
-                <div class="download"><a href="javascript:;"><img src="img/download.png" alt="">${{track.price}}</a></div>
-                <div  class="share"><a href="javascript:;"  title="Share" (click)="openShareTrackModel(shareTrack, i, 'rank')"><img src="img/share.png" alt=""></a></div>
+                <div class="cmt-like"><a href="javascript:;" title="Like" class="liked" (click)="likeTrack(track._id)"><img src="img/likehand.png" alt="">{{track?.no_of_likes}}</a></div>
+                <div class="download"><a href="javascript:;" title="Download"><img src="img/download.png"  (click)="downloadTrack(track._id)" alt=""></a></div>
+                <div class="cmt">
+                    <a href="javascript:;" title="Purchase" (click)="openCardModel(purchase, i, 'track')">
+                      ${{track.price}}
+                    </a>
+                  </div>
+                <div class="share"><a href="javascript:;"  title="Share" (click)="openShareTrackModel(shareTrack, i, 'track')"><img src="img/share.png" alt=""></a></div>
   
               </div>
             
@@ -195,3 +200,42 @@
  </div>
 </div>
 </ng-template>
+ <ng-template #purchase let-c="close" let-d="dismiss">
+    <div class="modal-body">
+      <div class="forget_password_modal">
+        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <form id="payment-form">
+          <div class="col-12 text-center shared_popup_header">
+            <h4>Purchase Track</h4>
+            <span>You are going to purchase the "{{track && track['name'] ? track['name'] : '' }}" Track.</span>
+          </div>
+          <div class="col-sm-12">
+         
+            <div *ngIf="card_loader" class="text-center col-12">
+              <i class="fa fa-spinner fa-spin fa-3x" aria-hidden="true"></i>
+            </div>
+            <div class="form-group">
+              <label for="card-element" class="control-label custom_form_label">
+                Credit or debit card
+              </label>
+              <div id="card-element">
+              
+              </div>
+              
+              <div id="card-errors" class="text-danger" role="alert"></div>
+            </div>
+            <div class="form-group">
+              <label class="control-label custom_form_label">Price</label>
+              <input class="form-control custom_form" value="{{'$'+track_data['price']}}" readonly />
+            </div>
+            <div class="form-group text-right">
+              <button class="btn forget_btn" [disabled]="show_spinner || card_loader">Submit <i *ngIf="show_spinner"
+                  class="fa fa-spinner fa-spin"></i></button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </ng-template>
