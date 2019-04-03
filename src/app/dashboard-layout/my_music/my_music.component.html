@@ -76,12 +76,12 @@
                         <span class="new-up"></span> -->
                       </div>
                       <div class="track-comment">
-                        <a href="javascript:;" routerLink="/artist_track_comment/{{t._id}}"><img src="img/comment.png"
+                        <a href="javascript:;" title="Comment" routerLink="/artist_track_comment/{{t._id}}"><img src="img/comment.png"
                             alt="Comment"></a>
-                        <!-- <span class="new-up"></span> -->
+                        <span class="new-up"></span>
                       </div>
-                      <div class="track-price"><a href="javascript:;">${{t.price}}</a></div>
-                      <div class="share"><a href="javascript:;" (click)="openShareTrackModel(shareTrack, i)"><img src="img/share.png"
+                      <div class="track-price"><a href="javascript:;" title="Purchase">${{t.price}}</a></div>
+                      <div class="share"><a href="javascript:;" title="share" (click)="openShareTrackModel(shareTrack, i,'userinfo')"><img src="img/share.png"
                             alt="Track Share"></a></div>
                       <div class="track-edit"><a data-fancybox data-animation-duration="700" data-src="#edittrack"
                           (click)="openEditTrackModal(editTrack, t)" href="javascript:;"><img src="img/edit.png" alt="Track Edit"></a></div>
@@ -173,8 +173,7 @@
       <div class="media-upload-btn" *ngIf="!audio_file">
         <span class="upl-img"><i class="fa fa-cloud-upload" aria-hidden="true"></i></span>
         <span class="up_text">Select Music</span>
-        <input type="file" name="my_doc_upload" id="my_doc_upload" (change)="changeAudio($event)" multiple="false"
-          accept=".mp3">
+        <input type="file" name="my_doc_upload" id="my_doc_upload" (change)="changeAudio($event)" multiple="false"  accept=".mp3">
         <p class="instrution">AIFF,WAV,FLAC,MP3 or AAC, 3GB or less</p>
       </div>
       <div class="media-upload-btn" *ngIf="audio_file">
@@ -202,14 +201,14 @@
       </div>
       <div class="form-group tr-price" [class.has-error]="price.invalid" [class.has-success]="price.valid">
         <label for="tname">Price</label>
-        <input type="number" class="form-control" id="tname" name="price" #price="ngModel" [(ngModel)]="trackdata.price"
-          placeholder="$ 1399" maxlength="3" required />
-
+        <input type="number" class="form-control" id="tname" name="price"  #price="ngModel" [(ngModel)]="trackdata.price" placeholder="$ 1399" maxlength="3" required/>
+       
       </div>
       <div class="textarea-upload">
         <div class="media-upload-btn song-photo" *ngIf="!add_track_img">
           <span class="upl-img"><i class="fa fa-cloud-upload" aria-hidden="true"></i></span>
           <span class="up_text">Upload <br>Photo</span>
+          <img src="{{edit_image}}" alt="Edit cover Image">
           <input type="file" name="my_doc_upload" id="my_doc_upload" (change)="changeFile($event)" multiple="false">
         </div>
         <div class="upload-cover" *ngIf="add_track_img" style="width:92.5px;height:85px;">
@@ -318,7 +317,7 @@
     <div class="shared_popup">
       <div class="col-12 text-center shared_popup_header">
         <h4>Share This Track</h4>
-        <span>You are Sharing the "{{audio_list && audio_list[this.song_cnt] ? audio_list[this.song_cnt]['name'] : ''
+        <span>You are Sharing the "{{track_data && track_data['name'] ? track_data['name'] : ''
           }}" Track</span>
       </div>
       <div class="row">

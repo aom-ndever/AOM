@@ -148,13 +148,15 @@ export class ArtistComponent implements OnInit {
     }
   }
   // filter artistv1
-  filterArtistv1(e: any) {  
-    if (e.keyCode == 13) {
+  filterArtistv1(e: any) {
+    // if (e.keyCode == 13) {
+    if (this.search_str.trim().length > 0) {
       let data = {
-        search: this.search_str
+        search: this.search_str.trim()
       };
       this.getAllArtistV1Data(data);
     }
+    // }
   }
   // Add region for filtering
   addRegionForFilter(flag: any, val: any) {

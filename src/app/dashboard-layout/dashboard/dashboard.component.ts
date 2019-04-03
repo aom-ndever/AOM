@@ -163,9 +163,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
   // Fiter
   filter(e: any) {
-    if (e.keyCode == 13) {
+    // if (e.keyCode == 13) {
+      if (this.search_str.trim().length > 0) {
       let data = {
-        search: this.search_str,
+        search: this.search_str.trim(),
         music_type: this.music_type_index != -1 ? this.music_type_list[this.music_type_index]._id : ''
       };
       this.getAllData(data);

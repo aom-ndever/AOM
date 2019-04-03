@@ -187,9 +187,10 @@ export class WhatsNewComponent implements OnInit, OnDestroy {
   }
   // Filter result
   filter(e: any) {
-    if (e.keyCode == 13) {
+    // if (e.keyCode == 13) {
+      if (this.search_str.trim().length > 0) {
       let data = {
-        search: this.search_str,
+        search: this.search_str.trim(),
         start: 0,
         length: this.length
       };

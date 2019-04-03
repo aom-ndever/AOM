@@ -29,6 +29,7 @@ export class MyMusicComponent implements OnInit, OnDestroy {
   show_filter: boolean = false;
   tab_cnt: Number = 1;
   modal_ref: NgbModalRef;
+  
   audio_file: any = '';
   image_upload: any = '';
   edit_image: any = 'img/profile-img.png';
