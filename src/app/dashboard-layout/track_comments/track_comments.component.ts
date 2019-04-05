@@ -161,7 +161,7 @@ export class TrackConmmentsComponent implements OnInit {
             // Send the token to your server.
             console.log(result.token);
             let data = {
-              track_id: this.track_data['_id'],
+              track_id: this.track['_id'],
               card_id: result['token']['id']
             };
             this.TrackCommentsService.purchaseTrack(data).subscribe((response) => {

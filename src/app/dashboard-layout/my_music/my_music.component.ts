@@ -173,6 +173,8 @@ export class MyMusicComponent implements OnInit, OnDestroy {
     this.tab_cnt = val;
   }
 
+ 
+
   changeAudio(event: any) {
     const file = event.target.files[0];
     let flag;
@@ -188,10 +190,9 @@ export class MyMusicComponent implements OnInit, OnDestroy {
       });
 
       const hex = bytes.join('').toUpperCase();
-      const binaryFileType = this.getMimetype(hex);
-      console.log(binaryFileType + ' ' + hex);
-      if (binaryFileType === 'Unknown filetype') {
-        //if (allow_types.indexOf(file.type) == -1) {
+      const allow_types =this.getMimetype(hex);
+    
+        if (allow_types.indexOf(file.type) == -1) {
         this.toastr.error('Invalid file format.', 'Error!');
         return false;
         // }
@@ -202,7 +203,7 @@ export class MyMusicComponent implements OnInit, OnDestroy {
 
     };
     fr.readAsArrayBuffer(file);
-    const allow_types = ["audio/mp3"];
+    const allow_types = ["audio/aiff,audio/mp3,audio/wav,audio/flac"];
   }
 
   changeFile(event: any) {
@@ -633,6 +634,14 @@ export class MyMusicComponent implements OnInit, OnDestroy {
       //   return 'video/webm';
       case '4944333':
         return 'audio/mp3';
+      case '464F524D':
+        return 'audio/aiff';
+      case '52494646':
+        return 'audio/wav';
+      case '664C6143':
+        return 'audio/flac';
+      // case '4944333':
+      //   return 'audio/mp3';
       // case '4357539':
       //   return 'application/x-shockwave-flash';
       // case '504B0304':

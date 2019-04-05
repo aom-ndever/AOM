@@ -321,8 +321,8 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
     });
 
     this.bank_fg = this.fb.group({
-      bname: ['', [Validators.required, Validators.pattern('[A-Za-z]+')]],
-      hname: ['', [Validators.required, Validators.pattern('[A-Za-z]+')]],
+      bname: ['', [Validators.required, Validators.pattern('[a-zA-Z ]*'),this.noWhitespaceValidator]],
+      hname: ['', [Validators.required, Validators.pattern('[a-zA-Z ]*')]],
       acno: ['', [Validators.required, Validators.pattern('[0-9]+'), this.noWhitespaceValidator]],
       rno: ['', [Validators.required, Validators.pattern('[0-9]+'), this.noWhitespaceValidator]]
     });
@@ -588,6 +588,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
   }
+  
 
   ngOnDestroy() {
     if (this.follower_location_chart) {
