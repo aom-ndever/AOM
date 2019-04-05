@@ -146,7 +146,7 @@ export class ArtistComponent implements OnInit {
   suspendArtist(id : any) {
     swal({
       title: 'Are you sure?',
-      text: "",
+      text: "You Want to suspend the Artist",
       type: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',

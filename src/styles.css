@@ -182,6 +182,19 @@ img.social_icons:hover{
   top: 34px;
   left: 10px;
 }
+.media-upload-btn img{
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+  object-fit: cover;
+}
+.media-upload-btn song-photo img{
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+  object-fit: cover;
+}
+
 
 
 

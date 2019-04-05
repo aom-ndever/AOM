@@ -81,12 +81,12 @@
                         <span class="new-up"></span>
                       </div>
                       <div class="track-price"><a href="javascript:;" title="Purchase">${{t.price}}</a></div>
-                      <div class="share"><a href="javascript:;" title="share" (click)="openShareTrackModel(shareTrack, i,'userinfo')"><img src="img/share.png"
+                      <div class="share"><a href="javascript:;" title="Share" (click)="openShareTrackModel(shareTrack, i,'userinfo')"><img src="img/share.png"
                             alt="Track Share"></a></div>
                       <div class="track-edit"><a data-fancybox data-animation-duration="700" data-src="#edittrack"
-                          (click)="openEditTrackModal(editTrack, t)" href="javascript:;"><img src="img/edit.png" alt="Track Edit"></a></div>
+                          (click)="openEditTrackModal(editTrack, t)" TITLE="Edit" href="javascript:;"><img src="img/edit.png" alt="Track Edit"></a></div>
                       <div class="track-del"><a data-fancybox data-animation-duration="700" data-src="#delete" (click)="removeTrack(t._id)"
-                          href="javascript:;"><img src="img/del.png" alt="Track Delete"></a></div>
+                          href="javascript:;" title="Delete"><img src="img/del.png" alt="Track Delete"></a></div>
                     </td>
                   </tr>
                 </tbody>
@@ -173,7 +173,7 @@
       <div class="media-upload-btn" *ngIf="!audio_file">
         <span class="upl-img"><i class="fa fa-cloud-upload" aria-hidden="true"></i></span>
         <span class="up_text">Select Music</span>
-        <input type="file" name="my_doc_upload" id="my_doc_upload" (change)="changeAudio($event)" multiple="false"  accept=".mp3">
+        <input type="file" name="my_doc_upload" id="my_doc_upload" (change)="changeAudio($event)" multiple="false"  accept="MP3,.AIFF,.WAV,.FLAC,.AAC">
         <p class="instrution">AIFF,WAV,FLAC,MP3 or AAC, 3GB or less</p>
       </div>
       <div class="media-upload-btn" *ngIf="audio_file">
@@ -211,7 +211,7 @@
           <img src="{{edit_image}}" alt="Edit cover Image">
           <input type="file" name="my_doc_upload" id="my_doc_upload" (change)="changeFile($event)" multiple="false">
         </div>
-        <div class="upload-cover" *ngIf="add_track_img" style="width:92.5px;height:85px;">
+        <div class="upload-cover" *ngIf="add_track_img">
           <img src="{{add_track_img}}" alt="Edit cover Image">
           <input type="file" name="my_doc_upload" id="my_doc_upload" (change)="changeFile($event)" multiple="false">
         </div>
