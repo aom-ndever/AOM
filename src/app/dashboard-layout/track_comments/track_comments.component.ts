@@ -68,11 +68,13 @@ export class TrackConmmentsComponent implements OnInit {
     this.socket = socketClient(environment.socketUrl);
     console.log("environment.socketUr", environment.socketUrl)
   }
+
   openShareTrackModel(content, index: any, type: any) {
+    console.log('this.artisttrack');
     if (type == 'track') {
-      this.track = this.artisttrack[index];
+      this.track_data = this.artisttrack[index];
     } else {
-      this.track = this.rankingtrack[index];
+      this.track_data = this.rankingtrack[index];
     }
     this.modalRef = this.modalService.open(content, { centered: true, windowClass: 'modal-wrapper', backdrop: true });
   }
@@ -104,12 +106,13 @@ export class TrackConmmentsComponent implements OnInit {
         setTimeout(() => {
           this.setupStripeFrom();
         }, 0);
-        if (type == 'track') {
-          this.track= this.artisttrack[index];
-        } else {
-          this.track= this.rankingtrack[index];
-        }
-        this.modalRef = this.modalService.open(content, { centered: true, backdrop: true });
+        // if (type == 'track') {
+        //   this.track= this.artisttrack[index];
+        // } else {
+        //   this.track= this.rankingtrack[index];
+        // }
+          this.modalRef = this.modalService.open(content, { centered: true, backdrop: true });
+        // this.modalRef = this.modalService.open(content, { centered: true, windowClass: 'modal-wrapper', backdrop: true });
       } else {
         this.toastr.info('Please sign-in as listener to purchase track.', 'Info!');
       }
@@ -161,7 +164,7 @@ export class TrackConmmentsComponent implements OnInit {
             // Send the token to your server.
             console.log(result.token);
             let data = {
-              track_id: this.track['_id'],
+              track_id: this.track_data['_id'],
               card_id: result['token']['id']
             };
             this.TrackCommentsService.purchaseTrack(data).subscribe((response) => {
