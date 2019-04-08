@@ -78,13 +78,13 @@
                       <div class="track-comment">
                         <a href="javascript:;" title="Comment" routerLink="/artist_track_comment/{{t._id}}"><img src="img/comment.png"
                             alt="Comment"></a>
-                        <span class="new-up"></span>
+                        <!-- <span class="new-up"></span> -->
                       </div>
                       <div class="track-price"><a href="javascript:;" title="Purchase">${{t.price}}</a></div>
                       <div class="share"><a href="javascript:;" title="Share" (click)="openShareTrackModel(shareTrack, i,'userinfo')"><img src="img/share.png"
                             alt="Track Share"></a></div>
                       <div class="track-edit"><a data-fancybox data-animation-duration="700" data-src="#edittrack"
-                          (click)="openEditTrackModal(editTrack, t)" TITLE="Edit" href="javascript:;"><img src="img/edit.png" alt="Track Edit"></a></div>
+                          (click)="openEditTrackModal(editTrack, t)" title="Edit" href="javascript:;"><img src="img/edit.png" alt="Track Edit"></a></div>
                       <div class="track-del"><a data-fancybox data-animation-duration="700" data-src="#delete" (click)="removeTrack(t._id)"
                           href="javascript:;" title="Delete"><img src="img/del.png" alt="Track Delete"></a></div>
                     </td>

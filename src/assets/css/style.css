@@ -3616,7 +3616,7 @@ button.close{    background: transparent;
 }
 .modal-wrapper .modal-dialog .modal-content {
     border: 0;
-    padding: 75px 75px 20px 75px;
+    padding: 75px 75px 20px 75px; */
     border-radius: 15px !important;
 }
 .modal_login_wrapper .modal-header {

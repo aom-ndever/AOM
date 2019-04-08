@@ -19,17 +19,22 @@
                   <img src="img/pause.png" alt="" (click)="stopAudio(1)" [style.display]="audio_ins.length > 0 && audio_ins[1] ? 'block' : 'none'">
                 </a> -->
               </div>
-              <div class="track-cname"><a href="javascript:;">{{track['name']}}</a></div>
+              <div class="track-cname"><a href="javascript:;">{{track?.name}}</a></div>
               <div class="artist-name"><h2><a href="javascript:;">{{artistdata.first_name+' '+artistdata.last_name}}</a></h2></div>
             </div>
             <div class="action">
                 <div class="cmt-like"><a href="javascript:;" title="Like" class="liked" (click)="likeTrack(track._id)"><img src="img/likehand.png" alt="">{{track?.no_of_likes}}</a></div>
                 <div class="download"><a href="javascript:;" title="Download"><img src="img/download.png"  (click)="downloadTrack(track._id)" alt=""></a></div>
-                <div class="cmt">
+                <!-- <div class="cmt">
                     <a href="javascript:;" title="Purchase" (click)="openCardModel(purchase, i, 'track')">
                       ${{track.price}}
                     </a>
-                  </div>
+                  </div> -->
+                  <div class="cmt">
+                      <a href="javascript:;" title="Purchase" (click)="openCardModel(purchase, i, 'track')">
+                        ${{track.price}}
+                      </a>
+                    </div>
                 <div class="share"><a href="javascript:;"  title="Share" (click)="openShareTrackModel(shareTrack, i, 'track')"><img src="img/share.png" alt=""></a></div>
   
               </div>
@@ -58,7 +63,7 @@
                       <div class="s-img"><img src="{{user['user'].image ? user_img_url+user['user'].image : 'img/upload1.png'}}" alt="img"></div>
                         <div class="form-group">
                             <label for="cmmt">Write a Comment</label>
-                            <input type="text" class="form-control" id="cmmt" name="comment" [(ngModel)]="comment_txt" placeholder="Write a comment">
+                            <input type="text" class="form-control" id="cmmt" name="comment" [(ngModel)]="comment_txt" placeholder="Write a comment" maxlength="5000">
                           </div>
                           <div class="button_group">
                         <button type="submit" (click)="postComment()" [disabled]="show_spinner" class="update-btn">Post <i class="fa fa-spinner fa-spin" *ngIf="show_spinner"></i></button>
@@ -111,8 +116,8 @@
   <div class="modal-body">
       <div class="shared_popup">
           <div class="col-12 text-center shared_popup_header">
-              <h4>Share This Track</h4>
-              <span>You are Sharing the "{{track && track['name'] ? track['name'] : '' }}" Track</span>
+              <h4>Share This Track</h4><br>
+               <!-- <span>You are Sharing the "{{track_data && track_data['name'] ? track_data['name'] : '' }}" Track</span> -->
           </div>
           <div class="row">
               <div class="col-sm-6">
@@ -152,9 +157,9 @@
 <ng-template #email let-c="close" let-d="dismiss">
 <div class="modal-body">
   <div class="forget_password_modal">
-    <!-- <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+     <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
         <span aria-hidden="true">&times;</span>
-    </button> -->
+    </button> 
     <form [formGroup]="share_form">
         <h3 class="forget_password_header">Share through email</h3>
         <div class="col-sm-12">
@@ -178,9 +183,9 @@
 <ng-template #phoneno let-c="close" let-d="dismiss">
 <div class="modal-body">
   <div class="forget_password_modal">
-    <!-- <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+     <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
         <span aria-hidden="true">&times;</span>
-    </button> -->
+    </button> 
     <form [formGroup]="share_form_phone">
         <h3 class="forget_password_header">Share through sms</h3>
         <div class="col-sm-12">
@@ -200,7 +205,7 @@
  </div>
 </div>
 </ng-template>
- <ng-template #purchase let-c="close" let-d="dismiss">
+<ng-template #purchase let-c="close" let-d="dismiss">
     <div class="modal-body">
       <div class="forget_password_modal">
         <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
@@ -209,10 +214,13 @@
         <form id="payment-form">
           <div class="col-12 text-center shared_popup_header">
             <h4>Purchase Track</h4>
-            <span>You are going to purchase the "{{track && track['name'] ? track['name'] : '' }}" Track.</span>
+             <!-- <span>You are going to purchase the "{{track_data && track_data['name'] ? track_data['name'] : '' }}" Track.</span> -->
           </div>
           <div class="col-sm-12">
-         
+             <!-- <div class="form-group">
+                    <label class="control-label custom_form_label">Name</label>
+                    <input type="email" class="form-control custom_form" name="Name"  placeholder="Enter Card Name"/>
+                </div> -->
             <div *ngIf="card_loader" class="text-center col-12">
               <i class="fa fa-spinner fa-spin fa-3x" aria-hidden="true"></i>
             </div>
@@ -221,14 +229,14 @@
                 Credit or debit card
               </label>
               <div id="card-element">
-              
+                <!-- A Stripe Element will be inserted here. -->
               </div>
-              
+              <!-- Used to display form errors. -->
               <div id="card-errors" class="text-danger" role="alert"></div>
             </div>
             <div class="form-group">
               <label class="control-label custom_form_label">Price</label>
-              <input class="form-control custom_form" value="{{'$'+track_data['price']}}" readonly />
+              <input class="form-control custom_form" value="{{'$'+track['price']}}" readonly />
             </div>
             <div class="form-group text-right">
               <button class="btn forget_btn" [disabled]="show_spinner || card_loader">Submit <i *ngIf="show_spinner"
