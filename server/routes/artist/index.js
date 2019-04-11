@@ -840,7 +840,9 @@ router.get('/track_comment', async (req, res) => {
 //     }
 // });
 
-router.post("/participate", async (req, res) => {
+// submit the tracks for contest
+
+router.post("/submit_tracks", async (req, res) => {
     artist_id = req.userInfo.id;
     var schema = {
         "contest_id": {
@@ -966,6 +968,14 @@ router.post("/participate", async (req, res) => {
     }
 });
 
+
+router.post("/get_contest_track", async (req, res) => {
+    var contest_track = await participate_helper.get_track_participation(req.body.contest_id, req.userInfo.id)
+    res.status(config.OK_STATUS).send({
+        "tracks": contest_track
+    })
+});
+
 router.get('/contest', async (req, res) => {
     var artist_music = await artist_helper.get_artist_by_id(req.userInfo.id);
     artist_music = artist_music.artist.music_type._id;
@@ -995,7 +1005,6 @@ router.post("/suspend/user/:user_id", async (req, res) => {
             var stat = "active"
             var user_resp = await user_helper.update_user_status(req.params.user_id, stat);
         }
-        logger.trace("User Suspended = ", { "user": user_resp });
         res.status(config.OK_STATUS).json({ "artist": user_resp });
     }
 });
