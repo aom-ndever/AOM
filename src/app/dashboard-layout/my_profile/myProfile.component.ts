@@ -10,7 +10,7 @@ import { Lightbox } from 'angular2-lightbox';
 import { Chart } from 'angular-highcharts';
 import { AmChartsService, AmChart } from "@amcharts/amcharts3-angular";
 import { MessageService } from '../../shared/message.service';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription, Subject } from 'rxjs';
 import { DataTableDirective } from 'angular-datatables';
 import swal from 'sweetalert2';
 import { Title } from '@angular/platform-browser';
@@ -37,12 +37,14 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
   // }
   @ViewChildren(DataTableDirective)
 
-  artist_validation = [false, false, false, false, false, false, false];
+  artist_validation = [false];
   imageChangedEvent: any = '';
   croppedImage: any = '';
   cropperReady = false;
   public card_list: any = [];
 
+  dtElement: DataTableDirective;
+  dtTrigger: Subject<any> = new Subject();
   dtElements: QueryList<DataTableDirective>;
   dtOptions: DataTables.Settings[] = [];
   subscription: Subscription;
@@ -419,6 +421,30 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
   ngOnInit() {
+    this.getList();
+  }
+  
+   //Render datatable
+   render(): void {
+    this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
+      dtInstance.draw();
+    });
+  }
+
+
+  
+   //destroy datatable
+   getDatatableInstance() {
+    this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
+      dtInstance.state.clear();
+      // Destroy the table first
+      dtInstance.destroy();
+      // Call the dtTrigger to rerender again
+      this.dtTrigger.next();
+    });
+  }
+  getList()
+  {
     if (this.userdata['type'] == 'artist') {
       this.getMediaList();
       this.calculateDateFromDays(this.analytics_days);
@@ -442,6 +468,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
           that.audio_ins = [];
           that.MyProfileService.getArtistPlaylist(dataTablesParameters).subscribe((response) => {
             that.playlist = response['playlist'];
+            console.log(response['playlist']);
             callback({
               recordsTotal: response['recordsTotal'],
               recordsFiltered: response['recordsTotal'],
@@ -537,6 +564,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
           that.audio_ins = [];
           that.MyProfileService.getAllListenerPlaylist(dataTablesParameters).subscribe((response) => {
             that.playlist = response['playlist'];
+            console.log(response['playlist']);
             callback({
               recordsTotal: response['recordsTotal'],
               recordsFiltered: response['recordsTotal'],
@@ -586,9 +614,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
       };
 
     }
-
   }
-  
 
   ngOnDestroy() {
     if (this.follower_location_chart) {
@@ -606,6 +632,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
   ngAfterViewInit() {
     // stripe card implementation
     // this.setupStripeFrom();
+    this.dtTrigger.next();
   }
 
   noWhitespaceValidator(control: FormControl) {
@@ -736,6 +763,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
     var fileList: FileList = event.target.files;
     const file = <File>event.target.files[0];
     if (event.target.files.length > 0) {
+      // this.artist_validation[1] = false;
       const allow_types = ['image/png', 'image/jpg', 'image/jpeg'];
       if (allow_types.indexOf(fileList[0].type) == -1) {
         this.toastr.error('Invalid file format.', 'Error!');
@@ -2109,7 +2137,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
 
   }
   // Remove existing playlist
-  removePlaylist(id: any) {
+  removePlaylist(id: any,idx : any) {
     swal({
       title: 'Are you sure?',
       text: "You won't be able to revert this!",
@@ -2123,11 +2151,15 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
         if (this.userdata && this.userdata['type'] == 'user') {
           this.MyProfileService.deleteListenerPlaylistById(id).subscribe((response) => {
             this.toastr.success(response['message'], 'Success!');
-            this.dtElements.forEach((dtElement: DataTableDirective, index: number) => {
-              dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
-                dtInstance.draw();
-              });
-            });
+            // this.getList();
+            this.render();
+            // this.dtElements.forEach((dtElement: DataTableDirective, index: number) => {
+            //   if(idx == index) {
+            //   dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
+            //     dtInstance.draw();
+            //   });
+            // }
+            // });
           });
         } else {
           this.MyProfileService.removeArtistPlaylist(id).subscribe((response) => {

@@ -63,7 +63,7 @@
                       <div class="s-img"><img src="{{user['user'].image ? user_img_url+user['user'].image : 'img/upload1.png'}}" alt="img"></div>
                         <div class="form-group">
                             <label for="cmmt">Write a Comment</label>
-                            <input type="text" class="form-control" id="cmmt" name="comment" [(ngModel)]="comment_txt" placeholder="Write a comment" maxlength="5000">
+                            <input type="text" class="form-control" id="cmmt" name="comment" [(ngModel)]="comment_txt" placeholder="Write a comment"  maxlength="5000">
                           </div>
                           <div class="button_group">
                         <button type="submit" (click)="postComment()" [disabled]="show_spinner" class="update-btn">Post <i class="fa fa-spinner fa-spin" *ngIf="show_spinner"></i></button>

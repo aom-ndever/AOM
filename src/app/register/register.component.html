@@ -264,6 +264,8 @@
                       <div class="cust_err_msg" *ngIf="artist_validation[3] && !artist_step4.controls['zipcode'].valid">
                         <span *ngIf="artist_step4.controls['zipcode'].errors['required']" class="text-danger">Zipcode
                           is required</span>
+                          <!-- <span *ngIf="artist_step4.controls['zipcode'].dirty)" class="text-danger">Please
+                              enter only numeric or alphanumeric.</span> -->
                         <span *ngIf="artist_step4.controls['zipcode'].errors['pattern'] && artist_step4.controls['zipcode'].dirty"
                           class="text-danger">please enter valid zipcode.</span>
                       </div>

@@ -29,7 +29,7 @@ export class MyMusicComponent implements OnInit, OnDestroy {
   show_filter: boolean = false;
   tab_cnt: Number = 1;
   modal_ref: NgbModalRef;
-  
+ 
   audio_file: any = '';
   image_upload: any = '';
   edit_image: any = 'img/profile-img.png';
@@ -222,10 +222,10 @@ export class MyMusicComponent implements OnInit, OnDestroy {
       });
 
       const hex = bytes.join('').toUpperCase();
-      const binaryFileType = this.getImageMimetype(hex);
-      console.log(binaryFileType + ' ' + hex);
-      if (binaryFileType === 'Unknown filetype') {
-        //if (allow_types.indexOf(file.type) == -1) {
+      const allow_types = this.getImageMimetype(hex);
+      // console.log(binaryFileType + ' ' + hex);
+      // if (binaryFileType === 'Unknown filetype') {
+        if (allow_types.indexOf(file.type) == -1) {
         console.log("1");
         this.toastr.error('Invalid file format.', 'Error!');
         return false;
@@ -266,9 +266,12 @@ export class MyMusicComponent implements OnInit, OnDestroy {
   openModal(content) {
     this.trackdata = {};
     this.add_track_img = '';
+    this.image_upload='';
+    this.edit_image='';
     this.add_track_audio = '';
     this.modal_ref = this.modalService.open(content, { centered: true, windowClass: 'add-track-popup', backdrop: 'static' });
   }
+
 
   // open edit track model
   openEditTrackModal(content: any, obj: any) {
@@ -314,6 +317,7 @@ export class MyMusicComponent implements OnInit, OnDestroy {
         this.trackdata = {};
         this.audio_file = '';
         this.image_upload = '';
+        this.add_track_img = '';
         this.toastr.success(response['message'], 'Success!');
         this.datatableElement.dtInstance.then((dtInstance: DataTables.Api) => {
           dtInstance.draw();
