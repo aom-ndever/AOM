@@ -390,7 +390,7 @@ export class MyMusicComponent implements OnInit, OnDestroy {
       isValid = !isWhitespace;
     }
 
-    if (this.trackdata && this.trackdata.name && isValid && this.trackdata.price && this.trackdata.price > 0 && this.trackdata.image) {
+    if (this.trackdata && this.trackdata.name && isValid && this.trackdata.price && this.trackdata.price > 0 && this.trackdata.price < 100  && this.trackdata.image) {
       let formdata = new FormData();
       formdata.append('name', this.trackdata.name);
       formdata.append('price', this.trackdata.price);
@@ -420,7 +420,10 @@ export class MyMusicComponent implements OnInit, OnDestroy {
       this.toastr.error('Please enter track price', 'Error!');
     } else if (this.trackdata.price < 0) {
       this.toastr.error('Track price must be positive.', 'Error!');
-    } else {
+    } 
+    else if (this.trackdata.price >= 100) {
+      this.toastr.error('Track price must be in two digits', 'Error!');
+    }  else {
       this.toastr.error('Please provide necessary details', 'Error!');
     }
   }

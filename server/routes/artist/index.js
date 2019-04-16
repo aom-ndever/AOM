@@ -245,7 +245,7 @@ router.post('/add_bank_details', async (req, res) => {
                 card_resps.account.account_id,
                 { external_account: bank_account_token.id }
             );
-            res.status(config.OK_STATUS).json({ "message": "Account created" });
+            res.status(config.OK_STATUS).json({ "message": "Bank account added successfully" });
 
         } catch (error) {
             //var delete_data = await Account.findOneAndRemove({ "_id": new ObjectId(card_resp.card._id) })

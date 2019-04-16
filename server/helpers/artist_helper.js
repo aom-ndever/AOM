@@ -23,6 +23,7 @@ var moment = require('moment');
  * 
  */
 artist_helper.insert_artist = async (object) => {
+    
     let art = new Artist(object)
     try {
         let data = await art.save();
