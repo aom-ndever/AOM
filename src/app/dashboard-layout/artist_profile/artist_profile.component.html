@@ -40,7 +40,7 @@
                     </a>
                   </li>
                   <li>
-                    <a [href]="artistdata.social_media['instagram']">
+                    <a [href]="artistdata.social_media['twitter']">
                       <i aria-hidden="true" class="fa fa-twitter"></i>
                     </a>
                   </li>
@@ -59,7 +59,7 @@
               </div>
               <div class="follower">
                 <h3>Followers</h3>
-                <span>{{artistfollower.length}}</span>
+                <span>{{artistfollower.length}}</span>,
                 <ul>
                   <li *ngFor="let follower of artistfollower;">
                     <img src="{{follower && follower['user_id'] && follower['user_id'].image ? user_img_url+follower['user_id'].image : 'img/upload1.png'}}"

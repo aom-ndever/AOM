@@ -37,7 +37,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
   // }
   @ViewChildren(DataTableDirective)
 
-  artist_validation = [false, false, false, false, false, false, false];
+  artist_validation = [false];
   imageChangedEvent: any = '';
   croppedImage: any = '';
   cropperReady = false;
@@ -736,6 +736,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
     var fileList: FileList = event.target.files;
     const file = <File>event.target.files[0];
     if (event.target.files.length > 0) {
+      // this.artist_validation[1] = false;
       const allow_types = ['image/png', 'image/jpg', 'image/jpeg'];
       if (allow_types.indexOf(fileList[0].type) == -1) {
         this.toastr.error('Invalid file format.', 'Error!');
