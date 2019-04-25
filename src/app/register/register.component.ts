@@ -146,7 +146,7 @@ export class RegisterComponent implements OnInit {
     });
 
     this.listener_step4 = this.fb.group({
-      zipcode: ['', [Validators.required, Validators.pattern('^[0-9]+$')]],
+      zipcode: ['', [Validators.required, Validators.pattern('^[A-Za-z0-9]+$')]],
       region: ['', [Validators.required]],
       state: ['', [Validators.required]]
     });

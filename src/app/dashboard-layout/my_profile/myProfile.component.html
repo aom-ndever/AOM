@@ -389,7 +389,7 @@
                                         <div class="form-group">
                                             <label for="ypwd">Your Password</label>
                                             <input type="password" class="form-control" id="ypwd" name="old"
-                                                [(ngModel)]="change_pwd.old" placeholder="Your Password">
+                                                [(ngModel)]="change_pwd.old" placeholder="Your Password" required>
                                             <div class="pwd-icon">
                                                 <!-- <i class="fa fa-eye" aria-hidden="true"></i> -->
                                                 <!-- <i class="fa fa-eye-slash" aria-hidden="true"></i> -->
@@ -397,8 +397,8 @@
                                         </div>
                                         <div class="form-group">
                                             <label for="npwd">New Password</label>
-                                            <input type="password" class="form-control" name="old"
-                                                [(ngModel)]="change_pwd.new" id="npwd" placeholder="New Password">
+                                            <input type="password" class="form-control" name="new"
+                                                [(ngModel)]="change_pwd.new" id="npwd" placeholder="New Password"  required>
                                             <div class="pwd-icon">
                                                 <!-- <i class="fa fa-eye" aria-hidden="true"></i> -->
                                                 <!-- <i class="fa fa-eye-slash" aria-hidden="true"></i> -->
@@ -406,15 +406,16 @@
                                         </div>
                                         <div class="form-group">
                                             <label for="rpwd">Repeat New Password</label>
-                                            <input type="password" class="form-control" id="rpwd" name="old"
-                                                [(ngModel)]="change_pwd.repeat" placeholder="Repeat Password">
+                                            <input type="password" class="form-control" id="rpwd" name="repeat"
+                                                [(ngModel)]="change_pwd.repeat" placeholder="Repeat Password" required>
                                             <div class="pwd-icon">
                                                 <!-- <i class="fa fa-eye " aria-hidden="true"></i> -->
                                                 <!-- <i class="fa fa-eye-slash" aria-hidden="true"></i> -->
                                             </div>
                                         </div>
                                         <div class="button_group">
-                                            <button type="submit" class="update-btn">update</button>
+                                            <button type="submit" [disabled]="show_spinner" class="update-btn">update  
+                                                <i *ngIf="show_spinner" class="fa fa-spinner fa-spin"></i></button>
                                         </div>
                                     </form>
                                 </div>

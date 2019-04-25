@@ -161,6 +161,15 @@ img.social_icons:hover{
   text.highcharts-credits {
     display: none;
 }
+.left_graph a{
+  display: none;
+}
+.amcharts-chart-div a{
+display: none !important;
+}
+#chartdiv .a{
+  display:none;
+}
 .header_search.search-input input[type="text"]{
   color:black;
 }
@@ -196,5 +205,9 @@ img.social_icons:hover{
 }
 
 
+.liked-active{
+
+color: green;
+}
 
 

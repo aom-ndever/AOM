@@ -24,7 +24,7 @@ var ArtistModelSchema = new Schema({
     music_type: { type: mongoose.Schema.Types.ObjectId, ref: 'music_type' },
     state: { type: mongoose.Schema.Types.ObjectId, ref: 'state' },
     gender: { type: String, enum: ["male", "female"] },
-    zipcode: Number,
+    zipcode: String,
     image: String,
     phone_no: Number,
     cover_image: String,

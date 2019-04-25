@@ -736,6 +736,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
     var fileList: FileList = event.target.files;
     const file = <File>event.target.files[0];
     if (event.target.files.length > 0) {
+
       // this.artist_validation[1] = false;
       const allow_types = ['image/png', 'image/jpg', 'image/jpeg'];
       if (allow_types.indexOf(fileList[0].type) == -1) {
@@ -794,12 +795,12 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
           });
 
           const hex = bytes.join('').toUpperCase();
-          const binaryFileType = this.getImageMimetype(hex);
-          console.log(binaryFileType + ' ' + hex);
-          if (binaryFileType === 'Unknown filetype') {
-            //if (allow_types.indexOf(file.type) == -1) {
+          const allow_types = this.getImageMimetype(hex);
+          // console.log(binaryFileType + ' ' + hex);
+          // if (binaryFileType === 'Unknown filetype') {
+            if (allow_types.indexOf(file.type) == -1) {
             this.toastr.error('Invalid file format.', 'Error!');
-            return;
+            return false;
             // }
           } else {
             // const file = new Blob([new Uint8Array(res)], { type: binaryFileType });
@@ -1105,6 +1106,8 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   changePassword() {
+  console.log(this.userdata.pwd);
+  console.log(this.change_pwd['old']);
     if (this.change_pwd['old'] && this.userdata.pwd == this.change_pwd['old']) {
       if (this.change_pwd['new'] && this.change_pwd['repeat'] && this.change_pwd['new'] == this.change_pwd['repeat'] && this.change_pwd['new'].length >= 6 && this.change_pwd['repeat'] >= 6) {
         let data = {
@@ -2110,7 +2113,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
 
   }
   // Remove existing playlist
-  removePlaylist(id: any) {
+  removePlaylist(id: any,idx : any) {
     swal({
       title: 'Are you sure?',
       text: "You won't be able to revert this!",
@@ -2125,18 +2128,22 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
           this.MyProfileService.deleteListenerPlaylistById(id).subscribe((response) => {
             this.toastr.success(response['message'], 'Success!');
             this.dtElements.forEach((dtElement: DataTableDirective, index: number) => {
+              if(idx == index) {
               dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
                 dtInstance.draw();
               });
+            }
             });
           });
         } else {
           this.MyProfileService.removeArtistPlaylist(id).subscribe((response) => {
             this.toastr.success(response['message'], 'Success!');
             this.dtElements.forEach((dtElement: DataTableDirective, index: number) => {
+              if(idx == index) {
               dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
                 dtInstance.draw();
               });
+            }
             });
           });
         }

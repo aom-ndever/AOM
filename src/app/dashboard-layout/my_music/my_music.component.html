@@ -77,7 +77,7 @@
                       </div>
                       <div class="track-comment" >
                         <a href="javascript:;" title="Comment" routerLink="/artist_track_comment/{{t._id}}"><img src="img/comment.png"
-                            alt="Comment"><span class="new-up"></span></a>
+                            alt="Comment"><span class="{{active_tab_index == 1 ? 'new-up' : ''}}"></span></a>
                         <!-- <span class="new-up"></span> -->
                       </div>
                       <div class="track-price"><a href="javascript:;" title="Purchase">${{t.price}}</a></div>
@@ -201,7 +201,7 @@
       </div>
       <div class="form-group tr-price" [class.has-error]="price.invalid" [class.has-success]="price.valid">
         <label for="tname">Price</label>
-        <input type="number" class="form-control" id="tname" name="price"  #price="ngModel" [(ngModel)]="trackdata.price" placeholder="$ 1399" maxlength="3" required/>
+        <input type="number" class="form-control" id="tname" name="price"  #price="ngModel" [(ngModel)]="trackdata.price" placeholder="$ 139" maxlength="3" required/>
        
       </div>
       <div class="textarea-upload">
@@ -240,7 +240,7 @@
         </div>
         <div class="form-group tr-price" [class.has-error]="price.invalid" [class.has-success]="price.valid">
             <label for="tname">Price</label>
-            <input type="number" class="form-control" id="tname" name="price"  #price="ngModel" [(ngModel)]="trackdata.price" placeholder="$ 1399" maxlength="3" required/>
+            <input type="number" class="form-control" id="tname" name="price"  #price="ngModel" [(ngModel)]="trackdata.price" placeholder="$ 139" maxlength="3" required/>
            
           </div>
         <div class="textarea-upload">

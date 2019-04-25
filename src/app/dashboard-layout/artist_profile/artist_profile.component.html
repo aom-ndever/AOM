@@ -30,28 +30,28 @@
                 <h3>Social</h3>
                 <ul>
                   <li>
-                    <a [href]="artistdata.social_media['facebook']">
+                    <a [href]="artistdata.social_media['facebook'] ? artistdata.social_media['facebook'] : 'javascript:void(0)'">
                       <i class="fa fa-facebook-official" aria-hidden="true"></i>
                     </a>
                   </li>
                   <li>
-                    <a [href]="artistdata.social_media['instagram']">
+                    <a [href]="artistdata.social_media['instagram'] ? artistdata.social_media['instagram'] : 'javascript:void(0)'">
                       <img _ngcontent-c3="" alt="" src="img/inst2.png" style="vertical-align: baseline;">
                     </a>
                   </li>
                   <li>
-                    <a [href]="artistdata.social_media['twitter']">
+                    <a [href]="artistdata.social_media['twitter'] ? artistdata.social_media['twitter'] : 'javascript:void(0)'">
                       <i aria-hidden="true" class="fa fa-twitter"></i>
                     </a>
                   </li>
 
                   <li>
-                    <a [href]="artistdata.social_media['youtube']">
+                    <a [href]="artistdata.social_media['youtube'] ? artistdata.social_media['youtube'] : 'javascript:void(0)'">
                       <i class="fa fa-youtube-play" aria-hidden="true"></i>
                     </a>
                   </li>
                   <li>
-                    <a [href]="artistdata.social_media['sound_cloud']">
+                    <a [href]="artistdata.social_media['sound_cloud'] ? artistdata.social_media['sound_cloud'] : 'javascript:void(0)'">
                       <i class="fa fa-soundcloud" aria-hidden="true"></i>
                     </a>
                   </li>
@@ -59,7 +59,7 @@
               </div>
               <div class="follower">
                 <h3>Followers</h3>
-                <span>{{artistfollower.length}}</span>,
+                <span>{{artistfollower.length}}</span>
                 <ul>
                   <li *ngFor="let follower of artistfollower;">
                     <img src="{{follower && follower['user_id'] && follower['user_id'].image ? user_img_url+follower['user_id'].image : 'img/upload1.png'}}"
@@ -189,13 +189,30 @@
                                 </div>
                                 <div class="cmt-like">
                                   <a href="javascript:;" title="Like" class="liked" (click)="likeTrack(artist._id, i)">
-                                    <img class="like_bw" src="img/likehand.png" alt=""><img class="like_active" src="img/like-color.jpg"
-                                      alt="">{{artist.no_of_likes}}
+                                      
+                                      <span *ngIf="artist.no_of_likes > 0; else templateName">
+                                          <img class="  "  src="img/like-color.jpg"
+                                      alt="" style="display:block;">
+                                      </span>
+                                      
+                                      <ng-template #templateName>
+                                          <img class="" src="img/likehand.png" alt="">
+                                      </ng-template>
+                                      
+                                    {{artist.no_of_likes}}
                                   </a>
                                 </div>
                                 <div class="cmt">
                                   <a href="javascript:;" title="Comment" (click)="goToComment(artistdata['_id'], artist._id)">
-                                    <img src="img/comment.png" alt="">{{artist.no_of_comments}}</a>
+                                      <span *ngIf="artist.no_of_comments > 0; else templatecomment">
+                                          <img class="" src="img/comment3.png" alt="">
+                                      </span>
+                                      <ng-template #templatecomment>
+                                          <img class="" src="img/comment.png" alt="">
+                                      </ng-template>
+
+
+                                  {{artist.no_of_comments}}</a>
                                 </div>
                                 <div class="download" *ngIf="artist.is_downloadable">
                                   <a href="javascript:;" title="Download">

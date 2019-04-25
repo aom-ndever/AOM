@@ -4777,8 +4777,11 @@ max-height: unset !important;
 
 .remove_comment_block > a{    color: #9b26b0 !important;}
 .custom_modal.artist_view_modal{    padding: 45px 20px 20px 20px;}
-.artist_view_modal .profile_detail  > span {
+/* .artist_view_modal .profile_detail  > span {
     opacity: 1;
+    color: #4caf50;
+} */
+.artist_view_modal .profile_detail > Suspended {
     color: #4caf50;
 }
 .track_play .custom_music_container{    width: 40%;}
