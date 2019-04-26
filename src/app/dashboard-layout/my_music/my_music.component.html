@@ -77,7 +77,7 @@
                       </div>
                       <div class="track-comment" >
                         <a href="javascript:;" title="Comment" routerLink="/artist_track_comment/{{t._id}}"><img src="img/comment.png"
-                            alt="Comment"><span class="{{active_tab_index == 1 ? 'new-up' : ''}}"></span></a>
+                            alt="Comment"><span class="new-up"></span></a>
                         <!-- <span class="new-up"></span> -->
                       </div>
                       <div class="track-price"><a href="javascript:;" title="Purchase">${{t.price}}</a></div>
@@ -137,7 +137,7 @@
                       </div>
                       <div class="track-comment">
                         <a href="javascript:;" routerLink="/artist_track_comment/{{t._id}}"><img src="img/comment.png"
-                            alt="Comment"></a>
+                            alt="Comment"></a>{{t.trackcomments}}
                         <span class="new-up"></span>
                       </div>
                       <div class="track-price"><a href="javascript:;">${{t.price}}</a></div>

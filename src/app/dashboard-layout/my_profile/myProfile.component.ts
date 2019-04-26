@@ -186,6 +186,8 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
     }
     if (data && data.artist) {
       this.userdata = { ...data['artist'] };
+      console.log('userData here===> ', this.userdata);
+      
       this.userdata['type'] = 'artist';
       if (this.userdata.dob) {
         let dt = new Date(this.userdata.dob);
@@ -1108,6 +1110,10 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
   changePassword() {
   console.log(this.userdata.pwd);
   console.log(this.change_pwd['old']);
+  console.log(this.userdata.type);
+  
+  
+  
     if (this.change_pwd['old'] && this.userdata.pwd == this.change_pwd['old']) {
       if (this.change_pwd['new'] && this.change_pwd['repeat'] && this.change_pwd['new'] == this.change_pwd['repeat'] && this.change_pwd['new'].length >= 6 && this.change_pwd['repeat'] >= 6) {
         let data = {
@@ -1116,7 +1122,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
         };
         this.show_spinner = true;
         if (this.userdata.type == 'artist') {
-          this.MyProfileService.changeArtistPassword(data).subscribe(response => {
+          this.MyProfileService.changeArtistPassword(data).subscribe(response => {      
             this.change_pwd = {};
             this.updateLocalStorage();
             this.toastr.success(response['resp'], 'Success!');
@@ -1133,6 +1139,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
             this.updateLocalStorage();
             this.toastr.success(response['resp'], 'Success!');
           }, error => {
+            console.log('api res****');
             this.toastr.error(error['error'].message, 'Error!');
             this.show_spinner = false;
           },() =>{

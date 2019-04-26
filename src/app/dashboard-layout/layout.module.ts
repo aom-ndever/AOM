@@ -80,7 +80,7 @@ import { ImageCropperModule } from 'ngx-image-cropper';
     RouterModule.forChild([
       {
         path: '',
-        component: DashboardLayoutComponent,data: { title: "AOM | What's New", edit: false },
+        component: DashboardLayoutComponent,data: { title: 'Dashboard' },
         children: [
           { path: '', component: DashboardComponent },
           { path: 'whats-new', component: WhatsNewComponent, data: { title: "AOM | What's New", edit: false } },

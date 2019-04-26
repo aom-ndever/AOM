@@ -183,6 +183,7 @@
                               </td>
                               <td class="action music_action" colspan="2">
                                 <div class="cmt">
+                                  {{artist.is_bookmarked}}
                                   <a href="javascript:;" title="Bookmarked Track" class="liked" (click)="bookMarkTrack(artist._id, i, 'track')">
                                     <i class="fa {{artist['is_bookmarked'] ? 'fa-heart' : 'fa-heart-o'}}"></i>
                                   </a>
@@ -191,7 +192,7 @@
                                   <a href="javascript:;" title="Like" class="liked" (click)="likeTrack(artist._id, i)">
                                       
                                       <span *ngIf="artist.no_of_likes > 0; else templateName">
-                                          <img class="  "  src="img/like-color.jpg"
+                                          <img class=""  src="img/like-color.jpg"
                                       alt="" style="display:block;">
                                       </span>
                                       

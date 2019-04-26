@@ -24,7 +24,7 @@
             </div>
             <div class="action">
                 <div class="cmt-like"><a href="javascript:;" title="Like" class="liked" (click)="likeTrack(track._id)"><img src="img/likehand.png" alt="">{{track?.no_of_likes}}</a></div>
-                <div class="download"><a href="javascript:;" title="Download"><img src="img/download.png"  (click)="downloadTrack(track._id)" alt=""></a></div>
+                <div class="download" *ngIf="track.is_downloadable" ><a href="javascript:;" title="Download"><img src="img/download.png"  (click)="downloadTrack(track._id)" alt=""></a></div>
                 <!-- <div class="cmt">
                     <a href="javascript:;" title="Purchase" (click)="openCardModel(purchase, i, 'track')">
                       ${{track.price}}
