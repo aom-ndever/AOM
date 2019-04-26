@@ -29,7 +29,7 @@ export class MyMusicComponent implements OnInit, OnDestroy {
   show_filter: boolean = false;
   tab_cnt: Number = 1;
   modal_ref: NgbModalRef;
- 
+
   audio_file: any = '';
   image_upload: any = '';
   edit_image: any = 'img/profile-img.png';
@@ -173,7 +173,7 @@ export class MyMusicComponent implements OnInit, OnDestroy {
     this.tab_cnt = val;
   }
 
- 
+
 
   changeAudio(event: any) {
     const file = event.target.files[0];
@@ -190,9 +190,12 @@ export class MyMusicComponent implements OnInit, OnDestroy {
       });
 
       const hex = bytes.join('').toUpperCase();
-      const allow_types =this.getMimetype(hex);
-    
-        if (allow_types.indexOf(file.type) == -1) {
+      console.log('hex', hex);
+      console.log('type', file.type);
+
+      const allow_types = this.getMimetype(hex);
+
+      if (allow_types.indexOf(file.type) == -1) {
         this.toastr.error('Invalid file format.', 'Error!');
         return false;
         // }
@@ -203,7 +206,7 @@ export class MyMusicComponent implements OnInit, OnDestroy {
 
     };
     fr.readAsArrayBuffer(file);
-    const allow_types = ["audio/aiff,audio/mp3,audio/wav,audio/flac"];
+    // const allow_types = ["audio/aiff,audio/mp3,audio/wav,audio/flac"];
   }
 
   changeFile(event: any) {
@@ -225,7 +228,7 @@ export class MyMusicComponent implements OnInit, OnDestroy {
       const allow_types = this.getImageMimetype(hex);
       // console.log(binaryFileType + ' ' + hex);
       // if (binaryFileType === 'Unknown filetype') {
-        if (allow_types.indexOf(file.type) == -1) {
+      if (allow_types.indexOf(file.type) == -1) {
         console.log("1");
         this.toastr.error('Invalid file format.', 'Error!');
         return false;
@@ -266,8 +269,8 @@ export class MyMusicComponent implements OnInit, OnDestroy {
   openModal(content) {
     this.trackdata = {};
     this.add_track_img = '';
-    this.image_upload='';
-    this.edit_image='';
+    this.image_upload = '';
+    this.edit_image = '';
     this.add_track_audio = '';
     this.modal_ref = this.modalService.open(content, { centered: true, windowClass: 'add-track-popup', backdrop: 'static' });
   }
@@ -305,7 +308,7 @@ export class MyMusicComponent implements OnInit, OnDestroy {
     }
     // if (flag == true) {
 
-    if (this.trackdata && this.trackdata.name && isValid && this.trackdata.price && this.trackdata.price > 0 && this.trackdata.price < 100 && this.audio_file && this.image_upload) {
+    if (this.trackdata && this.trackdata.name && isValid && this.trackdata.price && this.trackdata.price > 0 && this.trackdata.price.toString().length <= 3 && this.audio_file && this.image_upload) {
       let formdata = new FormData();
       formdata.append('name', this.trackdata.name);
       formdata.append('price', this.trackdata.price);
@@ -338,10 +341,16 @@ export class MyMusicComponent implements OnInit, OnDestroy {
     } else if (!this.trackdata.price) {
       this.toastr.error('Please enter track price', 'Error!');
     } else if (this.trackdata.price < 0) {
+
       this.toastr.error('Track price must be positive value.', 'Error!');
     }
-    else if (this.trackdata.price >= 100) {
-      this.toastr.error('Track price must be in two digits', 'Error!');
+    // else if (this.trackdata.price >= 100) {
+    //   this.toastr.error('Track price must be in three digits', 'Error!');
+    // }
+    else if (this.trackdata.price.toString().length != 3) {
+      console.log(this.trackdata.price.toString().length);
+      this.toastr.error('Track price must be in three digits', 'Error!');
+
     } else {
       this.toastr.error('Please provide necessary details', 'Error!');
     }
@@ -390,7 +399,7 @@ export class MyMusicComponent implements OnInit, OnDestroy {
       isValid = !isWhitespace;
     }
 
-    if (this.trackdata && this.trackdata.name && isValid && this.trackdata.price && this.trackdata.price > 0 && this.trackdata.price < 100  && this.trackdata.image) {
+    if (this.trackdata && this.trackdata.name && isValid && this.trackdata.price && this.trackdata.price > 0 && this.trackdata.price.toString().length <= 3 && this.trackdata.image) {
       let formdata = new FormData();
       formdata.append('name', this.trackdata.name);
       formdata.append('price', this.trackdata.price);
@@ -420,10 +429,12 @@ export class MyMusicComponent implements OnInit, OnDestroy {
       this.toastr.error('Please enter track price', 'Error!');
     } else if (this.trackdata.price < 0) {
       this.toastr.error('Track price must be positive.', 'Error!');
-    } 
-    else if (this.trackdata.price >= 100) {
-      this.toastr.error('Track price must be in two digits', 'Error!');
-    }  else {
+    }
+    else if (this.trackdata.price.toString().length != 3) {
+      console.log(this.trackdata.price.toString().length);
+      this.toastr.error('Track price must be in three digits', 'Error!');
+
+    } else {
       this.toastr.error('Please provide necessary details', 'Error!');
     }
   }
@@ -647,6 +658,8 @@ export class MyMusicComponent implements OnInit, OnDestroy {
         return 'audio/wav';
       case '664C6143':
         return 'audio/flac';
+      case 'FFF15080':
+        return 'audio/vnd.dlna.adts';
       // case '4944333':
       //   return 'audio/mp3';
       // case '4357539':

@@ -151,7 +151,7 @@ export class MyProfileService {
     return this.http.put(`${this.api_host}/user/playlist/${id}`, data, { headers: this.headers });
   }
   // Delete user playlist by id
-  deleteListenerPlaylistById(id) {
+  deleteListenerPlaylistById(id:any) {
     return this.http.delete(`${this.api_host}/user/playlist/${id}`, { headers: this.headers });
   }
   // Get track for playlist
@@ -187,7 +187,7 @@ export class MyProfileService {
     return this.http.put(`${this.api_host}/artist/playlist/${id}`, data, { headers: this.headers });
   }
   // Remove artist playlist
-  removeArtistPlaylist(id) {
+  removeArtistPlaylist(id:any) {
     return this.http.delete(`${this.api_host}/artist/playlist/${id}`, { headers: this.headers });
   }
   // Add track in artist playlist

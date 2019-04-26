@@ -162,6 +162,7 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
             dataTablesParameters['sort_by'] = this.sort_by;
             that.ArtistProfileService.getAllTrack(dataTablesParameters).subscribe((response) => {
               that.artisttrack = response['track']['music'];
+              console.log(that.artisttrack);
               console.log('start count', that.artist_track_row_cnt);
               if (that.artisttrack.length > 0) {
                 that.artisttrack.forEach((ele) => { that.audio_ins.push(false); });
@@ -362,6 +363,7 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
   followArtist(id: any, index: any) {
     let data = JSON.parse(localStorage.getItem('user'));
     if (data) {
+       this.artistfollower[index].length +1
       let data = {
         artist_id: id
       };

@@ -275,7 +275,7 @@ export class RolesComponent implements OnInit {
     let thi = this;
     swal({
       title: 'Are you sure?',
-      text: "You want to suspend this account!",
+      text: `You want to ${status == 'suspended' ? ' un-suspend' : ' suspend' } this account!`,
       type: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',

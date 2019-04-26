@@ -143,10 +143,12 @@ export class ArtistComponent implements OnInit {
       });
   }
   // suspend artist
-  suspendArtist(id : any) {
+  suspendArtist(id : any,flag) {
+    // console.log("flag",flag);
+    
     swal({
       title: 'Are you sure?',
-      text: "You Want to suspend the Artist",
+      text: `You want to ${flag ?'Un-suspend': 'Suspend' } this account!`,
       type: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',

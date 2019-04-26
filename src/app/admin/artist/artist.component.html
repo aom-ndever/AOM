@@ -173,7 +173,7 @@
             <td class="td_img action_div">
               <div class="icon_container">
                 <img src="img/suspend.png" *ngIf="user['admin']['account_type'] != 'moderator'">
-                <a href="javascript:;" *ngIf="user['admin']['account_type'] != 'moderator'" (click)="suspendArtist(artist['_id'])">{{artist['flag']
+                <a href="javascript:;" *ngIf="user['admin']['account_type'] != 'moderator'" (click)="suspendArtist(artist['_id'],artist['flag'])">{{artist['flag']
                   ? 'Un-suspend' : 'Suspend'}}</a>
               </div>
             </td>
@@ -202,7 +202,7 @@
           <img defaultImage="img/loader.gif" offset="100" lazyLoad="{{artist_detail['image'] ? artist_img_url+artist_detail['image'] : 'img/profile-img.png'}}" />
         </div>
         <div class="col-sm-8 profile_detail">
-          <span class="pull-right">{{artist_detail['flag'] ? 'Suspend' : 'Active'}}</span>
+          <span class="pull-right {{artist_detail['flag'] ?'Suspended' : 'Active'}}">{{artist_detail['flag'] ? 'Suspended' : 'Active'}}</span>
           <h3>{{artist_detail['first_name']+' '+artist_detail['last_name']}}</h3>
           <div class="checkbox custom_check_box">
             <label>

@@ -19,7 +19,7 @@ var UserModelSchema = new Schema({
     last_name: { type: String },
     music_type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'music_type' }],
     gender: { type: String, enum: ["male", "female"] },
-    zipcode: Number,
+    zipcode: String,
     dob: { type: Date },
     no_of_votes: { type: Number, default: 0 },
     no_of_followers: { type: Number, default: 0 },
