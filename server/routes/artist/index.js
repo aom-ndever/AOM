@@ -843,12 +843,14 @@ router.get('/track_comment', async (req, res) => {
 // submit the tracks for contest
 
 router.post("/submit_tracks", async (req, res) => {
+    console.log('1', 1);
+
     artist_id = req.userInfo.id;
     var schema = {
-        "contest_id": {
-            notEmpty: true,
-            errorMessage: "Contest Id is required"
-        },
+        // "contest_id": {
+        //     notEmpty: true,
+        //     errorMessage: "Contest Id is required"
+        // },
         // "track_id": {
         //     notEmpty: true,
         //     errorMessage: "Track Id is required"
@@ -880,8 +882,8 @@ router.post("/submit_tracks", async (req, res) => {
         var obj = {
             artist_id: req.userInfo.id,
             contest_id: req.body.contest_id,
-            preliminary2_track: req.body.preliminary2_track,
-            preliminary3_track: req.body.preliminary3_track,
+            preliminary2_track: req.body.preliminary1_track,
+            preliminary3_track: req.body.preliminary2_track,
             round1_track: req.body.round1_track,
             round2_track: req.body.round2_track,
             round3_track: req.body.round3_track,
@@ -893,7 +895,7 @@ router.post("/submit_tracks", async (req, res) => {
         if (artist_participation.status == 2) {
             var contest_data = await contest_helper.get_contest_by_id(obj.contest_id);
             var participate_data = await round_helper.get_round_by_id(obj.contest_id);
-            if (participate_data.contest.round == "preliminary") {
+            if (participate_data.contest.round == "preliminary1") {
                 var artist_data = await artist_helper.get_artist_by_id(req.userInfo.id);
                 if (artist_data.artist.music_type.alias == "hiphop") {
                     if (participate_data.contest.hip_hop_participants <= 1000) {
@@ -976,11 +978,11 @@ router.post("/get_contest_track", async (req, res) => {
     })
 });
 
+
 router.get('/contest', async (req, res) => {
     var artist_music = await artist_helper.get_artist_by_id(req.userInfo.id);
     artist_music = artist_music.artist.music_type._id;
-
-    var contest = await contest_helper.get_all_contests(artist_music);
+    var contest = await contest_helper.get_all_contests();
     if (contest.status === 1) {
         logger.trace("got details successfully");
         res.status(config.OK_STATUS).json({ "status": 1, "contest": contest.contest });

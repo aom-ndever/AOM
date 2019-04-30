@@ -184,8 +184,6 @@ router.post('/artist_registration', async (req, res) => {
     } else {
       res.status(config.BAD_REQUEST).json({ "status": 0, "message": "Artist's email already exist" });
     }
-
-
   } else {
     logger.error("Validation Error = ", errors);
     res.status(config.BAD_REQUEST).json({ message: errors });
@@ -217,7 +215,6 @@ router.post('/user_registration_facebook', async (req, res) => {
       notEmpty: true,
       errorMessage: "token is required"
     }
-
   };
   req.checkBody(schema);
   var errors = req.validationErrors();
@@ -228,15 +225,12 @@ router.post('/user_registration_facebook', async (req, res) => {
       "first_name": req.body.name,
       "provider": req.body.provider,
       "facebook_token": req.body.token,
-      "image": req.body.image,
-
+      "image": req.body.image
     };
 
     user = await user_helper.get_user_by_email(req.body.email)
     if (user.status === 2) {
-
       var data = await user_helper.insert_user(obj);
-
       if (data.status == 0) {
         logger.trace("Error occured while inserting user - User Signup API");
         logger.debug("Error = ", data.error);
@@ -259,11 +253,8 @@ router.post('/user_registration_facebook', async (req, res) => {
       }
     } else {
       let login_resp = await user_helper.get_login_by_email(req.body.email);
-
       var refreshToken = jwt.sign({ id: login_resp.user._id }, config.REFRESH_TOKEN_SECRET_KEY, {});
-
       let update_resp = await user_helper.update_user_by_id(login_resp.user._id, { "refresh_token": refreshToken, "last_login": Date.now() });
-
       var LoginJson = { id: login_resp.user._id, email: login_resp.email, role: "user" };
 
       var token = jwt.sign(LoginJson, config.ACCESS_TOKEN_SECRET_KEY, {

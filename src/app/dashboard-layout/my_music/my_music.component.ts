@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, Input } from '@angular/core';
 import { NgbModal, ModalDismissReasons, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { environment } from '../../../environments/environment';
 import { ToastrService } from 'ngx-toastr';
@@ -23,9 +23,13 @@ class DataTablesResponse {
   styleUrls: []
 })
 export class MyMusicComponent implements OnInit, OnDestroy {
+  public contestid;
   @ViewChild(DataTableDirective)
   datatableElement: DataTableDirective;
   dtOptions: DataTables.Settings = {};
+  contesttrack_data: any = {
+
+  }
   show_filter: boolean = false;
   tab_cnt: Number = 1;
   modal_ref: NgbModalRef;
@@ -41,7 +45,7 @@ export class MyMusicComponent implements OnInit, OnDestroy {
   userinfo: any = '';
   music_type_list: any = [];
   contest_list: any = [];
-  contest_id: any = '';
+  // contest_id: any = '';
   add_track_img: any = '';
   add_track_audio: any = '';
   subscription: Subscription;
@@ -64,6 +68,16 @@ export class MyMusicComponent implements OnInit, OnDestroy {
     private titleService: Title,
     private route: ActivatedRoute
   ) {
+    this.contesttrack_form = this.fb.group({
+      contest_id: new FormControl(),
+      preliminary1_track: new FormControl(),
+      preliminary2_track: new FormControl(),
+      round1_track: new FormControl(),
+      round2_track: new FormControl(),
+      round3_track: new FormControl(),
+      final_track: new FormControl(),
+      semi_final_track: new FormControl(),
+    })
     this.titleService.setTitle(this.route.snapshot.data['title']);
     this.userinfo = JSON.parse(localStorage.getItem('user'));
     this.subscription = this.MessageService.getMessage().subscribe((response) => {
@@ -134,6 +148,7 @@ export class MyMusicComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     // this.getAllTrack();
+    console.log("acdsdkmfe", this.contestid)
     this.getAllMusicType();
     this.getAllContest();
   }
@@ -297,6 +312,34 @@ export class MyMusicComponent implements OnInit, OnDestroy {
     this.modal_ref = this.modalService.open(content, { centered: true, windowClass: 'new-add-track-popup', backdrop: 'static' });
   }
 
+
+  addContestTrack() {
+    console.log("1")
+    //let formdata = new FormData();
+    //console.log("this.contesttrack_data", this.contesttrack_data);
+
+    //for (let cont of this.contesttrack_data) {
+
+    //   var value = this.contesttrack_data[cont]
+    //   formdata.append(cont, value);
+    //   console.log("value")
+    // }
+    // console.log("Formdata", formdata);
+    this.show_spinner = true;
+    this.MyMusicService.addContestTrack(this.contesttrack_data).subscribe(response => {
+
+      this.datatableElement.dtInstance.then((dtInstance: DataTables.Api) => {
+        dtInstance.draw();
+      });
+      this.modal_ref.close();
+    }, error => {
+      this.toastr.error(error['error'].message, 'Error!');
+      this.show_spinner = false;
+    }, () => {
+      this.show_spinner = false;
+    });
+
+  }
   addTrack() {
     let isWhitespace;
     let isValid;
@@ -502,30 +545,31 @@ export class MyMusicComponent implements OnInit, OnDestroy {
     });
   }
   // Add a track to contest
-  addTrackToContest() {
-    if (this.contest_id) {
-      let data = {
-        contest_id: this.contest_id,
-        track_id: this.trackdata._id
-      };
-      this.show_spinner = true;
-      this.MyMusicService.addTrackToContest(data).subscribe(response => {
-        this.contest_id = '';
-        this.modal_ref.close();
-        this.datatableElement.dtInstance.then((dtInstance: DataTables.Api) => {
-          dtInstance.draw();
-        });
-        this.toastr.success(response['message'], 'Success!');
-      }, error => {
-        this.toastr.error(error['error'].message, 'Error!');
-        this.show_spinner = false;
-      }, () => {
-        this.show_spinner = false;
-      });
-    } else {
-      this.toastr.error('Please select at least one contest', 'Error!');
-    }
-  }
+  // addTrackToContest() {
+  //   if (this.contest_id) {
+  //     let data = {
+  //       contest_id: this.contest_id,
+  //       //track_id: this._id,
+  //       preliminary1_track: this.preliminary1_track
+  //     };
+  //     this.show_spinner = true;
+  //     this.MyMusicService.addTrackToContest(data).subscribe(response => {
+  //       this.contest_id = '';
+  //       this.modal_ref.close();
+  //       this.datatableElement.dtInstance.then((dtInstance: DataTables.Api) => {
+  //         dtInstance.draw();
+  //       });
+  //       this.toastr.success(response['message'], 'Success!');
+  //     }, error => {
+  //       this.toastr.error(error['error'].message, 'Error!');
+  //       this.show_spinner = false;
+  //     }, () => {
+  //       this.show_spinner = false;
+  //     });
+  //   } else {
+  //     this.toastr.error('Please select at least one contest', 'Error!');
+  //   }
+  // }
   // Update download status
   updateTrackDownLoadStatus(id: any) {
     this.MyMusicService.trackDownload(id).subscribe(response => {
@@ -704,5 +748,25 @@ export class MyMusicComponent implements OnInit, OnDestroy {
         return 'Unknown filetype';
     }
   }
+
+  contesttrack_form: FormGroup;
+
+  get preliminary1_track() {
+    return this.contesttrack_form.get('preliminary1_track')
+  };
+  get preliminary2_track() { return this.contesttrack_form.get('preliminary2_track') };
+  get round1_track() { return this.contesttrack_form.get('round1_track1') };
+  get round2_track() { return this.contesttrack_form.get('round2_track') };
+  get round3_track() { return this.contesttrack_form.get('round3_track') };
+  get semi_final_track() { return this.contesttrack_form.get('semi_final_track') };
+  get final_track() { return this.contesttrack_form.get(' final_track') };
+  get contest_id() { return this.contesttrack_form.get(' contest_id') };
+
+  submit_contest_track(id, contestid) {
+    var modalref = this.modalService.open(id, { centered: true, windowClass: 'modal-wrapper', backdrop: true });
+    this.contestid = contestid;
+    this.contesttrack_data['contest_id'] = contestid
+  }
+
 }
 
