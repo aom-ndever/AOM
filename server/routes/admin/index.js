@@ -251,6 +251,7 @@ router.post("/add_contest", async (req, res) => {
         }
 
         var resp_data = await contest_helper.insert_contest(contest_obj);
+        console.log('resp_data', resp_data);
 
         var round_obj = {
           contest_id: resp_data.contest._id,
@@ -263,23 +264,25 @@ router.post("/add_contest", async (req, res) => {
           round_name: contest_obj.name + " " + "round" + req.body.round
         };
 
-        var resp_data = await round_helper.insert_round(round_obj);
+        var resp_datas = await round_helper.insert_round(round_obj);
+        console.log('resp_data', resp_datas);
+
         if (resp_data.status == 0) {
           logger.error("Error occured while inserting = ", resp_data);
           res.status(config.INTERNAL_SERVER_ERROR).json(resp_data);
         } else {
-          var resp_music = await artist_helper.get_all_artist_for_email();
-          if (resp_music.status == 1) {
-            for (const a of resp_music.artist) {
-              logger.trace("sending mail");
-              var mail_resp = await mail_helper.send("contest", {
-                "to": a.email,
-                "subject": "Contest Creation"
-              }, {
-                  "Note": "New contest has been created named :" + contest_obj.name,
-                });
-            }
-          }
+          // var resp_music = await artist_helper.get_all_artist_for_email();
+          // if (resp_music.status == 1) {
+          //   for (const a of resp_music.artist) {
+          //     logger.trace("sending mail");
+          //     var mail_resp = await mail_helper.send("contest", {
+          //       "to": a.email,
+          //       "subject": "Contest Creation"
+          //     }, {
+          //         "Note": "New contest has been created named :" + contest_obj.name,
+          //       });
+          //   }
+          // }
           logger.trace(" got successfully = ", resp_data);
           res.status(config.OK_STATUS).json(resp_data);
         }
