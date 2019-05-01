@@ -184,8 +184,6 @@ router.post('/artist_registration', async (req, res) => {
     } else {
       res.status(config.BAD_REQUEST).json({ "status": 0, "message": "Artist's email already exist" });
     }
-
-
   } else {
     logger.error("Validation Error = ", errors);
     res.status(config.BAD_REQUEST).json({ message: errors });
@@ -217,7 +215,6 @@ router.post('/user_registration_facebook', async (req, res) => {
       notEmpty: true,
       errorMessage: "token is required"
     }
-
   };
   req.checkBody(schema);
   var errors = req.validationErrors();
@@ -228,15 +225,12 @@ router.post('/user_registration_facebook', async (req, res) => {
       "first_name": req.body.name,
       "provider": req.body.provider,
       "facebook_token": req.body.token,
-      "image": req.body.image,
-
+      "image": req.body.image
     };
 
     user = await user_helper.get_user_by_email(req.body.email)
     if (user.status === 2) {
-
       var data = await user_helper.insert_user(obj);
-
       if (data.status == 0) {
         logger.trace("Error occured while inserting user - User Signup API");
         logger.debug("Error = ", data.error);
@@ -259,11 +253,8 @@ router.post('/user_registration_facebook', async (req, res) => {
       }
     } else {
       let login_resp = await user_helper.get_login_by_email(req.body.email);
-
       var refreshToken = jwt.sign({ id: login_resp.user._id }, config.REFRESH_TOKEN_SECRET_KEY, {});
-
       let update_resp = await user_helper.update_user_by_id(login_resp.user._id, { "refresh_token": refreshToken, "last_login": Date.now() });
-
       var LoginJson = { id: login_resp.user._id, email: login_resp.email, role: "user" };
 
       var token = jwt.sign(LoginJson, config.ACCESS_TOKEN_SECRET_KEY, {
@@ -1901,8 +1892,8 @@ router.get('/tracks/:track_id', async (req, res) => {
 
 
 router.post('/get_track_for_current_round', async (req, res) => {
+
   var round = await round_helper.get_current_round_of_contest(req.body.contest_id)
-  console.log('round', round);
   var arr = [];
   var data = round.round[0]
   for (const track of data.hip_hop_track) {
@@ -1930,10 +1921,17 @@ router.post('/get_track_for_current_round', async (req, res) => {
     arr.push(trk)
   }
 
+  //if (round.round[0].artist_id.length > 0) {
+  var tot_cnt = await Track.count({ "_id": { $in: arr } }).populate({ path: 'artist_id', populate: { path: 'music_type' } }).populate({ path: 'artist_id', populate: { path: 'state' } })
+  var filter_cnt = await Track.count({ "_id": { $in: arr } }).populate({ path: 'artist_id', populate: { path: 'music_type' } }).populate({ path: 'artist_id', populate: { path: 'state' } }).skip(req.body.start).limit(req.body.length)
+  var track = await Track.find({ "_id": { $in: arr } }).populate({ path: 'artist_id', populate: { path: 'music_type' } }).populate({ path: 'artist_id', populate: { path: 'state' } }).skip(req.body.start).limit(req.body.length)
+  console.log('track', track);
+  res.status(config.OK_STATUS).json({ "data": track, "recordsFiltered": filter_cnt, "recordsTotal": tot_cnt });
+  // }
+  // else {
+  //   res.status(config.BAD_REQUEST).json({ "message": "Contest has yet not started" })
+  // }
 
-  var track = await Track.find({ "_id": { $in: arr } }).populate({ path: 'artist_id', populate: { path: 'music_type' } }).populate({ path: 'artist_id', populate: { path: 'state' } })
-
-  res.status(config.OK_STATUS).json({ "data": track });
 
   // if (track.status === 1) {
   //   logger.trace("got details successfully");

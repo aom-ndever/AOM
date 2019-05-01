@@ -88,7 +88,6 @@ contest_helper.get_all_contests_for_vote = async (filter) => {
         })
     }
     let winner = await Contest.aggregate(aggregate);
-
     if (winner) {
         return { "status": 1, "message": "Artist  found", "winner": winner }
     } else {
@@ -99,7 +98,7 @@ contest_helper.get_all_contests_for_vote = async (filter) => {
 
 contest_helper.get_all_contests = async (music) => {
     try {
-        var participate = await Contest.find({ "music_type": music })
+        var participate = await Contest.find()
             .populate('music_type')
         if (participate) {
             return { "status": 1, "message": "contest details found", "contest": participate };

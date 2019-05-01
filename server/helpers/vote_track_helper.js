@@ -19,9 +19,11 @@ vote_track_helper.vote_for_track = async (user_id, obj) => {
 };
 
 
-vote_track_helper.get_all_voted_artist = async (user_id, track_id, contest_id, round_id) => {
+vote_track_helper.get_all_voted_artist = async (user_id, track_id, contest_id) => {
     try {
-        var vote = await Vote.findOne({ "user_id": new ObjectId(user_id), "track_id": new ObjectId(track_id), "contest_id": new ObjectId(contest_id), "round_id": new ObjectId(round_id) })
+        var vote = await Vote.findOne({
+            "user_id": new ObjectId(user_id), "track_id": new ObjectId(track_id), "contest_id": new ObjectId(contest_id)
+        })
         if (vote) {
             return { "status": 1, "message": "vote details found", "vote": vote.length };
         } else {

@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, Input } from '@angular/core';
 import { NgbModal, ModalDismissReasons, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { environment } from '../../../environments/environment';
 import { ToastrService } from 'ngx-toastr';
@@ -23,9 +23,16 @@ class DataTablesResponse {
   styleUrls: []
 })
 export class MyMusicComponent implements OnInit, OnDestroy {
+  public contestid;
   @ViewChild(DataTableDirective)
   datatableElement: DataTableDirective;
   dtOptions: DataTables.Settings = {};
+  contesttrack_data: any = {
+
+  }
+  standard_data: any = {
+
+  }
   show_filter: boolean = false;
   tab_cnt: Number = 1;
   modal_ref: NgbModalRef;
@@ -41,7 +48,7 @@ export class MyMusicComponent implements OnInit, OnDestroy {
   userinfo: any = '';
   music_type_list: any = [];
   contest_list: any = [];
-  contest_id: any = '';
+  // contest_id: any = '';
   add_track_img: any = '';
   add_track_audio: any = '';
   subscription: Subscription;
@@ -55,6 +62,7 @@ export class MyMusicComponent implements OnInit, OnDestroy {
   user: any = '';
   track_data: any = {};
   track_row_cnt = 1;
+  public contestType;
   constructor(
     private modalService: NgbModal,
     private MyMusicService: MyMusicService,
@@ -64,6 +72,24 @@ export class MyMusicComponent implements OnInit, OnDestroy {
     private titleService: Title,
     private route: ActivatedRoute
   ) {
+    this.contesttrack_form = this.fb.group({
+      contest_id: new FormControl(),
+      round1_track: new FormControl(),
+      round2_track: new FormControl(),
+      round3_track: new FormControl(),
+      final_track: new FormControl(),
+      semi_final_track: new FormControl(),
+    })
+    this.standard_form = this.fb.group({
+      scontest_id: new FormControl(),
+      spreliminary1_track: new FormControl(),
+      spreliminary2_track: new FormControl(),
+      sround1_track: new FormControl(),
+      sround2_track: new FormControl(),
+      sround3_track: new FormControl(),
+      sfinal_track: new FormControl(),
+      ssemi_final_track: new FormControl(),
+    })
     this.titleService.setTitle(this.route.snapshot.data['title']);
     this.userinfo = JSON.parse(localStorage.getItem('user'));
     this.subscription = this.MessageService.getMessage().subscribe((response) => {
@@ -102,6 +128,7 @@ export class MyMusicComponent implements OnInit, OnDestroy {
         setTimeout(() => {
           that.audio_ins = [];
           that.MyMusicService.getAllTrack(dataTablesParameters).subscribe(response => {
+            console.log('res', response)
             that.tracklist = response['track']['music'];
             that.tracklist.forEach((ele) => { that.audio_ins.push(false); });
             callback({
@@ -134,6 +161,7 @@ export class MyMusicComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     // this.getAllTrack();
+    console.log("acdsdkmfe", this.contestid)
     this.getAllMusicType();
     this.getAllContest();
   }
@@ -297,6 +325,50 @@ export class MyMusicComponent implements OnInit, OnDestroy {
     this.modal_ref = this.modalService.open(content, { centered: true, windowClass: 'new-add-track-popup', backdrop: 'static' });
   }
 
+
+  addContestTrack() {
+    console.log('contstType', this.contestType);
+
+    console.log('form value', this.standard_form);
+    let Obj;
+    if (this.contestType === 'beta') {
+      Obj = {
+        contest_id: this.contestid,
+        round1_track: this.contesttrack_form.value.round1_track,
+        round2_track: this.contesttrack_form.value.round2_track,
+        round3_track: this.contesttrack_form.value.round3_track,
+        semi_final_track: this.contesttrack_form.value.semi_final_track,
+        final_track: this.contesttrack_form.value.final_track
+      }
+    } else if (this.contestType === 'standard') {
+      Obj = {
+        contest_id: this.contestid,
+        preliminary2_track: this.standard_form.value.spreliminary1_track,
+        preliminary3_track: this.standard_form.value.spreliminary2_track,
+        round1_track: this.standard_form.value.sround1_track,
+        round2_track: this.standard_form.value.sround2_track,
+        round3_track: this.standard_form.value.sround3_track,
+        semi_final_track: this.standard_form.value.ssemi_final_track,
+        final_track: this.standard_form.value.sfinal_track
+      }
+    }
+
+
+    this.show_spinner = true;
+    this.MyMusicService.addContestTrack(Obj).subscribe(response => {
+
+      this.datatableElement.dtInstance.then((dtInstance: DataTables.Api) => {
+        dtInstance.draw();
+      });
+      this.modal_ref.close();
+    }, error => {
+      this.toastr.error(error['error'].message, 'Error!');
+      this.show_spinner = false;
+    }, () => {
+      this.show_spinner = false;
+    });
+
+  }
   addTrack() {
     let isWhitespace;
     let isValid;
@@ -502,30 +574,31 @@ export class MyMusicComponent implements OnInit, OnDestroy {
     });
   }
   // Add a track to contest
-  addTrackToContest() {
-    if (this.contest_id) {
-      let data = {
-        contest_id: this.contest_id,
-        track_id: this.trackdata._id
-      };
-      this.show_spinner = true;
-      this.MyMusicService.addTrackToContest(data).subscribe(response => {
-        this.contest_id = '';
-        this.modal_ref.close();
-        this.datatableElement.dtInstance.then((dtInstance: DataTables.Api) => {
-          dtInstance.draw();
-        });
-        this.toastr.success(response['message'], 'Success!');
-      }, error => {
-        this.toastr.error(error['error'].message, 'Error!');
-        this.show_spinner = false;
-      }, () => {
-        this.show_spinner = false;
-      });
-    } else {
-      this.toastr.error('Please select at least one contest', 'Error!');
-    }
-  }
+  // addTrackToContest() {
+  //   if (this.contest_id) {
+  //     let data = {
+  //       contest_id: this.contest_id,
+  //       //track_id: this._id,
+  //       preliminary1_track: this.preliminary1_track
+  //     };
+  //     this.show_spinner = true;
+  //     this.MyMusicService.addTrackToContest(data).subscribe(response => {
+  //       this.contest_id = '';
+  //       this.modal_ref.close();
+  //       this.datatableElement.dtInstance.then((dtInstance: DataTables.Api) => {
+  //         dtInstance.draw();
+  //       });
+  //       this.toastr.success(response['message'], 'Success!');
+  //     }, error => {
+  //       this.toastr.error(error['error'].message, 'Error!');
+  //       this.show_spinner = false;
+  //     }, () => {
+  //       this.show_spinner = false;
+  //     });
+  //   } else {
+  //     this.toastr.error('Please select at least one contest', 'Error!');
+  //   }
+  // }
   // Update download status
   updateTrackDownLoadStatus(id: any) {
     this.MyMusicService.trackDownload(id).subscribe(response => {
@@ -704,5 +777,47 @@ export class MyMusicComponent implements OnInit, OnDestroy {
         return 'Unknown filetype';
     }
   }
+
+  contesttrack_form: FormGroup;
+  standard_form: FormGroup;
+
+
+  get round1_track() { return this.contesttrack_form.get('round1_track1') };
+  get round2_track() { return this.contesttrack_form.get('round2_track') };
+  get round3_track() { return this.contesttrack_form.get('round3_track') };
+  get semi_final_track() { return this.contesttrack_form.get('semi_final_track') };
+  get final_track() { return this.contesttrack_form.get(' final_track') };
+  get contest_id() { return this.contesttrack_form.get(' contest_id') };
+
+
+  get spreliminary1_track() {
+    return this.standard_form.get('spreliminary1_track')
+  };
+  get spreliminary2_track() { return this.standard_form.get('spreliminary2_track') };
+  get sround1_track() { return this.standard_form.get('sround1_track1') };
+  get sround2_track() { return this.standard_form.get('sround2_track') };
+  get sround3_track() { return this.standard_form.get('sround3_track') };
+  get ssemi_final_track() { return this.standard_form.get('ssemi_final_track') };
+  get sfinal_track() { return this.standard_form.get('sfinal_track') };
+  get scontest_id() { return this.standard_form.get('scontest_id') };
+
+  // submit_contest_track(contestid, type) {
+  //   console.log("type", type)
+  //   this.contestType = type;
+  //   var modalref = this.modalService.open(type, { centered: true, windowClass: 'modal-wrapper', backdrop: true });
+  //   this.contestid = contestid;
+  //   this.contesttrack_data['contest_id'] = contestid
+  // }
+  submit_contest_track(id, contestid, type) {
+    console.log("type", type)
+    this.contestType = type;
+
+    console.log('id', id);
+
+    var modalref = this.modalService.open(id, { centered: true, windowClass: 'modal-wrapper', backdrop: true });
+    this.contestid = contestid;
+    this.contesttrack_data['contest_id'] = contestid
+  }
+
 }
 

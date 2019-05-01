@@ -158,15 +158,16 @@ router.post("/purchased", async (req, res) => {
  * @apiError (Error 4xx) {String} message Validation or error message.
  */
 router.post('/vote_track', async (req, res) => {
+  var obj = {
+    user_id: req.userInfo.id,
+    track_id: req.body.track_id,
+    artist_id: req.body.artist_id,
+    contest_id: req.body.contest_id,
+  };
   user_id = req.userInfo.id;
   var data = await vote_track_helper.get_all_voted_artist(user_id, obj.track_id, obj.contest_id);
+
   if (data.status == 2) {
-    var obj = {
-      user_id: req.userInfo.id,
-      track_id: req.body.track_id,
-      artist_id: req.body.artist_id,
-      contest_id: round_response.round.contest_id,
-    };
     var data = await vote_track_helper.vote_for_track(user_id, obj);
     var resp_data = await track_helper.get_all_track_by_track_id(obj.track_id);
     var no_vote = resp_data.track.no_of_votes + 1;
@@ -175,8 +176,10 @@ router.post('/vote_track', async (req, res) => {
     var resp_data = await artist_helper.get_artist_by_id(obj.artist_id);
     var no_vote = resp_data.artist.no_of_votes + 1;
     resp_data = await artist_helper.update_artist_votes(obj.artist_id, no_vote);
+    res.status(config.OK_STATUS).json({ "message": "Successfully Voted" });
+
   } else {
-    res.status(config.OK_STATUS).json({ "message": "Already Voted" });
+    res.status(config.BAD_REQUEST).json({ "message": "Already Voted" });
   }
 });
 
@@ -456,7 +459,6 @@ router.get('/:track_id/download', async (req, res) => {
     }
     var resp = await track_helper.get_all_track_by_track_id(obj.track_id);
 
-
     if (resp.track.is_downloadable == false) {
       res.status(200).json({ "status": 0, "message": "track cannot be downloaded" });
     } else {
@@ -520,29 +522,24 @@ router.get('/:track_id/purchase_track_download', async (req, res) => {
         logger.trace("music got successfully = ", resp_data);
         let track_resp = await track_helper.get_all_track_by_track_id(req.params.track_id);
         if (track_resp.status == 1) {
-
           var filename = new Date().getTime() + (Math.floor(Math.random() * 90000) + 10000) + '.zip';
           // create a file to stream archive data to.
           var output = await fs.createWriteStream(__dirname + '/../../uploads/user/' + filename);
           var archive = await archiver('zip', {
             zlib: { level: 9 }
           });
-
           archive.pipe(output);
           archive.append(fs.createReadStream(__dirname + '/../../uploads/track/' + track_resp.track.audio), { name: track_resp.track.audio });
           archive.finalize();
           res.status(200).json({ "status": 1, "filename": filename });
-
         } else {
           res.status(200).json({ "status": 0, "message": "track not found" });
         }
       }
       else {
         res.status(200).json({ "status": 0, "message": "track not found" });
-
       }
     }
-
   } catch (err) {
     res.send(err);
   }
