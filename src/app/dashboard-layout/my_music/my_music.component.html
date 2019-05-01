@@ -235,8 +235,10 @@
   </div>
 </ng-template>
 
-<ng-template #contesttrack let-c="close" let-d="dismiss">
+
+<ng-template #contesttrack let-c="close" let-d="dismiss" [ngIf]="contestType === 'beta'">
   <div class="modal-body">
+    <h1>Beta</h1>
     <div class="forget_password_modal">
       <!-- <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
         <span aria-hidden="true">&times;</span>
@@ -280,6 +282,51 @@
               <option value="">Select Semi Final</option>
               <option *ngFor="let t of tracklist;" value="{{t._id}}">{{t.name}}</option>
             </select>
+            <label class="control-label">Final</label>
+            <select name="final_track" class="form-control" [(ngModel)]="contesttrack_data.final_track" formControlName="final_track">
+              <option value="">Select Final</option>
+              <option *ngFor="let t of tracklist;" value="{{t._id}}">{{t.name}}</option>
+            </select>
+          </div>
+          <input type="hidden" name="contest_id" value="{{contestid}}" [(ngModel)]="contesttrack_data.contest_id"
+            formControlName="contest_id" />
+          <div class="form-group text-right">
+            <button class="btn forget_btn" (click)="addContestTrack()" [disabled]="show_spinner">Submit
+              <i *ngIf="show_spinner" class="fa fa-spinner fa-spin"></i></button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #standard let-c="close" let-d="dismiss" [ngIf]="contestType === 'standard'">
+  <div class="modal-body">
+    <h1>Standard</h1>
+    <div class="forget_password_modal">
+      <!-- <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+        <span aria-hidden="true">&times;</span>
+    </button> -->
+      <form [formGroup]="contesttrack_form">
+        <div class="col-sm-12">
+          <div class="form-group">
+            <label class="control-label">Preliminary 1</label>
+            <select name="preliminary1_track" class="form-control" [(ngModel)]="contesttrack_data.preliminary1_track"
+              formControlName="preliminary1_track">
+              <option value="">Select Preliminary1</option>
+              <option *ngFor="let t of tracklist;" value="{{t._id}}">{{t.name}}</option>
+            </select>
+            <label class="control-label">Preliminary 2</label>
+            <select name="preliminary2_track" class="form-control" [(ngModel)]="contesttrack_data.preliminary2_track"
+              formControlName="preliminary2_track">
+              <option value="">Select Preliminary2</option>
+              <option *ngFor="let t of tracklist;" value="{{t._id}}">{{t.name}}</option>
+            </select>
+            <label class="control-label">Round 1</label>
+
+
+
+
             <label class="control-label">Final</label>
             <select name="final_track" class="form-control" [(ngModel)]="contesttrack_data.final_track" formControlName="final_track">
               <option value="">Select Final</option>
@@ -358,8 +405,8 @@
               <!-- <input type="radio" value="{{con._id}}" name="card" [(ngModel)]="contest_id" /> -->
               <div class="radio">
                 <label>
-                  <input type="radio" value="{{con._id}}" (click)="submit_contest_track(contesttrack,con._id)" name="card"
-                    [(ngModel)]="contest_id" />
+                  <input type="radio" value="{{con._id}}" (click)="submit_contest_track(contesttrack,con._id,con.contest_type)"
+                    name="card" [(ngModel)]="contest_id" />
                   <span class="radio_check"></span>
                 </label>
               </div>
@@ -375,7 +422,7 @@
         </table>
       </div>
       <div class="button_group">
-        <button type="submit" *ngIf="contest_list.length != 0" [disabled]="show_spinner" (click)="addTrackToContest()"
+        <button type="submit" *ngIf="contest_list.length != 0" [disabled]="show_spinner" (click)="addTrackToContest(con._id)"
           class="add-btn">Submit <i *ngIf="show_spinner" class="fa fa-spinner fa-spin"></i></button>
       </div>
     </div>

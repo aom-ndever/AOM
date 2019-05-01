@@ -1798,7 +1798,7 @@ router.put("/featured_artist", async (req, res) => {
 //         }
 
 //       }
-//       else if (cont.contest_type == "standard") {
+//       else if (cont.contest_id.contest_type == "standard") {
 //         var round = await round_helper.get_last_round(cont.contest_id._id);
 //         if (round.contest.round == "preliminary1") {
 //           var startdate = round.contest.start_date;

@@ -59,6 +59,7 @@ export class MyMusicComponent implements OnInit, OnDestroy {
   user: any = '';
   track_data: any = {};
   track_row_cnt = 1;
+  public contestType;
   constructor(
     private modalService: NgbModal,
     private MyMusicService: MyMusicService,
@@ -762,7 +763,9 @@ export class MyMusicComponent implements OnInit, OnDestroy {
   get final_track() { return this.contesttrack_form.get(' final_track') };
   get contest_id() { return this.contesttrack_form.get(' contest_id') };
 
-  submit_contest_track(id, contestid) {
+  submit_contest_track(id, contestid, type) {
+    console.log("type", type)
+    this.contestType = type;
     var modalref = this.modalService.open(id, { centered: true, windowClass: 'modal-wrapper', backdrop: true });
     this.contestid = contestid;
     this.contesttrack_data['contest_id'] = contestid
