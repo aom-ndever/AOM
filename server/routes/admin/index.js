@@ -230,7 +230,7 @@ router.post("/add_contest", async (req, res) => {
         if (req.body.contest_type == "beta") {
           duration = 24,
             max_participation = 6000,
-            round = "preliminary"
+            round = "preliminary1"
         }
         else if (req.body.contest_type == "standard") {
           console.log('2', 2);

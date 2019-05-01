@@ -892,9 +892,12 @@ router.post("/submit_tracks", async (req, res) => {
         };
         var no_pariticipant;
         var artist_participation = await participate_helper.get_track_participation(obj.contest_id, req.userInfo.id)
+
         if (artist_participation.status == 2) {
             var contest_data = await contest_helper.get_contest_by_id(obj.contest_id);
             var participate_data = await round_helper.get_round_by_id(obj.contest_id);
+            console.log('participate_data', participate_data);
+
             if (participate_data.contest.round == "preliminary1") {
                 var artist_data = await artist_helper.get_artist_by_id(req.userInfo.id);
                 if (artist_data.artist.music_type.alias == "hiphop") {
@@ -954,7 +957,7 @@ router.post("/submit_tracks", async (req, res) => {
                 var no_of_participant = contest_data.contest.no_of_participant + 1
                 var resp_data = await contest_helper.update_participant(obj.contest_id, no_of_participant);
                 var resp_data = await participate_helper.insert_track_round(obj);
-                res.status(config.OK_STATUS).json({ "status": 1, "tracks": resp_data });
+                res.status(config.OK_STATUS).json({ message: "Successfully added track for the contest", "status": 1, "tracks": resp_data });
             }
             else {
                 res.status(config.BAD_REQUEST).json({ message: "Preliminary round is over for this contest" });

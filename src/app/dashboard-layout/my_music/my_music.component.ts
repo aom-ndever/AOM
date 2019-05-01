@@ -319,10 +319,12 @@ export class MyMusicComponent implements OnInit, OnDestroy {
     this.modal_ref = this.modalService.open(content, { centered: true, backdrop: 'static', windowClass: 'add-track-popup' });
   }
 
+  public submitContest;
   // Open contest modal
   openContestModal(content: any, obj: any) {
     this.trackdata = obj;
-    this.modal_ref = this.modalService.open(content, { centered: true, windowClass: 'new-add-track-popup', backdrop: 'static' });
+    // this.modal_ref = this.modalService.open(content, { centered: true, windowClass: 'new-add-track-popup', backdrop: 'static' });
+    this.submitContest = this.modalService.open(content, { centered: true, windowClass: 'new-add-track-popup', backdrop: 'static' });
   }
 
 
@@ -357,6 +359,9 @@ export class MyMusicComponent implements OnInit, OnDestroy {
     this.show_spinner = true;
     this.MyMusicService.addContestTrack(Obj).subscribe(response => {
 
+      this.toastr.success(response['message'], 'Success!');
+      this.show_spinner = false;
+      this.contestDetail.close();
       this.datatableElement.dtInstance.then((dtInstance: DataTables.Api) => {
         dtInstance.draw();
       });
@@ -369,6 +374,7 @@ export class MyMusicComponent implements OnInit, OnDestroy {
     });
 
   }
+
   addTrack() {
     let isWhitespace;
     let isValid;
@@ -393,6 +399,7 @@ export class MyMusicComponent implements OnInit, OnDestroy {
         this.audio_file = '';
         this.image_upload = '';
         this.add_track_img = '';
+
         this.toastr.success(response['message'], 'Success!');
         this.datatableElement.dtInstance.then((dtInstance: DataTables.Api) => {
           dtInstance.draw();
@@ -780,7 +787,8 @@ export class MyMusicComponent implements OnInit, OnDestroy {
 
   contesttrack_form: FormGroup;
   standard_form: FormGroup;
-
+  closeResult: string;
+  public contestDetail;
 
   get round1_track() { return this.contesttrack_form.get('round1_track1') };
   get round2_track() { return this.contesttrack_form.get('round2_track') };
@@ -814,9 +822,13 @@ export class MyMusicComponent implements OnInit, OnDestroy {
 
     console.log('id', id);
 
-    var modalref = this.modalService.open(id, { centered: true, windowClass: 'modal-wrapper', backdrop: true });
+    this.contestDetail = this.modalService.open(id, { centered: true, windowClass: 'modal-wrapper', backdrop: true });
     this.contestid = contestid;
     this.contesttrack_data['contest_id'] = contestid
+    this.submitContest.close();
+
+
+
   }
 
 }
