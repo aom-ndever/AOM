@@ -169,6 +169,7 @@
     </div>
   </div>
 </section>
+
 <ng-template #content let-c="close" let-d="dismiss">
   <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
     <span aria-hidden="true">&times;</span>
@@ -236,8 +237,8 @@
 </ng-template>
 
 
-
-<ng-template #betaTrack let-c="close" let-d="dismiss" [ngIf]="contestType ==='beta'">
+<!-- [ngIf]="contestType ==='beta'" -->
+<ng-template #betaTrack let-c="close" let-d="dismiss">
   <div class="modal-body">
     <h1>Beta</h1>
     <div class="forget_password_modal">
@@ -286,8 +287,8 @@
   </div>
 </ng-template>
 
-
-<ng-template #standardTrack let-c="close" let-d="dismiss" [ngIf]="contestType === 'standard'">
+<!-- [ngIf]="contestType === 'standard'" -->
+<ng-template #standardTrack let-c="close" let-d="dismiss">
   <div class="modal-body">
     <h1>Standard</h1>
     <div class="forget_password_modal">
@@ -388,6 +389,7 @@
     </form>
   </div>
 </ng-template>
+
 <ng-template #contest let-c="close" let-d="dismiss">
   <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
     <span aria-hidden="true">&times;</span>
