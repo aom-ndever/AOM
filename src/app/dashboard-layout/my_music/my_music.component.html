@@ -60,7 +60,7 @@
                       <img src="img/start.png" alt="start">
                       <span>1300 <br> <span>Votes</span></span>
                     </td>
-                    <td class="td track-vote" *ngIf="t.is_submit">
+                    <td class="td track-vote">
                       <img src="img/start.png" alt="start">
                       <span>{{t.no_of_votes}} <br> <span>Votes</span></span>
                     </td>
@@ -236,28 +236,14 @@
 </ng-template>
 
 
-<ng-template #contesttrack let-c="close" let-d="dismiss" [ngIf]="contestType === 'beta'">
+
+<ng-template #betaTrack let-c="close" let-d="dismiss" [ngIf]="contestType ==='beta'">
   <div class="modal-body">
     <h1>Beta</h1>
     <div class="forget_password_modal">
-      <!-- <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
-        <span aria-hidden="true">&times;</span>
-    </button> -->
       <form [formGroup]="contesttrack_form">
         <div class="col-sm-12">
           <div class="form-group">
-            <label class="control-label">Preliminary 1</label>
-            <select name="preliminary1_track" class="form-control" [(ngModel)]="contesttrack_data.preliminary1_track"
-              formControlName="preliminary1_track">
-              <option value="">Select Preliminary1</option>
-              <option *ngFor="let t of tracklist;" value="{{t._id}}">{{t.name}}</option>
-            </select>
-            <label class="control-label">Preliminary 2</label>
-            <select name="preliminary2_track" class="form-control" [(ngModel)]="contesttrack_data.preliminary2_track"
-              formControlName="preliminary2_track">
-              <option value="">Select Preliminary2</option>
-              <option *ngFor="let t of tracklist;" value="{{t._id}}">{{t.name}}</option>
-            </select>
             <label class="control-label">Round 1</label>
             <select name="round1_track" class="form-control" [(ngModel)]="contesttrack_data.round1_track"
               formControlName="round1_track">
@@ -300,41 +286,55 @@
   </div>
 </ng-template>
 
-<ng-template #standard let-c="close" let-d="dismiss" [ngIf]="contestType === 'standard'">
+
+<ng-template #standardTrack let-c="close" let-d="dismiss" [ngIf]="contestType === 'standard'">
   <div class="modal-body">
     <h1>Standard</h1>
     <div class="forget_password_modal">
-      <!-- <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
-        <span aria-hidden="true">&times;</span>
-    </button> -->
-      <form [formGroup]="contesttrack_form">
+      <form [formGroup]="standard_form">
         <div class="col-sm-12">
           <div class="form-group">
             <label class="control-label">Preliminary 1</label>
-            <select name="preliminary1_track" class="form-control" [(ngModel)]="contesttrack_data.preliminary1_track"
-              formControlName="preliminary1_track">
+            <select name="spreliminary1_track" class="form-control" [(ngModel)]="standard_data.preliminary1_track"
+              formControlName="spreliminary1_track">
               <option value="">Select Preliminary1</option>
               <option *ngFor="let t of tracklist;" value="{{t._id}}">{{t.name}}</option>
             </select>
             <label class="control-label">Preliminary 2</label>
-            <select name="preliminary2_track" class="form-control" [(ngModel)]="contesttrack_data.preliminary2_track"
-              formControlName="preliminary2_track">
+            <select name="spreliminary2_track" class="form-control" [(ngModel)]="standard_data.preliminary2_track"
+              formControlName="spreliminary2_track">
               <option value="">Select Preliminary2</option>
               <option *ngFor="let t of tracklist;" value="{{t._id}}">{{t.name}}</option>
             </select>
             <label class="control-label">Round 1</label>
-
-
-
-
+            <select name="sround1_track" class="form-control" [(ngModel)]="standard_data.round1_track" formControlName="sround1_track">
+              <option value="">Select Round 1</option>
+              <option *ngFor="let t of tracklist;" value="{{t._id}}">{{t.name}}</option>
+            </select>
+            <label class="control-label">Round 2</label>
+            <select name="sround2_track" class="form-control" [(ngModel)]="standard_data.round2_track" formControlName="sround2_track">
+              <option value="">Select Round 2</option>
+              <option *ngFor="let t of tracklist;" value="{{t._id}}">{{t.name}}</option>
+            </select>
+            <label class="control-label">Round 3</label>
+            <select name="sround3_track" class="form-control" [(ngModel)]="standard_data.round3_track" formControlName="sround3_track">
+              <option value="">Select Round 3</option>
+              <option *ngFor="let t of tracklist;" value="{{t._id}}">{{t.name}}</option>
+            </select>
+            <label class="control-label">Semi Final</label>
+            <select name="ssemi_final_track" class="form-control" [(ngModel)]="standard_data.semi_final_track"
+              formControlName="ssemi_final_track">
+              <option value="">Select Semi Final</option>
+              <option *ngFor="let t of tracklist;" value="{{t._id}}">{{t.name}}</option>
+            </select>
             <label class="control-label">Final</label>
-            <select name="final_track" class="form-control" [(ngModel)]="contesttrack_data.final_track" formControlName="final_track">
+            <select name="sfinal_track" class="form-control" [(ngModel)]="standard_data.final_track" formControlName="sfinal_track">
               <option value="">Select Final</option>
               <option *ngFor="let t of tracklist;" value="{{t._id}}">{{t.name}}</option>
             </select>
           </div>
-          <input type="hidden" name="contest_id" value="{{contestid}}" [(ngModel)]="contesttrack_data.contest_id"
-            formControlName="contest_id" />
+          <input type="hidden" name="scontest_id" value="{{contestid}}" [(ngModel)]="standard_data.contest_id"
+            formControlName="scontest_id" />
           <div class="form-group text-right">
             <button class="btn forget_btn" (click)="addContestTrack()" [disabled]="show_spinner">Submit
               <i *ngIf="show_spinner" class="fa fa-spinner fa-spin"></i></button>
@@ -405,8 +405,12 @@
               <!-- <input type="radio" value="{{con._id}}" name="card" [(ngModel)]="contest_id" /> -->
               <div class="radio">
                 <label>
-                  <input type="radio" value="{{con._id}}" (click)="submit_contest_track(contesttrack,con._id,con.contest_type)"
+                  <input type="radio" *ngIf="con.contest_type === 'standard'" value="{{con._id}}" (click)="submit_contest_track(standardTrack,con._id,con.contest_type)"
                     name="card" [(ngModel)]="contest_id" />
+                  <input type="radio" *ngIf="con.contest_type === 'beta'" value="{{con._id}}" (click)="submit_contest_track(betaTrack,con._id,con.contest_type)"
+                    name="card" [(ngModel)]="contest_id" />
+                  <!-- <input type="radio" value="{{con._id}}" (click)="submit_contest_track(con._id,con.contest_type)" name="card"
+                    [(ngModel)]="contest_id" /> -->
                   <span class="radio_check"></span>
                 </label>
               </div>

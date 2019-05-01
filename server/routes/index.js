@@ -1922,9 +1922,11 @@ router.post('/get_track_for_current_round', async (req, res) => {
   }
 
   //if (round.round[0].artist_id.length > 0) {
-  var track = await Track.find({ "_id": { $in: arr } }).populate({ path: 'artist_id', populate: { path: 'music_type' } }).populate({ path: 'artist_id', populate: { path: 'state' } })
+  var tot_cnt = await Track.count({ "_id": { $in: arr } }).populate({ path: 'artist_id', populate: { path: 'music_type' } }).populate({ path: 'artist_id', populate: { path: 'state' } })
+  var filter_cnt = await Track.count({ "_id": { $in: arr } }).populate({ path: 'artist_id', populate: { path: 'music_type' } }).populate({ path: 'artist_id', populate: { path: 'state' } }).skip(req.body.start).limit(req.body.length)
+  var track = await Track.find({ "_id": { $in: arr } }).populate({ path: 'artist_id', populate: { path: 'music_type' } }).populate({ path: 'artist_id', populate: { path: 'state' } }).skip(req.body.start).limit(req.body.length)
   console.log('track', track);
-  res.status(config.OK_STATUS).json({ "data": track });
+  res.status(config.OK_STATUS).json({ "data": track, "recordsFiltered": filter_cnt, "recordsTotal": tot_cnt });
   // }
   // else {
   //   res.status(config.BAD_REQUEST).json({ "message": "Contest has yet not started" })

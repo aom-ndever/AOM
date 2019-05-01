@@ -126,10 +126,10 @@ export class VoteComponent implements OnInit {
               this.audio_ins_list1.push(ele['track_id']);
             });
             callback({
-              // recordsTotal: response['track']['recordsTotal'],
-              recordsTotal: 1,
-              // recordsFiltered: response['track']['recordsTotal'],
-              recordsFiltered: 1,
+              recordsTotal: response['recordsTotal'],
+              // recordsTotal: 1,
+              recordsFiltered: response['recordsFiltered'],
+              // recordsFiltered: 1,
               data: []
             });
           }, (error) => {
@@ -172,10 +172,10 @@ export class VoteComponent implements OnInit {
             //   this.audio_ins_list1.push(ele['track_id']);
             // });
             callback({
-              // recordsTotal: response['track']['recordsTotal'],
-              // recordsFiltered: response['track']['recordsTotal'],
-              recordsTotal: 1,
-              recordsFiltered: 1,
+              recordsTotal: response['recordsTotal'],
+              recordsFiltered: response['recordsFiltered'],
+              // recordsTotal: 1,
+              // recordsFiltered: 1,
               data: []
             });
           }, (error) => {

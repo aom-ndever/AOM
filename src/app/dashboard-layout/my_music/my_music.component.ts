@@ -30,6 +30,9 @@ export class MyMusicComponent implements OnInit, OnDestroy {
   contesttrack_data: any = {
 
   }
+  standard_data: any = {
+
+  }
   show_filter: boolean = false;
   tab_cnt: Number = 1;
   modal_ref: NgbModalRef;
@@ -71,13 +74,21 @@ export class MyMusicComponent implements OnInit, OnDestroy {
   ) {
     this.contesttrack_form = this.fb.group({
       contest_id: new FormControl(),
-      preliminary1_track: new FormControl(),
-      preliminary2_track: new FormControl(),
       round1_track: new FormControl(),
       round2_track: new FormControl(),
       round3_track: new FormControl(),
       final_track: new FormControl(),
       semi_final_track: new FormControl(),
+    })
+    this.standard_form = this.fb.group({
+      scontest_id: new FormControl(),
+      spreliminary1_track: new FormControl(),
+      spreliminary2_track: new FormControl(),
+      sround1_track: new FormControl(),
+      sround2_track: new FormControl(),
+      sround3_track: new FormControl(),
+      sfinal_track: new FormControl(),
+      ssemi_final_track: new FormControl(),
     })
     this.titleService.setTitle(this.route.snapshot.data['title']);
     this.userinfo = JSON.parse(localStorage.getItem('user'));
@@ -117,6 +128,7 @@ export class MyMusicComponent implements OnInit, OnDestroy {
         setTimeout(() => {
           that.audio_ins = [];
           that.MyMusicService.getAllTrack(dataTablesParameters).subscribe(response => {
+            console.log('res', response)
             that.tracklist = response['track']['music'];
             that.tracklist.forEach((ele) => { that.audio_ins.push(false); });
             callback({
@@ -315,19 +327,35 @@ export class MyMusicComponent implements OnInit, OnDestroy {
 
 
   addContestTrack() {
-    console.log("1")
-    //let formdata = new FormData();
-    //console.log("this.contesttrack_data", this.contesttrack_data);
+    console.log('contstType', this.contestType);
 
-    //for (let cont of this.contesttrack_data) {
+    console.log('form value', this.standard_form);
+    let Obj;
+    if (this.contestType === 'beta') {
+      Obj = {
+        contest_id: this.contestid,
+        round1_track: this.contesttrack_form.value.round1_track,
+        round2_track: this.contesttrack_form.value.round2_track,
+        round3_track: this.contesttrack_form.value.round3_track,
+        semi_final_track: this.contesttrack_form.value.semi_final_track,
+        final_track: this.contesttrack_form.value.final_track
+      }
+    } else if (this.contestType === 'standard') {
+      Obj = {
+        contest_id: this.contestid,
+        preliminary2_track: this.standard_form.value.spreliminary1_track,
+        preliminary3_track: this.standard_form.value.spreliminary2_track,
+        round1_track: this.standard_form.value.sround1_track,
+        round2_track: this.standard_form.value.sround2_track,
+        round3_track: this.standard_form.value.sround3_track,
+        semi_final_track: this.standard_form.value.ssemi_final_track,
+        final_track: this.standard_form.value.sfinal_track
+      }
+    }
 
-    //   var value = this.contesttrack_data[cont]
-    //   formdata.append(cont, value);
-    //   console.log("value")
-    // }
-    // console.log("Formdata", formdata);
+
     this.show_spinner = true;
-    this.MyMusicService.addContestTrack(this.contesttrack_data).subscribe(response => {
+    this.MyMusicService.addContestTrack(Obj).subscribe(response => {
 
       this.datatableElement.dtInstance.then((dtInstance: DataTables.Api) => {
         dtInstance.draw();
@@ -751,11 +779,9 @@ export class MyMusicComponent implements OnInit, OnDestroy {
   }
 
   contesttrack_form: FormGroup;
+  standard_form: FormGroup;
 
-  get preliminary1_track() {
-    return this.contesttrack_form.get('preliminary1_track')
-  };
-  get preliminary2_track() { return this.contesttrack_form.get('preliminary2_track') };
+
   get round1_track() { return this.contesttrack_form.get('round1_track1') };
   get round2_track() { return this.contesttrack_form.get('round2_track') };
   get round3_track() { return this.contesttrack_form.get('round3_track') };
@@ -763,9 +789,31 @@ export class MyMusicComponent implements OnInit, OnDestroy {
   get final_track() { return this.contesttrack_form.get(' final_track') };
   get contest_id() { return this.contesttrack_form.get(' contest_id') };
 
+
+  get spreliminary1_track() {
+    return this.standard_form.get('spreliminary1_track')
+  };
+  get spreliminary2_track() { return this.standard_form.get('spreliminary2_track') };
+  get sround1_track() { return this.standard_form.get('sround1_track1') };
+  get sround2_track() { return this.standard_form.get('sround2_track') };
+  get sround3_track() { return this.standard_form.get('sround3_track') };
+  get ssemi_final_track() { return this.standard_form.get('ssemi_final_track') };
+  get sfinal_track() { return this.standard_form.get('sfinal_track') };
+  get scontest_id() { return this.standard_form.get('scontest_id') };
+
+  // submit_contest_track(contestid, type) {
+  //   console.log("type", type)
+  //   this.contestType = type;
+  //   var modalref = this.modalService.open(type, { centered: true, windowClass: 'modal-wrapper', backdrop: true });
+  //   this.contestid = contestid;
+  //   this.contesttrack_data['contest_id'] = contestid
+  // }
   submit_contest_track(id, contestid, type) {
     console.log("type", type)
     this.contestType = type;
+
+    console.log('id', id);
+
     var modalref = this.modalService.open(id, { centered: true, windowClass: 'modal-wrapper', backdrop: true });
     this.contestid = contestid;
     this.contesttrack_data['contest_id'] = contestid
