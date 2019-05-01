@@ -1892,8 +1892,8 @@ router.get('/tracks/:track_id', async (req, res) => {
 
 
 router.post('/get_track_for_current_round', async (req, res) => {
+
   var round = await round_helper.get_current_round_of_contest(req.body.contest_id)
-  console.log('round', round);
   var arr = [];
   var data = round.round[0]
   for (const track of data.hip_hop_track) {
@@ -1921,10 +1921,15 @@ router.post('/get_track_for_current_round', async (req, res) => {
     arr.push(trk)
   }
 
-
+  //if (round.round[0].artist_id.length > 0) {
   var track = await Track.find({ "_id": { $in: arr } }).populate({ path: 'artist_id', populate: { path: 'music_type' } }).populate({ path: 'artist_id', populate: { path: 'state' } })
-
+  console.log('track', track);
   res.status(config.OK_STATUS).json({ "data": track });
+  // }
+  // else {
+  //   res.status(config.BAD_REQUEST).json({ "message": "Contest has yet not started" })
+  // }
+
 
   // if (track.status === 1) {
   //   logger.trace("got details successfully");

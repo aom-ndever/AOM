@@ -126,8 +126,10 @@ export class VoteComponent implements OnInit {
               this.audio_ins_list1.push(ele['track_id']);
             });
             callback({
-              recordsTotal: response['track']['recordsTotal'],
-              recordsFiltered: response['track']['recordsTotal'],
+              // recordsTotal: response['track']['recordsTotal'],
+              recordsTotal: 1,
+              // recordsFiltered: response['track']['recordsTotal'],
+              recordsFiltered: 1,
               data: []
             });
           }, (error) => {
@@ -161,16 +163,19 @@ export class VoteComponent implements OnInit {
             dataTablesParameters['state'] = that.region_filter;
 
           that.VoteService.getWinnersData(dataTablesParameters).subscribe((response) => {
-            this.winner_list = response['track']['winner'];
+            this.winner_list = response['track'];
+            // this.winner_list = response['track']['winner'];
             this.audio_ins1 = [];
             this.audio_ins_list1 = [];
-            this.winner_list.forEach((ele) => {
-              this.audio_ins1.push(false);
-              this.audio_ins_list1.push(ele['track_id']);
-            });
+            // this.winner_list.forEach((ele) => {
+            //   this.audio_ins1.push(false);
+            //   this.audio_ins_list1.push(ele['track_id']);
+            // });
             callback({
-              recordsTotal: response['track']['recordsTotal'],
-              recordsFiltered: response['track']['recordsTotal'],
+              // recordsTotal: response['track']['recordsTotal'],
+              // recordsFiltered: response['track']['recordsTotal'],
+              recordsTotal: 1,
+              recordsFiltered: 1,
               data: []
             });
           }, (error) => {
@@ -214,13 +219,13 @@ export class VoteComponent implements OnInit {
       this.participants.forEach((ele) => {
         this.audio_ins.push(false)
         this.audio_ins_list.push(ele['track']);
-        if (user && user['user']) {
-          if (ele['votes'].indexOf(user['user']['_id']) != -1) {
-            ele['is_voted'] = true;
-          } else {
-            ele['is_voted'] = false;
-          }
-        }
+        // if (user && user['user']) {
+        //   if (ele['votes'].indexOf(user['user']['_id']) != -1) {
+        //     ele['is_voted'] = true;
+        //   } else {
+        //     ele['is_voted'] = false;
+        //   }
+        // }
       });
     }, (error) => {
       this.show_loader = false;
@@ -272,13 +277,17 @@ export class VoteComponent implements OnInit {
     }
   }
   // vote to the track
-  voteTrack(track_id, artist_id, index) {
+  voteTrack(track_id, artist_id, contests_id, index) {
+    console.log(track_id, artist_id)
     let user = JSON.parse(localStorage.getItem('user'));
+
     if (user && user.user) {
       let data = {
         track_id: track_id,
-        artist_id: artist_id
+        artist_id: artist_id,
+        contest_id: contests_id
       };
+      console.log("data", data)
       this.vote_spinner = true;
       this.VoteService.giveVoteToTrack(data).subscribe((response) => {
         // if(!(response['message'].toLowerCase() == 'already voted')) {
@@ -492,6 +501,7 @@ export class VoteComponent implements OnInit {
             ele['artist']['is_followed'] = false;
           }
         });
+        console.log("participant---------<", this.participants)
       });
     }
   }
