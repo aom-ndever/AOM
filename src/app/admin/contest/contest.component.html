@@ -28,7 +28,8 @@
             <td>{{contest['created_at'] | date : 'MMMM d, yyyy':'UTC' }}</td>
             <td>{{contest && contest['music_type'] ? contest['music_type']['name'] : '' }}</td>
             <td>
-              <a href="javascript:;" (click)="openRoundModel(round,contest['_id'])" title="view rounds"><i class="fa fa-television"></i></a>
+              <a href="javascript:;" (click)="openRoundModel(round,contest['_id'])" title="view rounds"><i
+                  class="fa fa-television"></i></a>
             </td>
           </tr>
         </tbody>
@@ -153,7 +154,7 @@
             <span *ngIf="contest_validation.controls['type'].errors['required']" class="text-danger">Contest type is
               required.</span>
           </div> -->
-          
+
         </div>
         <div class="form-group custom_modal_form">
           <label class="control-label">Contest Name</label>
@@ -161,7 +162,8 @@
           <div class="terms_error_msg" *ngIf="is_valid && !contest_validation.controls['name'].valid">
             <span *ngIf="contest_validation.controls['name'].errors['required']" class="text-danger">Contest Name is
               required.</span>
-            <span *ngIf="!contest_validation.controls['name'].errors['required'] && contest_validation.controls['name'].errors['whitespace']"
+            <span
+              *ngIf="!contest_validation.controls['name'].errors['required'] && contest_validation.controls['name'].errors['whitespace']"
               class="text-danger">Please enter valid detail.</span>
           </div>
         </div>
@@ -181,7 +183,8 @@
           <div class="date-of-birth row">
             <label for="date">Start Date</label>
             <div class="form-group custom_modal_form">
-              <select class="form-control" id="day" formControlName="day" name="day" [(ngModel)]="contest_detail['day']">
+              <select class="form-control" id="day" formControlName="day" name="day"
+                [(ngModel)]="contest_detail['day']">
                 <option value="">Day</option>
                 <option *ngFor="let d of day" value="{{d}}">{{d}}</option>
               </select>
@@ -191,7 +194,8 @@
               </div>
             </div>
             <div class="form-group custom_modal_form">
-              <select class="form-control" id="month" name="month" formControlName="month" [(ngModel)]="contest_detail['month']">
+              <select class="form-control" id="month" name="month" formControlName="month"
+                [(ngModel)]="contest_detail['month']">
                 <option value="">Month</option>
                 <option *ngFor="let m of month" value="{{m}}">{{m}}</option>
               </select>
@@ -201,7 +205,8 @@
               </div>
             </div>
             <div class="form-group custom_modal_form">
-              <select class="form-control" id="year" name="year" formControlName="year" [(ngModel)]="contest_detail['year']">
+              <select class="form-control" id="year" name="year" formControlName="year"
+                [(ngModel)]="contest_detail['year']">
                 <option value="">Year</option>
                 <option *ngFor="let y of year" value="{{y}}">{{y}}</option>
               </select>
@@ -217,16 +222,36 @@
             <div class="col-sm-6">
               <div class="form-group custom_modal_form">
                 <label class="control-label">Contest Type</label>
-                <select class="form-control" name="contest_type" formControlName="contest_type" [(ngModel)]="contest_detail['contest_type']">
+                <select class="form-control" name="contest_type" formControlName="contest_type"
+                  [(ngModel)]="contest_detail['contest_type']" (change)="specialContest()">
                   <option value="">Select Contest Type</option>
                   <option value="beta">Beta</option>
                   <option value="standard">Standard</option>
-
+                  <option value="special"> Special
+                  </option>
                 </select>
                 <!-- <div class="terms_error_msg" *ngIf="is_valid && !contest_validation.controls['duration'].valid">
                   <span *ngIf="contest_validation.controls['duration'].errors['required']" class="text-danger">Duration
                     is required.</span>
                 </div> -->
+              </div>
+            </div>
+
+            <div class="col-sm-6" *ngIf="isSpecialContest">
+              <div class="form-group custom_modal_form">
+                <label class="control-label">Contest Type</label>
+                <select class="form-control" name="duration" formControlName="duration"
+                  [(ngModel)]="contest_detail['duration']">
+                  <option value="">Select Contest Duration</option>
+                  <option value="1">1 Week</option>
+                  <option value="2">2 Week</option>
+                  <option value="3">3 Week</option>
+                  <option value="4">4 Week</option>
+                  <option value="5">5 Week</option>
+                  <option value="6">6 Week</option>
+                  <option value="7">7 Week</option>
+                  <option value="8">8 Week</option>
+                </select>
               </div>
             </div>
             <!-- <div class="col-sm-6">
@@ -245,13 +270,13 @@
         <div class="form-group">
           <div class="form-group custom_modal_form">
             <label class="control-label">Music Genre</label>
-            <select name="music_type" class="form-control" formControlName="music_type" [(ngModel)]="contest_detail['music_type']"
-              *ngIf="is_new_or_existing == 1">
+            <select name="music_type" class="form-control" formControlName="music_type"
+              [(ngModel)]="contest_detail['music_type']" *ngIf="is_new_or_existing == 1">
               <option value="">Select Music Gener</option>
               <option *ngFor="let music of music_type;" value="{{music['_id']}}">{{music['name']}}</option>
             </select>
-            <select name="music_type" class="form-control" formControlName="music_type" [(ngModel)]="contest_detail['music_type']"
-              *ngIf="is_new_or_existing == 2" disabled>
+            <select name="music_type" class="form-control" formControlName="music_type"
+              [(ngModel)]="contest_detail['music_type']" *ngIf="is_new_or_existing == 2" disabled>
               <option value="">Select Music Gener</option>
               <option *ngFor="let music of music_type;" value="{{music['_id']}}">{{music['name']}}</option>
             </select>
@@ -293,7 +318,8 @@
             <button class="custom_cancel_btn btn" (click)="contestModelRef.hide()">Cancel</button>
           </div>
           <div class="col-sm-6 text-right">
-            <button type="submit" class="custom_save btn" (click)="saveContest(contest_validation.valid)" [disabled]="show_spinner">Create
+            <button type="submit" class="custom_save btn" (click)="saveContest(contest_validation.valid)"
+              [disabled]="show_spinner">Create
               <i *ngIf="show_spinner" class="fa fa-spinner fa-spin"></i></button>
           </div>
         </div>

@@ -5,22 +5,24 @@
         <div class="track-menu">
           <ul class="nav nav-tabs" id="myTab">
             <li class="nav-item">
-              <a class="nav-link {{tab_cnt == 1 ? 'active' : ''}}" (click)="tabChanged(1)" data-toggle="tab" href="javascript:;">My
+              <a class="nav-link {{tab_cnt == 1 ? 'active' : ''}}" (click)="tabChanged(1)" data-toggle="tab"
+                href="javascript:;">My
                 Tracks</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link {{tab_cnt == 2 ? 'active' : ''}}" (click)="tabChanged(2)" data-toggle="tab" href="javascript:;">Stats</a>
+              <a class="nav-link {{tab_cnt == 2 ? 'active' : ''}}" (click)="tabChanged(2)" data-toggle="tab"
+                href="javascript:;">Stats</a>
             </li>
           </ul>
 
-          <p><a data-fancybox data-animation-duration="700" data-src="#addtrack" (click)="openModal(content)" href="javascript:;"><img
-                src="img/icons8-plus_mathNormal.png" alt="Plus Icone"> Add Track</a></p>
+          <p><a data-fancybox data-animation-duration="700" data-src="#addtrack" (click)="openModal(content)"
+              href="javascript:;"><img src="img/icons8-plus_mathNormal.png" alt="Plus Icone"> Add Track</a></p>
         </div>
       </div>
       <div class="col-lg-10 col-md-9 col-sm-8 col-xs-12">
         <div class="contest-btn">
-          <a data-fancybox data-animation-duration="700" (click)="openContestModal(contest, t)" data-src="#submitcontest"
-            href="javascript:;">Submit
+          <a data-fancybox data-animation-duration="700" (click)="openContestModal(contest, t)"
+            data-src="#submitcontest" href="javascript:;">Submit
             for a Contest</a>
         </div>
         <div class="tab-content">
@@ -34,10 +36,12 @@
                   <tr *ngFor="let t of tracklist; let i =  index;">
                     <td class="serial-num">{{track_row_cnt+i}}.</td>
                     <td class="play-option">
-                      <a href="javascript:;" [style.display]="!audio_ins[i] ? 'block' : 'none'" (click)="playAudio(t.audio, i, tracklist)">
+                      <a href="javascript:;" [style.display]="!audio_ins[i] ? 'block' : 'none'"
+                        (click)="playAudio(t.audio, i, tracklist)">
                         <img src="img/new-play.png" alt="Play">
                       </a>
-                      <a href="javascript:;" [style.display]="audio_ins[i] ? 'block' : 'none'" (click)="stopAudio(i, tracklist)">
+                      <a href="javascript:;" [style.display]="audio_ins[i] ? 'block' : 'none'"
+                        (click)="stopAudio(i, tracklist)">
                         <img src="img/pause.png" alt="Play">
                       </a>
                     </td>
@@ -45,8 +49,8 @@
                     <td class="track-det" colspan="2">
                       <div class="track-pic">
                         <a href="javascript:;">
-                          <img defaultImage="img/loader.gif" offset="100" lazyLoad="{{track_url+t.image}}" *ngIf="t.image"
-                            width="50" height="50" alt="Track Image">
+                          <img defaultImage="img/loader.gif" offset="100" lazyLoad="{{track_url+t.image}}"
+                            *ngIf="t.image" width="50" height="50" alt="Track Image">
                           <img src="img/upload1.png" *ngIf="!t.image" width="50" height="50" alt="Track Image">
                         </a>
                       </div>
@@ -71,7 +75,8 @@
                     <td class="action" colspan="2">
                       <div class="track-like" style="top:10px;">
                         <label class="switch" title="Track Download status">
-                          <input type="checkbox" [checked]="t.is_downloadable" (change)="updateTrackDownLoadStatus(t._id)" />
+                          <input type="checkbox" [checked]="t.is_downloadable"
+                            (change)="updateTrackDownLoadStatus(t._id)" />
                           <!-- <input type="checkbox" *ngIf="!t.is_downloadable" (change)="updateTrackDownLoadStatus(t._id)" /> -->
                           <span class="slider round"></span>
                         </label>
@@ -81,18 +86,21 @@
                         <span class="new-up"></span> -->
                       </div>
                       <div class="track-comment">
-                        <a href="javascript:;" title="Comment" routerLink="/artist_track_comment/{{t._id}}"><img src="img/comment.png"
-                            alt="Comment"><span class="{{active_tab_index == 1 ? 'new-up' : ''}}"></span></a>
+                        <a href="javascript:;" title="Comment" routerLink="/artist_track_comment/{{t._id}}"><img
+                            src="img/comment.png" alt="Comment"><span
+                            class="{{active_tab_index == 1 ? 'new-up' : ''}}"></span></a>
                         <!-- <span class="new-up"></span> -->
                       </div>
                       <div class="track-price"><a href="javascript:;" title="Purchase">${{t.price}}</a></div>
-                      <div class="share"><a href="javascript:;" title="Share" (click)="openShareTrackModel(shareTrack, i,'userinfo')"><img
-                            src="img/share.png" alt="Track Share"></a></div>
+                      <div class="share"><a href="javascript:;" title="Share"
+                          (click)="openShareTrackModel(shareTrack, i,'userinfo')"><img src="img/share.png"
+                            alt="Track Share"></a></div>
                       <div class="track-edit"><a data-fancybox data-animation-duration="700" data-src="#edittrack"
-                          (click)="openEditTrackModal(editTrack, t)" title="Edit" href="javascript:;"><img src="img/edit.png"
-                            alt="Track Edit"></a></div>
-                      <div class="track-del"><a data-fancybox data-animation-duration="700" data-src="#delete" (click)="removeTrack(t._id)"
-                          href="javascript:;" title="Delete"><img src="img/del.png" alt="Track Delete"></a></div>
+                          (click)="openEditTrackModal(editTrack, t)" title="Edit" href="javascript:;"><img
+                            src="img/edit.png" alt="Track Edit"></a></div>
+                      <div class="track-del"><a data-fancybox data-animation-duration="700" data-src="#delete"
+                          (click)="removeTrack(t._id)" href="javascript:;" title="Delete"><img src="img/del.png"
+                            alt="Track Delete"></a></div>
                     </td>
                   </tr>
                 </tbody>
@@ -114,10 +122,12 @@
                   <tr *ngFor="let t of tracklist; let i =  index;">
                     <td class="serial-num">{{track_row_cnt+i}}.</td>
                     <td class="play-option">
-                      <a href="javascript:;" [style.display]="!audio_ins[i] ? 'block' : 'none'" (click)="playAudio(t.audio, i, tracklist)">
+                      <a href="javascript:;" [style.display]="!audio_ins[i] ? 'block' : 'none'"
+                        (click)="playAudio(t.audio, i, tracklist)">
                         <img src="img/new-play.png" alt="Play">
                       </a>
-                      <a href="javascript:;" [style.display]="audio_ins[i] ? 'block' : 'none'" (click)="stopAudio(i, tracklist)">
+                      <a href="javascript:;" [style.display]="audio_ins[i] ? 'block' : 'none'"
+                        (click)="stopAudio(i, tracklist)">
                         <img src="img/pause.png" alt="Play">
                       </a>
 
@@ -147,12 +157,12 @@
                         <span class="new-up"></span>
                       </div>
                       <div class="track-price"><a href="javascript:;">${{t.price}}</a></div>
-                      <div class="share"><a href="javascript:;" (click)="openShareTrackModel(shareTrack, i)"><img src="img/share.png"
-                            alt="Track Share"></a></div>
-                      <div class="track-edit"><a data-fancybox data-animation-duration="700" data-src="#edittrack" href="javascript:;"><img
-                            src="img/edit.png" alt="Track Edit"></a></div>
-                      <div class="track-del"><a data-fancybox data-animation-duration="700" data-src="#delete" href="javascript:;"><img
-                            src="img/del.png" alt="Track Delete"></a></div>
+                      <div class="share"><a href="javascript:;" (click)="openShareTrackModel(shareTrack, i)"><img
+                            src="img/share.png" alt="Track Share"></a></div>
+                      <div class="track-edit"><a data-fancybox data-animation-duration="700" data-src="#edittrack"
+                          href="javascript:;"><img src="img/edit.png" alt="Track Edit"></a></div>
+                      <div class="track-del"><a data-fancybox data-animation-duration="700" data-src="#delete"
+                          href="javascript:;"><img src="img/del.png" alt="Track Delete"></a></div>
                     </td>
                   </tr>
                 </tbody>
@@ -198,14 +208,16 @@
           <div class="close-btn"><img src="img/closeNormal.png" alt="Close-btn"></div>
         </div>
         <div class="progress">
-          <div class="progress-bar" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="width:70%">
+          <div class="progress-bar" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100"
+            style="width:70%">
             <span class="sr-only">70% Complete</span>
           </div>
         </div>
       </div>
       <div class="form-group tr-name">
         <label for="tname">Track Name</label>
-        <input type="text" class="form-control" id="tname" name="name" [(ngModel)]="trackdata.name" placeholder="Track Name">
+        <input type="text" class="form-control" id="tname" name="name" [(ngModel)]="trackdata.name"
+          placeholder="Track Name">
       </div>
       <div class="form-group tr-price" [class.has-error]="price.invalid" [class.has-success]="price.valid">
         <label for="tname">Price</label>
@@ -226,19 +238,72 @@
         </div>
         <div class="form-group">
           <label>Description</label>
-          <textarea name="description" placeholder="Description" [(ngModel)]="trackdata.description" class="form-control"></textarea>
+          <textarea name="description" placeholder="Description" [(ngModel)]="trackdata.description"
+            class="form-control"></textarea>
         </div>
       </div>
       <div class="button_group">
-        <button class="add-btn" (click)="addTrack()" [disabled]="show_spinner">Add Track <i *ngIf="show_spinner" class="fa fa-spinner fa-spin"></i></button>
+        <button class="add-btn" (click)="addTrack()" [disabled]="show_spinner">Add Track <i *ngIf="show_spinner"
+            class="fa fa-spinner fa-spin"></i></button>
       </div>
     </div>
   </div>
 </ng-template>
 
 
-<!-- [ngIf]="contestType ==='beta'" -->
+<ng-template #contest let-c="close" let-d="dismiss">
+  <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+    <span aria-hidden="true">&times;</span>
+  </button>
+  <div class="modal-body">
+    <div class="contest-wrap">
+      <h3>Submit for a contest</h3>
+      <div class="contest-table" data-mcs-theme="dark-3">
+        <div class="alert alert-info" *ngIf="contest_list.length == 0">
+          No data available.
+        </div>
+        <table>
+          <tr *ngFor="let con of contest_list; let i = index;">
+            <td>
+              <!-- <input type="radio" value="{{con._id}}" name="card" [(ngModel)]="contest_id" /> -->
+              <div class="radio">
+                <label>
+                  <input type="radio" *ngIf="con.contest_type === 'standard'" value="{{con._id}}"
+                    (click)="submit_contest_track(standardTrack,con._id,con.contest_type)" name="card"
+                    [(ngModel)]="contest_id" />
+                  <input type="radio" *ngIf="con.contest_type === 'beta'" value="{{con._id}}"
+                    (click)="submit_contest_track(betaTrack,con._id,con.contest_type)" name="card"
+                    [(ngModel)]="contest_id" />
+                  <input type="radio" *ngIf="con.contest_type === 'special'" value="{{con._id}}"
+                    (click)="submit_contest_track(specialTrack,con._id,con.contest_type)" name="card"
+                    [(ngModel)]="contest_id" />
+                  <span class="radio_check"></span>
+                </label>
+              </div>
+            </td>
+            <td><img src="img/conest-img.jpg" alt="Contest Image"></td>
+            <td>
+              <h3 class="c-name">{{con.name}}</h3>
+              <div class="c-dates">{{con.start_date | date : 'MMMM dd, yyyy'}} - {{con.end_date | date : 'MMMM dd,
+                yyyy'}}</div>
+              <div class="c-part">{{con.no_of_participants}} Contest Participants</div>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div class="button_group">
+        <button type="submit" *ngIf="contest_list.length != 0" [disabled]="show_spinner"
+          (click)="addTrackToContest(con._id)" class="add-btn">Submit <i *ngIf="show_spinner"
+            class="fa fa-spinner fa-spin"></i></button>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
 <ng-template #betaTrack let-c="close" let-d="dismiss">
+  <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+    <span aria-hidden="true">&times;</span>
+  </button>
   <div class="modal-body">
     <h1>Beta</h1>
     <div class="forget_password_modal">
@@ -270,7 +335,8 @@
               <option *ngFor="let t of tracklist;" value="{{t._id}}">{{t.name}}</option>
             </select>
             <label class="control-label">Final</label>
-            <select name="final_track" class="form-control" [(ngModel)]="contesttrack_data.final_track" formControlName="final_track">
+            <select name="final_track" class="form-control" [(ngModel)]="contesttrack_data.final_track"
+              formControlName="final_track">
               <option value="">Select Final</option>
               <option *ngFor="let t of tracklist;" value="{{t._id}}">{{t.name}}</option>
             </select>
@@ -287,8 +353,10 @@
   </div>
 </ng-template>
 
-<!-- [ngIf]="contestType === 'standard'" -->
 <ng-template #standardTrack let-c="close" let-d="dismiss">
+  <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+    <span aria-hidden="true">&times;</span>
+  </button>
   <div class="modal-body">
     <h1>Standard</h1>
     <div class="forget_password_modal">
@@ -308,17 +376,20 @@
               <option *ngFor="let t of tracklist;" value="{{t._id}}">{{t.name}}</option>
             </select>
             <label class="control-label">Round 1</label>
-            <select name="sround1_track" class="form-control" [(ngModel)]="standard_data.round1_track" formControlName="sround1_track">
+            <select name="sround1_track" class="form-control" [(ngModel)]="standard_data.round1_track"
+              formControlName="sround1_track">
               <option value="">Select Round 1</option>
               <option *ngFor="let t of tracklist;" value="{{t._id}}">{{t.name}}</option>
             </select>
             <label class="control-label">Round 2</label>
-            <select name="sround2_track" class="form-control" [(ngModel)]="standard_data.round2_track" formControlName="sround2_track">
+            <select name="sround2_track" class="form-control" [(ngModel)]="standard_data.round2_track"
+              formControlName="sround2_track">
               <option value="">Select Round 2</option>
               <option *ngFor="let t of tracklist;" value="{{t._id}}">{{t.name}}</option>
             </select>
             <label class="control-label">Round 3</label>
-            <select name="sround3_track" class="form-control" [(ngModel)]="standard_data.round3_track" formControlName="sround3_track">
+            <select name="sround3_track" class="form-control" [(ngModel)]="standard_data.round3_track"
+              formControlName="sround3_track">
               <option value="">Select Round 3</option>
               <option *ngFor="let t of tracklist;" value="{{t._id}}">{{t.name}}</option>
             </select>
@@ -329,7 +400,8 @@
               <option *ngFor="let t of tracklist;" value="{{t._id}}">{{t.name}}</option>
             </select>
             <label class="control-label">Final</label>
-            <select name="sfinal_track" class="form-control" [(ngModel)]="standard_data.final_track" formControlName="sfinal_track">
+            <select name="sfinal_track" class="form-control" [(ngModel)]="standard_data.final_track"
+              formControlName="sfinal_track">
               <option value="">Select Final</option>
               <option *ngFor="let t of tracklist;" value="{{t._id}}">{{t.name}}</option>
             </select>
@@ -346,6 +418,36 @@
   </div>
 </ng-template>
 
+<ng-template #specialTrack let-c="close" let-d="dismiss">
+  <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+    <span aria-hidden="true">&times;</span>
+  </button>
+  <div class="modal-body">
+    <h1>Special</h1>
+    <div class="forget_password_modal">
+      <form [formGroup]="special_form">
+        <div class="col-sm-12">
+          <div class="form-group">
+            <label class="control-label">Round 1</label>
+            <select name="special_round1_track" class="form-control" [(ngModel)]="standard_data.round1_track"
+              formControlName="special_round1_track">
+              <option value="">Select Round 1</option>
+              <option *ngFor="let t of tracklist;" value="{{t._id}}">{{t.name}}</option>
+            </select>
+          </div>
+          <input type="hidden" name="special_contest_id" value="{{contestid}}" [(ngModel)]="standard_data.contest_id"
+            formControlName="special_contest_id" />
+          <div class="form-group text-right">
+            <button class="btn forget_btn" (click)="addContestTrack()" [disabled]="show_spinner">Submit
+              <i *ngIf="show_spinner" class="fa fa-spinner fa-spin"></i></button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</ng-template>
+
+
 <ng-template #editTrack let-c="close" let-d="dismiss">
   <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
     <span aria-hidden="true">&times;</span>
@@ -356,26 +458,30 @@
         <h3>Edit Track</h3>
         <div class="form-group tr-name">
           <label for="tname">Track Name</label>
-          <input type="text" class="form-control" id="tname" name="name" [(ngModel)]="trackdata.name" placeholder="Track Name">
+          <input type="text" class="form-control" id="tname" name="name" [(ngModel)]="trackdata.name"
+            placeholder="Track Name">
         </div>
         <div class="form-group tr-price" [class.has-error]="price.invalid" [class.has-success]="price.valid">
           <label for="tname">Price</label>
-          <input type="number" class="form-control" id="tname" name="price" #price="ngModel" [(ngModel)]="trackdata.price"
-            placeholder="$ 139" maxlength="3" required />
+          <input type="number" class="form-control" id="tname" name="price" #price="ngModel"
+            [(ngModel)]="trackdata.price" placeholder="$ 139" maxlength="3" required />
 
         </div>
         <div class="textarea-upload">
           <div class="edit-profile-picture">
             <div class="upload-cover">
               <img src="{{edit_image}}" alt="Edit cover Image">
-              <input type="file" name="my_doc_upload" id="my_doc_upload" (change)="changeTrackImage($event)" multiple="false">
-              <a data-fancybox="" data-animation-duration="700" data-src="#delete" *ngIf="trackdata.image" href="javascript:;"
-                (click)="removeTrackImage(trackdata._id)" class="delete"><i class="fa fa-trash"></i></a>
+              <input type="file" name="my_doc_upload" id="my_doc_upload" (change)="changeTrackImage($event)"
+                multiple="false">
+              <a data-fancybox="" data-animation-duration="700" data-src="#delete" *ngIf="trackdata.image"
+                href="javascript:;" (click)="removeTrackImage(trackdata._id)" class="delete"><i
+                  class="fa fa-trash"></i></a>
             </div>
           </div>
           <div class="form-group">
             <label>Description</label>
-            <textarea name="description" [(ngModel)]="trackdata.description" placeholder="Description" class="form-control"></textarea>
+            <textarea name="description" [(ngModel)]="trackdata.description" placeholder="Description"
+              class="form-control"></textarea>
           </div>
         </div>
         <div class="button_group">
@@ -390,50 +496,7 @@
   </div>
 </ng-template>
 
-<ng-template #contest let-c="close" let-d="dismiss">
-  <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
-    <span aria-hidden="true">&times;</span>
-  </button>
-  <div class="modal-body">
-    <div class="contest-wrap">
-      <h3>Submit for a contest</h3>
-      <div class="contest-table" data-mcs-theme="dark-3">
-        <div class="alert alert-info" *ngIf="contest_list.length == 0">
-          No data available.
-        </div>
-        <table>
-          <tr *ngFor="let con of contest_list; let i = index;">
-            <td>
-              <!-- <input type="radio" value="{{con._id}}" name="card" [(ngModel)]="contest_id" /> -->
-              <div class="radio">
-                <label>
-                  <input type="radio" *ngIf="con.contest_type === 'standard'" value="{{con._id}}" (click)="submit_contest_track(standardTrack,con._id,con.contest_type)"
-                    name="card" [(ngModel)]="contest_id" />
-                  <input type="radio" *ngIf="con.contest_type === 'beta'" value="{{con._id}}" (click)="submit_contest_track(betaTrack,con._id,con.contest_type)"
-                    name="card" [(ngModel)]="contest_id" />
-                  <!-- <input type="radio" value="{{con._id}}" (click)="submit_contest_track(con._id,con.contest_type)" name="card"
-                    [(ngModel)]="contest_id" /> -->
-                  <span class="radio_check"></span>
-                </label>
-              </div>
-            </td>
-            <td><img src="img/conest-img.jpg" alt="Contest Image"></td>
-            <td>
-              <h3 class="c-name">{{con.name}}</h3>
-              <div class="c-dates">{{con.start_date | date : 'MMMM dd, yyyy'}} - {{con.end_date | date : 'MMMM dd,
-                yyyy'}}</div>
-              <div class="c-part">{{con.no_of_participants}} Contest Participants</div>
-            </td>
-          </tr>
-        </table>
-      </div>
-      <div class="button_group">
-        <button type="submit" *ngIf="contest_list.length != 0" [disabled]="show_spinner" (click)="addTrackToContest(con._id)"
-          class="add-btn">Submit <i *ngIf="show_spinner" class="fa fa-spinner fa-spin"></i></button>
-      </div>
-    </div>
-  </div>
-</ng-template>
+
 
 <ng-template #shareTrack let-c="close" let-d="dismiss">
   <div class="modal_login_wrapper">
@@ -495,11 +558,13 @@
         <div class="col-sm-12">
           <div class="form-group">
             <label class="control-label custom_form_label">Email Id</label>
-            <input type="email" class="form-control custom_form" formControlName="email" name="email" [(ngModel)]="share_data['email']"
-              placeholder="Enter Email" />
+            <input type="email" class="form-control custom_form" formControlName="email" name="email"
+              [(ngModel)]="share_data['email']" placeholder="Enter Email" />
             <div class="cust_err_msg" *ngIf="share_form_validation && !share_form.controls['email'].valid">
-              <span *ngIf="share_form.controls['email'].errors['required']" class="text-danger">Email is required.</span>
-              <span *ngIf="!share_form.controls['email'].errors['required'] && share_form.controls['email'].errors['email']"
+              <span *ngIf="share_form.controls['email'].errors['required']" class="text-danger">Email is
+                required.</span>
+              <span
+                *ngIf="!share_form.controls['email'].errors['required'] && share_form.controls['email'].errors['email']"
                 class="text-danger">Enter valid email.</span>
             </div>
           </div>
@@ -524,17 +589,19 @@
         <div class="col-sm-12">
           <div class="form-group">
             <label class="control-label custom_form_label">Phone Number</label>
-            <input type="email" class="form-control custom_form" formControlName="phone" name="phone" [(ngModel)]="share_data['phone_no']"
-              placeholder="Enter Phone Number" />
+            <input type="email" class="form-control custom_form" formControlName="phone" name="phone"
+              [(ngModel)]="share_data['phone_no']" placeholder="Enter Phone Number" />
             <div class="cust_err_msg" *ngIf="share_form_validation && !share_form_phone.controls['phone'].valid">
               <span *ngIf="share_form_phone.controls['phone'].errors['required']" class="text-danger">Phone Number is
                 required.</span>
-              <span *ngIf="!share_form_phone.controls['phone'].errors['required'] && share_form_phone.controls['phone'].errors['minlength'] || share_form_phone.controls['phone'].errors['maxlength'] "
+              <span
+                *ngIf="!share_form_phone.controls['phone'].errors['required'] && share_form_phone.controls['phone'].errors['minlength'] || share_form_phone.controls['phone'].errors['maxlength'] "
                 class="text-danger">Enter valid phone Number.</span>
             </div>
           </div>
           <div class="form-group text-right">
-            <button class="btn forget_btn" (click)="share_via_sms(share_form_phone.valid)" [disabled]="show_spinner">Submit
+            <button class="btn forget_btn" (click)="share_via_sms(share_form_phone.valid)"
+              [disabled]="show_spinner">Submit
               <i *ngIf="show_spinner" class="fa fa-spinner fa-spin"></i></button>
           </div>
         </div>
