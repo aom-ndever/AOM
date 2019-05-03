@@ -125,6 +125,7 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
     // this.artisttrack = this.route.snapshot.data['track'].track;
     this.artistmedia = this.route.snapshot.data['media'].media;
     this.artistfollower = this.route.snapshot.data['follower'].artist;
+    console.log(this.artistfollower);
     this.artistcomments = this.route.snapshot.data['comments'].comment;
     // this.rankingtrack = this.route.snapshot.data['ranking'].track;
     if (this.artistcomments.length > 3) {
@@ -363,13 +364,14 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
   followArtist(id: any, index: any) {
     let data = JSON.parse(localStorage.getItem('user'));
     if (data) {
-      //  this.artistfollower[index].length +1
+      // this.artistfollower[index].length += 1;
       let data = {
         artist_id: id
       };
       this.ArtistProfileService.followArtist(data).subscribe(response => {
         this.toastr.success(response['message'], 'Success!');
         this.artist_following = true;
+        // this.artistfollower += 1;
       }, error => {
         this.toastr.error(error['error'].message, 'Error!');
       });
@@ -494,8 +496,8 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
       if (type == 'track') {
         this.artisttrack[index]['is_bookmarked'] = !this.artisttrack[index]['is_bookmarked'];
         let data = {
-          track_id: this.artistdata._id,
-           
+          track_id: id,
+           "artist_id": this.artistdata._id,
         };
         this.ArtistProfileService.bookmarkTrack(data).subscribe((response) => {
           this.toastr.success(response['message'], 'Success!');

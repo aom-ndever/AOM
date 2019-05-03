@@ -5005,7 +5005,7 @@ ul.sidebar-nav.custem-side-bar li a{padding: 15px 15px 6px 42px;}
 .contest-btn a{ display:inline-block; vertical-align:top;}
 
 table.my_track_table td:nth-child(5){ width:13%;}
-table.my_track_table td:nth-child(6){ width:50%;}
+table.my_track_table td:nth-child(7){ width:50%;}
 .forget_password_modal { padding:0; margin:0 -15px;}
 .forget_password_modal select.form-control:not([size]):not([multiple]) {height: auto;}
 .forget_password_modal .form-control {padding: 12px 15px; box-shadow: 0 4px 4px 0 rgba(0,0,0,.1); margin: 0 0 15px;}
