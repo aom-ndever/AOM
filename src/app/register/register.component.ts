@@ -2,7 +2,7 @@ import { Component, OnInit, Directive, forwardRef, Attribute } from '@angular/co
 import { FormGroup, FormBuilder, Validators, FormControl, AbstractControl, NG_VALIDATORS, Validator } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { RegisterService } from './register.service';
-import { environment } from '../../environments/environment';
+import { environment } from '../../../src/environments/environment';
 import { Router } from '@angular/router';
 import { AuthService, FacebookLoginProvider } from 'angular5-social-login';
 import { MessageService } from '../shared/message.service';

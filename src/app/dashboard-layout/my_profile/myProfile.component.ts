@@ -35,14 +35,14 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
   // }
-  @ViewChildren(DataTableDirective)
+  
 
   artist_validation = [false];
   imageChangedEvent: any = '';
   croppedImage: any = '';
   cropperReady = false;
   public card_list: any = [];
-
+  @ViewChildren(DataTableDirective)
   dtElements: QueryList<DataTableDirective>;
   dtOptions: DataTables.Settings[] = [];
   subscription: Subscription;
@@ -1222,6 +1222,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
           this.toastr.success(event['body']['message'], 'Success!');
           this.getMediaList();
           this.media_modal_ref.close();
+           this.show_spinner = false;
         }
       }, error => {
         this.toastr.error(error['error'].message, 'Error!');
@@ -2131,17 +2132,22 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
       confirmButtonText: 'Yes, delete it!'
     }).then((flag) => {
       if (flag.value) {
+       
+        
         if (this.userdata && this.userdata['type'] == 'user') {
+
           this.MyProfileService.deleteListenerPlaylistById(id).subscribe((response) => {
+            
             this.toastr.success(response['message'], 'Success!');
             this.dtElements.forEach((dtElement: DataTableDirective, index: number) => {
               if(idx == index) {
               dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
                 dtInstance.draw();
               });
-            }
+              }
             });
           });
+          
         } else {
           this.MyProfileService.removeArtistPlaylist(id).subscribe((response) => {
             this.toastr.success(response['message'], 'Success!');
@@ -2261,16 +2267,18 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
           this.search_track.forEach((ele) => { data['track_id'].push(ele['_id']) });
           this.show_spinner = true;
           this.MyProfileService.addTrackListenerPlaylist(data, this.playlist_data['_id']).subscribe((response) => {
+            this.toastr.success(response['message'], 'Success!');
             this.dtElements.forEach((dtElement: DataTableDirective, index: number) => {
               dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
                 dtInstance.draw();
               });
             });
             this.media_modal_ref.close();
-            this.toastr.success(response['message'], 'Success!');
+            
           }, (error) => {
-            this.show_spinner = false;
+            
             this.toastr.error(error['error'].message, 'Error!');
+            this.show_spinner = false;
           }, () => {
             this.show_spinner = false;
           });

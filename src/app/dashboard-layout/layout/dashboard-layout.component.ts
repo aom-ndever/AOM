@@ -1,6 +1,6 @@
 import { Component, OnInit, AfterViewInit, AfterViewChecked, OnDestroy } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl, AbstractControl, NG_VALIDATORS, Validator } from '@angular/forms';
-import { environment } from '../../../environments/environment';
+import { environment } from '../../../../src/environments/environment';
 import { Subscription } from 'rxjs/Subscription';
 import { MessageService } from '../../shared/message.service';
 import { DashboardLayoutService } from './dashboard-layout.service';

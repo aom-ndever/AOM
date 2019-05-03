@@ -70,68 +70,21 @@ import { ImageCropperModule } from 'ngx-image-cropper';
     AutoCompleteModule,
     MultiSelectModule,
     LazyLoadImageModule,
-    RouterModule.forChild([
+     RouterModule.forChild([
       {
         path: '',
         component: DashboardLayoutComponent, data: { title: 'Dashboard' },
         children: [
-          {
-            path: '',
-            component: DashboardComponent
-          },
-          {
-            path: 'whats-new', component: WhatsNewComponent,
-            data: { title: 'AOM | What\'s New', edit: false }
-          },
-          {
-            path: 'artist', component: ArtistComponent,
-            data: { title: 'AOM | Artist', edit: false }
-          },
-          {
-            path: 'artist_track_comment/:id',
-            component: ArtistTrackConmmentsComponent, canActivate: [AuthService],
-            data: { title: 'AOM | Artist', edit: false }
-          },
-          {
-            path: 'artist_profile/:artist_id/track/:id/comments',
-            component: TrackConmmentsComponent,
-            resolve: { comment: TrackCommentResolve, artist: TrackArtistProfileResolve, track: TrackDetailResolve },
-            data: { title: 'AOM | Track comment', edit: false }
-          },
-          {
-            path: 'artist_profile/:id/comments',
-            component: ConmmentsComponent,
-            resolve: { artist: ArtistProfileResolve, comments: ArtistCommentsResolve },
-            data: { title: 'AOM | Comment', edit: false }
-          },
-          {
-            path: 'artist_profile/:id',
-            component: ArtistProfileComponent,
-            resolve: {
-              artist: ArtistProfileResolve,
-              media: ArtistMediaResolve,
-              follower: ArtistFollowerResolve,
-              comments: ArtistCommentsResolve
-            },
-            data: { title: 'AOM | Profile', edit: false }
-          },
-          {
-            path: 'vote',
-            component: VoteComponent,
-            data: { title: 'AOM | Vote', edit: false }
-          },
-          {
-            path: 'my-music',
-            component: MyMusicComponent,
-            canActivate: [AuthService],
-            data: { title: 'AOM | My music', edit: false }
-          },
-          {
-            path: 'my-profile',
-            component: MyProfileComponent,
-            canActivate: [AuthService],
-            data: { title: 'AOM | My profile', edit: false }
-          }
+          { path: '', component: DashboardComponent },
+          { path: 'whats-new', component: WhatsNewComponent, data: { title: "AOM | What's New", edit: false } },
+          { path: 'artist', component: ArtistComponent, data: { title: "AOM | Artist", edit: false } },
+          { path: 'artist_track_comment/:id', component: ArtistTrackConmmentsComponent, canActivate: [AuthService], data: { title: "AOM | Artist", edit: false } },
+          { path: 'artist_profile/:artist_id/track/:id/comments', component: TrackConmmentsComponent, resolve: { comment: TrackCommentResolve, artist: TrackArtistProfileResolve, track: TrackDetailResolve }, data: { title: "AOM | Track comment", edit: false } },
+          { path: 'artist_profile/:id/comments', component: ConmmentsComponent, resolve: { artist: ArtistProfileResolve, comments: ArtistCommentsResolve }, data: { title: "AOM | Comment", edit: false } },
+          { path: 'artist_profile/:id', component: ArtistProfileComponent, resolve: { artist: ArtistProfileResolve, media: ArtistMediaResolve, follower: ArtistFollowerResolve, comments: ArtistCommentsResolve }, data: { title: "AOM | Profile", edit: false } },
+          { path: 'vote', component: VoteComponent, data: { title: "AOM | Vote", edit: false } },
+          { path: 'my-music', component: MyMusicComponent, canActivate: [AuthService], data: { title: "AOM | My music", edit: false } },
+          { path: 'my-profile', component: MyProfileComponent, canActivate: [AuthService], data: { title: "AOM | My profile", edit: false } }
         ]
       }
     ])

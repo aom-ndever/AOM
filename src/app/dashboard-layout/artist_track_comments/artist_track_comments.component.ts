@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ArtistTrackCommentsService } from './artist_track_comments.service';
 import { ToastrService } from 'ngx-toastr';
-import { environment } from '../../../environments/environment';
+import { environment } from '../../../../src/environments/environment';
 import { ActivatedRoute } from "@angular/router";
 import swal from 'sweetalert2';
 import { Title } from '@angular/platform-browser';
