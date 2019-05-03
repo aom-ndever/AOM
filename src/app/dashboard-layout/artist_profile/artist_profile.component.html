@@ -71,7 +71,7 @@
               <div class="comments">
                 <h3>
                   <a href="javascript:;" routerLink="/artist_profile/{{artistdata._id}}/comments">Comments</a>
-                </h3>
+                </h3> 
                 <span>{{artistcomments.length}}</span>
                 <div class="comment-block" *ngFor="let comment of display_comment;">
                   <div class="s-name" *ngIf="comment.track_id">{{comment.track_id.name}}</div>

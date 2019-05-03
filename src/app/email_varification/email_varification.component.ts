@@ -2,7 +2,7 @@ import { Component, OnInit, Directive, forwardRef, Attribute } from '@angular/co
 import { FormGroup, FormBuilder, Validators, FormControl, AbstractControl, NG_VALIDATORS, Validator } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { EamilVarificationService } from './email_varification.service';
-import { environment } from '../../environments/environment';
+import { environment } from '../../../src/environments/environment';
 import { ActivatedRoute, Router } from '@angular/router'; 
 declare const gapi: any;
 

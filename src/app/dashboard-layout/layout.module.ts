@@ -76,9 +76,9 @@ import { ImageCropperModule } from 'ngx-image-cropper';
     RouterModule.forChild([
       {
         path: '',
-        component: DashboardLayoutComponent, data: { title: 'Dashboard' },
+        component: DashboardLayoutComponent,
         children: [
-          { path: '', component: DashboardComponent },
+          { path: '', component: DashboardComponent,data: { title: "AOM" , edit: false}},
           { path: 'whats-new', component: WhatsNewComponent, data: { title: "AOM | What's New", edit: false } },
           { path: 'artist', component: ArtistComponent, data: { title: "AOM | Artist", edit: false } },
           { path: 'artist_track_comment/:id', component: ArtistTrackConmmentsComponent, canActivate: [AuthService], data: { title: "AOM | Artist", edit: false } },

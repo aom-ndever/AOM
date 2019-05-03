@@ -699,6 +699,10 @@ export class MyMusicComponent implements OnInit, OnDestroy {
         return 'audio/mp3';
       case '464F524D':
         return 'audio/aiff';
+      
+        case '464F524D':
+        return 'audio/x-aiff';
+
       case '52494646':
         return 'audio/wav';
       case '664C6143':
@@ -722,8 +726,8 @@ export class MyMusicComponent implements OnInit, OnDestroy {
     switch (signature) {
       case '89504E47':
         return 'image/png';
-      case '47494638':
-        return 'image/gif';
+      // case '47494638':
+      //   return 'image/gif';
       case 'FFD8FFDB':
       case 'FFD8FFE0':
       case 'FFD8FFE1':

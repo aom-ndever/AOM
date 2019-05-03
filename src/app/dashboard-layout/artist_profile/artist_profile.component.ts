@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, QueryList, ViewChildren } from '@angular/core';
 import { ArtistProfileService } from './artist_profile.service';
 import { ToastrService } from 'ngx-toastr';
-import { environment } from '../../../environments/environment';
+import { environment } from '../../../../src/environments/environment';
 import { DataTableDirective } from 'angular-datatables';
 import { ActivatedRoute, Router } from "@angular/router";
 import { Lightbox } from 'angular2-lightbox';
@@ -363,7 +363,7 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
   followArtist(id: any, index: any) {
     let data = JSON.parse(localStorage.getItem('user'));
     if (data) {
-       this.artistfollower[index].length +1
+      //  this.artistfollower[index].length +1
       let data = {
         artist_id: id
       };
@@ -494,7 +494,8 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
       if (type == 'track') {
         this.artisttrack[index]['is_bookmarked'] = !this.artisttrack[index]['is_bookmarked'];
         let data = {
-          track_id: id
+          track_id: this.artistdata._id,
+           
         };
         this.ArtistProfileService.bookmarkTrack(data).subscribe((response) => {
           this.toastr.success(response['message'], 'Success!');

@@ -18,11 +18,11 @@
         </div>
       </div>
       <div class="col-lg-10 col-md-9 col-sm-8 col-xs-12">
-        <div class="contest-btn">
+         <!-- <div class="contest-btn">
           <a data-fancybox data-animation-duration="700" (click)="openContestModal(contest, t)" data-src="#submitcontest"
             href="javascript:;">Submit
             for a Contest</a>
-        </div>
+        </div> -->
         <div class="tab-content">
           <div class="tab-pane fade {{tab_cnt == 1 ? 'show active' : ''}}" id="mytracks">
             <div class="track-table">
@@ -64,10 +64,10 @@
                       <img src="img/start.png" alt="start">
                       <span>{{t.no_of_votes}} <br> <span>Votes</span></span>
                     </td>
-                    <!-- <td class="contest-btn" *ngIf="!t.is_submit">
+                     <td class="contest-btn" *ngIf="!t.is_submit">
                       <a data-fancybox data-animation-duration="700" (click)="openContestModal(contest, t)" data-src="#submitcontest"
                         href="javascript:;">Submit for a Contest</a>
-                    </td> -->
+                    </td>
                     <td class="action" colspan="2">
                       <div class="track-like" style="top:10px;">
                         <label class="switch" title="Track Download status">
@@ -82,7 +82,7 @@
                       </div>
                       <div class="track-comment">
                         <a href="javascript:;" title="Comment" routerLink="/artist_track_comment/{{t._id}}"><img src="img/comment.png"
-                            alt="Comment"><span class="{{active_tab_index == 1 ? 'new-up' : ''}}"></span></a>
+                            alt="Comment"><span class="new-up"></span></a>
                         <!-- <span class="new-up"></span> -->
                       </div>
                       <div class="track-price"><a href="javascript:;" title="Purchase">${{t.price}}</a></div>
@@ -180,7 +180,7 @@
         <span class="upl-img"><i class="fa fa-cloud-upload" aria-hidden="true"></i></span>
         <span class="up_text">Select Music</span>
         <input type="file" name="my_doc_upload" id="my_doc_upload" (change)="changeAudio($event)" multiple="false"
-          accept="MP3,.AIFF,.WAV,.FLAC,.AAC">
+          accept="mp3,.aiff,.wav,.flac,.vnd.dlna.adt,.x-aiff">
         <p class="instrution">AIFF,WAV,FLAC,MP3 or AAC, 3GB or less</p>
       </div>
       <div class="media-upload-btn" *ngIf="audio_file">

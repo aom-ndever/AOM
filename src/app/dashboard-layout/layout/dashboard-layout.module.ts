@@ -5,7 +5,7 @@ import { DashboardLayoutComponent } from './dashboard-layout.component';
 import { HeaderComponent } from '../header/header.component';
 import { FooterComponent } from '../footer/footer.component';
 import { FormsModule, ReactiveFormsModule  } from '@angular/forms';
-import { environment } from '../../../environments/environment';
+import { environment } from '../../../../src/environments/environment';
 import { TooltipModule } from 'ngx-bootstrap';
 import {AuthServiceConfig,FacebookLoginProvider,SocialLoginModule} from "angular5-social-login";
 // Configs 

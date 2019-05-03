@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 // import { Http, Headers, RequestOptions, Response } from '@angular/http';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import 'rxjs/add/operator/toPromise';
-import { environment } from '../../environments/environment';
+import { environment } from '../../../src/environments/environment';
 import { dashCaseToCamelCase } from '@angular/compiler/src/util';
 @Injectable()
 export class RegisterService {

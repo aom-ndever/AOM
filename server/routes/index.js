@@ -121,7 +121,7 @@ router.post('/artist_registration', async (req, res) => {
       if (req.files && req.files["image"]) {
         var file = req.files["image"];
         var dir = "./uploads/artist";
-        var mimetype = ["image/png", "image/jpeg", "image/jpg", "image/gif"];
+        var mimetype = ["image/png", "image/jpeg", "image/jpg",];
 
         if (mimetype.indexOf(file.mimetype) != -1) {
           if (!fs.existsSync(dir)) {
