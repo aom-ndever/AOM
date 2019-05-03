@@ -1,7 +1,12 @@
 <!doctype html>
 <html lang="en">
+
 <head>
+<<<<<<< HEAD
     <noscript>
+=======
+  <noscript>
+>>>>>>> 6cbe772c8f735c2ca56360f2c05de539cdb7934a
     <div>
       <h1 style="text-align: center;">Opps! Something went wrong.</h1>
       <h4 style="color:#4c4949; text-align: center;">Please Enable Javascript on your Browser</h4>
@@ -27,58 +32,69 @@
   <script src="assets/js/light.js"></script>
   <script src="https://js.stripe.com/v3/"></script>
   <style>
-    /*@sid loader overlay*/  
+    /*@sid loader overlay*/
     #loader {
-        position: fixed;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        z-index: 9999;
-        text-align: center;
-        vertical-align: middle;
-        filter: Alpha(Opacity=70);
-        opacity: 0.7;
-        background-color: black;
+      position: fixed;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 9999;
+      text-align: center;
+      vertical-align: middle;
+      filter: Alpha(Opacity=70);
+      opacity: 0.7;
+      background-color: black;
     }
-    #loader > img{
+
+    #loader>img {
       width: 100px;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%,-50%);
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
     }
+
     #loader i {
-        color: #46a3f5;
-        position: absolute;
-        transform: translate(-50%, -50%);
-        left: 50%;
-        top: 50%;
-        height: 48px;
-        width: 48px;
+      color: #46a3f5;
+      position: absolute;
+      transform: translate(-50%, -50%);
+      left: 50%;
+      top: 50%;
+      height: 48px;
+      width: 48px;
     }
   </style>
 </head>
+
 <body>
   <app-root>
+<<<<<<< HEAD
       <!-- <div id="loader">
         <img src="img/loader.gif"/>
           <!- <i class="fa fa-spinner fa-spin fa-3x" aria-hidden="true"></i> --
       </div> -->
+=======
+    <div id="loader">
+      Loading
+      <!-- <img src="img/loader.gif"/> -->
+      <!-- <i class="fa fa-spinner fa-spin fa-3x" aria-hidden="true"></i> -->
+    </div>
+>>>>>>> 6cbe772c8f735c2ca56360f2c05de539cdb7934a
   </app-root>
 </body>
 <script>
-  window.fbAsyncInit = function() {
-        FB.init({
-            appId      : '1924632120949205',
-            cookie     : true,  // enable cookies to allow the server to access // the session
-            xfbml      : true,  // parse social plugins on this page
-            version    : 'v2.9' // use graph api version 2.8
-        });
-    };
+  window.fbAsyncInit = function () {
+    FB.init({
+      appId: '1924632120949205',
+      cookie: true,  // enable cookies to allow the server to access // the session
+      xfbml: true,  // parse social plugins on this page
+      version: 'v2.9' // use graph api version 2.8
+    });
+  };
 
   // Load the SDK asynchronously
-  (function(d, s, id) {
+  (function (d, s, id) {
     var js, fjs = d.getElementsByTagName(s)[0];
     if (d.getElementById(id)) return;
     js = d.createElement(s); js.id = id;
@@ -86,4 +102,5 @@
     fjs.parentNode.insertBefore(js, fjs);
   }(document, 'script', 'facebook-jssdk'));
 </script>
+
 </html>

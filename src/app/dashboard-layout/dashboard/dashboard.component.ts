@@ -5,7 +5,7 @@ import { environment } from '../../../../src/environments/environment';
 import { MessageService } from '../../shared/message.service';
 import { Subscription } from 'rxjs/Subscription';
 import { element } from '../../../../node_modules/protractor';
-import * as socketClient from 'socket.io-client'
+import * as socketClient from 'socket.io-client';
 
 @Component({
   selector: 'app-dashboard',
@@ -64,9 +64,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.socket = socketClient(environment.socketUrl);
-    this.socket.emit("join", this.user.token);
-    this.socket.on("receive_artist_notification_count", (data) => {
-      console.log("socket data", data)
+    this.socket.emit('join', this.user.token);
+    this.socket.on('receive_artist_notification_count', (data) => {
+      console.log('socket data', data)
       this.MessageService.checkCount(data);
     });
     console.log('Dashboard componenet is running');
@@ -140,16 +140,16 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     data.forEach(ele => {
       this.images.push({
-        "source": ele.image ? this.track_url + ele.image : 'img/profile-img.png',
-        "alt": "",
-        "title": ele.name,
-        "name": ele.artist_id['first_name'] + ' ' + ele.artist_id['last_name'],
-        "location": ele && ele['state']['name'] ? ele['state']['name'] : '',
-        "type": ele.music_type['name'],
-        "alias": ele.music_type['alias'],
-        "audio": ele.audio,
-        "enable": true,
-        "artist_id": ele['artist_id'] ? ele['artist_id']['_id'] : null
+        'source': ele.image ? this.track_url + ele.image : 'img/profile-img.png',
+        'alt': '',
+        'title': ele.name,
+        'name': ele.artist_id['first_name'] + ' ' + ele.artist_id['last_name'],
+        'location': ele && ele['state']['name'] ? ele['state']['name'] : '',
+        'type': ele.music_type['name'],
+        'alias': ele.music_type['alias'],
+        'audio': ele.audio,
+        'enable': true,
+        'artist_id': ele['artist_id'] ? ele['artist_id']['_id'] : null
       });
     });
     this.getAllFollower();
@@ -164,7 +164,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   // Fiter
   filter(e: any) {
     // if (e.keyCode == 13) {
-      if (this.search_str.trim().length > 0) {
+    if (this.search_str.trim().length > 0) {
       let data = {
         search: this.search_str.trim(),
         music_type: this.music_type_index != -1 ? this.music_type_list[this.music_type_index]._id : ''

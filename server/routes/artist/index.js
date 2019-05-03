@@ -896,14 +896,16 @@ router.post("/submit_tracks", async (req, res) => {
         if (artist_participation.status == 2) {
             var contest_data = await contest_helper.get_contest_by_id(obj.contest_id);
             console.log('contest_data', contest_data);
-            return;
+
             var participate_data = await round_helper.get_round_by_id(obj.contest_id);
             console.log('participate_data', participate_data);
 
             if (contest_data.contest.contest_type == "special") {
                 var artist_data = await artist_helper.get_artist_by_id(artist_id);
                 artist_music = artist_data.artist.music_type._id;
-                if (artist_music == contest_data.contest.music_type) {
+                console.log('artist_music => ', artist_music);
+                console.log('contest_data.contest.music_type => ', contest_data.contest.music_type);
+                if ((artist_music).toString() == (contest_data.contest.music_type).toString()) {
                     var no_of_participant = contest_data.contest.no_of_participant + 1
                     var resp_data = await contest_helper.update_participant(obj.contest_id, no_of_participant);
                     var resp_data = await participate_helper.insert_track_round(obj);

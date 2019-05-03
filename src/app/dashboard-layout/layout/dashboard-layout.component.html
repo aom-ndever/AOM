@@ -6,51 +6,57 @@
 </div>
 
 <section class="player-wrapper " [style.display]="audio_instance_list.length > 0 ? 'block' : 'none'">
-  <div class="container">
-    <div class="row">
-      <div class="col-lg-11 col-md-12 audio_container">
-          <div id="audioplayer">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-11 col-md-12 audio_container">
+                <div id="audioplayer">
 
-              <button class="btn  prev_icon" (click)="prev()"><img src="img/next.png"/></button>
-              <button id="pButton" class="play" (click)="play()"></button>
-              <button class="btn  next_icon" (click)="next()"><img src="img/next.png"/></button>
-              <div class="audio_profile">
-                  <img src="{{audio_list[song_cnt] &&  audio_list[song_cnt]['image'] ? track_url+audio_list[song_cnt]['image'] : 'img/profile-img.png' }}"/>
-              </div>
-              <div class="audio_content">
-                <div class="audio_profile_name">
-                    <h3>{{audio_list[song_cnt] && audio_list[song_cnt]['name'] ? audio_list[song_cnt]['name'] : ''}}</h3>
-                    <span>{{audio_list.length > 0 && audio_list[song_cnt] && audio_list[song_cnt]['artist_id'] && audio_list[song_cnt]['artist_id']['first_name'] ? audio_list[song_cnt]['artist_id']['first_name'] : '' +" "+audio_list.length > 0 && audio_list[song_cnt] && audio_list[song_cnt]['artist_id'] &&  audio_list[song_cnt]['artist_id']['last_name'] ? audio_list[song_cnt]['artist_id']['last_name'] : ''  }}</span>
-                </div> 
-                <div class="volume_section">
-                    <img class="volume_btn" src="img/volume.png"/>
-                    <span>
-                        <input type="range" id="myRange" min="1" value="100" (change)="mangeVolumn($event)">
-                    </span>
-                    <div class="audio_time"><span id="running_time"></span> / <span id="total_time"></span></div>
-                </div>  
-                <div class="progress">
-                    <input type="range" id="song_prog" min="0" (change)="manageProgress($event)">
-                </div>
-                <!-- <div class="progress " id="timeline">
+                    <button class="btn  prev_icon" (click)="prev()"><img src="img/next.png" /></button>
+                    <button id="pButton" class="play" (click)="play()"></button>
+                    <button class="btn  next_icon" (click)="next()"><img src="img/next.png" /></button>
+                    <div class="audio_profile">
+                        <img
+                            src="{{audio_list[song_cnt] &&  audio_list[song_cnt]['image'] ? track_url+audio_list[song_cnt]['image'] : 'img/profile-img.png' }}" />
+                    </div>
+                    <div class="audio_content">
+                        <div class="audio_profile_name">
+                            <h3>{{audio_list[song_cnt] && audio_list[song_cnt]['name'] ? audio_list[song_cnt]['name'] : ''}}
+                            </h3>
+                            <span>{{audio_list.length > 0 && audio_list[song_cnt] && audio_list[song_cnt]['artist_id'] && audio_list[song_cnt]['artist_id']['first_name'] ? audio_list[song_cnt]['artist_id']['first_name'] : '' +" "+audio_list.length > 0 && audio_list[song_cnt] && audio_list[song_cnt]['artist_id'] &&  audio_list[song_cnt]['artist_id']['last_name'] ? audio_list[song_cnt]['artist_id']['last_name'] : ''  }}</span>
+                        </div>
+                        <div class="volume_section">
+                            <img class="volume_btn" src="img/volume.png" />
+                            <span>
+                                <input type="range" id="myRange" min="1" value="100" (change)="mangeVolumn($event)">
+                            </span>
+                            <div class="audio_time"><span id="running_time"></span> / <span id="total_time"></span>
+                            </div>
+                        </div>
+                        <div class="progress">
+                            <input type="range" id="song_prog" min="0" (change)="manageProgress($event)">
+                        </div>
+                        <!-- <div class="progress " id="timeline">
                         <div class="progress-bar" id="playhead" role="progressbar"  aria-valuemax="100" style="width:10%">
                           <span class="sr-only">70% Complete</span>
                         </div>
                 </div> -->
-              </div>
-              <div class="music_icons">
-                  <a href="javascript:;" *ngIf="user && audio_list[song_cnt] && audio_list[song_cnt]['is_downloadable']" (click)="downloadTrack()"><img src="img/download.png"/></a>
-                   <span class="audio_price">${{audio_list[song_cnt] && audio_list[song_cnt]['price'] ? audio_list[song_cnt]['price'] : '' }}</span>
-                  <a href="javascript:;" (click)="openShareTrackModel(shareTrack)"><img src="img/share.png"/></a>
-              </div>
-          </div>
-        <div class="aom_audio_player">
+                    </div>
+                    <div class="music_icons">
+                        <a href="javascript:;"
+                            *ngIf="user && audio_list[song_cnt] && audio_list[song_cnt]['is_downloadable']"
+                            (click)="downloadTrack()"><img src="img/download.png" /></a>
+                        <span
+                            class="audio_price">${{audio_list[song_cnt] && audio_list[song_cnt]['price'] ? audio_list[song_cnt]['price'] : '' }}</span>
+                        <a href="javascript:;" (click)="openShareTrackModel(shareTrack)"><img src="img/share.png" /></a>
+                    </div>
+                </div>
+                <div class="aom_audio_player">
+                </div>
+            </div>
         </div>
-      </div>
     </div>
-  </div>
 </section>
-<ng-template #shareTrack let-c="close" let-d="dismiss" >
+<ng-template #shareTrack let-c="close" let-d="dismiss">
     <div class="modal_login_wrapper">
         <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
             <span aria-hidden="true">&times;</span>
@@ -60,7 +66,8 @@
         <div class="shared_popup">
             <div class="col-12 text-center shared_popup_header">
                 <h4>Share This Track</h4>
-                <span>You are Sharing the "{{audio_list && audio_list[this.song_cnt] ? audio_list[this.song_cnt]['name'] : '' }}" Track</span>
+                <span>You are Sharing the
+                    "{{audio_list && audio_list[this.song_cnt] ? audio_list[this.song_cnt]['name'] : '' }}" Track</span>
             </div>
             <div class="row">
                 <div class="col-sm-6">
@@ -70,12 +77,14 @@
                         </button>
                     </div>
                     <div class="col-12">
-                        <button class="btn btn-success social_button comment_btn" (click)="openPhoneShareTrackModel(phoneno)">
+                        <button class="btn btn-success social_button comment_btn"
+                            (click)="openPhoneShareTrackModel(phoneno)">
                             <i class="fa fa-comment "></i> SMS
                         </button>
                     </div>
                     <div class="col-12">
-                        <button class="btn btn-primary social_button link_btn" (click)="copy_link()" tooltip="Link Coppied" triggers="click">
+                        <button class="btn btn-primary social_button link_btn" (click)="copy_link()"
+                            tooltip="Link Coppied" triggers="click">
                             <i class="fa fa-link"></i> Copy Link
                         </button>
                     </div>
@@ -87,7 +96,8 @@
                         </button>
                     </div>
                     <div class="col-12">
-                        <button class="btn btn-danger social_button email_btn" (click)="openEmailShareTrackModel(email)">
+                        <button class="btn btn-danger social_button email_btn"
+                            (click)="openEmailShareTrackModel(email)">
                             <i class="fa fa-envelope"></i> Email
                         </button>
                     </div>
@@ -99,52 +109,65 @@
 
 <ng-template #email let-c="close" let-d="dismiss">
     <div class="modal-body">
-      <div class="forget_password_modal">
-        <!-- <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+        <div class="forget_password_modal">
+            <!-- <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
             <span aria-hidden="true">&times;</span>
         </button> -->
-        <form [formGroup]="share_form">
-            <h3 class="forget_password_header">Share through email</h3>
-            <div class="col-sm-12">
-                <div class="form-group">
-                    <label class="control-label custom_form_label">Email Id</label>
-                    <input type="email" class="form-control custom_form" formControlName="email" name="email" [(ngModel)]="share_data['email']"  placeholder="Enter Email"/>
-                    <div class="cust_err_msg" *ngIf="share_form_validation && !share_form.controls['email'].valid">
-                        <span *ngIf="share_form.controls['email'].errors['required']" class="text-danger">Email is required.</span>
-                        <span *ngIf="!share_form.controls['email'].errors['required'] && share_form.controls['email'].errors['email']" class="text-danger">Enter valid email.</span>
+            <form [formGroup]="share_form">
+                <h3 class="forget_password_header">Share through email</h3>
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label class="control-label custom_form_label">Email Id</label>
+                        <input type="email" class="form-control custom_form" formControlName="email" name="email"
+                            [(ngModel)]="share_data['email']" placeholder="Enter Email" />
+                        <div class="cust_err_msg" *ngIf="share_form_validation && !share_form.controls['email'].valid">
+                            <span *ngIf="share_form.controls['email'].errors['required']" class="text-danger">Email is
+                                required.</span>
+                            <span
+                                *ngIf="!share_form.controls['email'].errors['required'] && share_form.controls['email'].errors['email']"
+                                class="text-danger">Enter valid email.</span>
+                        </div>
+                    </div>
+                    <div class="form-group text-right">
+                        <button class="btn forget_btn" (click)="share_via_email(share_form.valid)"
+                            [disabled]="show_spinner">Submit <i *ngIf="show_spinner"
+                                class="fa fa-spinner fa-spin"></i></button>
                     </div>
                 </div>
-                <div class="form-group text-right">
-                    <button class="btn forget_btn" (click)="share_via_email(share_form.valid)" [disabled]="show_spinner">Submit <i *ngIf="show_spinner" class="fa fa-spinner fa-spin"></i></button>
-                </div>
-            </div>
-        </form>
-     </div>
+            </form>
+        </div>
     </div>
 </ng-template>
 
 <ng-template #phoneno let-c="close" let-d="dismiss">
     <div class="modal-body">
-      <div class="forget_password_modal">
-        <!-- <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+        <div class="forget_password_modal">
+            <!-- <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
             <span aria-hidden="true">&times;</span>
         </button> -->
-        <form [formGroup]="share_form_phone">
-            <h3 class="forget_password_header">Share through sms</h3>
-            <div class="col-sm-12">
-                <div class="form-group">
-                    <label class="control-label custom_form_label">Phone Number</label>
-                    <input type="email" class="form-control custom_form" formControlName="phone" name="phone" [(ngModel)]="share_data['phone_no']"  placeholder="Enter Phone Number"/>
-                    <div class="cust_err_msg" *ngIf="share_form_validation && !share_form_phone.controls['phone'].valid">
-                        <span *ngIf="share_form_phone.controls['phone'].errors['required']" class="text-danger">Phone Number is required.</span>
-                        <span *ngIf="!share_form_phone.controls['phone'].errors['required'] && share_form_phone.controls['phone'].errors['minlength'] || share_form_phone.controls['phone'].errors['maxlength'] " class="text-danger">Enter valid phone Number.</span>
+            <form [formGroup]="share_form_phone">
+                <h3 class="forget_password_header">Share through sms</h3>
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label class="control-label custom_form_label">Phone Number</label>
+                        <input type="email" class="form-control custom_form" formControlName="phone" name="phone"
+                            [(ngModel)]="share_data['phone_no']" placeholder="Enter Phone Number" />
+                        <div class="cust_err_msg"
+                            *ngIf="share_form_validation && !share_form_phone.controls['phone'].valid">
+                            <span *ngIf="share_form_phone.controls['phone'].errors['required']"
+                                class="text-danger">Phone Number is required.</span>
+                            <span
+                                *ngIf="!share_form_phone.controls['phone'].errors['required'] && share_form_phone.controls['phone'].errors['minlength'] || share_form_phone.controls['phone'].errors['maxlength'] "
+                                class="text-danger">Enter valid phone Number.</span>
+                        </div>
+                    </div>
+                    <div class="form-group text-right">
+                        <button class="btn forget_btn" (click)="share_via_sms(share_form_phone.valid)"
+                            [disabled]="show_spinner">Submit <i *ngIf="show_spinner"
+                                class="fa fa-spinner fa-spin"></i></button>
                     </div>
                 </div>
-                <div class="form-group text-right">
-                    <button class="btn forget_btn" (click)="share_via_sms(share_form_phone.valid)" [disabled]="show_spinner">Submit <i *ngIf="show_spinner" class="fa fa-spinner fa-spin"></i></button>
-                </div>
-            </div>
-        </form>
-     </div>
+            </form>
+        </div>
     </div>
 </ng-template>
