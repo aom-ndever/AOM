@@ -2,8 +2,10 @@
   <div class="container">
     <div class="row">
       <div class="col-md-12">
-        <div class="cover-img" style="background:url('{{artistdata['cover_image'] ? artist_img_url +artistdata['cover_image'] : 'img/cover.png'}}');">
-          <img src="{{artistdata['cover_image'] ? artist_img_url +artistdata['cover_image'] : 'img/cover.png'}}" alt="Cover Image">
+        <div class="cover-img"
+          style="background:url('{{artistdata['cover_image'] ? artist_img_url +artistdata['cover_image'] : 'img/cover.png'}}');">
+          <img src="{{artistdata['cover_image'] ? artist_img_url +artistdata['cover_image'] : 'img/cover.png'}}"
+            alt="Cover Image">
         </div>
       </div>
       <div class="col-md-12">
@@ -11,7 +13,8 @@
           <div class="row">
             <div class="col-md-3 col-sm-4 col-xs-4">
               <div class="profile-img">
-                <img defaultImage="img/loader.gif" offset="100" lazyLoad="{{artistdata['image'] ? artist_img_url +artistdata['image'] : 'img/profile-img.png'}}"
+                <img defaultImage="img/loader.gif" offset="100"
+                  lazyLoad="{{artistdata['image'] ? artist_img_url +artistdata['image'] : 'img/profile-img.png'}}"
                   alt="Profile Images">
               </div>
               <div class="follow-btn">
@@ -30,28 +33,33 @@
                 <h3>Social</h3>
                 <ul>
                   <li>
-                    <a [href]="artistdata.social_media['facebook'] ? artistdata.social_media['facebook'] : 'javascript:void(0)'">
+                    <a
+                      [href]="artistdata.social_media['facebook'] ? artistdata.social_media['facebook'] : 'javascript:void(0)'">
                       <i class="fa fa-facebook-official" aria-hidden="true"></i>
                     </a>
                   </li>
                   <li>
-                    <a [href]="artistdata.social_media['instagram'] ? artistdata.social_media['instagram'] : 'javascript:void(0)'">
+                    <a
+                      [href]="artistdata.social_media['instagram'] ? artistdata.social_media['instagram'] : 'javascript:void(0)'">
                       <img _ngcontent-c3="" alt="" src="img/inst2.png" style="vertical-align: baseline;">
                     </a>
                   </li>
                   <li>
-                    <a [href]="artistdata.social_media['twitter'] ? artistdata.social_media['twitter'] : 'javascript:void(0)'">
+                    <a
+                      [href]="artistdata.social_media['twitter'] ? artistdata.social_media['twitter'] : 'javascript:void(0)'">
                       <i aria-hidden="true" class="fa fa-twitter"></i>
                     </a>
                   </li>
 
                   <li>
-                    <a [href]="artistdata.social_media['youtube'] ? artistdata.social_media['youtube'] : 'javascript:void(0)'">
+                    <a
+                      [href]="artistdata.social_media['youtube'] ? artistdata.social_media['youtube'] : 'javascript:void(0)'">
                       <i class="fa fa-youtube-play" aria-hidden="true"></i>
                     </a>
                   </li>
                   <li>
-                    <a [href]="artistdata.social_media['sound_cloud'] ? artistdata.social_media['sound_cloud'] : 'javascript:void(0)'">
+                    <a
+                      [href]="artistdata.social_media['sound_cloud'] ? artistdata.social_media['sound_cloud'] : 'javascript:void(0)'">
                       <i class="fa fa-soundcloud" aria-hidden="true"></i>
                     </a>
                   </li>
@@ -62,7 +70,8 @@
                 <span>{{artistfollower.length}}</span>
                 <ul>
                   <li *ngFor="let follower of artistfollower;">
-                    <img src="{{follower && follower['user_id'] && follower['user_id'].image ? user_img_url+follower['user_id'].image : 'img/upload1.png'}}"
+                    <img
+                      src="{{follower && follower['user_id'] && follower['user_id'].image ? user_img_url+follower['user_id'].image : 'img/upload1.png'}}"
                       alt="Fan">
                   </li>
                 </ul>
@@ -71,12 +80,13 @@
               <div class="comments">
                 <h3>
                   <a href="javascript:;" routerLink="/artist_profile/{{artistdata._id}}/comments">Comments</a>
-                </h3>
+                </h3> 
                 <span>{{artistcomments.length}}</span>
                 <div class="comment-block" *ngFor="let comment of display_comment;">
                   <div class="s-name" *ngIf="comment.track_id">{{comment.track_id.name}}</div>
                   <div class="s-img">
-                    <img src="{{comment &&  comment.user_id && comment.user_id.image ? user_img_url+comment.user_id.image : 'img/upload1.png' }}"
+                    <img
+                      src="{{comment &&  comment.user_id && comment.user_id.image ? user_img_url+comment.user_id.image : 'img/upload1.png' }}"
                       alt="img">
                   </div>
                   <div class="cm-date-name">
@@ -109,8 +119,8 @@
                 </span>
                 <span *ngIf="show_more_flag">{{artistdata.description}}
                 </span>
-                <a href="javascript:;" (click)="show_more()" *ngIf="artistdata.description && artistdata.description.length > 50"
-                  class="more">{{show_more_flag
+                <a href="javascript:;" (click)="show_more()"
+                  *ngIf="artistdata.description && artistdata.description.length > 50" class="more">{{show_more_flag
                   ? 'less...' : 'more...'}}</a>
               </div>
               <div class="profile-tabs-det">
@@ -135,7 +145,8 @@
                   <div id="tracks" class="tab-pane fade {{active_tab_index == 1 ? 'active show' : ''}}">
                     <div class="track-wrapper">
                       <div class="track-select-wrap">
-                        <select class="form-control" name="artist_track" id="gender" (change)="sortArtistTrack(0, $event.target.value)">
+                        <select class="form-control" name="artist_track" id="gender"
+                          (change)="sortArtistTrack(0, $event.target.value)">
                           <option value="-1">Newest First</option>
                           <option value="1">Newest Last</option>
                         </select>
@@ -148,10 +159,12 @@
                               <td class="serial-num music_numb">{{(artist_track_row_cnt + i)}}.</td>
                               <td class="music_play">
                                 <div class="artist-profile-custom-action-btn">
-                                  <a [style.display]="!audio_ins[i] ? 'block' : 'none'" (click)="playAudio(artist.audio, i, artisttrack)"
-                                    class="play_img"><img src="img/play_icon.png" /></a>
-                                  <a [style.display]="audio_ins[i] ? 'block' : 'none'" (click)="stopAudio(i, artisttrack)"
-                                    class="pause_img"><img src="img/pause_icon.png" /></a>
+                                  <a [style.display]="!audio_ins[i] ? 'block' : 'none'"
+                                    (click)="playAudio(artist.audio, i, artisttrack)" class="play_img"><img
+                                      src="img/play_icon.png" /></a>
+                                  <a [style.display]="audio_ins[i] ? 'block' : 'none'"
+                                    (click)="stopAudio(i, artisttrack)" class="pause_img"><img
+                                      src="img/pause_icon.png" /></a>
                                 </div>
                                 <!-- <img src="img/play.png " alt="Pause "  [style.display]="!audio_ins[i] ? 'block' : 'none'" (click)="playAudio(artist.audio, i, artisttrack)">
                                     <img src="img/pause.png " alt="Pause "  [style.display]="audio_ins[i] ? 'block' : 'none'" (click)="stopAudio(i, artisttrack)"> -->
@@ -161,7 +174,8 @@
                               <td class="track-det" colspan="2">
                                 <div class="track-pic">
                                   <a href="javascript:;">
-                                    <img defaultImage="img/loader.gif" offset="100" lazyLoad="{{artist.image ? track_url+artist.image : 'img/upload1.png'}}"
+                                    <img defaultImage="img/loader.gif" offset="100"
+                                      lazyLoad="{{artist.image ? track_url+artist.image : 'img/upload1.png'}}"
                                       style="height:50px;width:50px;" alt="Track Image">
                                   </a>
                                 </div>
@@ -184,36 +198,38 @@
                               <td class="action music_action" colspan="2">
                                 <div class="cmt">
                                   <!-- {{artist.is_bookmarked}} -->
-                                  <a href="javascript:;" title="Bookmarked Track" class="liked" (click)="bookMarkTrack(artist._id, i, 'track')">
+                                  <a href="javascript:;" title="Bookmarked Track" class="liked"
+                                    (click)="bookMarkTrack(artist._id, i, 'track')">
                                     <i class="fa {{artist['is_bookmarked'] ? 'fa-heart' : 'fa-heart-o'}}"></i>
                                   </a>
                                 </div>
                                 <div class="cmt-like">
                                   <a href="javascript:;" title="Like" class="liked" (click)="likeTrack(artist._id, i)">
-                                      
-                                      <span *ngIf="artist.no_of_likes > 0; else templateName">
-                                          <img class=""  src="img/like-color.jpg"
-                                      alt="" style="display:block;">
-                                      </span>
-                                      
-                                      <ng-template #templateName>
-                                          <img class="" src="img/likehand.png" alt="">
-                                      </ng-template>
-                                      
+
+                                    <span *ngIf="artist.no_of_likes > 0; else templateName">
+                                      <img class="" src="img/like-color.jpg" alt="" style="display:block;">
+                                    </span>
+
+                                    <ng-template #templateName>
+                                      <img class="" src="img/likehand.png" alt="">
+                                    </ng-template>
+
                                     {{artist.no_of_likes}}
                                   </a>
                                 </div>
                                 <div class="cmt">
-                                  <a href="javascript:;" title="Comment" (click)="goToComment(artistdata['_id'], artist._id)">
-                                      <span *ngIf="artist.no_of_comments > 0; else templatecomment">
-                                          <img class="" src="img/comment3.png" alt="">
-                                      </span>
-                                      <ng-template #templatecomment>
-                                          <img class="" src="img/comment.png" alt="">
-                                      </ng-template>
+                                  <a href="javascript:;" title="Comment"
+                                    (click)="goToComment(artistdata['_id'], artist._id)">
+                                    <span *ngIf="artist.no_of_comments > 0; else templatecomment">
+                                      <img class="" src="img/comment3.png" alt="">
+                                    </span>
+                                    <ng-template #templatecomment>
+                                      <img class="" src="img/comment.png" alt="">
+                                    </ng-template>
 
 
-                                  {{artist.no_of_comments}}</a>
+                                    {{artist.no_of_comments}}
+                                  </a>
                                 </div>
                                 <div class="download" *ngIf="artist.is_downloadable">
                                   <a href="javascript:;" title="Download">
@@ -226,7 +242,8 @@
                                   </a>
                                 </div>
                                 <div class="share">
-                                  <a href="javascript:;" title="Share" (click)="openShareTrackModel(shareTrack, i, 'track')">
+                                  <a href="javascript:;" title="Share"
+                                    (click)="openShareTrackModel(shareTrack, i, 'track')">
                                     <img src="img/share.png" alt="">
                                   </a>
                                 </div>
@@ -248,10 +265,11 @@
                     <div class="alert alert-info" *ngIf="artistmedia.length <= 0">No data available.</div>
                     <div class="media-wrapper">
                       <div class="" *ngFor="let media of artistmedia; let i = index;">
-                        <a class="img-wrap" href="javascript:;" data-fancybox="images" data-width="1500" data-height="1000">
+                        <a class="img-wrap" href="javascript:;" data-fancybox="images" data-width="1500"
+                          data-height="1000">
                           <!-- <img src="{{media.image ? artist_media_url+media.image : 'img/no-image.png'}}" alt="Media"> -->
-                          <img defaultImage="img/loader.gif" offset="100" lazyLoad="{{media.image ? artist_media_url+media.image : 'img/no-image.png'}}"
-                            alt="Media">
+                          <img defaultImage="img/loader.gif" offset="100"
+                            lazyLoad="{{media.image ? artist_media_url+media.image : 'img/no-image.png'}}" alt="Media">
                         </a>
                         <video class="media_video" *ngIf="media.link" width="218" height="138" controls>
                           <source [src]="media.link">
@@ -277,10 +295,12 @@
                               <td class="serial-num">{{ranking_track_row_cnt+i}}.</td>
                               <td class="play-option">
                                 <div class="artist-profile-custom-action-btn">
-                                  <a [style.display]="!audio_ins[i] ? 'block' : 'none'" (click)="playRankAudio(rank.audio, i, rankingtrack)"
-                                    class="play_img"><img src="img/play_icon.png" /></a>
-                                  <a [style.display]="audio_ins[i] ? 'block' : 'none'" (click)="stopRankAudio(i, rankingtrack)"
-                                    class="pause_img"><img src="img/pause_icon.png" /></a>
+                                  <a [style.display]="!audio_ins[i] ? 'block' : 'none'"
+                                    (click)="playRankAudio(rank.audio, i, rankingtrack)" class="play_img"><img
+                                      src="img/play_icon.png" /></a>
+                                  <a [style.display]="audio_ins[i] ? 'block' : 'none'"
+                                    (click)="stopRankAudio(i, rankingtrack)" class="pause_img"><img
+                                      src="img/pause_icon.png" /></a>
                                 </div>
                                 <!-- <a href="javascript:;">
                                     <img src="img/play.png " alt="Pause "  [style.display]="!rank_audio_ins[i] ? 'block' : 'none'" (click)="playRankAudio(rank.audio, i, rankingtrack)">
@@ -291,7 +311,8 @@
                               <td class="track-det" colspan="2">
                                 <div class="track-pic">
                                   <a href="javascript:;">
-                                    <img defaultImage="img/loader.gif" offset="100" lazyLoad="{{rank.image ? track_url+rank.image : 'img/upload1.png'}}"
+                                    <img defaultImage="img/loader.gif" offset="100"
+                                      lazyLoad="{{rank.image ? track_url+rank.image : 'img/upload1.png'}}"
                                       alt="Track Image" style="height: 50px;width: 50px;;">
                                   </a>
                                 </div>
@@ -312,14 +333,16 @@
                               </td>
                               <td class="action music_action" colspan="2">
                                 <div class="cmt">
-                                  <a href="javascript:;" title="Bookmark Track" class="liked" (click)="bookMarkTrack(rank._id, i, 'rank')">
+                                  <a href="javascript:;" title="Bookmark Track" class="liked"
+                                    (click)="bookMarkTrack(rank._id, i, 'rank')">
                                     <i class="fa {{rank['is_bookmarked'] ? 'fa-heart' : 'fa-heart-o'}}"></i>
                                   </a>
                                 </div>
                                 <div class="cmt-like">
-                                  <a class="liked" title="Like" href="javascript:;" (click)="likeRankTrack(rank._id, i)">
-                                    <img class="like_bw" src="img/likehand.png" alt=""><img class="like_active" src="img/like-color.jpg"
-                                      alt="">{{rank.no_of_likes}}</a>
+                                  <a class="liked" title="Like" href="javascript:;"
+                                    (click)="likeRankTrack(rank._id, i)">
+                                    <img class="like_bw" src="img/likehand.png" alt=""><img class="like_active"
+                                      src="img/like-color.jpg" alt="">{{rank.no_of_likes}}</a>
                                 </div>
                                 <div class="cmt">
                                   <a href="javascript:;" title="Comment" (click)="goToComment(rank._id)">
@@ -331,17 +354,19 @@
                                   </a>
                                 </div>
                                 <div class="cmt">
-                                  <a href="javascript:;" title="Download" title="Purchase" (click)="openCardModel(purchase, i, 'rank')">
+                                  <a href="javascript:;" title="Download" title="Purchase"
+                                    (click)="openCardModel(purchase, i, 'rank')">
                                     ${{rank.price}}
                                   </a>
                                 </div>
                                 <div class="share">
-                                  <a href="javascript:;" title="Share" (click)="openShareTrackModel(shareTrack, i, 'rank')">
+                                  <a href="javascript:;" title="Share"
+                                    (click)="openShareTrackModel(shareTrack, i, 'rank')">
                                     <img src="img/share.png" alt="">
                                   </a>
                                 </div>
                               </td>
-                            
+
                             </tr>
                           </tbody>
                           <tbody *ngIf="rankingtrack?.length == 0">
@@ -421,11 +446,13 @@
         <div class="col-sm-12">
           <div class="form-group">
             <label class="control-label custom_form_label">Email Id</label>
-            <input type="email" class="form-control custom_form" formControlName="email" name="email" [(ngModel)]="share_data['email']"
-              placeholder="Enter Email" />
+            <input type="email" class="form-control custom_form" formControlName="email" name="email"
+              [(ngModel)]="share_data['email']" placeholder="Enter Email" />
             <div class="cust_err_msg" *ngIf="share_form_validation && !share_form.controls['email'].valid">
-              <span *ngIf="share_form.controls['email'].errors['required']" class="text-danger">Email is required.</span>
-              <span *ngIf="!share_form.controls['email'].errors['required'] && share_form.controls['email'].errors['email']"
+              <span *ngIf="share_form.controls['email'].errors['required']" class="text-danger">Email is
+                required.</span>
+              <span
+                *ngIf="!share_form.controls['email'].errors['required'] && share_form.controls['email'].errors['email']"
                 class="text-danger">Enter valid email.</span>
             </div>
           </div>
@@ -450,17 +477,19 @@
         <div class="col-sm-12">
           <div class="form-group">
             <label class="control-label custom_form_label">Phone Number</label>
-            <input type="email" class="form-control custom_form" formControlName="phone" name="phone" [(ngModel)]="share_data['phone_no']"
-              placeholder="Enter Phone Number" />
+            <input type="email" class="form-control custom_form" formControlName="phone" name="phone"
+              [(ngModel)]="share_data['phone_no']" placeholder="Enter Phone Number" />
             <div class="cust_err_msg" *ngIf="share_form_validation && !share_form_phone.controls['phone'].valid">
               <span *ngIf="share_form_phone.controls['phone'].errors['required']" class="text-danger">Phone Number is
                 required.</span>
-              <span *ngIf="!share_form_phone.controls['phone'].errors['required'] && share_form_phone.controls['phone'].errors['minlength'] || share_form_phone.controls['phone'].errors['maxlength'] "
+              <span
+                *ngIf="!share_form_phone.controls['phone'].errors['required'] && share_form_phone.controls['phone'].errors['minlength'] || share_form_phone.controls['phone'].errors['maxlength'] "
                 class="text-danger">Enter valid phone Number.</span>
             </div>
           </div>
           <div class="form-group text-right">
-            <button class="btn forget_btn" (click)="share_via_sms(share_form_phone.valid)" [disabled]="show_spinner">Submit
+            <button class="btn forget_btn" (click)="share_via_sms(share_form_phone.valid)"
+              [disabled]="show_spinner">Submit
               <i *ngIf="show_spinner" class="fa fa-spinner fa-spin"></i></button>
           </div>
         </div>
@@ -478,7 +507,8 @@
       <form id="payment-form">
         <div class="col-12 text-center shared_popup_header">
           <h4>Purchase Track</h4>
-          <span>You are going to purchase the "{{track_data && track_data['name'] ? track_data['name'] : '' }}" Track.</span>
+          <span>You are going to purchase the "{{track_data && track_data['name'] ? track_data['name'] : '' }}"
+            Track.</span>
         </div>
         <div class="col-sm-12">
           <!-- <div class="form-group">

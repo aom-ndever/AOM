@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
-
 import { ChartModule } from 'angular-highcharts';
-import { AmChartsModule } from "@amcharts/amcharts3-angular";
+import { AmChartsModule } from '@amcharts/amcharts3-angular';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { DataTablesModule } from 'angular-datatables';
@@ -24,7 +23,6 @@ import { DashboardLayoutModule } from './layout/dashboard-layout.module';
 import { CarouselModule } from '../shared/carousel/carousel.module';
 import { HttpModule } from '@angular/http';
 import { HttpClientModule } from '@angular/common/http'
-
 import { HeaderService } from './header/header.service';
 import { MyProfileService } from './my_profile/myProfile.service';
 import { MyMusicService } from './my_music/my_music.service';
@@ -51,7 +49,6 @@ import { LightboxModule } from 'angular2-lightbox';
 import { TimeAgoPipe } from 'time-ago-pipe';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AuthService } from '../shared/auth.service';
-
 import { ImageCropperModule } from 'ngx-image-cropper';
 
 @NgModule({
@@ -73,7 +70,7 @@ import { ImageCropperModule } from 'ngx-image-cropper';
     AutoCompleteModule,
     MultiSelectModule,
     LazyLoadImageModule,
-    RouterModule.forChild([
+     RouterModule.forChild([
       {
         path: '',
         component: DashboardLayoutComponent, data: { title: 'Dashboard' },

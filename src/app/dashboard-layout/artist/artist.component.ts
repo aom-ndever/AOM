@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ArtistService } from './artist.service';
 import { ToastrService } from 'ngx-toastr';
-import { environment } from '../../../environments/environment';
+import { environment } from '../../../../src/environments/environment';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 
@@ -31,6 +31,7 @@ export class ArtistComponent implements OnInit {
   audio_ins: any = [];
   state_list: any = [];
   my_follower_list: any = [];
+  length: any = 10;
 
   constructor(
     private ArtistService: ArtistService,
@@ -152,7 +153,9 @@ export class ArtistComponent implements OnInit {
     // if (e.keyCode == 13) {
     if (this.search_str.trim().length > 0) {
       let data = {
-        search: this.search_str.trim()
+        search: this.search_str.trim(),
+        start:0,
+        length:this.length
       };
       this.getAllArtistV1Data(data);
     }
@@ -170,6 +173,8 @@ export class ArtistComponent implements OnInit {
   // advanceFilter
   advanceFilter() {
     let data = {
+      start:0,
+      length : this.length,
       "filter": []
     };
     if (this.adv_filter.music_type && this.adv_filter.music_type != "") {
@@ -186,6 +191,7 @@ export class ArtistComponent implements OnInit {
       // });
     }
     this.show_filter = false;
+    this.show_loader = true;
     this.getAllArtistV1Data(data);
   }
 

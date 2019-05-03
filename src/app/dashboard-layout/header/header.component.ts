@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Subscription } from 'rxjs/Subscription';
 import { HeaderService } from './header.service';
-import { environment } from '../../../environments/environment';
+import { environment } from '../../../../src/environments/environment';
 import { MessageService } from '../../shared/message.service';
 import { AuthService, FacebookLoginProvider } from 'angular5-social-login';
 declare var FB: any;
@@ -261,8 +261,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
   logout() {
     localStorage.removeItem('user');
     this.user = '';
-    this.router.navigate(['']);
-    this.toastr.success('Logged off', 'Success!');
+    window.location.replace('');
+    // this.router.navigate(['']);
+    // this.toastr.success('Logged off', 'Success!');
   }
   toggleMainMenu() {
     this.toggleMenu = !this.toggleMenu;

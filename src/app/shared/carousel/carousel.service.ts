@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 // import { Http, Headers, RequestOptions, Response } from '@angular/http';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import 'rxjs/add/operator/toPromise';
-import { environment } from '../../../environments/environment';
+import { environment } from '../../../../src/environments/environment';
 @Injectable()
 export class CarouselService {
   private api_host : any = environment.API_URL;

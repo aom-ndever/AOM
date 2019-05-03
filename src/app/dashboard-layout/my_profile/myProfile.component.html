@@ -43,10 +43,12 @@
                                                     <div class="upload-cover">
                                                         <img [src]="default_profile_img" alt="Edit cover Image">
                                                         <span class="up_text">Update Photo</span>
-                                                        <input type="file" name="upload" id="cover_upload"
+                                                        <input type="file" name="upload" id="cover_upload" 
                                                             data-toggle="modal" data-target="#cropImagePop"
                                                             (change)="updateProfileImage($event)"
-                                                            accept="image/png,image/jpg,image/jpeg">
+                                                            accept="image/png,image/jpg,image/jpeg"
+                                                            
+                                                             />
 
                                                         <!-- <div class="modal fade" id="cropImagePop" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                                                                 <div class="modal-dialog">
@@ -109,11 +111,11 @@
                                                             href="javascript:;" class="delete"
                                                             (click)="removeArtistImage()"><i
                                                                 class="fa fa-trash"></i></a>
-                                                        <!-- <div class="heading">
+                                                         <div class="heading">
                                                                     <div class="cust_err_msg" *ngIf="artist_validation[5]">
                                                                       <span class="text-danger">Avatar is required</span>
                                                                     </div>
-                                                                  </div> -->
+                                                                  </div> 
                                                     </div>
                                                 </div>
                                             </div>

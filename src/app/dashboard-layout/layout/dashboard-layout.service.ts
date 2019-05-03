@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams, HttpRequest } from '@angular/common/http';
 import 'rxjs/add/operator/toPromise';
-import { environment } from '../../../environments/environment';
+import { environment } from '../../../../src/environments/environment';
 @Injectable()
 export class DashboardLayoutService {
     private api_host : any = environment.API_URL;

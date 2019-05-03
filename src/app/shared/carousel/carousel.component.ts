@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, OnDestroy, AfterViewInit } from '@angular/core';
 import { NgxCarousel } from 'ngx-carousel';
-import { environment } from '../../../environments/environment';
+import { environment } from '../../../../src/environments/environment';
 import { MessageService } from '../message.service';
 import { Subscription } from 'rxjs/Subscription';
 import { CarouselService } from './carousel.service';

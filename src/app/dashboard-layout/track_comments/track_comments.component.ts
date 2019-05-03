@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { TrackCommentsService } from './track_comments.service';
 import { ToastrService } from 'ngx-toastr';
 import { ArtistProfileService } from '../artist_profile/artist_profile.service';
-import { environment } from '../../../environments/environment';
+import { environment } from '../../../../src/environments/environment';
 import { ActivatedRoute } from "@angular/router";
 import { NgbModal, ModalDismissReasons, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { FormGroup, FormBuilder, Validators, FormControl, AbstractControl, NG_VALIDATORS, Validator } from '@angular/forms';

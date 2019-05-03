@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, QueryList, ViewChildren } from '@angular/core';
 import { ArtistProfileService } from './artist_profile.service';
 import { ToastrService } from 'ngx-toastr';
-import { environment } from '../../../environments/environment';
+import { environment } from '../../../../src/environments/environment';
 import { DataTableDirective } from 'angular-datatables';
 import { ActivatedRoute, Router } from "@angular/router";
 import { Lightbox } from 'angular2-lightbox';
@@ -43,7 +43,7 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
   private _albums: any = [];
   subscription: Subscription;
   sort_by: any = '';
-  
+
   private emailmodalRef: NgbModalRef;
   private phonemodalRef: NgbModalRef;
   share_data: any = {};
@@ -56,6 +56,9 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
   track_data: any = {};
   // Artist following
   artist_following: boolean = false;
+  card_loader: boolean = false;
+  show_more_flag: boolean = false;
+
   constructor(
     private ArtistProfileService: ArtistProfileService,
     private toastr: ToastrService,
@@ -125,6 +128,7 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
     // this.artisttrack = this.route.snapshot.data['track'].track;
     this.artistmedia = this.route.snapshot.data['media'].media;
     this.artistfollower = this.route.snapshot.data['follower'].artist;
+    console.log(this.artistfollower);
     this.artistcomments = this.route.snapshot.data['comments'].comment;
     // this.rankingtrack = this.route.snapshot.data['ranking'].track;
     if (this.artistcomments.length > 3) {
@@ -284,6 +288,7 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
     }
     this.modalRef = this.modalService.open(content, { centered: true, windowClass: 'modal-wrapper', backdrop: true });
   }
+
   openEmailShareTrackModel(content) {
     if (this.user) {
       this.share_data = {};
@@ -292,6 +297,7 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
       this.toastr.info('Login first to share track via email', 'Information!');
     }
   }
+
   openPhoneShareTrackModel(content) {
     if (this.user) {
       this.share_data = {};
@@ -320,6 +326,7 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
     this.audio_ins[index] = true;
     this.MessageService.sendMessage({ data: data, index: index, action: 'start', list: 1 });
   }
+
   // Stop audio
   stopAudio(index, data: any) {
     // console.log(this.audio_ins[index]);
@@ -332,6 +339,7 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
     });
     this.MessageService.sendMessage({ data: data, index: index, action: 'stop', list: 1 });
   }
+
   // Play audio
   playRankAudio(name: any, index: any, data: any) {
     // let audio = new Audio();
@@ -347,6 +355,7 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
     this.rank_audio_ins[index] = true;
     this.MessageService.sendMessage({ data: data, index: index, action: 'start', list: 2 });
   }
+
   // Stop audio
   stopRankAudio(index, data: any) {
     // console.log(this.audio_ins[index]);
@@ -359,17 +368,19 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
     });
     this.MessageService.sendMessage({ data: data, index: index, action: 'stop', list: 2 });
   }
+
   // Follow artist
   followArtist(id: any, index: any) {
     let data = JSON.parse(localStorage.getItem('user'));
     if (data) {
-       this.artistfollower[index].length +1
+      // this.artistfollower[index].length += 1;
       let data = {
         artist_id: id
       };
       this.ArtistProfileService.followArtist(data).subscribe(response => {
         this.toastr.success(response['message'], 'Success!');
         this.artist_following = true;
+        // this.artistfollower += 1;
       }, error => {
         this.toastr.error(error['error'].message, 'Error!');
       });
@@ -377,11 +388,13 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
       this.toastr.info('Please Sign in as listener to follow the artist.', 'Info!');
     }
   }
+
   // Open artist media in lightbox
   open(index: number): void {
     // open lightbox
     this.lightbox.open(this._albums, index);
   }
+
   // Like the track
   likeTrack(track_id: any, index: any) {
     let user = JSON.parse(localStorage.getItem('user'));
@@ -406,6 +419,7 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
     }
 
   }
+
   // Like the track
   likeRankTrack(track_id: any, index: any) {
     let user = JSON.parse(localStorage.getItem('user'));
@@ -429,10 +443,12 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
       this.toastr.info('Please login to like the track.');
     }
   }
+
   // Vist track comment page
   goToComment(artist_id: any, id: any) {
     this.router.navigate(['artist_profile/' + artist_id + '/track/' + id + '/comments']);
   }
+
   // sortArtistTrack
   sortArtistTrack(idx: any, sortBy: any) {
     // let data = {
@@ -491,7 +507,8 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
   // Bookmark particular track
   bookMarkTrack(id: any, index: any, type: any) {
     if (this.user && this.user['user']) {
-      if (type == 'track') {
+      console.log('type => ', type);
+      if (type === 'track') {
         this.artisttrack[index]['is_bookmarked'] = !this.artisttrack[index]['is_bookmarked'];
         let data = {
           track_id: id
@@ -502,7 +519,6 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
           this.artisttrack[index]['is_bookmarked'] = !this.artisttrack[index]['is_bookmarked'];
           this.toastr.error(error['error'].message, 'Error!');
         });
-
       } else {
         this.rankingtrack[index]['is_bookmarked'] = !this.rankingtrack[index]['is_bookmarked'];
         let data = {
@@ -540,6 +556,7 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
       })
     }, function (response) { });
   }
+
   // share on twitter
   shareOnTwitter() {
     let track = this.track_data;
@@ -549,6 +566,7 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
     var twitterWindow = window.open('https://twitter.com/share?url=' + encodeURIComponent(url) + '&text=' + encodeURIComponent(str), 'twitter-popup', 'height=350,width=600');
     if (twitterWindow.focus) { twitterWindow.focus(); }
   }
+
   // share track via email
   share_via_email(flag: boolean) {
     if (flag) {
@@ -574,6 +592,7 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
       this.share_form_validation = !flag;
     }
   }
+
   // share via sms
   share_via_sms(flag: boolean) {
     if (flag) {
@@ -600,6 +619,7 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
       this.share_form_validation = !flag;
     }
   }
+
   // copy share track link
   copy_link() {
     let track = this.track_data;
@@ -614,7 +634,7 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
     textArea.remove();
   }
 
-  card_loader: boolean = false;
+
   // Stripe Credit-Card implementation
   openCardModel(content, index, type) {
     if (this.user && this.user['user']) {
@@ -648,6 +668,7 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
       iconColor: '#fa755a'
     }
   };
+
   setupStripeFrom() {
     var stripe = Stripe(environment.STRIPE_PUB_KEY);
     var elements = stripe.elements();
@@ -697,7 +718,7 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
     });
   }
   // manage show more for artist description
-  show_more_flag: boolean = false;
+
   show_more() {
     this.show_more_flag = !this.show_more_flag;
   }
