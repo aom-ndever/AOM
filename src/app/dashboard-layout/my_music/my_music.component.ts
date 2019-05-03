@@ -817,18 +817,11 @@ export class MyMusicComponent implements OnInit, OnDestroy {
   //   this.contesttrack_data['contest_id'] = contestid
   // }
   submit_contest_track(id, contestid, type) {
-    console.log("type", type)
     this.contestType = type;
-
-    console.log('id', id);
-
     this.contestDetail = this.modalService.open(id, { centered: true, windowClass: 'modal-wrapper', backdrop: true });
     this.contestid = contestid;
     this.contesttrack_data['contest_id'] = contestid
     this.submitContest.close();
-
-
-
   }
 
 }

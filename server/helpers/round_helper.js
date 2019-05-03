@@ -289,7 +289,7 @@ round_helper.get_finished_round_of_contest = async (id) => {
 };
 
 
-round_helper.get_track_selected = async (music_type) => {
+round_helper.get_track_selected = async (music_type, limit) => {
     try {
         var aggregate = [
             {
@@ -338,7 +338,7 @@ round_helper.get_track_selected = async (music_type) => {
                 }
             },
             {
-                $limit: 51
+                $limit: limit
             },
             {
                 $project: {
@@ -360,7 +360,7 @@ round_helper.get_track_selected = async (music_type) => {
 };
 
 
-round_helper.get_tracks_selected = async (artist_id, music_type, round) => {
+round_helper.get_tracks_selected = async (artist_id, music_type, round, limit) => {
     try {
         var aggregate = [
             {
@@ -408,6 +408,83 @@ round_helper.get_tracks_selected = async (artist_id, music_type, round) => {
                     "music_type.alias": music_type
                 }
             },
+            {
+                $project: {
+                    "track._id": 1,
+                    "artist._id": 1
+                }
+            },
+            {
+                $sort:
+                {
+                    "track.no_of_votes": -1
+                }
+            },
+            {
+                $limit: limit
+            }
+
+        ];
+        let data = await RoundTracks.aggregate(aggregate);
+        var filter_cnt = data.length;
+        if (data) {
+            return { "status": 1, "message": "data details found", "data": data };
+        } else {
+            return { "status": 2, "message": "data not found" };
+        }
+    } catch (err) {
+        return { "status": 0, "message": "Error occured while finding data", "error": err }
+    }
+};
+
+round_helper.get_special_tracks_selected = async (artist_id, round) => {
+    try {
+        var aggregate = [
+            {
+                $match: {
+                    "artist_id": { $in: (artist_id) }
+                }
+            },
+            {
+                $lookup:
+                {
+                    from: "track",
+                    localField: round,
+                    foreignField: "_id",
+                    as: "track"
+                }
+            },
+            {
+                $unwind: "$track"
+            },
+            {
+                $lookup:
+                {
+                    from: "artist",
+                    localField: "artist_id",
+                    foreignField: "_id",
+                    as: "artist"
+                }
+            },
+            {
+                $unwind: "$artist"
+            },
+            {
+                $lookup:
+                {
+                    from: "music_type",
+                    localField: "artist.music_type",
+                    foreignField: "_id",
+                    as: "music_type"
+                }
+            }, {
+                $unwind: '$music_type'
+            },
+            // {
+            //     $match: {
+            //         "music_type.alias": music_type
+            //     }
+            // },
             {
                 $project: {
                     "track._id": 1,
