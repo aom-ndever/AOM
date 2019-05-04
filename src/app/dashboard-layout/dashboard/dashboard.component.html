@@ -1,4 +1,3 @@
-
 <section class="banner-wrap">
   <div class="container">
     <div class="row">
@@ -6,7 +5,7 @@
         <div class="banner-content">
           <h2>Lorem ipsum dolor sit amet</h2>
           <p>ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodoco</p>
-          <div class="btn-grp"><a href="javascript:;" routerLink="/vote" class="vote-now-btn" >vote now</a></div>
+          <div class="btn-grp"><a href="javascript:;" routerLink="/vote" class="vote-now-btn">vote now</a></div>
 
         </div>
       </div>
@@ -20,19 +19,21 @@
         <div class="mobile-filter-list" (click)="toggleFilter()"><i class="fa fa-filter" aria-hidden="true"></i></div>
         <div class="filter-list" [style.display]="toggFleilter ? 'block' : 'none' ">
           <ul>
-            <li class="{{music_type_index == -1 ? 'active' : ''}}"><a href="javascript:;" (click)="getDataByMusicType({}, -1)">All Styles</a></li>
+            <li class="{{music_type_index == -1 ? 'active' : ''}}"><a href="javascript:;"
+                (click)="getDataByMusicType({}, -1)">All Styles</a></li>
             <li class="{{music_type_index == i ? 'active' : ''}}" *ngFor="let music of music_type_list; let i = index;">
               <a href="javascript:;" (click)="getDataByMusicType({music_type:music._id}, i)">{{music.name}}</a>
             </li>
           </ul>
         </div>
-      </div> 
+      </div>
       <div class="col-lg-4 col-md-4  col-6">
         <div class="search-wrap custom_search_wrap">
           <form>
-            <div class="mobile-search" (click)="toggleSearch()" ><i class="fa fa-search" aria-hidden="true"></i></div>
+            <div class="mobile-search" (click)="toggleSearch()"><i class="fa fa-search" aria-hidden="true"></i></div>
             <div class="search-input" [style.display]="toggSearch ? 'block' : 'none' ">
-              <input type="text" placeholder="Search by Artist Name or Song Title" name="filter" (keyup)="filter($event)"  [(ngModel)]="search_str"/>
+              <input type="text" placeholder="Search by Artist Name or Song Title" name="filter"
+                (keyup)="filter($event)" [(ngModel)]="search_str" />
             </div>
           </form>
         </div>
@@ -45,12 +46,15 @@
   <div class="container">
     <div>
       <div>
-        <div class="head-global"><h2>Round Two Finalists</h2></div>
+        <div class="head-global">
+          <h2>Round Two Finalists</h2>
+        </div>
       </div>
       <div class="finalists-container">
-        
-          <app-carousel-scroll [images]="images" [showFavourit]='true' [carouselType]='"normal"' [allData]="data['finalist']"></app-carousel-scroll>
-         
+
+        <app-carousel-scroll [images]="images" [showFavourit]='true' [carouselType]='"normal"'
+          [allData]="data['finalist']"></app-carousel-scroll>
+
       </div>
     </div>
   </div>
@@ -61,45 +65,58 @@
   <div class="container">
     <div class="row">
       <div class="col-md-12">
-        <div class="head-global"><h2>New Uploads</h2></div>
+        <div class="head-global">
+          <h2>New Uploads</h2>
+        </div>
       </div>
     </div>
-      <div class="uploads-container">
-        <div class="row">
-            <div *ngIf="show_loader" class="text-center col-12">
-                <i class="fa fa-spinner fa-spin fa-3x" aria-hidden="true"></i>
-              </div>
-            <div class="alert alert-info col-sm-12" *ngIf="!show_loader && data['new_uploads'].length == 0">
-              No data available.
+    <div class="uploads-container">
+      <div class="row">
+        <div *ngIf="show_loader" class="text-center col-12">
+          <i class="fa fa-spinner fa-spin fa-3x" aria-hidden="true"></i>
+        </div>
+        <div class="alert alert-info col-sm-12" *ngIf="!show_loader && data['new_uploads'].length == 0">
+          No data available.
+        </div>
+        <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12" *ngFor="let nupload of data['new_uploads']; let i = index;">
+          <div class="upload">
+            <div class="img-wrap">
+              <img lazyLoad="{{nupload ? track_url+nupload.image : 'img/upload1.png'}}"
+                defaultImage="img/music-player.svg" offset="100" alt="New Uploads" class="music_icon_pic">
             </div>
-          <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12" *ngFor="let nupload of data['new_uploads']; let i = index;">
-            <div class="upload">
-              <div class="img-wrap">
-                <img lazyLoad="{{nupload ? track_url+nupload.image : 'img/upload1.png'}}" defaultImage="img/loader.gif" offset="100" alt="New Uploads">
-              </div>
-              <div class="content-wrap">
-                <div class="player">
-                  <div class="title"><a href="javascript:;"  title="{{nupload.name ? nupload.name : ''}}" routerLink="/artist_profile/{{nupload.artist_id._id}}">{{nupload.name ? nupload.name : ''}}</a></div>
-                  <div class="finalist-name">{{nupload.artist_id && nupload.artist_id['first_name'] ? nupload.artist_id['first_name'] : ''}}</div>
-                  <!-- <div class="finalist-name">{{nupload.artist_id['first_name'] ? nupload.artist_id['first_name'] : '' +' '+nupload.artist_id['last_name'] ? nupload.artist_id['last_name'] : ''}}</div> -->
-                  <div class="action-btn custom-action-btn">       
-                      <a [style.display]="!audio_ins[i] ? 'block' : 'none'" (click)="playAudio(nupload.audio, i, data['new_uploads'])" class="play_img" ><img src="img/play_icon.png"/></a>
-                      <a [style.display]="audio_ins[i] ? 'block' : 'none'" (click)="stopAudio(i, data['new_uploads'])" class="pause_img"><img src="img/pause_icon.png"/></a>
-                  </div>
-                  <!-- <div class="action-btn"><a href="javascript:;">
+            <div class="content-wrap">
+              <div class="player">
+                <div class="title"><a href="javascript:;" title="{{nupload.name ? nupload.name : ''}}"
+                    routerLink="/artist_profile/{{nupload.artist_id._id}}">{{nupload.name ? nupload.name : ''}}</a>
+                </div>
+                <div class="finalist-name">
+                  {{nupload.artist_id && nupload.artist_id['first_name'] ? nupload.artist_id['first_name'] : ''}}</div>
+                <!-- <div class="finalist-name">{{nupload.artist_id['first_name'] ? nupload.artist_id['first_name'] : '' +' '+nupload.artist_id['last_name'] ? nupload.artist_id['last_name'] : ''}}</div> -->
+                <div class="action-btn custom-action-btn">
+                  <a [style.display]="!audio_ins[i] ? 'block' : 'none'"
+                    (click)="playAudio(nupload.audio, i, data['new_uploads'])" class="play_img"><img
+                      src="img/play_icon.png" /></a>
+                  <a [style.display]="audio_ins[i] ? 'block' : 'none'" (click)="stopAudio(i, data['new_uploads'])"
+                    class="pause_img"><img src="img/pause_icon.png" /></a>
+                </div>
+                <!-- <div class="action-btn"><a href="javascript:;">
                     <img src="img/play.png " alt="Pause "  [style.display]="!audio_ins[i] ? 'block' : 'none'" (click)="playAudio(nupload.audio, i)">
                     <img src="img/pause.png " alt="Pause "  [style.display]="audio_ins[i] ? 'block' : 'none'" (click)="stopAudio(i)">
                   </a></div> -->
-                </div>
-                <div class="location">
-                  <p><i class="fa fa-map-marker" aria-hidden="true"></i><span>{{nupload && nupload.state && nupload['state']['name'] ? nupload['state']['name'] : '' }}</span></p>
-                  <div class="cat {{nupload && nupload.music_type && nupload.music_type['alias'] ? nupload.music_type['alias'] : '' }}">{{nupload && nupload.music_type && nupload.music_type['name'] ? nupload.music_type['name'] : ''}}</div>
+              </div>
+              <div class="location">
+                <p><i class="fa fa-map-marker"
+                    aria-hidden="true"></i><span>{{nupload && nupload.state && nupload['state']['name'] ? nupload['state']['name'] : '' }}</span>
+                </p>
+                <div
+                  class="cat {{nupload && nupload.music_type && nupload.music_type['alias'] ? nupload.music_type['alias'] : '' }}">
+                  {{nupload && nupload.music_type && nupload.music_type['name'] ? nupload.music_type['name'] : ''}}
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
+    </div>
   </div>
 </section>
-

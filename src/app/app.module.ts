@@ -15,7 +15,7 @@ import { EamilVarificationModule } from './email_varification/email_varification
 import { ForgetPasswordModule } from './forget_password/forget_password.module';
 import { AuthService } from './shared/auth.service';
 import { MessageService } from './shared/message.service';
-
+// import { NgxSpinnerModule } from 'ngx-spinner';
 import { PLATFORM_ID, APP_ID, Inject } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { HighchartsStatic } from 'angular2-highcharts/dist/HighchartsService';
@@ -32,25 +32,11 @@ import { HighchartsStatic } from 'angular2-highcharts/dist/HighchartsService';
     EamilVarificationModule,
     AdminLayoutModule,
     ForgetPasswordModule,
+    // NgxSpinnerModule,
     NgbModule.forRoot(),
     ChartModule.forRoot(require('highcharts/highstock'), require('highcharts/modules/drilldown')),
     DataTablesModule,
-    RouterModule.forRoot([
-
-      // { 
-      //   path: '', 
-      //   component: DashboardLayoutComponent,
-      //   children: [
-      //     { 
-      //       path: '', 
-      //       loadChildren: './dashboard-layout/dashboard/dashboard.module#DashboardModule', 
-      //     }]
-      // },
-      // { 
-      //   path: 'login', 
-      //   loadChildren: './login/login.module#LoginModule',
-      // }
-    ], { useHash: false })
+    RouterModule.forRoot([], { useHash: false })
   ],
   providers: [AuthService, MessageService,
   ],

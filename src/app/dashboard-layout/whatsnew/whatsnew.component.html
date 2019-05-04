@@ -5,7 +5,9 @@
         <div class="news-header container">
           <div class="row">
             <div class="col-lg-6 col-md-5 col-sm-6 col-xs-5">
-              <div class="head-global"><h2>What's New</h2></div>
+              <div class="head-global">
+                <h2>What's New</h2>
+              </div>
             </div>
             <div class="col-lg-6 col-md-7 col-sm-6 col-xs-7">
               <div class="new-head">
@@ -13,7 +15,8 @@
                   <form>
                     <div class="mobile-search"><i class="fa fa-search" aria-hidden="true"></i></div>
                     <div class="search-input">
-                      <input type="text" placeholder="Search by Artist Name" name="search" [(ngModel)]="search_str" (keyup)="filter($event)">
+                      <input type="text" placeholder="Search by Artist Name" name="search" [(ngModel)]="search_str"
+                        (keyup)="filter($event)">
                     </div>
                   </form>
                 </div>
@@ -22,7 +25,7 @@
                     <div class="filter-icon"><img src="img/filter.png" alt="Filter Icon"></div>
                     <span>Filters <i class="fa fa-caret-right"></i></span>
                   </a>
-                  
+
                 </div>
               </div>
             </div>
@@ -35,18 +38,20 @@
                       <ul>
                         <li>
                           <div class="radio">
-                              <label>
-                                <input type="radio" value="" name="musicgenre" [(ngModel)]="advance_filter.music_type">All styles
-                                <div class="radio_check"></div>
-                              </label>
+                            <label>
+                              <input type="radio" value="" name="musicgenre" [(ngModel)]="advance_filter.music_type">All
+                              styles
+                              <div class="radio_check"></div>
+                            </label>
                           </div>
                         </li>
                         <li *ngFor="let m of music_type_list">
                           <div class="radio">
-                              <label>
-                                <input type="radio" value="{{m._id}}" name="musicgenre" [(ngModel)]="advance_filter.music_type">{{m.name}}
-                                <div class="radio_check"></div>
-                              </label>
+                            <label>
+                              <input type="radio" value="{{m._id}}" name="musicgenre"
+                                [(ngModel)]="advance_filter.music_type">{{m.name}}
+                              <div class="radio_check"></div>
+                            </label>
                           </div>
                         </li>
                       </ul>
@@ -54,93 +59,105 @@
                   </div>
                   <div class="col-md-10 col-sm-12 col-xs-12">
                     <div class="sub-menu-filter">
-                    <div class="filter-heading">Region</div>
-                    <div class="row">
-                      <div class="col-lg-2 col-md-4 col-sm-4 col-xs-4">
-                        <div class="filter-subhead">Northeast</div>
-                        <ul>
-                          <li *ngFor="let s of state_list;" [style.display]="s['region']['name'] == 'northeast' ? 'block' : 'none'">
-                            <div class="checkbox">
+                      <div class="filter-heading">Region</div>
+                      <div class="row">
+                        <div class="col-lg-2 col-md-4 col-sm-4 col-xs-4">
+                          <div class="filter-subhead">Northeast</div>
+                          <ul>
+                            <li *ngFor="let s of state_list;"
+                              [style.display]="s['region']['name'] == 'northeast' ? 'block' : 'none'">
+                              <div class="checkbox">
                                 <label>
-                                  <input type="checkbox" [value]="s._id" (click)="addRegionForFilter($event.target.checked, $event.target.value)">
+                                  <input type="checkbox" [value]="s._id"
+                                    (click)="addRegionForFilter($event.target.checked, $event.target.value)">
                                   <div class="chk_check"></div>
                                   <span>{{s.name}}</span>
                                 </label>
-                            </div>
-                          </li>
-                        </ul>
-                      </div>
-                      <div class="col-lg-2 col-md-4 col-sm-4 col-xs-4">
-                        <div class="filter-subhead">southeast</div>
-                        <ul>
-                          <li *ngFor="let s of state_list;" [style.display]="s['region']['name'] == 'southeast' ? 'block' : 'none'">
-                            <div class="checkbox">
+                              </div>
+                            </li>
+                          </ul>
+                        </div>
+                        <div class="col-lg-2 col-md-4 col-sm-4 col-xs-4">
+                          <div class="filter-subhead">southeast</div>
+                          <ul>
+                            <li *ngFor="let s of state_list;"
+                              [style.display]="s['region']['name'] == 'southeast' ? 'block' : 'none'">
+                              <div class="checkbox">
                                 <label>
-                                  <input type="checkbox" [value]="s._id" (click)="addRegionForFilter($event.target.checked, $event.target.value)">
+                                  <input type="checkbox" [value]="s._id"
+                                    (click)="addRegionForFilter($event.target.checked, $event.target.value)">
                                   <div class="chk_check"></div>
                                   <span>{{s.name}}</span>
                                 </label>
-                            </div>
-                          </li>
-                        </ul>
-                      </div>
-                      <div class="col-lg-2 col-md-4 col-sm-4 col-xs-4">
-                        <div class="filter-subhead">Midwest</div>
-                        <ul>
-                          <li *ngFor="let s of state_list;" [style.display]="s['region']['name'] == 'midwest' ? 'block' : 'none'">
-                            <div class="checkbox">
+                              </div>
+                            </li>
+                          </ul>
+                        </div>
+                        <div class="col-lg-2 col-md-4 col-sm-4 col-xs-4">
+                          <div class="filter-subhead">Midwest</div>
+                          <ul>
+                            <li *ngFor="let s of state_list;"
+                              [style.display]="s['region']['name'] == 'midwest' ? 'block' : 'none'">
+                              <div class="checkbox">
                                 <label>
-                                  <input type="checkbox" [value]="s._id" (click)="addRegionForFilter($event.target.checked, $event.target.value)">
+                                  <input type="checkbox" [value]="s._id"
+                                    (click)="addRegionForFilter($event.target.checked, $event.target.value)">
                                   <div class="chk_check"></div>
                                   <span>{{s.name}}</span>
                                 </label>
-                            </div>
-                          </li>
-                        </ul>
-                      </div>
-                      <div class="col-lg-2 col-md-4 col-sm-4 col-xs-4">
-                        <div class="filter-subhead">Southwest</div>
-                        <ul>
-                          <li *ngFor="let s of state_list;" [style.display]="s['region']['name'] == 'southwest' ? 'block' : 'none'">
-                            <div class="checkbox">
+                              </div>
+                            </li>
+                          </ul>
+                        </div>
+                        <div class="col-lg-2 col-md-4 col-sm-4 col-xs-4">
+                          <div class="filter-subhead">Southwest</div>
+                          <ul>
+                            <li *ngFor="let s of state_list;"
+                              [style.display]="s['region']['name'] == 'southwest' ? 'block' : 'none'">
+                              <div class="checkbox">
                                 <label>
-                                  <input type="checkbox" [value]="s._id" (click)="addRegionForFilter($event.target.checked, $event.target.value)">
+                                  <input type="checkbox" [value]="s._id"
+                                    (click)="addRegionForFilter($event.target.checked, $event.target.value)">
                                   <div class="chk_check"></div>
                                   <span>{{s.name}}</span>
                                 </label>
-                            </div>
-                          </li>
-                        </ul>
-                      </div>
-                      <div class="col-lg-2 col-md-4 col-sm-4 col-xs-4">
-                        <div class="filter-subhead">West</div>
-                        <ul>
-                          <li *ngFor="let s of state_list;" [style.display]="s['region']['name'] == 'west' ? 'block' : 'none'">
-                            <div class="checkbox">
+                              </div>
+                            </li>
+                          </ul>
+                        </div>
+                        <div class="col-lg-2 col-md-4 col-sm-4 col-xs-4">
+                          <div class="filter-subhead">West</div>
+                          <ul>
+                            <li *ngFor="let s of state_list;"
+                              [style.display]="s['region']['name'] == 'west' ? 'block' : 'none'">
+                              <div class="checkbox">
                                 <label>
-                                  <input type="checkbox" [value]="s._id" (click)="addRegionForFilter($event.target.checked, $event.target.value)">
+                                  <input type="checkbox" [value]="s._id"
+                                    (click)="addRegionForFilter($event.target.checked, $event.target.value)">
                                   <div class="chk_check"></div>
                                   <span>{{s.name}}</span>
                                 </label>
-                            </div>
-                          </li>
-                        </ul>
-                      </div>
-                      <div class="col-lg-2 col-md-4 col-sm-4 col-xs-4">
-                        <div class="filter-subhead">other</div>
-                        <ul>
-                          <li *ngFor="let s of state_list;" [style.display]="s['region']['name'] == 'other' ? 'block' : 'none'">
-                            <div class="checkbox">
+                              </div>
+                            </li>
+                          </ul>
+                        </div>
+                        <div class="col-lg-2 col-md-4 col-sm-4 col-xs-4">
+                          <div class="filter-subhead">other</div>
+                          <ul>
+                            <li *ngFor="let s of state_list;"
+                              [style.display]="s['region']['name'] == 'other' ? 'block' : 'none'">
+                              <div class="checkbox">
                                 <label>
-                                  <input type="checkbox" [value]="s._id" (click)="addRegionForFilter($event.target.checked, $event.target.value)">
+                                  <input type="checkbox" [value]="s._id"
+                                    (click)="addRegionForFilter($event.target.checked, $event.target.value)">
                                   <div class="chk_check"></div>
                                   <span>{{s.name}}</span>
                                 </label>
-                            </div>
-                          </li>
-                        </ul>
+                              </div>
+                            </li>
+                          </ul>
+                        </div>
                       </div>
-                    </div>
                     </div>
                   </div>
                   <div class="col-md-12 col-sm-12 col-xs-12">
@@ -157,7 +174,7 @@
       </div>
       <div>
         <div class="whatsnew-banner">
-            <app-carousel-scroll [images]="images" [showFavourit]='true' [carouselType]='"banner"'></app-carousel-scroll>
+          <app-carousel-scroll [images]="images" [showFavourit]='true' [carouselType]='"banner"'></app-carousel-scroll>
         </div>
       </div>
     </div>
@@ -172,11 +189,11 @@
           <h2>Artist Highlights</h2>
         </div>
       </div>
-      <div class="highlights-wrap mCustomScrollbar "  data-mcs-theme="dark-3" >
+      <div class="highlights-wrap mCustomScrollbar " data-mcs-theme="dark-3">
         <div class="row">
-            <div *ngIf="show_loader" class="text-center col-12">
-              <i class="fa fa-spinner fa-spin fa-3x" aria-hidden="true"></i>
-            </div>
+          <div *ngIf="show_loader" class="text-center col-12">
+            <i class="fa fa-spinner fa-spin fa-3x" aria-hidden="true"></i>
+          </div>
           <div class="alert alert-info col-sm-12" *ngIf="!show_loader && whatsnewdata['artist'].length == 0">
             No data available.
           </div>
@@ -184,98 +201,120 @@
             <div class="final-wrap ">
               <div class="img-wrap ">
                 <a href="javascript:;" routerLink="/artist_profile/{{artist._id}}">
-                  <img lazyLoad="{{artist && artist.image ? artist_img_url+artist.image : 'img/upload1.png'}} " defaultImage="img/loader.gif" offset="100" alt="Finalists ">
+                  <img lazyLoad="{{artist && artist.image ? artist_img_url+artist.image : 'img/upload1.png'}} "
+                    defaultImage="img/music-player-grey.svg" offset="100" alt="Finalists ">
                 </a>
-                <a href="javascript:void(0) " class="fan " (click)="followArtist(artist._id, i)"><i class="fa {{artist.is_followed ? 'fa-heart' : 'fa-heart-o'}}" aria-hidden="true "></i></a>
+                <a href="javascript:void(0) " class="fan " (click)="followArtist(artist._id, i)"><i
+                    class="fa {{artist.is_followed ? 'fa-heart' : 'fa-heart-o'}}" aria-hidden="true "></i></a>
               </div>
               <div class="content-wrap ">
                 <div class="player ">
-                  <div class="title "><a href="javascript:;" routerLink="/artist_profile/{{artist._id}}">{{artist && artist.first_name ? artist.first_name : ''  +' '+ artist && artist.last_name ? artist.last_name : '' }}</a></div>
-                  <div class="cat {{artist && artist['music_type'] ? artist.music_type.alias : ''}}">{{artist && artist['music_type'] ? artist['music_type']['name'] : '' }}</div>
+                  <div class="title "><a href="javascript:;"
+                      routerLink="/artist_profile/{{artist._id}}">{{artist && artist.first_name ? artist.first_name : ''  +' '+ artist && artist.last_name ? artist.last_name : '' }}</a>
+                  </div>
+                  <div class="cat {{artist && artist['music_type'] ? artist.music_type.alias : ''}}">
+                    {{artist && artist['music_type'] ? artist['music_type']['name'] : '' }}</div>
                 </div>
                 <div class="location ">
-                  <p><i class="fa fa-map-marker " aria-hidden="true "></i><span>{{artist && artist['state'] ? artist.state.name : ''}}</span></p>
-                  
+                  <p><i class="fa fa-map-marker "
+                      aria-hidden="true "></i><span>{{artist && artist['state'] ? artist.state.name : ''}}</span></p>
+
                 </div>
               </div>
             </div>
           </div>
-          <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center" *ngIf="!show_loader && artist_list['length'] > 12">
-              <button class="btn btn-lg btn-default" (click)="loadMoreArtist()" [disabled]="artist_loader">load more <i *ngIf="artist_loader" class="fa fa-spinner fa-spin"></i></button>
+          <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center"
+            *ngIf="!show_loader && artist_list['length'] > 12">
+            <button class="btn btn-lg btn-default" (click)="loadMoreArtist()" [disabled]="artist_loader">load more <i
+                *ngIf="artist_loader" class="fa fa-spinner fa-spin"></i></button>
           </div>
         </div>
       </div>
     </div>
     <div class="head-global">
-        <h2>Featured Artist</h2>
+      <h2>Featured Artist</h2>
     </div>
-    <div class="highlights-wrap mCustomScrollbar "  data-mcs-theme="dark-3" >
-        <div class="row">
-            <div *ngIf="feature_loader" class="text-center col-12">
-              <i class="fa fa-spinner fa-spin fa-3x" aria-hidden="true"></i>
+    <div class="highlights-wrap mCustomScrollbar " data-mcs-theme="dark-3">
+      <div class="row">
+        <div *ngIf="feature_loader" class="text-center col-12">
+          <i class="fa fa-spinner fa-spin fa-3x" aria-hidden="true"></i>
+        </div>
+        <div class="alert alert-info col-sm-12" *ngIf="!feature_loader && featured_artist.length == 0">
+          No data available.
+        </div>
+        <div class="col-lg-3 col-md-4 col-sm-6 col-xs-6 " *ngFor="let artist of featured_artist; let i = index;">
+          <div class="final-wrap">
+            <div class="img-wrap">
+              <a href="javascript:;" routerLink="/artist_profile/{{artist._id}}">
+                <img lazyLoad="{{artist && artist.image ? artist_img_url+artist.image : 'img/upload1.png'}} "
+                  defaultImage="img/music-player-grey.svg" offset="100" alt="Finalists ">
+              </a>
+              <a href="javascript:void(0) " class="fan " (click)="followArtist(artist._id, i)"><i
+                  class="fa {{artist.is_followed ? 'fa-heart' : 'fa-heart-o'}}" aria-hidden="true "></i></a>
             </div>
-          <div class="alert alert-info col-sm-12" *ngIf="!feature_loader && featured_artist.length == 0">
-            No data available.
-          </div>
-          <div class="col-lg-3 col-md-4 col-sm-6 col-xs-6 " *ngFor="let artist of featured_artist; let i = index;">
-            <div class="final-wrap ">
-              <div class="img-wrap ">
-                <a href="javascript:;" routerLink="/artist_profile/{{artist._id}}">
-                  <img lazyLoad="{{artist && artist.image ? artist_img_url+artist.image : 'img/upload1.png'}} " defaultImage="img/loader.gif" offset="100" alt="Finalists ">
-                </a>
-                <a href="javascript:void(0) " class="fan " (click)="followArtist(artist._id, i)"><i class="fa {{artist.is_followed ? 'fa-heart' : 'fa-heart-o'}}" aria-hidden="true "></i></a>
+            <div class="content-wrap ">
+              <div class="player ">
+                <div class="title "><a href="javascript:;"
+                    routerLink="/artist_profile/{{artist._id}}">{{artist && artist.first_name ? artist.first_name : ''  +' '+ artist && artist.last_name ? artist.last_name : '' }}</a>
+                </div>
+                <div class="cat {{artist && artist['music_type'] ? artist.music_type.alias : ''}}">
+                  {{artist && artist['music_type'] ? artist['music_type']['name'] : '' }}</div>
               </div>
-              <div class="content-wrap ">
-                <div class="player ">
-                  <div class="title "><a href="javascript:;" routerLink="/artist_profile/{{artist._id}}">{{artist && artist.first_name ? artist.first_name : ''  +' '+ artist && artist.last_name ? artist.last_name : '' }}</a></div>
-                  <div class="cat {{artist && artist['music_type'] ? artist.music_type.alias : ''}}">{{artist && artist['music_type'] ? artist['music_type']['name'] : '' }}</div>
-                </div>
-                <div class="location ">
-                  <p><i class="fa fa-map-marker " aria-hidden="true "></i><span>{{artist && artist['state'] ? artist.state.name : ''}}</span></p>
-                </div>
+              <div class="location ">
+                <p><i class="fa fa-map-marker "
+                    aria-hidden="true "></i><span>{{artist && artist['state'] ? artist.state.name : ''}}</span></p>
               </div>
             </div>
           </div>
         </div>
       </div>
+    </div>
   </div>
 </section>
 <section class="newuploads-wrap">
   <div class="container ">
     <div class="row ">
       <div class="col-md-12 ">
-        <div class="head-global "><h2>Popular Tracks</h2></div>
+        <div class="head-global ">
+          <h2>Popular Tracks</h2>
+        </div>
       </div>
       <div class="uploads-container col-md-12 ">
-          <div *ngIf="show_loader" class="text-center col-12">
-              <i class="fa fa-spinner fa-spin fa-3x" aria-hidden="true"></i>
-            </div>
-            <div class="alert alert-info" *ngIf="!show_loader && whatsnewdata['track'] && whatsnewdata['track'].length == 0">
-                No data available.
-            </div>
-            <div class="row">
+        <div *ngIf="show_loader" class="text-center col-12">
+          <i class="fa fa-spinner fa-spin fa-3x" aria-hidden="true"></i>
+        </div>
+        <div class="alert alert-info"
+          *ngIf="!show_loader && whatsnewdata['track'] && whatsnewdata['track'].length == 0">
+          No data available.
+        </div>
+        <div class="row">
           <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12 " *ngFor="let track of track_list; let i = index">
             <div class="upload ">
               <div class="img-wrap ">
-                <img lazyLoad="{{track.image ? track_url+track.image : 'img/upload1.png'}}" defaultImage="img/loader.gif" offset="100" alt="New Uploads ">
+                <img lazyLoad="{{track.image ? track_url+track.image : 'img/upload1.png'}}"
+                  defaultImage="img/music-player.png" offset="100" alt="New Uploads ">
               </div>
               <div class="content-wrap ">
                 <div class="player ">
-                  <div class="title "><a href="javascript:; "title="{{track.name}}">{{track.name}}</a></div>
+                  <div class="title "><a href="javascript:; " title="{{track.name}}">{{track.name}}</a></div>
                   <div class="finalist-name ">{{track.artist_id['first_name']+' '+track.artist_id['last_name']}}</div>
                   <div class="action-btn ">
                     <a href="javascript:; ">
-                        <div  class="action-btn custom-action-btn">                
-                            <a  class="play_img" [style.display]="!audio_ins[i] ? 'block' : 'none'" (click)="playAudio(track.audio, i, whatsnewdata['track'])"><img  src="img/play_icon.png"></a>
-                            <a  class="pause_img" [style.display]="audio_ins[i] ? 'block' : 'none'" (click)="stopAudio(i, whatsnewdata['track'])"><img  src="img/pause_icon.png"></a>
-                        </div>
-                    <!-- <img src="img/play.png " alt="Pause "  [style.display]="!audio_ins[i] ? 'block' : 'none'" (click)="playAudio(track.audio, i)">
+                      <div class="action-btn custom-action-btn">
+                        <a class="play_img" [style.display]="!audio_ins[i] ? 'block' : 'none'"
+                          (click)="playAudio(track.audio, i, whatsnewdata['track'])"><img src="img/play_icon.png"></a>
+                        <a class="pause_img" [style.display]="audio_ins[i] ? 'block' : 'none'"
+                          (click)="stopAudio(i, whatsnewdata['track'])"><img src="img/pause_icon.png"></a>
+                      </div>
+                      <!-- <img src="img/play.png " alt="Pause "  [style.display]="!audio_ins[i] ? 'block' : 'none'" (click)="playAudio(track.audio, i)">
                     <img src="img/pause.png " alt="Pause "  [style.display]="audio_ins[i] ? 'block' : 'none'" (click)="stopAudio(i)"> -->
-                  </a>
-                </div>
+                    </a>
+                  </div>
                 </div>
                 <div class="location ">
-                  <p><i class="fa fa-map-marker " aria-hidden="true "></i><span>{{track && track.artist_id && track.artist_id['state'] ? track.artist_id['state']['name'] : ''}}</span></p>
+                  <p><i class="fa fa-map-marker "
+                      aria-hidden="true "></i><span>{{track && track.artist_id && track.artist_id['state'] ? track.artist_id['state']['name'] : ''}}</span>
+                  </p>
                   <div class="cat {{track.artist_id.music_type['alias']}}">{{track.artist_id.music_type['name']}}</div>
                 </div>
               </div>
@@ -283,7 +322,8 @@
           </div>
         </div>
         <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center" *ngIf="!show_loader && track_list['length'] > 12">
-            <button class="btn btn-lg btn-default" (click)="loadMoreTrack()" [disabled]="track_loader">load more <i *ngIf="track_loader" class="fa fa-spinner fa-spin"></i></button>
+          <button class="btn btn-lg btn-default" (click)="loadMoreTrack()" [disabled]="track_loader">load more <i
+              *ngIf="track_loader" class="fa fa-spinner fa-spin"></i></button>
         </div>
       </div>
     </div>

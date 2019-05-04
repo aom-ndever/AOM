@@ -6,32 +6,35 @@
 </div> -->
 <ngx-carousel [inputs]="carouselOne" *ngIf="carouselType == 'normal' && !flag">
   <ngx-tile NgxCarouselItem *ngFor="let image of images; let i = index">
-      <div class="final-wrap">
-        <div class="img-wrap">
-          <img lazyLoad="{{image.source}}" defaultImage="img/loader.gif" offset="100" alt="Finalists">
-          <a href="javascript:void(0)" class="fan"  (click)="followArtist(image['artist_id'])">
-            <i class="fa fa-{{image['is_followed'] ? 'heart' : 'heart-o'}}" title="Follow" aria-hidden="true"></i>
-          </a>
-        </div>
-        <div class="content-wrap">
-          <div class="player">
-            <div class="title">
-              <a href="javascript:;" routerLink="/artist_profile/{{image['artist_id']}}">{{ image.title }}</a>
-            </div>
-            <div class="finalist-name">{{image.name}}</div>
-            <div class="action-btn custom-action-btn">
-                <a [style.display]="!audio_ins[i] ? 'block' : 'none'" (click)="playAudio(image.audio, i, images)" class="play_img" ><img src="img/play_icon.png"/></a>
-                <a [style.display]="audio_ins[i] ? 'block' : 'none'" (click)="stopAudio(i, images)" class="pause_img"><img src="img/pause_icon.png"/></a>
-            </div>
+    <div class="final-wrap">
+      <div class="img-wrap home_carousel">
+        <!-- defaultImage="img/loader.gif" -->
+        <img lazyLoad="{{image.source}}" defaultImage="img/music-player-grey.svg" offset="100" alt="Finalists">
+        <a href="javascript:void(0)" class="fan" (click)="followArtist(image['artist_id'])">
+          <i class="fa fa-{{image['is_followed'] ? 'heart' : 'heart-o'}}" title="Follow" aria-hidden="true"></i>
+        </a>
+      </div>
+      <div class="content-wrap">
+        <div class="player">
+          <div class="title">
+            <a href="javascript:;" routerLink="/artist_profile/{{image['artist_id']}}">{{ image.title }}</a>
           </div>
-          <div class="location">
-            <p>
-              <i class="fa fa-map-marker" aria-hidden="true"></i>
-              <span>{{image.location}}</span>
-            </p>
-            <div class="cat {{image.alias}}">{{image.type}}</div>
+          <div class="finalist-name">{{image.name}}</div>
+          <div class="action-btn custom-action-btn">
+            <a [style.display]="!audio_ins[i] ? 'block' : 'none'" (click)="playAudio(image.audio, i, images)"
+              class="play_img"><img src="img/play_icon.png" /></a>
+            <a [style.display]="audio_ins[i] ? 'block' : 'none'" (click)="stopAudio(i, images)" class="pause_img"><img
+                src="img/pause_icon.png" /></a>
           </div>
         </div>
+        <div class="location">
+          <p>
+            <i class="fa fa-map-marker" aria-hidden="true"></i>
+            <span>{{image.location}}</span>
+          </p>
+          <div class="cat {{image.alias}}">{{image.type}}</div>
+        </div>
+      </div>
     </div>
   </ngx-tile>
   <i class="material-icons leftRs" NgxCarouselPrev></i>
@@ -39,18 +42,18 @@
 </ngx-carousel>
 <ngx-carousel [inputs]="carouselOne" *ngIf="carouselType == 'banner'">
   <ngx-tile NgxCarouselItem *ngFor="let image of images; let i = index">
-      <div class="newslider slider1">
-          <div class="banner-img">
-            <img src="{{image.source}}" alt="Banner image">
-          </div>
-          <div class="content-block">
-            <div class="what-bg-content">
-              <h3>{{ image.title }}</h3>
-              <p>{{image.description}} </p>
-              <div class="vote-btn"><a href="javascript:;" routerLink="/vote">Vote Now</a></div>
-            </div>
-          </div>
+    <div class="newslider slider1">
+      <div class="banner-img">
+        <img src="{{image.source}}" alt="Banner image">
+      </div>
+      <div class="content-block">
+        <div class="what-bg-content">
+          <h3>{{ image.title }}</h3>
+          <p>{{image.description}} </p>
+          <div class="vote-btn"><a href="javascript:;" routerLink="/vote">Vote Now</a></div>
         </div>
+      </div>
+    </div>
   </ngx-tile>
   <i class="material-icons leftRs" NgxCarouselPrev></i>
   <i class="material-icons rightRs" NgxCarouselNext></i>

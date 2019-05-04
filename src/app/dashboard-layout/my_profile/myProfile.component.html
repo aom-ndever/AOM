@@ -43,12 +43,10 @@
                                                     <div class="upload-cover">
                                                         <img [src]="default_profile_img" alt="Edit cover Image">
                                                         <span class="up_text">Update Photo</span>
-                                                        <input type="file" name="upload" id="cover_upload" 
+                                                        <input type="file" name="upload" id="cover_upload"
                                                             data-toggle="modal" data-target="#cropImagePop"
                                                             (change)="updateProfileImage($event)"
-                                                            accept="image/png,image/jpg,image/jpeg"
-                                                            
-                                                             />
+                                                            accept="image/png,image/jpg,image/jpeg" />
 
                                                         <!-- <div class="modal fade" id="cropImagePop" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                                                                 <div class="modal-dialog">
@@ -111,11 +109,11 @@
                                                             href="javascript:;" class="delete"
                                                             (click)="removeArtistImage()"><i
                                                                 class="fa fa-trash"></i></a>
-                                                         <div class="heading">
-                                                                    <div class="cust_err_msg" *ngIf="artist_validation[5]">
-                                                                      <span class="text-danger">Avatar is required</span>
-                                                                    </div>
-                                                                  </div> 
+                                                        <div class="heading">
+                                                            <div class="cust_err_msg" *ngIf="artist_validation[5]">
+                                                                <span class="text-danger">Avatar is required</span>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -400,7 +398,8 @@
                                         <div class="form-group">
                                             <label for="npwd">New Password</label>
                                             <input type="password" class="form-control" name="new"
-                                                [(ngModel)]="change_pwd.new" id="npwd" placeholder="New Password"  required>
+                                                [(ngModel)]="change_pwd.new" id="npwd" placeholder="New Password"
+                                                required>
                                             <div class="pwd-icon">
                                                 <!-- <i class="fa fa-eye" aria-hidden="true"></i> -->
                                                 <!-- <i class="fa fa-eye-slash" aria-hidden="true"></i> -->
@@ -416,7 +415,7 @@
                                             </div>
                                         </div>
                                         <div class="button_group">
-                                            <button type="submit" [disabled]="show_spinner" class="update-btn">update  
+                                            <button type="submit" [disabled]="show_spinner" class="update-btn">update
                                                 <i *ngIf="show_spinner" class="fa fa-spinner fa-spin"></i></button>
                                         </div>
                                     </form>
@@ -1203,7 +1202,8 @@
                                             <div class="col-md-3 col-sm-12 col-xs-12">
                                                 <div class="edit-profile-picture">
                                                     <div class="upload-cover">
-                                                        <img defaultImage="img/loader.gif" offset="100"
+                                                        <!-- defaultImage="img/loader.gif" -->
+                                                        <img defaultImage="" offset="100"
                                                             lazyLoad="{{default_profile_img}}" alt="Edit cover Image">
                                                         <span class="up_text">Update Photo</span>
                                                         <input type="file" name="upload" id="cover_upload"
@@ -1564,7 +1564,8 @@
                                                     <td class="track-det" colspan="2">
                                                         <div class="track-pic">
                                                             <a href="javascript:;">
-                                                                <img defaultImage="img/loader.gif" offset="100"
+                                                                <img defaultImage="img/music-player-grey.svg"
+                                                                    offset="100"
                                                                     lazyLoad="{{val && val['track'] ? track_url+val['track'].image : 'img/upload1.png'}}"
                                                                     style="height:50px;width:50px;" alt="Track Image">
                                                             </a>

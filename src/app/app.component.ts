@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { setTheme } from 'ngx-bootstrap/utils';
 import { Location } from '@angular/common';
 import { Router, NavigationStart, NavigationCancel, NavigationEnd, NavigationError, Event as RouterEvent, } from '@angular/router';
+// import { NgxSpinnerService } from 'ngx-spinner';
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -13,7 +15,8 @@ export class AppComponent {
   url: any = '';
   constructor(
     private router: Router,
-    private location: Location
+    private location: Location,
+    // private spinner: NgxSpinnerService
   ) {
     setTheme('bs4');
     router.events.subscribe((event: RouterEvent) => {

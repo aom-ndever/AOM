@@ -1,15 +1,6 @@
-#up_twit img {
-
-  width: 14px;
-
-}
-.header_search.search-input input[type="text"]{
-  color:black;
-}
-
-.ng-valid ng-dirty ng-touched{
-color:black;
-}
+#up_twit img {width: 14px;}
+.header_search.search-input input[type="text"]{ color:black;}
+.ng-valid ng-dirty ng-touched{color:black;}
 
 /* You can add global styles to this file, and also import other style files */
 .terms_condition_block p {max-height: 140px;overflow: auto;}
@@ -18,8 +9,6 @@ color:black;
 .track-table, .highlights-wrap{max-height: 1110px;overflow: auto;width: 100%;}
 .no-data-available {text-align: center !important;}
 .dataTables_empty {display: none;}
-
-
 #pButton{ box-shadow: 0px 2px 10px rgba(0,0,0,0.3);  background-color: #9b26b0;border-radius: 50% !important;width: 50px;height: 50px;color: #fff;margin: 0 10px;border: none;background-size: 21px;background-repeat: no-repeat;background-position: center;float: left;outline: none;}
 .play{background: url('img/play_icon.png');    background-position: left 18px top 14px !important;}
 .pause{background: url('img/pause_icon.png') ;    background-size: 15px !important;}
@@ -57,7 +46,6 @@ input[type="range"] {
 input[type="range"]:focus{
   outline:none;
 }
-
 ::-webkit-slider-runnable-track {
   background: #ddd;
 }
@@ -153,7 +141,16 @@ img.social_icons{
 img.social_icons:hover{
   filter: grayscale(0%);
 }
-    
+
+.img-wrap.home_carousel {
+    height: 255px;
+    width: 100%;
+}
+
+.music_icon_pic{
+  
+}
+
   @media(max-width:580px){
     #audioplayer{    position: relative;}
     
@@ -174,8 +171,6 @@ display: none !important;
   color:black;
 }
 
-
-
 .social-block .imginsta{
   height:15px;
 
@@ -184,8 +179,6 @@ display: none !important;
   height:15px;
 
 }
-
-
 .social-acc .form-group .utube {
   position: absolute;
   top: 34px;
@@ -206,7 +199,6 @@ display: none !important;
 
 
 .liked-active{
-
 color: green;
 }
 

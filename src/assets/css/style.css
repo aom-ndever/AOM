@@ -2929,7 +2929,7 @@ span.inner-text span{
     display: inline-block;
     border-radius: 6px;
      background-image: linear-gradient(to right, rgba(203, 79, 216, 0), #9c27b0);
-         float: right;
+    float: right;
     text-align: right;
     padding: 5px 10px;
     margin-left: auto;
@@ -3616,7 +3616,7 @@ button.close{    background: transparent;
 }
 .modal-wrapper .modal-dialog .modal-content {
     border: 0;
-    padding: 75px 75px 20px 75px; */
+    padding: 75px 75px 20px 75px;
     border-radius: 15px !important;
 }
 .modal_login_wrapper .modal-header {
@@ -4346,9 +4346,9 @@ background-color: #e91e63;
   color: #ffffff;
   margin-bottom: 0;
 }
-.location_top_container .download-graph ul li  .d-num span,
+.location_top_container .download-graph ul li  .d-num span
 {
-    font-size: 12px;
+  font-size: 12px;
   font-weight: 400;
   text-align: right;
   color: #ffffff;
@@ -4631,8 +4631,7 @@ justify-content: space-around !important;
     text-align: center;
 }
 .table_design thead tr th{ text-align: left;    font-size: 14px;}
- .table_design tbody tr td {text-align: left;    font-size: 14px;}
-.action_playlist{}
+.table_design tbody tr td {text-align: left;    font-size: 14px;}
 .edit_plalist_link, .delete_plalist_link, .track_plalist_link{    width: 25px;
     height: 25px;
     display: inline-block;
@@ -4746,7 +4745,6 @@ max-height: unset !important;
 .custom_track_table .track-det{
          width: 23%;
 }
-.custom_track_table .votes_label{}
 .custom_track_table .music_vote{    width: 30%;}
 .add_track_form > label{width:100%;}
 .add_track_autocomplete{width:100%;}

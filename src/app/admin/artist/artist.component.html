@@ -4,7 +4,8 @@
     <div>
       <h3 class="Audience-Overview">Search Artist </h3>
       <div class="search-input header_search">
-        <input type="text" name="search" [(ngModel)]="search_str" (keyup)="filterBasedOnSearch($event)" placeholder="Search by Artist Name or Song Title">
+        <input type="text" name="search" [(ngModel)]="search_str" (keyup)="filterBasedOnSearch($event)"
+          placeholder="Search by Artist Name or Song Title">
       </div>
       <div class="row top_header_filter">
         <div class="col-lg-2 col-md-3 col-sm-6 col-xs-6">
@@ -14,7 +15,8 @@
               <li>
                 <div class="radio">
                   <label>
-                    <input name="musicgenre" type="radio" value="" [(ngModel)]="music_type_id" (click)="filterByMusicType('')">All
+                    <input name="musicgenre" type="radio" value="" [(ngModel)]="music_type_id"
+                      (click)="filterByMusicType('')">All
                     styles
                     <div class="radio_check"></div>
                   </label>
@@ -23,7 +25,8 @@
               <li *ngFor="let music of music_type;">
                 <div class="radio">
                   <label>
-                    <input name="musicgenre" type="radio" [value]="music._id" [(ngModel)]="music_type_id" (click)="filterByMusicType(music._id)">{{music['name']}}
+                    <input name="musicgenre" type="radio" [value]="music._id" [(ngModel)]="music_type_id"
+                      (click)="filterByMusicType(music._id)">{{music['name']}}
                     <div class="radio_check"></div>
                   </label>
                 </div>
@@ -40,10 +43,12 @@
               <div class="col-lg-2 col-md-4 col-sm-4 col-xs-4">
                 <div class="filter-subhead">Northeast</div>
                 <ul>
-                  <li *ngFor="let s of state_list;" [style.display]="s['region']['name'] == 'northeast' ? 'block' : 'none'">
+                  <li *ngFor="let s of state_list;"
+                    [style.display]="s['region']['name'] == 'northeast' ? 'block' : 'none'">
                     <div class="checkbox">
                       <label>
-                        <input type="checkbox" [value]="s._id" (click)="addRegionForFilter($event.target.checked, $event.target.value)">
+                        <input type="checkbox" [value]="s._id"
+                          (click)="addRegionForFilter($event.target.checked, $event.target.value)">
                         <div class="chk_check"></div>
                         <span>{{s.name}}</span>
                       </label>
@@ -54,10 +59,12 @@
               <div class="col-lg-2 col-md-4 col-sm-4 col-xs-4">
                 <div class="filter-subhead">southeast</div>
                 <ul>
-                  <li *ngFor="let s of state_list;" [style.display]="s['region']['name'] == 'southeast' ? 'block' : 'none'">
+                  <li *ngFor="let s of state_list;"
+                    [style.display]="s['region']['name'] == 'southeast' ? 'block' : 'none'">
                     <div class="checkbox">
                       <label>
-                        <input type="checkbox" [value]="s._id" (click)="addRegionForFilter($event.target.checked, $event.target.value)">
+                        <input type="checkbox" [value]="s._id"
+                          (click)="addRegionForFilter($event.target.checked, $event.target.value)">
                         <div class="chk_check"></div>
                         <span>{{s.name}}</span>
                       </label>
@@ -68,10 +75,12 @@
               <div class="col-lg-2 col-md-4 col-sm-4 col-xs-4">
                 <div class="filter-subhead">Midwest</div>
                 <ul>
-                  <li *ngFor="let s of state_list;" [style.display]="s['region']['name'] == 'midwest' ? 'block' : 'none'">
+                  <li *ngFor="let s of state_list;"
+                    [style.display]="s['region']['name'] == 'midwest' ? 'block' : 'none'">
                     <div class="checkbox">
                       <label>
-                        <input type="checkbox" [value]="s._id" (click)="addRegionForFilter($event.target.checked, $event.target.value)">
+                        <input type="checkbox" [value]="s._id"
+                          (click)="addRegionForFilter($event.target.checked, $event.target.value)">
                         <div class="chk_check"></div>
                         <span>{{s.name}}</span>
                       </label>
@@ -82,10 +91,12 @@
               <div class="col-lg-2 col-md-4 col-sm-4 col-xs-4">
                 <div class="filter-subhead">Southwest</div>
                 <ul>
-                  <li *ngFor="let s of state_list;" [style.display]="s['region']['name'] == 'southwest' ? 'block' : 'none'">
+                  <li *ngFor="let s of state_list;"
+                    [style.display]="s['region']['name'] == 'southwest' ? 'block' : 'none'">
                     <div class="checkbox">
                       <label>
-                        <input type="checkbox" [value]="s._id" (click)="addRegionForFilter($event.target.checked, $event.target.value)">
+                        <input type="checkbox" [value]="s._id"
+                          (click)="addRegionForFilter($event.target.checked, $event.target.value)">
                         <div class="chk_check"></div>
                         <span>{{s.name}}</span>
                       </label>
@@ -99,7 +110,8 @@
                   <li *ngFor="let s of state_list;" [style.display]="s['region']['name'] == 'west' ? 'block' : 'none'">
                     <div class="checkbox">
                       <label>
-                        <input type="checkbox" [value]="s._id" (click)="addRegionForFilter($event.target.checked, $event.target.value)">
+                        <input type="checkbox" [value]="s._id"
+                          (click)="addRegionForFilter($event.target.checked, $event.target.value)">
                         <div class="chk_check"></div>
                         <span>{{s.name}}</span>
                       </label>
@@ -113,7 +125,8 @@
                   <li *ngFor="let s of state_list;" [style.display]="s['region']['name'] == 'other' ? 'block' : 'none'">
                     <div class="checkbox">
                       <label>
-                        <input type="checkbox" [value]="s._id" (click)="addRegionForFilter($event.target.checked, $event.target.value)">
+                        <input type="checkbox" [value]="s._id"
+                          (click)="addRegionForFilter($event.target.checked, $event.target.value)">
                         <div class="chk_check"></div>
                         <span>{{s.name}}</span>
                       </label>
@@ -130,7 +143,8 @@
   <div>
     <h3 class="Audience-Overview">Artists </h3>
     <div class="dropdown table_dropdown custom_dropdown">
-      <select class="form-control custom_drop_btn" id="sort" name="sort_by" [(ngModel)]="sort_by" (change)="sortArtist($event.target.value)">
+      <select class="form-control custom_drop_btn" id="sort" name="sort_by" [(ngModel)]="sort_by"
+        (change)="sortArtist($event.target.value)">
         <option value="-1">Newest First</option>
         <option value="1">Newest Last</option>
       </select>
@@ -173,7 +187,8 @@
             <td class="td_img action_div">
               <div class="icon_container">
                 <img src="img/suspend.png" *ngIf="user['admin']['account_type'] != 'moderator'">
-                <a href="javascript:;" *ngIf="user['admin']['account_type'] != 'moderator'" (click)="suspendArtist(artist['_id'],artist['flag'])">{{artist['flag']
+                <a href="javascript:;" *ngIf="user['admin']['account_type'] != 'moderator'"
+                  (click)="suspendArtist(artist['_id'],artist['flag'])">{{artist['flag']
                   ? 'Un-suspend' : 'Suspend'}}</a>
               </div>
             </td>
@@ -199,10 +214,12 @@
     <div class="custom_modal artist_view_modal">
       <div class="row" style="padding: 5px;">
         <div class="col-sm-4 artist_img">
-          <img defaultImage="img/loader.gif" offset="100" lazyLoad="{{artist_detail['image'] ? artist_img_url+artist_detail['image'] : 'img/profile-img.png'}}" />
+          <img defaultImage="img/loader.gif" offset="100"
+            lazyLoad="{{artist_detail['image'] ? artist_img_url+artist_detail['image'] : 'img/profile-img.png'}}" />
         </div>
         <div class="col-sm-8 profile_detail">
-          <span class="pull-right {{artist_detail['flag'] ?'Suspended' : 'Active'}}">{{artist_detail['flag'] ? 'Suspended' : 'Active'}}</span>
+          <span
+            class="pull-right {{artist_detail['flag'] ?'Suspended' : 'Active'}}">{{artist_detail['flag'] ? 'Suspended' : 'Active'}}</span>
           <h3>{{artist_detail['first_name']+' '+artist_detail['last_name']}}</h3>
           <div class="checkbox custom_check_box">
             <label>
@@ -261,7 +278,8 @@
                     </div>
                     <div class="popup_container">
                       <a href="javascript:;" *ngIf="user['admin']['account_type'] != 'moderator'" triggers="click"
-                        [outsideClick]="true" [popover]="myTemplate" popoverTitle="{{track['is_suspend'] ? 'Un-suspend' : 'Suspend'}}?">
+                        [outsideClick]="true" [popover]="myTemplate"
+                        popoverTitle="{{track['is_suspend'] ? 'Un-suspend' : 'Suspend'}}?">
                         <img src="img/suspend.png" style="top:3px !important;">{{track['is_suspend'] ? 'Suspended' :
                         'Suspend'}}
                       </a>
