@@ -15,10 +15,10 @@ import { EamilVarificationModule } from './email_varification/email_varification
 import { ForgetPasswordModule } from './forget_password/forget_password.module';
 import { AuthService } from './shared/auth.service';
 import { MessageService } from './shared/message.service';
-// import { NgxSpinnerModule } from 'ngx-spinner';
 import { PLATFORM_ID, APP_ID, Inject } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { HighchartsStatic } from 'angular2-highcharts/dist/HighchartsService';
+import { NgxUiLoaderModule } from 'ngx-ui-loader';
 
 @NgModule({
   declarations: [
@@ -32,7 +32,7 @@ import { HighchartsStatic } from 'angular2-highcharts/dist/HighchartsService';
     EamilVarificationModule,
     AdminLayoutModule,
     ForgetPasswordModule,
-    // NgxSpinnerModule,
+    NgxUiLoaderModule,
     NgbModule.forRoot(),
     ChartModule.forRoot(require('highcharts/highstock'), require('highcharts/modules/drilldown')),
     DataTablesModule,

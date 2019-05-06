@@ -8,7 +8,7 @@ import { ToastrService } from 'ngx-toastr';
 import { environment } from '../../../environments/environment';
 import { Lightbox } from 'angular2-lightbox';
 import { Chart } from 'angular-highcharts';
-import { AmChartsService, AmChart } from "@amcharts/amcharts3-angular";
+import { AmChartsService, AmChart } from '@amcharts/amcharts3-angular';
 import { MessageService } from '../../shared/message.service';
 import { Subscription } from 'rxjs/Subscription';
 import { DataTableDirective } from 'angular-datatables';
@@ -24,24 +24,12 @@ declare let Stripe: any;
 })
 
 export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
-
-  // public config = {
-  //    ImageName: 'Some image',
-  //    AspectRatios: ["4:3", "16:9"],
-  // ImageUrl: 'https://static.pexels.com/photos/248797/pexels-photo-248797.jpeg',
-  //   ImageType: 'image/jpeg'
-  //  }
-  // public getEditedFile(file: File) {
-
-
-  // }
-  
-
   artist_validation = [false];
   imageChangedEvent: any = '';
   croppedImage: any = '';
   cropperReady = false;
   public card_list: any = [];
+
   @ViewChildren(DataTableDirective)
   dtElements: QueryList<DataTableDirective>;
   dtOptions: DataTables.Settings[] = [];
@@ -53,7 +41,6 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
     month: '',
     year: ''
   };
-
   public default_profile_img: any = 'img/profile-img.png';
   public default_cover_img: any = 'img/edit-cover.jpg';
   public day: any = [];
@@ -115,7 +102,6 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
   artistProfileValidation: boolean = false;
   listener_profile: FormGroup;
   listenerProfileValidation: boolean = false;
-
   // upgrade to artist form group
   upgrade_artist: FormGroup;
   upgrade_artist_validation: boolean = false;
@@ -127,7 +113,6 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
   state_list: any = [];
   upgrade_artist_img: any = '';
   upgrade_artist_music_type = [];
-
   // playlist
   playlist: any = [];
   playlist_data: any = {};
@@ -140,16 +125,12 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
   playlist_validation: boolean = false;
   track_fg: FormGroup;
   track_validation: boolean = false;
-
   // Bank
   bank_fg: FormGroup;
   bank_validation: boolean = false;
-
   // Purchased track
   purchased_track: any = [];
   purchased_track_list: any = [];
-
-
   // payment tab
   payment_tab_cnt: any = 0;
   transaction_data: any = [];
@@ -186,8 +167,6 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
     }
     if (data && data.artist) {
       this.userdata = { ...data['artist'] };
-      console.log('userData here===> ', this.userdata);
-      
       this.userdata['type'] = 'artist';
       if (this.userdata.dob) {
         let dt = new Date(this.userdata.dob);
@@ -237,21 +216,14 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
         this.upgrade_artist_data['year'] = dt.getFullYear();
       }
       if (this.userdata.image) {
-        console.log("image=====>", this.userdata.image);
-        if (this.userdata.provider && this.userdata.provider == 'facebook' && this.userdata['image'].includes('graph.facebook.com') || (this.userdata.provider == "gmail" && this.userdata['image'].includes('lh3.googleusercontent.com'))) {
+        if (this.userdata.provider && this.userdata.provider === 'facebook' && this.userdata['image'].includes('graph.facebook.com') ||
+          (this.userdata.provider === 'gmail' && this.userdata['image'].includes('lh3.googleusercontent.com'))) {
           this.default_profile_img = this.userdata.image;
-
         } else {
           this.default_profile_img = environment.API_URL + environment.USER_IMG + this.userdata.image;
         }
         this.upgrade_artist_img = this.userdata.image;
       }
-      let tmp = [];
-      // this.userdata['music_type'].forEach((ele) => {
-      //   if(ele)
-      //     tmp.push(ele['_id']);
-      // });
-      // this.userdata['music_type'] = tmp;
     }
     this.MyProfileService.getAllMusicType().subscribe(response => {
       this.music_types = response['music'];
@@ -274,12 +246,10 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
       day: ['', [Validators.required]],
       month: ['', [Validators.required]],
       year: ['', [Validators.required]],
-      phone: ['', [Validators.required, Validators.pattern('[0-9]+'), Validators.minLength(10), Validators.maxLength(10), , this.noWhitespaceValidator]],
-      //  account_number: ['', [Validators.required, Validators.pattern('[0-9]+'), this.noWhitespaceValidator]],
-      // holder_name: ['', [Validators.required, Validators.pattern('[A_Za-z]+'), this.noWhitespaceValidator]],
+      phone: ['', [Validators.required, Validators.pattern('[0-9]+'), Validators.minLength(10), Validators.maxLength(10),
+      this.noWhitespaceValidator]],
       music_type: ['', [Validators.required]],
       zipcode: ['', [Validators.required, this.noWhitespaceValidator]],
-
       description: [''],
       share_url_fb: [''],
       share_url_insta: [''],
@@ -296,7 +266,8 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
       day: ['', [Validators.required]],
       month: ['', [Validators.required]],
       year: ['', [Validators.required]],
-      phone: ['', [Validators.required, Validators.pattern('[0-9]+'), Validators.minLength(10), Validators.maxLength(10), this.noWhitespaceValidator]],
+      phone: ['', [Validators.required, Validators.pattern('[0-9]+'), Validators.minLength(10), Validators.maxLength(10),
+      this.noWhitespaceValidator]],
       music_type: ['', [Validators.required]],
       zipcode: ['', [Validators.required, this.noWhitespaceValidator]],
       region: ['', [Validators.required]],
@@ -317,13 +288,14 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
       day: ['', [Validators.required]],
       month: ['', [Validators.required]],
       year: ['', [Validators.required]],
-      phone: ['', [Validators.required, Validators.pattern('[0-9]+'), Validators.minLength(10), Validators.maxLength(10), this.noWhitespaceValidator]],
+      phone: ['', [Validators.required, Validators.pattern('[0-9]+'), Validators.minLength(10), Validators.maxLength(10),
+      this.noWhitespaceValidator]],
       zipcode: ['', [Validators.required, this.noWhitespaceValidator]],
       music_type: ['', [this.multiSelectRequired]]
     });
 
     this.bank_fg = this.fb.group({
-      bname: ['', [Validators.required, Validators.pattern('[a-zA-Z ]*'),this.noWhitespaceValidator]],
+      bname: ['', [Validators.required, Validators.pattern('[a-zA-Z ]*'), this.noWhitespaceValidator]],
       hname: ['', [Validators.required, Validators.pattern('[a-zA-Z ]*')]],
       acno: ['', [Validators.required, Validators.pattern('[0-9]+'), this.noWhitespaceValidator]],
       rno: ['', [Validators.required, Validators.pattern('[0-9]+'), this.noWhitespaceValidator]]
@@ -336,7 +308,6 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
       name: ['', [Validators.required]]
     });
 
-    // this.getAllData();
     this.subscription = this.MessageService.getMessage().subscribe((response) => {
       if (response && response['list'] != 1) {
         this.audio_ins.forEach((ele, idx) => { this.audio_ins[idx] = false; });
@@ -398,25 +369,16 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
             this.userdata['year'] = dt.getFullYear();
           }
           if (this.userdata.image) {
-            if (this.userdata.provider && this.userdata.provider == 'facebook' && this.userdata['image'].includes('graph.facebook.com') || (this.userdata.provider == "gmail" && this.userdata['image'].includes('lh3.googleusercontent.com'))) {
+            if (this.userdata.provider && this.userdata.provider === 'facebook' && this.userdata['image'].includes('graph.facebook.com') ||
+              (this.userdata.provider === 'gmail' && this.userdata['image'].includes('lh3.googleusercontent.com'))) {
               this.default_profile_img = this.userdata.image;
             } else {
               this.default_profile_img = environment.API_URL + environment.USER_IMG + this.userdata.image;
             }
           }
-          // let tmp = [];
-          // this.userdata['music_type'].forEach((ele) => {
-          //   if(ele)
-          //     // tmp.push(ele['_id']);
-          //     tmp.push(ele['_id']);
-          // });
-          // this.userdata['music_type'] = tmp;
         }
       }
-
     });
-
-
   }
 
 
@@ -425,7 +387,6 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
       this.getMediaList();
       this.calculateDateFromDays(this.analytics_days);
       this.getAllCard();
-      //this.getAllTrackAnalytic({day : this.analytics_days});
       this.getAllOverviewAnalytic({ day: this.analytics_days });
       this.getAllDownloadAnalytic({ day: this.analytics_days });
       this.getAllPayment({ day: 30 });
@@ -457,6 +418,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
           { data: '' }
         ]
       };
+
       this.dtOptions[1] = {
         pagingType: 'full_numbers',
         pageLength: 10,
@@ -487,6 +449,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
           { data: '' }
         ]
       };
+
     } else {
       this.getRegionList();
       const that = this;
@@ -590,7 +553,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
   }
-  
+
 
   ngOnDestroy() {
     if (this.follower_location_chart) {
@@ -605,10 +568,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
     this.subscription.unsubscribe();
   }
 
-  ngAfterViewInit() {
-    // stripe card implementation
-    // this.setupStripeFrom();
-  }
+  ngAfterViewInit() { }
 
   noWhitespaceValidator(control: FormControl) {
     if (typeof (control.value || '') === 'string' || (control.value || '') instanceof String) {
@@ -684,8 +644,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
   }
   // Update user profile
   update(flag: boolean) {
-    if (this.userdata.type == 'artist') {
-      console.log("flag--------------->", flag)
+    if (this.userdata.type === 'artist') {
       if (flag) {
         this.artistProfileValidation = !flag;
         this.show_spinner = true;
@@ -727,36 +686,234 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
       }
     }
   }
-  //   imageCropped(event: ImageCroppedEvent) {
-  //     this.croppedImage = event.base64;
-  // }
 
 
-  updateProfileImage(event: any) {
 
-    console.log("update profile image");
-    var fileList: FileList = event.target.files;
-    const file = <File>event.target.files[0];
+  changeUpgradeArtistImage(event: any) {
+    const fileList: FileList = event.target.files;
     if (event.target.files.length > 0) {
-
-      // this.artist_validation[1] = false;
       const allow_types = ['image/png', 'image/jpg', 'image/jpeg'];
       if (allow_types.indexOf(fileList[0].type) == -1) {
         this.toastr.error('Invalid file format.', 'Error!');
         return false;
       }
-      this.imageChangedEvent = event;
-      if (event.target.files.length <= 0) {
-        this.cropperReady = false;
-      }
-
       console.log(fileList);
       let formData: FormData = new FormData();
+      this.upgrade_artist_img = fileList[0];
       formData.append('image', fileList[0]);
-      console.log(formData);
-      if (this.userdata.type == 'artist') {
+      if (fileList.length > 0) {
+        const fileExtention = fileList[0].name.split('.');
+        const file: File = fileList[0];
+        const reader = new FileReader();
+        reader.onload = (e: any) => {
+          const data = {};
+          let imageBuffer = e.target.result;
+          this.default_profile_img = imageBuffer;
+        };
+        reader.readAsDataURL(event.target.files[0]);
+      }
+    }
+  }
+
+
+
+  //   updateCoverImage(event: any) {
+  //   // this.imageChangedEvent = event;
+  //   const fileList: FileList = event.target.files;
+  //   console.log(fileList);
+  //   if (event.target.files.length > 0) {
+  //     const allow_types = ['image/png', 'image/jpg', 'image/jpeg'];
+  //     if (allow_types.indexOf(fileList[0].type) == -1) {
+  //       this.toastr.error('Invalid file format.', 'Error!');
+  //       return false;
+  //     }
+
+  //     const formData: FormData = new FormData();
+  //     formData.append('cover_image', fileList[0], fileList[0]['name']);
+  // this.MyProfileService.updateCoverImage(formData).subscribe(response => {
+  //   console.log('uploaded image', response);
+  //   this.updateLocalStorage();
+  // }, error => {
+  //   this.toastr.error(error['error'].message, 'Error!');
+  // }, () => {
+
+  // });
+  //     if (fileList.length > 0) {
+  //       const fileExtention = fileList[0].name.split('.');
+  //       const file: File = fileList[0];
+  //       const reader = new FileReader();
+  //       reader.onload = (e: any) => {
+  //         const data = {};
+  //         let imageBuffer = e.target.result;
+  //         this.default_cover_img = imageBuffer;
+  //       };
+  //       reader.readAsDataURL(event.target.files[0]);
+  //     }
+  //   }
+  // }
+
+
+
+  // updateProfileImage(event: any) {
+  //   console.log('event => ', event);
+  //   var fileList: FileList = event.target.files;
+  //   const file = <File>event.target.files[0];
+  //   console.log('file.size => ', file.size);
+
+  //   if (event.target.files.length > 0) {
+  //     if (file.size > 1000) {
+  //       console.log('in file size validation condition => ');
+  //       this.toastr.error('Please choose Image less then 1 mb.', 'Error!');
+  //     }
+  //     const allow_types = ['image/png', 'image/jpg', 'image/jpeg'];
+  //     if (allow_types.indexOf(fileList[0].type) === -1) {
+  //       this.toastr.error('Invalid file format.', 'Error!');
+  //       return false;
+  //     }
+  //     this.imageChangedEvent = event;
+  //     if (event.target.files.length <= 0) {
+  //       this.cropperReady = false;
+  //     }
+  //     let formData: FormData = new FormData();
+  //     formData.append('image', fileList[0]);
+  //     console.log('formData==============>', formData);
+  //     if (this.userdata.type === 'artist') {
+  //       this.MyProfileService.updateArtistProfileImage(formData).subscribe(response => {
+
+  //         console.log('uploaded image', response);
+  //         this.default_profile_img = environment.API_URL + environment.ARTIST_IMG + response['image'];
+  //         this.updateLocalStorage();
+  //         this.MessageService.sendMessage({ updateProfile: true });
+  //       }, error => {
+  //         this.toastr.error(error['error'].message, 'Error!');
+  //       });
+  //     } else {
+  //       this.MyProfileService.updateUserProfileImage(formData).subscribe(response => {
+  //         console.log('uploaded image', response);
+  //         this.default_profile_img = environment.API_URL + environment.USER_IMG + response['image'];
+  //         this.updateLocalStorage();
+  //         this.MessageService.sendMessage({ updateProfile: true });
+  //       }, error => {
+  //         this.toastr.error(error['error'].message, 'Error!');
+  //       });
+  //     }
+
+  //     if (fileList.length > 0) {
+  //       let flag;
+  //       let res;
+  //       let fr = new FileReader();
+  //       fr.onload = (e: any) => {
+  //         console.log('e================>', e);
+  //         res = e.target.result;
+  //         const uint = new Uint8Array(res.slice(0, 4));
+  //         const bytes = [];
+  //         uint.forEach((byte) => {
+  //           bytes.push(byte.toString(16));
+  //         });
+  //         const hex = bytes.join('').toUpperCase();
+  //         const allow_types = this.getImageMimetype(hex);
+  //         if (allow_types.indexOf(file.type) === -1) {
+  //           this.toastr.error('Invalid file format.', 'Error!');
+  //           return false;
+  //         } else {
+  //           this.default_profile_img = file;
+  //         }
+  //       };
+  //       fr.readAsArrayBuffer(file);
+  //     }
+  //   } else {
+  //     console.log('in else => ');
+  //   }
+
+  // }
+
+
+
+  updateCoverImage(event: any) {
+    const fileList: FileList = event.target.files;
+    console.log('fileList => ', fileList);
+    console.log('event => ', event);
+    const file = <File>event.target.files[0];
+    let isValidCover = false;
+    console.log('file ========================> ', file);
+    if (file) {
+      console.log('file.type ==============================> ', file.type);
+      if (file.type === 'image/jpeg' || file.type === 'image/png' || file.type === 'image/jpg') {
+        console.log('file type valid => ');
+        isValidCover = true;
+        console.log('file.size => ', file.size);
+        if (file.size >= 1000000) {
+          this.toastr.error('Please choose Image less then 1 mb.', 'Error!');
+          isValidCover = false;
+          console.log('returning ----- more than 1 mb => ');
+          return 0;
+        } else {
+          isValidCover = true;
+        }
+      } else {
+        console.log('in valid file format  => ');
+        isValidCover = false;
+        this.toastr.error('Invalid Image Format.', 'Error!');
+        console.log('returning ---- invalid format  => ');
+        return 0;
+      }
+    }
+
+    if (isValidCover) {
+      let formData: FormData = new FormData();
+      formData.append('cover_image', fileList[0], fileList[0]['name']);
+      this.MyProfileService.updateCoverImage(formData).subscribe(response => {
+        console.log('uploaded image', response);
+        this.updateLocalStorage();
+      }, error => {
+        this.toastr.error(error['error'].message, 'Error!');
+      });
+    }
+  }
+
+
+
+  updateProfileImage(event: any) {
+    var fileList: FileList = event.target.files;
+    const file = <File>event.target.files[0];
+    console.log('file.size => ', file.size);
+    let isValid = false;
+    console.log('file ========================> ', file);
+    if (file) {
+      console.log('file.type ==============================> ', file.type);
+      if (file.type === 'image/jpeg' || file.type === 'image/png' || file.type === 'image/jpg') {
+        console.log('file type valid => ');
+        isValid = true;
+        if (file.size >= 500000) {
+          this.toastr.error('Please choose Image less then 500 kb.', 'Error!');
+          isValid = false;
+          console.log('returning ----- more than 500 kb => ');
+          return 0;
+        } else {
+          isValid = true;
+        }
+      } else {
+        console.log('in valid file format  => ');
+        isValid = false;
+        this.toastr.error('Invalid Image Format.', 'Error!');
+        console.log('returning ---- invalid format  => ');
+        return 0;
+      }
+    }
+
+    const profilePic = [];
+
+    if (isValid) {
+      // const reader = new FileReader();
+      // reader.onload = (e: any) => {
+      //   profilePic.push(e.target.result);
+      // };
+      // reader.readAsDataURL(file);
+      let formData: FormData = new FormData();
+      formData.append('image', fileList[0]);
+      if (this.userdata.type === 'artist') {
         this.MyProfileService.updateArtistProfileImage(formData).subscribe(response => {
-          console.log('uploaded image', response);
+          console.log('uploaded image===============================>', response);
           this.default_profile_img = environment.API_URL + environment.ARTIST_IMG + response['image'];
           this.updateLocalStorage();
           this.MessageService.sendMessage({ updateProfile: true });
@@ -765,7 +922,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
         });
       } else {
         this.MyProfileService.updateUserProfileImage(formData).subscribe(response => {
-          console.log('uploaded image', response);
+          console.log('uploaded image================================>', response);
           this.default_profile_img = environment.API_URL + environment.USER_IMG + response['image'];
           this.updateLocalStorage();
           this.MessageService.sendMessage({ updateProfile: true });
@@ -773,54 +930,22 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
           this.toastr.error(error['error'].message, 'Error!');
         });
       }
-      if (fileList.length > 0) {
-        console.log("1")
-        // const fileExtention = fileList[0].name.split('.');
-        // const file: File = fileList[0];
-        // const reader = new FileReader();
-        // reader.onload = (e: any) => {
-        //   const data = {};
-        //   let imageBuffer = e.target.result;
-        //   this.default_profile_img = imageBuffer;
-        // };
-        // reader.readAsDataURL(event.target.files[0]);
-        let flag;
-        let res;
-        let fr = new FileReader();
-        fr.onload = (e: any) => {
-          console.log("e", e);
-          res = e.target.result;
-          const uint = new Uint8Array(res.slice(0, 4));
-          const bytes = [];
-          uint.forEach((byte) => {
-            bytes.push(byte.toString(16));
-          });
-
-          const hex = bytes.join('').toUpperCase();
-          const allow_types = this.getImageMimetype(hex);
-          // console.log(binaryFileType + ' ' + hex);
-          // if (binaryFileType === 'Unknown filetype') {
-            if (allow_types.indexOf(file.type) == -1) {
-            this.toastr.error('Invalid file format.', 'Error!');
-            return false;
-            // }
-          } else {
-            // const file = new Blob([new Uint8Array(res)], { type: binaryFileType });
-            this.default_profile_img = file;
-          }
-
-        };
-        fr.readAsArrayBuffer(file);
-      }
     }
-
   }
+
+
+
+
+
+
   imageCropped(image: string) {
     this.croppedImage = image;
   }
+
   imageLoaded() {
     this.cropperReady = true;
   }
+
   imageLoadFailed() {
     console.log('Load failed');
   }
@@ -857,71 +982,8 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
-  changeUpgradeArtistImage(event: any) {
-    const fileList: FileList = event.target.files;
-    if (event.target.files.length > 0) {
-      const allow_types = ['image/png', 'image/jpg', 'image/jpeg'];
-      if (allow_types.indexOf(fileList[0].type) == -1) {
-        this.toastr.error('Invalid file format.', 'Error!');
-        return false;
-      }
-      console.log(fileList);
-      let formData: FormData = new FormData();
-      this.upgrade_artist_img = fileList[0];
-      formData.append('image', fileList[0]);
-      if (fileList.length > 0) {
-        const fileExtention = fileList[0].name.split('.');
-        const file: File = fileList[0];
-        const reader = new FileReader();
-        reader.onload = (e: any) => {
-          const data = {};
-          let imageBuffer = e.target.result;
-          this.default_profile_img = imageBuffer;
-        };
-        reader.readAsDataURL(event.target.files[0]);
-      }
-    }
-  }
 
 
-  updateCoverImage(event: any) {
-    // this.imageChangedEvent = event;
-    const fileList: FileList = event.target.files;
-    console.log(fileList);
-    if (event.target.files.length > 0) {
-      const allow_types = ['image/png', 'image/jpg', 'image/jpeg'];
-      if (allow_types.indexOf(fileList[0].type) == -1) {
-        this.toastr.error('Invalid file format.', 'Error!');
-        return false;
-      }
-
-      const formData: FormData = new FormData();
-      formData.append('cover_image', fileList[0], fileList[0]['name']);
-      this.MyProfileService.updateCoverImage(formData).subscribe(response => {
-        console.log('uploaded image', response);
-        this.updateLocalStorage();
-      }, error => {
-        this.toastr.error(error['error'].message, 'Error!');
-      }, () => {
-
-      });
-      if (fileList.length > 0) {
-        const fileExtention = fileList[0].name.split('.');
-        const file: File = fileList[0];
-        const reader = new FileReader();
-        reader.onload = (e: any) => {
-          const data = {};
-          let imageBuffer = e.target.result;
-          this.default_cover_img = imageBuffer;
-        };
-        reader.readAsDataURL(event.target.files[0]);
-      }
-    }
-  }
-
-  //   imageCropped(event: ImageCroppedEvent) {
-  //     this.croppedImage = event.base64;
-  // }
 
   updateLocalStorage() {
     if (this.userdata.type == 'artist') {
@@ -1108,12 +1170,12 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   changePassword() {
-  console.log(this.userdata.pwd);
-  console.log(this.change_pwd['old']);
-  console.log(this.userdata.type);
-  
-  
-  
+    console.log(this.userdata.pwd);
+    console.log(this.change_pwd['old']);
+    console.log(this.userdata.type);
+
+
+
     if (this.change_pwd['old'] && this.userdata.pwd == this.change_pwd['old']) {
       if (this.change_pwd['new'] && this.change_pwd['repeat'] && this.change_pwd['new'] == this.change_pwd['repeat'] && this.change_pwd['new'].length >= 6 && this.change_pwd['repeat'] >= 6) {
         let data = {
@@ -1122,16 +1184,16 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
         };
         this.show_spinner = true;
         if (this.userdata.type == 'artist') {
-          this.MyProfileService.changeArtistPassword(data).subscribe(response => {      
+          this.MyProfileService.changeArtistPassword(data).subscribe(response => {
             this.change_pwd = {};
             this.updateLocalStorage();
             this.toastr.success(response['resp'], 'Success!');
           }, error => {
             this.toastr.error(error['error'].message, 'Error!');
             this.show_spinner = false;
-          },() =>{
+          }, () => {
             this.show_spinner = false;
-          
+
           });
         } else {
           this.MyProfileService.changeUserPassword(data).subscribe(response => {
@@ -1142,21 +1204,21 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
             console.log('api res****');
             this.toastr.error(error['error'].message, 'Error!');
             this.show_spinner = false;
-          },() =>{
+          }, () => {
             this.show_spinner = false;
-          
+
           });
         }
       } else if (!this.change_pwd['new']) {
-        this.toastr.error('Please enter new password','Error!');
+        this.toastr.error('Please enter new password', 'Error!');
       } else if (!this.change_pwd['repeat']) {
-        this.toastr.error('Please enter repeat password','Error!');
+        this.toastr.error('Please enter repeat password', 'Error!');
       } else if (this.change_pwd['new'].length < 6) {
         this.toastr.error('New password must be more than 6 character');
       } else if (this.change_pwd['repeat'].length < 6) {
         this.toastr.error('Repeat password must be more than 6 character');
       } else {
-        this.toastr.error('New and repeat password must be same','Error!');
+        this.toastr.error('New and repeat password must be same', 'Error!');
       }
     } else {
       this.toastr.error('Please enter existing password', 'Error!');
@@ -1222,7 +1284,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
           this.toastr.success(event['body']['message'], 'Success!');
           this.getMediaList();
           this.media_modal_ref.close();
-           this.show_spinner = false;
+          this.show_spinner = false;
         }
       }, error => {
         this.toastr.error(error['error'].message, 'Error!');
@@ -2121,7 +2183,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
 
   }
   // Remove existing playlist
-  removePlaylist(id: any,idx : any) {
+  removePlaylist(id: any, idx: any) {
     swal({
       title: 'Are you sure?',
       text: "You won't be able to revert this!",
@@ -2132,31 +2194,31 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
       confirmButtonText: 'Yes, delete it!'
     }).then((flag) => {
       if (flag.value) {
-       
-        
+
+
         if (this.userdata && this.userdata['type'] == 'user') {
 
           this.MyProfileService.deleteListenerPlaylistById(id).subscribe((response) => {
-            
+
             this.toastr.success(response['message'], 'Success!');
             this.dtElements.forEach((dtElement: DataTableDirective, index: number) => {
-              if(idx == index) {
-              dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
-                dtInstance.draw();
-              });
+              if (idx == index) {
+                dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
+                  dtInstance.draw();
+                });
               }
             });
           });
-          
+
         } else {
           this.MyProfileService.removeArtistPlaylist(id).subscribe((response) => {
             this.toastr.success(response['message'], 'Success!');
             this.dtElements.forEach((dtElement: DataTableDirective, index: number) => {
-              if(idx == index) {
-              dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
-                dtInstance.draw();
-              });
-            }
+              if (idx == index) {
+                dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
+                  dtInstance.draw();
+                });
+              }
             });
           });
         }
@@ -2274,9 +2336,9 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
               });
             });
             this.media_modal_ref.close();
-            
+
           }, (error) => {
-            
+
             this.toastr.error(error['error'].message, 'Error!');
             this.show_spinner = false;
           }, () => {
