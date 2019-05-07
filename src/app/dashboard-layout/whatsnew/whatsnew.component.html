@@ -202,7 +202,7 @@
               <div class="img-wrap ">
                 <a href="javascript:;" routerLink="/artist_profile/{{artist._id}}">
                   <img lazyLoad="{{artist && artist.image ? artist_img_url+artist.image : 'img/upload1.png'}} "
-                    defaultImage="img/default_img.png" offset="100" alt="Finalists ">
+                    defaultImage="img/profile-img.png" offset="100" alt="Finalists ">
                 </a>
                 <a href="javascript:void(0) " class="fan " (click)="followArtist(artist._id, i)"><i
                     class="fa {{artist.is_followed ? 'fa-heart' : 'fa-heart-o'}}" aria-hidden="true "></i></a>
@@ -247,7 +247,7 @@
             <div class="img-wrap">
               <a href="javascript:;" routerLink="/artist_profile/{{artist._id}}">
                 <img lazyLoad="{{artist && artist.image ? artist_img_url+artist.image : 'img/upload1.png'}} "
-                  defaultImage="img/default_img.png" offset="100" alt="Finalists ">
+                  defaultImage="img/profile-img.png" offset="100" alt="Finalists ">
               </a>
               <a href="javascript:void(0) " class="fan " (click)="followArtist(artist._id, i)"><i
                   class="fa {{artist.is_followed ? 'fa-heart' : 'fa-heart-o'}}" aria-hidden="true "></i></a>
@@ -292,7 +292,7 @@
             <div class="upload ">
               <div class="img-wrap ">
                 <img lazyLoad="{{track.image ? track_url+track.image : 'img/upload1.png'}}"
-                  defaultImage="img/default_img.png" offset="100" alt="New Uploads ">
+                  defaultImage="img/profile-img.png" offset="100" alt="New Uploads ">
               </div>
               <div class="content-wrap ">
                 <div class="player ">

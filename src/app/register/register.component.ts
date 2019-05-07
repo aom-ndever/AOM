@@ -280,14 +280,33 @@ export class RegisterComponent implements OnInit {
 
   fileChangeEvent(event: any) {
     const fileList: FileList = event.target.files;
+    const file = <File>event.target.files[0];
     console.log(event.target.files);
+    let isValidPic = false;
     if (event.target.files.length > 0) {
       this.artist_validation[5] = false;
-      const allow_types = ['image/png', 'image/jpg', 'image/jpeg'];
-      if (allow_types.indexOf(fileList[0].type) == -1) {
-        this.toastr.error('Invalid file format.', 'Error!');
-        return false;
+      // const allow_types = ['image/png', 'image/jpg', 'image/jpeg'];
+      if (file.type === 'image/jpeg' || file.type === 'image/png' || file.type === 'image/jpg') {
+        isValidPic = true;
+        if (file.size >= 500000) {
+          this.toastr.error('Please choose Image less then 500 kb.', 'Error!');
+          isValidPic = false;
+          console.log('returning ----- more than 500 kb => ');
+          return 0;
+        } else {
+          isValidPic = true;
+        }
+      } else {
+        console.log('in valid file format  => ');
+        isValidPic = false;
+        this.toastr.error('Invalid Image Format.', 'Error!');
+        console.log('returning ---- invalid format  => ');
+        return 0;
       }
+      // if (allow_types.indexOf(fileList[0].type) === -1) {
+      //   this.toastr.error('Invalid file format.', 'Error!');
+      //   return false;
+      // }
       this.imageChangedEvent = event;
       if (event.target.files.length <= 0) {
         this.cropperReady = false;
@@ -347,7 +366,8 @@ export class RegisterComponent implements OnInit {
         region: '',
         state: ''
       };
-      this.toastr.success('Registration done successfully and confirmation email sent to your account please verify to do login.', 'Success!');
+      this.toastr.success('Registration done successfully and confirmation email sent to your account please verify to do login.',
+        'Success!');
       this.show_spinner = false;
       this.router.navigate(['']);
     }, error => {
@@ -391,7 +411,8 @@ export class RegisterComponent implements OnInit {
           region: '',
           state: ''
         };
-        this.toastr.success('Registration done successfully and confirmation email sent to your account please verify to do login.', 'Success!');
+        this.toastr.success('Registration done successfully and confirmation email sent to your account please verify to do login.',
+          'Success!');
         this.show_spinner = false;
         this.router.navigate(['']);
       }, error => {

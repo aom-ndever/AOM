@@ -2,9 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { AppComponent } from './app.component';
-// import { ChartModule } from 'angular-highcharts';
 import { ChartModule } from 'angular2-highcharts';
-import { DashboardLayoutComponent } from './dashboard-layout/layout/dashboard-layout.component';
 import { DataTablesModule } from 'angular-datatables';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { LayoutModule } from './dashboard-layout/layout.module';
@@ -17,8 +15,9 @@ import { AuthService } from './shared/auth.service';
 import { MessageService } from './shared/message.service';
 import { PLATFORM_ID, APP_ID, Inject } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
-import { HighchartsStatic } from 'angular2-highcharts/dist/HighchartsService';
 import { NgxUiLoaderModule } from 'ngx-ui-loader';
+import { ToastrModule } from 'ngx-toastr';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 @NgModule({
   declarations: [
@@ -33,6 +32,12 @@ import { NgxUiLoaderModule } from 'ngx-ui-loader';
     AdminLayoutModule,
     ForgetPasswordModule,
     NgxUiLoaderModule,
+    ProgressSpinnerModule,
+    ToastrModule.forRoot({
+      progressBar: true,
+      preventDuplicates: true,
+      closeButton: true,
+    }),
     NgbModule.forRoot(),
     ChartModule.forRoot(require('highcharts/highstock'), require('highcharts/modules/drilldown')),
     DataTablesModule,

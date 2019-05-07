@@ -44,7 +44,7 @@ import {
 import { TrackCommentResolve, TrackArtistProfileResolve, TrackDetailResolve } from './resolve/track_comment_resolve';
 import { DashboardService } from './dashboard/dashboard.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ToastrModule } from 'ngx-toastr';
+// import { ToastrModule } from 'ngx-toastr';
 import { LightboxModule } from 'angular2-lightbox';
 import { TimeAgoPipe } from 'time-ago-pipe';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -62,7 +62,7 @@ import { ImageCropperModule } from 'ngx-image-cropper';
     FormsModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,
-    ToastrModule.forRoot({ preventDuplicates: true }),
+    // ToastrModule.forRoot({ preventDuplicates: true }),
     ChartModule,
     AmChartsModule,
     LightboxModule,
@@ -70,7 +70,7 @@ import { ImageCropperModule } from 'ngx-image-cropper';
     AutoCompleteModule,
     MultiSelectModule,
     LazyLoadImageModule,
-     RouterModule.forChild([
+    RouterModule.forChild([
       {
         path: '',
         component: DashboardLayoutComponent, data: { title: 'Dashboard' },

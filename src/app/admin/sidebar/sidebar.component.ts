@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-sidebar',
@@ -8,9 +9,9 @@ import { Router } from '@angular/router';
 })
 export class SidebarComponent implements OnInit {
 
-  user : any = {};
-  constructor(private router: Router) {
-    console.log("Admin dashboard component");
+  user: any = {};
+  constructor(private router: Router,
+    private toastr: ToastrService) {
     this.user = JSON.parse(localStorage.getItem('user'));
   }
 
@@ -20,5 +21,6 @@ export class SidebarComponent implements OnInit {
   logout() {
     localStorage.clear();
     this.router.navigate(['/admin/login']);
+    this.toastr.success('Logged off', 'Success!');
   }
 }

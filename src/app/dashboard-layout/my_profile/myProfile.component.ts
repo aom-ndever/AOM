@@ -863,8 +863,10 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
       let formData: FormData = new FormData();
       formData.append('cover_image', fileList[0], fileList[0]['name']);
       this.MyProfileService.updateCoverImage(formData).subscribe(response => {
+        console.log('response.message => ', response['message']);
         console.log('uploaded image', response);
         this.updateLocalStorage();
+        this.toastr.success(response['message'], 'Success!');
       }, error => {
         this.toastr.error(error['error'].message, 'Error!');
       });
@@ -916,6 +918,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
           console.log('uploaded image===============================>', response);
           this.default_profile_img = environment.API_URL + environment.ARTIST_IMG + response['image'];
           this.updateLocalStorage();
+          this.toastr.success(response['message'], 'Success!');
           this.MessageService.sendMessage({ updateProfile: true });
         }, error => {
           this.toastr.error(error['error'].message, 'Error!');
@@ -925,6 +928,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
           console.log('uploaded image================================>', response);
           this.default_profile_img = environment.API_URL + environment.USER_IMG + response['image'];
           this.updateLocalStorage();
+          this.toastr.success(response['message'], 'Success!');
           this.MessageService.sendMessage({ updateProfile: true });
         }, error => {
           this.toastr.error(error['error'].message, 'Error!');

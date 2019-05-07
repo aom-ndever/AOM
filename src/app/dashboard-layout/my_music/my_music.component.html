@@ -49,7 +49,7 @@
                     <td class="track-det" colspan="2">
                       <div class="track-pic">
                         <a href="javascript:;">
-                          <img defaultImage="img/music-player-grey.svg" offset="100" lazyLoad="{{track_url+t.image}}"
+                          <img defaultImage="img/profile-img.png" offset="100" lazyLoad="{{track_url+t.image}}"
                             *ngIf="t.image" width="50" height="50" alt="Track Image">
                           <img src="img/upload1.png" *ngIf="!t.image" width="50" height="50" alt="Track Image">
                         </a>
@@ -133,7 +133,7 @@
 
                     </td>
                     <td class="track-pic"><a href="javascript:;">
-                        <img defaultImage="img/default_img.png" offset="100" lazyLoad="{{track_url+t.image}}"
+                        <img defaultImage="img/profile-img.png" offset="100" lazyLoad="{{track_url+t.image}}"
                           *ngIf="t.image" width="50" height="50" alt="Track Image">
                         <img src="img/upload1.png" *ngIf="!t.image" alt="Track Image">
                       </a></td>
@@ -249,7 +249,6 @@
     </div>
   </div>
 </ng-template>
-
 
 <ng-template #contest let-c="close" let-d="dismiss">
   <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
@@ -447,7 +446,6 @@
   </div>
 </ng-template>
 
-
 <ng-template #editTrack let-c="close" let-d="dismiss">
   <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
     <span aria-hidden="true">&times;</span>
@@ -495,8 +493,6 @@
     </form>
   </div>
 </ng-template>
-
-
 
 <ng-template #shareTrack let-c="close" let-d="dismiss">
   <div class="modal_login_wrapper">
