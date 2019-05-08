@@ -191,9 +191,12 @@
       </div>
       <div class="highlights-wrap mCustomScrollbar " data-mcs-theme="dark-3">
         <div class="row">
-          <div *ngIf="show_loader" class="text-center col-12">
+
+          <!-- spinner fa-spinner -->
+          <!-- <div *ngIf="show_loader" class="text-center col-12">
             <i class="fa fa-spinner fa-spin fa-3x" aria-hidden="true"></i>
-          </div>
+          </div> -->
+
           <div class="alert alert-info col-sm-12" *ngIf="!show_loader && whatsnewdata['artist'].length == 0">
             No data available.
           </div>
@@ -236,9 +239,13 @@
     </div>
     <div class="highlights-wrap mCustomScrollbar " data-mcs-theme="dark-3">
       <div class="row">
-        <div *ngIf="feature_loader" class="text-center col-12">
+
+        <!-- spinner fa-spinner -->
+        <!-- <div *ngIf="feature_loader" class="text-center col-12">
           <i class="fa fa-spinner fa-spin fa-3x" aria-hidden="true"></i>
-        </div>
+        </div> -->
+
+
         <div class="alert alert-info col-sm-12" *ngIf="!feature_loader && featured_artist.length == 0">
           No data available.
         </div>
@@ -280,9 +287,13 @@
         </div>
       </div>
       <div class="uploads-container col-md-12 ">
-        <div *ngIf="show_loader" class="text-center col-12">
+
+        <!-- spinner fa-spinner -->
+        <!-- <div *ngIf="show_loader" class="text-center col-12">
           <i class="fa fa-spinner fa-spin fa-3x" aria-hidden="true"></i>
-        </div>
+        </div> -->
+
+
         <div class="alert alert-info"
           *ngIf="!show_loader && whatsnewdata['track'] && whatsnewdata['track'].length == 0">
           No data available.

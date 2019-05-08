@@ -10,7 +10,9 @@ import { FormGroup, FormBuilder, Validators, FormControl, AbstractControl, NG_VA
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import swal from 'sweetalert2';
+import { NgxUiLoaderService } from 'ngx-ui-loader';
 declare var FB: any;
+
 class DataTablesResponse {
   data: any[];
   draw: number;
@@ -72,7 +74,8 @@ export class MyMusicComponent implements OnInit, OnDestroy {
     private MessageService: MessageService,
     private fb: FormBuilder,
     private titleService: Title,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private ngxService: NgxUiLoaderService
   ) {
     this.contesttrack_form = this.fb.group({
       contest_id: new FormControl(),
@@ -129,8 +132,11 @@ export class MyMusicComponent implements OnInit, OnDestroy {
       ordering: false,
       lengthChange: false,
       responsive: true,
+      language: {
+        // 'processing': '<i class="fa fa-spinner fa-spin loader"></i>',
+        'processing': '',
+      },
       ajax: (dataTablesParameters: any, callback) => {
-        console.log(dataTablesParameters);
         setTimeout(() => {
           that.audio_ins = [];
           that.MyMusicService.getAllTrack(dataTablesParameters).subscribe(response => {
@@ -166,8 +172,8 @@ export class MyMusicComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.ngxService.start();
     // this.getAllTrack();
-    console.log('acdsdkmfe', this.contestid);
     this.getAllMusicType();
     this.getAllContest();
   }
@@ -273,7 +279,6 @@ export class MyMusicComponent implements OnInit, OnDestroy {
 
     };
     fr.readAsArrayBuffer(file);
-
     const allow_types = ['image/png', 'image/jpg', 'image/jpeg'];
   }
 
@@ -328,9 +333,6 @@ export class MyMusicComponent implements OnInit, OnDestroy {
   }
 
   addContestTrack() {
-    console.log('contstType', this.contestType);
-
-    console.log('form value', this.standard_form);
     let Obj;
     if (this.contestType === 'beta') {
       Obj = {
@@ -358,8 +360,6 @@ export class MyMusicComponent implements OnInit, OnDestroy {
         round1_track: this.special_form.value.special_round1_track,
       };
     }
-
-
     this.show_spinner = true;
     this.MyMusicService.addContestTrack(Obj).subscribe(response => {
 
@@ -382,15 +382,14 @@ export class MyMusicComponent implements OnInit, OnDestroy {
   addTrack() {
     let isWhitespace;
     let isValid;
-
-
     if (this.trackdata && this.trackdata.name) {
       isWhitespace = this.trackdata.name.trim().length === 0;
       isValid = !isWhitespace;
     }
     // if (flag == true) {
-
-    if (this.trackdata && this.trackdata.name && isValid && this.trackdata.price && this.trackdata.price > 0 && this.trackdata.price.toString().length <= 3 && this.audio_file && this.image_upload) {
+    console.log('this.audio_file => ', this.audio_file);
+    if (this.trackdata && this.trackdata.name && isValid && this.trackdata.price && this.trackdata.price > 0 &&
+      this.trackdata.price.toString().length <= 3 && this.audio_file && this.image_upload) {
       let formdata = new FormData();
       formdata.append('name', this.trackdata.name);
       formdata.append('price', this.trackdata.price);
@@ -483,8 +482,8 @@ export class MyMusicComponent implements OnInit, OnDestroy {
       isWhitespace = this.trackdata.name.trim().length === 0;
       isValid = !isWhitespace;
     }
-
-    if (this.trackdata && this.trackdata.name && isValid && this.trackdata.price && this.trackdata.price > 0 && this.trackdata.price.toString().length <= 3 && this.trackdata.image) {
+    if (this.trackdata && this.trackdata.name && isValid && this.trackdata.price && this.trackdata.price > 0 &&
+      this.trackdata.price.toString().length <= 3 && this.trackdata.image) {
       let formdata = new FormData();
       formdata.append('name', this.trackdata.name);
       formdata.append('price', this.trackdata.price);
@@ -514,9 +513,7 @@ export class MyMusicComponent implements OnInit, OnDestroy {
       this.toastr.error('Please enter track price', 'Error!');
     } else if (this.trackdata.price < 0) {
       this.toastr.error('Track price must be positive.', 'Error!');
-    }
-    else if (this.trackdata.price.toString().length !== 3) {
-      console.log(this.trackdata.price.toString().length);
+    } else if (this.trackdata.price.toString().length !== 3) {
       this.toastr.error('Track price must be in three digits', 'Error!');
 
     } else {
@@ -581,6 +578,7 @@ export class MyMusicComponent implements OnInit, OnDestroy {
   // Get all music type
   getAllMusicType() {
     this.MyMusicService.getAllMusicType().subscribe(response => {
+      console.log('first => ');
       this.music_type_list = response['music'];
     });
   }
@@ -588,7 +586,9 @@ export class MyMusicComponent implements OnInit, OnDestroy {
   // Get all contest
   getAllContest() {
     this.MyMusicService.getAllContest().subscribe(response => {
+      console.log('second => ');
       this.contest_list = response['contest'];
+      this.ngxService.stop();
     });
   }
 
@@ -754,8 +754,8 @@ export class MyMusicComponent implements OnInit, OnDestroy {
         return 'audio/mp3';
       case '464F524D':
         return 'audio/aiff';
-      
-        case '464F524D':
+
+      case '464F524D':
         return 'audio/x-aiff';
 
       case '52494646':
@@ -828,13 +828,6 @@ export class MyMusicComponent implements OnInit, OnDestroy {
 
   get special_round1_track() { return this.special_form.get('sround1_track1'); }
 
-  // submit_contest_track(contestid, type) {
-  //   console.log("type", type)
-  //   this.contestType = type;
-  //   var modalref = this.modalService.open(type, { centered: true, windowClass: 'modal-wrapper', backdrop: true });
-  //   this.contestid = contestid;
-  //   this.contesttrack_data['contest_id'] = contestid
-  // }
   submit_contest_track(id, contestid, type) {
     this.contestType = type;
     this.contestDetail = this.modalService.open(id, { centered: true, windowClass: 'modal-wrapper', backdrop: true });

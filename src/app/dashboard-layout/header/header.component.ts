@@ -270,8 +270,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.toastr.success('Logged off', 'Success!');
     localStorage.removeItem('user');
     this.user = '';
-    window.location.replace('');
-    // this.router.navigate(['']);
+    // window.location.replace('');
+    this.router.navigate(['']);
   }
   toggleMainMenu() {
     this.toggleMenu = !this.toggleMenu;

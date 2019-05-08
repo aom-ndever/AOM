@@ -22,24 +22,24 @@ class DataTablesResponse {
 export class ArtistComponent implements OnInit {
   @ViewChild(DataTableDirective)
   datatableElement: DataTableDirective;
-  
-  
+
+
   modalRef: BsModalRef;
   dtOptions: DataTables.Settings = {};
   artist_data: any = [];
   music_type: any = [];
-  region_filter : any = [];
-  state_list : any = [];
+  region_filter: any = [];
+  state_list: any = [];
   search_str: any = '';
   music_type_id: any = '';
-  artist_id : any = '';
-  sort_by : any = -1;
-  artist_detail : any = {};
-  artist_track : any = [];
-  artist_flag : any = [];
-  artist_img_url : any = environment.API_URL+environment.ARTIST_IMG;
-  artist_media_url : any = environment.API_URL+environment.ARTIST_MEDIA;
-  user : any = '';
+  artist_id: any = '';
+  sort_by: any = -1;
+  artist_detail: any = {};
+  artist_track: any = [];
+  artist_flag: any = [];
+  artist_img_url: any = environment.API_URL + environment.ARTIST_IMG;
+  artist_media_url: any = environment.API_URL + environment.ARTIST_MEDIA;
+  user: any = '';
   artist_row_cnt = 1;
   constructor(
     private ArtistService: ArtistService,
@@ -51,7 +51,7 @@ export class ArtistComponent implements OnInit {
     this.user = JSON.parse(localStorage.getItem('user'));
   }
 
-  ngOnInit() {  
+  ngOnInit() {
     const that = this;
     this.getAllMusicType();
     this.dtOptions = {
@@ -64,6 +64,9 @@ export class ArtistComponent implements OnInit {
       lengthChange: false,
       responsive: true,
       scrollCollapse: true,
+      language: {
+        'processing': '<i class="fa fa-spinner fa-spin loader"></i>',
+      },
       ajax: (dataTablesParameters: any, callback) => {
         console.log(dataTablesParameters);
         setTimeout(() => {
@@ -71,14 +74,14 @@ export class ArtistComponent implements OnInit {
           dataTablesParameters['order'] = '';
           dataTablesParameters['sort_by'] = that.sort_by;
           dataTablesParameters['filter'] = [];
-          if(that.music_type_id) {
+          if (that.music_type_id) {
             dataTablesParameters['filter'].push(
-              {'field' : 'music_type', value :  that.music_type_id}
+              { 'field': 'music_type', value: that.music_type_id }
             );
           }
-          if(that.region_filter.length) {
+          if (that.region_filter.length) {
             dataTablesParameters['filter'].push(
-              {'field' : 'state', value :  this.region_filter}
+              { 'field': 'state', value: this.region_filter }
             );
           }
           that.ArtistService.getAllArtist(dataTablesParameters).subscribe(response => {
@@ -91,7 +94,7 @@ export class ArtistComponent implements OnInit {
             that.artist_row_cnt = (dataTablesParameters['start'] + 1);
           });
         }, 0)
-        
+
       },
       columns: [{ data: '' },
       { data: 'first_name' },
@@ -105,7 +108,7 @@ export class ArtistComponent implements OnInit {
     };
   }
 
-  
+
   // get all artist data
   getAllArtistData(data: any) {
     this.ArtistService.getAllArtist(data).subscribe(response => {
@@ -138,46 +141,46 @@ export class ArtistComponent implements OnInit {
   // Sort artist data
   sortArtist(val: any) {
     const that = this;
-      this.datatableElement.dtInstance.then((dtInstance: DataTables.Api) => {
-        dtInstance.draw();
-      });
+    this.datatableElement.dtInstance.then((dtInstance: DataTables.Api) => {
+      dtInstance.draw();
+    });
   }
   // suspend artist
-  suspendArtist(id : any,flag) {
+  suspendArtist(id: any, flag) {
     // console.log("flag",flag);
-    
+
     swal({
       title: 'Are you sure?',
-      text: `You want to ${flag ?'Un-suspend': 'Suspend' } this account!`,
+      text: `You want to ${flag ? 'Un-suspend' : 'Suspend'} this account!`,
       type: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
       confirmButtonText: 'Yes'
     }).then((flag) => {
-      if(flag.value) {
+      if (flag.value) {
         this.ArtistService.suspendArtist(id).subscribe((response) => {
           this.toastr.success(response['message'], 'Success!');
           this.datatableElement.dtInstance.then((dtInstance: DataTables.Api) => {
             dtInstance.draw();
           });
-        }, (error)=> {
+        }, (error) => {
           this.toastr.error(error['error'].message, 'Error!');
         });
       }
     });
-    
+
   }
-  openModal(template: any, id : any) {
+  openModal(template: any, id: any) {
     let data = {
-      artist_id : id
+      artist_id: id
     };
     this.artist_id = id;
     this.ArtistService.getArtist(data).subscribe((response) => {
       this.artist_detail = response['artist'];
       let dob = new Date(this.artist_detail['dob']);
-        let dt =  new Date();
-        this.artist_detail['old'] = dt.getFullYear() - dob.getFullYear();
+      let dt = new Date();
+      this.artist_detail['old'] = dt.getFullYear() - dob.getFullYear();
     });
     this.ArtistService.getArtistTrack(data).subscribe((response) => {
       this.artist_track = response['track']['music'];
@@ -185,10 +188,10 @@ export class ArtistComponent implements OnInit {
     this.ArtistService.getArtistFlagDetails(data).subscribe((response) => {
       this.artist_flag = response['artist'];
     });
-    this.modalRef = this.modalService.show(template, { backdrop : 'static' });
+    this.modalRef = this.modalService.show(template, { backdrop: 'static' });
   }
 
-  removeTrack(id : any) {
+  removeTrack(id: any) {
     const thi = this;
     // swal({
     //   title: 'Are you sure?',
@@ -200,22 +203,22 @@ export class ArtistComponent implements OnInit {
     //   confirmButtonText: 'Yes, delete it!'
     // }).then((flag) => {
     //   if(flag.value) {
-        thi.ArtistService.removeArtistTrack(id).subscribe(response => {
-          let data = {artist_id : thi.artist_id};
-          thi.ArtistService.getArtistTrack(data).subscribe((response) => {
-            thi.artist_track = response['track']['music'];
-          });
-          thi.toastr.success(response['message'], 'Success!');
-        }, error => {
-          thi.toastr.error(error['error'].message, 'Error!');
-        });
+    thi.ArtistService.removeArtistTrack(id).subscribe(response => {
+      let data = { artist_id: thi.artist_id };
+      thi.ArtistService.getArtistTrack(data).subscribe((response) => {
+        thi.artist_track = response['track']['music'];
+      });
+      thi.toastr.success(response['message'], 'Success!');
+    }, error => {
+      thi.toastr.error(error['error'].message, 'Error!');
+    });
     //   }
     // });
   }
   // Suspend artist track
-  suspendArtistTrack(id : any) {
+  suspendArtistTrack(id: any) {
     this.ArtistService.suspendArtistTrack(id).subscribe((response) => {
-      let data = {artist_id : this.artist_id};
+      let data = { artist_id: this.artist_id };
       this.ArtistService.getArtistTrack(data).subscribe((response) => {
         this.artist_track = response['track']['music'];
       });
@@ -227,15 +230,15 @@ export class ArtistComponent implements OnInit {
 
   markAsFeatured() {
     let data = {
-      artist_id : this.artist_detail['_id']
+      artist_id: this.artist_detail['_id']
     };
-    this.ArtistService.markAsFeatured(data).subscribe((response)=>{
+    this.ArtistService.markAsFeatured(data).subscribe((response) => {
       this.toastr.success(response['message'], 'Success!');
       this.ArtistService.getArtist(data).subscribe((response) => {
         this.artist_detail = response['artist'];
         let dob = new Date(this.artist_detail['dob']);
-          let dt =  new Date();
-          this.artist_detail['old'] = dt.getFullYear() - dob.getFullYear();
+        let dt = new Date();
+        this.artist_detail['old'] = dt.getFullYear() - dob.getFullYear();
       });
     }, (error) => {
       this.toastr.error(error['error'].message, 'Error!');
@@ -249,8 +252,8 @@ export class ArtistComponent implements OnInit {
     });
   }
   // Add region for filtering
-  addRegionForFilter(flag : any, val : any) {
-    if(flag) {
+  addRegionForFilter(flag: any, val: any) {
+    if (flag) {
       this.region_filter.push(val);
     } else {
       let index = this.region_filter.indexOf(val);
@@ -262,7 +265,7 @@ export class ArtistComponent implements OnInit {
   }
   // Hide popover
   hidePopover() {
-    let data = {artist_id : this.artist_id};
+    let data = { artist_id: this.artist_id };
     this.ArtistService.getArtistTrack(data).subscribe((response) => {
       this.artist_track = response['track']['music'];
     });

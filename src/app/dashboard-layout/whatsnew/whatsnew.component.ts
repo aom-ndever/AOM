@@ -6,6 +6,7 @@ import { MessageService } from '../../shared/message.service';
 import { Subscription } from 'rxjs/Subscription';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
+import { NgxUiLoaderService } from 'ngx-ui-loader';
 
 @Component({
   selector: 'app-whatsnew',
@@ -43,40 +44,42 @@ export class WhatsNewComponent implements OnInit, OnDestroy {
     private toastr: ToastrService,
     private MessageService: MessageService,
     private titleService: Title,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private ngxService: NgxUiLoaderService
   ) {
+    window.scroll(0, 0);
     this.titleService.setTitle(this.route.snapshot.data['title']);
 
     this.images = [
       {
-        "source": "img/whats-new-bg.png",
-        "alt": "Description for Image 1",
-        "title": "Quarter Final",
-        "name": "Title 1",
-        "location": "Title 1",
-        "type": "Title 1",
-        "description": "Ut enim ad minim veniam",
-        "enable": true
+        'source': 'img/whats-new-bg.png',
+        'alt': 'Description for Image 1',
+        'title': 'Quarter Final',
+        'name': 'Title 1',
+        'location': 'Title 1',
+        'type': 'Title 1',
+        'description': 'Ut enim ad minim veniam',
+        'enable': true
       },
       {
-        "source": "img/whats-new-bg.png",
-        "alt": "Description for Image 2",
-        "title": "Quarter Final",
-        "name": "Title 1",
-        "location": "Title 1",
-        "type": "Title 1",
-        "description": "Ut enim ad minim veniam",
-        "enable": true
+        'source': 'img/whats-new-bg.png',
+        'alt': 'Description for Image 2',
+        'title': 'Quarter Final',
+        'name': 'Title 1',
+        'location': 'Title 1',
+        'type': 'Title 1',
+        'description': 'Ut enim ad minim veniam',
+        'enable': true
       },
       {
-        "source": "img/whats-new-bg.png",
-        "alt": "Description for Image 3",
-        "title": "Quarter Final",
-        "name": "Title 1",
-        "location": "Title 1",
-        "type": "Title 1",
-        "description": "Ut enim ad minim veniam",
-        "enable": true
+        'source': 'img/whats-new-bg.png',
+        'alt': 'Description for Image 3',
+        'title': 'Quarter Final',
+        'name': 'Title 1',
+        'location': 'Title 1',
+        'type': 'Title 1',
+        'description': 'Ut enim ad minim veniam',
+        'enable': true
       }];
     this.getAllState();
     this.subscription = this.MessageService.getMessage().subscribe((response) => {
@@ -103,6 +106,7 @@ export class WhatsNewComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.ngxService.start();
     this.getAllData();
     this.getAllMusicType();
     this.getAllFeaturedArtist({});
@@ -136,6 +140,8 @@ export class WhatsNewComponent implements OnInit, OnDestroy {
     this.audio_ins = [];
     this.show_loader = true;
     this.WhatsNewService.getWhatsnewData(data).subscribe(response => {
+      console.log('first => ');
+      this.ngxService.stop();
       this.whatsnewdata = response;
       this.artist_list = response['artist'];
       this.track_list = response['track'];
@@ -153,6 +159,7 @@ export class WhatsNewComponent implements OnInit, OnDestroy {
   getAllFeaturedArtist(data) {
     this.feature_loader = true;
     this.WhatsNewService.getAllFeaturedArtist(data).subscribe((response) => {
+      console.log('third => ');
       this.featured_artist = response['artist'];
       console.log(this.featured_artist);
       this.feature_loader = false;
@@ -188,7 +195,7 @@ export class WhatsNewComponent implements OnInit, OnDestroy {
   // Filter result
   filter(e: any) {
     // if (e.keyCode == 13) {
-      if (this.search_str.trim().length > 0) {
+    if (this.search_str.trim().length > 0) {
       let data = {
         search: this.search_str.trim(),
         start: 0,
@@ -248,6 +255,7 @@ export class WhatsNewComponent implements OnInit, OnDestroy {
   // Get all music type
   getAllMusicType() {
     this.WhatsNewService.getAllMusicType().subscribe(response => {
+      console.log('second => ');
       this.music_type_list = response['music'];
     });
   }

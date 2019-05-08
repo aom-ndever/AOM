@@ -72,9 +72,11 @@
     </div>
     <div class="uploads-container">
       <div class="row">
-        <div *ngIf="show_loader" class="text-center col-12">
+
+        <!-- spinner fa-spinner  -->
+        <!-- <div *ngIf="show_loader" class="text-center col-12">
           <i class="fa fa-spinner fa-spin fa-3x" aria-hidden="true"></i>
-        </div>
+        </div> -->
         <div class="alert alert-info col-sm-12" *ngIf="!show_loader && data['new_uploads'].length == 0">
           No data available.
         </div>

@@ -15,7 +15,7 @@ import { AuthService } from './shared/auth.service';
 import { MessageService } from './shared/message.service';
 import { PLATFORM_ID, APP_ID, Inject } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
-import { NgxUiLoaderModule } from 'ngx-ui-loader';
+import { NgxUiLoaderModule, NgxUiLoaderRouterModule } from 'ngx-ui-loader';
 import { ToastrModule } from 'ngx-toastr';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
@@ -31,7 +31,35 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
     EamilVarificationModule,
     AdminLayoutModule,
     ForgetPasswordModule,
-    NgxUiLoaderModule,
+    NgxUiLoaderModule.forRoot({
+      'bgsColor': '#00ACC1',
+      'bgsOpacity': 0.5,
+      'bgsPosition': 'bottom-right',
+      'bgsSize': 60,
+      'bgsType': 'ball-spin-clockwise',
+      'blur': 5,
+      // 'fgsColor': '#9b26b0',
+      // 'fgsColor': '#e69af3',
+      'fgsColor': '#d281df',
+      'fgsPosition': 'center-center',
+      'fgsSize': 60,
+      'fgsType': 'rectangle-bounce-party',
+      'gap': 24,
+      'logoPosition': 'center-center',
+      'logoSize': 120,
+      // 'overlayColor': 'rgba(255,255,255)',
+      // 'overlayColor': 'rgba(40, 40, 40, 0.8)',
+      'overlayColor': 'rgba(24,24,24,0.8)',
+      'pbColor': '#9b26b0',
+      'pbDirection': 'ltr',
+      'pbThickness': 3,
+      'hasProgressBar': true,
+      'text': '',
+      'textColor': '#FFFFFF',
+      'textPosition': 'center-center',
+      'threshold': 500
+    }),
+    // NgxUiLoaderRouterModule,
     ProgressSpinnerModule,
     ToastrModule.forRoot({
       progressBar: true,

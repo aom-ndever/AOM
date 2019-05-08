@@ -27,6 +27,7 @@
                                 <form [formGroup]="artist_profile">
                                     <div class="upload-cover">
                                         <img [src]="default_cover_img" alt="Edit cover Image">
+
                                         <span class="up_text">Update Photo</span>
                                         <input type="file" name="my_doc_upload" id="cover_upload1" multiple="false"
                                             (change)="updateCoverImage($event)">
@@ -65,28 +66,6 @@
                                                                   </div>
                                                                 </div>
                                                               </div> -->
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
                                                         <!-- <div>
                                                             <image-cropper
                                                             [imageChangedEvent]="imageChangedEvent"
@@ -179,7 +158,7 @@
                                                                 <select class="form-control" id="day"
                                                                     formControlName="day" name="day"
                                                                     [(ngModel)]="userdata.day">
-                                                                    <option value="">Day</option>
+                                                                    <option value="" disabled selected>Day</option>
                                                                     <option *ngFor="let d of day" value="{{d}}">{{d}}
                                                                     </option>
                                                                 </select>
@@ -194,7 +173,7 @@
                                                                 <select class="form-control" id="month"
                                                                     formControlName="month" name="month"
                                                                     [(ngModel)]="userdata.month">
-                                                                    <option value="">Month</option>
+                                                                    <option value="" disabled selected>Month</option>
                                                                     <option *ngFor="let m of month" value="{{m}}">{{m}}
                                                                     </option>
                                                                 </select>
@@ -209,7 +188,7 @@
                                                                 <select class="form-control" id="year"
                                                                     formControlName="year" name="year"
                                                                     [(ngModel)]="userdata.year">
-                                                                    <option value="">Year</option>
+                                                                    <option value="" disabled selected>Year</option>
                                                                     <option *ngFor="let y of year" value="{{y}}">{{y}}
                                                                     </option>
                                                                 </select>
@@ -550,8 +529,8 @@
                                                     <td>
                                                         <div class="radio" style="margin-right:0px;">
                                                             <label>
-                                                                <input type="radio" value="" name="musicgenre"
-                                                                    [checked]="card['status']"
+                                                                <input type="radio" value="" disabled selected
+                                                                    name="musicgenre" [checked]="card['status']"
                                                                     (click)="markAsDefault(card['_id'])">
                                                                 <div class="radio_check"></div>
                                                             </label>
@@ -1270,7 +1249,7 @@
                                                                 <select class="form-control" id="day"
                                                                     formControlName="day" name="day"
                                                                     [(ngModel)]="userdata.day">
-                                                                    <option value="">Day</option>
+                                                                    <option value="" disabled selected>Day</option>
                                                                     <option *ngFor="let d of day" value="{{d}}">{{d}}
                                                                     </option>
                                                                 </select>
@@ -1285,7 +1264,7 @@
                                                                 <select class="form-control" id="month"
                                                                     formControlName="month" name="month"
                                                                     [(ngModel)]="userdata.month">
-                                                                    <option value="">Month</option>
+                                                                    <option value="" disabled selected>Month</option>
                                                                     <option *ngFor="let m of month" value="{{m}}">{{m}}
                                                                     </option>
                                                                 </select>
@@ -1300,7 +1279,7 @@
                                                                 <select class="form-control" id="year"
                                                                     formControlName="year" name="year"
                                                                     [(ngModel)]="userdata.year">
-                                                                    <option value="">Year</option>
+                                                                    <option value="" disabled selected>Year</option>
                                                                     <option *ngFor="let y of year" value="{{y}}">{{y}}
                                                                     </option>
                                                                 </select>
@@ -1798,7 +1777,7 @@
                                                                 <select class="form-control" id="up_day"
                                                                     formControlName="day" name="up_day"
                                                                     [(ngModel)]="upgrade_artist_data.day">
-                                                                    <option value="">Day</option>
+                                                                    <option value="" disabled selected>Day</option>
                                                                     <option *ngFor="let d of day" value="{{d}}">{{d}}
                                                                     </option>
                                                                 </select>
@@ -1813,7 +1792,7 @@
                                                                 <select class="form-control" id="up_month"
                                                                     formControlName="month" name="up_month"
                                                                     [(ngModel)]="upgrade_artist_data.month">
-                                                                    <option value="">Month</option>
+                                                                    <option value="" disabled selected>Month</option>
                                                                     <option *ngFor="let m of month" value="{{m}}">{{m}}
                                                                     </option>
                                                                 </select>
@@ -1828,7 +1807,7 @@
                                                                 <select class="form-control" id="up_year"
                                                                     formControlName="year" name="up_year"
                                                                     [(ngModel)]="upgrade_artist_data.year">
-                                                                    <option value="">Year</option>
+                                                                    <option value="" disabled selected>Year</option>
                                                                     <option *ngFor="let y of year" value="{{y}}">{{y}}
                                                                     </option>
                                                                 </select>
@@ -1879,7 +1858,7 @@
                                                             formControlName="region" name="region"
                                                             [(ngModel)]="upgrade_artist_data.region"
                                                             (change)="getStateByRegion(upgrade_artist_data.region)">
-                                                            <option value="">Select Region</option>
+                                                            <option value="" disabled selected>Select Region</option>
                                                             <option *ngFor="let r of region_list" value="{{r._id}}">
                                                                 {{r.name}}</option>
                                                         </select>
@@ -1895,7 +1874,7 @@
                                                         <select class="form-control" id="up_state"
                                                             formControlName="state" name="state"
                                                             [(ngModel)]="upgrade_artist_data.state">
-                                                            <option value="">Select State</option>
+                                                            <option value="" disabled selected>Select State</option>
                                                             <option *ngFor="let s of state_list" value="{{s._id}}">
                                                                 {{s.name}}</option>
                                                         </select>
@@ -2100,19 +2079,12 @@
                     multiple="false">
                 <p class="instrution">320x320px .png, .jpg 5MB or less</p>
             </div>
-            <div *ngIf="show_progress" class="text-center">
-                <!-- <div class="det">
-					<div class="upl-file-name">IMG20185.JPG</div>
-					<div class="upl-time-rem">5 sec remaining</div>
-					<div class="close-btn"><img src="img/closeNormal.png" alt="Close-btn"></div>
-				</div>
-				<div class="progress">
-					<div class="progress-bar" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="width:{{progress_cnt}}%">
-						<span class="sr-only">70% Complete</span>
-					</div>
-                </div> -->
+
+            <!-- spinner fa-spinner  -->
+            <!-- <div *ngIf="show_progress" class="text-center">
                 <i class="fa fa-spinner fa-spin fa-3x"></i>
-            </div>
+            </div> -->
+
             <p class="or">Or Add Video Link</p>
             <div class="form-group">
                 <label for="vlink">Video Link</label>

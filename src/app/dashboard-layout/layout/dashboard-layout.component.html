@@ -1,9 +1,11 @@
 <app-header></app-header>
 <router-outlet></router-outlet>
 <app-footer class="{{audio_instance_list.length > 0 ? 'audio_footer' : ''}}"></app-footer>
-<div id="loader" *ngIf="loading">
+
+<!-- spinner fa-spinner  -->
+<!-- <div id="loader" *ngIf="loading">
     <i class="fa fa-spinner fa-spin fa-3x" aria-hidden="true"></i>
-</div>
+</div> -->
 
 <section class="player-wrapper " [style.display]="audio_instance_list.length > 0 ? 'block' : 'none'">
     <div class="container">

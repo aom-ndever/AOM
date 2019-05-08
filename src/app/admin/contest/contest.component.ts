@@ -85,6 +85,9 @@ export class ContestComponent implements OnInit {
       lengthChange: false,
       responsive: true,
       scrollCollapse: true,
+      language: {
+        'processing': '<i class="fa fa-spinner fa-spin loader"></i>',
+      },
       ajax: (dataTablesParameters: any, callback) => {
         setTimeout(() => {
           dataTablesParameters['search'] = that.search_str;

@@ -51,11 +51,11 @@ export class DashboardLayoutComponent implements OnInit, AfterViewInit, AfterVie
     console.log("dashboard component");
     this.audio_instance_list = [];
     this.audio_list = [];
-    console.log('ocalStorage.getIte====>', localStorage.getItem('user'));
+    // console.log('LocalStorage.getItem====>', localStorage.getItem('user'));
     let localuser = localStorage.getItem('user');
     this.user = JSON.parse(localuser);
     this.subscription = this.MessageService.getMessage().subscribe((response) => {
-      console.log(response);
+      // console.log(response);
       if (response['action'] == 'start') {
         this.audio_list = response['data'];
         response['data'].forEach((ele) => {
@@ -212,10 +212,11 @@ export class DashboardLayoutComponent implements OnInit, AfterViewInit, AfterVie
       this.audio_instance_list[this.song_cnt].currentTime = 0;
     }
     let cnt = this.song_cnt + 1;
-    if (cnt <= (this.audio_instance_list.length - 1))
+    if (cnt <= (this.audio_instance_list.length - 1)) {
       this.song_cnt = cnt;
-    else
+    } else {
       this.song_cnt = this.audio_instance_list.length - 1;
+    }
     var pButton = document.getElementById('pButton');
     if (pButton.className == 'pause') {
       this.MessageService.sendMessage({ index: this.song_cnt, action: 'next', track_action: 'pause', list: this.list_no });
@@ -229,10 +230,11 @@ export class DashboardLayoutComponent implements OnInit, AfterViewInit, AfterVie
       this.audio_instance_list[this.song_cnt].currentTime = 0;
     }
     let cnt = this.song_cnt - 1;
-    if (cnt > 0)
+    if (cnt > 0) {
       this.song_cnt = cnt;
-    else
+    } else {
       this.song_cnt = 0;
+    }
     var pButton = document.getElementById('pButton');
     if (pButton.className == 'pause') {
       this.MessageService.sendMessage({ index: this.song_cnt, action: 'prev', track_action: 'pause', list: this.list_no });

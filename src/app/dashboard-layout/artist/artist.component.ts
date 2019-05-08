@@ -4,6 +4,7 @@ import { ToastrService } from 'ngx-toastr';
 import { environment } from '../../../../src/environments/environment';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
+import { NgxUiLoaderService } from 'ngx-ui-loader';
 
 @Component({
   selector: 'app-artist',
@@ -37,8 +38,10 @@ export class ArtistComponent implements OnInit {
     private ArtistService: ArtistService,
     private toastr: ToastrService,
     private titleService: Title,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private ngxService: NgxUiLoaderService
   ) {
+    window.scroll(0, 0);
     this.titleService.setTitle(this.route.snapshot.data['title']);
     this.getAllState();
     this.user = JSON.parse(localStorage.getItem('user'));
@@ -46,6 +49,7 @@ export class ArtistComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.ngxService.start();
     this.getAllData();
     this.getAllArtistV1Data({});
     this.getAllMusicType();
@@ -58,6 +62,7 @@ export class ArtistComponent implements OnInit {
   getAllData() {
     let data = {};
     this.ArtistService.getArtistData(data).subscribe(response => {
+      console.log('first => ');
       this.artistdata = response;
       this.getAllFollower();
     });
@@ -66,6 +71,8 @@ export class ArtistComponent implements OnInit {
   getAllArtistV1Data(data) {
     this.show_loader = true;
     this.ArtistService.getAllArtistv1(data).subscribe(response => {
+      console.log('second => ');
+      this.ngxService.stop();
       this.artistv1 = response;
       this.show_filter = false;
       this.show_loader = false;
@@ -136,6 +143,7 @@ export class ArtistComponent implements OnInit {
   // Get all music list
   getAllMusicType() {
     this.ArtistService.getAllMusicType().subscribe(response => {
+      console.log('third => ');
       this.music_list = response['music'];
     });
   }
@@ -144,6 +152,7 @@ export class ArtistComponent implements OnInit {
     let user = JSON.parse(localStorage.getItem('user'));
     if (user && user['user']) {
       this.ArtistService.getMyFollower().subscribe((response) => {
+        console.log('forth => ');
         this.my_follower_list = response['user'];
       });
     }
@@ -154,8 +163,8 @@ export class ArtistComponent implements OnInit {
     if (this.search_str.trim().length > 0) {
       let data = {
         search: this.search_str.trim(),
-        start:0,
-        length:this.length
+        start: 0,
+        length: this.length
       };
       this.getAllArtistV1Data(data);
     }
@@ -173,8 +182,8 @@ export class ArtistComponent implements OnInit {
   // advanceFilter
   advanceFilter() {
     let data = {
-      start:0,
-      length : this.length,
+      start: 0,
+      length: this.length,
       "filter": []
     };
     if (this.adv_filter.music_type && this.adv_filter.music_type != "") {

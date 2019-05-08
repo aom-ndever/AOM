@@ -1,4 +1,4 @@
-import { Component, OnInit, QueryList, ViewChildren  } from '@angular/core';
+import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl, AbstractControl, NG_VALIDATORS, Validator } from '@angular/forms';
 import { RolesService } from './roles.service';
 import { DataTableDirective } from 'angular-datatables';
@@ -12,29 +12,29 @@ import swal from 'sweetalert2';
   styleUrls: []
 })
 export class RolesComponent implements OnInit {
-  @ViewChildren(DataTableDirective) 
+  @ViewChildren(DataTableDirective)
   dtElements: QueryList<DataTableDirective>;
 
-  show_spinner : boolean = false;
+  show_spinner: boolean = false;
   modalRef: BsModalRef;
-  contestModelRef : BsModalRef;
+  contestModelRef: BsModalRef;
   dtOptions: DataTables.Settings[] = [];
-  request_data : any = [];
-  roles_data : any = [];
-  search_str : any = '';
-  sort : any = 'name';
-  sort_request : any = -1;
-  year : any = [];
-  music_type : any = [];
-  user_data : any = {};
-  add_admin : FormGroup;
-  add_admin_validation : boolean = false;
+  request_data: any = [];
+  roles_data: any = [];
+  search_str: any = '';
+  sort: any = 'name';
+  sort_request: any = -1;
+  year: any = [];
+  music_type: any = [];
+  user_data: any = {};
+  add_admin: FormGroup;
+  add_admin_validation: boolean = false;
   passwordFormGroup: FormGroup;
-  user : any = {};
+  user: any = {};
   role_row_cnt = 1;
   req_row_cnt = 1;
   constructor(
-    private RolesService : RolesService,
+    private RolesService: RolesService,
     private toastr: ToastrService,
     private modalService: BsModalService,
     private fb: FormBuilder
@@ -44,26 +44,26 @@ export class RolesComponent implements OnInit {
       password: ['', [Validators.required, Validators.minLength(6)]],
       conf: ['', [Validators.required, Validators.minLength(6)]]
     }, {
-      validator : this.passwordMatchValidator
-    });
+        validator: this.passwordMatchValidator
+      });
     this.add_admin = this.fb.group({
-      'fname' : ['', [Validators.required, this.noWhitespaceValidator]],
-      'lname' : ['', [Validators.required, this.noWhitespaceValidator]],
-      'account_type' : ['', [Validators.required]],
-      'email' : ['', [Validators.required, Validators.email]],
-      passwordFormGroup1 : this.passwordFormGroup
+      'fname': ['', [Validators.required, this.noWhitespaceValidator]],
+      'lname': ['', [Validators.required, this.noWhitespaceValidator]],
+      'account_type': ['', [Validators.required]],
+      'email': ['', [Validators.required, Validators.email]],
+      passwordFormGroup1: this.passwordFormGroup
     });
   }
 
   passwordMatchValidator(g: FormGroup) {
-      return g.get('password').value === g.get('conf').value ? null : g.get('conf').setErrors({'mismatch': true});
+    return g.get('password').value === g.get('conf').value ? null : g.get('conf').setErrors({ 'mismatch': true });
   }
   noWhitespaceValidator(control: FormControl) {
-      if(typeof (control.value || '') === 'string' || (control.value || '') instanceof String) {
-        let isWhitespace = (control.value || '').trim().length === 0;
-        let isValid = !isWhitespace;
-        return isValid ? null : { 'whitespace': true }
-      }
+    if (typeof (control.value || '') === 'string' || (control.value || '') instanceof String) {
+      let isWhitespace = (control.value || '').trim().length === 0;
+      let isValid = !isWhitespace;
+      return isValid ? null : { 'whitespace': true }
+    }
   }
   ngOnInit() {
     const that = this;
@@ -76,12 +76,15 @@ export class RolesComponent implements OnInit {
       ordering: false,
       lengthChange: false,
       scrollCollapse: true,
+      language: {
+        'processing': '<i class="fa fa-spinner fa-spin loader"></i>',
+      },
       ajax: (dataTablesParameters: any, callback) => {
         setTimeout(() => {
-          dataTablesParameters['sort'] = [{"field" : this.sort, value : 1}];
+          dataTablesParameters['sort'] = [{ "field": this.sort, value: 1 }];
           that.RolesService.getAllAdministrator(dataTablesParameters).subscribe(response => {
             that.roles_data = response['admin'];
-            
+
             callback({
               recordsTotal: response['recordsTotal'],
               recordsFiltered: response['recordsTotal'],
@@ -89,7 +92,7 @@ export class RolesComponent implements OnInit {
             });
             that.role_row_cnt = (dataTablesParameters['start'] + 1);
           });
-        },0);
+        }, 0);
       }
     };
     this.dtOptions[1] = {
@@ -101,12 +104,15 @@ export class RolesComponent implements OnInit {
       ordering: false,
       lengthChange: false,
       scrollCollapse: true,
+      language: {
+        'processing': '<i class="fa fa-spinner fa-spin loader"></i>',
+      },
       ajax: (dataTablesParameters: any, callback) => {
         setTimeout(() => {
-          dataTablesParameters['sort'] = [this.sort_request == -1 ? {"field" : "end_date", value : -1} : {"field" : "start_date", value : 1}];
+          dataTablesParameters['sort'] = [this.sort_request == -1 ? { "field": "end_date", value: -1 } : { "field": "start_date", value: 1 }];
           that.RolesService.getAllRequest(dataTablesParameters).subscribe(response => {
             that.request_data = response['contest']['contest'];
-            
+
             callback({
               recordsTotal: response['contest']['recordsTotal'],
               recordsFiltered: response['contest']['recordsTotal'],
@@ -114,30 +120,30 @@ export class RolesComponent implements OnInit {
             });
             that.req_row_cnt = (dataTablesParameters['start'] + 1);
           });
-        },0);
+        }, 0);
       }
     };
     this.getAllMusicTypes();
   }
 
   // Get day difference between dates
-  getDaysDiff(dt1 : any, dt2 : any) {
+  getDaysDiff(dt1: any, dt2: any) {
     let date1 = new Date(dt1);
     let date2 = new Date(dt2);
     let timeDiff = Math.abs(date2.getTime() - date1.getTime());
-    let diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
+    let diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
     return diffDays;
   }
 
-  openContestModel(template : any) {
+  openContestModel(template: any) {
     this.user_data = {};
     this.add_admin_validation = false;
-    this.contestModelRef = this.modalService.show(template, {backdrop : 'static'});
+    this.contestModelRef = this.modalService.show(template, { backdrop: 'static' });
   }
 
-  sortRole(idx : any) {
+  sortRole(idx: any) {
     this.dtElements.forEach((dtElement: DataTableDirective, index: number) => {
-      if(idx == index) {
+      if (idx == index) {
         dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
           dtInstance.draw();
         });
@@ -145,9 +151,9 @@ export class RolesComponent implements OnInit {
     });
   }
 
-  sortRequest(idx : any) {
+  sortRequest(idx: any) {
     this.dtElements.forEach((dtElement: DataTableDirective, index: number) => {
-      if(idx == index) {
+      if (idx == index) {
         dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
           dtInstance.draw();
         });
@@ -155,7 +161,7 @@ export class RolesComponent implements OnInit {
     });
   }
   // Accept contest request
-  acceptRequest(id : any,idx : any) {
+  acceptRequest(id: any, idx: any) {
     let thi = this;
     swal({
       title: 'Are you sure?',
@@ -165,12 +171,12 @@ export class RolesComponent implements OnInit {
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
       confirmButtonText: 'Yes, Accept it!'
-    }).then((flag) =>  {
-      if(flag.value) {
-        thi.RolesService.acceptContestRequest(id).subscribe(response =>{
+    }).then((flag) => {
+      if (flag.value) {
+        thi.RolesService.acceptContestRequest(id).subscribe(response => {
           thi.toastr.success(response['message'], 'Success!');
           thi.dtElements.forEach((dtElement: DataTableDirective, index: number) => {
-            if(idx == index) {
+            if (idx == index) {
               dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
                 dtInstance.draw();
               });
@@ -183,7 +189,7 @@ export class RolesComponent implements OnInit {
     });
   }
   // Reject contest request
-  rejectRequest(id : any,idx : any) {
+  rejectRequest(id: any, idx: any) {
     let thi = this;
     swal({
       title: 'Are you sure?',
@@ -193,12 +199,12 @@ export class RolesComponent implements OnInit {
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
       confirmButtonText: 'Yes, Reject it!'
-    }).then((flag) =>  {
-      if(flag.value) {
-        thi.RolesService.rejectContestRequest(id).subscribe(response =>{
+    }).then((flag) => {
+      if (flag.value) {
+        thi.RolesService.rejectContestRequest(id).subscribe(response => {
           thi.toastr.success(response['message'], 'Success!');
           thi.dtElements.forEach((dtElement: DataTableDirective, index: number) => {
-            if(idx == index) {
+            if (idx == index) {
               dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
                 dtInstance.draw();
               });
@@ -219,12 +225,12 @@ export class RolesComponent implements OnInit {
   }
 
   // Create new admin
-  addNewAdmin(idx : any, flag) {
-    if(flag) {
+  addNewAdmin(idx: any, flag) {
+    if (flag) {
       this.show_spinner = true;
       this.RolesService.addNewAdmin(this.user_data).subscribe((response) => {
         this.dtElements.forEach((dtElement: DataTableDirective, index: number) => {
-          if(idx == index) {
+          if (idx == index) {
             dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
               dtInstance.draw();
             });
@@ -242,7 +248,7 @@ export class RolesComponent implements OnInit {
     this.add_admin_validation = !flag;
   }
   // remove admin 
-  removeAdmin(id : any, idx : any) {
+  removeAdmin(id: any, idx: any) {
     let thi = this;
     swal({
       title: 'Are you sure?',
@@ -253,11 +259,11 @@ export class RolesComponent implements OnInit {
       cancelButtonColor: '#d33',
       confirmButtonText: 'Yes, delete it!'
     }).then((flag) => {
-      if(flag.value) {
-        thi.RolesService.deleteAdmin(id).subscribe(response =>{
+      if (flag.value) {
+        thi.RolesService.deleteAdmin(id).subscribe(response => {
           thi.toastr.success(response['message'], 'Success!');
           thi.dtElements.forEach((dtElement: DataTableDirective, index: number) => {
-            if(idx == index) {
+            if (idx == index) {
               dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
                 dtInstance.draw();
               });
@@ -267,26 +273,26 @@ export class RolesComponent implements OnInit {
           thi.toastr.error(error['error'].message, 'Error!');
         });
       }
-      
+
     });
   }
   // suspend admin account
-  suspendAdmin(id : any, idx : any, status) {
+  suspendAdmin(id: any, idx: any, status) {
     let thi = this;
     swal({
       title: 'Are you sure?',
-      text: `You want to ${status == 'suspended' ? ' un-suspend' : ' suspend' } this account!`,
+      text: `You want to ${status == 'suspended' ? ' un-suspend' : ' suspend'} this account!`,
       type: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes,'+(status == 'suspended' ? ' un-suspend' : ' suspend' )+' it!'
+      confirmButtonText: 'Yes,' + (status == 'suspended' ? ' un-suspend' : ' suspend') + ' it!'
     }).then((flag) => {
-      if(flag.value) {
-        thi.RolesService.suspendAdmin(id).subscribe(response =>{
+      if (flag.value) {
+        thi.RolesService.suspendAdmin(id).subscribe(response => {
           thi.toastr.success(response['message'], 'Success!');
           thi.dtElements.forEach((dtElement: DataTableDirective, index: number) => {
-            if(idx == index) {
+            if (idx == index) {
               dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
                 dtInstance.draw();
               });
@@ -296,7 +302,7 @@ export class RolesComponent implements OnInit {
           thi.toastr.error(error['error'].message, 'Error!');
         });
       }
-      
+
     });
   }
 }

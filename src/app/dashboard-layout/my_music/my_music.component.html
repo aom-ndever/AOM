@@ -191,7 +191,7 @@
         <span class="upl-img"><i class="fa fa-cloud-upload" aria-hidden="true"></i></span>
         <span class="up_text">Select Music</span>
         <input type="file" name="my_doc_upload" id="my_doc_upload" (change)="changeAudio($event)" multiple="false"
-          accept="MP3,.AIFF,.WAV,.FLAC,.AAC">
+          accept=".MP3,.AIFF,.WAV,.FLAC,.AAC">
         <p class="instrution">AIFF,WAV,FLAC,MP3 or AAC, 3GB or less</p>
       </div>
       <div class="media-upload-btn" *ngIf="audio_file">
@@ -312,31 +312,31 @@
             <label class="control-label">Round 1</label>
             <select name="round1_track" class="form-control" [(ngModel)]="contesttrack_data.round1_track"
               formControlName="round1_track">
-              <option value="">Select Round 1</option>
+              <option value="" disabled selected disabled selected>Select Round 1</option>
               <option *ngFor="let t of tracklist;" value="{{t._id}}">{{t.name}}</option>
             </select>
             <label class="control-label">Round 2</label>
             <select name="round2_track" class="form-control" [(ngModel)]="contesttrack_data.round2_track"
               formControlName="round2_track">
-              <option value="">Select Round 2</option>
+              <option value="" disabled selected disabled selected>Select Round 2</option>
               <option *ngFor="let t of tracklist;" value="{{t._id}}">{{t.name}}</option>
             </select>
             <label class="control-label">Round 3</label>
             <select name="round3_track" class="form-control" [(ngModel)]="contesttrack_data.round3_track"
               formControlName="round3_track">
-              <option value="">Select Round 3</option>
+              <option value="" disabled selected>Select Round 3</option>
               <option *ngFor="let t of tracklist;" value="{{t._id}}">{{t.name}}</option>
             </select>
             <label class="control-label">Semi Final</label>
             <select name="semi_final_track" class="form-control" [(ngModel)]="contesttrack_data.semi_final_track"
               formControlName="semi_final_track">
-              <option value="">Select Semi Final</option>
+              <option value="" disabled selected>Select Semi Final</option>
               <option *ngFor="let t of tracklist;" value="{{t._id}}">{{t.name}}</option>
             </select>
             <label class="control-label">Final</label>
             <select name="final_track" class="form-control" [(ngModel)]="contesttrack_data.final_track"
               formControlName="final_track">
-              <option value="">Select Final</option>
+              <option value="" disabled selected>Select Final</option>
               <option *ngFor="let t of tracklist;" value="{{t._id}}">{{t.name}}</option>
             </select>
           </div>
@@ -365,43 +365,43 @@
             <label class="control-label">Preliminary 1</label>
             <select name="spreliminary1_track" class="form-control" [(ngModel)]="standard_data.preliminary1_track"
               formControlName="spreliminary1_track">
-              <option value="">Select Preliminary1</option>
+              <option value="" disabled selected>Select Preliminary1</option>
               <option *ngFor="let t of tracklist;" value="{{t._id}}">{{t.name}}</option>
             </select>
             <label class="control-label">Preliminary 2</label>
             <select name="spreliminary2_track" class="form-control" [(ngModel)]="standard_data.preliminary2_track"
               formControlName="spreliminary2_track">
-              <option value="">Select Preliminary2</option>
+              <option value="" disabled selected>Select Preliminary2</option>
               <option *ngFor="let t of tracklist;" value="{{t._id}}">{{t.name}}</option>
             </select>
             <label class="control-label">Round 1</label>
             <select name="sround1_track" class="form-control" [(ngModel)]="standard_data.round1_track"
               formControlName="sround1_track">
-              <option value="">Select Round 1</option>
+              <option value="" disabled selected>Select Round 1</option>
               <option *ngFor="let t of tracklist;" value="{{t._id}}">{{t.name}}</option>
             </select>
             <label class="control-label">Round 2</label>
             <select name="sround2_track" class="form-control" [(ngModel)]="standard_data.round2_track"
               formControlName="sround2_track">
-              <option value="">Select Round 2</option>
+              <option value="" disabled selected>Select Round 2</option>
               <option *ngFor="let t of tracklist;" value="{{t._id}}">{{t.name}}</option>
             </select>
             <label class="control-label">Round 3</label>
             <select name="sround3_track" class="form-control" [(ngModel)]="standard_data.round3_track"
               formControlName="sround3_track">
-              <option value="">Select Round 3</option>
+              <option value="" disabled selected>Select Round 3</option>
               <option *ngFor="let t of tracklist;" value="{{t._id}}">{{t.name}}</option>
             </select>
             <label class="control-label">Semi Final</label>
             <select name="ssemi_final_track" class="form-control" [(ngModel)]="standard_data.semi_final_track"
               formControlName="ssemi_final_track">
-              <option value="">Select Semi Final</option>
+              <option value="" disabled selected>Select Semi Final</option>
               <option *ngFor="let t of tracklist;" value="{{t._id}}">{{t.name}}</option>
             </select>
             <label class="control-label">Final</label>
             <select name="sfinal_track" class="form-control" [(ngModel)]="standard_data.final_track"
               formControlName="sfinal_track">
-              <option value="">Select Final</option>
+              <option value="" disabled selected>Select Final</option>
               <option *ngFor="let t of tracklist;" value="{{t._id}}">{{t.name}}</option>
             </select>
           </div>
@@ -430,7 +430,7 @@
             <label class="control-label">Round 1</label>
             <select name="special_round1_track" class="form-control" [(ngModel)]="standard_data.round1_track"
               formControlName="special_round1_track">
-              <option value="">Select Round 1</option>
+              <option value="" disabled selected>Select Round 1</option>
               <option *ngFor="let t of tracklist;" value="{{t._id}}">{{t.name}}</option>
             </select>
           </div>

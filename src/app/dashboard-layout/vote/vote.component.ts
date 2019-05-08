@@ -8,6 +8,7 @@ import { DataTableDirective } from 'angular-datatables';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { MyMusicComponent } from '../my_music/my_music.component';
+import { NgxUiLoaderService } from 'ngx-ui-loader';
 @Component({
   selector: 'app-vote',
   templateUrl: './vote.component.html',
@@ -49,8 +50,10 @@ export class VoteComponent implements OnInit {
     private toastr: ToastrService,
     private MessageService: MessageService,
     private titleService: Title,
+    private ngxService: NgxUiLoaderService,
     private route: ActivatedRoute
   ) {
+    window.scroll(0, 0);
     this.titleService.setTitle(this.route.snapshot.data['title']);
     this.getAllState();
     this.getAllMusicType();
@@ -97,6 +100,7 @@ export class VoteComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.ngxService.start();
     const that = this;
     this.dtOptions[0] = {
       pagingType: 'full_numbers',
@@ -108,6 +112,10 @@ export class VoteComponent implements OnInit {
       responsive: true,
       scrollCollapse: true,
       lengthChange: false,
+      language: {
+        // 'processing': '<i class="fa fa-spinner fa-spin loader"></i>',
+        'processing': '',
+      },
       ajax: (dataTablesParameters: any, callback) => {
         setTimeout(() => {
           dataTablesParameters['contest_id'] = this.contest_data;
@@ -153,6 +161,10 @@ export class VoteComponent implements OnInit {
       responsive: true,
       scrollCollapse: true,
       lengthChange: false,
+      language: {
+        // 'processing': '<i class="fa fa-spinner fa-spin loader"></i>',
+        'processing': '',
+      },
       ajax: (dataTablesParameters: any, callback) => {
         setTimeout(() => {
           dataTablesParameters['contest_id'] = this.contest_data;
@@ -197,12 +209,14 @@ export class VoteComponent implements OnInit {
   // Get all music list
   getAllMusicType() {
     this.VoteService.getAllMusicType().subscribe(response => {
+      console.log('second => ');
       this.music_list = response['music'];
     });
   }
   // get all state
   getAllState() {
     this.VoteService.getAllState().subscribe((response) => {
+      console.log('first => ');
       this.state_list = response['state'];
     });
   }
@@ -240,7 +254,9 @@ export class VoteComponent implements OnInit {
       music_type: this.adv_filter.music_type ? this.adv_filter.music_type : ''
     }
     this.VoteService.getAllContest(data).subscribe((response) => {
+      console.log('third => ');
       this.contest_list = response['contest']['winner'];
+      this.ngxService.stop();
       if (this.contest_list.length > 0) {
         this.contest_data = this.contest_list[0]['_id'];
         this.contest_name = this.contest_list[0]['name'];

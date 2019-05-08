@@ -15,6 +15,7 @@ import { DataTableDirective } from 'angular-datatables';
 import swal from 'sweetalert2';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
+import { NgxUiLoaderService } from 'ngx-ui-loader';
 // import { ImageCroppedEvent } from 'ngx-image-cropper';
 declare let Stripe: any;
 @Component({
@@ -92,7 +93,9 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
   download_chart: any = '';
   download_analytic_count: any = 0;
   show_duration_date: any = '';
-
+  isProfilePic: Boolean;
+  isCoverPic: Boolean;
+  bank_data: any = {};
   // bookmark track
   bookmark_list: any = [];
   audio_ins: any = [];
@@ -149,8 +152,12 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
     private AmCharts: AmChartsService,
     private fb: FormBuilder,
     private titleService: Title,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private ngxService: NgxUiLoaderService
   ) {
+    this.ngxService.start();
+    this.isProfilePic = true;
+    this.isCoverPic = true;
     this.titleService.setTitle(this.route.snapshot.data['title']);
     let data = JSON.parse(localStorage.getItem('user'));
     this.day = [];
@@ -226,8 +233,10 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
       }
     }
     this.MyProfileService.getAllMusicType().subscribe(response => {
+      console.log('***1 => ');
       this.music_types = response['music'];
       this.upgrade_artist_music_type = response['music'];
+      this.ngxService.stop();
       if (data && data.user) {
         let tmp = [];
         this.music_types.forEach((ele) => {
@@ -309,25 +318,26 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
     });
 
     this.subscription = this.MessageService.getMessage().subscribe((response) => {
-      if (response && response['list'] != 1) {
+      console.log('****2 => ');
+      if (response && response['list'] !== 1) {
         this.audio_ins.forEach((ele, idx) => { this.audio_ins[idx] = false; });
       }
 
-      if (response && response['action'] == 'stop' && response['list'] == 1) {
+      if (response && response['action'] === 'stop' && response['list'] === 1) {
         this.audio_ins[response['index']] = false;
       }
 
-      if (response && response['action'] == 'start' && response['list'] == 1) {
+      if (response && response['action'] === 'start' && response['list'] === 1) {
         this.audio_ins[response['index']] = true;
       }
 
-      if (response && response['list'] == 1 && response['action'] == 'next' || response['action'] == 'prev') {
-        if (response['track_action'] && response['track_action'] == 'pause') {
+      if (response && response['list'] === 1 && response['action'] === 'next' || response['action'] === 'prev') {
+        if (response['track_action'] && response['track_action'] === 'pause') {
           this.audio_ins.forEach((ele, idx) => { this.audio_ins[idx] = false; });
           this.audio_ins[response['index']] = true;
         }
       }
-      if (response && response['action'] == 'bottom_play' && response['list'] == 1) {
+      if (response && response['action'] === 'bottom_play' && response['list'] === 1) {
         this.audio_ins.forEach((ele, idx) => { this.audio_ins[idx] = false; });
         this.audio_ins[response['index']] = true;
       }
@@ -383,7 +393,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
   ngOnInit() {
-    if (this.userdata['type'] == 'artist') {
+    if (this.userdata['type'] === 'artist') {
       this.getMediaList();
       this.calculateDateFromDays(this.analytics_days);
       this.getAllCard();
@@ -400,10 +410,14 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
         ordering: false,
         lengthChange: false,
         responsive: true,
+        language: {
+          'processing': '<i class="fa fa-spinner fa-spin loader"></i>',
+        },
         ajax: (dataTablesParameters: any, callback) => {
           console.log(dataTablesParameters);
           that.audio_ins = [];
           that.MyProfileService.getArtistPlaylist(dataTablesParameters).subscribe((response) => {
+            console.log('****3 => ');
             that.playlist = response['playlist'];
             callback({
               recordsTotal: response['recordsTotal'],
@@ -428,6 +442,9 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
         ordering: false,
         lengthChange: false,
         responsive: true,
+        language: {
+          'processing': '<i class="fa fa-spinner fa-spin loader"></i>',
+        },
         ajax: (dataTablesParameters: any, callback) => {
           that.MyProfileService.getAllTransction(dataTablesParameters).subscribe((response) => {
             that.transaction_data = response['account'];
@@ -462,6 +479,9 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
         ordering: false,
         lengthChange: false,
         responsive: true,
+        language: {
+          'processing': '<i class="fa fa-spinner fa-spin loader"></i>',
+        },
         ajax: (dataTablesParameters: any, callback) => {
           console.log(dataTablesParameters);
           that.audio_ins = [];
@@ -497,6 +517,9 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
         ordering: false,
         lengthChange: false,
         responsive: true,
+        language: {
+          'processing': '<i class="fa fa-spinner fa-spin loader"></i>',
+        },
         ajax: (dataTablesParameters: any, callback) => {
           console.log(dataTablesParameters);
           that.audio_ins = [];
@@ -524,6 +547,9 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
         ordering: false,
         lengthChange: false,
         responsive: true,
+        language: {
+          'processing': '<i class="fa fa-spinner fa-spin loader"></i>',
+        },
         ajax: (dataTablesParameters: any, callback) => {
           console.log(dataTablesParameters);
           that.audio_ins = [];
@@ -553,7 +579,6 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
   }
-
 
   ngOnDestroy() {
     if (this.follower_location_chart) {
@@ -631,13 +656,13 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
   changeAnlyticTab(cnt: Number) {
     this.analytic_tab = cnt;
     this.location_flag = false;
-    if (cnt == 1) {
+    if (cnt === 1) {
       this.getAllOverviewAnalytic({ day: this.analytics_days });
-    } else if (cnt == 2) {
+    } else if (cnt === 2) {
       this.getAllFollowerAnalytics({ day: this.analytics_days });
-    } else if (cnt == 3) {
+    } else if (cnt === 3) {
       this.getAllTrackAnalytic({ day: this.analytics_days });
-    } else if (cnt == 4) {
+    } else if (cnt === 4) {
       this.getAllDownloadAnalytic({ day: this.analytics_days });
       this.getAllProceed({ day: this.analytics_days });
     }
@@ -687,13 +712,11 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
-
-
   changeUpgradeArtistImage(event: any) {
     const fileList: FileList = event.target.files;
     if (event.target.files.length > 0) {
       const allow_types = ['image/png', 'image/jpg', 'image/jpeg'];
-      if (allow_types.indexOf(fileList[0].type) == -1) {
+      if (allow_types.indexOf(fileList[0].type) === -1) {
         this.toastr.error('Invalid file format.', 'Error!');
         return false;
       }
@@ -714,8 +737,6 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
       }
     }
   }
-
-
 
   //   updateCoverImage(event: any) {
   //   // this.imageChangedEvent = event;
@@ -828,8 +849,9 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
   // }
 
 
-
+  // ****** updated code *******
   updateCoverImage(event: any) {
+    this.isCoverPic = false;
     const fileList: FileList = event.target.files;
     console.log('fileList => ', fileList);
     console.log('event => ', event);
@@ -846,6 +868,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
           this.toastr.error('Please choose Image less then 1 mb.', 'Error!');
           isValidCover = false;
           console.log('returning ----- more than 1 mb => ');
+          this.isCoverPic = true;
           return 0;
         } else {
           isValidCover = true;
@@ -855,6 +878,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
         isValidCover = false;
         this.toastr.error('Invalid Image Format.', 'Error!');
         console.log('returning ---- invalid format  => ');
+        this.isCoverPic = true;
         return 0;
       }
     }
@@ -867,15 +891,15 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
         console.log('uploaded image', response);
         this.updateLocalStorage();
         this.toastr.success(response['message'], 'Success!');
+        this.isCoverPic = true;
       }, error => {
         this.toastr.error(error['error'].message, 'Error!');
+        this.isCoverPic = true;
       });
     }
   }
-
-
-
   updateProfileImage(event: any) {
+    this.isProfilePic = false;
     var fileList: FileList = event.target.files;
     const file = <File>event.target.files[0];
     console.log('file.size => ', file.size);
@@ -890,6 +914,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
           this.toastr.error('Please choose Image less then 500 kb.', 'Error!');
           isValid = false;
           console.log('returning ----- more than 500 kb => ');
+          this.isProfilePic = true;
           return 0;
         } else {
           isValid = true;
@@ -899,6 +924,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
         isValid = false;
         this.toastr.error('Invalid Image Format.', 'Error!');
         console.log('returning ---- invalid format  => ');
+        this.isProfilePic = true;
         return 0;
       }
     }
@@ -919,6 +945,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
           this.default_profile_img = environment.API_URL + environment.ARTIST_IMG + response['image'];
           this.updateLocalStorage();
           this.toastr.success(response['message'], 'Success!');
+          this.isProfilePic = true;
           this.MessageService.sendMessage({ updateProfile: true });
         }, error => {
           this.toastr.error(error['error'].message, 'Error!');
@@ -929,17 +956,16 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
           this.default_profile_img = environment.API_URL + environment.USER_IMG + response['image'];
           this.updateLocalStorage();
           this.toastr.success(response['message'], 'Success!');
+          this.isProfilePic = true;
           this.MessageService.sendMessage({ updateProfile: true });
         }, error => {
           this.toastr.error(error['error'].message, 'Error!');
+          this.isProfilePic = true;
         });
       }
     }
   }
-
-
-
-
+  // ****** updated code *******
 
 
   imageCropped(image: string) {
@@ -986,11 +1012,8 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
-
-
-
   updateLocalStorage() {
-    if (this.userdata.type == 'artist') {
+    if (this.userdata.type === 'artist') {
       this.userdata = {
         day: '',
         month: '',
@@ -1044,7 +1067,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
           this.userdata['year'] = dt.getFullYear();
         }
         if (this.userdata.image) {
-          if (this.userdata.provider && this.userdata.provider == 'facebook' && this.userdata['image'].includes('graph.facebook.com') || (this.userdata.provider == "gmail" && this.userdata['image'].includes('lh3.googleusercontent.com'))) {
+          if (this.userdata.provider && this.userdata.provider === 'facebook' && this.userdata['image'].includes('graph.facebook.com') || (this.userdata.provider === "gmail" && this.userdata['image'].includes('lh3.googleusercontent.com'))) {
             this.default_profile_img = this.userdata.image;
           } else {
             this.default_profile_img = environment.API_URL + environment.USER_IMG + this.userdata.image;
@@ -1052,8 +1075,9 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
         }
         let tmp = [];
         data['user']['music_type'].forEach((ele) => {
-          if (ele)
+          if (ele) {
             tmp.push(ele['_id']);
+          }
         });
         this.userdata['music_type'] = tmp;
         localStorage.setItem('user', JSON.stringify(data));
@@ -1131,14 +1155,14 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   changeEmail() {
-    if (this.change_email['old'] && this.userdata.email == this.change_email['old']) {
-      if (this.change_email['new'] && this.change_email['repeat'] && this.change_email['new'] == this.change_email['repeat']) {
+    if (this.change_email['old'] && this.userdata.email === this.change_email['old']) {
+      if (this.change_email['new'] && this.change_email['repeat'] && this.change_email['new'] === this.change_email['repeat']) {
         let data = {
           email: this.userdata.email,
           new_email: this.change_email['new']
         };
         this.show_spinner = true;
-        if (this.userdata.type == 'artist') {
+        if (this.userdata.type === 'artist') {
           this.MyProfileService.changeArtistEmail(data).subscribe(response => {
             this.change_email = {};
             this.updateLocalStorage();
@@ -1174,20 +1198,15 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   changePassword() {
-    console.log(this.userdata.pwd);
-    console.log(this.change_pwd['old']);
-    console.log(this.userdata.type);
-
-
-
-    if (this.change_pwd['old'] && this.userdata.pwd == this.change_pwd['old']) {
-      if (this.change_pwd['new'] && this.change_pwd['repeat'] && this.change_pwd['new'] == this.change_pwd['repeat'] && this.change_pwd['new'].length >= 6 && this.change_pwd['repeat'] >= 6) {
+    if (this.change_pwd['old'] && this.userdata.pwd === this.change_pwd['old']) {
+      if (this.change_pwd['new'] && this.change_pwd['repeat'] && this.change_pwd['new'] === this.change_pwd['repeat'] &&
+        this.change_pwd['new'].length >= 6 && this.change_pwd['repeat'] >= 6) {
         let data = {
           password: this.userdata.pwd,
           new_password: this.change_pwd['new']
         };
         this.show_spinner = true;
-        if (this.userdata.type == 'artist') {
+        if (this.userdata.type === 'artist') {
           this.MyProfileService.changeArtistPassword(data).subscribe(response => {
             this.change_pwd = {};
             this.updateLocalStorage();
@@ -1239,7 +1258,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
     let formData: FormData = new FormData();
     formData.append('image', fileList[0]);
     let allow_types = ['image/png', 'image/jpeg', 'image/jpg'];
-    if (allow_types.indexOf(fileList[0].type) == -1) {
+    if (allow_types.indexOf(fileList[0].type) === -1) {
       this.toastr.error('Please upload valid file.', 'Error!');
       return false;
     }
@@ -1267,10 +1286,12 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
   getMediaList() {
     this._albums = [];
     this.MyProfileService.getAllMedia().subscribe(response => {
+      console.log('first => ');
       this.media_list = response['media'];
       for (let i = 0; i < this.media_list.length; i++) {
-        if (this.media_list[i].image)
+        if (this.media_list[i].image) {
           this._albums.push({ src: this.artist_media_url + this.media_list[i].image });
+        }
       }
     }, error => {
       this.toastr.error(error['error'].message, 'Error!');
@@ -1350,6 +1371,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
   // Get all overview analytics data
   getAllOverviewAnalytic(data) {
     this.MyProfileService.getAllOverviewAnalytic(data).subscribe(response => {
+      console.log('third => ');
       this.overview_analytic_data = response;
       this.overview_download_total = 0;
       if (response['track']) {
@@ -1368,6 +1390,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
   // Get all payment details
   getAllPayment(data) {
     this.MyProfileService.getProceedChartData(data).subscribe((response) => {
+      console.log('fifth => ');
       this.paymentChart(response['day']);
     });
   }
@@ -1381,6 +1404,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
   // Get all download analytics data
   getAllDownloadAnalytic(data) {
     this.MyProfileService.getAllDownloadAnalytic(data).subscribe(response => {
+      console.log('forth => ');
       this.download_analytic_data = response;
       this.downloadChart(response['day']);
     });
@@ -1448,10 +1472,12 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
   genderChart(data: any) {
     let result = [];
     data.forEach(ele => {
-      if (ele['_id'] == 'male')
+      if (ele['_id'] === 'male') {
         this.follower_male_per = ele['percentage_value'];
-      else
+      }
+      else {
         this.follower_female_per = ele['percentage_value'];
+      }
       result.push({
         name: ele['_id'],
         y: parseFloat(ele['percentage_value'])
@@ -1715,10 +1741,12 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
   overviewGenderChart(data: any) {
     let result = [];
     data.forEach(ele => {
-      if (ele['_id'] == 'male')
+      if (ele['_id'] === 'male') {
         this.overview_male_per = ele['percentage_value'];
-      else
+      }
+      else {
         this.overview_female_per = ele['percentage_value'];
+      }
       result.push({
         name: ele['_id'],
         y: parseFloat(ele['percentage_value'])
@@ -1783,10 +1811,12 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
     let result = [];
     if (data) {
       data.forEach(ele => {
-        if (ele['_id'] == 'male')
+        if (ele['_id'] === 'male') {
           this.track_male_per = ele['percentage_value'];
-        else
+        }
+        else {
           this.track_female_per = ele['percentage_value'];
+        }
         result.push({
           name: ele['_id'],
           y: parseFloat(ele['percentage_value'])
@@ -2057,7 +2087,6 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
 
   // Play audio
   playAudio(name: any, index: any, data: any) {
-
     data.forEach((ele, idx) => {
       this.audio_ins[idx] = false;
     });
@@ -2094,7 +2123,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
   // add new playlist to db
   addNewPlaylist(flag) {
     if (flag) {
-      if (this.userdata && this.userdata['type'] == 'user') {
+      if (this.userdata && this.userdata['type'] === 'user') {
         if (this.playlist_data && this.playlist_data['name'] && this.playlist_data['name'] != null) {
           this.show_spinner = true;
           this.MyProfileService.addNewListenerPlaylist(this.playlist_data).subscribe((response) => {
@@ -2141,7 +2170,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
   // edit existing playlist
   editPlaylist(flag) {
     if (flag) {
-      if (this.userdata && this.userdata['type'] == 'user') {
+      if (this.userdata && this.userdata['type'] === 'user') {
         if (this.playlist_data && this.playlist_data['name'] && this.playlist_data['name'] != null) {
           this.show_spinner = true;
           this.MyProfileService.updateListenerPlaylist(this.playlist_data, this.playlist_data['_id']).subscribe((response) => {
@@ -2200,13 +2229,13 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
       if (flag.value) {
 
 
-        if (this.userdata && this.userdata['type'] == 'user') {
+        if (this.userdata && this.userdata['type'] === 'user') {
 
           this.MyProfileService.deleteListenerPlaylistById(id).subscribe((response) => {
 
             this.toastr.success(response['message'], 'Success!');
             this.dtElements.forEach((dtElement: DataTableDirective, index: number) => {
-              if (idx == index) {
+              if (idx === index) {
                 dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
                   dtInstance.draw();
                 });
@@ -2218,7 +2247,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
           this.MyProfileService.removeArtistPlaylist(id).subscribe((response) => {
             this.toastr.success(response['message'], 'Success!');
             this.dtElements.forEach((dtElement: DataTableDirective, index: number) => {
-              if (idx == index) {
+              if (idx === index) {
                 dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
                   dtInstance.draw();
                 });
@@ -2234,7 +2263,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
     const that = this;
     this.track_flag = true;
     this.playlist_data = this.playlist[index];
-    if (this.userdata && this.userdata['type'] == 'user') {
+    if (this.userdata && this.userdata['type'] === 'user') {
       this.dtOptions[2] = {
         pagingType: 'full_numbers',
         pageLength: 10,
@@ -2244,6 +2273,9 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
         ordering: false,
         lengthChange: false,
         responsive: true,
+        language: {
+          'processing': '<i class="fa fa-spinner fa-spin loader"></i>',
+        },
         ajax: (dataTablesParameters: any, callback) => {
           console.log(dataTablesParameters);
           that.audio_ins = [];
@@ -2281,6 +2313,9 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
         ordering: false,
         lengthChange: false,
         responsive: true,
+        language: {
+          'processing': '<i class="fa fa-spinner fa-spin loader"></i>',
+        },
         ajax: (dataTablesParameters: any, callback) => {
           console.log(dataTablesParameters);
           that.audio_ins = [];
@@ -2324,7 +2359,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
   // Add track to playlist
   addTrackPlaylist(flag) {
     if (flag) {
-      if (this.userdata && this.userdata['type'] == 'user') {
+      if (this.userdata && this.userdata['type'] === 'user') {
         console.log(this.search_track);
         if (this.search_track) {
           let data = {
@@ -2392,7 +2427,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
       confirmButtonText: 'Yes, delete it!'
     }).then((flag) => {
       if (flag.value) {
-        if (this.userdata && this.userdata['type'] == 'user') {
+        if (this.userdata && this.userdata['type'] === 'user') {
           let data = {
             track_id: id,
             playlist_id: this.playlist_data['_id']
@@ -2430,7 +2465,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   getStateByRegion(id: any) {
-    if (id && id != "") {
+    if (id && id !== "") {
       this.MyProfileService.getStateByRegion({ region: id }).subscribe((response) => {
         this.state_list = response['state'];
       });
@@ -2479,7 +2514,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
       })
     } else {
       console.log('flag', flag, 'profile image', typeof profile_img);
-      if (profile_img == '') {
+      if (profile_img === '') {
         this.upgrade_artist_validation = true;
       } else {
         this.upgrade_artist_validation = !flag;
@@ -2489,7 +2524,6 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   // Stripe Credit-Card implementation
-  bank_data: any = {};
   openCardModel(content) {
     this.bank_data = {};
     this.bank_validation = false;
@@ -2518,6 +2552,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
   // get all card
   getAllCard() {
     this.MyProfileService.getAllBank().subscribe((response) => {
+      console.log('second => ');
       this.card_list = response['bank'];
       console.log('here in list Data', this.card_list);
       this.card_list.forEach((ele) => {
@@ -2525,8 +2560,6 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
       });
     });
   }
-
-
 
   // remove card
   removeCard(id: any) {
@@ -2565,19 +2598,13 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
     });
   }
 
-
-
-
-
-
-
   fileChangeEvent(event: any) {
     const fileList: FileList = event.target.files;
     console.log(event.target.files);
     if (event.target.files.length > 0) {
       this.artist_validation[5] = false;
       const allow_types = ['image/png', 'image/jpg', 'image/jpeg'];
-      if (allow_types.indexOf(fileList[0].type) == -1) {
+      if (allow_types.indexOf(fileList[0].type) === -1) {
         this.toastr.error('Invalid file format.', 'Error!');
         return false;
       }

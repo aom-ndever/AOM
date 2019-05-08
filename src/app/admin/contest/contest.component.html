@@ -185,7 +185,7 @@
             <div class="form-group custom_modal_form">
               <select class="form-control" id="day" formControlName="day" name="day"
                 [(ngModel)]="contest_detail['day']">
-                <option value="">Day</option>
+                <option value="" disabled selected>Day</option>
                 <option *ngFor="let d of day" value="{{d}}">{{d}}</option>
               </select>
               <div class="terms_error_msg" *ngIf="is_valid && !contest_validation.controls['day'].valid">
@@ -196,7 +196,7 @@
             <div class="form-group custom_modal_form">
               <select class="form-control" id="month" name="month" formControlName="month"
                 [(ngModel)]="contest_detail['month']">
-                <option value="">Month</option>
+                <option value="" disabled selected>Month</option>
                 <option *ngFor="let m of month" value="{{m}}">{{m}}</option>
               </select>
               <div class="terms_error_msg" *ngIf="is_valid && !contest_validation.controls['month'].valid">
@@ -207,7 +207,7 @@
             <div class="form-group custom_modal_form">
               <select class="form-control" id="year" name="year" formControlName="year"
                 [(ngModel)]="contest_detail['year']">
-                <option value="">Year</option>
+                <option value="" disabled selected>Year</option>
                 <option *ngFor="let y of year" value="{{y}}">{{y}}</option>
               </select>
               <div class="terms_error_msg" *ngIf="is_valid && !contest_validation.controls['year'].valid">
@@ -224,7 +224,7 @@
                 <label class="control-label">Contest Type</label>
                 <select class="form-control" name="contest_type" formControlName="contest_type"
                   [(ngModel)]="contest_detail['contest_type']" (change)="specialContest()">
-                  <option value="">Select Contest Type</option>
+                  <option value="" disabled selected>Select Contest Type</option>
                   <option value="beta">Beta</option>
                   <option value="standard">Standard</option>
                   <option value="special"> Special
@@ -242,7 +242,7 @@
                 <label class="control-label">Contest Type</label>
                 <select class="form-control" name="duration" formControlName="duration"
                   [(ngModel)]="contest_detail['duration']">
-                  <option value="">Select Contest Duration</option>
+                  <option value="" disabled selected>Select Contest Duration</option>
                   <option value="1">1 Week</option>
                   <option value="2">2 Week</option>
                   <option value="3">3 Week</option>
@@ -272,12 +272,12 @@
             <label class="control-label">Music Genre</label>
             <select name="music_type" class="form-control" formControlName="music_type"
               [(ngModel)]="contest_detail['music_type']" *ngIf="is_new_or_existing == 1">
-              <option value="">Select Music Gener</option>
+              <option value="" disabled selected>Select Music Gener</option>
               <option *ngFor="let music of music_type;" value="{{music['_id']}}">{{music['name']}}</option>
             </select>
             <select name="music_type" class="form-control" formControlName="music_type"
               [(ngModel)]="contest_detail['music_type']" *ngIf="is_new_or_existing == 2" disabled>
-              <option value="">Select Music Gener</option>
+              <option value="" disabled selected>Select Music Gener</option>
               <option *ngFor="let music of music_type;" value="{{music['_id']}}">{{music['name']}}</option>
             </select>
             <div class="terms_error_msg" *ngIf="is_valid && !contest_validation.controls['music_type'].valid">
@@ -291,7 +291,7 @@
             <label class="control-label">Region</label>
             <select class="form-control" name="region" formControlName="region" [(ngModel)]="contest_detail['region']"
               (change)="getStateFromRegion($event.target.value)">
-              <option value="">Select Region</option>
+              <option value="" disabled selected>Select Region</option>
               <option [value]="r['_id']" *ngFor="let r of region_list;">{{r['name']}}</option>
             </select>
             <div class="terms_error_msg" *ngIf="is_valid && !contest_validation.controls['region'].valid">
@@ -304,7 +304,7 @@
           <div class="form-group custom_modal_form">
             <label class="control-label">State</label>
             <select class="form-control" name="state" formControlName="state" [(ngModel)]="contest_detail['state']">
-              <option value="">Select State</option>
+              <option value="" disabled selected>Select State</option>
               <option [value]="s['_id']" *ngFor="let s of state_list;">{{s['name']}}</option>
             </select>
             <div class="terms_error_msg" *ngIf="is_valid && !contest_validation.controls['state'].valid">

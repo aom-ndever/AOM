@@ -3,7 +3,7 @@ import { UsersService } from './users.service';
 import { DataTableDirective } from 'angular-datatables';
 import { ToastrService } from 'ngx-toastr';
 import { BsModalService } from 'ngx-bootstrap/modal';
-import {NgbModal, ModalDismissReasons, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, ModalDismissReasons, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 import { environment } from '../../../../src/environments/environment';
 import swal from 'sweetalert2';
@@ -23,19 +23,19 @@ export class UsersComponent implements OnInit {
   datatableElement: DataTableDirective;
   modalRef: BsModalRef;
   dtOptions: DataTables.Settings = {};
-  user_data : any = [];
-  search_str : any = '';
-  region_filter : any = [];
-  state_list : any = [];
-  sort_by : any = -1;
-  user_flag : any = [];
-  user_detail : any = [];
-  user_following : any = [];
-  user_id : any = '';
-  user_img_url : any = environment.API_URL+environment.USER_IMG;
-  user_role : any = '';
+  user_data: any = [];
+  search_str: any = '';
+  region_filter: any = [];
+  state_list: any = [];
+  sort_by: any = -1;
+  user_flag: any = [];
+  user_detail: any = [];
+  user_following: any = [];
+  user_id: any = '';
+  user_img_url: any = environment.API_URL + environment.USER_IMG;
+  user_role: any = '';
   user_row_cnt = 1;
-  constructor(private UsersService : UsersService,
+  constructor(private UsersService: UsersService,
     private toastr: ToastrService,
     private modalService: BsModalService
   ) {
@@ -56,32 +56,35 @@ export class UsersComponent implements OnInit {
       responsive: true,
       scrollCollapse: true,
       lengthChange: false,
+      language: {
+        'processing': '<i class="fa fa-spinner fa-spin loader"></i>',
+      },
       ajax: (dataTablesParameters: any, callback) => {
         setTimeout(() => {
           dataTablesParameters['search'] = that.search_str;
           dataTablesParameters['sort_by'] = that.sort_by;
           dataTablesParameters['filter'] = [];
-          if(that.region_filter.length) {
+          if (that.region_filter.length) {
             dataTablesParameters['filter'].push(
-              {'field' : 'state', value :  this.region_filter}
+              { 'field': 'state', value: this.region_filter }
             );
           }
           that.UsersService.getAllUser(dataTablesParameters).subscribe(response => {
             that.user_data = response['user']['user'];
-                callback({
-                  recordsTotal: response['user']['recordsTotal'],
-                  recordsFiltered: response['user']['recordsTotal'],
-                  data: []
-                });
+            callback({
+              recordsTotal: response['user']['recordsTotal'],
+              recordsFiltered: response['user']['recordsTotal'],
+              data: []
+            });
             that.user_row_cnt = (dataTablesParameters['start'] + 1);
           });
-        },0);
+        }, 0);
       }
     };
   }
 
   // suspend user
-  suspendUser(id : any) {
+  suspendUser(id: any) {
     swal({
       title: 'Are you sure?',
       text: "",
@@ -91,18 +94,18 @@ export class UsersComponent implements OnInit {
       cancelButtonColor: '#d33',
       confirmButtonText: 'Yes'
     }).then((flag) => {
-      if(flag.value) {
+      if (flag.value) {
         this.UsersService.suspendUser(id).subscribe((response) => {
           this.toastr.success(response['message'], 'Success!');
           this.datatableElement.dtInstance.then((dtInstance: DataTables.Api) => {
             dtInstance.draw();
           });
-        }, (error)=> {
+        }, (error) => {
           this.toastr.error(error['error'].message, 'Error!');
         });
       }
     });
-    
+
   }
   // Filter user based on search string
   filterBasedOnSearch(e: any) {
@@ -116,24 +119,24 @@ export class UsersComponent implements OnInit {
   // Sort user data
   sortUser(val: any) {
     const that = this;
-      this.datatableElement.dtInstance.then((dtInstance: DataTables.Api) => {
-        dtInstance.draw();
-      });
+    this.datatableElement.dtInstance.then((dtInstance: DataTables.Api) => {
+      dtInstance.draw();
+    });
   }
-  openModal(template: any, id : any) {
+  openModal(template: any, id: any) {
     let data = {
-      user_id : id
+      user_id: id
     };
-    this.modalRef = this.modalService.show(template, { backdrop : 'static' });
-    
+    this.modalRef = this.modalService.show(template, { backdrop: 'static' });
+
     this.UsersService.getUserFollowingArtist(data).subscribe((response) => {
       this.user_following = response['user'];
     });
     this.UsersService.getUserById(data).subscribe((response) => {
       this.user_detail = response['user'];
-      if(this.user_detail['dob']) {
+      if (this.user_detail['dob']) {
         let dob = new Date(this.user_detail['dob']);
-        let dt =  new Date();
+        let dt = new Date();
         this.user_detail['old'] = dt.getFullYear() - dob.getFullYear();
       }
     });
@@ -148,8 +151,8 @@ export class UsersComponent implements OnInit {
     });
   }
   // Add region for filtering
-  addRegionForFilter(flag : any, val : any) {
-    if(flag) {
+  addRegionForFilter(flag: any, val: any) {
+    if (flag) {
       this.region_filter.push(val);
     } else {
       let index = this.region_filter.indexOf(val);

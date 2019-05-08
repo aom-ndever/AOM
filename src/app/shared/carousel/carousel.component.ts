@@ -62,7 +62,7 @@ export class CarouselComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
   ngOnInit() {
-    if (this.carouselType == 'normal') {
+    if (this.carouselType === 'normal') {
       this.carouselOne = {
         grid: { xs: 1, sm: 12, md: 3, lg: 4, all: 0 },
         slide: 1,
