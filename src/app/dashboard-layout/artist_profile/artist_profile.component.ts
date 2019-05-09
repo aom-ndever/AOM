@@ -372,7 +372,8 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
   }
 
   // Follow artist
-  followArtist(id: any, index: any) {
+  // followArtist(id: any, index: any) {
+  followArtist(id: any) {
     let data = JSON.parse(localStorage.getItem('user'));
     if (data) {
       // this.artistfollower[index].length += 1;

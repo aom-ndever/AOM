@@ -4,7 +4,7 @@ import { AmChartsModule } from '@amcharts/amcharts3-angular';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { DataTablesModule } from 'angular-datatables';
-import { SlimScroll } from 'angular-io-slimscroll';
+// import { SlimScroll } from 'angular-io-slimscroll';
 import { AutoCompleteModule, MultiSelectModule, ProgressSpinnerModule } from 'primeng/primeng';
 import { LazyLoadImageModule } from 'ng-lazyload-image';
 import { DashboardComponent } from './dashboard/dashboard.component';
@@ -146,7 +146,7 @@ import { ImageCropperModule } from 'ngx-image-cropper';
     VoteComponent,
     MyProfileComponent,
     MyMusicComponent,
-    SlimScroll,
+    // SlimScroll,
     ArtistProfileComponent,
     TrackConmmentsComponent,
     ArtistTrackConmmentsComponent,

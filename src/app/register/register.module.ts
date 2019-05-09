@@ -6,13 +6,13 @@ import { RegisterComponent } from './register.component';
 import { RegisterService } from './register.service';
 import { Http, HttpModule } from '@angular/http';
 // import { HttpClientModule, HttpClient } from '@angular/common/http';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http'
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ImageCropperModule } from 'ngx-image-cropper';
 // import { ToastrModule } from 'ngx-toastr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AuthService } from '../shared/auth.service';
 import { environment } from '../../../src/environments/environment';
-import { AuthServiceConfig, FacebookLoginProvider, SocialLoginModule } from "angular5-social-login";
+import { AuthServiceConfig, FacebookLoginProvider, SocialLoginModule } from 'angular5-social-login';
 // Configs 
 export function getAuthServiceConfigs() {
   let config = new AuthServiceConfig(

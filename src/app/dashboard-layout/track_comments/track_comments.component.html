@@ -32,18 +32,18 @@
                 src="img/likehand.png" alt="">{{track?.no_of_likes}}</a></div>
           <div class="download" *ngIf="track.is_downloadable"><a href="javascript:;" title="Download"><img
                 src="img/download.png" (click)="downloadTrack(track?._id)" alt=""></a></div>
-          <!-- <div class="cmt">
-                    <a href="javascript:;" title="Purchase" (click)="openCardModel(purchase, i, 'track')">
-                      ${{track.price}}
-                    </a>
-                  </div> -->
           <div class="cmt">
-            <a href="javascript:;" title="Purchase" (click)="openCardModel(purchase, i, 'track')">
+            <a href="javascript:;" title="Purchase" (click)="openCardModel(purchase,'track')">
+              <!-- <a href="javascript:;" title="Purchase" (click)="openCardModel(purchase, i, 'track')"> -->
               ${{track.price}}
             </a>
           </div>
-          <div class="share"><a href="javascript:;" title="Share"
-              (click)="openShareTrackModel(shareTrack, i, 'track')"><img src="img/share.png" alt=""></a></div>
+          <div class="share">
+            <!-- <a href="javascript:;" title="Share" (click)="openShareTrackModel(shareTrack, i, 'track')"> -->
+            <a href="javascript:;" title="Share" (click)="openShareTrackModel(shareTrack, 'track')">
+              <img src="img/share.png" alt="">
+            </a>
+          </div>
         </div>
         <div class="profile-location"><i class="fa fa-map-marker" aria-hidden="true"></i>
           <span>{{artistdata && artistdata['state'] ? artistdata['state']['name'] : '' }}</span>

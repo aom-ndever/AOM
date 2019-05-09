@@ -7,15 +7,14 @@
     <i class="fa fa-spinner fa-spin fa-3x" aria-hidden="true"></i>
 </div> -->
 
-<section class="player-wrapper " [style.display]="audio_instance_list.length > 0 ? 'block' : 'none'">
+<section class="player-wrapper" [style.display]="audio_instance_list.length > 0 ? 'block' : 'none'">
     <div class="container">
         <div class="row">
             <div class="col-lg-11 col-md-12 audio_container">
                 <div id="audioplayer">
-
-                    <button class="btn  prev_icon" (click)="prev()"><img src="img/next.png" /></button>
+                    <button class="btn prev_icon" (click)="prev()"><img src="img/next.png" /></button>
                     <button id="pButton" class="play" (click)="play()"></button>
-                    <button class="btn  next_icon" (click)="next()"><img src="img/next.png" /></button>
+                    <button class="btn next_icon" (click)="next()"><img src="img/next.png" /></button>
                     <div class="audio_profile">
                         <img
                             src="{{audio_list[song_cnt] &&  audio_list[song_cnt]['image'] ? track_url+audio_list[song_cnt]['image'] : 'img/profile-img.png' }}" />
@@ -24,7 +23,11 @@
                         <div class="audio_profile_name">
                             <h3>{{audio_list[song_cnt] && audio_list[song_cnt]['name'] ? audio_list[song_cnt]['name'] : ''}}
                             </h3>
-                            <span>{{audio_list.length > 0 && audio_list[song_cnt] && audio_list[song_cnt]['artist_id'] && audio_list[song_cnt]['artist_id']['first_name'] ? audio_list[song_cnt]['artist_id']['first_name'] : '' +" "+audio_list.length > 0 && audio_list[song_cnt] && audio_list[song_cnt]['artist_id'] &&  audio_list[song_cnt]['artist_id']['last_name'] ? audio_list[song_cnt]['artist_id']['last_name'] : ''  }}</span>
+                            <span *ngIf='audio_list.length > 0'>
+                                {{audio_list[song_cnt] && audio_list[song_cnt]['artist_id'] && audio_list[song_cnt]['artist_id']['first_name'] ? 
+                                    audio_list[song_cnt]['artist_id']['first_name'] : '' +" "+audio_list.length > 0 && audio_list[song_cnt] && audio_list[song_cnt]['artist_id'] &&  audio_list[song_cnt]['artist_id']['last_name'] ? 
+                                    audio_list[song_cnt]['artist_id']['last_name'] : ''  }}
+                            </span>
                         </div>
                         <div class="volume_section">
                             <img class="volume_btn" src="img/volume.png" />

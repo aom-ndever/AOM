@@ -17,9 +17,9 @@ export class RegisterComponent implements OnInit {
   user: any = '';
   public artist_cnt: any = 0;
   public listner_cnt: any = 0;
-  public step_flag: boolean = true;
+  public step_flag = true;
   public auth2: any;
-  public show_spinner: boolean = false;
+  public show_spinner = false;
   public music_types: any = [];
   public region_list: any = [];
   public state_list: any = [];
@@ -134,7 +134,6 @@ export class RegisterComponent implements OnInit {
     this.listener_step2 = this.fb.group({
       terms_condtion: ['', Validators.required]
     });
-
     this.listener_step3 = this.fb.group({
       fname: ['', [Validators.required, Validators.pattern('[A-Za-z]+')]],
       lname: ['', [Validators.required, Validators.pattern('[A-Za-z]+')]],
@@ -144,13 +143,11 @@ export class RegisterComponent implements OnInit {
       gender: ['', [Validators.required]],
       phone: ['', [Validators.required, Validators.pattern('[0-9]+'), Validators.minLength(10), Validators.maxLength(10)]]
     });
-
     this.listener_step4 = this.fb.group({
       zipcode: ['', [Validators.required, Validators.pattern('^[A-Za-z0-9]+$')]],
       region: ['', [Validators.required]],
       state: ['', [Validators.required]]
     });
-
     this.RegisterService.getAllMusicType().subscribe(response => {
       this.music_types = response['music'];
     });
@@ -158,9 +155,9 @@ export class RegisterComponent implements OnInit {
   }
   noWhitespaceValidator(control: FormControl) {
     if (typeof (control.value || '') === 'string' || (control.value || '') instanceof String) {
-      let isWhitespace = (control.value || '').trim().length === 0;
-      let isValid = !isWhitespace;
-      return isValid ? null : { 'whitespace': true }
+      const isWhitespace = (control.value || '').trim().length === 0;
+      const isValid = !isWhitespace;
+      return isValid ? null : { 'whitespace': true };
     }
   }
   // Code for initialize google login button
@@ -179,12 +176,9 @@ export class RegisterComponent implements OnInit {
   public attachSignin(element) {
     this.auth2.attachClickHandler(element, {},
       (googleUser) => {
-
-        let profile = googleUser.getBasicProfile();
-
+        const profile = googleUser.getBasicProfile();
         console.log(profile, googleUser.getAuthResponse().id_token);
-        //YOUR CODE HERE
-        let data = {
+        const data = {
           U3: profile.getEmail(),
           ofa: profile.ofa,
           wea: profile.wea,
@@ -209,7 +203,6 @@ export class RegisterComponent implements OnInit {
 
   ngOnInit() {
     this.googleInit();
-
   }
 
   passwordMatchValidator(g: FormGroup) {
@@ -226,9 +219,11 @@ export class RegisterComponent implements OnInit {
         const res = response;
         if (res['results'].length > 0 && res['results'][0].hasOwnProperty('address_components')) {
           if (res['results'][0]['address_components'].length > 3) {
-            this.location = res['results'][0]['address_components'][1]['long_name'] + ', ' + res['results'][0]['address_components'][3]['long_name']
+            this.location = res['results'][0]['address_components'][1]['long_name'] +
+              ', ' + res['results'][0]['address_components'][3]['long_name'];
           } else if (res['results'][0]['address_components'].length > 2) {
-            this.location = res['results'][0]['address_components'][1]['long_name'] + ', ' + res['results'][0]['address_components'][2]['long_name']
+            this.location = res['results'][0]['address_components'][1]['long_name'] +
+              ', ' + res['results'][0]['address_components'][2]['long_name'];
           }
         } else {
           this.location = '';
@@ -245,9 +240,11 @@ export class RegisterComponent implements OnInit {
         const res = response;
         if (res['results'].length > 0 && res['results'][0].hasOwnProperty('address_components')) {
           if (res['results'][0]['address_components'].length > 3) {
-            this.location = res['results'][0]['address_components'][1]['long_name'] + ', ' + res['results'][0]['address_components'][3]['long_name']
+            this.location = res['results'][0]['address_components'][1]['long_name'] +
+              ', ' + res['results'][0]['address_components'][3]['long_name'];
           } else if (res['results'][0]['address_components'].length > 2) {
-            this.location = res['results'][0]['address_components'][1]['long_name'] + ', ' + res['results'][0]['address_components'][2]['long_name']
+            this.location = res['results'][0]['address_components'][1]['long_name'] +
+              ', ' + res['results'][0]['address_components'][2]['long_name'];
           }
         } else {
           this.location = '';
@@ -263,7 +260,7 @@ export class RegisterComponent implements OnInit {
     if (isChecked) {
       this.artist_data.music_type.push(type);
     } else {
-      let index = this.artist_data.music_type.findIndex(x => x == type)
+      const index = this.artist_data.music_type.findIndex(x => x === type);
       this.artist_data.music_type.splice(index, 1);
     }
   }
@@ -273,7 +270,7 @@ export class RegisterComponent implements OnInit {
     if (isChecked) {
       this.listener_data.music_type.push(type);
     } else {
-      let index = this.listener_data.music_type.findIndex(x => x == type)
+      const index = this.listener_data.music_type.findIndex(x => x === type);
       this.listener_data.music_type.splice(index, 1);
     }
   }
@@ -328,10 +325,10 @@ export class RegisterComponent implements OnInit {
   }
   // Handle submit event of artist form
   artist_submit() {
-    let file = this.imageChangedEvent.target.files[0];
-    let new_file = this.dataURLtoFile(this.croppedImage, file.name);
+    const file = this.imageChangedEvent.target.files[0];
+    const new_file = this.dataURLtoFile(this.croppedImage, file.name);
 
-    let formData: FormData = new FormData();
+    const formData: FormData = new FormData();
     formData.append('email', this.artist_data['email']);
     formData.append('password', this.artist_data['password']);
     formData.append('first_name', this.artist_data['fname']);
@@ -383,7 +380,7 @@ export class RegisterComponent implements OnInit {
       this.listener_validation[4] = true;
     } else {
       this.listener_validation[4] = false;
-      let data = {
+      const data = {
         email: this.listener_data['email'],
         password: this.listener_data['password'],
         first_name: this.listener_data['fname'],
@@ -424,38 +421,53 @@ export class RegisterComponent implements OnInit {
     }
 
   }
-  public nxt_btn(step_lbl: any, flag: any, index: any) {
-
+  // public nxt_btn(step_lbl: any, flag: any, index: any) {
+  public nxt_btn(step_lbl: any, flag: any) {
+    console.log('step_lb1 => ', step_lbl);
+    console.log('flag => ', flag);
     this.step_flag = false;
-    console.log(step_lbl, this.artist_cnt);
-    if (step_lbl == 'artist' && flag) {
-      this.artist_validation[index] = !flag;
+    if (step_lbl === 'artist' && flag) {
+
+      // ******************* check this **********************
+      // this.artist_validation[index] = !flag;
+
       this.artist_cnt++;
-    } else if (step_lbl == 'artist') {
-      this.artist_validation[index] = !flag;
+    } else if (step_lbl === 'artist') {
+
+      // ******************* check this **********************
+      // this.artist_validation[index] = !flag;
+
     }
-    if (step_lbl == 'listener' && flag) {
+    if (step_lbl === 'listener' && flag) {
       this.listner_cnt++;
-      this.listener_validation[index] = !flag;
-    } else if (step_lbl == 'listener') {
-      this.listener_validation[index] = !flag;
+      
+      // ******************* check this **********************
+      // this.listener_validation[index] = !flag;
+
+    } else if (step_lbl === 'listener') {
+
+      // ******************* check this **********************
+      // this.listener_validation[index] = !flag;
+
     }
   }
 
   public back_btn(step_lbl) {
-    if (step_lbl == 'artist') {
+    if (step_lbl === 'artist') {
       this.artist_cnt--;
-      if (this.artist_cnt == 0)
+      if (this.artist_cnt === 0) {
         this.step_flag = true;
+      }
     } else {
       this.listner_cnt--;
-      if (this.listner_cnt == 0)
+      if (this.listner_cnt === 0) {
         this.step_flag = true;
+      }
     }
   }
 
   private dataURLtoFile(dataurl, filename) {
-    var arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1],
+    let arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1],
       bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
     while (n--) {
       u8arr[n] = bstr.charCodeAt(n);
@@ -470,7 +482,7 @@ export class RegisterComponent implements OnInit {
   }
 
   getStateByRegion(id: any) {
-    if (id && id != "") {
+    if (id && id !== '') {
       this.RegisterService.getStateByRegion({ region: id }).subscribe((response) => {
         this.state_list = response['state'];
       });
@@ -478,7 +490,7 @@ export class RegisterComponent implements OnInit {
   }
   // Login or registration with facebook
   fbLogin() {
-    let socialPlatformProvider = FacebookLoginProvider.PROVIDER_ID;
+    const socialPlatformProvider = FacebookLoginProvider.PROVIDER_ID;
     this.socialAuthService.signIn(socialPlatformProvider).then(
       (data) => {
         this.RegisterService.userFacebookLogin(data).subscribe((response) => {

@@ -13,13 +13,13 @@
           <div class="row">
             <div class="col-md-3 col-sm-4 col-xs-4">
               <div class="profile-img">
-                <!-- defaultImage="img/music-player-grey.svg" -->
                 <img defaultImage="img/profile-img" offset="100"
                   lazyLoad="{{artistdata['image'] ? artist_img_url +artistdata['image'] : 'img/profile-img.png'}}"
                   alt="Profile Images">
               </div>
               <div class="follow-btn">
-                <a href="javascript:;" (click)="followArtist(artistdata._id, i)">
+                <!-- <a href="javascript:;" (click)="followArtist(artistdata._id, i)"> -->
+                <a href="javascript:;" (click)="followArtist(artistdata._id)">
                   <i class="fa fa-{{artist_following ? 'heart' : 'heart-o'}}" aria-hidden="true"></i>
                   {{artist_following ? 'Following' : 'Follow'}}
                 </a>

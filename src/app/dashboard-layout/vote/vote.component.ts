@@ -57,9 +57,7 @@ export class VoteComponent implements OnInit {
     this.titleService.setTitle(this.route.snapshot.data['title']);
     this.getAllState();
     this.getAllMusicType();
-
     this.getAllContest();
-
     this.subscription = this.MessageService.getMessage().subscribe((response) => {
       if (response && response['list'] != 2) {
         this.audio_ins.forEach((ele, idx) => { this.audio_ins[idx] = false; });

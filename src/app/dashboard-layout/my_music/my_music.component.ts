@@ -328,8 +328,9 @@ export class MyMusicComponent implements OnInit, OnDestroy {
   }
 
   // Open contest modal
-  openContestModal(content: any, obj: any) {
-    this.trackdata = obj;
+  // openContestModal(content: any, obj: any) {
+  openContestModal(content: any) {
+    // this.trackdata = obj;
     // this.modal_ref = this.modalService.open(content, { centered: true, windowClass: 'new-add-track-popup', backdrop: 'static' });
     this.submitContest = this.modalService.open(content, { centered: true, windowClass: 'new-add-track-popup', backdrop: 'static' });
   }
