@@ -22,7 +22,6 @@
       "styles": [
         "styles.css",
         "../node_modules/bootstrap/dist/css/bootstrap.min.css",
-       
         "assets/css/font-awesome.min.css",
         "assets/css/jquery.fancybox.min.css",
         "assets/css/style.css",

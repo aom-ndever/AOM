@@ -1,13 +1,15 @@
-<!-- <router-outlet *ngIf="!loading"></router-outlet>
-<div id="loader" *ngIf="loading">
+<!-- <router-outlet *ngIf="!loading"></router-outlet> -->
+<!-- <div id="loader" *ngIf="loading">
     <img src="img/loader.gif" />
 </div> -->
 <router-outlet>
-    <!-- <div class="loader" id="loader-6" *ngIf="loading">
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-    </div> -->
+    <div class="wrapper__two" *ngIf="loading">
+        <div class="rect rect__one"></div>
+        <div class="rect rect__two"></div>
+        <div class="rect rect__three"></div>
+        <div class="rect rect__four"></div>
+        <div class="rect rect__five"></div>
+        <div class="rect rect__six"></div>
+    </div>
 </router-outlet>
 <ngx-ui-loader></ngx-ui-loader>

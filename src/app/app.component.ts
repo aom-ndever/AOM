@@ -18,6 +18,7 @@ export class AppComponent {
     private location: Location,
     // private spinner: NgxSpinnerService
   ) {
+    console.log('app component => ');
     setTheme('bs4');
     router.events.subscribe((event: RouterEvent) => {
       this.navigationInterceptor(event);

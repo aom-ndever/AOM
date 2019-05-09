@@ -38,9 +38,9 @@
       z-index: 9999;
       text-align: center;
       vertical-align: middle;
-      filter: Alpha(Opacity=70);
-      opacity: 0.7;
-      background-color: black;
+      /* filter: Alpha(Opacity=70); */
+      /* opacity: 0.7; */
+      /* background-color: black; */
     }
 
     #loader>img {
@@ -60,6 +60,115 @@
       height: 48px;
       width: 48px;
     }
+
+    /* body {
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      width: 100vw;
+      justify-content: center;
+      align-content: center;
+      overflow: hidden;
+    } */
+
+    .wrapper__one,
+    .wrapper__two {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      padding-top: 45vh;
+      height: 100vh;
+      width: 100%;
+    }
+
+    .wrapper__two {
+      background: white;
+      perspective: 500px;
+    }
+
+    .rect {
+      height: 25px;
+      /* width: 14px; */
+      width: 10px;
+      background: #9b26b0;
+      margin: 0 0.3em;
+      display: inline-block;
+      border-radius: 10px;
+    }
+
+    .rect__one {
+      /* height: 50px; */
+      height: 40px;
+      /* margin: 25px 0.4em; */
+      margin: 25px 0.3em;
+      opacity: 0.4;
+      animation: door 1s infinite;
+      animation-timing-function: linear;
+    }
+
+    .rect__two {
+      /* height: 69px; */
+      height: 62px;
+      /* margin: 12px 0.4em; */
+      margin: 12px 0.3em;
+      opacity: 0.8;
+      animation: door 1s infinite;
+      animation-delay: 0.08s;
+      animation-timing-function: linear;
+    }
+
+    .rect__three {
+      /* height: 97px; */
+      height: 92px;
+      /* margin: 0 0.4em; */
+      margin: 0 0.3em;
+      opacity: 1;
+      animation: door 1s infinite;
+      animation-delay: 0.15s;
+      animation-timing-function: linear;
+    }
+
+    .rect__four {
+      /* height: 69px; */
+      height: 64px;
+      /* margin: 12px 0.4em; */
+      margin: 12px 0.3em;
+      opacity: 0.8;
+      animation: door 1s infinite;
+      animation-delay: 0.15s;
+      animation-timing-function: linear;
+    }
+
+    .rect__five {
+      /* height: 52px; */
+      height: 42px;
+      /* margin: 25px 0.4em; */
+      margin: 25px 0.3em;
+      opacity: 0.6;
+      animation: door 1s infinite;
+      animation-delay: 0.15s;
+      animation-timing-function: linear;
+    }
+
+    .rect__six {
+      /* height: 35px; */
+      height: 25px;
+      /* margin: 35px 0.4em; */
+      margin: 35px 0.3em;
+      opacity: 0.4;
+      animation: door 1s infinite;
+      animation-timing-function: linear;
+    }
+
+    @keyframes door {
+      0% {
+        transform: scale(1.4);
+      }
+
+      100% {
+        transform: scale(1);
+      }
+    }
   </style>
 </head>
 
@@ -68,6 +177,15 @@
     <!-- <div id="loader">
       <img src="img/loader.gif" />
     </div> -->
+    <div class="wrapper__two" id="loader">
+      <div class="rect rect__one"></div>
+      <div class="rect rect__two"></div>
+      <div class="rect rect__three"></div>
+      <div class="rect rect__four"></div>
+      <div class="rect rect__five"></div>
+      <div class="rect rect__six"></div>
+    </div>
+
   </app-root>
 </body>
 <script>

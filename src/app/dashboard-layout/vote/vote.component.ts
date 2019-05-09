@@ -113,20 +113,22 @@ export class VoteComponent implements OnInit {
       scrollCollapse: true,
       lengthChange: false,
       language: {
-        // 'processing': '<i class="fa fa-spinner fa-spin loader"></i>',
-        'processing': '',
+        'processing': '<i class="fa fa-spinner fa-spin loader"></i>',
+        // 'processing': '',
       },
       ajax: (dataTablesParameters: any, callback) => {
         setTimeout(() => {
           dataTablesParameters['contest_id'] = this.contest_data;
-          if (that.search_str)
+          if (that.search_str) {
             dataTablesParameters['search'] = that.search_str;
+          }
           dataTablesParameters['music_type'] = that.advance_filter.music_type;
-          if (that.region_filter.length > 0)
+          if (that.region_filter.length > 0) {
             dataTablesParameters['state'] = that.region_filter;
+          }
           that.VoteService.getWinnersData(dataTablesParameters).subscribe((response) => {
             this.winner_list = response['data'];
-            //console.log('dsbdthj', this.winner_list[0].artist_id.music_type.name);
+            // console.log('dsbdthj', this.winner_list[0].artist_id.music_type.name);
             this.audio_ins1 = [];
             this.audio_ins_list1 = [];
             this.winner_list.forEach((ele) => {
@@ -162,17 +164,19 @@ export class VoteComponent implements OnInit {
       scrollCollapse: true,
       lengthChange: false,
       language: {
-        // 'processing': '<i class="fa fa-spinner fa-spin loader"></i>',
-        'processing': '',
+        'processing': '<i class="fa fa-spinner fa-spin loader"></i>',
+        // 'processing': '',
       },
       ajax: (dataTablesParameters: any, callback) => {
         setTimeout(() => {
           dataTablesParameters['contest_id'] = this.contest_data;
-          if (that.search_str)
+          if (that.search_str) {
             dataTablesParameters['search'] = that.search_str;
+          }
           dataTablesParameters['music_type'] = that.advance_filter.music_type;
-          if (that.region_filter.length > 0)
+          if (that.region_filter.length > 0) {
             dataTablesParameters['state'] = that.region_filter;
+          }
 
           that.VoteService.getWinnersData(dataTablesParameters).subscribe((response) => {
             this.winner_list = response['track'];

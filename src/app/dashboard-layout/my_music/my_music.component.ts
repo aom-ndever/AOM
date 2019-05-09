@@ -133,8 +133,8 @@ export class MyMusicComponent implements OnInit, OnDestroy {
       lengthChange: false,
       responsive: true,
       language: {
-        // 'processing': '<i class="fa fa-spinner fa-spin loader"></i>',
-        'processing': '',
+        'processing': '<i class="fa fa-spinner fa-spin loader"></i>',
+        // 'processing': '',
       },
       ajax: (dataTablesParameters: any, callback) => {
         setTimeout(() => {
@@ -249,8 +249,9 @@ export class MyMusicComponent implements OnInit, OnDestroy {
   }
 
   changeFile(event: any) {
+    console.log('in function  => ');
     const file = event.target.files[0];
-    console.log('change file', file);
+    console.log(' file ======>', file);
     let flag;
     let res;
     let fr = new FileReader();
@@ -262,21 +263,22 @@ export class MyMusicComponent implements OnInit, OnDestroy {
       uint.forEach((byte) => {
         bytes.push(byte.toString(16));
       });
-
       const hex = bytes.join('').toUpperCase();
       const allow_types = this.getImageMimetype(hex);
-      // console.log(binaryFileType + ' ' + hex);
-      // if (binaryFileType === 'Unknown filetype') {
       if (allow_types.indexOf(file.type) === -1) {
         console.log('1');
         this.toastr.error('Invalid file format.', 'Error!');
         return false;
-        // }
       } else {
-        // const file = new Blob([new Uint8Array(res)], { type: binaryFileType });
-        this.image_upload = file;
+        console.log('file => ', file);
+        console.log('file.size => ', file.size);
+        if (file.size <= 500000) {
+          this.image_upload = file;
+        } else {
+          this.toastr.error('Please choose Image less then 500 kb.', 'Error!');
+          return false;
+        }
       }
-
     };
     fr.readAsArrayBuffer(file);
     const allow_types = ['image/png', 'image/jpg', 'image/jpeg'];

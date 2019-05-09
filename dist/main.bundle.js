@@ -2579,7 +2579,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, "/* .loader{\r\n  width: 100px;\r\n  height: 100px;\r\n  border-radius: 100%;\r\n  position: relative;\r\n  margin: 0 auto;\r\n} */\r\n\r\n/* LOADER 6 */\r\n\r\n/* #loader-6{\r\n  top: 40px;\r\n  left: -2.5px;\r\n}\r\n\r\n#loader-6 span{\r\n  display: inline-block;\r\n  width: 5px;\r\n  height: 20px;\r\n  background-color: #3498db;\r\n}\r\n\r\n#loader-6 span:nth-child(1){\r\n  animation: grow 1s ease-in-out infinite;\r\n}\r\n\r\n#loader-6 span:nth-child(2){\r\n  animation: grow 1s ease-in-out 0.15s infinite;\r\n}\r\n\r\n#loader-6 span:nth-child(3){\r\n  animation: grow 1s ease-in-out 0.30s infinite;\r\n}\r\n\r\n#loader-6 span:nth-child(4){\r\n  animation: grow 1s ease-in-out 0.45s infinite;\r\n}\r\n\r\n@keyframes grow{\r\n  0%, 100%{\r\n    -webkit-transform: scaleY(1);\r\n    -ms-transform: scaleY(1);\r\n    -o-transform: scaleY(1);\r\n    transform: scaleY(1);\r\n  }\r\n\r\n  50%{\r\n    -webkit-transform: scaleY(1.8);\r\n    -ms-transform: scaleY(1.8);\r\n    -o-transform: scaleY(1.8);\r\n    transform: scaleY(1.8);\r\n  }\r\n} */\r\n\r\n/* body{\r\n  margin: 0;\r\n  padding: 0;\r\n  height: 100vh;\r\n  width: 100vw;\r\n  justify-content: center;\r\n  align-content: center;\r\n \r\n  overflow: hidden;\r\n}\r\n\r\n.wrapper__one, .wrapper__two{\r\n  display: flex;\r\n  flex-direction: row;\r\n  justify-content: center;\r\n  padding-top: 30vh;\r\n  height: 100vh;\r\n  width:100%;\r\n}\r\n\r\n.wrapper__two{\r\n  background: rgb(207, 86, 255);\r\n  perspective: 500px;\r\n}\r\n.circle{\r\n  margin: 0 0.3em;\r\n  height: 4em;\r\n  width: 4em;\r\n  background: transparent;\r\n  display: inline-block;\r\n  border-radius: 50%;\r\n  border: 8px solid rgba(207,86,255,0.1);\r\n  border-top: 8px solid rgb(207, 86, 255);\r\n  border-bottom: 8px solid rgb(207, 86, 255);\r\n}\r\n\r\n.circle__one{\r\n  opacity: 1;\r\n  animation: roll 2s infinite 0s linear;\r\n}\r\n\r\n@keyframes roll{\r\n  0%{\r\n    transform: rotate(0deg);\r\n  }\r\n  \r\n \r\n  \r\n  100%{\r\n  transform: rotate(360deg);\r\n  }\r\n}\r\n\r\n\r\n.rect{\r\n  height: 25px;\r\n  width: 14px;\r\n  background:white;\r\n  margin: 0 0.4em;\r\n  display: inline-block;\r\n  border-radius: 10px;\r\n}\r\n\r\n.rect__one{\r\n  height: 63px;\r\n  margin: 25px 0.4em;\r\n  opacity: 1;\r\n  animation: door 1s infinite;\r\n  animation-timing-function: linear;\r\n}\r\n.rect__two{\r\n  height: 69px;\r\n  margin: 12px 0.4em;\r\n  opacity: 0.8;\r\n  animation: door 1s infinite;\r\n  animation-delay:0.08s;\r\n  animation-timing-function: linear;\r\n}\r\n.rect__three{\r\n  height: 97px;\r\n  margin: 0 0.4em;\r\n  opacity: 0.5;\r\n  animation: door 1s infinite;\r\n  animation-delay: 0.15s;\r\n  animation-timing-function: linear;\r\n}\r\n.rect__four{\r\n  height: 69px;\r\n  margin: 12px 0.4em;\r\n  opacity: 0.2;\r\n  animation: door 1s infinite;\r\n  animation-delay: 0.15s;\r\n  animation-timing-function: linear;\r\n}\r\n\r\n@keyframes door{\r\n  0%{\r\n    transform: scale(1.4);\r\n  }\r\n  \r\n  100%{\r\n    transform: scale(1);\r\n  }\r\n} */", ""]);
+exports.push([module.i, "/* body {\r\n      margin: 0;\r\n      padding: 0;\r\n      height: 100vh;\r\n      width: 100vw;\r\n      justify-content: center;\r\n      align-content: center;\r\n      overflow: hidden;\r\n    } */\r\n\r\n    /* .wrapper__one,\r\n    .wrapper__two {\r\n      display: flex;\r\n      flex-direction: row;\r\n      justify-content: center;\r\n      padding-top: 45vh;\r\n      height: 100vh;\r\n      width: 100%;\r\n    }\r\n\r\n    .wrapper__two {\r\n      background: white;\r\n      perspective: 500px;\r\n    }\r\n\r\n    .rect {\r\n      height: 25px;\r\n      width: 14px;\r\n      background: #9b26b0;\r\n      margin: 0 0.4em;\r\n      display: inline-block;\r\n      border-radius: 10px;\r\n    }\r\n\r\n    .rect__one {\r\n      height: 50px;\r\n      margin: 25px 0.4em;\r\n      opacity: 0.4;\r\n      animation: door 1s infinite;\r\n      animation-timing-function: linear;\r\n    }\r\n\r\n    .rect__two {\r\n      height: 69px;\r\n      margin: 12px 0.4em;\r\n      opacity: 0.8;\r\n      animation: door 1s infinite;\r\n      animation-delay: 0.08s;\r\n      animation-timing-function: linear;\r\n    }\r\n\r\n    .rect__three {\r\n      height: 97px;\r\n      margin: 0 0.4em;\r\n      opacity: 1;\r\n      animation: door 1s infinite;\r\n      animation-delay: 0.15s;\r\n      animation-timing-function: linear;\r\n    }\r\n\r\n    .rect__four {\r\n      height: 69px;\r\n      margin: 12px 0.4em;\r\n      opacity: 0.7;\r\n      animation: door 1s infinite;\r\n      animation-delay: 0.15s;\r\n      animation-timing-function: linear;\r\n    }\r\n\r\n    .rect__five {\r\n      height: 52px;\r\n      margin: 25px 0.4em;\r\n      opacity: 0.6;\r\n      animation: door 1s infinite;\r\n      animation-delay: 0.15s;\r\n      animation-timing-function: linear;\r\n    }\r\n\r\n    .rect__six {\r\n      height: 35px;\r\n      margin: 35px 0.4em;\r\n      opacity: 0.4;\r\n      animation: door 1s infinite;\r\n      animation-timing-function: linear;\r\n    }\r\n\r\n    @keyframes door {\r\n      0% {\r\n        transform: scale(1.4);\r\n      }\r\n\r\n      100% {\r\n        transform: scale(1);\r\n      }\r\n    } */", ""]);
 
 // exports
 
@@ -2592,7 +2592,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/app.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<!-- <router-outlet *ngIf=\"!loading\"></router-outlet>\r\n<div id=\"loader\" *ngIf=\"loading\">\r\n    <img src=\"img/loader.gif\" />\r\n</div> -->\r\n<router-outlet>\r\n    <!-- <div class=\"loader\" id=\"loader-6\" *ngIf=\"loading\">\r\n        <span></span>\r\n        <span></span>\r\n        <span></span>\r\n        <span></span>\r\n    </div> -->\r\n</router-outlet>\r\n<ngx-ui-loader></ngx-ui-loader>"
+module.exports = "<!-- <router-outlet *ngIf=\"!loading\"></router-outlet> -->\r\n<!-- <div id=\"loader\" *ngIf=\"loading\">\r\n    <img src=\"img/loader.gif\" />\r\n</div> -->\r\n<router-outlet>\r\n    <div class=\"wrapper__two\" *ngIf=\"loading\">\r\n        <div class=\"rect rect__one\"></div>\r\n        <div class=\"rect rect__two\"></div>\r\n        <div class=\"rect rect__three\"></div>\r\n        <div class=\"rect rect__four\"></div>\r\n        <div class=\"rect rect__five\"></div>\r\n        <div class=\"rect rect__six\"></div>\r\n    </div>\r\n</router-outlet>\r\n<ngx-ui-loader></ngx-ui-loader>"
 
 /***/ }),
 
@@ -2627,6 +2627,7 @@ var AppComponent = /** @class */ (function () {
         this.title = 'app';
         this.loading = true;
         this.url = '';
+        console.log('app component => ');
         Object(__WEBPACK_IMPORTED_MODULE_1_ngx_bootstrap_utils__["d" /* setTheme */])('bs4');
         router.events.subscribe(function (event) {
             _this.navigationInterceptor(event);
@@ -2789,7 +2790,8 @@ var AppModule = /** @class */ (function () {
                     // 'overlayColor': 'rgba(255,255,255)',
                     // 'overlayColor': 'rgba(40, 40, 40, 0.8)',
                     'overlayColor': 'rgba(24,24,24,0.8)',
-                    'pbColor': '#9b26b0',
+                    // 'pbColor': '#9b26b0',
+                    'pbColor': '#d281df',
                     'pbDirection': 'ltr',
                     'pbThickness': 3,
                     'hasProgressBar': true,
@@ -6286,8 +6288,7 @@ var MyMusicComponent = /** @class */ (function () {
             lengthChange: false,
             responsive: true,
             language: {
-                // 'processing': '<i class="fa fa-spinner fa-spin loader"></i>',
-                'processing': '',
+                'processing': '<i class="fa fa-spinner fa-spin loader"></i>',
             },
             ajax: function (dataTablesParameters, callback) {
                 setTimeout(function () {
@@ -6393,8 +6394,9 @@ var MyMusicComponent = /** @class */ (function () {
     };
     MyMusicComponent.prototype.changeFile = function (event) {
         var _this = this;
+        console.log('in function  => ');
         var file = event.target.files[0];
-        console.log('change file', file);
+        console.log(' file ======>', file);
         var flag;
         var res;
         var fr = new FileReader();
@@ -6408,17 +6410,21 @@ var MyMusicComponent = /** @class */ (function () {
             });
             var hex = bytes.join('').toUpperCase();
             var allow_types = _this.getImageMimetype(hex);
-            // console.log(binaryFileType + ' ' + hex);
-            // if (binaryFileType === 'Unknown filetype') {
             if (allow_types.indexOf(file.type) === -1) {
                 console.log('1');
                 _this.toastr.error('Invalid file format.', 'Error!');
                 return false;
-                // }
             }
             else {
-                // const file = new Blob([new Uint8Array(res)], { type: binaryFileType });
-                _this.image_upload = file;
+                console.log('file => ', file);
+                console.log('file.size => ', file.size);
+                if (file.size <= 500000) {
+                    _this.image_upload = file;
+                }
+                else {
+                    _this.toastr.error('Please choose Image less then 500 kb.', 'Error!');
+                    return false;
+                }
             }
         };
         fr.readAsArrayBuffer(file);
@@ -11125,20 +11131,21 @@ var VoteComponent = /** @class */ (function () {
             scrollCollapse: true,
             lengthChange: false,
             language: {
-                // 'processing': '<i class="fa fa-spinner fa-spin loader"></i>',
-                'processing': '',
+                'processing': '<i class="fa fa-spinner fa-spin loader"></i>',
             },
             ajax: function (dataTablesParameters, callback) {
                 setTimeout(function () {
                     dataTablesParameters['contest_id'] = _this.contest_data;
-                    if (that.search_str)
+                    if (that.search_str) {
                         dataTablesParameters['search'] = that.search_str;
+                    }
                     dataTablesParameters['music_type'] = that.advance_filter.music_type;
-                    if (that.region_filter.length > 0)
+                    if (that.region_filter.length > 0) {
                         dataTablesParameters['state'] = that.region_filter;
+                    }
                     that.VoteService.getWinnersData(dataTablesParameters).subscribe(function (response) {
                         _this.winner_list = response['data'];
-                        //console.log('dsbdthj', this.winner_list[0].artist_id.music_type.name);
+                        // console.log('dsbdthj', this.winner_list[0].artist_id.music_type.name);
                         _this.audio_ins1 = [];
                         _this.audio_ins_list1 = [];
                         _this.winner_list.forEach(function (ele) {
@@ -11174,17 +11181,18 @@ var VoteComponent = /** @class */ (function () {
             scrollCollapse: true,
             lengthChange: false,
             language: {
-                // 'processing': '<i class="fa fa-spinner fa-spin loader"></i>',
-                'processing': '',
+                'processing': '<i class="fa fa-spinner fa-spin loader"></i>',
             },
             ajax: function (dataTablesParameters, callback) {
                 setTimeout(function () {
                     dataTablesParameters['contest_id'] = _this.contest_data;
-                    if (that.search_str)
+                    if (that.search_str) {
                         dataTablesParameters['search'] = that.search_str;
+                    }
                     dataTablesParameters['music_type'] = that.advance_filter.music_type;
-                    if (that.region_filter.length > 0)
+                    if (that.region_filter.length > 0) {
                         dataTablesParameters['state'] = that.region_filter;
+                    }
                     that.VoteService.getWinnersData(dataTablesParameters).subscribe(function (response) {
                         _this.winner_list = response['track'];
                         // this.winner_list = response['track']['winner'];

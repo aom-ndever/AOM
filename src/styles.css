@@ -204,3 +204,8 @@ display: none !important;
 .liked-active{
 color: green;
 }
+
+i.fa.fa-spinner.fa-spin.loader {
+    color: #c1c1c1;
+}
+
