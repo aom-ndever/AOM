@@ -372,7 +372,7 @@
             <div class="img-wrap">
               <img src="{{p && p['artist_id']  ? artist_img_url+p['artist_id'].image : 'img/upload1.png'}}"
                 alt="Finalists">
-              <a href="javascript:void(0)" (click)="followArtist(p['artist_id']._id)" class="fan">
+              <a (click)="followArtist(p['artist_id']._id)" class="fan">
                 <!-- <i class="fa fa-{{p['artist'].is_followed ? 'heart' : 'heart-o'}}" aria-hidden="true"></i> -->
               </a>
             </div>

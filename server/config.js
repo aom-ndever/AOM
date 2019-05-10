@@ -35,6 +35,8 @@ module.exports = {
   // Other configuration
   "website_url": process.env.WEBSITE_URL,
   "base_url": process.env.BASE + ':' + process.env.NODE_PORT,
-
+  "IS_HTTPS": process.env.IS_HTTPS,
+  "SSL_CERT": process.env.SSL_CERT,
+  "SSL_KEY": process.env.SSL_KEY,
   // "base_url": "http://13.55.64.183:3200"
 };

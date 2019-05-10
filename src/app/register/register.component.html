@@ -389,8 +389,9 @@
                     </div>
                     <div [style.display]="cropperReady ? null : 'none'">
                       <image-cropper [imageChangedEvent]="imageChangedEvent" [maintainAspectRatio]="true"
-                        [aspectRatio]="1 / 1" [resizeToWidth]="128" format="jpeg" (imageCropped)="imageCropped($event)"
-                        (imageLoaded)="imageLoaded()" [style.display]="cropperReady ? null : 'none'"></image-cropper>
+                        [imageQuality]="92" [aspectRatio]="1 / 1" [resizeToWidth]="200" format="jpeg"
+                        (imageCropped)="imageCropped($event)" (imageLoaded)="imageLoaded()"
+                        [style.display]="cropperReady ? null : 'none'"></image-cropper>
                       <!-- <image-cropper [imageChangedEvent]="imageChangedEvent" [maintainAspectRatio]="true"
                         [aspectRatio]="1 / 1" [resizeToWidth]="128" format="jpeg" (imageCropped)="imageCropped($event)"
                         (imageLoaded)="imageLoaded()" (loadImageFailed)="loadImageFailed()"
