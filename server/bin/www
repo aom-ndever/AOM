@@ -1,18 +1,26 @@
+#!/usr/bin/env node
+
+/**
+ * Module dependencies.
+ */
+
 var app = require('../app');
-var debug = require('debug')('backend:server');
+var debug = require('debug')('music-social-voting-api:server');
 var http = require('http');
+var socket = require('../socket/socketServer');
 var https = require('https');
 var config = require('./../config');
-var fs = require('fs');
-
-var socket = require('../socket/socketServer');
 
 /**
  * Get port from environment and store in Express.
  */
 
-var port = normalizePort(config.node_port || process.env.PORT || '3000');
+var port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
+
+/**
+ * Create HTTP server.
+ */
 
 var server = {};
 
@@ -31,7 +39,6 @@ if (config.IS_HTTPS == "true") {
     */
   server = http.createServer(app);
 }
-
 
 /**
  * Listen on provided port, on all network interfaces.
@@ -91,7 +98,7 @@ function onError(error) {
 
 /**
  * Event listener for HTTP server "listening" event.
- */
+*/
 
 function onListening() {
   var addr = server.address();
@@ -100,5 +107,4 @@ function onListening() {
     : 'port ' + addr.port;
   debug('Listening on ' + bind);
   socket.init(server);
-
 }
