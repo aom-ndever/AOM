@@ -421,34 +421,22 @@ export class RegisterComponent implements OnInit {
     }
 
   }
-  // public nxt_btn(step_lbl: any, flag: any, index: any) {
-  public nxt_btn(step_lbl: any, flag: any) {
-    console.log('step_lb1 => ', step_lbl);
-    console.log('flag => ', flag);
+
+
+
+  public nxt_btn(step_lbl: any, flag: any, index: number) {
     this.step_flag = false;
     if (step_lbl === 'artist' && flag) {
-
-      // ******************* check this **********************
-      // this.artist_validation[index] = !flag;
-
+      this.artist_validation[index] = !flag;
       this.artist_cnt++;
     } else if (step_lbl === 'artist') {
-
-      // ******************* check this **********************
-      // this.artist_validation[index] = !flag;
-
+      this.artist_validation[index] = !flag;
     }
     if (step_lbl === 'listener' && flag) {
       this.listner_cnt++;
-      
-      // ******************* check this **********************
-      // this.listener_validation[index] = !flag;
-
+      this.listener_validation[index] = !flag;
     } else if (step_lbl === 'listener') {
-
-      // ******************* check this **********************
-      // this.listener_validation[index] = !flag;
-
+      this.listener_validation[index] = !flag;
     }
   }
 

@@ -13,11 +13,11 @@
                 <h3>Who are you?</h3>
               </div>
               <div class="select-who">
-                <div class="artist"><a href="javascript:;" (click)="nxt_btn('artist', true)">
+                <div class="artist"><a href="javascript:;" (click)="nxt_btn('artist', true, undefined)">
                     <img src="img/artist.png" alt="Artist">
                     <h3>Artist</h3>
                   </a></div>
-                <div class="listner"><a href="javascript:;" (click)="nxt_btn('listener', true)"><img
+                <div class="listner"><a href="javascript:;" (click)="nxt_btn('listener', true, undefined)"><img
                       src="img/listiner.png" alt="listner">
                     <h3>Listener</h3>
                   </a></div>
@@ -68,8 +68,8 @@
                   <div class="button_group terms_btn">
                     <a href="javascript:;" class="back-btn" (click)="back_btn('artist')"><img src="img/prev-arrow.png"
                         alt="Previou Arrow"> Back</a>
-                    <!-- <button type="submit" (click)="nxt_btn('artist', artist_step1.valid, 0)" class="next-btn"> -->
-                    <button type="submit" (click)="nxt_btn('artist', artist_step1.valid)" class="next-btn">
+                    <button type="submit" (click)="nxt_btn('artist', artist_step1.valid, 0)" class="next-btn">
+                      <!-- <button type="submit" (click)="nxt_btn('artist', artist_step1.valid)" class="next-btn"> -->
                       Next
                     </button>
                   </div>
@@ -136,8 +136,8 @@
                   <div class="button_group">
                     <a href="javascript:;" class="back-btn" (click)="back_btn('artist')"><img src="img/prev-arrow.png"
                         alt="Previou Arrow"> Back</a>
-                    <!-- <button type="submit" (click)="nxt_btn('artist', artist_step2.valid , 1)" class="next-btn"> -->
-                    <button type="submit" (click)="nxt_btn('artist', artist_step2.valid)" class="next-btn">
+                    <button type="submit" (click)="nxt_btn('artist', artist_step2.valid , 1)" class="next-btn">
+                      <!-- <button type="submit" (click)="nxt_btn('artist', artist_step2.valid)" class="next-btn"> -->
                       Next
                     </button>
                   </div>
@@ -262,8 +262,8 @@
                   <div class="button_group">
                     <a href="javascript:;" class="back-btn" (click)="back_btn('artist')"><img src="img/prev-arrow.png"
                         alt="Previou Arrow"> Back</a>
-                    <!-- <button type="submit" (click)="nxt_btn('artist', artist_step3.valid , 2)" class="next-btn"> -->
-                    <button type="submit" (click)="nxt_btn('artist', artist_step3.valid)" class="next-btn">
+                    <button type="submit" (click)="nxt_btn('artist', artist_step3.valid , 2)" class="next-btn">
+                      <!-- <button type="submit" (click)="nxt_btn('artist', artist_step3.valid)" class="next-btn"> -->
                       Next
                     </button>
                   </div>
@@ -328,8 +328,8 @@
                   <div class="button_group">
                     <a href="javascript:;" class="back-btn" (click)="back_btn('artist')"><img src="img/prev-arrow.png"
                         alt="Previou Arrow"> Back</a>
-                    <!-- <button type="submit" (click)="nxt_btn('artist', artist_step4.valid , 3)" class="next-btn"> -->
-                    <button type="submit" (click)="nxt_btn('artist', artist_step4.valid)" class="next-btn">
+                    <button type="submit" (click)="nxt_btn('artist', artist_step4.valid , 3)" class="next-btn">
+                      <!-- <button type="submit" (click)="nxt_btn('artist', artist_step4.valid)" class="next-btn"> -->
                       Next
                     </button>
                   </div>
@@ -359,9 +359,9 @@
                   <div class="button_group">
                     <a href="javascript:;" class="back-btn" (click)="back_btn('artist')"><img src="img/prev-arrow.png"
                         alt="Previou Arrow"> Back</a>
-                    <!-- <button type="submit" (click)="nxt_btn('artist', (artist_data.music_type ? true : false) , 4)"   class="next-btn"> -->
-                    <button type="submit" (click)="nxt_btn('artist', (artist_data.music_type ? true : false))"
+                    <button type="submit" (click)="nxt_btn('artist', (artist_data.music_type ? true : false) , 4)"
                       class="next-btn">
+                      <!-- <button type="submit" (click)="nxt_btn('artist', (artist_data.music_type ? true : false))" class="next-btn"> -->
                       Next
                     </button>
                   </div>
@@ -422,8 +422,8 @@
                 <div class="button_group">
                   <a href="javascript:;" class="back-btn" (click)="back_btn('artist')"><img src="img/prev-arrow.png"
                       alt="Previou Arrow"> Back</a>
-                  <!-- <button (click)="nxt_btn('artist', cropperReady, 5)" class="next-btn"> -->
-                  <button (click)="nxt_btn('artist', cropperReady)" class="next-btn">
+                  <button (click)="nxt_btn('artist', cropperReady, 5)" class="next-btn">
+                    <!-- <button (click)="nxt_btn('artist', cropperReady)" class="next-btn"> -->
                     Next
                   </button>
                 </div>
@@ -563,8 +563,8 @@
                   <div class="button_group">
                     <a href="javascript:;" class="back-btn" (click)="back_btn('listener')"><img src="img/prev-arrow.png"
                         alt="Previou Arrow"> Back</a>
-                    <!-- <button type="submit" (click)="nxt_btn('listener', listener_step1.valid, 0)" class="next-btn"> -->
-                    <button type="submit" (click)="nxt_btn('listener', listener_step1.valid)" class="next-btn">
+                    <button type="submit" (click)="nxt_btn('listener', listener_step1.valid, 0)" class="next-btn">
+                      <!-- <button type="submit" (click)="nxt_btn('listener', listener_step1.valid)" class="next-btn"> -->
                       Next
                     </button>
                   </div>
@@ -614,8 +614,8 @@
                   <div class="button_group">
                     <a href="javascript:;" class="back-btn" (click)="back_btn('listener')"><img src="img/prev-arrow.png"
                         alt="Previou Arrow"> Back</a>
-                    <!-- <button type="submit" (click)="nxt_btn('listener', listener_step2.valid, 1)" class="next-btn"> -->
-                    <button type="submit" (click)="nxt_btn('listener', listener_step2.valid)" class="next-btn">
+                    <button type="submit" (click)="nxt_btn('listener', listener_step2.valid, 1)" class="next-btn">
+                      <!-- <button type="submit" (click)="nxt_btn('listener', listener_step2.valid)" class="next-btn"> -->
                       Next
                     </button>
                   </div>
@@ -738,8 +738,8 @@
                   <div class="button_group">
                     <a href="javascript:;" class="back-btn" (click)="back_btn('listener')"><img src="img/prev-arrow.png"
                         alt="Previou Arrow"> Back</a>
-                    <!-- <button type="submit" (click)="nxt_btn('listener', listener_step3.valid, 2)" class="next-btn"> -->
-                    <button type="submit" (click)="nxt_btn('listener', listener_step3.valid)" class="next-btn">
+                    <button type="submit" (click)="nxt_btn('listener', listener_step3.valid, 2)" class="next-btn">
+                      <!-- <button type="submit" (click)="nxt_btn('listener', listener_step3.valid)" class="next-btn"> -->
                       Next
                     </button>
                   </div>
@@ -805,8 +805,8 @@
                   <div class="button_group">
                     <a href="javascript:;" class="back-btn" (click)="back_btn('listener')"><img src="img/prev-arrow.png"
                         alt="Previou Arrow"> Back</a>
-                    <!-- <button type="submit" (click)="nxt_btn('listener', listener_step4.valid, 3)" class="next-btn"> -->
-                    <button type="submit" (click)="nxt_btn('listener', listener_step4.valid)" class="next-btn">
+                    <button type="submit" (click)="nxt_btn('listener', listener_step4.valid, 3)" class="next-btn">
+                      <!-- <button type="submit" (click)="nxt_btn('listener', listener_step4.valid)" class="next-btn"> -->
                       Next
                     </button>
                   </div>

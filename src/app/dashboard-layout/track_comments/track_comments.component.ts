@@ -36,7 +36,7 @@ export class TrackConmmentsComponent implements OnInit {
   share_form_phone: FormGroup;
   share_form: FormGroup;
   share_form_validation: boolean = false;
-
+  card_loader: boolean = false;
   private emailmodalRef: NgbModalRef;
   private socket;
   private modalRef: NgbModalRef;
@@ -69,36 +69,28 @@ export class TrackConmmentsComponent implements OnInit {
     console.log('environment.socketUr', environment.socketUrl)
   }
 
+
+  // ****** updated code *******
+
   // openShareTrackModel(content, index: any, type: any) {
   openShareTrackModel(content, type: any) {
-    // console.log('index => ', index);
-    console.log('type => ', type);
-    console.log('this.artisttrack => ', this.artisttrack);
-    if (type === 'track') {
-      // this.track_data = this.artisttrack[index];
-
-      // **************check here **************
-
-      this.track_data = this.artisttrack[0];
-
-      console.log('track_data => ', this.track_data);
-    } else {
-      // this.track_data = this.rankingtrack[index];
-
-      // **************check here **************
-
-      this.track_data = this.rankingtrack[0];
-    }
+    // if (type === 'track') {
+    //   this.track_data = this.artisttrack[index];
+    // } else {
+    //   this.track_data = this.rankingtrack[index];
+    // }
     this.modalRef = this.modalService.open(content, { centered: true, windowClass: 'modal-wrapper', backdrop: true });
   }
+
+  // ****** updated code *******
+
+
   // share on facebook
   shareOnFacebook() {
     let track = this.track;
-    console.log(track);
+    console.log('this.track => ', this.track);
     let url = 'http://' + window.location.host + '/artist_profile/' + track['artist_id']['_id'] + '/track/' + track['_id'] + '/comments';
     let str = 'Track Name: ' + track['name'] + '\nArtist: ' + track['artist_id']['first_name'] + ' ' + track['artist_id']['last_name'] + '\nDescription: ' + track['description'];
-    // var facebookWindow = window.open('https://www.facebook.com/sharer.php?s=100&p[summary]='+encodeURIComponent(str)+"&p[url]="+encodeURIComponent(url), 'facebook-popup', 'height=350,width=600');
-    // if(facebookWindow.focus) { facebookWindow.focus(); }
     FB.ui({
       method: 'share_open_graph',
       action_type: 'og.likes',
@@ -111,7 +103,7 @@ export class TrackConmmentsComponent implements OnInit {
       })
     }, function (response) { });
   }
-  card_loader: boolean = false;
+
   // Stripe Credit-Card implementation
   // openCardModel(content, index, type) {
   openCardModel(content, type) {
