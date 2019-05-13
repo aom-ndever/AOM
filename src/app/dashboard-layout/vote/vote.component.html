@@ -274,7 +274,8 @@
                     </tr>
 
                   </tbody>
-                  <tbody *ngIf="winner_list?.length == 0">
+                  <!-- <tbody *ngIf="winner_list?.length === 0"> -->
+                  <tbody *ngIf="participants?.length === 0">
                     <tr>
                       <td colspan="5" class="no-data-available">No data available!</td>
                     </tr>

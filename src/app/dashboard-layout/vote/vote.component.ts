@@ -254,7 +254,7 @@ export class VoteComponent implements OnInit {
   getAllContest() {
     let data = {
       music_type: this.adv_filter.music_type ? this.adv_filter.music_type : ''
-    }
+    };
     this.VoteService.getAllContest(data).subscribe((response) => {
       console.log('third => ');
       this.contest_list = response['contest']['winner'];

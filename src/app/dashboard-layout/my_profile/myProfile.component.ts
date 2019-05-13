@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, QueryList, ViewChildren, AfterViewInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, QueryList, ViewChildren, AfterViewInit, TemplateRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgbModal, ModalDismissReasons, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { FormGroup, FormBuilder, Validators, FormControl, AbstractControl, NG_VALIDATORS, Validator } from '@angular/forms';
@@ -16,12 +16,14 @@ import swal from 'sweetalert2';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
-// import { ImageCroppedEvent } from 'ngx-image-cropper';
+import { BsModalService } from 'ngx-bootstrap/modal';
+import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 declare let Stripe: any;
+
 @Component({
   selector: 'app-myProfile',
   templateUrl: './myProfile.component.html',
-  styleUrls: []
+  styleUrls: ['./myProfile.component.css']
 })
 
 export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
@@ -30,6 +32,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
   croppedImage: any = '';
   cropperReady = false;
   public card_list: any = [];
+  modalRef: BsModalRef;
 
   @ViewChildren(DataTableDirective)
   dtElements: QueryList<DataTableDirective>;
@@ -142,6 +145,8 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
   proceed_chart: any = '';
   procced_count: any = 0;
   proceed_row_cnt = 1;
+  display: boolean = false;
+  public isvalidPrflPic;
 
   constructor(private MyProfileService: MyProfileService,
     private toastr: ToastrService,
@@ -153,7 +158,8 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
     private fb: FormBuilder,
     private titleService: Title,
     private route: ActivatedRoute,
-    private ngxService: NgxUiLoaderService
+    private ngxService: NgxUiLoaderService,
+    private ngxModalService: BsModalService
   ) {
     this.ngxService.start();
     this.isProfilePic = true;
@@ -233,7 +239,6 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
       }
     }
     this.MyProfileService.getAllMusicType().subscribe(response => {
-      console.log('***1 => ');
       this.music_types = response['music'];
       this.upgrade_artist_music_type = response['music'];
       this.ngxService.stop();
@@ -245,7 +250,6 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
         this.music_types = tmp;
       }
     });
-    console.log('music_type', this.music_types);
     this.artist_profile = this.fb.group({
       upload: [''],
       cover: [''],
@@ -318,7 +322,6 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
     });
 
     this.subscription = this.MessageService.getMessage().subscribe((response) => {
-      console.log('****2 => ');
       if (response && response['list'] !== 1) {
         this.audio_ins.forEach((ele, idx) => { this.audio_ins[idx] = false; });
       }
@@ -391,7 +394,6 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
     });
   }
 
-
   ngOnInit() {
     if (this.userdata['type'] === 'artist') {
       this.getMediaList();
@@ -414,10 +416,8 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
           'processing': '<i class="fa fa-spinner fa-spin loader"></i>',
         },
         ajax: (dataTablesParameters: any, callback) => {
-          console.log(dataTablesParameters);
           that.audio_ins = [];
           that.MyProfileService.getArtistPlaylist(dataTablesParameters).subscribe((response) => {
-            console.log('****3 => ');
             that.playlist = response['playlist'];
             callback({
               recordsTotal: response['recordsTotal'],
@@ -483,7 +483,6 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
           'processing': '<i class="fa fa-spinner fa-spin loader"></i>',
         },
         ajax: (dataTablesParameters: any, callback) => {
-          console.log(dataTablesParameters);
           that.audio_ins = [];
           that.MyProfileService.getBookmarkedTrack(dataTablesParameters).subscribe((response) => {
             that.bookmark_list = response['bookmark'];
@@ -521,7 +520,6 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
           'processing': '<i class="fa fa-spinner fa-spin loader"></i>',
         },
         ajax: (dataTablesParameters: any, callback) => {
-          console.log(dataTablesParameters);
           that.audio_ins = [];
           that.MyProfileService.getAllListenerPlaylist(dataTablesParameters).subscribe((response) => {
             that.playlist = response['playlist'];
@@ -551,7 +549,6 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
           'processing': '<i class="fa fa-spinner fa-spin loader"></i>',
         },
         ajax: (dataTablesParameters: any, callback) => {
-          console.log(dataTablesParameters);
           that.audio_ins = [];
           that.MyProfileService.getAllPurchasedTrack(dataTablesParameters).subscribe((response) => {
             that.purchased_track = response['track'];
@@ -594,6 +591,16 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngAfterViewInit() { }
+
+  updateProfilePic(template: TemplateRef<any>, cropperReady: Boolean) {
+    this.cropperReady = false;
+    this.modalRef = this.ngxModalService.show(template);
+  }
+
+  cancel() {
+    this.modalRef.hide();
+    this.cropperReady = false;
+  }
 
   noWhitespaceValidator(control: FormControl) {
     if (typeof (control.value || '') === 'string' || (control.value || '') instanceof String) {
@@ -676,7 +683,6 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
         this.userdata['dob'] = new Date(this.userdata['year'], this.userdata['month'], this.userdata['day']);
         this.userdata['share_url'] = JSON.stringify(this.userdata['social_media']);
         this.MyProfileService.updateArtistProfile(this.userdata).subscribe(response => {
-          console.log(response);
           this.toastr.success(response['message'], 'Success!');
           this.updateLocalStorage();
           this.MessageService.sendMessage({ updateProfile: true });
@@ -696,7 +702,6 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
         this.show_spinner = true;
         this.userdata['dob'] = new Date(this.userdata['year'], this.userdata['month'], this.userdata['day']);
         this.MyProfileService.updateUserProfile(this.userdata).subscribe(response => {
-          console.log(response);
           this.toastr.success(response['message'], 'Success!');
           this.updateLocalStorage();
           this.MessageService.sendMessage({ updateProfile: true });
@@ -720,7 +725,6 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
         this.toastr.error('Invalid file format.', 'Error!');
         return false;
       }
-      console.log(fileList);
       let formData: FormData = new FormData();
       this.upgrade_artist_img = fileList[0];
       formData.append('image', fileList[0]);
@@ -738,146 +742,26 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
-  //   updateCoverImage(event: any) {
-  //   // this.imageChangedEvent = event;
-  //   const fileList: FileList = event.target.files;
-  //   console.log(fileList);
-  //   if (event.target.files.length > 0) {
-  //     const allow_types = ['image/png', 'image/jpg', 'image/jpeg'];
-  //     if (allow_types.indexOf(fileList[0].type) == -1) {
-  //       this.toastr.error('Invalid file format.', 'Error!');
-  //       return false;
-  //     }
-
-  //     const formData: FormData = new FormData();
-  //     formData.append('cover_image', fileList[0], fileList[0]['name']);
-  // this.MyProfileService.updateCoverImage(formData).subscribe(response => {
-  //   console.log('uploaded image', response);
-  //   this.updateLocalStorage();
-  // }, error => {
-  //   this.toastr.error(error['error'].message, 'Error!');
-  // }, () => {
-
-  // });
-  //     if (fileList.length > 0) {
-  //       const fileExtention = fileList[0].name.split('.');
-  //       const file: File = fileList[0];
-  //       const reader = new FileReader();
-  //       reader.onload = (e: any) => {
-  //         const data = {};
-  //         let imageBuffer = e.target.result;
-  //         this.default_cover_img = imageBuffer;
-  //       };
-  //       reader.readAsDataURL(event.target.files[0]);
-  //     }
-  //   }
-  // }
-
-
-
-  // updateProfileImage(event: any) {
-  //   console.log('event => ', event);
-  //   var fileList: FileList = event.target.files;
-  //   const file = <File>event.target.files[0];
-  //   console.log('file.size => ', file.size);
-
-  //   if (event.target.files.length > 0) {
-  //     if (file.size > 1000) {
-  //       console.log('in file size validation condition => ');
-  //       this.toastr.error('Please choose Image less then 1 mb.', 'Error!');
-  //     }
-  //     const allow_types = ['image/png', 'image/jpg', 'image/jpeg'];
-  //     if (allow_types.indexOf(fileList[0].type) === -1) {
-  //       this.toastr.error('Invalid file format.', 'Error!');
-  //       return false;
-  //     }
-  //     this.imageChangedEvent = event;
-  //     if (event.target.files.length <= 0) {
-  //       this.cropperReady = false;
-  //     }
-  //     let formData: FormData = new FormData();
-  //     formData.append('image', fileList[0]);
-  //     console.log('formData==============>', formData);
-  //     if (this.userdata.type === 'artist') {
-  //       this.MyProfileService.updateArtistProfileImage(formData).subscribe(response => {
-
-  //         console.log('uploaded image', response);
-  //         this.default_profile_img = environment.API_URL + environment.ARTIST_IMG + response['image'];
-  //         this.updateLocalStorage();
-  //         this.MessageService.sendMessage({ updateProfile: true });
-  //       }, error => {
-  //         this.toastr.error(error['error'].message, 'Error!');
-  //       });
-  //     } else {
-  //       this.MyProfileService.updateUserProfileImage(formData).subscribe(response => {
-  //         console.log('uploaded image', response);
-  //         this.default_profile_img = environment.API_URL + environment.USER_IMG + response['image'];
-  //         this.updateLocalStorage();
-  //         this.MessageService.sendMessage({ updateProfile: true });
-  //       }, error => {
-  //         this.toastr.error(error['error'].message, 'Error!');
-  //       });
-  //     }
-
-  //     if (fileList.length > 0) {
-  //       let flag;
-  //       let res;
-  //       let fr = new FileReader();
-  //       fr.onload = (e: any) => {
-  //         console.log('e================>', e);
-  //         res = e.target.result;
-  //         const uint = new Uint8Array(res.slice(0, 4));
-  //         const bytes = [];
-  //         uint.forEach((byte) => {
-  //           bytes.push(byte.toString(16));
-  //         });
-  //         const hex = bytes.join('').toUpperCase();
-  //         const allow_types = this.getImageMimetype(hex);
-  //         if (allow_types.indexOf(file.type) === -1) {
-  //           this.toastr.error('Invalid file format.', 'Error!');
-  //           return false;
-  //         } else {
-  //           this.default_profile_img = file;
-  //         }
-  //       };
-  //       fr.readAsArrayBuffer(file);
-  //     }
-  //   } else {
-  //     console.log('in else => ');
-  //   }
-
-  // }
-
-
   // ****** updated code *******
   updateCoverImage(event: any) {
     this.isCoverPic = false;
     const fileList: FileList = event.target.files;
-    console.log('fileList => ', fileList);
-    console.log('event => ', event);
     const file = <File>event.target.files[0];
     let isValidCover = false;
-    console.log('file ========================> ', file);
     if (file) {
-      console.log('file.type ==============================> ', file.type);
       if (file.type === 'image/jpeg' || file.type === 'image/png' || file.type === 'image/jpg') {
-        console.log('file type valid => ');
         isValidCover = true;
-        console.log('file.size => ', file.size);
         if (file.size >= 1000000) {
           this.toastr.error('Please choose Image less then 1 mb.', 'Error!');
           isValidCover = false;
-          console.log('returning ----- more than 1 mb => ');
           this.isCoverPic = true;
           return 0;
         } else {
           isValidCover = true;
         }
       } else {
-        console.log('in valid file format  => ');
         isValidCover = false;
         this.toastr.error('Invalid Image Format.', 'Error!');
-        console.log('returning ---- invalid format  => ');
         this.isCoverPic = true;
         return 0;
       }
@@ -887,8 +771,6 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
       let formData: FormData = new FormData();
       formData.append('cover_image', fileList[0], fileList[0]['name']);
       this.MyProfileService.updateCoverImage(formData).subscribe(response => {
-        console.log('response.message => ', response['message']);
-        console.log('uploaded image', response);
         this.updateLocalStorage();
         this.toastr.success(response['message'], 'Success!');
         this.isCoverPic = true;
@@ -902,46 +784,50 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
     this.isProfilePic = false;
     var fileList: FileList = event.target.files;
     const file = <File>event.target.files[0];
-    console.log('file.size => ', file.size);
-    let isValid = false;
-    console.log('file ========================> ', file);
+    this.isvalidPrflPic = false;
+    if (event.target.files.length <= 0) {
+      this.cropperReady = false;
+    }
     if (file) {
-      console.log('file.type ==============================> ', file.type);
       if (file.type === 'image/jpeg' || file.type === 'image/png' || file.type === 'image/jpg') {
-        console.log('file type valid => ');
-        isValid = true;
+        this.isvalidPrflPic = true;
         if (file.size >= 500000) {
           this.toastr.error('Please choose Image less then 500 kb.', 'Error!');
-          isValid = false;
-          console.log('returning ----- more than 500 kb => ');
+          this.isvalidPrflPic = false;
           this.isProfilePic = true;
           return 0;
         } else {
-          isValid = true;
+          this.isvalidPrflPic = true;
+          this.imageChangedEvent = event;
         }
       } else {
-        console.log('in valid file format  => ');
-        isValid = false;
+        this.isvalidPrflPic = false;
         this.toastr.error('Invalid Image Format.', 'Error!');
-        console.log('returning ---- invalid format  => ');
         this.isProfilePic = true;
         return 0;
       }
     }
+  }
 
-    const profilePic = [];
+  private dataURLtoFile(dataurl, filename) {
+    let arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1],
+      bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
+    while (n--) {
+      u8arr[n] = bstr.charCodeAt(n);
+    }
+    return new File([u8arr], filename, { type: mime });
+  }
 
-    if (isValid) {
-      // const reader = new FileReader();
-      // reader.onload = (e: any) => {
-      //   profilePic.push(e.target.result);
-      // };
-      // reader.readAsDataURL(file);
+  updatePrflPic() {
+    if (this.isvalidPrflPic) {
       let formData: FormData = new FormData();
-      formData.append('image', fileList[0]);
+      const prfl_file = this.imageChangedEvent.target.files[0];
+      const new_file = this.dataURLtoFile(this.croppedImage, prfl_file.name);
+      formData.append('image', new_file);
       if (this.userdata.type === 'artist') {
         this.MyProfileService.updateArtistProfileImage(formData).subscribe(response => {
-          console.log('uploaded image===============================>', response);
+          this.modalRef.hide();
+          this.cropperReady = false;
           this.default_profile_img = environment.API_URL + environment.ARTIST_IMG + response['image'];
           this.updateLocalStorage();
           this.toastr.success(response['message'], 'Success!');
@@ -952,7 +838,8 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
         });
       } else {
         this.MyProfileService.updateUserProfileImage(formData).subscribe(response => {
-          console.log('uploaded image================================>', response);
+          this.modalRef.hide();
+          this.cropperReady = false;
           this.default_profile_img = environment.API_URL + environment.USER_IMG + response['image'];
           this.updateLocalStorage();
           this.toastr.success(response['message'], 'Success!');
@@ -973,12 +860,11 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   imageLoaded() {
+    console.log('herree => ');
     this.cropperReady = true;
   }
 
-  imageLoadFailed() {
-    console.log('Load failed');
-  }
+  imageLoadFailed() { }
 
   getImageMimetype = (signature) => {
     switch (signature) {
@@ -1020,7 +906,6 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
         year: ''
       };
       this.MyProfileService.getArtistById().subscribe(res => {
-        console.log('artist', res);
         let data = JSON.parse(localStorage.getItem('user'));
         data['artist'] = res['artist'];
         this.userdata = res['artist'];
@@ -1224,7 +1109,6 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
             this.updateLocalStorage();
             this.toastr.success(response['resp'], 'Success!');
           }, error => {
-            console.log('api res****');
             this.toastr.error(error['error'].message, 'Error!');
             this.show_spinner = false;
           }, () => {
@@ -1254,7 +1138,6 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
 
   uploadImage(event: any) {
     const fileList: FileList = event.target.files;
-    console.log(fileList);
     let formData: FormData = new FormData();
     formData.append('image', fileList[0]);
     let allow_types = ['image/png', 'image/jpeg', 'image/jpg'];
@@ -1268,9 +1151,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
         // This is an upload progress event. Compute and show the % done:
         const percentDone = Math.round(100 * event.loaded / event.total);
         this.progress_cnt = percentDone;
-        console.log(`File is ${percentDone}% uploaded.`);
       } else if (event instanceof HttpResponse) {
-        console.log('File is completely uploaded!', event['body']);
         this.getMediaList();
         this.media_modal_ref.close();
         this.toastr.success(event['body']['message'], 'Success!');
@@ -1286,7 +1167,6 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
   getMediaList() {
     this._albums = [];
     this.MyProfileService.getAllMedia().subscribe(response => {
-      console.log('first => ');
       this.media_list = response['media'];
       for (let i = 0; i < this.media_list.length; i++) {
         if (this.media_list[i].image) {
@@ -1371,7 +1251,6 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
   // Get all overview analytics data
   getAllOverviewAnalytic(data) {
     this.MyProfileService.getAllOverviewAnalytic(data).subscribe(response => {
-      console.log('third => ');
       this.overview_analytic_data = response;
       this.overview_download_total = 0;
       if (response['track']) {
@@ -1390,7 +1269,6 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
   // Get all payment details
   getAllPayment(data) {
     this.MyProfileService.getProceedChartData(data).subscribe((response) => {
-      console.log('fifth => ');
       this.paymentChart(response['day']);
     });
   }
@@ -1404,7 +1282,6 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
   // Get all download analytics data
   getAllDownloadAnalytic(data) {
     this.MyProfileService.getAllDownloadAnalytic(data).subscribe(response => {
-      console.log('forth => ');
       this.download_analytic_data = response;
       this.downloadChart(response['day']);
     });
@@ -1429,7 +1306,6 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
         result[6] = ele.count;
       }
     });
-    console.log(result);
     this.follower_age_chart = new Chart({
       chart: {
         type: 'column',
@@ -2277,7 +2153,6 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
           'processing': '<i class="fa fa-spinner fa-spin loader"></i>',
         },
         ajax: (dataTablesParameters: any, callback) => {
-          console.log(dataTablesParameters);
           that.audio_ins = [];
           that.MyProfileService.getPlaylistTrack(dataTablesParameters, id).subscribe((response) => {
             that.playlist_track = response['playlist'];
@@ -2317,7 +2192,6 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
           'processing': '<i class="fa fa-spinner fa-spin loader"></i>',
         },
         ajax: (dataTablesParameters: any, callback) => {
-          console.log(dataTablesParameters);
           that.audio_ins = [];
           that.MyProfileService.getArtistPlaylistTrack(dataTablesParameters, id).subscribe((response) => {
             that.playlist_track = response['playlist'];
@@ -2348,7 +2222,6 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
   }
   // get track based on search string
   search(event) {
-    console.log(event.query);
     let data = {
       search: event.query
     };
@@ -2360,7 +2233,6 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
   addTrackPlaylist(flag) {
     if (flag) {
       if (this.userdata && this.userdata['type'] === 'user') {
-        console.log(this.search_track);
         if (this.search_track) {
           let data = {
             track_id: []
@@ -2513,13 +2385,11 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
         }
       })
     } else {
-      console.log('flag', flag, 'profile image', typeof profile_img);
       if (profile_img === '') {
         this.upgrade_artist_validation = true;
       } else {
         this.upgrade_artist_validation = !flag;
       }
-      console.log('upgrade artist flag', this.upgrade_artist_validation);
     }
   }
 
@@ -2531,7 +2401,6 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
   }
   // Add new bank
   addBank(flag) {
-    console.log(flag);
     if (flag) {
       this.show_spinner = true;
       this.MyProfileService.addNewPaymentMethod(this.bank_data).subscribe(async (response) => {
@@ -2540,7 +2409,6 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
         this.show_spinner = false;
         this.media_modal_ref.close();
       }, (error) => {
-        console.log(error);
         this.toastr.error(error['error'].message, 'Error!');
         this.show_spinner = false;
       }, () => {
@@ -2552,9 +2420,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
   // get all card
   getAllCard() {
     this.MyProfileService.getAllBank().subscribe((response) => {
-      console.log('second => ');
       this.card_list = response['bank'];
-      console.log('here in list Data', this.card_list);
       this.card_list.forEach((ele) => {
         ele['account_number'] = ele['account_number'].toString().replace(/.(?=.{4})/g, 'X');
       });
@@ -2591,7 +2457,6 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
   // Download track
   downloadTrack(id: any) {
     this.MyProfileService.downloadTrack(id).subscribe(response => {
-      console.log(response);
       window.location.href = this.user_img_url + response['filename'];
     }, error => {
       this.toastr.error(error['error'].message, 'Error!');
@@ -2600,7 +2465,6 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
 
   fileChangeEvent(event: any) {
     const fileList: FileList = event.target.files;
-    console.log(event.target.files);
     if (event.target.files.length > 0) {
       this.artist_validation[5] = false;
       const allow_types = ['image/png', 'image/jpg', 'image/jpeg'];

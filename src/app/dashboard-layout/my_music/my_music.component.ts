@@ -66,6 +66,7 @@ export class MyMusicComponent implements OnInit, OnDestroy {
   special_form: FormGroup;
   closeResult: string;
   public contestDetail;
+  public track_img;
 
   constructor(
     private modalService: NgbModal,
@@ -140,7 +141,6 @@ export class MyMusicComponent implements OnInit, OnDestroy {
         setTimeout(() => {
           that.audio_ins = [];
           that.MyMusicService.getAllTrack(dataTablesParameters).subscribe(response => {
-            console.log('res', response);
             that.tracklist = response['track']['music'];
             that.tracklist.forEach((ele) => { that.audio_ins.push(false); });
             callback({
@@ -220,20 +220,14 @@ export class MyMusicComponent implements OnInit, OnDestroy {
     let res;
     let fr = new FileReader();
     fr.onload = (e: any) => {
-      console.log('e', e);
       res = e.target.result;
       const uint = new Uint8Array(res.slice(0, 4));
       const bytes = [];
       uint.forEach((byte) => {
         bytes.push(byte.toString(16));
       });
-
       const hex = bytes.join('').toUpperCase();
-      console.log('hex', hex);
-      console.log('type', file.type);
-
       const allow_types = this.getMimetype(hex);
-
       if (allow_types.indexOf(file.type) === -1) {
         this.toastr.error('Invalid file format.', 'Error!');
         return false;
@@ -249,14 +243,13 @@ export class MyMusicComponent implements OnInit, OnDestroy {
   }
 
   changeFile(event: any) {
-    console.log('in function  => ');
+    console.log('heree => ');
     const file = event.target.files[0];
-    console.log(' file ======>', file);
+    console.log('file => ', file);
     let flag;
     let res;
     let fr = new FileReader();
     fr.onload = (e: any) => {
-      console.log('e', e);
       res = e.target.result;
       const uint = new Uint8Array(res.slice(0, 4));
       const bytes = [];
@@ -266,14 +259,12 @@ export class MyMusicComponent implements OnInit, OnDestroy {
       const hex = bytes.join('').toUpperCase();
       const allow_types = this.getImageMimetype(hex);
       if (allow_types.indexOf(file.type) === -1) {
-        console.log('1');
         this.toastr.error('Invalid file format.', 'Error!');
         return false;
       } else {
-        console.log('file => ', file);
-        console.log('file.size => ', file.size);
         if (file.size <= 500000) {
           this.image_upload = file;
+          this.track_img = environment.API_URL + environment.ARTIST_TRACK + file;
         } else {
           this.toastr.error('Please choose Image less then 500 kb.', 'Error!');
           return false;
@@ -315,12 +306,14 @@ export class MyMusicComponent implements OnInit, OnDestroy {
   // open edit track model
   openEditTrackModal(content: any, obj: any) {
     this.trackdata = { ...obj };
-    console.log(obj);
     if (!obj.description || obj.description === 'undefined') {
       this.trackdata['description'] = '';
     }
+    console.log('obj => ', obj);
+    console.log('obj.image => ', obj.image);
     if (obj.image) {
       this.edit_image = environment.API_URL + environment.ARTIST_TRACK + obj.image;
+      console.log('this.edit_image => ', this.edit_image);
     } else {
       this.edit_image = 'img/profile-img.png';
     }
@@ -389,8 +382,6 @@ export class MyMusicComponent implements OnInit, OnDestroy {
       isWhitespace = this.trackdata.name.trim().length === 0;
       isValid = !isWhitespace;
     }
-    // if (flag == true) {
-    console.log('this.audio_file => ', this.audio_file);
     if (this.trackdata && this.trackdata.name && isValid && this.trackdata.price && this.trackdata.price > 0 &&
       this.trackdata.price.toString().length <= 3 && this.audio_file && this.image_upload) {
       let formdata = new FormData();
@@ -428,28 +419,17 @@ export class MyMusicComponent implements OnInit, OnDestroy {
     } else if (this.trackdata.price < 0) {
 
       this.toastr.error('Track price must be positive value.', 'Error!');
-    }
-    // else if (this.trackdata.price >= 100) {
-    //   this.toastr.error('Track price must be in three digits', 'Error!');
-    // }
-    else if (this.trackdata.price.toString().length !== 3) {
-      console.log(this.trackdata.price.toString().length);
+    } else if (this.trackdata.price.toString().length !== 3) {
       this.toastr.error('Track price must be in three digits', 'Error!');
-
     } else {
       this.toastr.error('Please provide necessary details', 'Error!');
     }
     //}
-
   }
 
   // Get all track
   getAllTrack() {
     this.audio_ins = [];
-    // this.MyMusicService.getAllTrack().subscribe(response => {
-    //   this.tracklist = response['track'];
-    //   this.tracklist.forEach((ele) => {this.audio_ins.push(false);});
-    // });
   }
 
   // Remove track by id
@@ -567,7 +547,6 @@ export class MyMusicComponent implements OnInit, OnDestroy {
 
   // Stop audio
   stopAudio(index, data: any) {
-    // console.log(this.audio_ins[index]);
     // this.audio_ins[index].pause();
     // this.audio_ins[index].currentTime = 0;
     // // this.audio_ins[index].stop();
@@ -581,7 +560,6 @@ export class MyMusicComponent implements OnInit, OnDestroy {
   // Get all music type
   getAllMusicType() {
     this.MyMusicService.getAllMusicType().subscribe(response => {
-      console.log('first => ');
       this.music_type_list = response['music'];
     });
   }
@@ -589,7 +567,6 @@ export class MyMusicComponent implements OnInit, OnDestroy {
   // Get all contest
   getAllContest() {
     this.MyMusicService.getAllContest().subscribe(response => {
-      console.log('second => ');
       this.contest_list = response['contest'];
       this.ngxService.stop();
     });
@@ -637,7 +614,6 @@ export class MyMusicComponent implements OnInit, OnDestroy {
   // share on facebook
   shareOnFacebook() {
     let track = this.track_data;
-    console.log(track);
     let url = 'http://' + window.location.host + '/artist_profile/' + track['artist_id']['_id'] + '/track/' + track['_id'] + '/comments';
     let str = 'Track Name: ' + track['name'] + '\nArtist: ' +
       track['artist_id']['first_name'] + ' ' + track['artist_id']['last_name'] + '\nDescription: ' + track['description'];
@@ -659,7 +635,6 @@ export class MyMusicComponent implements OnInit, OnDestroy {
   // share on twitter
   shareOnTwitter() {
     let track = this.track_data;
-    console.log(track);
     let url = 'http://' + window.location.host + '/artist_profile/' + track['artist_id']['_id'] + '/track/' + track['_id'] + '/comments';
     let str = 'Track Name: ' + track['name'] + '\nArtist: ' +
       track['artist_id']['first_name'] + ' ' + track['artist_id']['last_name'] + '\nDescription: ' + track['description'];
@@ -724,7 +699,6 @@ export class MyMusicComponent implements OnInit, OnDestroy {
   // copy share track link
   copy_link() {
     let track = this.track_data;
-    console.log(track);
     let url = 'http://' + window.location.host + '/artist_profile/' + track['artist_id']['_id'] + '/track/' + track['_id'] + '/comments';
     var textArea = document.createElement('textarea');
     textArea.value = url;

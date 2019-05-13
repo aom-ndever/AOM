@@ -2,15 +2,13 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { HttpModule } from '@angular/http';
-import { HttpClientModule } from '@angular/common/http'
+import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-// import { ToastrModule } from 'ngx-toastr';
 import { LightboxModule } from 'angular2-lightbox';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ChartModule, HIGHCHARTS_MODULES } from 'angular-highcharts';
 import * as highmaps from 'highcharts/modules/map.src';
-// import more from 'highcharts/highcharts-more.src';
-import { AmChartsModule } from "@amcharts/amcharts3-angular";
+import { AmChartsModule } from '@amcharts/amcharts3-angular';
 import { BsDropdownModule, ModalModule, PopoverModule } from 'ngx-bootstrap';
 import { DataTablesModule } from 'angular-datatables';
 import { AuthService } from '../shared/auth.service';
@@ -39,7 +37,6 @@ import { LazyLoadImageModule } from 'ng-lazyload-image';
     ReactiveFormsModule,
     BrowserAnimationsModule,
     LayoutModule,
-    // ToastrModule.forRoot({preventDuplicates: true}),
     BsDropdownModule.forRoot(),
     ModalModule.forRoot(),
     PopoverModule.forRoot(),

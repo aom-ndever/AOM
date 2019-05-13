@@ -209,3 +209,17 @@ i.fa.fa-spinner.fa-spin.loader {
     color: #c1c1c1;
 }
 
+.imgCropperDialog {
+    width: 400px !important;
+}
+
+.mt-50{
+  margin-top: 50px !important;
+}
+
+.btn-primary:active{
+    color: #fff;
+    background-color: #9C27B0 !important;
+    border: 0px !important;
+
+}

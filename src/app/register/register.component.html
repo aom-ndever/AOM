@@ -389,13 +389,10 @@
                     </div>
                     <div [style.display]="cropperReady ? null : 'none'">
                       <image-cropper [imageChangedEvent]="imageChangedEvent" [maintainAspectRatio]="true"
-                        [imageQuality]="92" [aspectRatio]="1 / 1" [resizeToWidth]="200" format="jpeg"
+                        [imageQuality]="92" [aspectRatio]="1 / 1" [resizeToWidth]="320" format="jpeg"
                         (imageCropped)="imageCropped($event)" (imageLoaded)="imageLoaded()"
-                        [style.display]="cropperReady ? null : 'none'"></image-cropper>
-                      <!-- <image-cropper [imageChangedEvent]="imageChangedEvent" [maintainAspectRatio]="true"
-                        [aspectRatio]="1 / 1" [resizeToWidth]="128" format="jpeg" (imageCropped)="imageCropped($event)"
-                        (imageLoaded)="imageLoaded()" (loadImageFailed)="loadImageFailed()"
-                        [style.display]="cropperReady ? null : 'none'"></image-cropper> -->
+                        [style.display]="cropperReady ? null : 'none'">
+                      </image-cropper>
                       <div class="upload-btn-div">
                         <label for="fileUpload">Upload a Different Photo</label>
                         <input type="file" name="my_doc_upload" (change)="fileChangeEvent($event)" id="my_doc_upload"

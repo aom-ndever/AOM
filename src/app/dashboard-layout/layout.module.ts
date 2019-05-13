@@ -44,12 +44,14 @@ import {
 import { TrackCommentResolve, TrackArtistProfileResolve, TrackDetailResolve } from './resolve/track_comment_resolve';
 import { DashboardService } from './dashboard/dashboard.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-// import { ToastrModule } from 'ngx-toastr';
 import { LightboxModule } from 'angular2-lightbox';
 import { TimeAgoPipe } from 'time-ago-pipe';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AuthService } from '../shared/auth.service';
 import { ImageCropperModule } from 'ngx-image-cropper';
+import { DialogModule } from 'primeng/dialog';
+import { ButtonModule } from 'primeng/button';
+import { ModalModule } from 'ngx-bootstrap';
 
 @NgModule({
   imports: [
@@ -63,7 +65,7 @@ import { ImageCropperModule } from 'ngx-image-cropper';
     ReactiveFormsModule,
     BrowserAnimationsModule,
     ProgressSpinnerModule,
-    // ToastrModule.forRoot({ preventDuplicates: true }),
+    ModalModule.forRoot(),
     ChartModule,
     AmChartsModule,
     LightboxModule,
@@ -71,6 +73,8 @@ import { ImageCropperModule } from 'ngx-image-cropper';
     AutoCompleteModule,
     MultiSelectModule,
     LazyLoadImageModule,
+    DialogModule,
+    ButtonModule,
     RouterModule.forChild([
       {
         path: '',

@@ -4,18 +4,30 @@
             <div class="col-lg-2 col-md-3 col-sm-3 col-xs-3">
                 <div class="profile-tabs">
                     <ul class="nav nav-tabs" id="myTab">
-                        <li class="nav-item"><a class="nav-link {{tab_cnt == 1 ? 'active' : '' }}"
-                                (click)="tabChange(1)" data-toggle="tab" href="javascript:;">Profile</a></li>
-                        <li class="nav-item"><a class="nav-link {{tab_cnt == 2 ? 'active' : '' }}" data-toggle="tab"
-                                (click)="tabChange(2)" href="javascript:;">Settings</a></li>
-                        <li class="nav-item"><a class="nav-link {{tab_cnt == 3 ? 'active' : '' }}" data-toggle="tab"
-                                (click)="tabChange(3)" href="javascript:;">Payments</a></li>
-                        <li class="nav-item"><a class="nav-link {{tab_cnt == 4 ? 'active' : '' }}" data-toggle="tab"
-                                (click)="tabChange(4)" href="javascript:;">Media</a></li>
-                        <li class="nav-item"><a class="nav-link {{tab_cnt == 5 ? 'active' : '' }}" data-toggle="tab"
-                                (click)="tabChange(5)" href="javascript:;">Analytics</a></li>
-                        <li class="nav-item"><a class="nav-link {{tab_cnt == 6 ? 'active' : '' }}" data-toggle="tab"
-                                (click)="tabChange(6)" href="javascript:;">Playlist</a></li>
+                        <li class="nav-item">
+                            <a class="nav-link {{tab_cnt == 1 ? 'active' : '' }}" (click)="tabChange(1)"
+                                data-toggle="tab" href="javascript:;">Profile</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {{tab_cnt == 2 ? 'active' : '' }}" data-toggle="tab"
+                                (click)="tabChange(2)" href="javascript:;">Settings</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {{tab_cnt == 3 ? 'active' : '' }}" data-toggle="tab"
+                                (click)="tabChange(3)" href="javascript:;">Payments</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {{tab_cnt == 4 ? 'active' : '' }}" data-toggle="tab"
+                                (click)="tabChange(4)" href="javascript:;">Media</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {{tab_cnt == 5 ? 'active' : '' }}" data-toggle="tab"
+                                (click)="tabChange(5)" href="javascript:;">Analytics</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {{tab_cnt == 6 ? 'active' : '' }}" data-toggle="tab"
+                                (click)="tabChange(6)" href="javascript:;">Playlist</a>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -27,14 +39,14 @@
                                 <form [formGroup]="artist_profile">
                                     <div class="upload-cover">
                                         <img [src]="default_cover_img" alt="Edit cover Image">
-
                                         <span class="up_text">Update Photo</span>
                                         <input type="file" name="my_doc_upload" id="cover_upload1" multiple="false"
                                             (change)="updateCoverImage($event)">
                                         <a data-fancybox data-animation-duration="700" data-src="#delete"
                                             href="javascript:;" *ngIf="userdata.cover_image"
-                                            (click)="removeArtistCoverImage()" class="delete"><i
-                                                class="fa fa-trash"></i></a>
+                                            (click)="removeArtistCoverImage()" class="delete">
+                                            <i class="fa fa-trash"></i>
+                                        </a>
                                     </div>
                                     <div class="edit-details">
                                         <div class="edit-head">Your Details</div>
@@ -44,10 +56,107 @@
                                                     <div class="upload-cover">
                                                         <img [src]="default_profile_img" alt="Edit profile Image">
                                                         <span class="up_text">Update Photo</span>
-                                                        <input type="file" name="upload" id="cover_upload"
+                                                        <!-- <input type="file" name="upload" id="cover_upload"
                                                             data-toggle="modal" data-target="#cropImagePop"
                                                             (change)="updateProfileImage($event)"
-                                                            accept="image/png,image/jpg,image/jpeg" />
+                                                            accept="image/png,image/jpg,image/jpeg" /> -->
+
+
+
+                                                        <button type="button" class="btn btn-primary" id="cover_upload"
+                                                            (click)="updateProfilePic(template)"></button>
+
+
+                                                        <ng-template #template>
+                                                            <button type="button" class="close pull-right"
+                                                                aria-label="Close" (click)="modalRef.hide()">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                            <div class="modal-body">
+                                                                <div class="creat_contest_body">
+                                                                    <div class="col-sm-12 text-center">
+                                                                        <h4 class="custom_modal_head">Upload Profile
+                                                                            Photo
+                                                                        </h4>
+                                                                    </div>
+                                                                    <div class="row">
+                                                                        <div class="col-sm-6 text-center">
+                                                                            <div class="upl-div">
+                                                                                <div class="upload-btn"
+                                                                                    *ngIf="!cropperReady">
+                                                                                    <span class="upl-img"><i
+                                                                                            class="fa fa-cloud-upload"
+                                                                                            aria-hidden="true"></i></span>
+                                                                                    <span class="up_text">Upload
+                                                                                        Photo</span>
+                                                                                    <input type="file"
+                                                                                        name="my_doc_upload"
+                                                                                        (change)="updateProfileImage($event)"
+                                                                                        id="my_doc_upload"
+                                                                                        multiple="false">
+                                                                                    <p class="instrution"></p>
+                                                                                </div>
+                                                                                <div
+                                                                                    [style.display]="cropperReady ? null : 'none'">
+                                                                                    <image-cropper
+                                                                                        [imageChangedEvent]="imageChangedEvent"
+                                                                                        [maintainAspectRatio]="true"
+                                                                                        [imageQuality]="92"
+                                                                                        [aspectRatio]="1 / 1"
+                                                                                        [resizeToWidth]="320"
+                                                                                        format="jpeg"
+                                                                                        (imageCropped)="imageCropped($event)"
+                                                                                        (imageLoaded)="imageLoaded()"
+                                                                                        [style.display]="cropperReady ? null : 'none'">
+                                                                                    </image-cropper>
+                                                                                    <div class="upload-btn-div">
+                                                                                        <label for="fileUpload">Upload a
+                                                                                            Different Photo</label>
+                                                                                        <input type="file"
+                                                                                            name="my_doc_upload"
+                                                                                            (change)="updateProfileImage($event)"
+                                                                                            id="my_doc_upload"
+                                                                                            multiple="false">
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-sm-6 text-center">
+                                                                            <div class="upl-div">
+                                                                                <div class="upload-btn-cstm_p"
+                                                                                    *ngIf="!cropperReady">
+                                                                                    <span class="upl-img">
+                                                                                        <img src="img/icons8-microphone2Normal.png"
+                                                                                            alt="">
+                                                                                    </span>
+                                                                                </div>
+                                                                                <div
+                                                                                    [style.display]="cropperReady ? null : 'none'">
+                                                                                    <img [src]="croppedImage"
+                                                                                        style="height: 167px;width: 155px;" />
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="row mt-50">
+                                                                        <div class="col-sm-6">
+                                                                            <button class="custom_cancel_btn btn"
+                                                                                (click)="cancel()">Cancel</button>
+                                                                        </div>
+                                                                        <div class="col-sm-6 text-right">
+                                                                            <button type="submit"
+                                                                                class="custom_save btn"
+                                                                                [disabled]="show_spinner"
+                                                                                (click)="updatePrflPic()">Update
+                                                                                <i *ngIf="show_spinner"
+                                                                                    class="fa fa-spinner fa-spin"></i>
+                                                                            </button>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </ng-template>
+
                                                         <!-- <div class="modal fade" id="cropImagePop" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                                                                 <div class="modal-dialog">
                                                                   <div class="modal-content">
