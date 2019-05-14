@@ -36,7 +36,7 @@ export class MyMusicComponent implements OnInit, OnDestroy {
   modal_ref: NgbModalRef;
   audio_file: any = '';
   image_upload: any = '';
-  edit_image: any = 'img/profile-img.png';
+  edit_image: any = 'img/default_img.png';
   trackdata: any = {};
   tracklist: any = [];
   show_spinner: boolean = false;
@@ -315,7 +315,7 @@ export class MyMusicComponent implements OnInit, OnDestroy {
       this.edit_image = environment.API_URL + environment.ARTIST_TRACK + obj.image;
       console.log('this.edit_image => ', this.edit_image);
     } else {
-      this.edit_image = 'img/profile-img.png';
+      this.edit_image = 'img/default_img.png';
     }
     this.modal_ref = this.modalService.open(content, { centered: true, backdrop: 'static', windowClass: 'add-track-popup' });
   }
@@ -475,7 +475,7 @@ export class MyMusicComponent implements OnInit, OnDestroy {
       this.show_spinner = true;
       this.MyMusicService.updateTrack(formdata, this.trackdata._id).subscribe(response => {
         if (!response['track']['image']) {
-          this.edit_image = 'img/profile-img.png';
+          this.edit_image = 'img/default_img.png';
         }
         this.datatableElement.dtInstance.then((dtInstance: DataTables.Api) => {
           dtInstance.draw();
@@ -519,7 +519,7 @@ export class MyMusicComponent implements OnInit, OnDestroy {
       if (flag.value) {
         thi.MyMusicService.deleteTrackImageById(id).subscribe(response => {
           thi.getAllTrack();
-          thi.edit_image = 'img/profile-img.png';
+          thi.edit_image = 'img/default_img.png';
           delete this.trackdata['image'];
           thi.toastr.success(response['message'], 'Success!');
         }, error => {

@@ -145,7 +145,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     data.forEach(ele => {
       this.images.push({
-        'source': ele.image ? this.track_url + ele.image : 'img/profile-img.png',
+        'source': ele.image ? this.track_url + ele.image : 'img/default_img.png',
         'alt': '',
         'title': ele.name,
         'name': ele.artist_id['first_name'] + ' ' + ele.artist_id['last_name'],

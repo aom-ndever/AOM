@@ -13,8 +13,8 @@
           <div class="row">
             <div class="col-md-3 col-sm-4 col-xs-4">
               <div class="profile-img">
-                <img defaultImage="img/profile-img" offset="100"
-                  lazyLoad="{{artistdata['image'] ? artist_img_url +artistdata['image'] : 'img/profile-img.png'}}"
+                <img defaultImage="img/default_img.png" offset="100"
+                  lazyLoad="{{artistdata['image'] ? artist_img_url +artistdata['image'] : 'img/default_img.png'}}"
                   alt="Profile Images">
               </div>
               <div class="follow-btn">
@@ -176,7 +176,7 @@
                                 <div class="track-pic">
                                   <a href="javascript:;">
                                     <!-- defaultImage="img/music-player-grey.svg" -->
-                                    <img defaultImage="img/profile-img" offset="100"
+                                    <img defaultImage="img/default_img.png" offset="100"
                                       lazyLoad="{{artist.image ? track_url+artist.image : 'img/upload1.png'}}"
                                       style="height:50px;width:50px;" alt="Track Image">
                                   </a>
@@ -271,7 +271,7 @@
                           data-height="1000">
                           <!-- <img src="{{media.image ? artist_media_url+media.image : 'img/no-image.png'}}" alt="Media"> -->
                           <!-- defaultImage="img/music-player-grey.svg" -->
-                          <img defaultImage="img/profile-img.png" offset="100"
+                          <img defaultImage="img/default_img.png" offset="100"
                             lazyLoad="{{media.image ? artist_media_url+media.image : 'img/no-image.png'}}" alt="Media">
                         </a>
                         <video class="media_video" *ngIf="media.link" width="218" height="138" controls>
@@ -314,7 +314,7 @@
                               <td class="track-det" colspan="2">
                                 <div class="track-pic">
                                   <a href="javascript:;">
-                                    <img defaultImage="img/profile-img.png" offset="100"
+                                    <img defaultImage="img/default_img.png" offset="100"
                                       lazyLoad="{{rank.image ? track_url+rank.image : 'img/upload1.png'}}"
                                       alt="Track Image" style="height: 50px;width: 50px;;">
                                   </a>

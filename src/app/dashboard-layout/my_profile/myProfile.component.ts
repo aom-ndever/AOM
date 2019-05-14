@@ -29,8 +29,11 @@ declare let Stripe: any;
 export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
   artist_validation = [false];
   imageChangedEvent: any = '';
+  upgradeImageChangedEvent: any = '';
   croppedImage: any = '';
+  upgradeCroppedImage: any = '';
   cropperReady = false;
+  upgradeCropperReady = false;
   public card_list: any = [];
   modalRef: BsModalRef;
 
@@ -147,6 +150,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
   proceed_row_cnt = 1;
   display: boolean = false;
   public isvalidPrflPic;
+  public isvalidUpgradePrflPic;
 
   constructor(private MyProfileService: MyProfileService,
     private toastr: ToastrService,
@@ -592,9 +596,13 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
 
   ngAfterViewInit() { }
 
-  updateProfilePic(template: TemplateRef<any>, cropperReady: Boolean) {
+  updateProfilePic(template: TemplateRef<any>) {
     this.cropperReady = false;
     this.modalRef = this.ngxModalService.show(template);
+  }
+
+  upgradeProfilePic(upgradePrfl: TemplateRef<any>) {
+    this.modalRef = this.ngxModalService.show(upgradePrfl);
   }
 
   cancel() {
@@ -648,6 +656,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
 
   tabChange(cnt: Number) {
     this.tab_cnt = cnt;
+    console.log('this.tab_cnt => ', this.tab_cnt);
     this.track_flag = false;
   }
 
@@ -718,27 +727,53 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   changeUpgradeArtistImage(event: any) {
+    this.isvalidUpgradePrflPic = false;
     const fileList: FileList = event.target.files;
     if (event.target.files.length > 0) {
+      this.cropperReady = true;
       const allow_types = ['image/png', 'image/jpg', 'image/jpeg'];
       if (allow_types.indexOf(fileList[0].type) === -1) {
         this.toastr.error('Invalid file format.', 'Error!');
         return false;
       }
-      let formData: FormData = new FormData();
+      // let formData: FormData = new FormData();
       this.upgrade_artist_img = fileList[0];
-      formData.append('image', fileList[0]);
+      // formData.append('image', fileList[0]);
+      console.log('fileList => ', fileList);
       if (fileList.length > 0) {
-        const fileExtention = fileList[0].name.split('.');
-        const file: File = fileList[0];
-        const reader = new FileReader();
-        reader.onload = (e: any) => {
-          const data = {};
-          let imageBuffer = e.target.result;
-          this.default_profile_img = imageBuffer;
-        };
-        reader.readAsDataURL(event.target.files[0]);
+        if (fileList[0].size <= 500000) {
+          this.imageChangedEvent = event;
+          console.log('upgradeImageChangedEvent == event => ', event);
+          this.isvalidUpgradePrflPic = true;
+          // const prfl_file = this.upgradeImageChangedEvent.target.files[0];
+          // const reader = new FileReader();
+          // reader.onload = (e: any) => {
+          //   let imageBuffer = e.target.result;
+          //   this.croppedImage = imageBuffer;
+          //   const new_file = this.dataURLtoFile(this.croppedImage, prfl_file.name);
+          //   console.log('new_file => ', new_file);
+          //   // formData.append('image', new_file);
+          // };
+          // reader.readAsDataURL(event.target.files[0]);
+        } else {
+          this.toastr.error('Please choose Image less then 500 kb.', 'Error!');
+          this.isvalidUpgradePrflPic = false;
+        }
       }
+    }
+  }
+
+  upgradeProfile() {
+    if (this.isvalidUpgradePrflPic) {
+      const formData: FormData = new FormData();
+      console.log('this.imagechangedEvent => ', this.imageChangedEvent);
+      const prfl_file = this.imageChangedEvent.target.files[0];
+      const new_file = this.dataURLtoFile(this.croppedImage, prfl_file.name);
+      formData.append('image', new_file);
+      console.log('new_file => ', new_file);
+      this.default_profile_img = environment.USER_IMG + new_file.name;
+      console.log('this.default_profile_img => ', this.default_profile_img);
+      this.modalRef.hide();
     }
   }
 
@@ -810,6 +845,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   private dataURLtoFile(dataurl, filename) {
+    console.log('dataurl => ', dataurl);
     let arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1],
       bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
     while (n--) {
@@ -856,13 +892,25 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
   imageCropped(image: string) {
+    console.log('cropped image => ', image);
     this.croppedImage = image;
   }
 
   imageLoaded() {
-    console.log('herree => ');
+    console.log('image loaded => ');
     this.cropperReady = true;
   }
+
+  // upgradeImageCropped(image: string) {
+  //   console.log('image => ', image);
+  //   this.upgradeCroppedImage = image;
+  //   // this.upgradeCropperReady = false;
+  // }
+
+  // upgradeImageLoaded() {
+  //   console.log('Image loaded=> ');
+  //   this.upgradeCropperReady = true;
+  // }
 
   imageLoadFailed() { }
 

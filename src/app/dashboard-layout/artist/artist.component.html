@@ -206,7 +206,7 @@
               <div class="img-wrap">
                 <a routerLink="/artist_profile/{{artist_rising && artist_rising._id ? artist_rising._id : '' }}">
                   <img lazyLoad="{{artist_rising.image ? artist_img_url+artist_rising.image : 'img/upload1.png'}} "
-                    defaultImage="img/profile-img.png" offset="100" alt="Finalists "></a>
+                    defaultImage="img/default_img.png" offset="100" alt="Finalists "></a>
                 <a class="fan" (click)="followArtist(artist_rising._id, i)"><i
                     class="fa {{artist_rising && artist_rising['is_followed'] ? 'fa-heart' : 'fa-heart-o'}} "
                     title="Follow" aria-hidden="true "></i></a>
@@ -260,7 +260,7 @@
                     <!-- defaultImage="img/music-player-grey.svg" -->
                     <img
                       lazyLoad="{{artist_chart['artist'].image ? artist_img_url+artist_chart['artist'].image : 'img/upload1.png'}} "
-                      defaultImage="img/profile-img.png" offset="100" alt="Finalists "></a>
+                      defaultImage="img/default_img.png" offset="100" alt="Finalists "></a>
                   <a href="javascript:void(0) " class="fan " (click)="followArtist(artist_chart['artist']._id, i)"><i
                       class="fa {{artist_chart['artist']['is_followed'] ? 'fa-heart' : 'fa-heart-o'}}" title="Follow"
                       aria-hidden="true "></i></a>
@@ -304,7 +304,7 @@
               <div class="img-wrap">
                 <img
                   lazyLoad="{{my['artist_id']['image'] ? artist_img_url+my['artist_id']['image'] : 'img/upload1.png'}}"
-                  defaultImage="img/profile-img.png" offset="100" alt="Finalists">
+                  defaultImage="img/default_img.png" offset="100" alt="Finalists">
               </div>
               <div class="content-wrap">
                 <div class="player">

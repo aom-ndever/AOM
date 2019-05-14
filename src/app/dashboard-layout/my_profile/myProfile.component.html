@@ -66,131 +66,6 @@
                                                         <button type="button" class="btn btn-primary" id="cover_upload"
                                                             (click)="updateProfilePic(template)"></button>
 
-
-                                                        <ng-template #template>
-                                                            <button type="button" class="close pull-right"
-                                                                aria-label="Close" (click)="modalRef.hide()">
-                                                                <span aria-hidden="true">&times;</span>
-                                                            </button>
-                                                            <div class="modal-body">
-                                                                <div class="creat_contest_body">
-                                                                    <div class="col-sm-12 text-center">
-                                                                        <h4 class="custom_modal_head">Upload Profile
-                                                                            Photo
-                                                                        </h4>
-                                                                    </div>
-                                                                    <div class="row">
-                                                                        <div class="col-sm-6 text-center">
-                                                                            <div class="upl-div">
-                                                                                <div class="upload-btn"
-                                                                                    *ngIf="!cropperReady">
-                                                                                    <span class="upl-img"><i
-                                                                                            class="fa fa-cloud-upload"
-                                                                                            aria-hidden="true"></i></span>
-                                                                                    <span class="up_text">Upload
-                                                                                        Photo</span>
-                                                                                    <input type="file"
-                                                                                        name="my_doc_upload"
-                                                                                        (change)="updateProfileImage($event)"
-                                                                                        id="my_doc_upload"
-                                                                                        multiple="false">
-                                                                                    <p class="instrution"></p>
-                                                                                </div>
-                                                                                <div
-                                                                                    [style.display]="cropperReady ? null : 'none'">
-                                                                                    <image-cropper
-                                                                                        [imageChangedEvent]="imageChangedEvent"
-                                                                                        [maintainAspectRatio]="true"
-                                                                                        [imageQuality]="92"
-                                                                                        [aspectRatio]="1 / 1"
-                                                                                        [resizeToWidth]="320"
-                                                                                        format="jpeg"
-                                                                                        (imageCropped)="imageCropped($event)"
-                                                                                        (imageLoaded)="imageLoaded()"
-                                                                                        [style.display]="cropperReady ? null : 'none'">
-                                                                                    </image-cropper>
-                                                                                    <div class="upload-btn-div">
-                                                                                        <label for="fileUpload">Upload a
-                                                                                            Different Photo</label>
-                                                                                        <input type="file"
-                                                                                            name="my_doc_upload"
-                                                                                            (change)="updateProfileImage($event)"
-                                                                                            id="my_doc_upload"
-                                                                                            multiple="false">
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="col-sm-6 text-center">
-                                                                            <div class="upl-div">
-                                                                                <div class="upload-btn-cstm_p"
-                                                                                    *ngIf="!cropperReady">
-                                                                                    <span class="upl-img">
-                                                                                        <img src="img/icons8-microphone2Normal.png"
-                                                                                            alt="">
-                                                                                    </span>
-                                                                                </div>
-                                                                                <div
-                                                                                    [style.display]="cropperReady ? null : 'none'">
-                                                                                    <img [src]="croppedImage"
-                                                                                        style="height: 167px;width: 155px;" />
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="row mt-50">
-                                                                        <div class="col-sm-6">
-                                                                            <button class="custom_cancel_btn btn"
-                                                                                (click)="cancel()">Cancel</button>
-                                                                        </div>
-                                                                        <div class="col-sm-6 text-right">
-                                                                            <button type="submit"
-                                                                                class="custom_save btn"
-                                                                                [disabled]="show_spinner"
-                                                                                (click)="updatePrflPic()">Update
-                                                                                <i *ngIf="show_spinner"
-                                                                                    class="fa fa-spinner fa-spin"></i>
-                                                                            </button>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </ng-template>
-
-                                                        <!-- <div class="modal fade" id="cropImagePop" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                                                                <div class="modal-dialog">
-                                                                  <div class="modal-content">
-                                                                  <div class="modal-header">
-                                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                                                    <h4 class="modal-title" id="myModalLabel">
-                                                                        <?=multiLanguage( "Edit Foto" , "Edit Photo" )?></h4>
-                                                                  </div>
-                                                                  <div class="modal-body">
-                                                                  <div id="upload-demo" class="center-block"></div>
-                                                            </div>
-                                                                   <div class="modal-footer">
-                                              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                              <button type="button" id="cropImageBtn" class="btn btn-primary">Crop</button>
-                                            </div>
-                                                                  </div>
-                                                                </div>
-                                                              </div> -->
-                                                        <!-- <div>
-                                                            <image-cropper
-                                                            [imageChangedEvent]="imageChangedEvent"
-                                                            [maintainAspectRatio]="true"
-                                                            [aspectRatio]="4 / 3"
-                                                            [resizeToWidth]="128"
-                                                            format="png"
-                                                            (imageCropped)="imageCropped($event)"
-                                                            (imageLoaded)="imageLoaded()"
-                                                            (loadImageFailed)="loadImageFailed()"
-                                                        ></image-cropper>
-                                                           <img [src]="croppedImage" />
-                                                    </div> -->
-
-
-
                                                         <a data-fancybox data-animation-duration="700"
                                                             data-src="#delete" *ngIf="userdata.image"
                                                             href="javascript:;" class="delete"
@@ -206,7 +81,6 @@
                                             </div>
                                             <div class="col-md-9 col-sm-12 col-xs-12">
                                                 <div class="form-details">
-
                                                     <div class="form-group">
                                                         <label for="fname">First Name</label>
                                                         <input type="text" class="form-control" formControlName="fname"
@@ -741,7 +615,7 @@
                                         *ngFor="let obj of media_list; let i=index;">
                                         <div *ngIf="obj.image">
                                             <!-- <a class="img-wrap" href="{{artist_media_url+obj.image}}" *ngIf="obj.image" data-fancybox="images" data-width="1500" data-height="1000"> -->
-                                            <img defaultImage="img/profile-img.png" offset="100"
+                                            <img defaultImage="img/default_img.png" offset="100"
                                                 lazyLoad="{{obj ? artist_media_url+obj.image : 'img/upload1.png'}}"
                                                 alt="Media" (click)="open(i)">
                                             <!-- </a> -->
@@ -1096,7 +970,7 @@
                                                     <td class="serial-num">{{i+1}}.</td>
                                                     <td class="track-pic">
                                                         <a href="javascript:;"><img style="height: 50px;width:50px;"
-                                                                defaultImage="img/profile-img.png" offset="100"
+                                                                defaultImage="img/default_img.png" offset="100"
                                                                 lazyLoad="{{download.image ? track_url+download.image : 'img/track-img.png'}}"
                                                                 alt="Track Image"></a>
                                                     </td>
@@ -1203,7 +1077,7 @@
                                                         <div class="custom_music_container">
                                                             <div class="track-pic">
                                                                 <a href="javascript:;">
-                                                                    <img defaultImage="img/profile-img.png" offset="100"
+                                                                    <img defaultImage="img/default_img.png" offset="100"
                                                                         lazyLoad="{{val['track'] && val['track'].image ? track_url+val['track'].image : 'img/track-img.png'}}"
                                                                         style="height:50px;width:50px;"
                                                                         alt="Track Image">
@@ -1289,12 +1163,13 @@
                                             <div class="col-md-3 col-sm-12 col-xs-12">
                                                 <div class="edit-profile-picture">
                                                     <div class="upload-cover">
-                                                        <!-- defaultImage="img/loader.gif" -->
-                                                        <img defaultImage="img/profile-img.png" offset="100"
+                                                        <img defaultImage="img/default_img.png" offset="100"
                                                             lazyLoad="{{default_profile_img}}" alt="Edit cover Image">
                                                         <span class="up_text">Update Photo</span>
-                                                        <input type="file" name="upload" id="cover_upload"
-                                                            (change)="updateProfileImage($event)">
+                                                        <!-- <input type="file" name="upload" id="cover_upload"
+                                                            (change)="updateProfileImage($event)"> -->
+                                                        <button type="button" class="btn btn-primary" id="cover_upload"
+                                                            (click)="updateProfilePic(template)"></button>
                                                         <a data-fancybox data-animation-duration="700"
                                                             data-src="#delete" *ngIf="userdata.image"
                                                             (click)="removeUserImage()" href="javascript:;"
@@ -1651,7 +1526,7 @@
                                                     <td class="track-det" colspan="2">
                                                         <div class="track-pic">
                                                             <a href="javascript:;">
-                                                                <img defaultImage="img/profile-img.png" offset="100"
+                                                                <img defaultImage="img/default_img.png" offset="100"
                                                                     lazyLoad="{{val && val['track'] ? track_url+val['track'].image : 'img/upload1.png'}}"
                                                                     style="height:50px;width:50px;" alt="Track Image">
                                                             </a>
@@ -1756,7 +1631,7 @@
                                                     <td class="track-det custom_music_container" colspan="2">
                                                         <div class="track-pic">
                                                             <a href="javascript:;">
-                                                                <img defaultImage="img/profile-img.png" offset="100"
+                                                                <img defaultImage="img/default_img.png" offset="100"
                                                                     lazyLoad="{{val['track'] && val['track'].image ? track_url+val['track'].image : 'img/track-img.png'}}"
                                                                     style="height:50px;width:50px;" alt="Track Image">
                                                             </a>
@@ -1812,9 +1687,16 @@
                                                     <div class="upload-cover">
                                                         <img [src]="default_profile_img" alt="Edit cover Image">
                                                         <span class="up_text">Update Photo</span>
-                                                        <input type="file" formControlName="upload" name="upload"
+                                                        <!-- <input type="file" formControlName="upload" name="upload"
                                                             id="up_cover_upload"
-                                                            (change)="changeUpgradeArtistImage($event)">
+                                                            (change)="changeUpgradeArtistImage($event)"> -->
+
+                                                        <!-- <button type="button" class="btn btn-primary" id="cover_upload"
+                                                            (click)="upgradeProfilePic(upgradePrfl)"></button> -->
+
+                                                        <button type="button" class="btn btn-primary" id="cover_upload"
+                                                            (click)="updateProfilePic(template)"></button>
+
                                                         <a data-fancybox data-animation-duration="700"
                                                             data-src="#delete" *ngIf="userdata.image"
                                                             href="javascript:;" class="delete"
@@ -1829,7 +1711,6 @@
                                             </div>
                                             <div class="col-md-9 col-sm-12 col-xs-12">
                                                 <div class="form-details">
-
                                                     <div class="form-group">
                                                         <label for="fname">First Name</label>
                                                         <input type="text" class="form-control" formControlName="fname"
@@ -2117,7 +1998,7 @@
                                                     <td class="track-det" colspan="2">
                                                         <div class="track-pic">
                                                             <a href="javascript:;">
-                                                                <img defaultImage="img/profile-img.png" offset="100"
+                                                                <img defaultImage="img/default_img.png" offset="100"
                                                                     lazyLoad="{{val['track'] && val['track'].image ? track_url+val['track'].image : 'img/upload1.png'}}"
                                                                     style="height:50px;width:50px;" alt="Track Image">
                                                             </a>
@@ -2173,6 +2054,143 @@
         </div>
     </div>
 </section>
+
+<!-- <ng-template #upgradePrfl>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+        <span aria-hidden="true">&times;</span>
+    </button>
+    <div class="modal-body">
+        <div class="creat_contest_body">
+            <div class="col-sm-12 text-center">
+                <h4 class="custom_modal_head">Upload Profile
+                    Photo
+                </h4>
+                {{upgradeCropperReady}}
+            </div>
+            <div class="row">
+                <div class="col-sm-6 text-center">
+                    <div class="upl-div">
+                        <div class="upload-btn" *ngIf="!upgradeCropperReady">
+                            <span class="upl-img"><i class="fa fa-cloud-upload" aria-hidden="true"></i></span>
+                            <span class="up_text">Upload Photo</span>
+                            <input type="file" name="upload" (change)="changeUpgradeArtistImage($event)"
+                                id="up_cover_upload" multiple="false">
+                            <p class="instrution"></p>
+                        </div>
+                        <div [style.display]="upgradeCropperReady ? null : 'none'">
+                            <image-cropper [imageChangedEvent]="imageChangedEvent" [maintainAspectRatio]="true"
+                                [imageQuality]="92" [aspectRatio]="1 / 1" [resizeToWidth]="320" format="jpeg"
+                                (imageCropped)="upgradeImageCropped($event)" (imageLoaded)="upgradeImageLoaded()"
+                                [style.display]="upgradeCropperReady ? null : 'none'">
+                            </image-cropper>
+                            <div class="upload-btn-div">
+                                <label for="fileUpload">Upload a Different Photo</label>
+                                <input type="file" name="upload" (change)="changeUpgradeArtistImage($event)"
+                                    id="up_cover_upload" multiple="false">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 text-center">
+                    <div class="upl-div">
+                        <div class="upload-btn-cstm_p" *ngIf="!upgradeCropperReady">
+                            <span class="upl-img">
+                                <img src="img/icons8-microphone2Normal.png" alt="">
+                            </span>
+                        </div>
+                        <div [style.display]="upgradeCropperReady ? null : 'none'">
+                            <img [src]="upgradeCroppedImage" style="height: 167px;width: 155px;" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-50">
+                <div class="col-sm-6">
+                    <button class="custom_cancel_btn btn" (click)="modalRef.hide()">Cancel</button>
+                </div>
+                <div class="col-sm-6 text-right">
+                    <button type="submit" class="custom_save btn" [disabled]="show_spinner"
+                        (click)="modalRef.hide()">Update
+                        <i *ngIf="show_spinner" class="fa fa-spinner fa-spin"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-template> -->
+
+<ng-template #template>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+        <span aria-hidden="true">&times;</span>
+    </button>
+    <div class="modal-body">
+        <div class="creat_contest_body">
+            <div class="col-sm-12 text-center">
+                <h4 class="custom_modal_head">Upload Profile
+                    Photo
+                </h4>
+            </div>
+            <div class="row">
+                <div class="col-sm-6 text-center">
+                    <div class="upl-div">
+                        <div class="upload-btn" *ngIf="!cropperReady">
+                            <span class="upl-img"><i class="fa fa-cloud-upload" aria-hidden="true"></i></span>
+                            <span class="up_text">Upload
+                                Photo</span>
+                            <input *ngIf="tab_cnt === 1" type="file" name="my_doc_upload"
+                                (change)="updateProfileImage($event)" id="my_doc_upload" multiple="false">
+                            <input *ngIf="tab_cnt === 5" type="file" name="upload" id="up_cover_upload"
+                                (change)="changeUpgradeArtistImage($event)">
+                            <p class="instrution"></p>
+                        </div>
+                        <div [style.display]="cropperReady ? null : 'none'">
+                            <image-cropper [imageChangedEvent]="imageChangedEvent" [maintainAspectRatio]="true"
+                                [imageQuality]="92" [aspectRatio]="1 / 1" [resizeToWidth]="320" format="jpeg"
+                                (imageCropped)="imageCropped($event)" (imageLoaded)="imageLoaded()"
+                                [style.display]="cropperReady ? null : 'none'">
+                            </image-cropper>
+                            <div class="upload-btn-div">
+                                <label for="fileUpload">Upload a Different Photo</label>
+                                <input *ngIf="tab_cnt === 1" type="file" name="my_doc_upload"
+                                    (change)="updateProfileImage($event)" id="my_doc_upload" multiple="false">
+                                <input *ngIf="tab_cnt === 5" type="file" name="upload" id="up_cover_upload"
+                                    (change)="changeUpgradeArtistImage($event)">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 text-center">
+                    <div class="upl-div">
+                        <div class="upload-btn-cstm_p" *ngIf="!cropperReady">
+                            <span class="upl-img">
+                                <img src="img/icons8-microphone2Normal.png" alt="">
+                            </span>
+                        </div>
+                        <div [style.display]="cropperReady ? null : 'none'">
+                            <img [src]="croppedImage" style="height: 167px;width: 155px;" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-50">
+                <div class="col-sm-6">
+                    <button class="custom_cancel_btn btn" (click)="cancel()">Cancel</button>
+                </div>
+                <div class="col-sm-6 text-right">
+                    <button *ngIf="tab_cnt === 1" type="submit" class="custom_save btn" [disabled]="show_spinner"
+                        (click)="updatePrflPic()">Update
+                        <i *ngIf="show_spinner" class="fa fa-spinner fa-spin"></i>
+                    </button>
+                    <button *ngIf="tab_cnt === 5" type="submit" class="custom_save btn" [disabled]="show_spinner"
+                        (click)="upgradeProfile()">Update
+                        <i *ngIf="show_spinner" class="fa fa-spinner fa-spin"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-template>
+
 <ng-template #content let-c="close" let-d="dismiss">
     <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
         <span aria-hidden="true">&times;</span>
