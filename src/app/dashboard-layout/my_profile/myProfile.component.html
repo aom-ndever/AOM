@@ -56,13 +56,6 @@
                                                     <div class="upload-cover">
                                                         <img [src]="default_profile_img" alt="Edit profile Image">
                                                         <span class="up_text">Update Photo</span>
-                                                        <!-- <input type="file" name="upload" id="cover_upload"
-                                                            data-toggle="modal" data-target="#cropImagePop"
-                                                            (change)="updateProfileImage($event)"
-                                                            accept="image/png,image/jpg,image/jpeg" /> -->
-
-
-
                                                         <button type="button" class="btn btn-primary" id="cover_upload"
                                                             (click)="updateProfilePic(template)"></button>
 
@@ -1158,7 +1151,6 @@
                             <div class="edit-cover">
                                 <form [formGroup]="listener_profile">
                                     <div class="edit-details">
-                                        <!-- <div class="edit-head">Your Details</div> -->
                                         <div class="row">
                                             <div class="col-md-3 col-sm-12 col-xs-12">
                                                 <div class="edit-profile-picture">
@@ -1685,14 +1677,12 @@
                                             <div class="col-md-3 col-sm-12 col-xs-12">
                                                 <div class="edit-profile-picture">
                                                     <div class="upload-cover">
-                                                        <img [src]="default_profile_img" alt="Edit cover Image">
+                                                        <img defaultImage="img/default_img.png" offset="100"
+                                                            lazyLoad="{{default_profile_img}}" alt="Edit cover Image">
                                                         <span class="up_text">Update Photo</span>
                                                         <!-- <input type="file" formControlName="upload" name="upload"
                                                             id="up_cover_upload"
                                                             (change)="changeUpgradeArtistImage($event)"> -->
-
-                                                        <!-- <button type="button" class="btn btn-primary" id="cover_upload"
-                                                            (click)="upgradeProfilePic(upgradePrfl)"></button> -->
 
                                                         <button type="button" class="btn btn-primary" id="cover_upload"
                                                             (click)="updateProfilePic(template)"></button>

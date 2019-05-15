@@ -656,7 +656,6 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
 
   tabChange(cnt: Number) {
     this.tab_cnt = cnt;
-    console.log('this.tab_cnt => ', this.tab_cnt);
     this.track_flag = false;
   }
 
@@ -726,6 +725,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
+  // ****** updated code *******
   changeUpgradeArtistImage(event: any) {
     this.isvalidUpgradePrflPic = false;
     const fileList: FileList = event.target.files;
@@ -736,25 +736,10 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
         this.toastr.error('Invalid file format.', 'Error!');
         return false;
       }
-      // let formData: FormData = new FormData();
-      this.upgrade_artist_img = fileList[0];
-      // formData.append('image', fileList[0]);
-      console.log('fileList => ', fileList);
       if (fileList.length > 0) {
         if (fileList[0].size <= 500000) {
           this.imageChangedEvent = event;
-          console.log('upgradeImageChangedEvent == event => ', event);
           this.isvalidUpgradePrflPic = true;
-          // const prfl_file = this.upgradeImageChangedEvent.target.files[0];
-          // const reader = new FileReader();
-          // reader.onload = (e: any) => {
-          //   let imageBuffer = e.target.result;
-          //   this.croppedImage = imageBuffer;
-          //   const new_file = this.dataURLtoFile(this.croppedImage, prfl_file.name);
-          //   console.log('new_file => ', new_file);
-          //   // formData.append('image', new_file);
-          // };
-          // reader.readAsDataURL(event.target.files[0]);
         } else {
           this.toastr.error('Please choose Image less then 500 kb.', 'Error!');
           this.isvalidUpgradePrflPic = false;
@@ -764,20 +749,18 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   upgradeProfile() {
+    this.modalRef.hide();
     if (this.isvalidUpgradePrflPic) {
       const formData: FormData = new FormData();
-      console.log('this.imagechangedEvent => ', this.imageChangedEvent);
       const prfl_file = this.imageChangedEvent.target.files[0];
+      this.upgrade_artist_img = this.imageChangedEvent.target.files[0];
       const new_file = this.dataURLtoFile(this.croppedImage, prfl_file.name);
       formData.append('image', new_file);
-      console.log('new_file => ', new_file);
-      this.default_profile_img = environment.USER_IMG + new_file.name;
-      console.log('this.default_profile_img => ', this.default_profile_img);
+      this.default_profile_img = this.croppedImage;
       this.modalRef.hide();
     }
   }
 
-  // ****** updated code *******
   updateCoverImage(event: any) {
     this.isCoverPic = false;
     const fileList: FileList = event.target.files;
@@ -815,6 +798,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
       });
     }
   }
+
   updateProfileImage(event: any) {
     this.isProfilePic = false;
     var fileList: FileList = event.target.files;
@@ -845,7 +829,6 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   private dataURLtoFile(dataurl, filename) {
-    console.log('dataurl => ', dataurl);
     let arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1],
       bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
     while (n--) {
@@ -892,25 +875,12 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
   imageCropped(image: string) {
-    console.log('cropped image => ', image);
     this.croppedImage = image;
   }
 
   imageLoaded() {
-    console.log('image loaded => ');
     this.cropperReady = true;
   }
-
-  // upgradeImageCropped(image: string) {
-  //   console.log('image => ', image);
-  //   this.upgradeCroppedImage = image;
-  //   // this.upgradeCropperReady = false;
-  // }
-
-  // upgradeImageLoaded() {
-  //   console.log('Image loaded=> ');
-  //   this.upgradeCropperReady = true;
-  // }
 
   imageLoadFailed() { }
 
