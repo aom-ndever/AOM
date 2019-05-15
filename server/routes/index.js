@@ -113,8 +113,6 @@ router.post('/artist_registration', async (req, res) => {
     console.log('artist', artist);
 
     if (artist.status === 2) {
-
-
       var obj = {}
       //image upload
       var filename;
@@ -665,7 +663,9 @@ router.post('/user_registration', async (req, res) => {
  * @apiError (Error 4xx) {String} message Validation or error message.
  */
 router.get('/user_email_verify/:user_id', async (req, res) => {
+  console.log('req.params.user_id => ', req.params.user_id);
   var user_resp = await user_helper.get_user_by_id(req.params.user_id);
+  console.log('user_resp => ', user_resp);
   if (user_resp.status === 0) {
     logger.error("Error occured while finding user by id - ", req.params.user_id, user_resp.error);
     res.status(config.INTERNAL_SERVER_ERROR).json({ "status": 0, "message": "Error has occured while finding user" });
