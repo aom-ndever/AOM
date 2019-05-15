@@ -27,6 +27,20 @@ declare let Stripe: any;
 })
 
 export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
+
+  @ViewChildren(DataTableDirective)
+  dtElements: QueryList<DataTableDirective>;
+  dtOptions: DataTables.Settings[] = [];
+  subscription: Subscription;
+  public default_profile_img: any = 'img/profile-img.png';
+  public default_cover_img: any = 'img/edit-cover.jpg';
+  public day: any = [];
+  public month: any = [];
+  public year: any = [];
+  public card_list: any = [];
+  public isvalidPrflPic;
+  public isvalidUpgradePrflPic;
+  private _albums: any = [];
   artist_validation = [false];
   imageChangedEvent: any = '';
   upgradeImageChangedEvent: any = '';
@@ -34,13 +48,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
   upgradeCroppedImage: any = '';
   cropperReady = false;
   upgradeCropperReady = false;
-  public card_list: any = [];
   modalRef: BsModalRef;
-
-  @ViewChildren(DataTableDirective)
-  dtElements: QueryList<DataTableDirective>;
-  dtOptions: DataTables.Settings[] = [];
-  subscription: Subscription;
   show_spinner: boolean = false;
   tab_cnt: Number = 1;
   userdata: any = {
@@ -48,11 +56,6 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
     month: '',
     year: ''
   };
-  public default_profile_img: any = 'img/profile-img.png';
-  public default_cover_img: any = 'img/edit-cover.jpg';
-  public day: any = [];
-  public month: any = [];
-  public year: any = [];
   music_types: any = [];
   change_email = {};
   change_pwd = {};
@@ -60,7 +63,6 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
   show_progress: boolean = false;
   progress_cnt: Number = 0;
   media_list: any = [];
-  private _albums: any = [];
   artist_media_url: any = environment.API_URL + environment.ARTIST_MEDIA;
   track_url: any = environment.API_URL + environment.ARTIST_TRACK;
   user_img_url: any = environment.API_URL + environment.USER_IMG;
@@ -149,10 +151,9 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
   procced_count: any = 0;
   proceed_row_cnt = 1;
   display: boolean = false;
-  public isvalidPrflPic;
-  public isvalidUpgradePrflPic;
 
-  constructor(private MyProfileService: MyProfileService,
+  constructor(
+    private MyProfileService: MyProfileService,
     private toastr: ToastrService,
     private router: Router,
     private modalService: NgbModal,
@@ -493,8 +494,8 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
             if (that.bookmark_list.length > 0) {
               this.audio_ins = [];
               this.bookmark_track_list = [];
-              this.bookmark_list.forEach((ele) => { this.audio_ins.push(false) });
-              this.bookmark_list.forEach((ele) => { this.bookmark_track_list.push(ele['track']) });
+              this.bookmark_list.forEach((ele) => { this.audio_ins.push(false); });
+              this.bookmark_list.forEach((ele) => { this.bookmark_track_list.push(ele['track']); });
             }
             callback({
               recordsTotal: response['recordsTotal'],
@@ -558,8 +559,8 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
             that.purchased_track = response['track'];
             this.audio_ins = [];
             this.purchased_track_list = [];
-            that.purchased_track.forEach((ele) => { this.audio_ins.push(false) });
-            that.purchased_track.forEach((ele) => { this.purchased_track_list.push(ele['track']) });
+            that.purchased_track.forEach((ele) => { this.audio_ins.push(false); });
+            that.purchased_track.forEach((ele) => { this.purchased_track_list.push(ele['track']); });
             callback({
               recordsTotal: response['recordsTotal'],
               recordsFiltered: response['recordsTotal'],
@@ -596,13 +597,9 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
 
   ngAfterViewInit() { }
 
-  updateProfilePic(template: TemplateRef<any>) {
+  updateProfilePic(updtPrflPic: TemplateRef<any>) {
     this.cropperReady = false;
-    this.modalRef = this.ngxModalService.show(template);
-  }
-
-  upgradeProfilePic(upgradePrfl: TemplateRef<any>) {
-    this.modalRef = this.ngxModalService.show(upgradePrfl);
+    this.modalRef = this.ngxModalService.show(updtPrflPic);
   }
 
   cancel() {
@@ -614,7 +611,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
     if (typeof (control.value || '') === 'string' || (control.value || '') instanceof String) {
       let isWhitespace = (control.value || '').trim().length === 0;
       let isValid = !isWhitespace;
-      return isValid ? null : { 'whitespace': true }
+      return isValid ? null : { 'whitespace': true };
     }
   }
 
@@ -632,10 +629,10 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
 
   formatDate(date) {
     var monthNames = [
-      "January", "February", "March",
-      "April", "May", "June", "July",
-      "August", "September", "October",
-      "November", "December"
+      'January', 'February', 'March',
+      'April', 'May', 'June', 'July',
+      'August', 'September', 'October',
+      'November', 'December'
     ];
 
     var day = date.getDate();
@@ -970,7 +967,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
           this.userdata['year'] = dt.getFullYear();
         }
         if (this.userdata.image) {
-          if (this.userdata.provider && this.userdata.provider === 'facebook' && this.userdata['image'].includes('graph.facebook.com') || (this.userdata.provider === "gmail" && this.userdata['image'].includes('lh3.googleusercontent.com'))) {
+          if (this.userdata.provider && this.userdata.provider === 'facebook' && this.userdata['image'].includes('graph.facebook.com') || (this.userdata.provider === 'gmail' && this.userdata['image'].includes('lh3.googleusercontent.com'))) {
             this.default_profile_img = this.userdata.image;
           } else {
             this.default_profile_img = environment.API_URL + environment.USER_IMG + this.userdata.image;
@@ -992,7 +989,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
     let thi = this;
     swal({
       title: 'Are you sure?',
-      text: "You won't be able to revert this!",
+      text: 'You won\'t be able to revert this!',
       type: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
@@ -1015,7 +1012,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
     let thi = this;
     swal({
       title: 'Are you sure?',
-      text: "You won't be able to revert this!",
+      text: 'You won\'t be able to revert this!',
       type: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
@@ -1038,7 +1035,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
     let thi = this;
     swal({
       title: 'Are you sure?',
-      text: "You won't be able to revert this!",
+      text: 'You won\'t be able to revert this!',
       type: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
@@ -1223,7 +1220,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
     let thi = this;
     swal({
       title: 'Are you sure?',
-      text: "You won't be able to revert this!",
+      text: 'You won\'t be able to revert this!',
       type: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
@@ -1245,6 +1242,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
     // open lightbox
     this.lightbox.open(this._albums, index);
   }
+
   // Get All follower analytics data
   getAllFollowerAnalytics(data) {
     this.MyProfileService.getAllFollowerAnalytic(data).subscribe(response => {
@@ -1256,6 +1254,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
       this.followerLocationBarChart(response['loaction']);
     });
   }
+
   // Get all track and contest details
   getAllTrackAnalytic(data) {
     this.MyProfileService.getAllTrackContestData(data).subscribe(response => {
@@ -1266,6 +1265,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
       this.trackLocationBarChart(response['location']);
     });
   }
+
   // Get all overview analytics data
   getAllOverviewAnalytic(data) {
     this.MyProfileService.getAllOverviewAnalytic(data).subscribe(response => {
@@ -1290,6 +1290,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
       this.paymentChart(response['day']);
     });
   }
+
   // Get all proceed details
   getAllProceed(data) {
     this.MyProfileService.getProceedChartData(data).subscribe((response) => {
@@ -1304,6 +1305,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
       this.downloadChart(response['day']);
     });
   }
+
   // Age chart
   ageChart(data: any) {
     let result = [0, 0, 0, 0, 0, 0, 0];
@@ -1362,14 +1364,14 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
     });
 
   }
+
   // Gender chart
   genderChart(data: any) {
     let result = [];
     data.forEach(ele => {
       if (ele['_id'] === 'male') {
         this.follower_male_per = ele['percentage_value'];
-      }
-      else {
+      } else {
         this.follower_female_per = ele['percentage_value'];
       }
       result.push({
@@ -1394,6 +1396,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
       }]
     });
   }
+
   // Followers location chart
   overviewLocationChart(data: any) {
     let final_data = [];
@@ -1405,24 +1408,25 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
     data.forEach((ele) => {
       final_data.push({ id: 'US-' + ele['_id']['name'], value: ele['value'] });
     });
-    this.overview_location_chart = this.AmCharts.makeChart("overviewLoc", {
-      "type": "map",
-      "theme": "light",
-      "dataProvider": {
-        "map": 'usaLow',
-        "colorSteps": 10,
-        "areas": final_data
+    this.overview_location_chart = this.AmCharts.makeChart('overviewLoc', {
+      'type': 'map',
+      'theme': 'light',
+      'dataProvider': {
+        'map': 'usaLow',
+        'colorSteps': 10,
+        'areas': final_data
       },
-      "areasSettings": {
-        "autoZoom": true
+      'areasSettings': {
+        'autoZoom': true
       },
-      "valueLegend": {
-        "right": 10,
-        "minValue": min,
-        "maxValue": max
+      'valueLegend': {
+        'right': 10,
+        'minValue': min,
+        'maxValue': max
       }
     });
   }
+
   // Followers vote chart
   followerVoteChart(data: any) {
     let result = [0, 0, 0, 0, 0, 0, 0];
@@ -1460,6 +1464,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
       ]
     });
   }
+
   // Followers location chart
   followerLocationChart(data: any) {
     let final_data = [];
@@ -1471,24 +1476,25 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
     data.forEach((ele) => {
       final_data.push({ id: 'US-' + ele['_id']['name'], value: ele['value'] });
     });
-    this.follower_location_chart = this.AmCharts.makeChart("followLoc", {
-      "type": "map",
-      "theme": "light",
-      "dataProvider": {
-        "map": 'usaLow',
-        "colorSteps": 10,
-        "areas": final_data
+    this.follower_location_chart = this.AmCharts.makeChart('followLoc', {
+      'type': 'map',
+      'theme': 'light',
+      'dataProvider': {
+        'map': 'usaLow',
+        'colorSteps': 10,
+        'areas': final_data
       },
-      "areasSettings": {
-        "autoZoom": true
+      'areasSettings': {
+        'autoZoom': true
       },
-      "valueLegend": {
-        "right": 10,
-        "minValue": min,
-        "maxValue": max
+      'valueLegend': {
+        'right': 10,
+        'minValue': min,
+        'maxValue': max
       }
     });
   }
+
   // Overview vote chart
   overviewVoteChart(data: any) {
     let result = [0, 0, 0, 0, 0, 0, 0];
@@ -1527,13 +1533,13 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
     });
   }
 
-  // payment chart 
+  // payment chart
   paymentChart(data: any) {
     let result = [];
     let cat = [];
     let dt = new Date();
     for (let i = 1; i <= 30; i++) {
-      cat.push(this.month_name(dt) + " " + i);
+      cat.push(this.month_name(dt) + ' ' + i);
       result.push(0);
     }
     this.payment_count = 0;
@@ -1585,7 +1591,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
     let cat = [];
     let dt = new Date();
     for (let i = 1; i <= this.analytics_days; i++) {
-      cat.push(this.month_name(dt) + " " + i);
+      cat.push(this.month_name(dt) + ' ' + i);
       result.push(0);
     }
     this.procced_count = 0;
@@ -1637,8 +1643,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
     data.forEach(ele => {
       if (ele['_id'] === 'male') {
         this.overview_male_per = ele['percentage_value'];
-      }
-      else {
+      } else {
         this.overview_female_per = ele['percentage_value'];
       }
       result.push({
@@ -1663,6 +1668,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
       }]
     });
   }
+
   // track vote chart
   trackVoteChart(data: any) {
     let result = [0, 0, 0, 0, 0, 0, 0];
@@ -1700,6 +1706,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
       ]
     });
   }
+
   // Track Gender chart
   trackGenderChart(data: any) {
     let result = [];
@@ -1707,8 +1714,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
       data.forEach(ele => {
         if (ele['_id'] === 'male') {
           this.track_male_per = ele['percentage_value'];
-        }
-        else {
+        } else {
           this.track_female_per = ele['percentage_value'];
         }
         result.push({
@@ -1735,6 +1741,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
       }]
     });
   }
+
   // Track location chart
   trackLocationChart(data: any) {
     let final_data = [];
@@ -1746,35 +1753,37 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
     data.forEach((ele) => {
       final_data.push({ id: 'US-' + ele['_id']['name'], value: ele['value'] });
     });
-    this.track_location_chart = this.AmCharts.makeChart("trackLoc", {
-      "type": "map",
-      "theme": "light",
-      "dataProvider": {
-        "map": 'usaLow',
-        "colorSteps": 10,
-        "areas": final_data
+    this.track_location_chart = this.AmCharts.makeChart('trackLoc', {
+      'type': 'map',
+      'theme': 'light',
+      'dataProvider': {
+        'map': 'usaLow',
+        'colorSteps': 10,
+        'areas': final_data
       },
-      "areasSettings": {
-        "autoZoom": true
+      'areasSettings': {
+        'autoZoom': true
       },
-      "valueLegend": {
-        "right": 10,
-        "minValue": min,
-        "maxValue": max
+      'valueLegend': {
+        'right': 10,
+        'minValue': min,
+        'maxValue': max
       }
     });
   }
+
   month_name(dt) {
-    let mlist = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    let mlist = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
     return mlist[dt.getMonth()];
-  };
+  }
+
   // Download chart
   downloadChart(data: any) {
     let result = [];
     let cat = [];
     let dt = new Date();
     for (let i = 1; i <= this.analytics_days; i++) {
-      cat.push(this.month_name(dt) + " " + i);
+      cat.push(this.month_name(dt) + ' ' + i);
       result.push(0);
     }
     this.download_analytic_count = 0;
@@ -1811,6 +1820,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
       ]
     });
   }
+
   // update notification settings
   updateNotificationSetting(key: any, val: any) {
     let data = {};
@@ -1822,6 +1832,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
       this.toastr.error(error['error'].message, 'Error!');
     });
   }
+
   // Top location bar chart
   LocationBarChart(data: any) {
     let cat = [];
@@ -1874,6 +1885,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
       ]
     });
   }
+
   // Top location bar chart
   trackLocationBarChart(data: any) {
     let cat = [];
@@ -1926,6 +1938,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
       ]
     });
   }
+
   // Top location bar chart
   followerLocationBarChart(data: any) {
     let cat = [];
@@ -1987,6 +2000,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
     this.audio_ins[index] = true;
     this.MessageService.sendMessage({ data: data, index: index, action: 'start', list: 1 });
   }
+
   // Stop audio
   stopAudio(index, data: any) {
 
@@ -2003,17 +2017,20 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
     this.playlist_validation = false;
     this.media_modal_ref = this.modalService.open(content, { centered: true });
   }
+
   // open edit playlist model
   openEditPlaylistModel(content, index: any) {
     this.playlist_data = { ...this.playlist[index] };
     this.media_modal_ref = this.modalService.open(content, { centered: true });
   }
+
   // open edit playlist model
   openPlaylistTrackModel(content) {
     this.search_track = '';
     this.track_validation = false;
     this.media_modal_ref = this.modalService.open(content, { centered: true });
   }
+
   // add new playlist to db
   addNewPlaylist(flag) {
     if (flag) {
@@ -2061,6 +2078,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
     }
     this.playlist_validation = !flag;
   }
+
   // edit existing playlist
   editPlaylist(flag) {
     if (flag) {
@@ -2109,11 +2127,12 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
     this.playlist_validation = !flag;
 
   }
+
   // Remove existing playlist
   removePlaylist(id: any, idx: any) {
     swal({
       title: 'Are you sure?',
-      text: "You won't be able to revert this!",
+      text: 'You won\'t be able to revert this!',
       type: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
@@ -2152,6 +2171,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
       }
     });
   }
+
   // Playlist track
   getPlaylistTrack(id, index) {
     const that = this;
@@ -2177,8 +2197,8 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
             if (that.playlist_track.length > 0) {
               this.audio_ins = [];
               this.playlist_track_list = [];
-              this.playlist_track.forEach((ele) => { this.audio_ins.push(false) });
-              this.playlist_track.forEach((ele) => { this.playlist_track_list.push(ele['track']) });
+              this.playlist_track.forEach((ele) => { this.audio_ins.push(false); });
+              this.playlist_track.forEach((ele) => { this.playlist_track_list.push(ele['track']); });
             }
             callback({
               recordsTotal: response['recordsTotal'],
@@ -2216,8 +2236,8 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
             if (that.playlist_track.length > 0) {
               this.audio_ins = [];
               this.playlist_track_list = [];
-              this.playlist_track.forEach((ele) => { this.audio_ins.push(false) });
-              this.playlist_track.forEach((ele) => { this.playlist_track_list.push(ele['track']) });
+              this.playlist_track.forEach((ele) => { this.audio_ins.push(false); });
+              this.playlist_track.forEach((ele) => { this.playlist_track_list.push(ele['track']); });
             }
             callback({
               recordsTotal: response['recordsTotal'],
@@ -2238,6 +2258,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
   }
+
   // get track based on search string
   search(event) {
     let data = {
@@ -2247,6 +2268,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
       this.serach_track_list = response['track'];
     });
   }
+
   // Add track to playlist
   addTrackPlaylist(flag) {
     if (flag) {
@@ -2254,8 +2276,8 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
         if (this.search_track) {
           let data = {
             track_id: []
-          }
-          this.search_track.forEach((ele) => { data['track_id'].push(ele['_id']) });
+          };
+          this.search_track.forEach((ele) => { data['track_id'].push(ele['_id']); });
           this.show_spinner = true;
           this.MyProfileService.addTrackListenerPlaylist(data, this.playlist_data['_id']).subscribe((response) => {
             this.toastr.success(response['message'], 'Success!');
@@ -2280,8 +2302,8 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
         if (this.search_track) {
           let data = {
             track_id: []
-          }
-          this.search_track.forEach((ele) => { data['track_id'].push(ele['_id']) });
+          };
+          this.search_track.forEach((ele) => { data['track_id'].push(ele['_id']); });
           this.show_spinner = true;
           this.MyProfileService.addTrackToArtistPlaylist(data, this.playlist_data['_id']).subscribe((response) => {
             this.dtElements.forEach((dtElement: DataTableDirective, index: number) => {
@@ -2305,11 +2327,12 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
     this.track_validation = !flag;
 
   }
+
   // Remove track from playlist for listener
   removeTrackFromPlaylist(id) {
     swal({
       title: 'Are you sure?',
-      text: "You won't be able to revert this!",
+      text: 'You won\'t be able to revert this!',
       type: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
@@ -2355,7 +2378,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   getStateByRegion(id: any) {
-    if (id && id !== "") {
+    if (id && id !== '') {
       this.MyProfileService.getStateByRegion({ region: id }).subscribe((response) => {
         this.state_list = response['state'];
       });
@@ -2367,7 +2390,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
       this.upgrade_artist_validation = !flag;
       swal({
         title: 'Upgrade to Artist',
-        html: "<strong>Your user profile and saved data has been removed.</strong><br>Do you want to continue?",
+        html: '<strong>Your user profile and saved data has been removed.</strong><br>Do you want to continue?',
         type: 'info',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
@@ -2401,7 +2424,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
             this.show_spinner = false;
           });
         }
-      })
+      });
     } else {
       if (profile_img === '') {
         this.upgrade_artist_validation = true;
@@ -2417,6 +2440,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
     this.bank_validation = false;
     this.media_modal_ref = this.modalService.open(content, { centered: true, backdrop: true });
   }
+
   // Add new bank
   addBank(flag) {
     if (flag) {
@@ -2435,6 +2459,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
     }
     this.bank_validation = !flag;
   }
+
   // get all card
   getAllCard() {
     this.MyProfileService.getAllBank().subscribe((response) => {
@@ -2449,7 +2474,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
   removeCard(id: any) {
     swal({
       title: 'Are you sure?',
-      text: "You won't be able to revert this!",
+      text: 'You won\'t be able to revert this!',
       type: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
@@ -2472,6 +2497,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
       this.toastr.success(response['message'], 'Success!');
     });
   }
+
   // Download track
   downloadTrack(id: any) {
     this.MyProfileService.downloadTrack(id).subscribe(response => {

@@ -221,5 +221,8 @@ i.fa.fa-spinner.fa-spin.loader {
     color: #fff;
     background-color: #9C27B0 !important;
     border: 0px !important;
+}
 
+a:focus {
+    outline: none !important;
 }

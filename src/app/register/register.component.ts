@@ -35,7 +35,7 @@ export class RegisterComponent implements OnInit {
     month: '',
     year: '',
     gender: '',
-    region: '',
+    // region: '',
     state: ''
   };
   public listener_data: any = {
@@ -44,11 +44,12 @@ export class RegisterComponent implements OnInit {
     month: '',
     year: '',
     gender: '',
-    region: '',
+    // region: '',
     state: ''
   };
   public user_data: any = {};
   public location: any = '';
+  public formattedState: any = '';
   public day: any = [];
   public month: any = [];
   public year: any = [];
@@ -64,7 +65,6 @@ export class RegisterComponent implements OnInit {
   passwordFormGroup1: FormGroup;
   artist_step3: FormGroup;
   artist_step4: FormGroup;
-
   // Listener Form Group for validation
   listener_step1: FormGroup;
   listener_step2: FormGroup;
@@ -122,8 +122,8 @@ export class RegisterComponent implements OnInit {
     });
     this.artist_step4 = this.fb.group({
       zipcode: ['', [Validators.required, Validators.pattern('^[A-Za-z0-9]+$')]],
-      region: ['', [Validators.required]],
-      state: ['', [Validators.required]]
+      // region: ['', [Validators.required]],
+      // state: ['', [Validators.required]]
     });
 
     this.listener_step1 = this.fb.group({
@@ -145,14 +145,15 @@ export class RegisterComponent implements OnInit {
     });
     this.listener_step4 = this.fb.group({
       zipcode: ['', [Validators.required, Validators.pattern('^[A-Za-z0-9]+$')]],
-      region: ['', [Validators.required]],
-      state: ['', [Validators.required]]
+      // region: ['', [Validators.required]],
+      // state: ['', [Validators.required]]
     });
     this.RegisterService.getAllMusicType().subscribe(response => {
       this.music_types = response['music'];
     });
     this.getRegionList();
   }
+
   noWhitespaceValidator(control: FormControl) {
     if (typeof (control.value || '') === 'string' || (control.value || '') instanceof String) {
       const isWhitespace = (control.value || '').trim().length === 0;
@@ -160,6 +161,7 @@ export class RegisterComponent implements OnInit {
       return isValid ? null : { 'whitespace': true };
     }
   }
+
   // Code for initialize google login button
   public googleInit() {
     gapi.load('auth2', () => {
@@ -177,7 +179,6 @@ export class RegisterComponent implements OnInit {
     this.auth2.attachClickHandler(element, {},
       (googleUser) => {
         const profile = googleUser.getBasicProfile();
-        console.log(profile, googleUser.getAuthResponse().id_token);
         const data = {
           U3: profile.getEmail(),
           ofa: profile.ofa,
@@ -212,46 +213,101 @@ export class RegisterComponent implements OnInit {
   passwordMatchValidatorListener(g: FormGroup) {
     return g.get('password').value === g.get('conf').value ? null : g.get('conf').setErrors({ 'mismatch': true });
   }
+
   // get location details based on zipcode
   getLocation() {
     if (this.artist_data['zipcode']) {
       this.RegisterService.getLocationFromZipCode(this.artist_data['zipcode']).subscribe(response => {
+        console.log('response => ', response);
         const res = response;
         if (res['results'].length > 0 && res['results'][0].hasOwnProperty('address_components')) {
-          if (res['results'][0]['address_components'].length > 3) {
-            this.location = res['results'][0]['address_components'][1]['long_name'] +
-              ', ' + res['results'][0]['address_components'][3]['long_name'];
-          } else if (res['results'][0]['address_components'].length > 2) {
-            this.location = res['results'][0]['address_components'][1]['long_name'] +
-              ', ' + res['results'][0]['address_components'][2]['long_name'];
+          // if (res['results'][0]['address_components'].length > 3) {
+          //   this.location = res['results'][0]['address_components'][1]['long_name'] +
+          //     ', ' + res['results'][0]['address_components'][3]['long_name'];
+          //   // console.log('greater than 3 => ', this.location);
+          //   this.formattedState = res['results'][0]['address_components'][1]['long_name'];
+          //   // console.log('this.formattedState => ', this.formattedState);
+          // } else if (res['results'][0]['address_components'].length > 2) {
+          //   this.location = res['results'][0]['address_components'][1]['long_name'] +
+          //     ', ' + res['results'][0]['address_components'][2]['long_name'];
+          //   // console.log('greater than 2 => ', this.location);
+          // }
+
+          for (var i = 0; i < res['results'][0].address_components.length; i++) {
+            var addressType = res['results'][0].address_components[i].types[0];
+            if (addressType === 'administrative_area_level_1') {
+              this.formattedState = res['results'][0].address_components[i].long_name;
+              console.log('state => ', this.formattedState);
+            }
+            if (addressType === 'locality') {
+              var city = res['results'][0].address_components[i].long_name;
+              // console.log('city => ', city);
+            }
+            // console.log('city => ', city);
+            if (city !== undefined) {
+              // console.log('city is not undefined => ');
+              this.location = city + ',' + this.formattedState;
+            } else {
+              // console.log('here in else city undefined  => ');
+              this.location = '';
+            }
           }
+
         } else {
           this.location = '';
+          // console.log('no location => ', this.location);
         }
       });
     } else {
       this.location = '';
+      // console.log('no zip code => ', this.location);
     }
   }
+
   // get location details based on zipcode for listener
   getLocationForListener() {
     if (this.listener_data['zipcode']) {
       this.RegisterService.getLocationFromZipCode(this.listener_data['zipcode']).subscribe(response => {
         const res = response;
         if (res['results'].length > 0 && res['results'][0].hasOwnProperty('address_components')) {
-          if (res['results'][0]['address_components'].length > 3) {
-            this.location = res['results'][0]['address_components'][1]['long_name'] +
-              ', ' + res['results'][0]['address_components'][3]['long_name'];
-          } else if (res['results'][0]['address_components'].length > 2) {
-            this.location = res['results'][0]['address_components'][1]['long_name'] +
-              ', ' + res['results'][0]['address_components'][2]['long_name'];
+          //   if (res['results'][0]['address_components'].length > 3) {
+          //     this.location = res['results'][0]['address_components'][1]['long_name'] +
+          //       ', ' + res['results'][0]['address_components'][3]['long_name'];
+          //     // console.log('this.location > 3 => ', this.location);
+          //   } else if (res['results'][0]['address_components'].length > 2) {
+          //     this.location = res['results'][0]['address_components'][1]['long_name'] +
+          //       ', ' + res['results'][0]['address_components'][2]['long_name'];
+          //     // console.log('this.location > 2 => ', this.location);
+          //   }
+          // } else {
+          //   this.location = '';
+          // }
+          // console.log('res[results][0].address_components => ', res['results'][0].address_components);
+          for (var i = 0; i < res['results'][0].address_components.length; i++) {
+            var addressType = res['results'][0].address_components[i].types[0];
+            if (addressType === 'administrative_area_level_1') {
+              this.formattedState = res['results'][0].address_components[i].long_name;
+              console.log('state => ', this.formattedState);
+            }
+            if (addressType === 'locality') {
+              var city = res['results'][0].address_components[i].long_name;
+              // console.log('city => ', city);
+            }
+            // console.log('city => ', city);
+            if (city !== undefined) {
+              // console.log('city is not undefined => ');
+              this.location = city + ',' + this.formattedState;
+            } else {
+              // console.log('here in else city undefined  => ');
+              this.location = '';
+            }
           }
-        } else {
-          this.location = '';
+          console.log('this.location => ', this.location);
         }
       });
     } else {
       this.location = '';
+      // console.log('this.location = "" => ', this.location);
     }
   }
 
@@ -278,7 +334,6 @@ export class RegisterComponent implements OnInit {
   fileChangeEvent(event: any) {
     const fileList: FileList = event.target.files;
     const file = <File>event.target.files[0];
-    console.log(event.target.files);
     let isValidPic = false;
     if (event.target.files.length > 0) {
       this.artist_validation[5] = false;
@@ -288,16 +343,13 @@ export class RegisterComponent implements OnInit {
         if (file.size >= 500000) {
           this.toastr.error('Please choose Image less then 500 kb.', 'Error!');
           isValidPic = false;
-          console.log('returning ----- more than 500 kb => ');
           return 0;
         } else {
           isValidPic = true;
         }
       } else {
-        console.log('in valid file format  => ');
         isValidPic = false;
         this.toastr.error('Invalid Image Format.', 'Error!');
-        console.log('returning ---- invalid format  => ');
         return 0;
       }
       // if (allow_types.indexOf(fileList[0].type) === -1) {
@@ -310,24 +362,28 @@ export class RegisterComponent implements OnInit {
       }
     }
   }
+
   imageCropped(image: string) {
     this.croppedImage = image;
   }
+
   imageLoaded() {
     this.cropperReady = true;
   }
+
   imageLoadFailed() {
     console.log('Load failed');
   }
+
   // Select music genre
   selectMusciGenre(id: any) {
     this.artist_data['music_type'] = id;
   }
+
   // Handle submit event of artist form
   artist_submit() {
     const file = this.imageChangedEvent.target.files[0];
     const new_file = this.dataURLtoFile(this.croppedImage, file.name);
-
     const formData: FormData = new FormData();
     formData.append('email', this.artist_data['email']);
     formData.append('password', this.artist_data['password']);
@@ -338,13 +394,13 @@ export class RegisterComponent implements OnInit {
     formData.append('music_type', this.artist_data['music_type']);
     formData.append('image', new_file);
     formData.append('phone_no', this.artist_data['phone_no']);
-    formData.append('state', this.artist_data['state']);
+    // formData.append('state', this.artist_data['state']);
+    formData.append('state', this.formattedState);
     formData.append('share_url', JSON.stringify(this.artist_data['share_url']));
     formData.append('dob', (new Date(this.artist_data['year'], this.artist_data['month'], this.artist_data['day']).toString()));
 
     this.show_spinner = true;
     this.RegisterService.artistRegistration(formData).subscribe(response => {
-      console.log('response', response);
       this.step_flag = true;
       this.location = '';
       this.artist_cnt = 0;
@@ -360,7 +416,7 @@ export class RegisterComponent implements OnInit {
         month: '',
         year: '',
         gender: '',
-        region: '',
+        // region: '',
         state: ''
       };
       this.toastr.success('Registration done successfully and confirmation email sent to your account please verify to do login.',
@@ -374,6 +430,7 @@ export class RegisterComponent implements OnInit {
       this.show_spinner = false;
     });
   }
+
   // Handle submit event of listener form
   listener_submit() {
     if (this.listener_data.music_type && this.listener_data.music_type.length <= 0) {
@@ -389,13 +446,12 @@ export class RegisterComponent implements OnInit {
         music_type: this.listener_data['music_type'],
         gender: this.listener_data['gender'],
         phone_no: this.listener_data['phone_no'],
-        state: this.listener_data['state'],
+        // state: this.listener_data['state'],
+        state: this.formattedState,
         dob: new Date(this.listener_data['year'], this.listener_data['month'], this.listener_data['day'])
       };
-      console.log('listener', data);
       this.show_spinner = true;
       this.RegisterService.listenerRegistration(data).subscribe(response => {
-        console.log('response', response);
         this.step_flag = true;
         this.listner_cnt = 0;
         this.location = '';
@@ -405,7 +461,7 @@ export class RegisterComponent implements OnInit {
           month: '',
           year: '',
           gender: '',
-          region: '',
+          // region: '',
           state: ''
         };
         this.toastr.success('Registration done successfully and confirmation email sent to your account please verify to do login.',
@@ -421,8 +477,6 @@ export class RegisterComponent implements OnInit {
     }
 
   }
-
-
 
   public nxt_btn(step_lbl: any, flag: any, index: number) {
     this.step_flag = false;
@@ -465,6 +519,7 @@ export class RegisterComponent implements OnInit {
 
   getRegionList() {
     this.RegisterService.getAllRegion().subscribe((response) => {
+      console.log('response of region => ', response);
       this.region_list = response['Region'];
     });
   }
@@ -472,10 +527,13 @@ export class RegisterComponent implements OnInit {
   getStateByRegion(id: any) {
     if (id && id !== '') {
       this.RegisterService.getStateByRegion({ region: id }).subscribe((response) => {
+        console.log('response of state => ', response);
         this.state_list = response['state'];
+        console.log('this.this.state_list => ', this.state_list);
       });
     }
   }
+
   // Login or registration with facebook
   fbLogin() {
     const socialPlatformProvider = FacebookLoginProvider.PROVIDER_ID;
@@ -493,4 +551,5 @@ export class RegisterComponent implements OnInit {
       }
     );
   }
+
 }

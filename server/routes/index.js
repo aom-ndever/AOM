@@ -625,6 +625,7 @@ router.post('/user_registration', async (req, res) => {
 
       if (data.status == 0) {
         logger.trace("Error occured while inserting user - User Signup API");
+        console.log('data.error => ', data.error);
         logger.debug("Error = ", data.error);
         res.status(config.INTERNAL_SERVER_ERROR).json(data);
       } else {
