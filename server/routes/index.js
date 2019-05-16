@@ -104,7 +104,8 @@ router.post('/artist_registration', async (req, res) => {
       "music_type": req.body.music_type,
       "state": req.body.state,
       "gender": req.body.gender,
-      "dob": req.body.dob
+      "dob": req.body.dob,
+      "type": "artist"
     };
     if (req.body.share_url) {
       reg_obj.social_media = JSON.parse(req.body.share_url)
@@ -612,6 +613,7 @@ router.post('/user_registration', async (req, res) => {
       "gender": req.body.gender,
       "state": req.body.state,
       "phone_no": req.body.phone_no,
+      "type": "listener"
     };
     if (req.body.share_url) {
       obj.social_media = JSON.parse(req.body.share_url)

@@ -30,6 +30,7 @@ var UserModelSchema = new Schema({
     phone_no: Number,
     refresh_token: { type: String },
     flag: { type: Boolean, default: false },
+    type: { type: String },
     // state: { type: mongoose.Schema.Types.ObjectId, ref: 'state' },
     state: { type: String },
     last_login: { type: Date },

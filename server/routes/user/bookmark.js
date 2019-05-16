@@ -131,22 +131,22 @@ router.get("/", async (req, res) => {
 });
 
 
-router.get("/", async (req, res) => {
-  user_id = req.userInfo.id;
+// router.delete("/", async (req, res) => {
+//   user_id = req.userInfo.id;
 
-  track_id = req.body.track_id
-  logger.trace("Get all Artist API called");
-  console.log('user_id => ', user_id);
-  var resp_data = await bookmark_helper.delete_bookmark_by_track_id(track_id, user_id);
-  console.log('resp_data => ', resp_data);
-  if (resp_data.status == 0) {
-    logger.error("Error occured while fetching Artist = ", resp_data);
-    res.status(config.INTERNAL_SERVER_ERROR).json(resp_data);
-  } else {
-    logger.trace("Artist got successfully = ", resp_data);
-    res.status(config.OK_STATUS).json(resp_data);
-  }
-});
+//   track_id = req.body.track_id
+//   logger.trace("Get all Artist API called");
+//   console.log('user_id => ', user_id);
+//   var resp_data = await bookmark_helper.delete_bookmark_by_track_id(track_id, user_id);
+//   console.log('resp_data => ', resp_data);
+//   if (resp_data.status == 0) {
+//     logger.error("Error occured while fetching Artist = ", resp_data);
+//     res.status(config.INTERNAL_SERVER_ERROR).json(resp_data);
+//   } else {
+//     logger.trace("Artist got successfully = ", resp_data);
+//     res.status(config.OK_STATUS).json(resp_data);
+//   }
+// });
 
 
 /**
