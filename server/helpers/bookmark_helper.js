@@ -44,9 +44,9 @@ bookmark_helper.delete_bookmark = async (bookmark_id) => {
         return { status: 0, message: "Error occured while deleting user", error: err };
     }
 };
-bookmark_helper.delete_bookmark_by_track_id = async (track_id) => {
+bookmark_helper.delete_bookmark_by_track_id = async (track_id, user_id) => {
     try {
-        let user = await Bookmark.deleteMany({ track_id: new ObjectId(track_id) });
+        let user = await Bookmark.deleteMany({ "track_id": new ObjectId(track_id), "user_id": new ObjectId(user_id) });
         if (!user) {
             return { status: 2, message: "Record has not Deleted" };
         } else {
@@ -269,12 +269,13 @@ bookmark_helper.get_all_bookmarked_tracks = async (user_id, start, length) => {
 
 
 bookmark_helper.get_all_bookmarked = async (user_id) => {
+    console.log('1 => ', 1);
     try {
         var bookmark = await Bookmark
             .find({ "user_id": new ObjectId(user_id) })
             .populate({ path: 'track_id', populate: { path: 'artist_id' } })
             .populate({ path: 'user_id', populate: { path: 'music_type' } })
-
+        console.log('bookmark => ', bookmark);
         if (bookmark) {
             return { "status": 1, "message": "bookmark details found", "bookmark": bookmark };
         } else {
@@ -286,19 +287,19 @@ bookmark_helper.get_all_bookmarked = async (user_id) => {
 };
 
 
-bookmark_helper.get_all_bookmarked = async (track_id) => {
-    try {
-        var bookmark = await Bookmark
-            .find({ "track_id": new ObjectId(track_id) })
+// bookmark_helper.get_all_bookmarked = async (track_id) => {
+//     try {
+//         var bookmark = await Bookmark
+//             .find({ "track_id": new ObjectId(track_id) })
 
-        if (bookmark) {
-            return { "status": 1, "message": "bookmark details found", "bookmark": bookmark };
-        } else {
-            return { "status": 2, "message": "bookmark not found" };
-        }
-    } catch (err) {
-        return { "status": 0, "message": "Error occured while finding bookmark", "error": err }
-    }
-};
+//         if (bookmark) {
+//             return { "status": 1, "message": "bookmark details found", "bookmark": bookmark };
+//         } else {
+//             return { "status": 2, "message": "bookmark not found" };
+//         }
+//     } catch (err) {
+//         return { "status": 0, "message": "Error occured while finding bookmark", "error": err }
+//     }
+// };
 
 module.exports = bookmark_helper;

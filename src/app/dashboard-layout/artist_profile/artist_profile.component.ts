@@ -75,7 +75,6 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
     this.titleService.setTitle(this.route.snapshot.data['title']);
     this.user = JSON.parse(localStorage.getItem('user'));
     this.subscription = this.MessageService.getMessage().subscribe((response) => {
-      console.log('first => ');
       if (response && response['list'] !== 1) {
         this.audio_ins.forEach((ele, idx) => { this.audio_ins[idx] = false; });
       }
@@ -163,18 +162,22 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
             dataTablesParameters['artist_id'] = params['id'];
             dataTablesParameters['sort_by'] = this.sort_by;
             that.ArtistProfileService.getAllTrack(dataTablesParameters).subscribe((response) => {
-              console.log('second => ');
+              console.log('get all track response for artist => ', response);
               this.ngxService.stop();
               that.artisttrack = response['track']['music'];
               if (that.artisttrack.length > 0) {
                 that.artisttrack.forEach((ele) => { that.audio_ins.push(false); });
                 if (that.user && that.user['user']) {
                   that.ArtistProfileService.getBookmarkedTrackList().subscribe((response) => {
-                    console.log('third => ');
                     let bookmark_list = response['bookmark'];
+                    console.log('bookmark_list => ', bookmark_list);
                     that.artisttrack.forEach((ele) => {
+                      console.log('ele => ', ele);
                       let flag = false;
                       bookmark_list.forEach((bookmark) => {
+                        console.log('bookmark in foreach looop => ', bookmark);
+                        console.log('bookmark[track_id][_id] => ', bookmark['track_id']['_id']);
+                        console.log('ele[_id] => ', ele['_id']);
                         if (bookmark['track_id']['_id'] === ele['_id']) {
                           flag = true;
                           return;
@@ -193,7 +196,7 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
               });
               that.artist_track_row_cnt = (dataTablesParameters['start'] + 1);
             });
-          }, 0)
+          }, 0);
         },
         columns: [
           { data: '' },
@@ -218,21 +221,19 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
           'processing': '<i class="fa fa-spinner fa-spin loader"></i>',
         },
         ajax: (dataTablesParameters: any, callback) => {
-          console.log(dataTablesParameters);
-
           setTimeout(() => {
             that.audio_ins = [];
             dataTablesParameters['artist_id'] = params['id'];
             dataTablesParameters['sort_by'] = this.sort_by;
             that.ArtistProfileService.getAllRanking(dataTablesParameters).subscribe((response) => {
-              console.log('forth => ');
+              console.log('get all track response for ratings => ', response);
               that.rankingtrack = response['track']['music'];
               that.rankingtrack.forEach((ele) => { that.audio_ins.push(false); });
               // that.rankingtrack.forEach((ele) => {ele['is_bookmarked'] = false;});
               if (that.user && that.user['user']) {
                 that.ArtistProfileService.getBookmarkedTrackList().subscribe((response) => {
-                  console.log('fifth => ');
                   let bookmark_list = response['bookmark'];
+                  console.log('another bookmark_list => ', bookmark_list);
                   that.rankingtrack.forEach((ele) => {
                     let flag = false;
                     bookmark_list.forEach((bookmark) => {
@@ -253,7 +254,7 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
               });
               that.ranking_track_row_cnt = (dataTablesParameters['start'] + 1);
             });
-          }, 0)
+          }, 0);
 
         },
         columns: [
@@ -268,7 +269,6 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
       };
       if (this.user && this.user['user']) {
         this.ArtistProfileService.getUserFollowing().subscribe((response) => {
-          console.log('fifth => ');
           if (response['artist'] && response['artist'].indexOf(params['id']) !== -1) {
             this.artist_following = true;
           }
@@ -331,7 +331,6 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
 
   // Stop audio
   stopAudio(index, data: any) {
-    // console.log(this.audio_ins[index]);
     // this.audio_ins[index].pause();
     // this.audio_ins[index].currentTime = 0;
     // // this.audio_ins[index].stop();
@@ -360,7 +359,6 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
 
   // Stop audio
   stopRankAudio(index, data: any) {
-    // console.log(this.audio_ins[index]);
     // this.rank_audio_ins[index].pause();
     // this.rank_audio_ins[index].currentTime = 0;
     // // this.audio_ins[index].stop();
@@ -495,15 +493,13 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
     let user = JSON.parse(localStorage.getItem('user'));
     if (user && user.user) {
       this.ArtistProfileService.downloadTrack(id).subscribe(response => {
-        console.log(response);
         window.location.href = this.user_img_url + response['filename'];
       }, error => {
         this.toastr.error(error['error'].message, 'Error!');
       });
     } else if (user && user.artist) {
       this.toastr.info('Only listenr can download this track.', 'Info!');
-    }
-    else {
+    } else {
       this.toastr.info('Please login to download this track.', 'Info!');
     }
   }
@@ -511,13 +507,16 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
   // Bookmark particular track
   bookMarkTrack(id: any, index: any, type: any) {
     if (this.user && this.user['user']) {
-      console.log('type => ', type);
+      console.log('type on bookmark function => ', type);
+      console.log('is_bookmarked => ', this.artisttrack[index]['is_bookmarked']);
       if (type === 'track') {
         this.artisttrack[index]['is_bookmarked'] = !this.artisttrack[index]['is_bookmarked'];
         let data = {
+          // is_bookmarked: this.artisttrack[index]['is_bookmarked'],
           track_id: id
         };
         this.ArtistProfileService.bookmarkTrack(data).subscribe((response) => {
+          console.log('Bookmark response => ', response);
           this.toastr.success(response['message'], 'Success!');
         }, (error) => {
           this.artisttrack[index]['is_bookmarked'] = !this.artisttrack[index]['is_bookmarked'];
@@ -526,6 +525,7 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
       } else {
         this.rankingtrack[index]['is_bookmarked'] = !this.rankingtrack[index]['is_bookmarked'];
         let data = {
+          // is_bookmarked: this.rankingtrack[index]['is_bookmarked'],
           track_id: id
         };
         this.ArtistProfileService.bookmarkTrack(data).subscribe((response) => {
@@ -543,7 +543,6 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
   // share on facebook
   shareOnFacebook() {
     let track = this.track_data;
-    console.log(track);
     let url = 'http://' + window.location.host + '/artist_profile/' + track['artist_id']['_id'] + '/track/' + track['_id'] + '/comments';
     let str = 'Track Name: ' + track['name'] + '\nArtist: ' + track['artist_id']['first_name'] + ' ' + track['artist_id']['last_name'] + '\nDescription: ' + track['description'];
     // var facebookWindow = window.open('https://www.facebook.com/sharer.php?s=100&p[summary]='+encodeURIComponent(str)+"&p[url]="+encodeURIComponent(url), 'facebook-popup', 'height=350,width=600');
@@ -564,7 +563,6 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
   // share on twitter
   shareOnTwitter() {
     let track = this.track_data;
-    console.log(track);
     let url = 'http://' + window.location.host + '/artist_profile/' + track['artist_id']['_id'] + '/track/' + track['_id'] + '/comments';
     let str = 'Track Name: ' + track['name'] + '\nArtist: ' + track['artist_id']['first_name'] + ' ' + track['artist_id']['last_name'] + '\nDescription: ' + track['description'];
     var twitterWindow = window.open('https://twitter.com/share?url=' + encodeURIComponent(url) + '&text=' + encodeURIComponent(str), 'twitter-popup', 'height=350,width=600');
@@ -627,7 +625,6 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
   // copy share track link
   copy_link() {
     let track = this.track_data;
-    console.log(track);
     let url = 'http://' + window.location.host + '/artist_profile/' + track['artist_id']['_id'] + '/track/' + track['_id'] + '/comments';
     var textArea = document.createElement('textarea');
     textArea.value = url;
@@ -703,7 +700,6 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
           this.show_spinner = false;
         } else {
           // Send the token to your server.
-          console.log(result.token);
           let data = {
             track_id: this.track_data['_id'],
             card_id: result['token']['id']
@@ -717,7 +713,7 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
           }, () => {
             this.show_spinner = false;
           });
-          //this.stripeTokenHandler(result.token);
+          // this.stripeTokenHandler(result.token);
         }
       });
     });

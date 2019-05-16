@@ -164,8 +164,8 @@
                                     (click)="playAudio(artist.audio, i, artisttrack)" class="play_img"><img
                                       src="img/play_icon.png" /></a>
                                   <a [style.display]="audio_ins[i] ? 'block' : 'none'"
-                                    (click)="stopAudio(i, artisttrack)" class="pause_img"><img
-                                      src="img/pause_icon.png" /></a>
+                                    (click)="stopAudio(i, artisttrack)" class="pause_img">
+                                    <img src="img/pause_icon.png" /></a>
                                 </div>
                                 <!-- <img src="img/play.png " alt="Pause "  [style.display]="!audio_ins[i] ? 'block' : 'none'" (click)="playAudio(artist.audio, i, artisttrack)">
                                     <img src="img/pause.png " alt="Pause "  [style.display]="audio_ins[i] ? 'block' : 'none'" (click)="stopAudio(i, artisttrack)"> -->
@@ -175,7 +175,6 @@
                               <td class="track-det" colspan="2">
                                 <div class="track-pic">
                                   <a href="javascript:;">
-                                    <!-- defaultImage="img/music-player-grey.svg" -->
                                     <img defaultImage="img/default_img.png" offset="100"
                                       lazyLoad="{{artist.image ? track_url+artist.image : 'img/upload1.png'}}"
                                       style="height:50px;width:50px;" alt="Track Image">
@@ -199,7 +198,7 @@
                               </td>
                               <td class="action music_action" colspan="2">
                                 <div class="cmt">
-                                  <!-- {{artist.is_bookmarked}} -->
+                                  {{artist.is_bookmarked}}
                                   <a href="javascript:;" title="Bookmarked Track" class="liked"
                                     (click)="bookMarkTrack(artist._id, i, 'track')">
                                     <i class="fa {{artist['is_bookmarked'] ? 'fa-heart' : 'fa-heart-o'}}"></i>
@@ -223,13 +222,11 @@
                                   <a href="javascript:;" title="Comment"
                                     (click)="goToComment(artistdata['_id'], artist._id)">
                                     <span *ngIf="artist.no_of_comments > 0; else templatecomment">
-                                      <img class="" src="img/comment3.png" alt="">
+                                      <img src="img/comment3.png" alt="">
                                     </span>
                                     <ng-template #templatecomment>
-                                      <img class="" src="img/comment.png" alt="">
+                                      <img src="img/comment.png" alt="">
                                     </ng-template>
-
-
                                     {{artist.no_of_comments}}
                                   </a>
                                 </div>
