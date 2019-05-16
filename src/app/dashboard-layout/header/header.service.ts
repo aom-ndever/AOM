@@ -6,33 +6,37 @@ import { environment } from '../../../../src/environments/environment';
 import { dashCaseToCamelCase } from '@angular/compiler/src/util';
 @Injectable()
 export class HeaderService {
-  private api_host : any = environment.API_URL;
+  private api_host: any = environment.API_URL;
   constructor(private http: HttpClient) { }
 
   private headers = new Headers({ 'Content-Type': 'application/json' });
 
   //Artist login
-  artist_login(data : any) {
+  artist_login(data: any) {
     return this.http.post(`${this.api_host}/artist_login`, data);
   }
   //user login
-  user_login(data : any) {
+  user_login(data: any) {
     return this.http.post(`${this.api_host}/user_login`, data);
   }
+  //login
+  login(data: any) {
+    return this.http.post(`${this.api_host}/login`, data);
+  }
   // Forget password for artist
-  artistForgetPassword(data : any) {
+  artistForgetPassword(data: any) {
     return this.http.post(`${this.api_host}/artist_forgot_password`, data);
   }
   // Forget password for user
-  userForgetPassword(data : any) {
+  userForgetPassword(data: any) {
     return this.http.post(`${this.api_host}/user_forgot_password`, data);
   }
   // Facebook login
-  userFacebookLogin(data : any) {
+  userFacebookLogin(data: any) {
     return this.http.post(`${this.api_host}/user_registration_facebook`, data);
   }
   // Google login
-  userGoogleLogin(data : any) {
+  userGoogleLogin(data: any) {
     return this.http.post(`${this.api_host}/user_registration_gmail`, data);
   }
 }

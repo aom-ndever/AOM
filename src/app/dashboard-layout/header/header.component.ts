@@ -27,6 +27,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   auth2: any;
   subscription: Subscription;
   toggleMenu: boolean = false;
+  public userType;
   private modalRef: NgbModalRef;
   private modalForgetRef: NgbModalRef;
   constructor(private modalService: NgbModal,
@@ -39,6 +40,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   ) {
     this.user = JSON.parse(localStorage.getItem('user'));
     this.MessageService.sendMessage({ loggedin_user: this.user });
+    console.log('this.user => ', this.user);
 
     if (this.user && this.user.artist) {
       this.user.artist['image'] = typeof this.user.artist['image'] !== 'undefined' ? environment.API_URL +
@@ -79,11 +81,15 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.login_form = this.fb.group({
       email: ['', [Validators.required]],
       password: ['', [Validators.required]],
-      type: ['', [Validators.required]]
+
+      // ******************************* updated code **************************************
+      // type: ['', [Validators.required]]
     });
     this.forget_form = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
-      type: ['', [Validators.required]]
+
+      // ******************************* updated code **************************************
+      // type: ['', [Validators.required]]
     });
   }
 
@@ -166,17 +172,21 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   login(flag: boolean) {
+    // ******************************* updated code **************************************
     console.log('flag => ', flag);
-    console.log('login', this.userdata);
-    if (this.userdata['type'] === 'artist' && flag) {
-      this.show_spinner = true;
-      this.login_validation = !flag;
-      this.HeaderService.artist_login(this.userdata).subscribe(response => {
-        console.log(response);
-        localStorage.setItem('user', JSON.stringify(response));
+    console.log('userdata', this.userdata);
+    this.show_spinner = true;
+    // console.log('userData[type] => ', this.userdata['type']);
+    this.HeaderService.login(this.userdata).subscribe(response => {
+      console.log('response => ', response);
+      if (response['user']) {
+        console.log('user => ');
+        this.userType = response['user'].type;
         this.toastr.success('Login Done', 'Success!');
+        localStorage.setItem('user', JSON.stringify(response));
         this.modalRef.close();
         this.user = JSON.parse(localStorage.getItem('user'));
+        console.log('this.user in user => ', this.user);
         if (this.user && this.user.artist) {
           this.user.artist['image'] = typeof this.user.artist['image'] !== 'undefined' ?
             environment.API_URL + environment.ARTIST_IMG + this.user.artist['image'] : '';
@@ -186,45 +196,100 @@ export class HeaderComponent implements OnInit, OnDestroy {
         }
         this.MessageService.sendMessage({ 'loggedin_user': this.user });
         this.router.navigate(['']);
-      }, error => {
-        console.log(error);
-        this.show_spinner = false;
-        this.toastr.error(error['error'].message, 'Error!');
-      }, () => {
-        this.show_spinner = false;
-      });
-    } else {
-      this.login_validation = !flag;
-    }
+      } else if (response['artist']) {
+        console.log('artist => ');
+        this.userType = response['artist'].type;
+        localStorage.setItem('user', JSON.stringify(response));
+        this.toastr.success('Login Done', 'Success!');
+        this.modalRef.close();
+        this.user = JSON.parse(localStorage.getItem('user'));
+        console.log('this.user in user => ', this.user);
+        if (this.user && this.user.artist) {
+          this.user.artist['image'] = typeof this.user.artist['image'] !== 'undefined' ?
+            environment.API_URL + environment.ARTIST_IMG + this.user.artist['image'] : '';
+        } else if (this.user && this.user.user) {
+          this.user.user['image'] = typeof this.user.user['image'] !== 'undefined' ?
+            environment.API_URL + environment.USER_IMG + this.user.user['image'] : '';
+        }
+        this.MessageService.sendMessage({ 'loggedin_user': this.user });
+        this.router.navigate(['']);
+      }
+      console.log('this.userType => ', this.userType);
+    }, error => {
+      console.log(error);
+      this.show_spinner = false;
+      this.toastr.error(error['error'].message, 'Error!');
+    }, () => {
+      this.show_spinner = false;
+    });
+    // ******************************* updated code **************************************
 
-    if (this.userdata['type'] === 'listener' && flag) {
-      this.show_spinner = true;
-      this.login_validation = !flag;
-      this.HeaderService.user_login(this.userdata).subscribe(response => {
-        console.log(response);
-        this.toastr.success('Login Done', 'Success!');
-        localStorage.setItem('user', JSON.stringify(response));
-        this.modalRef.close();
-        this.user = JSON.parse(localStorage.getItem('user'));
-        if (this.user && this.user.artist) {
-          this.user.artist['image'] = typeof this.user.artist['image'] !== 'undefined' ?
-            environment.API_URL + environment.ARTIST_IMG + this.user.artist['image'] : '';
-        } else if (this.user && this.user.user) {
-          this.user.user['image'] = typeof this.user.user['image'] !== 'undefined' ?
-            environment.API_URL + environment.USER_IMG + this.user.user['image'] : '';
-        }
-        this.MessageService.sendMessage({ 'loggedin_user': this.user });
-        this.router.navigate(['']);
-      }, error => {
-        console.log(error);
-        this.show_spinner = false;
-        this.toastr.error(error['error'].message, 'Error!');
-      }, () => {
-        this.show_spinner = false;
-      });
-    } else {
-      this.login_validation = !flag;
-    }
+
+
+
+    /***************************************** old code ***********************************/
+    // if (this.userdata['type'] === 'artist' && flag) {
+    //   this.show_spinner = true;
+    //   this.login_validation = !flag;
+    //   // this.HeaderService.artist_login(this.userdata).subscribe(response => {
+    //   this.HeaderService.login(this.userdata).subscribe(response => {
+    //     console.log(response);
+    //     localStorage.setItem('user', JSON.stringify(response));
+    //     this.toastr.success('Login Done', 'Success!');
+    //     this.modalRef.close();
+    //     this.user = JSON.parse(localStorage.getItem('user'));
+    //     console.log('this.user => ', this.user);
+    //     if (this.user && this.user.artist) {
+    //       this.user.artist['image'] = typeof this.user.artist['image'] !== 'undefined' ?
+    //         environment.API_URL + environment.ARTIST_IMG + this.user.artist['image'] : '';
+    //     } else if (this.user && this.user.user) {
+    //       this.user.user['image'] = typeof this.user.user['image'] !== 'undefined' ?
+    //         environment.API_URL + environment.USER_IMG + this.user.user['image'] : '';
+    //     }
+    //     this.MessageService.sendMessage({ 'loggedin_user': this.user });
+    //     this.router.navigate(['']);
+    //   }, error => {
+    //     console.log(error);
+    //     this.show_spinner = false;
+    //     this.toastr.error(error['error'].message, 'Error!');
+    //   }, () => {
+    //     this.show_spinner = false;
+    //   });
+    // } else {
+    //   this.login_validation = !flag;
+    // }
+
+    // if (this.userdata['type'] === 'listener' && flag) {
+    //   this.show_spinner = true;
+    //   this.login_validation = !flag;
+    //   this.HeaderService.user_login(this.userdata).subscribe(response => {
+    //     console.log(response);
+    //     this.toastr.success('Login Done', 'Success!');
+    //     localStorage.setItem('user', JSON.stringify(response));
+    //     this.modalRef.close();
+    //     this.user = JSON.parse(localStorage.getItem('user'));
+    //     if (this.user && this.user.artist) {
+    //       this.user.artist['image'] = typeof this.user.artist['image'] !== 'undefined' ?
+    //         environment.API_URL + environment.ARTIST_IMG + this.user.artist['image'] : '';
+    //     } else if (this.user && this.user.user) {
+    //       this.user.user['image'] = typeof this.user.user['image'] !== 'undefined' ?
+    //         environment.API_URL + environment.USER_IMG + this.user.user['image'] : '';
+    //     }
+    //     this.MessageService.sendMessage({ 'loggedin_user': this.user });
+    //     this.router.navigate(['']);
+    //   }, error => {
+    //     console.log(error);
+    //     this.show_spinner = false;
+    //     this.toastr.error(error['error'].message, 'Error!');
+    //   }, () => {
+    //     this.show_spinner = false;
+    //   });
+    // } else {
+    //   this.login_validation = !flag;
+    // }
+    /***************************************** old code ***********************************/
+
+
   }
 
   forgetPassword(flag: boolean) {
@@ -246,7 +311,12 @@ export class HeaderComponent implements OnInit, OnDestroy {
           this.show_spinner = false;
         });
       } else {
-        this.HeaderService.userForgetPassword({ email: this.forget_pwd_data.email, type: this.forget_pwd_data.type }).subscribe(response => {
+        this.HeaderService.userForgetPassword(
+          {
+            email: this.forget_pwd_data.email,
+            type: this.forget_pwd_data.type
+          }
+        ).subscribe(response => {
           console.log('user ', response);
           this.toastr.success(response['message'], 'Success!');
           this.modalForgetRef.close();

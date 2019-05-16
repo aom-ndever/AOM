@@ -451,7 +451,8 @@ router.get(newFunction(), async (req, res) => {
  * @apiSuccess (Success 200) {String} refresh_token Unique token which needs to be passed to generate next access token.
  * @apiError (Error 4xx) {String} message Validation or error message.
  */
-router.post('/artist_login', async (req, res) => {
+
+router.post('/login', async (req, res) => {
 
   logger.trace("API - artist login called");
   logger.debug("req.body = ", req.body);
@@ -468,64 +469,111 @@ router.post('/artist_login', async (req, res) => {
   req.checkBody(schema);
   var errors = req.validationErrors();
   if (!errors) {
-    if (req.body.type == 'artist') {
+    // if (req.body.type == 'artist') {
 
-      let login_resp = await artist_helper.get_login_by_email(req.body.email);
-
+    let login_resp = await artist_helper.get_login_by_email(req.body.email);
+    console.log('login_resp => ', login_resp);
+    let userlogin_resp = await user_helper.get_login_by_email(req.body.email);
+    console.log('userlogin_resp => ', userlogin_resp);
+    logger.trace("Login checked resp = ", login_resp);
+    if (login_resp.status === 0 && userlogin_resp.status === 0) {
       logger.trace("Login checked resp = ", login_resp);
-      if (login_resp.status === 0) {
-        logger.trace("Login checked resp = ", login_resp);
-        logger.error("Error in finding by email in login API. Err = ", login_resp.err);
+      logger.error("Error in finding by email in login API. Err = ", login_resp.err);
 
-        res.status(config.INTERNAL_SERVER_ERROR).json({ "status": 0, "message": "Something went wrong while finding artist", "error": login_resp.error });
-      } else if (login_resp.status === 1) {
-        logger.trace("Artist found. Executing next instruction");
-        logger.trace("valid token. Generating token");
-        if (login_resp.artist.flag == false) {
-          if (bcrypt.compareSync(req.body.password, login_resp.artist.password) && req.body.email == login_resp.artist.email) {
+      res.status(config.INTERNAL_SERVER_ERROR).json({ "status": 0, "message": "Something went wrong while finding artist", "error": login_resp.error });
+    }
+    else if (login_resp.status === 1) {
+      console.log('2 => ', 2);
+      logger.trace("Artist found. Executing next instruction");
+      logger.trace("valid token. Generating token");
+      if (login_resp.artist.flag == false) {
+        if (bcrypt.compareSync(req.body.password, login_resp.artist.password) && req.body.email == login_resp.artist.email) {
 
-            if (login_resp.artist.email_verified) {
+          if (login_resp.artist.email_verified) {
 
-              var refreshToken = jwt.sign({ id: login_resp.artist._id }, config.REFRESH_TOKEN_SECRET_KEY, {});
-              let update_resp = await artist_helper.update_artist_by_id(login_resp.artist._id, { "refresh_token": refreshToken, "last_login": Date.now() });
-              var LoginJson = { id: login_resp.artist._id, email: login_resp.email, role: "artist" };
-              var token = jwt.sign(LoginJson, config.ACCESS_TOKEN_SECRET_KEY, {
-                expiresIn: config.ACCESS_TOKEN_EXPIRE_TIME
-              });
-              delete login_resp.artist.status;
-              delete login_resp.artist.password;
-              delete login_resp.artist.refresh_token;
-              delete login_resp.artist.last_login_date;
-              delete login_resp.artist.created_at;
-              console.log('login_resp.artist._id', login_resp.artist._id);
+            var refreshToken = jwt.sign({ id: login_resp.artist._id }, config.REFRESH_TOKEN_SECRET_KEY, {});
+            let update_resp = await artist_helper.update_artist_by_id(login_resp.artist._id, { "refresh_token": refreshToken, "last_login": Date.now() });
+            var LoginJson = { id: login_resp.artist._id, email: login_resp.email, role: "artist" };
+            var token = jwt.sign(LoginJson, config.ACCESS_TOKEN_SECRET_KEY, {
+              expiresIn: config.ACCESS_TOKEN_EXPIRE_TIME
+            });
+            delete login_resp.artist.status;
+            delete login_resp.artist.password;
+            delete login_resp.artist.refresh_token;
+            delete login_resp.artist.last_login_date;
+            delete login_resp.artist.created_at;
+            console.log('login_resp.artist._id', login_resp.artist._id);
 
-              logger.info("Token generated");
-              var count = await ArtistNotification.countDocuments({ "isSeen": 0, "receiver": new ObjectId(login_resp.artist._id) })
+            logger.info("Token generated");
+            var count = await ArtistNotification.countDocuments({ "isSeen": 0, "receiver": new ObjectId(login_resp.artist._id) })
 
-              res.status(config.OK_STATUS).json({ "status": 1, "message": "Logged in successful", "artist": login_resp.artist, "token": token, "refresh_token": refreshToken, "count": count });
-            }
-            else {
-              res.status(config.BAD_REQUEST).json({ "status": 0, "message": "Email not verified" });
-            }
+            res.status(config.OK_STATUS).json({ "status": 1, "message": "Logged in successful", "artist": login_resp.artist, "token": token, "refresh_token": refreshToken, "count": count });
           }
           else {
-            res.status(config.BAD_REQUEST).json({ "status": 0, "message": "Invalid email address or password" });
+            res.status(config.BAD_REQUEST).json({ "status": 0, "message": "Email not verified" });
           }
-
-
-        } else {
-          res.status(config.BAD_REQUEST).json({ message: "Your account is suspended by admin" });
-
         }
-      } else {
+        else {
+          res.status(config.BAD_REQUEST).json({ "status": 0, "message": "Invalid email address or password" });
+        }
 
-        res.status(config.BAD_REQUEST).json({ message: "Your email is not registered with this type" });
+
+      } else {
+        res.status(config.BAD_REQUEST).json({ message: "Your account is suspended by admin" });
+
       }
     }
-    else {
+    else if (userlogin_resp.status === 1) {
+      console.log('1 => ', 1);
+      logger.trace("Artist found. Executing next instruction");
+      logger.trace("valid token. Generating token");
+      if (userlogin_resp.user.flag == false) {
+        console.log('req.body.password, userlogin_resp.user.password => ', req.body.password, userlogin_resp.user.password);
+        if (bcrypt.compareSync(req.body.password, userlogin_resp.user.password) && req.body.email == userlogin_resp.user.email) {
 
-      res.status(config.BAD_REQUEST).json({ message: "Your email is not registered with this type" });
+          if (userlogin_resp.user.email_verified) {
+
+            var refreshToken = jwt.sign({ id: userlogin_resp.user._id }, config.REFRESH_TOKEN_SECRET_KEY, {});
+            let update_resp = await user_helper.update_user_by_id(userlogin_resp.user._id, { "refresh_token": refreshToken, "last_login": Date.now() });
+            var LoginJson = { id: userlogin_resp.user._id, email: userlogin_resp.email, role: "user" };
+            var token = jwt.sign(LoginJson, config.ACCESS_TOKEN_SECRET_KEY, {
+              expiresIn: config.ACCESS_TOKEN_EXPIRE_TIME
+            });
+            delete userlogin_resp.user.status;
+            delete userlogin_resp.user.password;
+            delete userlogin_resp.user.refresh_token;
+            delete userlogin_resp.user.last_login_date;
+            delete userlogin_resp.user.created_at;
+            console.log('userlogin_resp.user._id', userlogin_resp.user._id);
+
+            logger.info("Token generated");
+            var count = await ArtistNotification.countDocuments({ "isSeen": 0, "receiver": new ObjectId(userlogin_resp.user._id) })
+
+            res.status(config.OK_STATUS).json({ "status": 1, "message": "Logged in successful", "user": userlogin_resp.user, "token": token, "refresh_token": refreshToken, "count": count });
+          }
+          else {
+            res.status(config.BAD_REQUEST).json({ "status": 0, "message": "Email not verified" });
+          }
+        }
+        else {
+          res.status(config.BAD_REQUEST).json({ "status": 0, "message": "Invalid email address or password" });
+        }
+
+
+      } else {
+        res.status(config.BAD_REQUEST).json({ message: "Your account is suspended by admin" });
+
+      }
     }
+    // else {
+
+    //   res.status(config.BAD_REQUEST).json({ message: "Your email is not registered with this type" });
+    // }
+    // }
+    // else {
+
+    //   res.status(config.BAD_REQUEST).json({ message: "Your email is not registered with this type" });
+    // }
   }
   else {
 
@@ -559,7 +607,7 @@ router.post('/artist_login', async (req, res) => {
  */
 router.post('/user_registration', async (req, res) => {
 
-  logger.trace("API - artist signup called");
+  logger.trace("API - user signup called");
   logger.debug("req.body = ", req.body);
   var schema = {
 
