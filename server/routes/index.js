@@ -170,7 +170,7 @@ router.post('/artist_registration', async (req, res) => {
           "to": data.artist.email,
           "subject": "Music Social Voting - Email confirmation"
         }, {
-            "confirm_url": config.website_url + "/artist_email_verify/" + data.artist._id
+            "confirm_url": config.website_url + "/email_confirm/artist/" + data.artist._id
           });
 
         if (mail_resp.status === 0) {
@@ -397,7 +397,7 @@ router.post('/user_registration_gmail', async (req, res) => {
  * @apiSuccess (Success 200) {String} message Success message
  * @apiError (Error 4xx) {String} message Validation or error message.
  */
-router.get('/artist_email_verify/:artist_id', async (req, res) => {
+router.get(newFunction(), async (req, res) => {
 
   logger.debug("req.body = ", req.body);
 
@@ -634,7 +634,7 @@ router.post('/user_registration', async (req, res) => {
           "to": data.user.email,
           "subject": "Music Social Voting - Email confirmation"
         }, {
-            "confirm_url": config.website_url + "/user_email_verify/" + data.user._id
+            "confirm_url": config.website_url + "/email_confirm/user/" + data.user._id
           });
         if (mail_resp.status === 0) {
           res.status(config.INTERNAL_SERVER_ERROR).json({ "status": 0, "message": "Error occured while sending confirmation email", "error": mail_resp.error });
@@ -2011,3 +2011,7 @@ router.post('/get_contest', async (req, res) => {
 });
 
 module.exports = router;
+function newFunction() {
+  return '/artist_email_verify/:artist_id';
+}
+

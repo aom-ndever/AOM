@@ -3,7 +3,7 @@ import { FormGroup, FormBuilder, Validators, FormControl, AbstractControl, NG_VA
 import { ToastrService } from 'ngx-toastr';
 import { EamilVarificationService } from './email_varification.service';
 import { environment } from '../../../src/environments/environment';
-import { ActivatedRoute, Router } from '@angular/router'; 
+import { ActivatedRoute, Router } from '@angular/router';
 declare const gapi: any;
 
 @Component({
@@ -12,16 +12,17 @@ declare const gapi: any;
   styleUrls: []
 })
 export class EmailVarificationComponent implements OnInit {
- 
+
 
   constructor(private fb: FormBuilder,
-     private EamilVarificationService : EamilVarificationService, 
-     private toastr: ToastrService,
-     private route: ActivatedRoute,
-     private router: Router
-    ) {
-    this.route.params.subscribe(res =>  {
-      if(res.type && res.type == 'artist') {
+    private EamilVarificationService: EamilVarificationService,
+    private toastr: ToastrService,
+    private route: ActivatedRoute,
+    private router: Router
+  ) {
+    this.route.params.subscribe(res => {
+      console.log('res => ', res);
+      if (res.type && res.type === 'artist') {
         this.EamilVarificationService.artistEmailVarification(res.id).subscribe(response => {
           console.log('verification done artist', response);
           this.toastr.success(response['message'], 'Success!');
@@ -40,12 +41,12 @@ export class EmailVarificationComponent implements OnInit {
           console.log('user error', error);
         });
       }
-       console.log(res.id, res.type);
+      console.log(res.id, res.type);
     });
   }
 
   ngOnInit() {
-  
+
   }
-  
+
 }
