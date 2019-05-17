@@ -114,7 +114,6 @@ export class HomeComponent implements OnInit, OnDestroy {
   // Get all aritst based on max vote
   getMaxVoteAritst(data: any) {
     this.HomeService.getMaxVoteArtists(data).subscribe(response => {
-      console.log('first => ');
       this.artist_vote = response;
       this.artistChart(response['day_vote']);
       this.topLocationChart(response['location']);

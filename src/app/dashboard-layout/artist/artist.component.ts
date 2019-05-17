@@ -45,7 +45,6 @@ export class ArtistComponent implements OnInit {
     this.titleService.setTitle(this.route.snapshot.data['title']);
     this.getAllState();
     this.user = JSON.parse(localStorage.getItem('user'));
-    console.log(this.user);
   }
 
   ngOnInit() {
@@ -62,7 +61,6 @@ export class ArtistComponent implements OnInit {
   getAllData() {
     let data = {};
     this.ArtistService.getArtistData(data).subscribe(response => {
-      console.log('first => ');
       this.artistdata = response;
       this.getAllFollower();
     });
@@ -71,7 +69,6 @@ export class ArtistComponent implements OnInit {
   getAllArtistV1Data(data) {
     this.show_loader = true;
     this.ArtistService.getAllArtistv1(data).subscribe(response => {
-      console.log('second => ');
       this.ngxService.stop();
       this.artistv1 = response;
       this.show_filter = false;
@@ -91,7 +88,6 @@ export class ArtistComponent implements OnInit {
   }
   // Stop audio
   stopAudio(index) {
-    console.log(this.audio_ins[index]);
     this.audio_ins[index].pause();
     this.audio_ins[index].currentTime = 0;
     // this.audio_ins[index].stop();
@@ -143,7 +139,6 @@ export class ArtistComponent implements OnInit {
   // Get all music list
   getAllMusicType() {
     this.ArtistService.getAllMusicType().subscribe(response => {
-      console.log('third => ');
       this.music_list = response['music'];
     });
   }
@@ -152,7 +147,6 @@ export class ArtistComponent implements OnInit {
     let user = JSON.parse(localStorage.getItem('user'));
     if (user && user['user']) {
       this.ArtistService.getMyFollower().subscribe((response) => {
-        console.log('forth => ');
         this.my_follower_list = response['user'];
       });
     }

@@ -126,7 +126,6 @@ export class VoteComponent implements OnInit {
           }
           that.VoteService.getWinnersData(dataTablesParameters).subscribe((response) => {
             this.winner_list = response['data'];
-            // console.log('dsbdthj', this.winner_list[0].artist_id.music_type.name);
             this.audio_ins1 = [];
             this.audio_ins_list1 = [];
             this.winner_list.forEach((ele) => {
@@ -211,14 +210,12 @@ export class VoteComponent implements OnInit {
   // Get all music list
   getAllMusicType() {
     this.VoteService.getAllMusicType().subscribe(response => {
-      console.log('second => ');
       this.music_list = response['music'];
     });
   }
   // get all state
   getAllState() {
     this.VoteService.getAllState().subscribe((response) => {
-      console.log('first => ');
       this.state_list = response['state'];
     });
   }
@@ -229,7 +226,6 @@ export class VoteComponent implements OnInit {
     let user = JSON.parse(localStorage.getItem('user'));
     this.VoteService.getAllParticipants(data).subscribe((response) => {
       this.participants = response['data'];
-      console.log(this.participants);
       this.audio_ins = [];
       this.audio_ins_list = [];
       this.participants.forEach((ele) => {
@@ -256,7 +252,6 @@ export class VoteComponent implements OnInit {
       music_type: this.adv_filter.music_type ? this.adv_filter.music_type : ''
     };
     this.VoteService.getAllContest(data).subscribe((response) => {
-      console.log('third => ');
       this.contest_list = response['contest']['winner'];
       this.ngxService.stop();
       if (this.contest_list.length > 0) {
@@ -296,7 +291,6 @@ export class VoteComponent implements OnInit {
   }
   // vote to the track
   voteTrack(track_id, artist_id, contests_id, index) {
-    console.log(track_id, artist_id)
     let user = JSON.parse(localStorage.getItem('user'));
 
     if (user && user.user) {
@@ -305,7 +299,6 @@ export class VoteComponent implements OnInit {
         artist_id: artist_id,
         contest_id: contests_id
       };
-      console.log("data", data)
       this.vote_spinner = true;
       this.VoteService.giveVoteToTrack(data).subscribe((response) => {
         // if(!(response['message'].toLowerCase() == 'already voted')) {
@@ -452,7 +445,6 @@ export class VoteComponent implements OnInit {
       length: this.length,
       contest_id: this.contest_data
     };
-    console.log('type', this.advance_filter.music_type);
     if (this.advance_filter.music_type && this.advance_filter.music_type != "") {
       data['music_type'] = this.advance_filter.music_type;
     }
@@ -519,7 +511,6 @@ export class VoteComponent implements OnInit {
             ele['artist']['is_followed'] = false;
           }
         });
-        console.log("participant---------<", this.participants)
       });
     }
   }

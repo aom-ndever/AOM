@@ -81,7 +81,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   onChange(index: any) {
-    console.log(this.images[index]);
     if (this.images[index]['enable']) {
       this.images[index]['enable'] = false;
     } else {
@@ -109,7 +108,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.MessageService.sendMessage({ 'music_flag': 'yes' });
     this.show_loader = true;
     this.DashboardService.getAllData(data).subscribe(response => {
-      console.log('first => ');
       this.data = response;
       this.ngxService.stop();
       response['new_uploads'].forEach((ele) => {
@@ -163,7 +161,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
   // Get All music type  
   getAllMusicType() {
     this.DashboardService.getAllMusicType().subscribe(response => {
-      console.log('second => ');
       this.music_type_list = response['music'];
     });
   }
@@ -182,7 +179,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
   getAllFollower() {
     let user = JSON.parse(localStorage.getItem('user'));
     if (user && user['user']) {
-      console.log('dgdfgdfg', this.images);
       this.DashboardService.getFollower().subscribe(response => {
         this.images.forEach((ele) => {
           if (response['artist'] && response['artist'].indexOf(ele['artist_id']) !== -1) {
