@@ -1589,7 +1589,7 @@ router.post("/mainpage", async (req, res) => {
   if (!errors) {
     var artist_ids = [];
     var resp_artist = await track_helper.get_track_main(search, filters);
-
+    console.log('resp_artist => ', resp_artist);
     var resp_track = await track_helper.get_new_uploads(30, req.body.start, req.body.length);
 
     if (resp_track.status == 0 && resp_artist.status == 0) {

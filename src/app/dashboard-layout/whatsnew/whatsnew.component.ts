@@ -140,11 +140,12 @@ export class WhatsNewComponent implements OnInit, OnDestroy {
     this.audio_ins = [];
     this.show_loader = true;
     this.WhatsNewService.getWhatsnewData(data).subscribe(response => {
-      console.log('first => ');
       this.ngxService.stop();
       this.whatsnewdata = response;
+      console.log('this.whatsnewdata => ', this.whatsnewdata);
       this.artist_list = response['artist'];
       this.track_list = response['track'];
+      console.log('this.track_list => ', this.track_list);
       this.show_loader = false;
       if (this.whatsnewdata['track']) {
         this.whatsnewdata['track'].forEach((ele) => {

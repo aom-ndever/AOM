@@ -830,7 +830,7 @@ track_helper.get_track_main = async (filter, filters) => {
 
 
     ];
-
+    console.log('aggregate => ', aggregate);
     if (filters) {
         aggregate.push({
             "$match": filters

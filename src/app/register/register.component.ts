@@ -35,7 +35,7 @@ export class RegisterComponent implements OnInit {
     month: '',
     year: '',
     gender: '',
-    // region: '',
+    region: '',
     state: ''
   };
   public listener_data: any = {
@@ -44,7 +44,7 @@ export class RegisterComponent implements OnInit {
     month: '',
     year: '',
     gender: '',
-    // region: '',
+    region: '',
     state: ''
   };
   public user_data: any = {};
@@ -122,8 +122,8 @@ export class RegisterComponent implements OnInit {
     });
     this.artist_step4 = this.fb.group({
       zipcode: ['', [Validators.required, Validators.pattern('^[A-Za-z0-9]+$')]],
-      // region: ['', [Validators.required]],
-      // state: ['', [Validators.required]]
+      region: ['', [Validators.required]],
+      state: ['', [Validators.required]]
     });
 
     this.listener_step1 = this.fb.group({
@@ -145,8 +145,8 @@ export class RegisterComponent implements OnInit {
     });
     this.listener_step4 = this.fb.group({
       zipcode: ['', [Validators.required, Validators.pattern('^[A-Za-z0-9]+$')]],
-      // region: ['', [Validators.required]],
-      // state: ['', [Validators.required]]
+      region: ['', [Validators.required]],
+      state: ['', [Validators.required]]
     });
     this.RegisterService.getAllMusicType().subscribe(response => {
       this.music_types = response['music'];
@@ -221,41 +221,46 @@ export class RegisterComponent implements OnInit {
         console.log('response => ', response);
         const res = response;
         if (res['results'].length > 0 && res['results'][0].hasOwnProperty('address_components')) {
-          // if (res['results'][0]['address_components'].length > 3) {
-          //   this.location = res['results'][0]['address_components'][1]['long_name'] +
-          //     ', ' + res['results'][0]['address_components'][3]['long_name'];
-          //   // console.log('greater than 3 => ', this.location);
-          //   this.formattedState = res['results'][0]['address_components'][1]['long_name'];
-          //   // console.log('this.formattedState => ', this.formattedState);
-          // } else if (res['results'][0]['address_components'].length > 2) {
-          //   this.location = res['results'][0]['address_components'][1]['long_name'] +
-          //     ', ' + res['results'][0]['address_components'][2]['long_name'];
-          //   // console.log('greater than 2 => ', this.location);
-          // }
-
-          for (var i = 0; i < res['results'][0].address_components.length; i++) {
-            var addressType = res['results'][0].address_components[i].types[0];
-            if (addressType === 'administrative_area_level_1') {
-              this.formattedState = res['results'][0].address_components[i].long_name;
-              console.log('state => ', this.formattedState);
-            }
-            if (addressType === 'locality') {
-              var city = res['results'][0].address_components[i].long_name;
-              // console.log('city => ', city);
-            }
-            // console.log('city => ', city);
-            if (city !== undefined) {
-              // console.log('city is not undefined => ');
-              this.location = city + ',' + this.formattedState;
-            } else {
-              // console.log('here in else city undefined  => ');
-              this.location = '';
-            }
+          /***************************************** old code ***********************************/
+          if (res['results'][0]['address_components'].length > 3) {
+            this.location = res['results'][0]['address_components'][1]['long_name'] +
+              ', ' + res['results'][0]['address_components'][3]['long_name'];
+            // console.log('greater than 3 => ', this.location);
+            this.formattedState = res['results'][0]['address_components'][1]['long_name'];
+            // console.log('this.formattedState => ', this.formattedState);
+          } else if (res['results'][0]['address_components'].length > 2) {
+            this.location = res['results'][0]['address_components'][1]['long_name'] +
+              ', ' + res['results'][0]['address_components'][2]['long_name'];
+            // console.log('greater than 2 => ', this.location);
           }
+          /***************************************** old code ***********************************/
 
-        } else {
-          this.location = '';
-          // console.log('no location => ', this.location);
+          // ******************************* updated code **************************************
+          //   for (var i = 0; i < res['results'][0].address_components.length; i++) {
+          //     var addressType = res['results'][0].address_components[i].types[0];
+          //     if (addressType === 'administrative_area_level_1') {
+          //       this.formattedState = res['results'][0].address_components[i].long_name;
+          //       console.log('state => ', this.formattedState);
+          //     }
+          //     if (addressType === 'locality') {
+          //       var city = res['results'][0].address_components[i].long_name;
+          //       // console.log('city => ', city);
+          //     }
+          //     // console.log('city => ', city);
+          //     if (city !== undefined) {
+          //       // console.log('city is not undefined => ');
+          //       this.location = city + ',' + this.formattedState;
+          //     } else {
+          //       // console.log('here in else city undefined  => ');
+          //       this.location = '';
+          //     }
+          //   }
+
+          // } else {
+          //   this.location = '';
+          //   // console.log('no location => ', this.location);
+          // ******************************* updated code **************************************
+
         }
       });
     } else {
@@ -270,40 +275,45 @@ export class RegisterComponent implements OnInit {
       this.RegisterService.getLocationFromZipCode(this.listener_data['zipcode']).subscribe(response => {
         const res = response;
         if (res['results'].length > 0 && res['results'][0].hasOwnProperty('address_components')) {
-          //   if (res['results'][0]['address_components'].length > 3) {
-          //     this.location = res['results'][0]['address_components'][1]['long_name'] +
-          //       ', ' + res['results'][0]['address_components'][3]['long_name'];
-          //     // console.log('this.location > 3 => ', this.location);
-          //   } else if (res['results'][0]['address_components'].length > 2) {
-          //     this.location = res['results'][0]['address_components'][1]['long_name'] +
-          //       ', ' + res['results'][0]['address_components'][2]['long_name'];
-          //     // console.log('this.location > 2 => ', this.location);
-          //   }
-          // } else {
-          //   this.location = '';
-          // }
-          // console.log('res[results][0].address_components => ', res['results'][0].address_components);
-          for (var i = 0; i < res['results'][0].address_components.length; i++) {
-            var addressType = res['results'][0].address_components[i].types[0];
-            if (addressType === 'administrative_area_level_1') {
-              this.formattedState = res['results'][0].address_components[i].long_name;
-              console.log('state => ', this.formattedState);
-            }
-            if (addressType === 'locality') {
-              var city = res['results'][0].address_components[i].long_name;
-              // console.log('city => ', city);
-            }
-            // console.log('city => ', city);
-            if (city !== undefined) {
-              // console.log('city is not undefined => ');
-              this.location = city + ',' + this.formattedState;
-            } else {
-              // console.log('here in else city undefined  => ');
-              this.location = '';
-            }
+          /***************************************** old code ***********************************/
+          if (res['results'][0]['address_components'].length > 3) {
+            this.location = res['results'][0]['address_components'][1]['long_name'] +
+              ', ' + res['results'][0]['address_components'][3]['long_name'];
+            // console.log('this.location > 3 => ', this.location);
+          } else if (res['results'][0]['address_components'].length > 2) {
+            this.location = res['results'][0]['address_components'][1]['long_name'] +
+              ', ' + res['results'][0]['address_components'][2]['long_name'];
+            // console.log('this.location > 2 => ', this.location);
           }
-          console.log('this.location => ', this.location);
+        } else {
+          this.location = '';
         }
+        console.log('res[results][0].address_components => ', res['results'][0].address_components);
+        /***************************************** old code ***********************************/
+
+        // ******************************* updated code **************************************
+        // for (var i = 0; i < res['results'][0].address_components.length; i++) {
+        //   var addressType = res['results'][0].address_components[i].types[0];
+        //   if (addressType === 'administrative_area_level_1') {
+        //     this.formattedState = res['results'][0].address_components[i].long_name;
+        //     console.log('state => ', this.formattedState);
+        //   }
+        //   if (addressType === 'locality') {
+        //     var city = res['results'][0].address_components[i].long_name;
+        //     // console.log('city => ', city);
+        //   }
+        //   // console.log('city => ', city);
+        //   if (city !== undefined) {
+        //     // console.log('city is not undefined => ');
+        //     this.location = city + ',' + this.formattedState;
+        //   } else {
+        //     // console.log('here in else city undefined  => ');
+        //     this.location = '';
+        //   }
+        // }
+        // console.log('this.location => ', this.location);
+        // }
+        // ******************************* updated code **************************************
       });
     } else {
       this.location = '';
@@ -394,8 +404,8 @@ export class RegisterComponent implements OnInit {
     formData.append('music_type', this.artist_data['music_type']);
     formData.append('image', new_file);
     formData.append('phone_no', this.artist_data['phone_no']);
-    // formData.append('state', this.artist_data['state']);
-    formData.append('state', this.formattedState);
+    formData.append('state', this.artist_data['state']);
+    // formData.append('state', this.formattedState);
     formData.append('share_url', JSON.stringify(this.artist_data['share_url']));
     formData.append('dob', (new Date(this.artist_data['year'], this.artist_data['month'], this.artist_data['day']).toString()));
 
@@ -416,7 +426,7 @@ export class RegisterComponent implements OnInit {
         month: '',
         year: '',
         gender: '',
-        // region: '',
+        region: '',
         state: ''
       };
       this.toastr.success('Registration done successfully and confirmation email sent to your account please verify to do login.',
@@ -446,8 +456,8 @@ export class RegisterComponent implements OnInit {
         music_type: this.listener_data['music_type'],
         gender: this.listener_data['gender'],
         phone_no: this.listener_data['phone_no'],
-        // state: this.listener_data['state'],
-        state: this.formattedState,
+        state: this.listener_data['state'],
+        // state: this.formattedState,
         dob: new Date(this.listener_data['year'], this.listener_data['month'], this.listener_data['day'])
       };
       this.show_spinner = true;
@@ -461,7 +471,7 @@ export class RegisterComponent implements OnInit {
           month: '',
           year: '',
           gender: '',
-          // region: '',
+          region: '',
           state: ''
         };
         this.toastr.success('Registration done successfully and confirmation email sent to your account please verify to do login.',
