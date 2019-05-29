@@ -125,6 +125,7 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.ngxService.start();
     this.artistdata = this.route.snapshot.data['artist'].artist;
+    console.log('this.artistdata => ', this.artistdata);
     this.artistmedia = this.route.snapshot.data['media'].media;
     this.artistfollower = this.route.snapshot.data['follower'].artist;
     this.artistcomments = this.route.snapshot.data['comments'].comment;

@@ -108,6 +108,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.MessageService.sendMessage({ 'music_flag': 'yes' });
     this.show_loader = true;
     this.DashboardService.getAllData(data).subscribe(response => {
+      console.log('response getAllData() => ', response);
       this.data = response;
       this.ngxService.stop();
       response['new_uploads'].forEach((ele) => {
@@ -142,12 +143,13 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.images = [];
 
     data.forEach(ele => {
+      console.log('ele ================> ', ele);
       this.images.push({
         'source': ele.image ? this.track_url + ele.image : 'img/default_img.png',
         'alt': '',
         'title': ele.name,
         'name': ele.artist_id['first_name'] + ' ' + ele.artist_id['last_name'],
-        'location': ele && ele['state']['name'] ? ele['state']['name'] : '',
+        'location': ele.artist_id['state'],
         'type': ele.music_type['name'],
         'alias': ele.music_type['alias'],
         'audio': ele.audio,
