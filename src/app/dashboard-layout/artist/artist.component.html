@@ -221,8 +221,9 @@
                     {{artist_rising && artist_rising.music_type ?  artist_rising.music_type.name : ''}}</div>
                 </div>
                 <div class="location ">
-                  <p><i class="fa fa-map-marker "
-                      aria-hidden="true "></i><span>{{artist_rising && artist_rising.state ? artist_rising.state.name : ''}}</span>
+                  <p><i class="fa fa-map-marker " aria-hidden="true "></i>
+                    <!-- <span>{{artist_rising && artist_rising.state ? artist_rising.state.name : ''}}</span> -->
+                    <span>{{artist_rising && artist_rising.state ? artist_rising.state : ''}}</span>
                   </p>
                 </div>
               </div>
@@ -274,8 +275,9 @@
                       {{artist_chart['artist']['music_type']['name']}}</div>
                   </div>
                   <div class="location ">
-                    <p><i class="fa fa-map-marker "
-                        aria-hidden="true "></i><span>{{artist_chart && artist_chart['artist'].state ? artist_chart['artist'].state.name : ''}}</span>
+                    <p><i class="fa fa-map-marker " aria-hidden="true "></i>
+                      <!-- <span>{{artist_chart && artist_chart['artist'].state ? artist_chart['artist'].state.name : ''}}</span> -->
+                      <span>{{artist_chart && artist_chart['artist'].state ? artist_chart['artist'].state : ''}}</span>
                     </p>
 
                   </div>

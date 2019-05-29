@@ -221,9 +221,10 @@
                     {{artist && artist['music_type'] ? artist['music_type']['name'] : '' }}</div>
                 </div>
                 <div class="location ">
-                  <p><i class="fa fa-map-marker "
-                      aria-hidden="true "></i><span>{{artist && artist['state'] ? artist.state.name : ''}}</span></p>
-
+                  <p><i class="fa fa-map-marker " aria-hidden="true "></i>
+                    <!-- <span>{{artist && artist['state'] ? artist.state.name : ''}}</span> -->
+                    <span>{{artist && artist['state'] ? artist.state : ''}}</span>
+                  </p>
                 </div>
               </div>
             </div>
@@ -270,8 +271,10 @@
                   {{artist && artist['music_type'] ? artist['music_type']['name'] : '' }}</div>
               </div>
               <div class="location ">
-                <p><i class="fa fa-map-marker "
-                    aria-hidden="true "></i><span>{{artist && artist['state'] ? artist.state.name : ''}}</span></p>
+                <p><i class="fa fa-map-marker " aria-hidden="true "></i>
+                  <!-- <span>{{artist && artist['state'] ? artist.state.name : ''}}</span> -->
+                  <span>{{artist && artist['state'] ? artist.state : ''}}</span>
+                </p>
               </div>
             </div>
           </div>
@@ -325,8 +328,9 @@
                   </div>
                 </div>
                 <div class="location ">
-                  <p><i class="fa fa-map-marker "
-                      aria-hidden="true "></i><span>{{track && track.artist_id && track.artist_id['state'] ? track.artist_id['state']['name'] : ''}}</span>
+                  <p><i class="fa fa-map-marker " aria-hidden="true "></i>
+                    <!-- <span>{{track && track.artist_id && track.artist_id['state'] ? track.artist_id['state']['name'] : ''}}</span> -->
+                    <span>{{track && track.artist_id && track.artist_id['state'] ? track.artist_id['state']: ''}}</span>
                   </p>
                   <div class="cat {{track.artist_id.music_type['alias']}}">{{track.artist_id.music_type['name']}}</div>
                 </div>

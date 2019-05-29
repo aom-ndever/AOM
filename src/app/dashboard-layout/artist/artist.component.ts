@@ -71,6 +71,7 @@ export class ArtistComponent implements OnInit {
     this.ArtistService.getAllArtistv1(data).subscribe(response => {
       this.ngxService.stop();
       this.artistv1 = response;
+      console.log('this.artistv1 => ', this.artistv1);
       this.show_filter = false;
       this.show_loader = false;
       this.getAllFollower();
