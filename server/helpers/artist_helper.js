@@ -110,10 +110,10 @@ artist_helper.get_payment_by_day = async (artist_id, day) => {
     var aggregate = [
         {
             "$match":
-            {
-                "created_at": { "$gt": new Date(from), "$lt": new Date(to) },
-                "artist_id": new ObjectId(artist_id)
-            },
+                {
+                    "created_at": { "$gt": new Date(from), "$lt": new Date(to) },
+                    "artist_id": new ObjectId(artist_id)
+                },
         },
         {
             $project: {
@@ -337,17 +337,17 @@ artist_helper.get_artists = async (filter, search) => {
                     "featured": true
                 }
             },
-            {
-                $lookup: {
-                    from: "state",
-                    localField: "state",
-                    foreignField: "_id",
-                    as: "state"
-                }
-            },
-            {
-                $unwind: "$state"
-            },
+            // {
+            //     $lookup: {
+            //         from: "state",
+            //         localField: "state",
+            //         foreignField: "_id",
+            //         as: "state"
+            //     }
+            // },
+            // {
+            //     $unwind: "$state"
+            // },
 
             {
                 $lookup: {
@@ -456,17 +456,17 @@ artist_helper.get_all_artist = async (search, filter) => {
             {
                 "$match": { "flag": false }
             },
-            {
-                $lookup: {
-                    from: "state",
-                    localField: "state",
-                    foreignField: "_id",
-                    as: "state"
-                }
-            },
-            {
-                $unwind: "$state"
-            },
+            // {
+            //     $lookup: {
+            //         from: "state",
+            //         localField: "state",
+            //         foreignField: "_id",
+            //         as: "state"
+            //     }
+            // },
+            // {
+            //     $unwind: "$state"
+            // },
 
             {
                 $lookup: {
@@ -543,17 +543,17 @@ artist_helper.get_artist_by_filter = async (filter, start, length, filters) => {
             {
                 '$unwind': '$music_type'
             },
-            {
-                '$lookup': {
-                    from: 'state',
-                    localField: 'state',
-                    foreignField: '_id',
-                    as: 'state'
-                }
-            },
-            {
-                '$unwind': '$state'
-            },
+            // {
+            //     '$lookup': {
+            //         from: 'state',
+            //         localField: 'state',
+            //         foreignField: '_id',
+            //         as: 'state'
+            //     }
+            // },
+            // {
+            //     '$unwind': '$state'
+            // },
             {
                 $skip: start
             },
@@ -901,17 +901,17 @@ artist_helper.get_new_uploads = async (search, filter = {}) => {
             {
                 '$unwind': '$music_type'
             },
-            {
-                '$lookup': {
-                    from: 'state',
-                    localField: 'state',
-                    foreignField: '_id',
-                    as: 'state'
-                }
-            },
-            {
-                '$unwind': '$state'
-            },
+            // {
+            //     '$lookup': {
+            //         from: 'state',
+            //         localField: 'state',
+            //         foreignField: '_id',
+            //         as: 'state'
+            //     }
+            // },
+            // {
+            //     '$unwind': '$state'
+            // },
 
             // {
             //     $skip: start
