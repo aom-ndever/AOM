@@ -59,7 +59,7 @@ vote_track_helper.get_all_voted_artists = async () => {
             .find()
             .populate('track_id')
             .populate({ path: 'artist_id', populate: { path: 'music_type' } })
-            .populate({ path: 'artist_id', populate: { path: 'state' } })
+            // .populate({ path: 'artist_id', populate: { path: 'state' } })
             .populate('round_id')
 
         if (vote) {
@@ -80,10 +80,10 @@ vote_track_helper.get_artist_vote_by_day = async (artist_id, day) => {
     var aggregate = [
         {
             "$match":
-            {
-                "created_at": { "$gt": new Date(from), "$lt": new Date(to) },
-                "artist_id": new ObjectId(artist_id)
-            },
+                {
+                    "created_at": { "$gt": new Date(from), "$lt": new Date(to) },
+                    "artist_id": new ObjectId(artist_id)
+                },
         },
         {
             "$group": {
@@ -146,10 +146,10 @@ vote_track_helper.get_artist_vote_by_gender = async (artist_id, day) => {
     var aggregate = [
         {
             "$match":
-            {
-                "created_at": { "$gt": new Date(from), "$lt": new Date(to) },
-                "artist_id": new ObjectId(artist_id)
-            },
+                {
+                    "created_at": { "$gt": new Date(from), "$lt": new Date(to) },
+                    "artist_id": new ObjectId(artist_id)
+                },
         },
         {
             $lookup: {
@@ -213,9 +213,9 @@ vote_track_helper.get_artist_by_location_vote = async (id, day) => {
     var aggregate = [
         {
             "$match":
-            {
-                "created_at": { "$gt": new Date(from), "$lt": new Date(to) },
-            },
+                {
+                    "created_at": { "$gt": new Date(from), "$lt": new Date(to) },
+                },
         },
 
     ];
@@ -241,10 +241,10 @@ vote_track_helper.get_artist_by_location_votes = async (id, day) => {
     var aggregate = [
         {
             "$match":
-            {
-                "created_at": { "$gt": new Date(from), "$lt": new Date(to) },
-                "artist_id": new ObjectId(id)
-            },
+                {
+                    "created_at": { "$gt": new Date(from), "$lt": new Date(to) },
+                    "artist_id": new ObjectId(id)
+                },
         },
         {
             $lookup: {
@@ -257,22 +257,22 @@ vote_track_helper.get_artist_by_location_votes = async (id, day) => {
         {
             $unwind: "$user"
         },
-        {
-            $lookup: {
-                from: "state",
-                localField: "user.state",
-                foreignField: "_id",
-                as: "state"
-            }
-        },
-        {
-            $unwind: "$state"
-        },
+        // {
+        //     $lookup: {
+        //         from: "state",
+        //         localField: "user.state",
+        //         foreignField: "_id",
+        //         as: "state"
+        //     }
+        // },
+        // {
+        //     $unwind: "$state"
+        // },
         {
             "$group": {
                 _id: {
-                    _id: "$state.name",
-                    name: "$state.short_name"
+                    _id: "$user.state",
+                    //name: "$state.short_name"
 
                 },
                 value: { $sum: 1 },

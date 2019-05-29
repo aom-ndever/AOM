@@ -56,17 +56,17 @@ purchase_helper.get_purchased_track = async (user_id, start, length) => {
             {
                 '$unwind': '$music_type'
             },
-            {
-                '$lookup': {
-                    from: 'state',
-                    localField: 'artist.state',
-                    foreignField: '_id',
-                    as: 'state'
-                }
-            },
-            {
-                '$unwind': '$state'
-            },
+            // {
+            //     '$lookup': {
+            //         from: 'state',
+            //         localField: 'artist.state',
+            //         foreignField: '_id',
+            //         as: 'state'
+            //     }
+            // },
+            // {
+            //     '$unwind': '$state'
+            // },
 
             {
                 '$lookup': {
@@ -79,32 +79,32 @@ purchase_helper.get_purchased_track = async (user_id, start, length) => {
             {
                 '$unwind': '$user'
             },
-            // {
-            //     '$lookup': {
-            //         from: 'music_type',
-            //         localField: 'user.music_type',
-            //         foreignField: '_id',
-            //         as: 'music_type'
-            //     }
-            // },
-            // {
-            //     '$unwind': '$music_type'
-            // },
             {
                 '$lookup': {
-                    from: 'state',
-                    localField: 'user.state',
+                    from: 'music_type',
+                    localField: 'user.music_type',
                     foreignField: '_id',
-                    as: 'state'
+                    as: 'music_type'
                 }
             },
             {
-                '$unwind': '$state'
+                '$unwind': '$music_type'
             },
+            // {
+            //     '$lookup': {
+            //         from: 'state',
+            //         localField: 'user.state',
+            //         foreignField: '_id',
+            //         as: 'state'
+            //     }
+            // },
+            // {
+            //     '$unwind': '$state'
+            // },
             {
                 '$project': {
                     'artist.music_type': 0,
-                    'artist.state': 0,
+                    //'artist.state': 0,
                     'track.artist_id': 0
                 }
             },
@@ -157,17 +157,17 @@ purchase_helper.get_purchased_track = async (user_id, start, length) => {
             {
                 '$unwind': '$music_type'
             },
-            {
-                '$lookup': {
-                    from: 'state',
-                    localField: 'artist.state',
-                    foreignField: '_id',
-                    as: 'state'
-                }
-            },
-            {
-                '$unwind': '$state'
-            },
+            // {
+            //     '$lookup': {
+            //         from: 'state',
+            //         localField: 'artist.state',
+            //         foreignField: '_id',
+            //         as: 'state'
+            //     }
+            // },
+            // {
+            //     '$unwind': '$state'
+            // },
 
             {
                 '$lookup': {
@@ -180,32 +180,32 @@ purchase_helper.get_purchased_track = async (user_id, start, length) => {
             {
                 '$unwind': '$user'
             },
-            // {
-            //     '$lookup': {
-            //         from: 'music_type',
-            //         localField: 'user.music_type',
-            //         foreignField: '_id',
-            //         as: 'music_type'
-            //     }
-            // },
-            // {
-            //     '$unwind': '$music_type'
-            // },
             {
                 '$lookup': {
-                    from: 'state',
-                    localField: 'user.state',
+                    from: 'music_type',
+                    localField: 'user.music_type',
                     foreignField: '_id',
-                    as: 'state'
+                    as: 'music_type'
                 }
             },
             {
-                '$unwind': '$state'
+                '$unwind': '$music_type'
             },
+            // {
+            //     '$lookup': {
+            //         from: 'state',
+            //         localField: 'user.state',
+            //         foreignField: '_id',
+            //         as: 'state'
+            //     }
+            // },
+            // {
+            //     '$unwind': '$state'
+            // },
             {
                 '$project': {
                     'artist.music_type': 0,
-                    'artist.state': 0,
+                    //'artist.state': 0,
                     'track.artist_id': 0
                 }
             },

@@ -148,17 +148,17 @@ winner_helper.get_qualified = async (round_id, start, length, filter, filters) =
             //         "artist.flag": false
             //     }
             // },
-            {
-                '$lookup': {
-                    from: 'state',
-                    localField: 'artist.state',
-                    foreignField: '_id',
-                    as: 'state'
-                }
-            },
-            {
-                '$unwind': '$state'
-            },
+            // {
+            //     '$lookup': {
+            //         from: 'state',
+            //         localField: 'artist.state',
+            //         foreignField: '_id',
+            //         as: 'state'
+            //     }
+            // },
+            // {
+            //     '$unwind': '$state'
+            // },
             {
                 '$lookup': {
                     from: 'music_type',
@@ -173,7 +173,7 @@ winner_helper.get_qualified = async (round_id, start, length, filter, filters) =
             {
                 '$project': {
                     'artist.music_type': 0,
-                    'artist.state': 0,
+                    // 'artist.state': 0,
                     'track_id': 0,
                     'artist_id': 0
                 }

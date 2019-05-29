@@ -25,10 +25,10 @@ follower_helper.get_artist_followers_by_gender = async (artist_id, day) => {
     var aggregate = [
         {
             "$match":
-            {
-                "created_at": { "$gt": new Date(from), "$lt": new Date(to) },
-                "artist_id": new ObjectId(artist_id)
-            },
+                {
+                    "created_at": { "$gt": new Date(from), "$lt": new Date(to) },
+                    "artist_id": new ObjectId(artist_id)
+                },
         },
         {
             $lookup: {
@@ -81,10 +81,10 @@ follower_helper.get_artist_followers_by_day = async (artist_id, day) => {
     var aggregate = [
         {
             "$match":
-            {
-                "created_at": { "$gt": new Date(from), "$lt": new Date(to) },
-                "artist_id": new ObjectId(artist_id)
-            },
+                {
+                    "created_at": { "$gt": new Date(from), "$lt": new Date(to) },
+                    "artist_id": new ObjectId(artist_id)
+                },
         },
         {
             $group: {
@@ -111,10 +111,10 @@ follower_helper.get_artist_followers_by_age = async (artist_id, day) => {
     var aggregate = [
         {
             "$match":
-            {
-                "created_at": { "$gt": new Date(from), "$lt": new Date(to) },
-                "artist_id": new ObjectId(artist_id)
-            },
+                {
+                    "created_at": { "$gt": new Date(from), "$lt": new Date(to) },
+                    "artist_id": new ObjectId(artist_id)
+                },
         },
         {
             $lookup: {
@@ -145,10 +145,10 @@ follower_helper.get_artist_followers_by_location = async (artist_id, day) => {
     var aggregate = [
         {
             "$match":
-            {
-                "created_at": { "$gt": new Date(from), "$lt": new Date(to) },
-                "artist_id": new ObjectId(artist_id)
-            },
+                {
+                    "created_at": { "$gt": new Date(from), "$lt": new Date(to) },
+                    "artist_id": new ObjectId(artist_id)
+                },
         },
         {
             $lookup: {
@@ -162,22 +162,22 @@ follower_helper.get_artist_followers_by_location = async (artist_id, day) => {
             $unwind: "$user"
         },
 
-        {
-            $lookup: {
-                from: "state",
-                localField: "user.state",
-                foreignField: "_id",
-                as: "state"
-            }
-        },
-        {
-            $unwind: "$state"
-        },
+        // {
+        //     $lookup: {
+        //         from: "state",
+        //         localField: "user.state",
+        //         foreignField: "_id",
+        //         as: "state"
+        //     }
+        // },
+        // {
+        //     $unwind: "$state"
+        // },
         {
             "$group": {
                 _id: {
-                    _id: "$state.name",
-                    name: "$state.short_name"
+                    _id: "$user.state",
+                    // /name: "$state.short_name"
 
                 },
                 value: { $sum: 1 },

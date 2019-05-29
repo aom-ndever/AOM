@@ -154,7 +154,7 @@ track_helper.get_track_by_filter = async (id, filter, start, length) => {
         var track = await Track
             .find({ "artist_id": { $in: id } })
             .populate({ path: 'artist_id', populate: { path: 'music_type' } })
-            .populate({ path: 'artist_id', populate: { path: 'state' } })
+            //  .populate({ path: 'artist_id', populate: { path: 'state' } })
             .sort({ "no_of_likes": - 1 })
             .skip(start)
             .limit(length)
@@ -306,10 +306,10 @@ track_helper.get_all_track_by_id = async (artist_id) => {
         },
         {
             "$project":
-            {
-                "_id": 1,
-                "no_of_likes": 1
-            }
+                {
+                    "_id": 1,
+                    "no_of_likes": 1
+                }
         }
         ];
         var track = await Track.aggregate(aggregate);
@@ -422,9 +422,9 @@ track_helper.get_artist_by_day_vote = async (day) => {
     var aggregate = [
         {
             "$match":
-            {
-                "created_at": { "$gt": new Date(from), "$lt": new Date(to) },
-            },
+                {
+                    "created_at": { "$gt": new Date(from), "$lt": new Date(to) },
+                },
         },
         {
             $group: {
@@ -449,9 +449,9 @@ track_helper.get_artist_by_location_vote = async (day) => {
     var aggregate = [
         {
             "$match":
-            {
-                "created_at": { "$gt": new Date(from), "$lt": new Date(to) },
-            },
+                {
+                    "created_at": { "$gt": new Date(from), "$lt": new Date(to) },
+                },
         },
         {
             $lookup: {
@@ -464,21 +464,21 @@ track_helper.get_artist_by_location_vote = async (day) => {
         {
             $unwind: "$user"
         },
-        {
-            $lookup: {
-                from: "state",
-                localField: "user.state",
-                foreignField: "_id",
-                as: "state"
-            }
-        },
-        {
-            $unwind: "$state"
-        },
+        // {
+        //     $lookup: {
+        //         from: "state",
+        //         localField: "user.state",
+        //         foreignField: "_id",
+        //         as: "state"
+        //     }
+        // },
+        // {
+        //     $unwind: "$state"
+        // },
         {
             "$group": {
                 _id: {
-                    _id: "$state.name",
+                    _id: "$user.state",
                 },
                 count: { $sum: 1 },
             }
@@ -501,9 +501,9 @@ track_helper.get_artist_by_day_like = async (day) => {
     var aggregate = [
         {
             "$match":
-            {
-                "created_at": { "$gt": new Date(from), "$lt": new Date(to) },
-            },
+                {
+                    "created_at": { "$gt": new Date(from), "$lt": new Date(to) },
+                },
         },
         {
             $group: {
@@ -528,9 +528,9 @@ track_helper.get_artist_by_location_like = async (day) => {
     var aggregate = [
         {
             "$match":
-            {
-                "created_at": { "$gt": new Date(from), "$lt": new Date(to) },
-            },
+                {
+                    "created_at": { "$gt": new Date(from), "$lt": new Date(to) },
+                },
         },
         {
             $lookup: {
@@ -543,22 +543,22 @@ track_helper.get_artist_by_location_like = async (day) => {
         {
             $unwind: "$user"
         },
-        {
-            $lookup: {
-                from: "state",
-                localField: "user.state",
-                foreignField: "_id",
-                as: "state"
-            }
-        },
-        {
-            $unwind: "$state"
-        },
+        // {
+        //     $lookup: {
+        //         from: "state",
+        //         localField: "user.state",
+        //         foreignField: "_id",
+        //         as: "state"
+        //     }
+        // },
+        // {
+        //     $unwind: "$state"
+        // },
         {
             "$group": {
                 _id: {
-                    _id: "$state.name",
-                    name: "$state.short_name"
+                    _id: "$user.name",
+                    //     name: "$state.short_name"
 
                 },
                 value: { $sum: 1 },
@@ -585,9 +585,9 @@ track_helper.get_artist_by_day_comment = async (day) => {
     var aggregate = [
         {
             "$match":
-            {
-                "created_at": { "$gt": new Date(from), "$lt": new Date(to) },
-            },
+                {
+                    "created_at": { "$gt": new Date(from), "$lt": new Date(to) },
+                },
         },
         {
             $group: {
@@ -612,9 +612,9 @@ track_helper.get_artist_by_location_comment = async (day) => {
     var aggregate = [
         {
             "$match":
-            {
-                "created_at": { "$gt": new Date(from), "$lt": new Date(to) },
-            },
+                {
+                    "created_at": { "$gt": new Date(from), "$lt": new Date(to) },
+                },
         },
         {
             $lookup: {
@@ -627,22 +627,22 @@ track_helper.get_artist_by_location_comment = async (day) => {
         {
             $unwind: "$user"
         },
-        {
-            $lookup: {
-                from: "state",
-                localField: "user.state",
-                foreignField: "_id",
-                as: "state"
-            }
-        },
-        {
-            $unwind: "$state"
-        },
+        // {
+        //     $lookup: {
+        //         from: "state",
+        //         localField: "user.state",
+        //         foreignField: "_id",
+        //         as: "state"
+        //     }
+        // },
+        // {
+        //     $unwind: "$state"
+        // },
         {
             "$group": {
                 _id: {
-                    _id: "$state.name",
-                    name: "$state.short_name"
+                    _id: "$user.state",
+                    // name: "$state.short_name"
 
                 },
                 value: { $sum: 1 },
@@ -745,21 +745,21 @@ track_helper.get_new_uploads = async (day, start, length) => {
         {
             '$unwind': '$music_type'
         },
-        {
-            '$lookup': {
-                from: 'state',
-                localField: 'artist_id.state',
-                foreignField: '_id',
-                as: 'state'
-            }
-        },
-        {
-            '$unwind': '$state'
-        },
+        // {
+        //     '$lookup': {
+        //         from: 'state',
+        //         localField: 'artist_id.state',
+        //         foreignField: '_id',
+        //         as: 'state'
+        //     }
+        // },
+        // {
+        //     '$unwind': '$state'
+        // },
         {
             '$project': {
                 'artist_id.music_type': 0,
-                'artist_id.state': 0
+                //'artist_id.state': 0
             }
         },
 
@@ -810,27 +810,26 @@ track_helper.get_track_main = async (filter, filters) => {
         {
             '$unwind': '$music_type'
         },
-        {
-            '$lookup': {
-                from: 'state',
-                localField: 'artist_id.state',
-                foreignField: '_id',
-                as: 'state'
-            }
-        },
-        {
-            '$unwind': '$state'
-        },
+        // {
+        //     '$lookup': {
+        //         from: 'state',
+        //         localField: 'artist_id.state',
+        //         foreignField: '_id',
+        //         as: 'state'
+        //     }
+        // },
+        // {
+        //     '$unwind': '$state'
+        // },
         {
             '$project': {
                 'artist_id.music_type': 0,
-                'artist_id.state': 0
+                // 'artist_id.state': 0
             }
         },
 
 
     ];
-    console.log('aggregate => ', aggregate);
     if (filters) {
         aggregate.push({
             "$match": filters

@@ -69,7 +69,7 @@ round_helper.get_rounds_by_contestid = async (id) => {
             .find({ "contest_id": new ObjectId(id) })
             .populate({ path: 'contest_id', populate: { path: 'music_type' } })
             .populate('region')
-            .populate('state')
+        // .populate('state')
         if (contest) {
             return { "status": 1, "message": "contest details found", "contest": contest };
         } else {
@@ -86,7 +86,7 @@ round_helper.get_last_round = async (id) => {
             .findOne({ "contest_id": new ObjectId(id) }).sort({ "created_at": -1 })
             .populate({ path: 'contest_id', populate: { path: 'music_type' } })
             .populate('region')
-            .populate('state')
+        // .populate('state')
         if (contest) {
             return { "status": 1, "message": "contest details found", "contest": contest };
         } else {
@@ -195,7 +195,7 @@ round_helper.get_all_round = async (start, length, sort = {}) => {
         var participate = await Round.find()
             .populate({ path: 'contest_id', populate: { path: 'music_type' } })
             .populate('region')
-            .populate('state')
+            // .populate('state')
             .sort(sort)
             .skip(start)
             .limit(length)
@@ -218,7 +218,7 @@ round_helper.get_all_contests = async () => {
     try {
         var participate = await Round.find()
             .populate({ path: 'contest_id', populate: { path: 'music_type' } })
-            .populate('state')
+        // .populate('state')
 
         if (participate) {
             return { "status": 1, "message": "contest details found", "contest": participate };
@@ -234,7 +234,7 @@ round_helper.get_all_round_tracks = async (round) => {
     try {
         var participate = await RoundTracks.find({}, { "round1": round })
             .populate({ path: 'contest_id', populate: { path: 'music_type' } })
-            .populate('state')
+        // .populate('state')
         if (participate) {
             return { "status": 1, "message": "contest details found", "contest": participate };
         } else {
@@ -294,12 +294,12 @@ round_helper.get_track_selected = async (music_type, limit) => {
         var aggregate = [
             {
                 $lookup:
-                {
-                    from: "track",
-                    localField: "round1_track",
-                    foreignField: "_id",
-                    as: "track"
-                }
+                    {
+                        from: "track",
+                        localField: "round1_track",
+                        foreignField: "_id",
+                        as: "track"
+                    }
             },
 
             {
@@ -307,23 +307,23 @@ round_helper.get_track_selected = async (music_type, limit) => {
             },
             {
                 $lookup:
-                {
-                    from: "artist",
-                    localField: "track.artist_id",
-                    foreignField: "_id",
-                    as: "artist"
-                }
+                    {
+                        from: "artist",
+                        localField: "track.artist_id",
+                        foreignField: "_id",
+                        as: "artist"
+                    }
             }, {
                 $unwind: '$artist'
             },
             {
                 $lookup:
-                {
-                    from: "music_type",
-                    localField: "artist.music_type",
-                    foreignField: "_id",
-                    as: "music_type"
-                }
+                    {
+                        from: "music_type",
+                        localField: "artist.music_type",
+                        foreignField: "_id",
+                        as: "music_type"
+                    }
             }, {
                 $unwind: '$music_type'
             },
@@ -370,36 +370,36 @@ round_helper.get_tracks_selected = async (artist_id, music_type, round, limit) =
             },
             {
                 $lookup:
-                {
-                    from: "track",
-                    localField: round,
-                    foreignField: "_id",
-                    as: "track"
-                }
+                    {
+                        from: "track",
+                        localField: round,
+                        foreignField: "_id",
+                        as: "track"
+                    }
             },
             {
                 $unwind: "$track"
             },
             {
                 $lookup:
-                {
-                    from: "artist",
-                    localField: "artist_id",
-                    foreignField: "_id",
-                    as: "artist"
-                }
+                    {
+                        from: "artist",
+                        localField: "artist_id",
+                        foreignField: "_id",
+                        as: "artist"
+                    }
             },
             {
                 $unwind: "$artist"
             },
             {
                 $lookup:
-                {
-                    from: "music_type",
-                    localField: "artist.music_type",
-                    foreignField: "_id",
-                    as: "music_type"
-                }
+                    {
+                        from: "music_type",
+                        localField: "artist.music_type",
+                        foreignField: "_id",
+                        as: "music_type"
+                    }
             }, {
                 $unwind: '$music_type'
             },
@@ -416,9 +416,9 @@ round_helper.get_tracks_selected = async (artist_id, music_type, round, limit) =
             },
             {
                 $sort:
-                {
-                    "track.no_of_votes": -1
-                }
+                    {
+                        "track.no_of_votes": -1
+                    }
             },
             {
                 $limit: limit
@@ -447,36 +447,36 @@ round_helper.get_special_tracks_selected = async (artist_id, round) => {
             },
             {
                 $lookup:
-                {
-                    from: "track",
-                    localField: round,
-                    foreignField: "_id",
-                    as: "track"
-                }
+                    {
+                        from: "track",
+                        localField: round,
+                        foreignField: "_id",
+                        as: "track"
+                    }
             },
             {
                 $unwind: "$track"
             },
             {
                 $lookup:
-                {
-                    from: "artist",
-                    localField: "artist_id",
-                    foreignField: "_id",
-                    as: "artist"
-                }
+                    {
+                        from: "artist",
+                        localField: "artist_id",
+                        foreignField: "_id",
+                        as: "artist"
+                    }
             },
             {
                 $unwind: "$artist"
             },
             {
                 $lookup:
-                {
-                    from: "music_type",
-                    localField: "artist.music_type",
-                    foreignField: "_id",
-                    as: "music_type"
-                }
+                    {
+                        from: "music_type",
+                        localField: "artist.music_type",
+                        foreignField: "_id",
+                        as: "music_type"
+                    }
             }, {
                 $unwind: '$music_type'
             },
@@ -493,9 +493,9 @@ round_helper.get_special_tracks_selected = async (artist_id, round) => {
             },
             {
                 $sort:
-                {
-                    "track.no_of_votes": -1
-                }
+                    {
+                        "track.no_of_votes": -1
+                    }
             },
             {
                 $limit: 1

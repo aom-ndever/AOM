@@ -114,17 +114,17 @@ bookmark_helper.get_all_bookmarked_tracks = async (user_id, start, length) => {
                     "artist.flag": false
                 }
             },
-            {
-                '$lookup': {
-                    from: 'state',
-                    localField: 'artist.state',
-                    foreignField: '_id',
-                    as: 'state'
-                }
-            },
-            {
-                '$unwind': '$state'
-            },
+            // {
+            //     '$lookup': {
+            //         from: 'state',
+            //         localField: 'artist.state',
+            //         foreignField: '_id',
+            //         as: 'state'
+            //     }
+            // },
+            // {
+            //     '$unwind': '$state'
+            // },
             {
                 '$lookup': {
                     from: 'music_type',
@@ -153,7 +153,7 @@ bookmark_helper.get_all_bookmarked_tracks = async (user_id, start, length) => {
                     'track_id': 0,
                     'user_id': 0,
                     'track.artist_id': 0,
-                    'artist.state': 0,
+                    // 'artist.state': 0,
                     'artist.music_type': 0
                 }
             },
@@ -201,17 +201,17 @@ bookmark_helper.get_all_bookmarked_tracks = async (user_id, start, length) => {
                     "artist.flag": false
                 }
             },
-            {
-                '$lookup': {
-                    from: 'state',
-                    localField: 'artist.state',
-                    foreignField: '_id',
-                    as: 'state'
-                }
-            },
-            {
-                '$unwind': '$state'
-            },
+            // {
+            //     '$lookup': {
+            //         from: 'state',
+            //         localField: 'artist.state',
+            //         foreignField: '_id',
+            //         as: 'state'
+            //     }
+            // },
+            // {
+            //     '$unwind': '$state'
+            // },
             {
                 '$lookup': {
                     from: 'music_type',
@@ -239,7 +239,7 @@ bookmark_helper.get_all_bookmarked_tracks = async (user_id, start, length) => {
                     'track_id': 0,
                     'user_id': 0,
                     'track.artist_id': 0,
-                    'artist.state': 0,
+                    // 'artist.state': 0,
                     'artist.music_type': 0
                 }
             },

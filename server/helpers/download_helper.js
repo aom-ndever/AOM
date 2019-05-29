@@ -75,10 +75,10 @@ download_helper.get_downloads_by_day = async (artist_id, day) => {
     var aggregate = [
         {
             "$match":
-            {
-                "created_at": { "$gt": new Date(from), "$lt": new Date(to) },
-                "artist_id": new ObjectId(artist_id)
-            },
+                {
+                    "created_at": { "$gt": new Date(from), "$lt": new Date(to) },
+                    "artist_id": new ObjectId(artist_id)
+                },
         },
         {
             "$group": {
@@ -98,9 +98,9 @@ download_helper.get_downloads_by_day = async (artist_id, day) => {
         },
         {
             $project:
-            {
-                _id: 0
-            }
+                {
+                    _id: 0
+                }
         }
 
     ];
@@ -124,10 +124,10 @@ download_helper.get_downloads_by_location = async (artist_id, day) => {
     var aggregate = [
         {
             "$match":
-            {
-                "created_at": { "$gt": new Date(from), "$lt": new Date(to) },
-                "artist_id": new ObjectId(artist_id)
-            },
+                {
+                    "created_at": { "$gt": new Date(from), "$lt": new Date(to) },
+                    "artist_id": new ObjectId(artist_id)
+                },
         },
         {
             $lookup: {
@@ -141,22 +141,22 @@ download_helper.get_downloads_by_location = async (artist_id, day) => {
             $unwind: "$user"
         },
 
-        {
-            $lookup: {
-                from: "state",
-                localField: "user.state",
-                foreignField: "_id",
-                as: "state"
-            }
-        },
-        {
-            $unwind: "$state"
-        },
+        // {
+        //     $lookup: {
+        //         from: "state",
+        //         localField: "user.state",
+        //         foreignField: "_id",
+        //         as: "state"
+        //     }
+        // },
+        // {
+        //     $unwind: "$state"
+        // },
         {
             "$group": {
                 _id: {
-                    _id: "$state.name",
-                    name: "$state.short_name"
+                    _id: "$user.state",
+                    //name: "$state.short_name"
 
                 },
                 value: { $sum: 1 },

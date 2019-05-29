@@ -31,8 +31,8 @@ var UserModelSchema = new Schema({
     refresh_token: { type: String },
     flag: { type: Boolean, default: false },
     type: { type: String },
-    state: { type: mongoose.Schema.Types.ObjectId, ref: 'state' },
-    // state: { type: String },
+    // state: { type: mongoose.Schema.Types.ObjectId, ref: 'state' },
+    state: { type: String },
     last_login: { type: Date },
     created_at: { type: Date, default: Date.now }
 }, { versionKey: false });

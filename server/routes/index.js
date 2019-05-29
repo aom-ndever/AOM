@@ -158,6 +158,8 @@ router.post('/artist_registration', async (req, res) => {
       //End image upload
 
       var data = await artist_helper.insert_artist(reg_obj);
+      console.log('data', data);
+
       var datas = await artist_helper.insert_notification(obj);
 
       if (data.status == 0) {
@@ -173,6 +175,7 @@ router.post('/artist_registration', async (req, res) => {
         }, {
             "confirm_url": config.website_url + "/email_confirm/artist/" + data.artist._id
           });
+        console.log('mail_resp', mail_resp);
 
         if (mail_resp.status === 0) {
           res.status(config.INTERNAL_SERVER_ERROR).json({ "status": 0, "message": "Error occured while sending confirmation email", "error": mail_resp.error });
