@@ -111,9 +111,10 @@ router.post('/artist_registration', async (req, res) => {
       reg_obj.social_media = JSON.parse(req.body.share_url)
     }
     let artist = await artist_helper.get_artist_by_email(req.body.email)
+    let user = await user_helper.get_user_by_email(req.body.email)
     console.log('artist', artist);
 
-    if (artist.status === 2) {
+    if (artist.status === 2 && user.status === 2) {
       var obj = {}
       //image upload
       var filename;
@@ -184,7 +185,7 @@ router.post('/artist_registration', async (req, res) => {
         }
       }
     } else {
-      res.status(config.BAD_REQUEST).json({ "status": 0, "message": "Artist's email already exist" });
+      res.status(config.BAD_REQUEST).json({ "status": 0, "message": "Email already exist" });
     }
   } else {
     logger.error("Validation Error = ", errors);
@@ -669,8 +670,9 @@ router.post('/user_registration', async (req, res) => {
     if (req.body.share_url) {
       obj.social_media = JSON.parse(req.body.share_url)
     }
-    user = await user_helper.get_user_by_email(req.body.email)
-    if (user.status === 2) {
+    let artist = await artist_helper.get_artist_by_email(req.body.email)
+    let user = await user_helper.get_user_by_email(req.body.email)
+    if (user.status === 2 && artist.status === 2) {
 
       var data = await user_helper.insert_user(obj);
 
@@ -696,7 +698,7 @@ router.post('/user_registration', async (req, res) => {
         }
       }
     } else {
-      res.status(config.BAD_REQUEST).json({ "status": 0, "message": "User's email already exist" });
+      res.status(config.BAD_REQUEST).json({ "status": 0, "message": "Email already exist" });
     }
   } else {
     logger.error("Validation Error = ", errors);
@@ -1592,7 +1594,7 @@ router.post("/mainpage", async (req, res) => {
   if (!errors) {
     var artist_ids = [];
     var resp_artist = await track_helper.get_track_main(search, filters);
-    console.log('resp_artist => ', resp_artist);
+    // console.log('resp_artist => ', resp_artist);
     var resp_track = await track_helper.get_new_uploads(30, req.body.start, req.body.length);
 
     if (resp_track.status == 0 && resp_artist.status == 0) {

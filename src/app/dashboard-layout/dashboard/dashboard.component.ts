@@ -66,13 +66,14 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    console.log('environment.socketUrl => ', environment.socketUrl);
     this.socket = socketClient(environment.socketUrl);
     this.socket.emit('join', this.user.token);
     this.socket.on('receive_artist_notification_count', (data) => {
-      console.log('socket data', data);
+      console.log('socket data =============>>', data);
       this.MessageService.checkCount(data);
     });
-    console.log('Dashboard componenet is running');
+    console.log('Dashboard componenet is running=======================>');
   }
 
   ngOnDestroy() {
@@ -108,7 +109,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.MessageService.sendMessage({ 'music_flag': 'yes' });
     this.show_loader = true;
     this.DashboardService.getAllData(data).subscribe(response => {
-      console.log('response getAllData() => ', response);
       this.data = response;
       this.ngxService.stop();
       response['new_uploads'].forEach((ele) => {
@@ -143,7 +143,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.images = [];
 
     data.forEach(ele => {
-      console.log('ele ================> ', ele);
       this.images.push({
         'source': ele.image ? this.track_url + ele.image : 'img/default_img.png',
         'alt': '',

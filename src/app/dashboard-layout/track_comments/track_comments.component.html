@@ -48,7 +48,8 @@
           </div>
         </div>
         <div class="profile-location"><i class="fa fa-map-marker" aria-hidden="true"></i>
-          <span>{{artistdata && artistdata['state'] ? artistdata['state']['name'] : '' }}</span>
+          <!-- <span>{{artistdata && artistdata['state'] ? artistdata['state']['name'] : '' }}</span> -->
+          <span>{{artistdata && artistdata.state ? artistdata.state : '' }}</span>
           <p class="{{artistdata['music_type']['alias']}} tag">{{artistdata['music_type']['name']}}</p>
         </div>
         <div class="profile-description">

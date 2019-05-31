@@ -361,6 +361,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
             this.userdata['month'] = dt.getMonth();
             this.userdata['year'] = dt.getFullYear();
           }
+          console.log('userdata => ', this.userdata);
           if (this.userdata.image) {
             this.default_profile_img = environment.API_URL + environment.ARTIST_IMG + this.userdata.image;
           }

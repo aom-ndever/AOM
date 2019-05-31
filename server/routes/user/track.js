@@ -59,7 +59,9 @@ router.post('/purchase', async (req, res) => {
     };
 
     var track_response = await track_helper.get_all_track_by_track_id(obj.track_id);
+    console.log('track_response => ', track_response);
     artist_id = track_response.track.artist_id._id;
+
 
     try {
       var charge = await stripe.charges.create({
@@ -72,6 +74,7 @@ router.post('/purchase', async (req, res) => {
       });
 
       var resp_data = await purchase_helper.purchase_track(obj);
+      console.log('resp_data => ', resp_data);
       if (resp_data.status == 0) {
         logger.error("Error occured while fetching music = ", resp_data);
         res.status(config.INTERNAL_SERVER_ERROR).json(resp_data);

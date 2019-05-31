@@ -374,6 +374,7 @@ export class RegisterComponent implements OnInit {
   }
 
   imageCropped(image: string) {
+    console.log('image => ', image);
     this.croppedImage = image;
   }
 

@@ -232,12 +232,14 @@
         <div class="media-upload-btn song-photo" *ngIf="!add_track_img">
           <span class="upl-img"><i class="fa fa-cloud-upload" aria-hidden="true"></i></span>
           <span class="up_text">Upload <br>Photo</span>
-          <img [src]="track_img" alt="Edit cover Image">
+          <img *ngIf="track_img" [src]="track_img" alt="Add cover Image">
           <input type="file" name="my_doc_upload" id="my_doc_upload" (change)="changeFile($event)" multiple="false">
         </div>
-        <div class="upload-cover" *ngIf="add_track_img">
-          <img [src]="track_img" alt="Edit cover Image">
-          <input type="file" name="my_doc_upload" id="my_doc_upload" (change)="changeFile($event)" multiple="false">
+        <div class="edit-profile-picture">
+          <div class="upload-cover" *ngIf="add_track_img">
+            <img [src]="track_img" alt="Add cover Image">
+            <input type="file" name="my_doc_upload" id="my_doc_upload" (change)="changeFile($event)" multiple="false">
+          </div>
         </div>
         <div class="form-group">
           <label>Description</label>
@@ -250,6 +252,55 @@
             class="fa fa-spinner fa-spin"></i></button>
       </div>
     </div>
+  </div>
+</ng-template>
+
+
+<ng-template #editTrack let-c="close" let-d="dismiss">
+  <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+    <span aria-hidden="true">&times;</span>
+  </button>
+  <div class="modal-body">
+    <form>
+      <div class="edit-track-modal">
+        <h3>Edit Track</h3>
+        <div class="form-group tr-name">
+          <label for="tname">Track Name</label>
+          <input type="text" class="form-control" id="tname" name="name" [(ngModel)]="trackdata.name"
+            placeholder="Track Name">
+        </div>
+        <div class="form-group tr-price" [class.has-error]="price.invalid" [class.has-success]="price.valid">
+          <label for="tname">Price</label>
+          <input type="number" class="form-control" id="tname" name="price" #price="ngModel"
+            [(ngModel)]="trackdata.price" placeholder="$ 139" maxlength="3" required />
+
+        </div>
+        <div class="textarea-upload">
+          <div class="edit-profile-picture">
+            <div class="upload-cover">
+              <img src="{{edit_image}}" alt="Edit cover Image">
+              <input type="file" name="my_doc_upload" id="my_doc_upload" (change)="changeTrackImage($event)"
+                multiple="false">
+              <a data-fancybox="" data-animation-duration="700" data-src="#delete" *ngIf="trackdata.image"
+                href="javascript:;" (click)="removeTrackImage(trackdata._id)" class="delete"><i
+                  class="fa fa-trash"></i></a>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Description</label>
+            <textarea name="description" [(ngModel)]="trackdata.description" placeholder="Description"
+              class="form-control"></textarea>
+          </div>
+        </div>
+        <div class="button_group">
+          <a href="javascript:;" class="pull-left cancel_button" (click)="d('Cross click')">
+            <span aria-hidden="true">Cancel</span>
+          </a>
+          <button type="submit" (click)="updateTrack()" [disabled]="show_spinner" class="update-btn pull-right">Save <i
+              *ngIf="show_spinner" class="fa fa-spinner fa-spin"></i></button>
+        </div>
+      </div>
+    </form>
   </div>
 </ng-template>
 
@@ -449,53 +500,6 @@
   </div>
 </ng-template>
 
-<ng-template #editTrack let-c="close" let-d="dismiss">
-  <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
-    <span aria-hidden="true">&times;</span>
-  </button>
-  <div class="modal-body">
-    <form>
-      <div class="edit-track-modal">
-        <h3>Edit Track</h3>
-        <div class="form-group tr-name">
-          <label for="tname">Track Name</label>
-          <input type="text" class="form-control" id="tname" name="name" [(ngModel)]="trackdata.name"
-            placeholder="Track Name">
-        </div>
-        <div class="form-group tr-price" [class.has-error]="price.invalid" [class.has-success]="price.valid">
-          <label for="tname">Price</label>
-          <input type="number" class="form-control" id="tname" name="price" #price="ngModel"
-            [(ngModel)]="trackdata.price" placeholder="$ 139" maxlength="3" required />
-
-        </div>
-        <div class="textarea-upload">
-          <div class="edit-profile-picture">
-            <div class="upload-cover">
-              <img src="{{edit_image}}" alt="Edit cover Image">
-              <input type="file" name="my_doc_upload" id="my_doc_upload" (change)="changeTrackImage($event)"
-                multiple="false">
-              <a data-fancybox="" data-animation-duration="700" data-src="#delete" *ngIf="trackdata.image"
-                href="javascript:;" (click)="removeTrackImage(trackdata._id)" class="delete"><i
-                  class="fa fa-trash"></i></a>
-            </div>
-          </div>
-          <div class="form-group">
-            <label>Description</label>
-            <textarea name="description" [(ngModel)]="trackdata.description" placeholder="Description"
-              class="form-control"></textarea>
-          </div>
-        </div>
-        <div class="button_group">
-          <a href="javascript:;" class="pull-left cancel_button" (click)="d('Cross click')">
-            <span aria-hidden="true">Cancel</span>
-          </a>
-          <button type="submit" (click)="updateTrack()" [disabled]="show_spinner" class="update-btn pull-right">Save <i
-              *ngIf="show_spinner" class="fa fa-spinner fa-spin"></i></button>
-        </div>
-      </div>
-    </form>
-  </div>
-</ng-template>
 
 <ng-template #shareTrack let-c="close" let-d="dismiss">
   <div class="modal_login_wrapper">

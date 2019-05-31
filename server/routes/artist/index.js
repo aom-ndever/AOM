@@ -403,7 +403,7 @@ router.put('/update_image', function (req, res) {
                         fs.mkdirSync(dir);
                     }
                     //var extention = path.extname(file.name);
-                    var extension = '.pdf';
+                    var extension = '.jpg';
                     var filename = "artist_" + new Date().getTime() + (Math.floor(Math.random() * 90000) + 10000) + extension;
                     file.mv(dir + '/' + filename, async (err) => {
                         if (err) {

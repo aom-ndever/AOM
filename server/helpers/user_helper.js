@@ -250,7 +250,7 @@ user_helper.get_all_active_and_suspend_user = async (start, length, filter, sort
 
         var user = await User
             .find(filter)
-            .populate({ path: 'state', populate: { path: 'region' } })
+            // .populate({ path: 'state', populate: { path: 'region' } })
             .sort(sort_by)
             .skip(start)
             .limit(length)

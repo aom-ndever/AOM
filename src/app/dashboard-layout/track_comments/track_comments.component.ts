@@ -65,8 +65,9 @@ export class TrackConmmentsComponent implements OnInit {
   }
 
   ngOnInit() {
+    console.log('environment.socketUr', environment.socketUrl);
     this.socket = socketClient(environment.socketUrl);
-    console.log('environment.socketUr', environment.socketUrl)
+    console.log('this.socket => ', this.socket);
   }
 
 
@@ -173,11 +174,12 @@ export class TrackConmmentsComponent implements OnInit {
             track_id: this.track_data['_id'],
             card_id: result['token']['id']
           };
+          console.log('here => ');
           this.TrackCommentsService.purchaseTrack(data).subscribe((response) => {
             this.toastr.success(response['message'], 'Success!');
             this.modalRef.close();
           }, (error) => {
-            this.toastr.error(error['error'].message, 'Error!');
+            this.toastr.error(error['error'].message[0].msg, 'Error!');
             this.show_spinner = false;
           }, () => {
             this.show_spinner = false;

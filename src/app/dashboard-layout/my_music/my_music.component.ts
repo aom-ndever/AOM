@@ -66,7 +66,7 @@ export class MyMusicComponent implements OnInit, OnDestroy {
   special_form: FormGroup;
   closeResult: string;
   public contestDetail;
-  public track_img;
+  public track_img: String;
 
   constructor(
     private modalService: NgbModal,
@@ -78,6 +78,7 @@ export class MyMusicComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private ngxService: NgxUiLoaderService
   ) {
+    console.log('my music component => ');
     this.contesttrack_form = this.fb.group({
       contest_id: new FormControl(),
       round1_track: new FormControl(),
@@ -243,38 +244,66 @@ export class MyMusicComponent implements OnInit, OnDestroy {
   }
 
   changeFile(event: any) {
-    console.log('heree => ');
     const file = event.target.files[0];
     console.log('file => ', file);
-    let flag;
-    let res;
-    let fr = new FileReader();
-    fr.onload = (e: any) => {
-      res = e.target.result;
-      const uint = new Uint8Array(res.slice(0, 4));
-      const bytes = [];
-      uint.forEach((byte) => {
-        bytes.push(byte.toString(16));
-      });
-      const hex = bytes.join('').toUpperCase();
-      const allow_types = this.getImageMimetype(hex);
-      if (allow_types.indexOf(file.type) === -1) {
-        this.toastr.error('Invalid file format.', 'Error!');
-        return false;
+    if (file.type === 'image/png' || file.type === 'image/jpg' || file.type === 'image/jpeg') {
+      if (file.size <= 500000) {
+        this.image_upload = file;
+        this.track_img = environment.API_URL + environment.ARTIST_TRACK + file.name;
+        console.log('track_image => ', this.track_img);
+        let fr = new FileReader();
+        fr.onload = (e: any) => {
+          console.log('e => ', e);
+          this.track_img = e.target.result;
+          this.add_track_img = e.target.result;
+        };
+        fr.readAsDataURL(file);
+        this.add_track_img = environment.API_URL + environment.ARTIST_TRACK + file;
       } else {
-        if (file.size <= 500000) {
-          this.image_upload = file;
-          this.track_img = environment.API_URL + environment.ARTIST_TRACK + file;
-        } else {
-          this.toastr.error('Please choose Image less then 500 kb.', 'Error!');
-          return false;
-        }
+        this.toastr.error('Please choose Image less then 500 kb.', 'Error!');
+        return false;
       }
-    };
-    fr.readAsArrayBuffer(file);
-    const allow_types = ['image/png', 'image/jpg', 'image/jpeg'];
+
+    } else {
+      this.toastr.error('Invalid file format.', 'Error!');
+    }
+    // let flag;
+    // let res;
+    // let fr = new FileReader();
+    // fr.onload = (e: any) => {
+    //   console.log('e => ', e);
+    //   res = e.target.result;
+    //   console.log('res ======================================================> ', res);
+    //   const uint = new Uint8Array(res.slice(0, 4));
+    //   const bytes = [];
+    //   uint.forEach((byte) => {
+    //     bytes.push(byte.toString(16));
+    //   });
+    //   console.log('bytes => ', bytes);
+    //   const hex = bytes.join('').toUpperCase();
+    //   console.log('hex => ', hex);
+    //   const allow_types = this.getImageMimetype(hex);
+    //   if (allow_types.indexOf(file.type) === -1) {
+    //     this.toastr.error('Invalid file format.', 'Error!');
+    //     return false;
+    //   } else {
+    //     if (file.size <= 500000) {
+    //       this.image_upload = file;
+    //       console.log('file => ', file);
+    //       this.track_img = environment.API_URL + environment.ARTIST_TRACK + file.name;
+    //       console.log('track_image => ', this.track_img);
+    //       this.add_track_img = environment.API_URL + environment.ARTIST_TRACK + file;
+    //     } else {
+    //       this.toastr.error('Please choose Image less then 500 kb.', 'Error!');
+    //       return false;
+    //     }
+    //   }
+    // };
+    // fr.readAsArrayBuffer(file);
+    // const allow_types = ['image/png', 'image/jpg', 'image/jpeg'];
   }
 
+  // on change event of edit track pic 
   changeTrackImage(event: any) {
     let file = event.target.files[0];
     if (event.target.files.length > 0) {
@@ -289,6 +318,7 @@ export class MyMusicComponent implements OnInit, OnDestroy {
         const data = {};
         let imageBuffer = e.target.result;
         this.edit_image = imageBuffer;
+        console.log('this.edit_image in edit form => ', this.edit_image);
       };
       reader.readAsDataURL(event.target.files[0]);
     }
@@ -305,12 +335,11 @@ export class MyMusicComponent implements OnInit, OnDestroy {
 
   // open edit track model
   openEditTrackModal(content: any, obj: any) {
+    console.log('obj => ', obj);
     this.trackdata = { ...obj };
     if (!obj.description || obj.description === 'undefined') {
       this.trackdata['description'] = '';
     }
-    console.log('obj => ', obj);
-    console.log('obj.image => ', obj.image);
     if (obj.image) {
       this.edit_image = environment.API_URL + environment.ARTIST_TRACK + obj.image;
       console.log('this.edit_image => ', this.edit_image);
