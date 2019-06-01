@@ -85,7 +85,7 @@ router.post('/follow', async (req, res) => {
         var notification_data = await global_helper.send_notification(notificationObj, socket);
         console.log('notification_data', notification_data);
         logger.trace("followed successfully = ", resp_data);
-        res.status(config.OK_STATUS).json(resp_data);
+        res.status(config.OK_STATUS).json({ "message": "You Have followed", "flag": "follow" });
       }
     }
     else {
@@ -101,7 +101,7 @@ router.post('/follow', async (req, res) => {
 
       no_follow = response.user.no_of_followers - 1
       var resp_data = await user_helper.update_user_for_followers(obj.user_id, no_follow);
-      res.status(config.OK_STATUS).json({ "message": "You Have Unfollowed" });
+      res.status(config.OK_STATUS).json({ "message": "You Have Unfollowed", "flag": "unfollow" });
     }
 
   } else {

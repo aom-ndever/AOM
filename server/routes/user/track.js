@@ -357,7 +357,7 @@ router.post('/like_track', async (req, res) => {
       var notification_data = await global_helper.send_notification(notificationObj, socket);
       console.log('notification_data', notification_data);
       logger.trace("like done successfully = ", data);
-      res.status(config.OK_STATUS).json(data);
+      res.status(config.OK_STATUS).json({ "message": "Like has been done", "flag": "liked" });
     }
     else {
       var data = await like_helper.delete_like(obj.track_id, req.userInfo.id);
@@ -380,7 +380,7 @@ router.post('/like_track', async (req, res) => {
       var resp_data = await user_helper.update_user_for_likes(obj.user_id, no_like);
       var resp = await artist_helper.get_artist_by_id(obj.artist_id);
       var response = await user_helper.get_user_by_id(user_id);
-      res.status(config.OK_STATUS).json({ "message": "Like has been removed" });
+      res.status(config.OK_STATUS).json({ "message": "Like has been removed", "flag": "unliked" });
     }
   }
   else {

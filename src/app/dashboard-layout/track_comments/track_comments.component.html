@@ -28,8 +28,17 @@
           </div>
         </div>
         <div class="action">
-          <div class="cmt-like"><a href="javascript:;" title="Like" class="liked" (click)="likeTrack(track._id)"><img
-                src="img/likehand.png" alt="">{{track?.no_of_likes}}</a></div>
+          <div class="cmt-like"><a href="javascript:;" title="Like" class="liked" (click)="likeTrack(track._id)">
+              <!-- <img src="img/likehand.png" alt=""> -->
+              <span *ngIf="track && track.no_of_likes > 0; else dislike">
+                <img class="" src="img/like-color.jpg" alt="" style="display:block;">
+              </span>
+
+              <ng-template #dislike>
+                <img class="" src="img/likehand.png" alt="">
+              </ng-template>
+              {{track?.no_of_likes}}
+            </a></div>
           <div class="download" *ngIf="track.is_downloadable"><a href="javascript:;" title="Download"><img
                 src="img/download.png" (click)="downloadTrack(track?._id)" alt=""></a></div>
           <div class="cmt">
@@ -110,6 +119,7 @@
                     <div class="cm-date-name">
                       <h6>{{comment['user_id']['first_name']+' '+comment['user_id']['last_name']}}.</h6>
                       <p>{{comment['created_at'] | timeAgo}}</p>
+                      <!-- <p>{{comment.created_at | timeAgo }}</p> -->
                       <div class="profile-descriptions">
                         <p>{{comment['comment']}}</p>
                       </div>

@@ -52,6 +52,7 @@ export class TrackConmmentsComponent implements OnInit {
     this.titleService.setTitle(this.route.snapshot.data['title']);
     this.artistdata = this.route.snapshot.data['artist'].artist;
     this.trackcomments = this.route.snapshot.data['comment'].comment;
+    console.log('this.trackcomments => ', this.trackcomments);
     this.track = this.route.snapshot.data['track'].track;
     this.user = JSON.parse(localStorage.getItem('user'));
     console.log('it is track', this.track);
@@ -108,6 +109,8 @@ export class TrackConmmentsComponent implements OnInit {
   // Stripe Credit-Card implementation
   // openCardModel(content, index, type) {
   openCardModel(content, type) {
+    console.log('content => ', content);
+    console.log('type => ', type);
     if (this.user && this.user['user']) {
       this.card_loader = true;
       setTimeout(() => {
@@ -169,12 +172,14 @@ export class TrackConmmentsComponent implements OnInit {
           this.show_spinner = false;
         } else {
           // Send the token to your server.
-          console.log(result.token);
+          console.log('result', result);
+          console.log('this.track => ', this.track);
+          console.log('this.trackdata => ', this.track_data);
           let data = {
-            track_id: this.track_data['_id'],
+            // track_id: this.track_data['_id'],
+            track_id: this.track._id,
             card_id: result['token']['id']
           };
-          console.log('here => ');
           this.TrackCommentsService.purchaseTrack(data).subscribe((response) => {
             this.toastr.success(response['message'], 'Success!');
             this.modalRef.close();
@@ -349,19 +354,25 @@ export class TrackConmmentsComponent implements OnInit {
     let user = JSON.parse(localStorage.getItem('user'));
     if (user && user.user) {
       console.log('likes counter==> ', this.track);
-      this.track.no_of_likes += 1;
+      // this.track.no_of_likes += 1;
       let data = {
         'track_id': track_id,
         'artist_id': this.artistdata._id,
         'status': true
       };
       this.TrackCommentsService.trackLike(data).subscribe(response => {
-        if (response['message'] === 'Already liked') {
-          this.track.no_of_likes -= 1;
+        console.log('response => ', response);
+        if (response['flag'] === 'liked') {
+          this.track.no_of_likes = 1;
+        } else if (response['flag'] === 'unliked') {
+          this.track.no_of_likes = 0;
         }
+        // if (response['message'] === 'Already liked') {
+        //   this.track.no_of_likes -= 1;
+        // }
         this.toastr.success(response['message'], 'Success!');
       }, error => {
-        this.track.no_of_likes -= 1;
+        // this.track.no_of_likes -= 1;
         this.toastr.error(error['error'].message, 'Error!');
       });
     } else {
@@ -376,6 +387,7 @@ export class TrackConmmentsComponent implements OnInit {
     };
     this.TrackCommentsService.getAllTrackComment(data).subscribe(response => {
       this.trackcomments = response['comment'];
+      console.log('trackcomments => ', this.trackcomments);
     });
   }
   // Flag other user

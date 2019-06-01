@@ -223,7 +223,7 @@
                                   <a href="javascript:;" title="Comment"
                                     (click)="goToComment(artistdata['_id'], artist._id)">
                                     <span *ngIf="artist.no_of_comments > 0; else templatecomment">
-                                      <img src="img/comment3.png" alt="">
+                                      <img src="img/comment.png" alt="">
                                     </span>
                                     <ng-template #templatecomment>
                                       <img src="img/comment.png" alt="">
@@ -342,11 +342,20 @@
                                 <div class="cmt-like">
                                   <a class="liked" title="Like" href="javascript:;"
                                     (click)="likeRankTrack(rank._id, i)">
-                                    <img class="like_bw" src="img/likehand.png" alt=""><img class="like_active"
-                                      src="img/like-color.jpg" alt="">{{rank.no_of_likes}}</a>
+                                    <span *ngIf="rank.no_of_likes > 0; else dislike">
+                                      <img class="" src="img/like-color.jpg" alt="" style="display:block;">
+                                    </span>
+
+                                    <ng-template #dislike>
+                                      <img class="" src="img/likehand.png" alt="">
+                                    </ng-template>
+                                    {{rank.no_of_likes}}
+                                  </a>
+
                                 </div>
                                 <div class="cmt">
-                                  <a href="javascript:;" title="Comment" (click)="goToComment(rank._id)">
+                                  <a href="javascript:;" title="Comment"
+                                    (click)="goToComment(rank.artist_id._id,rank._id)">
                                     <img src="img/comment.png" alt="">{{rank.no_of_comments}}</a>
                                 </div>
                                 <div class="download" *ngIf="rank.is_downloadable">
