@@ -62,10 +62,10 @@ like_helper.get_all_track_by_track_id = async (track_id) => {
     }
 }
 
-like_helper.delete_like = async (track_id) => {
+like_helper.delete_like = async (track_id, user_id) => {
 
     try {
-        var user = await Like.deleteMany({ "track_id": track_id })
+        var user = await Like.deleteMany({ "track_id": track_id, "user_id": user_id })
 
         if (user) {
             return { "status": 1, "message": "flag deleted", "user": user };

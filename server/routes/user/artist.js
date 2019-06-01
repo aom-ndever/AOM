@@ -89,8 +89,19 @@ router.post('/follow', async (req, res) => {
       }
     }
     else {
-      logger.trace("Already Followed");
-      res.status(config.OK_STATUS).json({ "message": "Already Followed" });
+
+      var resp_data = await follower_helper.delete_follow(obj.artist_id, obj.user_id);
+      console.log('resp_data => ', resp_data);
+      var resp = await artist_helper.get_artist_by_id(obj.artist_id);
+
+      no_follow = resp.artist.no_of_followers - 1
+      var resp_data = await track_helper.update_artist_for_followers(obj.artist_id, no_follow);
+
+      var response = await user_helper.get_user_by_id(obj.user_id);
+
+      no_follow = response.user.no_of_followers - 1
+      var resp_data = await user_helper.update_user_for_followers(obj.user_id, no_follow);
+      res.status(config.OK_STATUS).json({ "message": "You Have Unfollowed" });
     }
 
   } else {

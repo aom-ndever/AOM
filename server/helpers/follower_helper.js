@@ -25,10 +25,10 @@ follower_helper.get_artist_followers_by_gender = async (artist_id, day) => {
     var aggregate = [
         {
             "$match":
-                {
-                    "created_at": { "$gt": new Date(from), "$lt": new Date(to) },
-                    "artist_id": new ObjectId(artist_id)
-                },
+            {
+                "created_at": { "$gt": new Date(from), "$lt": new Date(to) },
+                "artist_id": new ObjectId(artist_id)
+            },
         },
         {
             $lookup: {
@@ -81,10 +81,10 @@ follower_helper.get_artist_followers_by_day = async (artist_id, day) => {
     var aggregate = [
         {
             "$match":
-                {
-                    "created_at": { "$gt": new Date(from), "$lt": new Date(to) },
-                    "artist_id": new ObjectId(artist_id)
-                },
+            {
+                "created_at": { "$gt": new Date(from), "$lt": new Date(to) },
+                "artist_id": new ObjectId(artist_id)
+            },
         },
         {
             $group: {
@@ -111,10 +111,10 @@ follower_helper.get_artist_followers_by_age = async (artist_id, day) => {
     var aggregate = [
         {
             "$match":
-                {
-                    "created_at": { "$gt": new Date(from), "$lt": new Date(to) },
-                    "artist_id": new ObjectId(artist_id)
-                },
+            {
+                "created_at": { "$gt": new Date(from), "$lt": new Date(to) },
+                "artist_id": new ObjectId(artist_id)
+            },
         },
         {
             $lookup: {
@@ -145,10 +145,10 @@ follower_helper.get_artist_followers_by_location = async (artist_id, day) => {
     var aggregate = [
         {
             "$match":
-                {
-                    "created_at": { "$gt": new Date(from), "$lt": new Date(to) },
-                    "artist_id": new ObjectId(artist_id)
-                },
+            {
+                "created_at": { "$gt": new Date(from), "$lt": new Date(to) },
+                "artist_id": new ObjectId(artist_id)
+            },
         },
         {
             $lookup: {
@@ -212,6 +212,21 @@ follower_helper.get_all_followers = async (id) => {
         return { "status": 0, "message": "Error occured while finding artist", "error": err }
     }
 };
+
+
+follower_helper.delete_follow = async (artist_id, user_id) => {
+    try {
+        let user = await Followers.findOneAndRemove({ user_id: new ObjectId(user_id), artist_id: new ObjectId(artist_id) });
+        if (!user) {
+            return { status: 2, message: "Record has not Deleted" };
+        } else {
+            return { status: 1, message: "Bookmark has been Deleted" };
+        }
+    } catch (err) {
+        return { status: 0, message: "Error occured while deleting user", error: err };
+    }
+};
+
 
 follower_helper.get_all_followers_of_user = async (id) => {
     try {
