@@ -68,7 +68,7 @@
                               [style.display]="s['region']['name'] == 'northeast' ? 'block' : 'none'">
                               <div class="checkbox">
                                 <label>
-                                  <input type="checkbox" [value]="s._id"
+                                  <input type="checkbox" [value]="s.name"
                                     (click)="addRegionForFilter($event.target.checked, $event.target.value)">
                                   <div class="chk_check"></div>
                                   <span>{{s.name}}</span>
@@ -84,7 +84,7 @@
                               [style.display]="s['region']['name'] == 'southeast' ? 'block' : 'none'">
                               <div class="checkbox">
                                 <label>
-                                  <input type="checkbox" [value]="s._id"
+                                  <input type="checkbox" [value]="s.name"
                                     (click)="addRegionForFilter($event.target.checked, $event.target.value)">
                                   <div class="chk_check"></div>
                                   <span>{{s.name}}</span>
@@ -100,7 +100,7 @@
                               [style.display]="s['region']['name'] == 'midwest' ? 'block' : 'none'">
                               <div class="checkbox">
                                 <label>
-                                  <input type="checkbox" [value]="s._id"
+                                  <input type="checkbox" [value]="s.name"
                                     (click)="addRegionForFilter($event.target.checked, $event.target.value)">
                                   <div class="chk_check"></div>
                                   <span>{{s.name}}</span>
@@ -116,7 +116,7 @@
                               [style.display]="s['region']['name'] == 'southwest' ? 'block' : 'none'">
                               <div class="checkbox">
                                 <label>
-                                  <input type="checkbox" [value]="s._id"
+                                  <input type="checkbox" [value]="s.name"
                                     (click)="addRegionForFilter($event.target.checked, $event.target.value)">
                                   <div class="chk_check"></div>
                                   <span>{{s.name}}</span>
@@ -132,7 +132,7 @@
                               [style.display]="s['region']['name'] == 'west' ? 'block' : 'none'">
                               <div class="checkbox">
                                 <label>
-                                  <input type="checkbox" [value]="s._id"
+                                  <input type="checkbox" [value]="s.name"
                                     (click)="addRegionForFilter($event.target.checked, $event.target.value)">
                                   <div class="chk_check"></div>
                                   <span>{{s.name}}</span>
@@ -148,7 +148,7 @@
                               [style.display]="s['region']['name'] == 'other' ? 'block' : 'none'">
                               <div class="checkbox">
                                 <label>
-                                  <input type="checkbox" [value]="s._id"
+                                  <input type="checkbox" [value]="s.name"
                                     (click)="addRegionForFilter($event.target.checked, $event.target.value)">
                                   <div class="chk_check"></div>
                                   <span>{{s.name}}</span>

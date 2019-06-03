@@ -102,8 +102,8 @@ router.post('/', async (req, res) => {
             "to": resp.artist.email,
             "subject": "Comment from user"
           }, {
-              "username": resp.artist.first_name + '\t' + response.user.last_name,
-              "user": response.user.first_name + '\t' + resp.artist.last_name,
+              "username": resp.artist.first_name + '\t' + resp.artist.last_name,
+              "user": response.user.first_name + '\t' + response.user.last_name,
               "link": "http://34.204.127.137/artist_profile/" + resp.artist._id + "/comments"
             });
 

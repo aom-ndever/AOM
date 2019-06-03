@@ -8,6 +8,7 @@ music_helper.get_all_music_type = async () => {
     try {
         var music = await Music
             .find()
+            .sort({ "alias": 1 })
         if (music) {
             return { "status": 1, "message": "music details found", "music": music };
         } else {

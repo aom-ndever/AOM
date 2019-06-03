@@ -1521,9 +1521,8 @@ router.post("/state", async (req, res) => {
 
 
   if (req.body.state) {
-    var tmp = _.map(req.body.state, function (id) { return ObjectId(id) });
-
-    filter["state._id"] = {
+    var tmp = _.map(req.body.state, function (id) { return (id) });
+    filter["state"] = {
       $in: tmp
     };
   }
@@ -1633,13 +1632,25 @@ router.post("/artistv1", async (req, res) => {
   if (req.body.music_type) {
     filters["artist.music_type._id"] = new ObjectId(req.body.music_type);
   }
+  // if (req.body.state) {
+  //   filter["state"] = req.body.state;
+  // }
+  // if (req.body.state) {
+  //   filters["artist.state"] = req.body.state;
+  // }
   if (req.body.state) {
-    filter["state._id"] = new ObjectId(req.body.state);
-  }
-  if (req.body.state) {
-    filters["artist.state._id"] = new ObjectId(req.body.state);
+    var tmp = _.map(req.body.state, function (id) { return (id) });
+    filter["state"] = {
+      $in: tmp
+    };
   }
 
+  if (req.body.state) {
+    var tmp = _.map(req.body.state, function (id) { return (id) });
+    filters["artist.state"] = {
+      $in: tmp
+    };
+  }
 
   if (req.body.search) {
     var r = new RegExp(req.body.search);

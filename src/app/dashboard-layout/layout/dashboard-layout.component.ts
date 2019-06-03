@@ -15,9 +15,9 @@ declare var FB: any;
 export class DashboardLayoutComponent implements OnInit, AfterViewInit, AfterViewChecked, OnDestroy {
   track_url: any = environment.API_URL + environment.ARTIST_TRACK;
   audio_list: any = [
-    this.track_url + "/audio_152939725821967008.mp4",
-    this.track_url + "/audio_152940920498523176.mp4",
-    this.track_url + "/audio_152940899013172582.mp4"
+    this.track_url + '/audio_152939725821967008.mp4',
+    this.track_url + '/audio_152940920498523176.mp4',
+    this.track_url + '/audio_152940899013172582.mp4'
   ];
   show_spinner: boolean = false;
   user: any = '';
@@ -48,15 +48,13 @@ export class DashboardLayoutComponent implements OnInit, AfterViewInit, AfterVie
     private modalService: NgbModal,
     private fb: FormBuilder
   ) {
-    console.log("dashboard component");
     this.audio_instance_list = [];
     this.audio_list = [];
-    // console.log('LocalStorage.getItem====>', localStorage.getItem('user'));
     let localuser = localStorage.getItem('user');
     this.user = JSON.parse(localuser);
     this.subscription = this.MessageService.getMessage().subscribe((response) => {
-      // console.log(response);
-      if (response['action'] == 'start') {
+      console.log('response => ', response);
+      if (response['action'] === 'start') {
         this.audio_list = response['data'];
         response['data'].forEach((ele) => {
           let audio = new Audio();
@@ -64,7 +62,7 @@ export class DashboardLayoutComponent implements OnInit, AfterViewInit, AfterVie
           audio.load();
           this.audio_instance_list.push(audio);
           audio.addEventListener('timeupdate', this.timeUpdate, false);
-          audio.addEventListener("canplaythrough", () => {
+          audio.addEventListener('canplaythrough', () => {
             this.duration = audio.duration;
             // this.total_time = this.format_seconds(this.duration);
             // this.dur_sec = this.duration - this.dur_min * 60;
@@ -73,18 +71,18 @@ export class DashboardLayoutComponent implements OnInit, AfterViewInit, AfterVie
 
       }
       this.list_no = response['list'];
-      if (response['action'] == 'start') {
+      if (response['action'] === 'start') {
         this.song_cnt = response['index'];
         if (this.audio_ins) {
           this.audio_ins.currentTime = 0;
           this.audio_ins.pause();
-          this.total_time = "0:0";
+          this.total_time = '0:0';
         }
         this.play();
-      } else if (response['action'] == 'stop') {
+      } else if (response['action'] === 'stop') {
         var pButton = document.getElementById('pButton');
-        pButton.className = "";
-        pButton.className = "play";
+        pButton.className = '';
+        pButton.className = 'play';
         if (this.audio_ins) {
           this.audio_ins.currentTime = 0;
           this.audio_ins.pause();
@@ -148,7 +146,7 @@ export class DashboardLayoutComponent implements OnInit, AfterViewInit, AfterVie
     try {
       var pButton = document.getElementById('pButton');
       this.audio_ins = this.audio_instance_list[this.song_cnt];
-      if (pButton.className == "play") {
+      if (pButton.className === 'play') {
         this.MessageService.sendMessage({ index: this.song_cnt, action: 'bottom_play', list: this.list_no });
       }
       if (this.audio_instance_list[this.song_cnt] && this.audio_instance_list[this.song_cnt].paused) {
@@ -160,19 +158,19 @@ export class DashboardLayoutComponent implements OnInit, AfterViewInit, AfterVie
             this.toastr.info('This audio type is not supported in this browser.', 'Information!');
             this.audio_instance_list[this.song_cnt].pause();
             this.MessageService.sendMessage({ index: this.song_cnt, action: 'stop', list: this.list_no });
-            pButton.className = "";
-            pButton.className = "play";
+            pButton.className = '';
+            pButton.className = 'play';
             // Automatic playback failed.
             // Show a UI element to let the user manually start playback.
           });
         }
-        pButton.className = "";
-        pButton.className = "pause";
+        pButton.className = '';
+        pButton.className = 'pause';
       } else {
         this.audio_instance_list[this.song_cnt].pause();
         this.MessageService.sendMessage({ index: this.song_cnt, action: 'stop', list: this.list_no });
-        pButton.className = "";
-        pButton.className = "play";
+        pButton.className = '';
+        pButton.className = 'play';
       }
     } catch (err) {
       console.log(err);
@@ -199,10 +197,10 @@ export class DashboardLayoutComponent implements OnInit, AfterViewInit, AfterVie
     console.log('total_time', str);
     total_time.innerHTML = str.toString();
 
-    if ($event.target.currentTime == $event.target.duration) {
+    if ($event.target.currentTime === $event.target.duration) {
       // this.next();          
-      pButton.className = "";
-      pButton.className = "play";
+      pButton.className = '';
+      pButton.className = 'play';
     }
   }
 
@@ -218,7 +216,7 @@ export class DashboardLayoutComponent implements OnInit, AfterViewInit, AfterVie
       this.song_cnt = this.audio_instance_list.length - 1;
     }
     var pButton = document.getElementById('pButton');
-    if (pButton.className == 'pause') {
+    if (pButton.className === 'pause') {
       this.MessageService.sendMessage({ index: this.song_cnt, action: 'next', track_action: 'pause', list: this.list_no });
       this.play();
     }
@@ -236,7 +234,7 @@ export class DashboardLayoutComponent implements OnInit, AfterViewInit, AfterVie
       this.song_cnt = 0;
     }
     var pButton = document.getElementById('pButton');
-    if (pButton.className == 'pause') {
+    if (pButton.className === 'pause') {
       this.MessageService.sendMessage({ index: this.song_cnt, action: 'prev', track_action: 'pause', list: this.list_no });
       this.play();
     }
@@ -294,7 +292,7 @@ export class DashboardLayoutComponent implements OnInit, AfterViewInit, AfterVie
     let track = this.audio_list[this.song_cnt];
     console.log(track);
     let url = 'http://' + window.location.host + '/artist_profile/' + track['artist_id']['_id'] + '/track/' + track['_id'] + '/comments';
-    let str = "Track Name: " + track.name + "\nArtist: " + track['artist_id']['first_name'] + ' ' + track['artist_id']['last_name'] + '\nDescription: ' + track.description;
+    let str = 'Track Name: ' + track.name + '\nArtist: ' + track['artist_id']['first_name'] + ' ' + track['artist_id']['last_name'] + '\nDescription: ' + track.description;
     // var facebookWindow = window.open('https://www.facebook.com/sharer.php?s=100&p[summary]='+encodeURIComponent(str)+"&p[url]="+encodeURIComponent(url), 'facebook-popup', 'height=350,width=600');
     // if(facebookWindow.focus) { facebookWindow.focus(); }
     FB.ui({
@@ -314,7 +312,7 @@ export class DashboardLayoutComponent implements OnInit, AfterViewInit, AfterVie
     let track = this.audio_list[this.song_cnt];
     console.log(track);
     let url = 'http://' + window.location.host + '/artist_profile/' + track['artist_id']['_id'] + '/track/' + track['_id'] + '/comments';
-    let str = "Track Name: " + track.name + "\nArtist: " + track['artist_id']['first_name'] + ' ' + track['artist_id']['last_name'] + '\nDescription: ' + track.description;
+    let str = 'Track Name: ' + track.name + '\nArtist: ' + track['artist_id']['first_name'] + ' ' + track['artist_id']['last_name'] + '\nDescription: ' + track.description;
     var twitterWindow = window.open('https://twitter.com/share?url=' + encodeURIComponent(url) + '&text=' + encodeURIComponent(str), 'twitter-popup', 'height=350,width=600');
     if (twitterWindow.focus) { twitterWindow.focus(); }
   }
@@ -374,12 +372,12 @@ export class DashboardLayoutComponent implements OnInit, AfterViewInit, AfterVie
     let track = this.audio_list[this.song_cnt];
     console.log(track);
     let url = 'http://' + window.location.host + '/artist_profile/' + track['artist_id']['_id'] + '/track/' + track['_id'] + '/comments';
-    var textArea = document.createElement("textarea");
+    var textArea = document.createElement('textarea');
     textArea.value = url;
     document.body.appendChild(textArea);
     textArea.focus();
     textArea.select();
-    document.execCommand("copy");
+    document.execCommand('copy');
     textArea.remove();
   }
 }

@@ -110,10 +110,10 @@ artist_helper.get_payment_by_day = async (artist_id, day) => {
     var aggregate = [
         {
             "$match":
-                {
-                    "created_at": { "$gt": new Date(from), "$lt": new Date(to) },
-                    "artist_id": new ObjectId(artist_id)
-                },
+            {
+                "created_at": { "$gt": new Date(from), "$lt": new Date(to) },
+                "artist_id": new ObjectId(artist_id)
+            },
         },
         {
             $project: {
@@ -502,7 +502,7 @@ artist_helper.get_all_artist = async (search, filter) => {
                 "$match": filter
             })
         }
-
+        console.log('filter => ', filter);
         if (search) {
             aggregate.push({
                 "$match":
@@ -561,6 +561,8 @@ artist_helper.get_artist_by_filter = async (filter, start, length, filters) => {
                 $limit: length
             }
         ];
+        console.log('filter => ', filter);
+
 
         if (filter) {
             aggregate.push({
@@ -923,7 +925,7 @@ artist_helper.get_new_uploads = async (search, filter = {}) => {
                 $sort: { "no_of_likes": - 1 }
             }
         ];
-
+        console.log('filter => ', filter);
         if (filter) {
             aggregate.push({
                 "$match": filter

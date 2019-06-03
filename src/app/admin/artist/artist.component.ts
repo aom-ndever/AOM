@@ -88,7 +88,7 @@ export class ArtistComponent implements OnInit {
             that.artist_data = response['artist']['artist'];
             callback({
               recordsTotal: response['artist']['recordsTotal'],
-              recordsFiltered: response['artist']['recordsTotal'],
+              recordsFiltered: response['artist']['recordsFiltered'],
               data: []
             });
             that.artist_row_cnt = (dataTablesParameters['start'] + 1);

@@ -1144,6 +1144,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
         this.toastr.error('New and repeat password must be same', 'Error!');
       }
     } else {
+      console.log('11111111 => ');
       this.toastr.error('Please enter existing password', 'Error!');
     }
   }

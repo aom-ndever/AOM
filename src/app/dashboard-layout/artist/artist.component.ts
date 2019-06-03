@@ -41,6 +41,7 @@ export class ArtistComponent implements OnInit {
     private route: ActivatedRoute,
     private ngxService: NgxUiLoaderService
   ) {
+    console.log('1111 => ');
     window.scroll(0, 0);
     this.titleService.setTitle(this.route.snapshot.data['title']);
     this.getAllState();
@@ -167,6 +168,7 @@ export class ArtistComponent implements OnInit {
   }
   // Add region for filtering
   addRegionForFilter(flag: any, val: any) {
+    console.log('flag, val => ', flag, val);
     if (flag) {
       this.region_filter.push(val);
     } else {
@@ -179,15 +181,18 @@ export class ArtistComponent implements OnInit {
     let data = {
       start: 0,
       length: this.length,
-      "filter": []
+      'filter': []
     };
-    if (this.adv_filter.music_type && this.adv_filter.music_type != "") {
+    console.log('this.adv_filter => ', this.adv_filter);
+    if (this.adv_filter.music_type && this.adv_filter.music_type !== '') {
       data['music_type'] = this.adv_filter.music_type;
       // data['filter'].push({
       //   'field' : 'music_type', value :  this.adv_filter.music_type
       // });
     }
 
+    console.log('this.region_filter => ', this.region_filter);
+    console.log('this.region_filter.length => ', this.region_filter.length);
     if (this.region_filter.length > 0) {
       data['state'] = this.region_filter;
       // data['filter'].push({
@@ -202,7 +207,9 @@ export class ArtistComponent implements OnInit {
   // get all state
   getAllState() {
     this.ArtistService.getAllState().subscribe((response) => {
+      console.log('response => ', response);
       this.state_list = response['state'];
+
     });
   }
   toggleSearch() {

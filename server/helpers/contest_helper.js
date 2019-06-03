@@ -80,6 +80,11 @@ contest_helper.get_all_contests_for_vote = async (filter) => {
             $project: {
                 "name": 1
             }
+        },
+        {
+            $sort: {
+                "name": 1
+            }
         }
     ];
     if (filter) {
