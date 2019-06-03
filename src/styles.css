@@ -216,6 +216,10 @@ i.fa.fa-spinner.fa-spin.loader {
   margin-top: 50px !important;
 }
 
+.mt-10{
+  margin-top: 10px !important;
+}
+
 .btn-primary:active{
     color: #fff;
     background-color: #9C27B0 !important;

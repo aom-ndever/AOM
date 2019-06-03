@@ -421,8 +421,7 @@ input[type="password"]:-moz-placeholder{ /* Firefox 18- */
 }
 .finalist-wrap .tile{box-shadow:none !important; }
 .artist-highlight .highlights-wrap{ overflow-y:auto !important; overflow-x:hidden !important;}
-.fan i{font-size: 16px; color:#fff;}
-/* .fan i{font-size: 16px; color:#9b26b0;} */
+.fan i{font-size: 16px; color:#fff; cursor: pointer;}
 .highlights-wrap{ padding-right: 10px;    padding-left: 5px;    margin-bottom: 30px;}
 .content-wrap{padding: 20px;}
 .title a {font-size: 14px; color: #1a1a1a; font-weight: 600; line-height: 16px;}
@@ -4828,7 +4827,8 @@ max-height: unset !important;
     margin-right: 15px;
 }
 .ana-header #days-select {
-    width: 128px !important;
+    /* width: 128px !important; */
+    width: 100% !important;
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;

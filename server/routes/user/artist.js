@@ -53,52 +53,45 @@ router.post('/follow', async (req, res) => {
       artist_id: req.body.artist_id
     };
     var resp_datas = await follower_helper.get_all_follows(obj.artist_id, obj.user_id);
-
     if (resp_datas && resp_datas.user == 0) {
-
       var resp_data = await follower_helper.follow_artist(obj);
-      if (resp_data.status == 0) {
-        logger.error("Error occured while following = ", resp_data);
-        res.status(config.INTERNAL_SERVER_ERROR).json(resp_data);
-      } else {
-        var resp = await artist_helper.get_artist_by_id(obj.artist_id);
-
-        no_follow = resp.artist.no_of_followers + 1
-        var resp_data = await track_helper.update_artist_for_followers(obj.artist_id, no_follow);
-
-        var response = await user_helper.get_user_by_id(obj.user_id);
-
-        no_follow = response.user.no_of_followers + 1
-        var resp_data = await user_helper.update_user_for_followers(obj.user_id, no_follow);
-
-        let mail_resp = await mail_helper.send("listener_followed", {
-          "to": resp.artist.email,
-          "subject": "Music Social Voting - Email confirmation"
-        })
-
-        var notificationObj = {
-          sender: req.userInfo.id,
-          receiver: req.body.artist_id,
-          type: "follow",
-          body: response.user.first_name + " " + "is following you",
-        }
-        var notification_data = await global_helper.send_notification(notificationObj, socket);
-        console.log('notification_data', notification_data);
-        logger.trace("followed successfully = ", resp_data);
-        res.status(config.OK_STATUS).json({ "message": "You Have followed", "flag": "follow" });
-      }
-    }
-    else {
-
-      var resp_data = await follower_helper.delete_follow(obj.artist_id, obj.user_id);
-      console.log('resp_data => ', resp_data);
+      // if (resp_data.status == 0) {
+      //   logger.error("Error occured while following = ", resp_data);
+      //   res.status(config.INTERNAL_SERVER_ERROR).json(resp_data);
+      // } else {
       var resp = await artist_helper.get_artist_by_id(obj.artist_id);
 
-      no_follow = resp.artist.no_of_followers - 1
+      no_follow = resp.artist.no_of_followers + 1
       var resp_data = await track_helper.update_artist_for_followers(obj.artist_id, no_follow);
 
       var response = await user_helper.get_user_by_id(obj.user_id);
 
+      no_follow = response.user.no_of_followers + 1
+      var resp_data = await user_helper.update_user_for_followers(obj.user_id, no_follow);
+
+      let mail_resp = await mail_helper.send("listener_followed", {
+        "to": resp.artist.email,
+        "subject": "Music Social Voting - Email confirmation"
+      })
+
+      var notificationObj = {
+        sender: req.userInfo.id,
+        receiver: req.body.artist_id,
+        type: "follow",
+        body: response.user.first_name + " " + "is following you",
+      }
+      var notification_data = await global_helper.send_notification(notificationObj, socket);
+      logger.trace("followed successfully = ", resp_data);
+      res.status(config.OK_STATUS).json({ "message": "You Have followed", "flag": "follow" });
+      // }
+    }
+    else {
+
+      var resp_data = await follower_helper.delete_follow(obj.artist_id, obj.user_id);
+      var resp = await artist_helper.get_artist_by_id(obj.artist_id);
+      no_follow = resp.artist.no_of_followers - 1
+      var resp_data = await track_helper.update_artist_for_followers(obj.artist_id, no_follow);
+      var response = await user_helper.get_user_by_id(obj.user_id);
       no_follow = response.user.no_of_followers - 1
       var resp_data = await user_helper.update_user_for_followers(obj.user_id, no_follow);
       res.status(config.OK_STATUS).json({ "message": "You Have Unfollowed", "flag": "unfollow" });
