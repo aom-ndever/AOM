@@ -2,7 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { AppComponent } from './app.component';
-import { ChartModule } from 'angular2-highcharts';
+// import { ChartModule } from 'angular2-highcharts';
 import { DataTablesModule } from 'angular-datatables';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { LayoutModule } from './dashboard-layout/layout.module';
@@ -64,7 +64,7 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
     }),
     NgbModule.forRoot(),
     // ChartModule.forRoot(require('highcharts/highstock'), require('highcharts/modules/drilldown')),
-    ChartModule,
+    // ChartModule,
     DataTablesModule,
     RouterModule.forRoot([], { useHash: false })
   ],
