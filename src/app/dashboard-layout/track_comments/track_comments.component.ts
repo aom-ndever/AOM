@@ -9,7 +9,7 @@ import { FormGroup, FormBuilder, Validators, FormControl, AbstractControl, NG_VA
 import { Title } from '@angular/platform-browser';
 declare var FB: any;
 declare let Stripe: any;
-import * as socketClient from 'socket.io-client'
+import * as socketClient from 'socket.io-client';
 import { MyMusicComponent } from '../my_music/my_music.component';
 
 @Component({
@@ -66,6 +66,7 @@ export class TrackConmmentsComponent implements OnInit {
   }
 
   ngOnInit() {
+    console.log('track comment component => ');
     console.log('environment.socketUr', environment.socketUrl);
     this.socket = socketClient(environment.socketUrl);
     console.log('this.socket => ', this.socket);
@@ -361,7 +362,6 @@ export class TrackConmmentsComponent implements OnInit {
         'status': true
       };
       this.TrackCommentsService.trackLike(data).subscribe(response => {
-        console.log('response => ', response);
         if (response['flag'] === 'liked') {
           this.track.no_of_likes = 1;
         } else if (response['flag'] === 'unliked') {
@@ -405,7 +405,7 @@ export class TrackConmmentsComponent implements OnInit {
     if (this.user && this.user['user']) {
       let data = {
         comment_id: id
-      }
+      };
       this.TrackCommentsService.upVoteComment(data).subscribe((response) => {
         this.getAllTrackComment();
         this.toastr.success(response['message'], 'Success!');
@@ -421,7 +421,7 @@ export class TrackConmmentsComponent implements OnInit {
     if (this.user && this.user['user']) {
       let data = {
         comment_id: id
-      }
+      };
       this.TrackCommentsService.downVoteComment(data).subscribe((response) => {
         this.getAllTrackComment();
         this.toastr.success(response['message'], 'Success!');

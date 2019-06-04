@@ -18,7 +18,6 @@ export class MessageService {
     }
 
     sendMessage(obj: any) {
-        console.log('obj => ', obj);
         this.subject.next(obj);
     }
 

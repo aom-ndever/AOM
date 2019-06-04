@@ -173,6 +173,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   login(flag: boolean) {
+    console.log('flag => ', flag);
     // ******************************* updated code **************************************
     this.show_spinner = true;
     this.HeaderService.login(this.userdata).subscribe(response => {

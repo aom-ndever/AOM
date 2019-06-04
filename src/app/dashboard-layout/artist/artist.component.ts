@@ -207,7 +207,6 @@ export class ArtistComponent implements OnInit {
   // get all state
   getAllState() {
     this.ArtistService.getAllState().subscribe((response) => {
-      console.log('response => ', response);
       this.state_list = response['state'];
 
     });

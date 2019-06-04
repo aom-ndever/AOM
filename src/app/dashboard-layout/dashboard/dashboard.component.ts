@@ -70,12 +70,13 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.socket = socketClient(environment.socketUrl);
     if (this.user && this.user.token !== null) {
       this.socket.emit('join', this.user.token);
+      console.log('this.socket => ', this.socket);
+      this.socket.on('receive_artist_notification_count', (data) => {
+        console.log('socket data =============>>', data);
+        this.MessageService.checkCount(data);
+      });
+      console.log('Dashboard componenet is running=========>');
     }
-    this.socket.on('receive_artist_notification_count', (data) => {
-      console.log('socket data =============>>', data);
-      this.MessageService.checkCount(data);
-    });
-    console.log('Dashboard componenet is running=======================>');
   }
 
   ngOnDestroy() {

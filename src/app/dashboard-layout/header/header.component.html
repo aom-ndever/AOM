@@ -57,12 +57,12 @@
             <ul class="update-option">
               <li class="message">
                 <a href="javascript:;"><i class="fa fa-envelope-o" aria-hidden="true"></i>
-                  <span class="new-up"> </span>
+                  <span class="new-up" *ngIf='count'> </span>
                 </a>
               </li>
               <li class="notification">
                 <a href="javascript:;"><i class="fa fa-bell" aria-hidden="true"></i>
-                  <span class="new-up">{{count}}</span>
+                  <span class="new-up" *ngIf='count'>{{count}}</span>
                 </a>
               </li>
             </ul>
@@ -103,10 +103,11 @@
             </ul>
           </nav>
           <div class="logged-in-header">
-            <ul class="update-option">
-              <li class="notification"><a href="javascript:;"><i class="fa fa-bell" aria-hidden="true"></i> <span
-                    class="new-up"></span></a></li>
-            </ul>
+            <!-- <ul class="update-option">
+              <li class="notification">
+                <a href="javascript:;"><i class="fa fa-bell" aria-hidden="true"></i> <span class="new-up"></span></a>
+              </li>
+            </ul> -->
             <div class="profile-picture" ngbDropdown>
               <a href="javascirpt:;" ngbDropdownToggle>
                 <img src="{{user.artist.image != '' ? user.artist.image : 'img/upload1.png'}}" *ngIf="user.artist"

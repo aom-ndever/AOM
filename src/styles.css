@@ -199,6 +199,9 @@ display: none !important;
   object-fit: cover;
 }
 
+.social i.fa{
+  color: rgb(155, 155, 155);
+}
 
 .liked-active{
 color: green;

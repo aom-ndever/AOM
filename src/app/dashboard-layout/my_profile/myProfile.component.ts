@@ -18,6 +18,7 @@ import { ActivatedRoute } from '@angular/router';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
+import { Subject } from 'rxjs';
 declare let Stripe: any;
 
 @Component({
@@ -31,6 +32,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChildren(DataTableDirective)
   dtElements: QueryList<DataTableDirective>;
   dtOptions: DataTables.Settings[] = [];
+  dtTrigger: Subject<any> = new Subject();
   subscription: Subscription;
   public default_profile_img: any = 'img/profile-img.png';
   public default_cover_img: any = 'img/edit-cover.jpg';
@@ -584,6 +586,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngOnDestroy() {
+    this.dtTrigger.unsubscribe();
     if (this.follower_location_chart) {
       this.AmCharts.destroyChart(this.follower_location_chart);
     }
@@ -596,7 +599,18 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
     this.subscription.unsubscribe();
   }
 
-  ngAfterViewInit() { }
+  ngAfterViewInit() {
+    this.dtTrigger.next();
+  }
+
+  // rerender(): void {
+  //   this.dtElements.dtInstance.then((dtInstance: DataTables.Api) => {
+  //     // Destroy the table first
+  //     dtInstance.destroy();
+  //     // Call the dtTrigger to rerender again
+  //     this.dtTrigger.next();
+  //   });
+  // }
 
   updateProfilePic(updtPrflPic: TemplateRef<any>) {
     this.cropperReady = false;
@@ -2132,6 +2146,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
 
   // Remove existing playlist
   removePlaylist(id: any, idx: any) {
+    console.log('idx => ', idx);
     swal({
       title: 'Are you sure?',
       text: 'You won\'t be able to revert this!',
@@ -2142,31 +2157,30 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
       confirmButtonText: 'Yes, delete it!'
     }).then((flag) => {
       if (flag.value) {
-
-
         if (this.userdata && this.userdata['type'] === 'user') {
-
           this.MyProfileService.deleteListenerPlaylistById(id).subscribe((response) => {
-
             this.toastr.success(response['message'], 'Success!');
             this.dtElements.forEach((dtElement: DataTableDirective, index: number) => {
-              if (idx === index) {
-                dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
-                  dtInstance.draw();
-                });
-              }
+              console.log('hereee for each => ');
+              console.log('idx, index => ', idx, index);
+              // if (idx === index) {
+              console.log('idx === index => ');
+              dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
+                console.log('draw function => ');
+                dtInstance.draw();
+              });
+              // }
             });
           });
-
         } else {
           this.MyProfileService.removeArtistPlaylist(id).subscribe((response) => {
             this.toastr.success(response['message'], 'Success!');
             this.dtElements.forEach((dtElement: DataTableDirective, index: number) => {
-              if (idx === index) {
+              // if (idx === index) {
                 dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
                   dtInstance.draw();
                 });
-              }
+              // }
             });
           });
         }

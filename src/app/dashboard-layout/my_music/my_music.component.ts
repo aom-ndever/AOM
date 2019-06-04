@@ -335,7 +335,6 @@ export class MyMusicComponent implements OnInit, OnDestroy {
 
   // open edit track model
   openEditTrackModal(content: any, obj: any) {
-    console.log('obj => ', obj);
     this.trackdata = { ...obj };
     if (!obj.description || obj.description === 'undefined') {
       this.trackdata['description'] = '';

@@ -63,9 +63,9 @@ artist_notifications_helper.get_notifications = async (userId, skip = false, lim
  *          status 1 - If notification data count, with notification object
  *          status 2 - If notification not count, with appropriate message
  */
-artist_notifications_helper.get_notifications_count = async userId => {
+artist_notifications_helper.get_notifications_count = async sender => {
     try {
-        var count = await ArtistNotifications.find(userId).count();
+        var count = await ArtistNotifications.find(sender).count();
         return {
             status: 1,
             message: "notifications found",

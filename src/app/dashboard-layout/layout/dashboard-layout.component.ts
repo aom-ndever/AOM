@@ -53,7 +53,6 @@ export class DashboardLayoutComponent implements OnInit, AfterViewInit, AfterVie
     let localuser = localStorage.getItem('user');
     this.user = JSON.parse(localuser);
     this.subscription = this.MessageService.getMessage().subscribe((response) => {
-      console.log('response => ', response);
       if (response['action'] === 'start') {
         this.audio_list = response['data'];
         response['data'].forEach((ele) => {

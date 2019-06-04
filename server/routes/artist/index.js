@@ -14,6 +14,7 @@ var follower_helper = require('../../helpers/follower_helper');
 var comment_helper = require('../../helpers/comment_helper');
 var participate_helper = require('../../helpers/participate_helper');
 var round_helper = require('../../helpers/round_helper');
+var artist_helper = require('../../helpers/artist_helper');
 var user_helper = require('../../helpers/user_helper');
 var download_helper = require('../../helpers/download_helper');
 var vote_track_helper = require('../../helpers/vote_track_helper');
@@ -77,6 +78,21 @@ router.get('/get_music_and_track', async (req, res) => {
     } else {
         logger.error("Error occured while fetching = ", media);
         res.status(config.INTERNAL_SERVER_ERROR).json(media);
+    }
+});
+
+
+router.get('/get_all_artist_notifiction', async (req, res) => {
+    artist_id = req.userInfo.id;
+
+    var notification = await artist_helper.get_all_artist_notification(artist_id);
+
+    if (notification.status === 1) {
+        logger.trace("got details successfully");
+        res.status(config.OK_STATUS).json({ "status": 1, "notification": notification });
+    } else {
+        logger.error("Error occured while fetching = ", notification);
+        res.status(config.INTERNAL_SERVER_ERROR).json(notification);
     }
 });
 

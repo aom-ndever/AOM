@@ -402,7 +402,6 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
         'status': true
       };
       this.ArtistProfileService.trackLike(data).subscribe(response => {
-        console.log('response => ', response);
         console.log('this.artisttrack => ', this.artisttrack);
         if (response['flag'] === 'liked') {
           this.artisttrack[index].no_of_likes = 1;
@@ -434,7 +433,6 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
         'status': true
       };
       this.ArtistProfileService.trackLike(data).subscribe(response => {
-        console.log('response => ', response);
         if (response['flag'] === 'liked') {
           this.rankingtrack[index].no_of_likes = 1;
         } else if (response['flag'] === 'unliked') {

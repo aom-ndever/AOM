@@ -218,7 +218,6 @@ export class RegisterComponent implements OnInit {
   getLocation() {
     if (this.artist_data['zipcode']) {
       this.RegisterService.getLocationFromZipCode(this.artist_data['zipcode']).subscribe(response => {
-        console.log('response => ', response);
         const res = response;
         if (res['results'].length > 0 && res['results'][0].hasOwnProperty('address_components')) {
           /***************************************** old code ***********************************/

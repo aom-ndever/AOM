@@ -7,6 +7,7 @@ var Notification = require("./../models/notification");
 var Bank = require("../models/bank");
 var Account = require("../models/account");
 var Transaction = require("../models/transaction");
+var ArtistNotification = require("../models/artist_notification");
 const saltRounds = 10;
 var artist_helper = {};
 var mongoose = require('mongoose');
@@ -239,6 +240,20 @@ artist_helper.insert_notification = async (object) => {
 artist_helper.get_all_artist_for_email = async () => {
     try {
         var artist = await Artist.find()
+        if (artist) {
+            return { "status": 1, "message": "artist details found", "artist": artist };
+        } else {
+            return { "status": 2, "message": "artist not found" };
+        }
+    } catch (err) {
+        return { "status": 0, "message": "Error occured while finding artist", "error": err }
+    }
+};
+
+
+artist_helper.get_all_artist_notification = async (user_id) => {
+    try {
+        var artist = await ArtistNotification.find({ "isSeen": 0, "receiver": user_id })
         if (artist) {
             return { "status": 1, "message": "artist details found", "artist": artist };
         } else {
