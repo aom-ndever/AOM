@@ -96,6 +96,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   public googleInit() {
     console.log('here in googleinit');
     gapi.load('auth2', () => {
+      // gapi.load(this.auth2, () => {
 
       console.log('here1 in googleinit');
 
@@ -104,11 +105,13 @@ export class HeaderComponent implements OnInit, OnDestroy {
         cookiepolicy: 'single_host_origin',
         scope: 'profile email'
       });
+      console.log('this.auth2 => ', this.auth2);
       this.attachSignin(document.getElementById('googleBtn'));
     });
   }
   // Code for open google signin popup and do login
   public attachSignin(element) {
+    console.log('attachSignin => ');
     this.auth2.attachClickHandler(element, {},
       (googleUser) => {
         let profile = googleUser.getBasicProfile();
