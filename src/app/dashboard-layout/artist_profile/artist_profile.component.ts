@@ -168,10 +168,12 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
                 that.artisttrack.forEach((ele) => { that.audio_ins.push(false); });
                 if (that.user && that.user['user']) {
                   that.ArtistProfileService.getBookmarkedTrackList().subscribe((response) => {
+                    console.log('response => ', response);
                     let bookmark_list = response['bookmark'];
                     that.artisttrack.forEach((ele) => {
                       let flag = false;
                       bookmark_list.forEach((bookmark) => {
+                        console.log('bookmark => ', bookmark);
                         if (bookmark['track_id']['_id'] === ele['_id']) {
                           flag = true;
                           return;

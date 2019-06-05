@@ -695,11 +695,11 @@ router.put('/settings/password', async (req, res) => {
                 res.status(config.OK_STATUS).json({ "status": 1, "resp": "Password changed" });
             }
             else {
-                res.status(config.OK_STATUS).json({ "status": 1, "resp": "Please Enter New Password" });
+                res.status(config.BAD_REQUEST).json({ "status": 1, "message": "Please Enter New Password" });
             }
         }
         else {
-            res.status(config.BAD_REQUEST).json({ "status": 2, "resp": "Password is wrong" });
+            res.status(config.BAD_REQUEST).json({ "status": 2, "message": "Password is wrong" });
         }
     }
     else {

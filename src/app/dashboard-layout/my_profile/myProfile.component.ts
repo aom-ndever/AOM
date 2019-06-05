@@ -1113,54 +1113,59 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   changePassword() {
-    if (this.change_pwd['old'] && this.userdata.pwd === this.change_pwd['old']) {
-      if (this.change_pwd['new'] && this.change_pwd['repeat'] && this.change_pwd['new'] === this.change_pwd['repeat'] &&
-        this.change_pwd['new'].length >= 6 && this.change_pwd['repeat'] >= 6) {
-        let data = {
-          password: this.userdata.pwd,
-          new_password: this.change_pwd['new']
-        };
-        this.show_spinner = true;
-        if (this.userdata.type === 'artist') {
-          this.MyProfileService.changeArtistPassword(data).subscribe(response => {
-            this.change_pwd = {};
-            this.updateLocalStorage();
-            this.toastr.success(response['resp'], 'Success!');
-          }, error => {
-            this.toastr.error(error['error'].message, 'Error!');
-            this.show_spinner = false;
-          }, () => {
-            this.show_spinner = false;
+    console.log('this.userdata => ', this.userdata);
+    console.log('this.change_pwd[old] => ', this.change_pwd['old']);
+    console.log('this.userdata.pwd => ', this.userdata.pwd);
+    // if (this.change_pwd['old'] && this.userdata.pwd === this.change_pwd['old']) {
+    if (this.change_pwd['new'] && this.change_pwd['repeat'] && this.change_pwd['new'] === this.change_pwd['repeat'] &&
+      this.change_pwd['new'].length >= 6 && this.change_pwd['repeat'] >= 6) {
+      let data = {
+        // password: this.userdata.pwd,
+        password: this.change_pwd['old'],
+        new_password: this.change_pwd['new']
+      };
+      this.show_spinner = true;
+      if (this.userdata.type === 'artist') {
+        this.MyProfileService.changeArtistPassword(data).subscribe(response => {
+          this.change_pwd = {};
+          this.updateLocalStorage();
+          this.toastr.success(response['resp'], 'Success!');
+        }, error => {
+          console.log('error => ', error);
+          this.toastr.error(error['error'].message, 'Error!');
+          this.show_spinner = false;
+        }, () => {
+          this.show_spinner = false;
 
-          });
-        } else {
-          this.MyProfileService.changeUserPassword(data).subscribe(response => {
-            this.change_pwd = {};
-            this.updateLocalStorage();
-            this.toastr.success(response['resp'], 'Success!');
-          }, error => {
-            this.toastr.error(error['error'].message, 'Error!');
-            this.show_spinner = false;
-          }, () => {
-            this.show_spinner = false;
-
-          });
-        }
-      } else if (!this.change_pwd['new']) {
-        this.toastr.error('Please enter new password', 'Error!');
-      } else if (!this.change_pwd['repeat']) {
-        this.toastr.error('Please enter repeat password', 'Error!');
-      } else if (this.change_pwd['new'].length < 6) {
-        this.toastr.error('New password must be more than 6 character');
-      } else if (this.change_pwd['repeat'].length < 6) {
-        this.toastr.error('Repeat password must be more than 6 character');
+        });
       } else {
-        this.toastr.error('New and repeat password must be same', 'Error!');
+        this.MyProfileService.changeUserPassword(data).subscribe(response => {
+          this.change_pwd = {};
+          this.updateLocalStorage();
+          this.toastr.success(response['resp'], 'Success!');
+        }, error => {
+          this.toastr.error(error['error'].message, 'Error!');
+          this.show_spinner = false;
+        }, () => {
+          this.show_spinner = false;
+
+        });
       }
+    } else if (!this.change_pwd['new']) {
+      this.toastr.error('Please enter new password', 'Error!');
+    } else if (!this.change_pwd['repeat']) {
+      this.toastr.error('Please enter repeat password', 'Error!');
+    } else if (this.change_pwd['new'].length < 6) {
+      this.toastr.error('New password must be more than 6 character');
+    } else if (this.change_pwd['repeat'].length < 6) {
+      this.toastr.error('Repeat password must be more than 6 character');
     } else {
-      console.log('11111111 => ');
-      this.toastr.error('Please enter existing password', 'Error!');
+      this.toastr.error('New and repeat password must be same', 'Error!');
     }
+    // } else {
+    //   console.log('11111111 => ');
+    //   this.toastr.error('Please enter existing password', 'Error!');
+    // }
   }
 
   openAddMediaModal(content) {
@@ -2177,9 +2182,9 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
             this.toastr.success(response['message'], 'Success!');
             this.dtElements.forEach((dtElement: DataTableDirective, index: number) => {
               // if (idx === index) {
-                dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
-                  dtInstance.draw();
-                });
+              dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
+                dtInstance.draw();
+              });
               // }
             });
           });
