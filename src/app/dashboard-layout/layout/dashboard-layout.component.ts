@@ -154,6 +154,7 @@ export class DashboardLayoutComponent implements OnInit, AfterViewInit, AfterVie
           playPromise.then(() => {
             // Automatic playback started!
           }).catch((error) => {
+            console.log('error => ', error);
             this.toastr.info('This audio type is not supported in this browser.', 'Information!');
             this.audio_instance_list[this.song_cnt].pause();
             this.MessageService.sendMessage({ index: this.song_cnt, action: 'stop', list: this.list_no });
