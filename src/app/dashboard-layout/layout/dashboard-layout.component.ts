@@ -15,9 +15,12 @@ declare var FB: any;
 export class DashboardLayoutComponent implements OnInit, AfterViewInit, AfterViewChecked, OnDestroy {
   track_url: any = environment.API_URL + environment.ARTIST_TRACK;
   audio_list: any = [
-    this.track_url + '/audio_152939725821967008.mp4',
-    this.track_url + '/audio_152940920498523176.mp4',
-    this.track_url + '/audio_152940899013172582.mp4'
+    // this.track_url + '/audio_152939725821967008.mp4',
+    // this.track_url + '/audio_152940920498523176.mp4',
+    // this.track_url + '/audio_152940899013172582.mp4'
+    this.track_url + '/audio_152939725821967008.mp3',
+    this.track_url + '/audio_152940920498523176.mp3',
+    this.track_url + '/audio_152940899013172582.mp3'
   ];
   show_spinner: boolean = false;
   user: any = '';

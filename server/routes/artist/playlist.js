@@ -175,7 +175,8 @@ router.put('/:playlist_id', function (req, res) {
                   if (!fs.existsSync(dir)) {
                     fs.mkdirSync(dir);
                   }
-                  extention = ".mp4";
+                  // extention = ".mp4";
+                  extention = ".mp3";
                   filename = "audio_" + new Date().getTime() + extention;
                   file.mv(dir + "/" + filename, function (err) {
                     if (err) {
