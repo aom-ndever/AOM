@@ -13,43 +13,13 @@ a,a:hover,a:active,a:focus{text-decoration: none;}
     unicode-range: U+0020-02DC;
 }
 
-.tooltip {
-  position: relative;
-  display: inline-block;
-  border-bottom: 1px dotted black;
-}
+.tooltip {position: relative;display: inline-block; border-bottom: 1px dotted black;}
 
-.tooltip .tooltiptext {
-  visibility: hidden;
-  width: 120px;
-  background-color: #555;
-  color: #fff;
-  text-align: center;
-  border-radius: 6px;
-  padding: 5px 0;
-  position: absolute;
-  z-index: 1;
-  bottom: 125%;
-  left: 50%;
-  margin-left: -60px;
-  opacity: 0;
-  transition: opacity 0.3s;
-}
+.tooltip .tooltiptext { visibility: hidden;  width: 120px; background-color: #555; color: #fff; text-align: center;border-radius: 6px; padding: 5px 0;position: absolute;z-index: 1; bottom: 125%; left: 50%; margin-left: -60px; opacity: 0;transition: opacity 0.3s;}
 
-.tooltip .tooltiptext::after {
-  content: "";
-  position: absolute;
-  top: 100%;
-  left: 50%;
-  margin-left: -5px;
-  border-width: 5px;
-  border-style: solid;
-  border-color: #555 transparent transparent transparent;
-}
+.tooltip .tooltiptext::after { content: ""; position: absolute; top: 100%; left: 50%; margin-left: -5px; border-width: 5px; border-style: solid; border-color: #555 transparent transparent transparent;}
 
-.tooltip:hover .tooltiptext {
-  visibility: visible;
-  opacity: 1;
+.tooltip:hover .tooltiptext { visibility: visible;  opacity: 1;
 }
 /*header*/
 .navigation ul,.update-option{
@@ -1630,6 +1600,7 @@ width: 100%;
 select.form-control:focus {
     outline: none !important;
     box-shadow: none;
+    border-color: #9b26b0;
 }
 .profile-detail-wrap  .comment-block .cm-date-name > h6 {
     margin-bottom: 5px;
@@ -2217,11 +2188,16 @@ a.no-btn,.cancel-btn {
 
 }
 .notify-by-email ul li,.notify-by-sms  ul li,.on-side-alert ul li{
-    -webkit-flex: 0 0 33.33%;
+    /* -webkit-flex: 0 0 33.33%;
     -moz-flex: 0 0 33.33%;
     -ms-flex: 0 0 33.33%;
-    -o-flex: 0 0 33.33%;
-    flex: 0 0 33.33%;
+    -o-flex: 0 0 33.33%; */
+    /* flex: 0 0 33.33%; */
+    -webkit-flex: 0 0 23.33%;
+    -moz-flex: 0 0 23.33%;
+    -ms-flex: 0 0 23.33%;
+    -o-flex: 0 0 23.33%;
+    flex: 0 0 23.33%;
     padding: 0 15px;
 }
 .notify-by-email ul li p,.notify-by-sms  ul li p,.on-side-alert ul li p{
@@ -2563,13 +2539,13 @@ input:checked + .slider:before {
 }
 .upl-time-rem{
     opacity: 0.5;
-  font-family: Helvetica;
-  font-size: 12px;
-  font-weight: normal;
-  letter-spacing: -0.4px;
-  text-align: right;
-  color: #1a1a1a;
-  margin-bottom: 15px;
+    font-family: Helvetica;
+    font-size: 12px;
+    font-weight: normal;
+    letter-spacing: -0.4px;
+    text-align: right;
+    color: #1a1a1a;
+    margin-bottom: 15px;
 }
 .media_progress_bar{display: none;}
 .select-card{margin: 0 50px;}

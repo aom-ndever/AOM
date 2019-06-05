@@ -327,6 +327,7 @@ export class MyMusicComponent implements OnInit, OnDestroy {
   openModal(content) {
     this.trackdata = {};
     this.add_track_img = '';
+    this.track_img = '';
     this.image_upload = '';
     this.edit_image = '';
     this.add_track_audio = '';
@@ -410,6 +411,11 @@ export class MyMusicComponent implements OnInit, OnDestroy {
       isWhitespace = this.trackdata.name.trim().length === 0;
       isValid = !isWhitespace;
     }
+    if (this.trackdata) {
+      console.log('this.trackdata.price => ', this.trackdata.price);
+      console.log('this.trackdata.price.length => ', this.trackdata.price.length);
+      console.log('this.trackdata.price.toString().length => ', this.trackdata.price.toString().length);
+    }
     if (this.trackdata && this.trackdata.name && isValid && this.trackdata.price && this.trackdata.price > 0 &&
       this.trackdata.price.toString().length <= 3 && this.audio_file && this.image_upload) {
       let formdata = new FormData();
@@ -424,7 +430,6 @@ export class MyMusicComponent implements OnInit, OnDestroy {
         this.audio_file = '';
         this.image_upload = '';
         this.add_track_img = '';
-
         this.toastr.success(response['message'], 'Success!');
         this.datatableElement.dtInstance.then((dtInstance: DataTables.Api) => {
           dtInstance.draw();
@@ -445,9 +450,10 @@ export class MyMusicComponent implements OnInit, OnDestroy {
     } else if (!this.trackdata.price) {
       this.toastr.error('Please enter track price', 'Error!');
     } else if (this.trackdata.price < 0) {
-
+      console.log('< 0 => ');
       this.toastr.error('Track price must be positive value.', 'Error!');
     } else if (this.trackdata.price.toString().length !== 3) {
+      console.log('< 3 => ');
       this.toastr.error('Track price must be in three digits', 'Error!');
     } else {
       this.toastr.error('Please provide necessary details', 'Error!');

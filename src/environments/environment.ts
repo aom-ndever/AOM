@@ -18,6 +18,7 @@ export const environment = {
   USER_IMG: '/uploads/user/',
   ARTIST_MEDIA: '/uploads/media/',
   ARTIST_TRACK: '/uploads/track/',
-  FB_APPID: 1924632120949205,
+  // FB_APPID: 1924632120949205,
+  FB_APPID: 591838207995165,
   STRIPE_PUB_KEY: 'pk_test_78OzF2o8zLt5dc5QfPI8hpNS'
 };
