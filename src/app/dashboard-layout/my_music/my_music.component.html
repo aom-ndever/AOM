@@ -156,7 +156,7 @@
                       <div class="track-comment">
                         <a href="javascript:;" routerLink="/artist_track_comment/{{t._id}}"><img src="img/comment.png"
                             alt="Comment"></a>
-                        <span class="new-up"></span>
+                        <!-- <span class="new-up"></span> -->
                       </div>
                       <div class="track-price"><a href="javascript:;">${{t.price}}</a></div>
                       <div class="share"><a href="javascript:;" (click)="openShareTrackModel(shareTrack, i)"><img
@@ -557,7 +557,7 @@
         <span aria-hidden="true">&times;</span>
     </button> -->
       <form [formGroup]="share_form">
-        <h3 class="forget_password_header">Share through email</h3>
+        <h3 class="forget_password_header">Share Through Email</h3>
         <div class="col-sm-12">
           <div class="form-group">
             <label class="control-label custom_form_label">Email Id</label>

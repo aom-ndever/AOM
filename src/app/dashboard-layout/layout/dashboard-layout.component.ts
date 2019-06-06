@@ -55,9 +55,13 @@ export class DashboardLayoutComponent implements OnInit, AfterViewInit, AfterVie
     this.audio_list = [];
     let localuser = localStorage.getItem('user');
     this.user = JSON.parse(localuser);
+    console.log('this.audio_instance_list shold be emp ty => ', this.audio_instance_list);
     this.subscription = this.MessageService.getMessage().subscribe((response) => {
+      console.log('response for dashboard play => ', response);
       if (response['action'] === 'start') {
+        console.log('action = start = 1 => ');
         this.audio_list = response['data'];
+        this.audio_instance_list = [];
         response['data'].forEach((ele) => {
           let audio = new Audio();
           audio.src = ele['audio'] ? this.track_url + '/' + ele['audio'] : '';
@@ -74,6 +78,7 @@ export class DashboardLayoutComponent implements OnInit, AfterViewInit, AfterVie
       }
       this.list_no = response['list'];
       if (response['action'] === 'start') {
+        console.log('action = start = 2 => ');
         this.song_cnt = response['index'];
         if (this.audio_ins) {
           this.audio_ins.currentTime = 0;
@@ -82,6 +87,7 @@ export class DashboardLayoutComponent implements OnInit, AfterViewInit, AfterVie
         }
         this.play();
       } else if (response['action'] === 'stop') {
+        console.log('action = stop => ');
         var pButton = document.getElementById('pButton');
         pButton.className = '';
         pButton.className = 'play';
@@ -91,6 +97,7 @@ export class DashboardLayoutComponent implements OnInit, AfterViewInit, AfterVie
         }
       }
     });
+
     this.share_form = this.fb.group({
       email: ['', [Validators.required, Validators.email]]
     });
@@ -145,8 +152,10 @@ export class DashboardLayoutComponent implements OnInit, AfterViewInit, AfterVie
   }
 
   play() {
+    console.log('in play function => ');
     try {
       var pButton = document.getElementById('pButton');
+      console.log('this.audio_instance_list => ', this.audio_instance_list);
       this.audio_ins = this.audio_instance_list[this.song_cnt];
       if (pButton.className === 'play') {
         this.MessageService.sendMessage({ index: this.song_cnt, action: 'bottom_play', list: this.list_no });
@@ -195,6 +204,7 @@ export class DashboardLayoutComponent implements OnInit, AfterViewInit, AfterVie
     running_time.innerHTML = minutes + ':' + Math.round(seconds);
     minutes = Math.floor($event.target.duration / 60);
     seconds = $event.target.duration - minutes * 60;
+    // console.log('running_time => ', running_time);
     var total_time = document.getElementById('total_time');
     var str = ((isNaN(minutes) ? 0 : minutes) + ':' + (isNaN(seconds) ? 0 : Math.round(seconds)));
     console.log('total_time', str);

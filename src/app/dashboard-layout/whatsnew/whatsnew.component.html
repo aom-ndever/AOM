@@ -231,7 +231,7 @@
           </div>
           <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center"
             *ngIf="!show_loader && artist_list['length'] > 12">
-            <button class="btn btn-lg btn-default" (click)="loadMoreArtist()" [disabled]="artist_loader">load more <i
+            <button class="btn btn-lg btn-default" (click)="loadMoreArtist()" [disabled]="artist_loader">Load More <i
                 *ngIf="artist_loader" class="fa fa-spinner fa-spin"></i></button>
           </div>
         </div>
@@ -338,10 +338,10 @@
             </div>
           </div>
         </div>
-        <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center" *ngIf="!show_loader && track_list['length'] > 12">
-          <button class="btn btn-lg btn-default" (click)="loadMoreTrack()" [disabled]="track_loader">load more <i
-              *ngIf="track_loader" class="fa fa-spinner fa-spin"></i></button>
-        </div>
+        <!-- <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center" *ngIf="!show_loader && track_list['length'] > 12">
+          <button class="btn btn-lg btn-default load-more-btn" (click)="loadMoreTrack()" [disabled]="track_loader">Load
+            More <i *ngIf="track_loader" class="fa fa-spinner fa-spin"></i></button>
+        </div> -->
       </div>
     </div>
   </div>

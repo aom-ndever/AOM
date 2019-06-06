@@ -284,8 +284,8 @@ router.delete('/:track_id', async (req, res) => {
     no_track = resp.artist.no_of_likes - 1
     var resp_data = await track_helper.update_artist_for_likes(artist_id, no_track);
 
-    var bookmark_del = await bookmark_helper.delete_bookmark_by_track_id(track_id);
-
+    var bookmark_del = await bookmark_helper.delete_bookmark_by_track(track_id);
+    console.log('bookmark_del => ', bookmark_del);
     var like_del = await like_helper.delete_like(track_id);
     var comment_del = await comment_helper.delete_comment_by_track(track_id);
     var playlist_del = await playlist_helper.delete_playlist_by_track(track_id);

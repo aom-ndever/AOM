@@ -161,7 +161,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.show_spinner = false;
     this.userdata = {};
     this.login_validation = false;
-    this.modalRef = this.modalService.open(content, { centered: true, windowClass: 'modal-wrapper', backdrop: true });
+    this.modalRef = this.modalService.open(content, { centered: true, windowClass: 'modal-wrapper', backdrop: 'static' });
     this.googleInit();
   }
 
@@ -169,7 +169,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.modalRef.close();
     this.forget_pwd_data = {};
     this.forget_validation = false;
-    this.modalForgetRef = this.modalService.open(content, { centered: true, backdrop: true });
+    this.modalForgetRef = this.modalService.open(content, { centered: true, backdrop: 'static' });
   }
 
   login(flag: boolean) {
@@ -288,45 +288,62 @@ export class HeaderComponent implements OnInit, OnDestroy {
   forgetPassword(flag: boolean) {
     if (flag) {
       this.show_spinner = true;
-      if (this.forget_pwd_data && this.forget_pwd_data.type == 'artist') {
-        this.HeaderService.artistForgetPassword({
-          email: this.forget_pwd_data.email, type: this.forget_pwd_data.type
-        }).subscribe(response => {
-          this.toastr.success(response['message'], 'Success!');
-          this.modalForgetRef.close();
-        }, error => {
-          if (error['error'].message[0] && error['error'].message[0]['param'] && error['error'].message[0]['param'] == 'email') {
-            this.toastr.error(error['error'].message[0]['msg'], 'Error!');
-          } else {
-            this.toastr.error(error['error'].message, 'Error!');
-          }
-          this.show_spinner = false;
-        }, () => {
-          this.forget_pwd_data = {};
-          this.show_spinner = false;
-        });
-      } else {
-        this.HeaderService.userForgetPassword(
-          {
-            email: this.forget_pwd_data.email,
-            type: this.forget_pwd_data.type
-          }
-        ).subscribe(response => {
-          console.log('user ', response);
-          this.toastr.success(response['message'], 'Success!');
-          this.modalForgetRef.close();
-        }, error => {
-          if (error['error'].message[0] && error['error'].message[0]['param'] && error['error'].message[0]['param'] == 'email') {
-            this.toastr.error(error['error'].message[0]['msg'], 'Error!');
-          } else {
-            this.toastr.error(error['error'].message, 'Error!');
-          }
-          this.show_spinner = false;
-        }, () => {
-          this.forget_pwd_data = {};
-          this.show_spinner = false;
-        });
-      }
+      this.HeaderService.artistForgetPassword({
+        email: this.forget_pwd_data.email
+      }).subscribe(response => {
+        this.toastr.success(response['message'], 'Success!');
+        this.modalForgetRef.close();
+      }, error => {
+        if (error['error'].message[0] && error['error'].message[0]['param'] && error['error'].message[0]['param'] == 'email') {
+          this.toastr.error(error['error'].message[0]['msg'], 'Error!');
+        } else {
+          this.toastr.error(error['error'].message, 'Error!');
+        }
+        this.show_spinner = false;
+      }, () => {
+        this.forget_pwd_data = {};
+        this.show_spinner = false;
+      });
+      // if (this.forget_pwd_data && this.forget_pwd_data.type == 'artist') {
+      //   this.HeaderService.artistForgetPassword({
+      //     email: this.forget_pwd_data.email
+      //     // , type: this.forget_pwd_data.type
+      //   }).subscribe(response => {
+      //     this.toastr.success(response['message'], 'Success!');
+      //     this.modalForgetRef.close();
+      //   }, error => {
+      //     if (error['error'].message[0] && error['error'].message[0]['param'] && error['error'].message[0]['param'] == 'email') {
+      //       this.toastr.error(error['error'].message[0]['msg'], 'Error!');
+      //     } else {
+      //       this.toastr.error(error['error'].message, 'Error!');
+      //     }
+      //     this.show_spinner = false;
+      //   }, () => {
+      //     this.forget_pwd_data = {};
+      //     this.show_spinner = false;
+      //   });
+      // } else {
+      //   this.HeaderService.userForgetPassword(
+      //     {
+      //       email: this.forget_pwd_data.email
+      //       // , type: this.forget_pwd_data.type
+      //     }
+      //   ).subscribe(response => {
+      //     console.log('user ', response);
+      //     this.toastr.success(response['message'], 'Success!');
+      //     this.modalForgetRef.close();
+      //   }, error => {
+      //     if (error['error'].message[0] && error['error'].message[0]['param'] && error['error'].message[0]['param'] == 'email') {
+      //       this.toastr.error(error['error'].message[0]['msg'], 'Error!');
+      //     } else {
+      //       this.toastr.error(error['error'].message, 'Error!');
+      //     }
+      //     this.show_spinner = false;
+      //   }, () => {
+      //     this.forget_pwd_data = {};
+      //     this.show_spinner = false;
+      //   });
+      // }
     }
     this.forget_validation = !flag;
   }

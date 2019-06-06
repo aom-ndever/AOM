@@ -208,7 +208,7 @@
       <form [formGroup]="forget_form">
         <h3 class="forget_password_header">Forget Password</h3>
         <div class="col-sm-12">
-          <div class="form-group">
+          <!-- <div class="form-group">
             <label class="control-label custom_form_label">Account Type</label>
             <select class="form-control custom_form" formControlName="type" name="type"
               [(ngModel)]="forget_pwd_data.type" placeholder='Enter login type'>
@@ -218,7 +218,7 @@
             <div class="cust_err_msg" *ngIf="forget_validation && !forget_form.controls['type'].valid">
               <span *ngIf="forget_form.controls['type'].errors['required']" class="text-danger">Type is required.</span>
             </div>
-          </div>
+          </div> -->
           <div class="form-group">
             <label class="control-label custom_form_label">Email Id</label>
             <input class="form-control custom_form" name="email" formControlName="email"

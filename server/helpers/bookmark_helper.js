@@ -58,6 +58,20 @@ bookmark_helper.delete_bookmark_by_track_id = async (track_id, user_id) => {
 };
 
 
+bookmark_helper.delete_bookmark_by_track = async (track_id) => {
+    try {
+        let user = await Bookmark.deleteMany({ "track_id": new ObjectId(track_id) });
+        if (!user) {
+            return { status: 2, message: "Record has not Deleted" };
+        } else {
+            return { status: 1, message: "Bookmark has been Deleted" };
+        }
+    } catch (err) {
+        return { status: 0, message: "Error occured while deleting user", error: err };
+    }
+};
+
+
 bookmark_helper.get_all_bookmarked_tracks = async (user_id, start, length) => {
     try {
 

@@ -164,6 +164,7 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
             that.ArtistProfileService.getAllTrack(dataTablesParameters).subscribe((response) => {
               this.ngxService.stop();
               that.artisttrack = response['track']['music'];
+              console.log('all track artisttrack => ', this.artisttrack);
               if (that.artisttrack.length > 0) {
                 that.artisttrack.forEach((ele) => { that.audio_ins.push(false); });
                 if (that.user && that.user['user']) {
@@ -309,6 +310,7 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
 
   // Play audio
   playAudio(name: any, index: any, data: any) {
+    console.log('name => ', name);
     // let audio = new Audio();
     // audio.src = this.track_url+name;
     // audio.load();

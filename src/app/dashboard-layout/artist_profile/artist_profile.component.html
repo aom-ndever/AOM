@@ -166,6 +166,7 @@
                               <td class="serial-num music_numb">{{(artist_track_row_cnt + i)}}.</td>
                               <td class="music_play">
                                 <div class="artist-profile-custom-action-btn">
+                                  <!-- {{audio_ins[i]}} -->
                                   <a [style.display]="!audio_ins[i] ? 'block' : 'none'"
                                     (click)="playAudio(artist.audio, i, artisttrack)" class="play_img"><img
                                       src="img/play_icon.png" /></a>
@@ -457,7 +458,7 @@
           <span aria-hidden="true">&times;</span>
       </button> -->
       <form [formGroup]="share_form">
-        <h3 class="forget_password_header">Share through email</h3>
+        <h3 class="forget_password_header">Share Through Email</h3>
         <div class="col-sm-12">
           <div class="form-group">
             <label class="control-label custom_form_label">Email Id</label>

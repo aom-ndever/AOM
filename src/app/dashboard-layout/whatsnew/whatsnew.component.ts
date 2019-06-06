@@ -145,7 +145,13 @@ export class WhatsNewComponent implements OnInit, OnDestroy {
       console.log('this.whatsnewdata => ', this.whatsnewdata);
       this.artist_list = response['artist'];
       this.track_list = response['track'];
-      console.log('this.track_list => ', this.track_list);
+      // console.log('response[track] => ', response['track']);
+      // if (response['track'].length > 12) {
+      //   console.log('> 12 => ');
+      // } else {
+      //   console.log('else => ');
+      //   this.track_list = response['track'];
+      // }
       this.show_loader = false;
       if (this.whatsnewdata['track']) {
         this.whatsnewdata['track'].forEach((ele) => {
