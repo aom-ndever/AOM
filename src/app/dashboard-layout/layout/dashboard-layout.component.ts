@@ -55,11 +55,8 @@ export class DashboardLayoutComponent implements OnInit, AfterViewInit, AfterVie
     this.audio_list = [];
     let localuser = localStorage.getItem('user');
     this.user = JSON.parse(localuser);
-    console.log('this.audio_instance_list shold be emp ty => ', this.audio_instance_list);
     this.subscription = this.MessageService.getMessage().subscribe((response) => {
-      console.log('response for dashboard play => ', response);
       if (response['action'] === 'start') {
-        console.log('action = start = 1 => ');
         this.audio_list = response['data'];
         this.audio_instance_list = [];
         response['data'].forEach((ele) => {
@@ -78,7 +75,6 @@ export class DashboardLayoutComponent implements OnInit, AfterViewInit, AfterVie
       }
       this.list_no = response['list'];
       if (response['action'] === 'start') {
-        console.log('action = start = 2 => ');
         this.song_cnt = response['index'];
         if (this.audio_ins) {
           this.audio_ins.currentTime = 0;
@@ -87,7 +83,6 @@ export class DashboardLayoutComponent implements OnInit, AfterViewInit, AfterVie
         }
         this.play();
       } else if (response['action'] === 'stop') {
-        console.log('action = stop => ');
         var pButton = document.getElementById('pButton');
         pButton.className = '';
         pButton.className = 'play';
@@ -152,7 +147,7 @@ export class DashboardLayoutComponent implements OnInit, AfterViewInit, AfterVie
   }
 
   play() {
-    console.log('in play function => ');
+    console.log('play function => ');
     try {
       var pButton = document.getElementById('pButton');
       console.log('this.audio_instance_list => ', this.audio_instance_list);
@@ -191,6 +186,10 @@ export class DashboardLayoutComponent implements OnInit, AfterViewInit, AfterVie
   }
 
   timeUpdate($event: any) {
+    // console.log('$event => ', $event);
+    // console.log('$event.target => ', $event.target);
+    // console.log('$event.target.currentTime => ', $event.target.currentTime);
+    // console.log('time update function => ');
     var pButton = document.getElementById('pButton');
     var nprogres = document.getElementById('song_prog');
     var playPercent = (100 * $event.target.currentTime / $event.target.duration);
@@ -218,6 +217,7 @@ export class DashboardLayoutComponent implements OnInit, AfterViewInit, AfterVie
   }
 
   next() {
+    console.log('next function => ');
     if (this.audio_instance_list[this.song_cnt]) {
       this.audio_instance_list[this.song_cnt].pause();
       this.audio_instance_list[this.song_cnt].currentTime = 0;
@@ -236,6 +236,7 @@ export class DashboardLayoutComponent implements OnInit, AfterViewInit, AfterVie
   }
 
   prev() {
+    console.log('prev function => ');
     if (this.audio_instance_list[this.song_cnt]) {
       this.audio_instance_list[this.song_cnt].pause();
       this.audio_instance_list[this.song_cnt].currentTime = 0;
@@ -254,6 +255,7 @@ export class DashboardLayoutComponent implements OnInit, AfterViewInit, AfterVie
   }
 
   pad(num, size) {
+    console.log('pad function => ');
     var s = num + '';
     while (s.length < size) {
       s = '0' + s;
@@ -270,6 +272,10 @@ export class DashboardLayoutComponent implements OnInit, AfterViewInit, AfterVie
   }
 
   manageProgress(e: any) {
+    // console.log('e of manage progress bar => ', e);
+    // console.log('e.target => ', e.target);
+    // console.log('e.target.currentTime => ', e.target.currentTime);
+    // console.log('manage progress function => ');
     this.audio_ins.removeEventListener('timeupdate', this.timeUpdate, false);
     console.log('prog => ', e.target.value);
     var nprogres = document.getElementById('song_prog');
@@ -280,6 +286,7 @@ export class DashboardLayoutComponent implements OnInit, AfterViewInit, AfterVie
       nprogres['value'] = e.target.value;
       this.audio_ins['currentTime'] = e.target.value;
       running_time.innerHTML = minutes + ':' + Math.round(seconds);
+      // console.log('running_time.innerHTML => ', running_time.innerHTML);
     }, 500);
   }
 

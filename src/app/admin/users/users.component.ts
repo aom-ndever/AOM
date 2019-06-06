@@ -41,7 +41,6 @@ export class UsersComponent implements OnInit {
   ) {
     this.getAllState();
     this.user_role = JSON.parse(localStorage.getItem('user'));
-    console.log('user', this.user_role);
   }
 
   ngOnInit() {

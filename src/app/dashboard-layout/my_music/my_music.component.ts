@@ -245,15 +245,12 @@ export class MyMusicComponent implements OnInit, OnDestroy {
 
   changeFile(event: any) {
     const file = event.target.files[0];
-    console.log('file => ', file);
     if (file.type === 'image/png' || file.type === 'image/jpg' || file.type === 'image/jpeg') {
       if (file.size <= 500000) {
         this.image_upload = file;
         this.track_img = environment.API_URL + environment.ARTIST_TRACK + file.name;
-        console.log('track_image => ', this.track_img);
         let fr = new FileReader();
         fr.onload = (e: any) => {
-          console.log('e => ', e);
           this.track_img = e.target.result;
           this.add_track_img = e.target.result;
         };
@@ -318,7 +315,6 @@ export class MyMusicComponent implements OnInit, OnDestroy {
         const data = {};
         let imageBuffer = e.target.result;
         this.edit_image = imageBuffer;
-        console.log('this.edit_image in edit form => ', this.edit_image);
       };
       reader.readAsDataURL(event.target.files[0]);
     }
@@ -342,7 +338,6 @@ export class MyMusicComponent implements OnInit, OnDestroy {
     }
     if (obj.image) {
       this.edit_image = environment.API_URL + environment.ARTIST_TRACK + obj.image;
-      console.log('this.edit_image => ', this.edit_image);
     } else {
       this.edit_image = 'img/default_img.png';
     }
@@ -411,11 +406,6 @@ export class MyMusicComponent implements OnInit, OnDestroy {
       isWhitespace = this.trackdata.name.trim().length === 0;
       isValid = !isWhitespace;
     }
-    if (this.trackdata) {
-      console.log('this.trackdata.price => ', this.trackdata.price);
-      console.log('this.trackdata.price.length => ', this.trackdata.price.length);
-      console.log('this.trackdata.price.toString().length => ', this.trackdata.price.toString().length);
-    }
     if (this.trackdata && this.trackdata.name && isValid && this.trackdata.price && this.trackdata.price > 0 &&
       this.trackdata.price.toString().length <= 3 && this.audio_file && this.image_upload) {
       let formdata = new FormData();
@@ -450,10 +440,8 @@ export class MyMusicComponent implements OnInit, OnDestroy {
     } else if (!this.trackdata.price) {
       this.toastr.error('Please enter track price', 'Error!');
     } else if (this.trackdata.price < 0) {
-      console.log('< 0 => ');
       this.toastr.error('Track price must be positive value.', 'Error!');
     } else if (this.trackdata.price.toString().length !== 3) {
-      console.log('< 3 => ');
       this.toastr.error('Track price must be in three digits', 'Error!');
     } else {
       this.toastr.error('Please provide necessary details', 'Error!');

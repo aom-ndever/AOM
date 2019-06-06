@@ -199,7 +199,6 @@ export class ContestComponent implements OnInit {
       this.ContestService.getStateByRegion(data).subscribe((response) => {
         this.state_list = response['state'];
         if (this.contest_detail) {
-          console.log(this.contest_detail);
           this.contest_detail['state'] = this.contest_detail['state'] ? this.contest_detail['state']['_id'] : '';
         }
       });
@@ -208,9 +207,6 @@ export class ContestComponent implements OnInit {
 
   // Add new contest
   saveContest(flag) {
-    console.log('on create function  => ');
-    console.log('this.contest_validation => ', this.contest_validation);
-    console.log('this.contest_detail[duration] => ', this.contest_detail['duration']);
     // if (flag) {
     //   this.is_valid = !flag;
     // if (this.is_new_or_existing == 1) {
@@ -223,9 +219,7 @@ export class ContestComponent implements OnInit {
     //   this.toastr.info('The date must be bigger or equal to today date');
     //   return;
     // }
-    console.log('this.is_valid => ', this.is_valid);
     this.is_valid = !flag;
-    console.log('flag', flag);
     if (flag) {
       // this.show_spinner = true;
       let data;
@@ -327,10 +321,7 @@ export class ContestComponent implements OnInit {
   // Select exisiting contest
   selectContest(idx: any) {
     this.contest_detail = this.existing_contest_list[idx];
-    console.log(this.contest_detail);
-    console.log(this.contest_detail['start_date']);
     let dt = new Date(this.contest_detail['start_date']);
-    console.log(dt);
     this.contest_detail['no_of_round'] = this.contest_detail['round'] + 1;
     this.contest_detail['day'] = dt.getUTCDate();
     this.contest_detail['month'] = (dt.getUTCMonth() + 1);
@@ -340,12 +331,9 @@ export class ContestComponent implements OnInit {
   }
 
   specialContest() {
-    console.log('*******check value***** => ', this.contest_detail.contest_type);
     if (this.contest_detail.contest_type === 'special') {
-      console.log('special => ');
       this.isSpecialContest = true;
     } else {
-      console.log('standard or beta => ');
       this.isSpecialContest = false;
     }
   }

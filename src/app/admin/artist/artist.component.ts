@@ -68,7 +68,6 @@ export class ArtistComponent implements OnInit {
         'processing': '<i class="fa fa-spinner fa-spin loader"></i>',
       },
       ajax: (dataTablesParameters: any, callback) => {
-        console.log(dataTablesParameters);
         setTimeout(() => {
           dataTablesParameters['search'] = that.search_str;
           dataTablesParameters['order'] = '';
@@ -147,8 +146,6 @@ export class ArtistComponent implements OnInit {
   }
   // suspend artist
   suspendArtist(id: any, flag) {
-    // console.log("flag",flag);
-
     swal({
       title: 'Are you sure?',
       text: `You want to ${flag ? 'Un-suspend' : 'Suspend'} this account!`,

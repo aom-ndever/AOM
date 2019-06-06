@@ -1113,9 +1113,6 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   changePassword() {
-    console.log('this.userdata => ', this.userdata);
-    console.log('this.change_pwd[old] => ', this.change_pwd['old']);
-    console.log('this.userdata.pwd => ', this.userdata.pwd);
     // if (this.change_pwd['old'] && this.userdata.pwd === this.change_pwd['old']) {
     if (this.change_pwd['new'] && this.change_pwd['repeat'] && this.change_pwd['new'] === this.change_pwd['repeat'] &&
       this.change_pwd['new'].length >= 6 && this.change_pwd['repeat'] >= 6) {
@@ -1163,7 +1160,6 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
       this.toastr.error('New and repeat password must be same', 'Error!');
     }
     // } else {
-    //   console.log('11111111 => ');
     //   this.toastr.error('Please enter existing password', 'Error!');
     // }
   }
@@ -2166,12 +2162,8 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
           this.MyProfileService.deleteListenerPlaylistById(id).subscribe((response) => {
             this.toastr.success(response['message'], 'Success!');
             this.dtElements.forEach((dtElement: DataTableDirective, index: number) => {
-              console.log('hereee for each => ');
-              console.log('idx, index => ', idx, index);
               // if (idx === index) {
-              console.log('idx === index => ');
               dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
-                console.log('draw function => ');
                 dtInstance.draw();
               });
               // }

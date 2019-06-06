@@ -22,18 +22,13 @@ export class ConmmentsComponent implements OnInit {
     private route: ActivatedRoute,
     private titleService: Title,
   ) {
-    console.log('1 => ');
     this.titleService.setTitle(this.route.snapshot.data['title']);
     this.artistdata = this.route.snapshot.data['artist'].artist;
-    console.log('this.artistdata => ', this.artistdata);
-    console.log('this.artistdata.state => ', this.artistdata.state);
     this.artistcomments = this.route.snapshot.data['comments'].comment;
     this.user = JSON.parse(localStorage.getItem('user'));
   }
 
-  ngOnInit() {
-    console.log('comment component => ');
-  }
+  ngOnInit() { }
 
   // Get all artist comment
   getAllArtistComment() {

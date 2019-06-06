@@ -242,6 +242,35 @@ follower_helper.get_all_followers_of_user = async (id) => {
     }
 };
 
+follower_helper.get_all_artist_followers = async (id) => {
+    try {
+        var artist = await Followers
+            .find({ "artist_id": id })
+        if (artist) {
+            return { "status": 1, "message": "artist details found", "artist": artist };
+        } else {
+            return { "status": 2, "message": "artist not found" };
+        }
+    } catch (err) {
+        return { "status": 0, "message": "Error occured while finding artist", "error": err }
+    }
+};
+
+follower_helper.get_all_followers_of_artist = async (id) => {
+    try {
+        console.log('id => ', id);
+        var artist = await Followers
+            .find({ "artist_id": ObjectId(id) }).populate('user_id').populate('artist_id');
+        if (artist) {
+            return { "status": 1, "message": "artist details found", "artist": artist };
+        } else {
+            return { "status": 2, "message": "artist not found" };
+        }
+    } catch (err) {
+        return { "status": 0, "message": "Error occured while finding artist", "error": err }
+    }
+};
+
 follower_helper.get_all_follows = async (id, userid) => {
     try {
         var user = await Followers

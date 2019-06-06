@@ -27,6 +27,18 @@ var ObjectId = mongoose.Types.ObjectId;
 var fs = require('fs');
 
 
+router.get('/followers_of_artist', async (req, res) => {
+    user_id = req.userInfo.id
+    var user = await follower_helper.get_all_artist_followers(user_id);
+    if (user.status === 1) {
+        logger.trace("got details successfully");
+        res.status(config.OK_STATUS).json(user);
+    } else {
+        logger.error("Error occured while fetching = ", user);
+        res.status(config.INTERNAL_SERVER_ERROR).json(user);
+    }
+});
+
 
 router.delete('/delete_comment/:comment_id', async (req, res) => {
     user_id = req.userInfo.id;

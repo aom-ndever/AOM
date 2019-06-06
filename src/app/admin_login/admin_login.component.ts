@@ -12,43 +12,42 @@ import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
   styleUrls: []
 })
 export class AdminLoginComponent implements OnInit {
-  ModelRef : BsModalRef;
-  admin_data : any = {};
-  show_spinner : Boolean = false;
-  admin_formgroup : FormGroup;
-  forget_formgroup : FormGroup;
-  forget_data : any = {};
-  forget_validation : boolean = false;
-  constructor(private AdminLoginService : AdminLoginService, 
+  ModelRef: BsModalRef;
+  admin_data: any = {};
+  show_spinner: Boolean = false;
+  admin_formgroup: FormGroup;
+  forget_formgroup: FormGroup;
+  forget_data: any = {};
+  forget_validation: boolean = false;
+  constructor(private AdminLoginService: AdminLoginService,
     private fb: FormBuilder,
     private toastr: ToastrService,
     private router: Router,
     private modalService: BsModalService
   ) {
     this.admin_formgroup = this.fb.group({
-      'email' : ['', [Validators.required, Validators.email]],
-      'password' : ['', [Validators.required]],
+      'email': ['', [Validators.required, Validators.email]],
+      'password': ['', [Validators.required]],
     });
     this.forget_formgroup = this.fb.group({
-      email : ['', [Validators.required, Validators.email, this.noWhitespaceValidator]]
+      email: ['', [Validators.required, Validators.email, this.noWhitespaceValidator]]
     });
   }
 
   noWhitespaceValidator(control: FormControl) {
-      if(typeof (control.value || '') === 'string' || (control.value || '') instanceof String) {
-        let isWhitespace = (control.value || '').trim().length === 0;
-        let isValid = !isWhitespace;
-        return isValid ? null : { 'whitespace': true }
-      }
+    if (typeof (control.value || '') === 'string' || (control.value || '') instanceof String) {
+      let isWhitespace = (control.value || '').trim().length === 0;
+      let isValid = !isWhitespace;
+      return isValid ? null : { 'whitespace': true }
+    }
   }
   ngOnInit() {
-   
+
   }
 
   signin() {
     this.show_spinner = true;
     this.AdminLoginService.login(this.admin_data).subscribe(response => {
-      console.log(response);
       localStorage.setItem('user', JSON.stringify(response));
       this.router.navigate(['/admin/home']);
     }, error => {
@@ -58,16 +57,16 @@ export class AdminLoginComponent implements OnInit {
       this.show_spinner = false;
     });
   }
-  
-  openContestModel(template : any) {
+
+  openContestModel(template: any) {
     this.forget_data = {};
     this.forget_validation = false;
-    this.ModelRef = this.modalService.show(template, {backdrop : 'static'});
+    this.ModelRef = this.modalService.show(template, { backdrop: 'static' });
   }
 
   // Forget password
   forgetPassword(flag) {
-    if(flag) {
+    if (flag) {
       this.show_spinner = true;
       this.AdminLoginService.forgetPassword(this.forget_data).subscribe((response) => {
         this.forget_data = {};

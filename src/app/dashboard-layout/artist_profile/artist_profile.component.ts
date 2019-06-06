@@ -59,6 +59,7 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
   artist_following: boolean = false;
   card_loader: boolean = false;
   show_more_flag: boolean = false;
+  isFollowed: boolean = false;
 
   constructor(
     private ArtistProfileService: ArtistProfileService,
@@ -74,6 +75,7 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
   ) {
     this.titleService.setTitle(this.route.snapshot.data['title']);
     this.user = JSON.parse(localStorage.getItem('user'));
+    console.log('this.user => ', this.user);
     this.subscription = this.MessageService.getMessage().subscribe((response) => {
       if (response && response['list'] !== 1) {
         this.audio_ins.forEach((ele, idx) => { this.audio_ins[idx] = false; });
@@ -127,6 +129,7 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
     this.artistdata = this.route.snapshot.data['artist'].artist;
     this.artistmedia = this.route.snapshot.data['media'].media;
     this.artistfollower = this.route.snapshot.data['follower'].artist;
+    console.log('artistfollower => ', this.artistfollower);
     this.artistcomments = this.route.snapshot.data['comments'].comment;
     if (this.artistcomments.length > 3) {
       this.display_comment = this.artistcomments.slice(0, 3).map(i => {
@@ -164,17 +167,14 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
             that.ArtistProfileService.getAllTrack(dataTablesParameters).subscribe((response) => {
               this.ngxService.stop();
               that.artisttrack = response['track']['music'];
-              console.log('all track artisttrack => ', this.artisttrack);
               if (that.artisttrack.length > 0) {
                 that.artisttrack.forEach((ele) => { that.audio_ins.push(false); });
                 if (that.user && that.user['user']) {
                   that.ArtistProfileService.getBookmarkedTrackList().subscribe((response) => {
-                    console.log('response => ', response);
                     let bookmark_list = response['bookmark'];
                     that.artisttrack.forEach((ele) => {
                       let flag = false;
                       bookmark_list.forEach((bookmark) => {
-                        console.log('bookmark => ', bookmark);
                         if (bookmark['track_id']['_id'] === ele['_id']) {
                           flag = true;
                           return;
@@ -310,7 +310,6 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
 
   // Play audio
   playAudio(name: any, index: any, data: any) {
-    console.log('name => ', name);
     // let audio = new Audio();
     // audio.src = this.track_url+name;
     // audio.load();
@@ -368,26 +367,40 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
   // Follow artist
   // followArtist(id: any, index: any) {
   followArtist(id: any) {
+    // const promise = new Promise((resolve, reject) => {
     let data = JSON.parse(localStorage.getItem('user'));
     if (data) {
       // this.artistfollower[index].length += 1;
       let data = {
         artist_id: id
       };
+
       this.ArtistProfileService.followArtist(data).subscribe(response => {
+        console.log('here 1 => ');
         this.toastr.success(response['message'], 'Success!');
         if (response['flag'] === 'follow') {
           this.artist_following = true;
+          console.log('this.user => ', this.user);
         } else if (response['flag'] === 'unfollow') {
           this.artist_following = false;
         }
+        console.log('this.artistfollower => ', this.artistfollower);
       }, error => {
         this.toastr.error(error['error'].message, 'Error!');
       });
     } else {
       this.toastr.info('Please Sign in as listener to follow the artist.', 'Info!');
     }
+    // });
+    // return promise;
+    // this.ArtistProfileService.getArtistFollowers(data).subscribe(response => {
+    //   console.log('here 2 => ');
+    //   console.log('response.artist => ', response['artist']);
+    //   this.artistfollower = response['artist'];
+    // });
   }
+
+
 
   // Open artist media in lightbox
   open(index: number): void {
@@ -406,7 +419,6 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
         'status': true
       };
       this.ArtistProfileService.trackLike(data).subscribe(response => {
-        console.log('this.artisttrack => ', this.artisttrack);
         if (response['flag'] === 'liked') {
           this.artisttrack[index].no_of_likes = 1;
         } else if (response['flag'] === 'unliked') {
@@ -712,7 +724,6 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
             track_id: this.track_data['_id'],
             card_id: result['token']['id']
           };
-          console.log('data => ', data);
           this.ArtistProfileService.purchaseTrack(data).subscribe((response) => {
             this.toastr.success(response['message'], 'Success!');
             this.modalRef.close();

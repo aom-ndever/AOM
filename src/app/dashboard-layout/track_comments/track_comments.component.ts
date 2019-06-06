@@ -52,10 +52,8 @@ export class TrackConmmentsComponent implements OnInit {
     this.titleService.setTitle(this.route.snapshot.data['title']);
     this.artistdata = this.route.snapshot.data['artist'].artist;
     this.trackcomments = this.route.snapshot.data['comment'].comment;
-    console.log('this.trackcomments => ', this.trackcomments);
     this.track = this.route.snapshot.data['track'].track;
     this.user = JSON.parse(localStorage.getItem('user'));
-    console.log('it is track', this.track);
     this.share_form_phone = this.fb.group({
       phone: ['', [Validators.required, Validators.maxLength(10), Validators.minLength(10)]]
     });

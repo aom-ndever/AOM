@@ -126,9 +126,36 @@ router.get('/followers', async (req, res) => {
   }
 });
 
+router.post('/artist_followers', async (req, res) => {
+  user_id = req.body.artist_id
+  var user = await follower_helper.get_all_followers_of_artist(user_id);
+  if (user.status === 1) {
+    logger.trace("got details successfully");
+    res.status(config.OK_STATUS).json(user);
+  } else {
+    logger.error("Error occured while fetching = ", user);
+    res.status(config.INTERNAL_SERVER_ERROR).json(user);
+  }
+});
 
 router.get('/followed', async (req, res) => {
   user_id = req.userInfo.id
+  var user = await follower_helper.get_all_followers_of_user(user_id);
+  var artisIds = _.pluck(user.artist, 'artist_id');
+
+  if (user.status === 1) {
+    logger.trace("got details successfully");
+    res.status(config.OK_STATUS).json({ "artist": artisIds });
+  } else {
+    logger.error("Error occured while fetching = ", user);
+    res.status(config.INTERNAL_SERVER_ERROR).json(error);
+  }
+});
+
+
+router.post('/artist_followers', async (req, res) => {
+  user_id = req.body.artist_id
+  console.log('user_id => ', user_id);
   var user = await follower_helper.get_all_followers_of_user(user_id);
   var artisIds = _.pluck(user.artist, 'artist_id');
 
@@ -152,4 +179,7 @@ router.get('/get_followers', async (req, res) => {
     res.status(config.INTERNAL_SERVER_ERROR).json(user);
   }
 });
+
+
+
 module.exports = router;

@@ -9,7 +9,6 @@ import { MessageService } from '../shared/message.service';
 export class LoginComponent implements OnInit {
 
   constructor(private MessageService: MessageService) {
-    console.log('here in login====>');
     var cnt = {
       count: 0
     };

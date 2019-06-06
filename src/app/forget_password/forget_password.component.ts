@@ -3,7 +3,7 @@ import { FormGroup, FormBuilder, Validators, FormControl, AbstractControl, NG_VA
 import { ToastrService } from 'ngx-toastr';
 import { ForgetPasswordService } from './forget_password.service';
 import { environment } from '../../../src/environments/environment';
-import { ActivatedRoute, Router } from '@angular/router'; 
+import { ActivatedRoute, Router } from '@angular/router';
 declare const gapi: any;
 
 @Component({
@@ -12,42 +12,41 @@ declare const gapi: any;
   styleUrls: []
 })
 export class ForgetPasswordComponent implements OnInit {
- 
-  passwordFormGroup : FormGroup;
-  show_spinner : boolean = false;
-  forget_password : any = '';
-  conf : any = '';
-  param : any = {}
+
+  passwordFormGroup: FormGroup;
+  show_spinner: boolean = false;
+  forget_password: any = '';
+  conf: any = '';
+  param: any = {}
   constructor(private fb: FormBuilder,
-     private ForgetPasswordService : ForgetPasswordService, 
-     private toastr: ToastrService,
-     private route: ActivatedRoute,
-     private router: Router
-    ) {
+    private ForgetPasswordService: ForgetPasswordService,
+    private toastr: ToastrService,
+    private route: ActivatedRoute,
+    private router: Router
+  ) {
     this.passwordFormGroup = this.fb.group({
-      password : ['', [Validators.required, Validators.minLength(6)]],
-      conf : ['', [Validators.required, Validators.minLength(6)]]
+      password: ['', [Validators.required, Validators.minLength(6)]],
+      conf: ['', [Validators.required, Validators.minLength(6)]]
     }, {
-      validator : this.passwordMatchValidator
-    });
-    this.route.params.subscribe(res =>  {
+        validator: this.passwordMatchValidator
+      });
+    this.route.params.subscribe(res => {
       this.param = res;
-       console.log(res.id, res.type);
     });
   }
 
   passwordMatchValidator(g: FormGroup) {
-      return g.get('password').value === g.get('conf').value ? null : g.get('conf').setErrors({'mismatch': true});
+    return g.get('password').value === g.get('conf').value ? null : g.get('conf').setErrors({ 'mismatch': true });
   }
   ngOnInit() {
-  
+
   }
-  
+
   resetPassword() {
-    if(this.param && this.param.type == 'artist') {
+    if (this.param && this.param.type == 'artist') {
       const data = {
-        token : this.param.id,
-        password : this.forget_password
+        token: this.param.id,
+        password: this.forget_password
       };
       this.show_spinner = true;
       this.ForgetPasswordService.artistChangePassword(data).subscribe(response => {
@@ -61,10 +60,10 @@ export class ForgetPasswordComponent implements OnInit {
       }, () => {
         this.show_spinner = false;
       });
-    } else if(this.param && this.param.type == 'admin') {
+    } else if (this.param && this.param.type == 'admin') {
       const data = {
-        token : this.param.id,
-        password : this.forget_password
+        token: this.param.id,
+        password: this.forget_password
       };
       this.show_spinner = true;
       this.ForgetPasswordService.adminChangePassword(data).subscribe(response => {
@@ -80,12 +79,11 @@ export class ForgetPasswordComponent implements OnInit {
       });
     } else {
       const data = {
-        token : this.param.id,
-        password : this.forget_password
+        token: this.param.id,
+        password: this.forget_password
       };
       this.show_spinner = true;
       this.ForgetPasswordService.userChangePassword(data).subscribe(response => {
-        console.log(response);
         this.forget_password = '';
         this.conf = '';
         this.router.navigate(['']);

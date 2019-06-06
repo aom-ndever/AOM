@@ -16,7 +16,15 @@ export class ArtistProfileService {
 
   // Get Artist and track
   getArtistData(data: any) {
+    console.log('data => ', data);
     return this.http.post(`${this.api_host}/get_artist`, data);
+  }
+  // Get Artist and track
+  getArtistFollowers(data: any) {
+    this.user = JSON.parse(localStorage.getItem('user'));
+    this.headers = new HttpHeaders({ 'x-access-token': this.user.token });
+    console.log('called => ');
+    return this.http.post(`${this.api_host}/user/artist/artist_followers`, data, { headers: this.headers });
   }
   // Follow the artist 
   followArtist(data: any) {

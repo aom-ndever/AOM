@@ -94,24 +94,17 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   // Code for initialize google login button
   public googleInit() {
-    console.log('here in googleinit');
     gapi.load('auth2', () => {
-      // gapi.load(this.auth2, () => {
-
-      console.log('here1 in googleinit');
-
       this.auth2 = gapi.auth2.init({
         client_id: environment.GOOGLE_CLIENT_ID,
         cookiepolicy: 'single_host_origin',
         scope: 'profile email'
       });
-      console.log('this.auth2 => ', this.auth2);
       this.attachSignin(document.getElementById('googleBtn'));
     });
   }
   // Code for open google signin popup and do login
   public attachSignin(element) {
-    console.log('attachSignin => ');
     this.auth2.attachClickHandler(element, {},
       (googleUser) => {
         let profile = googleUser.getBasicProfile();
