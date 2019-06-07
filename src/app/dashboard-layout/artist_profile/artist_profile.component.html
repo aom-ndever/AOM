@@ -82,8 +82,8 @@
                   </li>
                 </ul>
               </div>
-
-              <div class="comments">
+              <!-- old code -->
+              <!-- <div class="comments">
                 <h3>
                   <a href="javascript:;" routerLink="/artist_profile/{{artistdata._id}}/comments">Comments</a>
                 </h3>
@@ -105,7 +105,39 @@
                     <p>{{comment.comment}}</p>
                   </div>
                 </div>
+              </div> -->
+              <!-- old code -->
+
+              <!-- updated code -->
+              <div class="comments">
+                <h3>
+                  <a href="javascript:;" routerLink="/artist_profile/{{artistdata._id}}/comments">Comments</a>
+                </h3>
+                <span>{{artistcomments.length}}</span>
+                <div class="comment-block" *ngFor="let comment of display_comment;">
+                  <div class="row">
+                    <div class="col-md-12">
+                      <div class="s-name" *ngIf="comment.track_id">{{comment.track_id.name}}</div>
+                    </div>
+                    <div class="col-md-3 col-sm-3 col-xs-3">
+                      <img class="cmmnt-blc-prfl-pic"
+                        src="{{comment &&  comment.user_id && comment.user_id.image ? user_img_url+comment.user_id.image : 'img/upload1.png' }}"
+                        alt="img">
+                    </div>
+                    <div class="col-md-9 col-sm-9 col-xs-9 cmmnt-blc-cmmnt-dtl">
+                      <h6>
+                        {{comment.user_id && comment.user_id.first_name ? comment.user_id.first_name : '' + ' '+comment
+                                              && comment.user_id && comment.user_id.last_name ? comment.user_id.last_name : '' }}.
+                      </h6>
+                      <p>{{comment.created_at | timeAgo}}</p>
+                    </div>
+                    <div class="col-md-12">
+                      <p class="cmmnt-blc-cmmnt">{{comment.comment}}</p>
+                    </div>
+                  </div>
+                </div>
               </div>
+              <!-- updated code -->
 
             </div>
             <div class="col-md-9 col-sm-8 col-xs-8">

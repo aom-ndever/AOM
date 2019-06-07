@@ -113,6 +113,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.show_loader = true;
     this.DashboardService.getAllData(data).subscribe(response => {
       this.data = response;
+      // this.data = {
+      //   'finalist': [],
+      //   'new_uploads': [],
+      // }
+      console.log('this.data => ', this.data);
       this.ngxService.stop();
       response['new_uploads'].forEach((ele) => {
         this.audio_ins.push(false);

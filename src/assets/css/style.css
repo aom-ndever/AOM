@@ -425,7 +425,6 @@ border-radius: 2px; font-family: 'Roboto', sans-serif;}
 .finalists-container .content-wrap {
     padding: 34px 20px;
 }
-.finalists-container{clear: both;    margin: 0 -30px;}
 .finalist-carousel .owl-nav{display: none;}
 .owl-theme .owl-dots .owl-dot.active span, .owl-theme .owl-dots .owl-dot:hover span {
     background: #9B26B0;
@@ -5119,12 +5118,7 @@ table.my_track_table td:nth-child(7){ width:50%;}
     .comment-wrap .s-img, .track-comment-wrap .s-img {
     width: 5%;}
     /*comment*/
-   
-    .finalists-container {
-        clear: both;
-        margin: 0;
-    }
-  
+    
     .filter-head {
         margin-right: 0;
     }

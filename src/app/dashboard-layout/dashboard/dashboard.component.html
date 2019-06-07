@@ -44,18 +44,21 @@
 
 <section class="finalist-wrap">
   <div class="container">
-    <div>
-      <div>
+    <div class="row">
+      <div class="col-md-12 col-sm-12">
         <div class="head-global">
           <h2>Round Two Finalists</h2>
         </div>
       </div>
-      <div class="finalists-container">
-
-        <app-carousel-scroll [images]="images" [showFavourit]='true' [carouselType]='"normal"'
-          [allData]="data['finalist']"></app-carousel-scroll>
-
+      <div class="col-md-12 col-sm-12">
+        <div class="alert alert-info" *ngIf="!show_loader && data['finalist'].length == 0">
+          No data available.
+        </div>
       </div>
+    </div>
+    <div class="finalists-container">
+      <app-carousel-scroll [images]="images" [showFavourit]='true' [carouselType]='"normal"'
+        [allData]="data['finalist']"></app-carousel-scroll>
     </div>
   </div>
 </section>
@@ -70,17 +73,19 @@
         </div>
       </div>
     </div>
-    <div class="uploads-container">
-      <div class="row">
-
-        <!-- spinner fa-spinner  -->
-        <!-- <div *ngIf="show_loader" class="text-center col-12">
+    <div class="row">
+      <!-- spinner fa-spinner  -->
+      <!-- <div *ngIf="show_loader" class="text-center col-12">
           <i class="fa fa-spinner fa-spin fa-3x" aria-hidden="true"></i>
         </div> -->
-        <div class="alert alert-info col-sm-12" *ngIf="!show_loader && data['new_uploads'].length == 0">
+      <div class="col-md-12 col-sm-12" *ngIf="!show_loader && data['new_uploads'].length == 0">
+        <div class="alert alert-info">
           No data available.
         </div>
-        <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12" *ngFor="let nupload of data['new_uploads']; let i = index;">
+      </div>
+
+      <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12" *ngFor="let nupload of data['new_uploads']; let i = index;">
+        <div class="uploads-container">
           <div class="upload">
             <div class="img-wrap">
               <img lazyLoad="{{nupload ? track_url+nupload.image : 'img/upload1.png'}}"
@@ -119,6 +124,7 @@
             </div>
           </div>
         </div>
+
       </div>
     </div>
   </div>

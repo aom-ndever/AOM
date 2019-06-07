@@ -269,7 +269,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
       phone: ['', [Validators.required, Validators.pattern('[0-9]+'), Validators.minLength(10), Validators.maxLength(10),
       this.noWhitespaceValidator]],
       music_type: ['', [Validators.required]],
-      zipcode: ['', [Validators.required, this.noWhitespaceValidator]],
+      zipcode: ['', [Validators.required, Validators.pattern('^[0-9][0-9]*(\.[0-9]+)?$'), this.noWhitespaceValidator]],
       description: [''],
       share_url_fb: [''],
       share_url_insta: [''],
@@ -289,7 +289,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
       phone: ['', [Validators.required, Validators.pattern('[0-9]+'), Validators.minLength(10), Validators.maxLength(10),
       this.noWhitespaceValidator]],
       music_type: ['', [Validators.required]],
-      zipcode: ['', [Validators.required, this.noWhitespaceValidator]],
+      zipcode: ['', [Validators.required, Validators.pattern('^[0-9][0-9]*(\.[0-9]+)?$'), this.noWhitespaceValidator]],
       region: ['', [Validators.required]],
       state: ['', [Validators.required]],
       description: [''],
@@ -310,7 +310,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
       year: ['', [Validators.required]],
       phone: ['', [Validators.required, Validators.pattern('[0-9]+'), Validators.minLength(10), Validators.maxLength(10),
       this.noWhitespaceValidator]],
-      zipcode: ['', [Validators.required, this.noWhitespaceValidator]],
+      zipcode: ['', [Validators.required, Validators.pattern('^[0-9][0-9]*(\.[0-9]+)?$'), this.noWhitespaceValidator]],
       music_type: ['', [this.multiSelectRequired]]
     });
 
