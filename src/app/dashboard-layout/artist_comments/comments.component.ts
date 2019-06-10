@@ -28,7 +28,9 @@ export class ConmmentsComponent implements OnInit {
     this.user = JSON.parse(localStorage.getItem('user'));
   }
 
-  ngOnInit() { }
+  ngOnInit() {
+    console.log('comments component => ');
+  }
 
   // Get all artist comment
   getAllArtistComment() {

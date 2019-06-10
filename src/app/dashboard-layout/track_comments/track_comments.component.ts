@@ -64,10 +64,11 @@ export class TrackConmmentsComponent implements OnInit {
   }
 
   ngOnInit() {
+    window.scroll(0, 0);
     console.log('track comment component => ');
-    console.log('environment.socketUr', environment.socketUrl);
+    // console.log('environment.socketUr', environment.socketUrl);
     this.socket = socketClient(environment.socketUrl);
-    console.log('this.socket => ', this.socket);
+    // console.log('this.socket => ', this.socket);
   }
 
 
@@ -89,7 +90,6 @@ export class TrackConmmentsComponent implements OnInit {
   // share on facebook
   shareOnFacebook() {
     let track = this.track;
-    console.log('this.track => ', this.track);
     let url = 'http://' + window.location.host + '/artist_profile/' + track['artist_id']['_id'] + '/track/' + track['_id'] + '/comments';
     let str = 'Track Name: ' + track['name'] + '\nArtist: ' + track['artist_id']['first_name'] + ' ' + track['artist_id']['last_name'] + '\nDescription: ' + track['description'];
     FB.ui({
@@ -108,8 +108,6 @@ export class TrackConmmentsComponent implements OnInit {
   // Stripe Credit-Card implementation
   // openCardModel(content, index, type) {
   openCardModel(content, type) {
-    console.log('content => ', content);
-    console.log('type => ', type);
     if (this.user && this.user['user']) {
       this.card_loader = true;
       setTimeout(() => {
@@ -171,9 +169,6 @@ export class TrackConmmentsComponent implements OnInit {
           this.show_spinner = false;
         } else {
           // Send the token to your server.
-          console.log('result', result);
-          console.log('this.track => ', this.track);
-          console.log('this.trackdata => ', this.track_data);
           let data = {
             // track_id: this.track_data['_id'],
             track_id: this.track._id,

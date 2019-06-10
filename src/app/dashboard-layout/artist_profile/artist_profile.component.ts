@@ -76,7 +76,7 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
     console.log('artist-profile component => ');
     this.titleService.setTitle(this.route.snapshot.data['title']);
     this.user = JSON.parse(localStorage.getItem('user'));
-    console.log('this.user => ', this.user);
+    // console.log('this.user => ', this.user);
     this.subscription = this.MessageService.getMessage().subscribe((response) => {
       if (response && response['list'] !== 1) {
         this.audio_ins.forEach((ele, idx) => { this.audio_ins[idx] = false; });
@@ -126,6 +126,7 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    window.scroll(0, 0);
     this.ngxService.start();
     this.artistdata = this.route.snapshot.data['artist'].artist;
     this.artistmedia = this.route.snapshot.data['media'].media;
@@ -371,40 +372,27 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
   }
 
   // Follow artist
-  // followArtist(id: any, index: any) {
   followArtist(id: any) {
     // const promise = new Promise((resolve, reject) => {
     let data = JSON.parse(localStorage.getItem('user'));
     if (data) {
-      // this.artistfollower[index].length += 1;
       let data = {
         artist_id: id
       };
-
       this.ArtistProfileService.followArtist(data).subscribe(response => {
         this.MessageService.changeFollower();
-        console.log('here 1 => ');
         this.toastr.success(response['message'], 'Success!');
         if (response['flag'] === 'follow') {
           this.artist_following = true;
-          console.log('this.user => ', this.user);
         } else if (response['flag'] === 'unfollow') {
           this.artist_following = false;
         }
-        console.log('this.artistfollower => ', this.artistfollower);
       }, error => {
         this.toastr.error(error['error'].message, 'Error!');
       });
     } else {
       this.toastr.info('Please Sign in as listener to follow the artist.', 'Info!');
     }
-    // });
-    // return promise;
-    // this.ArtistProfileService.getArtistFollowers(data).subscribe(response => {
-    //   console.log('here 2 => ');
-    //   console.log('response.artist => ', response['artist']);
-    //   this.artistfollower = response['artist'];
-    // });
   }
 
 
@@ -419,7 +407,6 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
   likeTrack(track_id: any, index: any) {
     let user = JSON.parse(localStorage.getItem('user'));
     if (user && user.user) {
-      // this.artisttrack[index].no_of_likes += 1;
       let data = {
         'track_id': track_id,
         'artist_id': this.artistdata._id,
@@ -431,12 +418,8 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
         } else if (response['flag'] === 'unliked') {
           this.artisttrack[index].no_of_likes = 0;
         }
-        // if (response['message'] === 'Already liked') {
-        //   this.artisttrack[index].no_of_likes -= 1;
-        // }
         this.toastr.success(response['message'], 'Success!');
       }, error => {
-        // this.artisttrack[index].no_of_likes -= 1;
         this.toastr.error(error['error'].message, 'Error!');
       });
     } else {
@@ -449,7 +432,6 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
   likeRankTrack(track_id: any, index: any) {
     let user = JSON.parse(localStorage.getItem('user'));
     if (user && user.user) {
-      // this.rankingtrack[index].no_of_likes += 1;
       let data = {
         'track_id': track_id,
         'artist_id': this.artistdata._id,
@@ -461,12 +443,8 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
         } else if (response['flag'] === 'unliked') {
           this.rankingtrack[index].no_of_likes = 0;
         }
-        // if (response['message'] === 'Already liked') {
-        //   this.rankingtrack[index].no_of_likes -= 1;
-        // }
         this.toastr.success(response['message'], 'Success!');
       }, error => {
-        // this.rankingtrack[index].no_of_likes -= 1;
         this.toastr.error(error['error'].message, 'Error!');
       });
     } else {
@@ -698,7 +676,6 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
   };
 
   setupStripeFrom() {
-    console.log('stripefrom => ');
     var stripe = Stripe(environment.STRIPE_PUB_KEY);
     var elements = stripe.elements();
     var card = elements.create('card', { style: this.style });

@@ -21,27 +21,21 @@ export class EmailVarificationComponent implements OnInit {
     private router: Router
   ) {
     this.route.params.subscribe(res => {
-      console.log('res => ', res);
       if (res.type && res.type === 'artist') {
         this.EamilVarificationService.artistEmailVarification(res.id).subscribe(response => {
-          console.log('verification done artist', response);
           this.toastr.success(response['message'], 'Success!');
           this.router.navigate(['']);
         }, error => {
           this.toastr.error(error['error'].message, 'Error!');
-          console.log('artist error', error.error);
         });
       } else {
         this.EamilVarificationService.userEmailVarification(res.id).subscribe(response => {
-          console.log('verification done user', response);
           this.toastr.success(response['message'], 'Success!');
           this.router.navigate(['dashboard/']);
         }, error => {
           this.toastr.error(error['error'].message, 'Error!');
-          console.log('user error', error);
         });
       }
-      console.log(res.id, res.type);
     });
   }
 

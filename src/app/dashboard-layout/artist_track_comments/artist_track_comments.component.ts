@@ -51,7 +51,6 @@ export class ArtistTrackConmmentsComponent implements OnInit {
   }
   // Stop audio
   stopAudio(index) {
-    console.log(this.audio_ins[index]);
     this.audio_ins[index].pause();
     this.audio_ins[index].currentTime = 0;
     // this.audio_ins[index].stop();

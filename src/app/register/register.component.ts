@@ -239,7 +239,7 @@ export class RegisterComponent implements OnInit {
             var addressType = res['results'][0].address_components[i].types[0];
             if (addressType === 'administrative_area_level_1') {
               this.formattedState = res['results'][0].address_components[i].long_name;
-              console.log('state => ', this.formattedState);
+              // console.log('state => ', this.formattedState);
             }
             if (addressType === 'locality') {
               var city = res['results'][0].address_components[i].long_name;
@@ -310,7 +310,7 @@ export class RegisterComponent implements OnInit {
               this.location = '';
             }
           }
-          console.log('this.location => ', this.location);
+          // console.log('this.location => ', this.location);
         }
         // ******************************* updated code **************************************
       });
@@ -373,7 +373,6 @@ export class RegisterComponent implements OnInit {
   }
 
   imageCropped(image: string) {
-    console.log('image => ', image);
     this.croppedImage = image;
   }
 
@@ -392,7 +391,6 @@ export class RegisterComponent implements OnInit {
 
   // Handle submit event of artist form
   artist_submit() {
-    console.log('on submit => ');
     const file = this.imageChangedEvent.target.files[0];
     const new_file = this.dataURLtoFile(this.croppedImage, file.name);
     const formData: FormData = new FormData();
@@ -412,7 +410,6 @@ export class RegisterComponent implements OnInit {
 
     this.show_spinner = true;
     this.RegisterService.artistRegistration(formData).subscribe(response => {
-      console.log('response of artist submit => ', response);
       this.step_flag = true;
       this.location = '';
       this.artist_cnt = 0;
@@ -464,7 +461,6 @@ export class RegisterComponent implements OnInit {
       };
       this.show_spinner = true;
       this.RegisterService.listenerRegistration(data).subscribe(response => {
-        console.log('response of listener submit => ', response);
         this.step_flag = true;
         this.listner_cnt = 0;
         this.location = '';
@@ -492,7 +488,6 @@ export class RegisterComponent implements OnInit {
   }
 
   public nxt_btn(step_lbl: any, flag: any, index: number) {
-    console.log('next button  => ');
     this.step_flag = false;
     if (step_lbl === 'artist' && flag) {
       this.artist_validation[index] = !flag;
@@ -533,7 +528,6 @@ export class RegisterComponent implements OnInit {
 
   getRegionList() {
     this.RegisterService.getAllRegion().subscribe((response) => {
-      console.log('response of region => ', response);
       this.region_list = response['Region'];
     });
   }
@@ -541,9 +535,7 @@ export class RegisterComponent implements OnInit {
   getStateByRegion(id: any) {
     if (id && id !== '') {
       this.RegisterService.getStateByRegion({ region: id }).subscribe((response) => {
-        console.log('response of state => ', response);
         this.state_list = response['state'];
-        console.log('this.this.state_list => ', this.state_list);
       });
     }
   }

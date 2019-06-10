@@ -11,7 +11,7 @@ import { NgxUiLoaderService } from 'ngx-ui-loader';
 @Component({
   selector: 'app-whatsnew',
   templateUrl: './whatsnew.component.html',
-  styleUrls: []
+  styleUrls: ['./whatsnew.component.css']
 })
 export class WhatsNewComponent implements OnInit, OnDestroy {
 
@@ -47,9 +47,7 @@ export class WhatsNewComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private ngxService: NgxUiLoaderService
   ) {
-    window.scroll(0, 0);
     this.titleService.setTitle(this.route.snapshot.data['title']);
-
     this.images = [
       {
         'source': 'img/whats-new-bg.png',
@@ -106,6 +104,7 @@ export class WhatsNewComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    window.scroll(0, 0);
     this.ngxService.start();
     this.getAllData();
     this.getAllMusicType();
@@ -142,9 +141,9 @@ export class WhatsNewComponent implements OnInit, OnDestroy {
     this.WhatsNewService.getWhatsnewData(data).subscribe(response => {
       this.ngxService.stop();
       this.whatsnewdata = response;
-      console.log('this.whatsnewdata => ', this.whatsnewdata);
       this.artist_list = response['artist'];
       this.track_list = response['track'];
+      console.log('track_list => ', this.track_list);
       // console.log('response[track] => ', response['track']);
       // if (response['track'].length > 12) {
       //   console.log('> 12 => ');
@@ -166,9 +165,7 @@ export class WhatsNewComponent implements OnInit, OnDestroy {
   getAllFeaturedArtist(data) {
     this.feature_loader = true;
     this.WhatsNewService.getAllFeaturedArtist(data).subscribe((response) => {
-      console.log('third => ');
       this.featured_artist = response['artist'];
-      console.log(this.featured_artist);
       this.feature_loader = false;
     });
   }
@@ -262,7 +259,6 @@ export class WhatsNewComponent implements OnInit, OnDestroy {
   // Get all music type
   getAllMusicType() {
     this.WhatsNewService.getAllMusicType().subscribe(response => {
-      console.log('second => ');
       this.music_type_list = response['music'];
     });
   }

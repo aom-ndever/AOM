@@ -66,13 +66,14 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    console.log('environment.socketUrl => ', environment.socketUrl);
+    window.scroll(0, 0);
+    // console.log('environment.socketUrl => ', environment.socketUrl);
     this.socket = socketClient(environment.socketUrl);
     if (this.user && this.user.token !== null) {
       this.socket.emit('join', this.user.token);
-      console.log('this.socket => ', this.socket);
+      // console.log('this.socket => ', this.socket);
       this.socket.on('receive_artist_notification_count', (data) => {
-        console.log('socket data =============>>', data);
+        // console.log('socket data =============>>', data);
         this.MessageService.checkCount(data);
       });
       console.log('Dashboard componenet is running=========>');
@@ -117,7 +118,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
       //   'finalist': [],
       //   'new_uploads': [],
       // }
-      console.log('this.data => ', this.data);
       this.ngxService.stop();
       response['new_uploads'].forEach((ele) => {
         this.audio_ins.push(false);
@@ -131,15 +131,18 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
   // Play audio
   playAudio(name: any, index: any, data: any) {
+    // console.log('data of play button => ', data);
+    // console.log('index of play button => ', index);
     data.forEach((ele, idx) => {
       this.audio_ins[idx] = false;
     });
     this.audio_ins[index] = true;
     this.MessageService.sendMessage({ data: data, index: index, action: 'start', list: 2 });
-
   }
   // Stop audio
   stopAudio(index, data: any) {
+    // console.log('data of stop button => ', data);
+    // console.log('index of stop button => ', index);
     data.forEach((ele, idx) => {
       this.audio_ins[idx] = false;
     });

@@ -135,7 +135,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
           this.toastr.error(error['error'].message, 'Error!');
         });
       }, (error) => {
-        console.log(JSON.stringify(error, undefined, 2));
+        // console.log(JSON.stringify(error, undefined, 2));
       });
   }
   ngOnInit() { }
@@ -166,7 +166,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   login(flag: boolean) {
-    console.log('flag => ', flag);
+    // console.log('flag => ', flag);
     // ******************************* updated code **************************************
     this.show_spinner = true;
     this.HeaderService.login(this.userdata).subscribe(response => {

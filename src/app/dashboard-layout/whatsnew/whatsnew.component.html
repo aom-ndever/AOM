@@ -312,7 +312,8 @@
               </div>
               <div class="content-wrap ">
                 <div class="player ">
-                  <div class="title "><a href="javascript:; " title="{{track.name}}">{{track.name}}</a></div>
+                  <div class="title "><a href="javascript:; " routerLink="/artist_profile/{{track.artist_id['_id']}}"
+                      title="{{track.name}}">{{track.name}}</a></div>
                   <div class="finalist-name ">{{track.artist_id['first_name']+' '+track.artist_id['last_name']}}</div>
                   <div class="action-btn ">
                     <a href="javascript:; ">

@@ -34,6 +34,7 @@ export class DashboardLayoutComponent implements OnInit, AfterViewInit, AfterVie
   duration: any = '';
   song_cnt: any = 0;
   total_time: any = 0;
+  play_time: any = 0;
   list_no: any = '';
   subscription: Subscription;
   user_img_url: any = environment.API_URL + environment.USER_IMG;
@@ -51,6 +52,8 @@ export class DashboardLayoutComponent implements OnInit, AfterViewInit, AfterVie
     private modalService: NgbModal,
     private fb: FormBuilder
   ) {
+    console.log('dashboard layouts component  =============================> ');
+    // console.log('play_time => ', this.play_time);
     this.audio_instance_list = [];
     this.audio_list = [];
     let localuser = localStorage.getItem('user');
@@ -102,6 +105,7 @@ export class DashboardLayoutComponent implements OnInit, AfterViewInit, AfterVie
   }
 
   ngOnInit() {
+    window.scroll(0, 0);
   }
 
   ngAfterViewInit() {
@@ -147,10 +151,10 @@ export class DashboardLayoutComponent implements OnInit, AfterViewInit, AfterVie
   }
 
   play() {
-    console.log('play function => ');
+    // console.log('play function => ');
     try {
       var pButton = document.getElementById('pButton');
-      console.log('this.audio_instance_list => ', this.audio_instance_list);
+      // console.log('this.audio_instance_list => ', this.audio_instance_list);
       this.audio_ins = this.audio_instance_list[this.song_cnt];
       if (pButton.className === 'play') {
         this.MessageService.sendMessage({ index: this.song_cnt, action: 'bottom_play', list: this.list_no });
@@ -201,12 +205,13 @@ export class DashboardLayoutComponent implements OnInit, AfterViewInit, AfterVie
     var seconds = $event.target.currentTime - minutes * 60;
     var running_time = document.getElementById('running_time');
     running_time.innerHTML = minutes + ':' + Math.round(seconds);
+    // console.log('running_time.innerHTML  => ', running_time.innerHTML);
     minutes = Math.floor($event.target.duration / 60);
     seconds = $event.target.duration - minutes * 60;
     // console.log('running_time => ', running_time);
     var total_time = document.getElementById('total_time');
     var str = ((isNaN(minutes) ? 0 : minutes) + ':' + (isNaN(seconds) ? 0 : Math.round(seconds)));
-    console.log('total_time', str);
+    // console.log('total_time', str);
     total_time.innerHTML = str.toString();
 
     if ($event.target.currentTime === $event.target.duration) {
@@ -217,7 +222,7 @@ export class DashboardLayoutComponent implements OnInit, AfterViewInit, AfterVie
   }
 
   next() {
-    console.log('next function => ');
+    // console.log('next function => ');
     if (this.audio_instance_list[this.song_cnt]) {
       this.audio_instance_list[this.song_cnt].pause();
       this.audio_instance_list[this.song_cnt].currentTime = 0;
@@ -236,7 +241,7 @@ export class DashboardLayoutComponent implements OnInit, AfterViewInit, AfterVie
   }
 
   prev() {
-    console.log('prev function => ');
+    // console.log('prev function => ');
     if (this.audio_instance_list[this.song_cnt]) {
       this.audio_instance_list[this.song_cnt].pause();
       this.audio_instance_list[this.song_cnt].currentTime = 0;
@@ -255,7 +260,7 @@ export class DashboardLayoutComponent implements OnInit, AfterViewInit, AfterVie
   }
 
   pad(num, size) {
-    console.log('pad function => ');
+    // console.log('pad function => ');
     var s = num + '';
     while (s.length < size) {
       s = '0' + s;
@@ -272,12 +277,12 @@ export class DashboardLayoutComponent implements OnInit, AfterViewInit, AfterVie
   }
 
   manageProgress(e: any) {
+    // console.log('manage progress function => ');
     // console.log('e of manage progress bar => ', e);
     // console.log('e.target => ', e.target);
     // console.log('e.target.currentTime => ', e.target.currentTime);
-    // console.log('manage progress function => ');
     this.audio_ins.removeEventListener('timeupdate', this.timeUpdate, false);
-    console.log('prog => ', e.target.value);
+    // console.log('prog => ', e.target.value);
     var nprogres = document.getElementById('song_prog');
     var minutes = Math.floor(e.target.value / 60);
     var seconds = e.target.value - minutes * 60;
@@ -291,7 +296,7 @@ export class DashboardLayoutComponent implements OnInit, AfterViewInit, AfterVie
   }
 
   downloadTrack() {
-    console.log(this.audio_list[this.song_cnt]);
+    // console.log(this.audio_list[this.song_cnt]);
     if (this.user) {
       this.DashboardLayoutService.downloadTrack(this.audio_list[this.song_cnt]['_id']).subscribe((response) => {
         if (response['message']) {
@@ -310,7 +315,7 @@ export class DashboardLayoutComponent implements OnInit, AfterViewInit, AfterVie
   // share on facebook
   shareOnFacebook() {
     let track = this.audio_list[this.song_cnt];
-    console.log(track);
+    // console.log(track);
     let url = 'http://' + window.location.host + '/artist_profile/' + track['artist_id']['_id'] + '/track/' + track['_id'] + '/comments';
     let str = 'Track Name: ' + track.name + '\nArtist: ' + track['artist_id']['first_name'] + ' ' + track['artist_id']['last_name'] + '\nDescription: ' + track.description;
     // var facebookWindow = window.open('https://www.facebook.com/sharer.php?s=100&p[summary]='+encodeURIComponent(str)+"&p[url]="+encodeURIComponent(url), 'facebook-popup', 'height=350,width=600');
@@ -330,7 +335,7 @@ export class DashboardLayoutComponent implements OnInit, AfterViewInit, AfterVie
   // share on twitter
   shareOnTwitter() {
     let track = this.audio_list[this.song_cnt];
-    console.log(track);
+    // console.log(track);
     let url = 'http://' + window.location.host + '/artist_profile/' + track['artist_id']['_id'] + '/track/' + track['_id'] + '/comments';
     let str = 'Track Name: ' + track.name + '\nArtist: ' + track['artist_id']['first_name'] + ' ' + track['artist_id']['last_name'] + '\nDescription: ' + track.description;
     var twitterWindow = window.open('https://twitter.com/share?url=' + encodeURIComponent(url) + '&text=' + encodeURIComponent(str), 'twitter-popup', 'height=350,width=600');
@@ -390,7 +395,7 @@ export class DashboardLayoutComponent implements OnInit, AfterViewInit, AfterVie
   // copy share track link
   copy_link() {
     let track = this.audio_list[this.song_cnt];
-    console.log(track);
+    // console.log(track);
     let url = 'http://' + window.location.host + '/artist_profile/' + track['artist_id']['_id'] + '/track/' + track['_id'] + '/comments';
     var textArea = document.createElement('textarea');
     textArea.value = url;

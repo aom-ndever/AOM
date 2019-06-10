@@ -363,7 +363,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
             this.userdata['month'] = dt.getMonth();
             this.userdata['year'] = dt.getFullYear();
           }
-          console.log('userdata => ', this.userdata);
+          // console.log('userdata => ', this.userdata);
           if (this.userdata.image) {
             this.default_profile_img = environment.API_URL + environment.ARTIST_IMG + this.userdata.image;
           }
@@ -403,6 +403,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngOnInit() {
+    window.scroll(0, 0);
     if (this.userdata['type'] === 'artist') {
       this.getMediaList();
       this.calculateDateFromDays(this.analytics_days);
@@ -2147,7 +2148,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
 
   // Remove existing playlist
   removePlaylist(id: any, idx: any) {
-    console.log('idx => ', idx);
+    // console.log('idx => ', idx);
     swal({
       title: 'Are you sure?',
       text: 'You won\'t be able to revert this!',

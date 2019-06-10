@@ -1,14 +1,37 @@
-/* body {
-      margin: 0;
-      padding: 0;
-      height: 100vh;
-      width: 100vw;
-      justify-content: center;
-      align-content: center;
-      overflow: hidden;
-    } */
+/* body{
+  overflow: hidden;
+}
 
-    /* .wrapper__one,
+#loader {
+      position: fixed;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 9999;
+      text-align: center;
+      vertical-align: middle;
+    }
+
+    #loader>img {
+      width: 100px;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    #loader i {
+      color: #46a3f5;
+      position: absolute;
+      transform: translate(-50%, -50%);
+      left: 50%;
+      top: 50%;
+      height: 48px;
+      width: 48px;
+    }
+
+    .wrapper__one,
     .wrapper__two {
       display: flex;
       flex-direction: row;
@@ -25,24 +48,24 @@
 
     .rect {
       height: 25px;
-      width: 14px;
+      width: 10px;
       background: #9b26b0;
-      margin: 0 0.4em;
+      margin: 0 0.3em;
       display: inline-block;
       border-radius: 10px;
     }
 
     .rect__one {
-      height: 50px;
-      margin: 25px 0.4em;
+      height: 40px;
+      margin: 25px 0.3em;
       opacity: 0.4;
       animation: door 1s infinite;
       animation-timing-function: linear;
     }
 
     .rect__two {
-      height: 69px;
-      margin: 12px 0.4em;
+      height: 62px;
+      margin: 12px 0.3em;
       opacity: 0.8;
       animation: door 1s infinite;
       animation-delay: 0.08s;
@@ -50,8 +73,8 @@
     }
 
     .rect__three {
-      height: 97px;
-      margin: 0 0.4em;
+      height: 92px;
+      margin: 0 0.3em;
       opacity: 1;
       animation: door 1s infinite;
       animation-delay: 0.15s;
@@ -59,17 +82,17 @@
     }
 
     .rect__four {
-      height: 69px;
-      margin: 12px 0.4em;
-      opacity: 0.7;
+      height: 64px;
+      margin: 12px 0.3em;
+      opacity: 0.8;
       animation: door 1s infinite;
       animation-delay: 0.15s;
       animation-timing-function: linear;
     }
 
     .rect__five {
-      height: 52px;
-      margin: 25px 0.4em;
+      height: 42px;
+      margin: 25px 0.3em;
       opacity: 0.6;
       animation: door 1s infinite;
       animation-delay: 0.15s;
@@ -77,12 +100,13 @@
     }
 
     .rect__six {
-      height: 35px;
-      margin: 35px 0.4em;
+      height: 25px;
+      margin: 35px 0.3em;
       opacity: 0.4;
       animation: door 1s infinite;
       animation-timing-function: linear;
     }
+
 
     @keyframes door {
       0% {

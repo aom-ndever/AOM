@@ -28,7 +28,6 @@ export class MyMusicService {
   }
 
   addContestTrack(data: any) {
-    console.log("inside")
     return this.http.post(`${this.api_host}/artist/submit_tracks`, data, { headers: this.headers });
   }
 
