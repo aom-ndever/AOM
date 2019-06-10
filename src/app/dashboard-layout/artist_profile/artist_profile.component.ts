@@ -130,7 +130,12 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
     this.artistdata = this.route.snapshot.data['artist'].artist;
     this.artistmedia = this.route.snapshot.data['media'].media;
     this.artistfollower = this.route.snapshot.data['follower'].artist;
-    console.log('artistfollower => ', this.artistfollower);
+    this.MessageService.followList.subscribe(res => {
+      this.ArtistProfileService.getAllFollower({ artist_id: this.route.snapshot.paramMap.get('id') }).subscribe(response => {
+        this.artistfollower = response['artist'];
+      });
+      // this.artistfollower = this.route.snapshot.data['follower'].artist;
+    });
     this.artistcomments = this.route.snapshot.data['comments'].comment;
     if (this.artistcomments.length > 3) {
       this.display_comment = this.artistcomments.slice(0, 3).map(i => {
@@ -377,6 +382,7 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
       };
 
       this.ArtistProfileService.followArtist(data).subscribe(response => {
+        this.MessageService.changeFollower();
         console.log('here 1 => ');
         this.toastr.success(response['message'], 'Success!');
         if (response['flag'] === 'follow') {
