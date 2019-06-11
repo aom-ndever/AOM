@@ -12,15 +12,15 @@
         <div class="row">
             <div class="col-lg-11 col-md-12 audio_container">
                 <div id="audioplayer">
-                    <!-- <button class="btn prev_icon" (click)="prev()"><img src="img/next.png" /></button> -->
-                    <button class="btn prev_icon" (click)="prev()">
-                        <!-- <img src="img/next.png" /> -->
-                    </button>
+                    <button class="btn prev_icon" (click)="prev()"><img src="img/next.png" /></button>
+                    <!-- <button class="btn prev_icon" (click)="prev()"> -->
+                    <!-- <img src="img/next.png" /> -->
+                    <!-- </button> -->
                     <button id="pButton" class="play" (click)="play()"></button>
-                    <!-- <button class="btn next_icon" (click)="next()"><img src="img/next.png" /></button> -->
-                    <button class="btn next_icon" (click)="next()">
-                        <!-- <img src="img/next.png" /> -->
-                    </button>
+                    <button class="btn next_icon" (click)="next()"><img src="img/next.png" /></button>
+                    <!-- <button class="btn next_icon" (click)="next()"> -->
+                    <!-- <img src="img/next.png" /> -->
+                    <!-- </button> -->
                     <div class="audio_profile">
                         <img
                             src="{{audio_list[song_cnt] &&  audio_list[song_cnt]['image'] ? track_url+audio_list[song_cnt]['image'] : 'img/default_img.png' }}" />

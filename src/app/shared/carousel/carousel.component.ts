@@ -28,28 +28,28 @@ export class CarouselComponent implements OnInit, OnDestroy, AfterViewInit {
     private toastr: ToastrService
   ) {
     this.subscription = this.MessageService.getMessage().subscribe((response) => {
-      if (response && response['list'] != 1) {
+      if (response && response['list'] !== 1) {
         this.audio_ins.forEach((ele, idx) => { this.audio_ins[idx] = false; });
       }
-      if (response && response['action'] == 'stop' && response['list'] == 1) {
+      if (response && response['action'] === 'stop' && response['list'] === 1) {
         this.audio_ins[response['index']] = false;
       }
-      if (response && response['action'] == 'start' && response['list'] == 1) {
+      if (response && response['action'] === 'start' && response['list'] === 1) {
         this.audio_ins[response['index']] = true;
       }
-      if (response && response['list'] == 1 && response['action'] == 'next' || response['action'] == 'prev') {
-        if (response['track_action'] && response['track_action'] == 'pause') {
+      if (response && response['list'] === 1 && response['action'] === 'next' || response['action'] === 'prev') {
+        if (response['track_action'] && response['track_action'] === 'pause') {
           this.audio_ins.forEach((ele, idx) => { this.audio_ins[idx] = false; });
           this.audio_ins[response['index']] = true;
         }
       }
-      if (response && response['action'] == 'bottom_play' && response['list'] == 1) {
+      if (response && response['action'] === 'bottom_play' && response['list'] === 1) {
         this.audio_ins.forEach((ele, idx) => { this.audio_ins[idx] = false; });
         this.audio_ins[response['index']] = true;
       }
       if (response && response['music_flag']) {
         console.log('carousel =>', response['music_flag']);
-        this.flag = response['music_flag'] == 'yes' ? true : false;
+        this.flag = response['music_flag'] === 'yes' ? true : false;
       }
     });
 
@@ -65,10 +65,14 @@ export class CarouselComponent implements OnInit, OnDestroy, AfterViewInit {
     if (this.carouselType === 'normal') {
       this.carouselOne = {
         grid: { xs: 1, sm: 12, md: 3, lg: 4, all: 0 },
-        slide: 1,
-        speed: 400,
-        interval: 2000,
-        load: 2,
+        // slide: 1,
+        // speed: 400,
+        // interval: 2000,
+        // load: 2,
+        slide: 4,
+        speed: 300,
+        interval: 3000,
+        load: 4,
         touch: true,
         loop: true,
         custom: 'banner',
