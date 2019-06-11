@@ -35,14 +35,14 @@ export class DashboardComponent implements OnInit, OnDestroy {
   constructor(
     private DashboardService: DashboardService,
     private toastr: ToastrService,
-    private MessageService: MessageService,
+    private messageService: MessageService,
     private ngxService: NgxUiLoaderService
   ) {
     this.ngxService.start();
     this.getAllData({});
     this.getAllMusicType();
     this.user = JSON.parse(localStorage.getItem('user'));
-    this.subscription = this.MessageService.getMessage().subscribe((response) => {
+    this.subscription = this.messageService.getMessage().subscribe((response) => {
       if (response && response['list'] !== 2) {
         this.audio_ins.forEach((ele, idx) => { this.audio_ins[idx] = false; });
       }
@@ -74,7 +74,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
       // console.log('this.socket => ', this.socket);
       this.socket.on('receive_artist_notification_count', (data) => {
         // console.log('socket data =============>>', data);
-        this.MessageService.checkCount(data);
+        this.messageService.checkCount(data);
       });
       console.log('Dashboard componenet is running=========>');
     }
@@ -110,7 +110,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   // Get all whatsnew data
   getAllData(data: any) {
     this.audio_ins = [];
-    this.MessageService.sendMessage({ 'music_flag': 'yes' });
+    this.messageService.sendMessage({ 'music_flag': 'yes' });
     this.show_loader = true;
     this.DashboardService.getAllData(data).subscribe(response => {
       this.data = response;
@@ -131,28 +131,28 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
   // Play audio
   playAudio(name: any, index: any, data: any) {
-    // console.log('data of play button => ', data);
-    // console.log('index of play button => ', index);
+    console.log('component play button => ');
+    console.log('data of play button => ', data);
+    console.log('index of play button => ', index);
     data.forEach((ele, idx) => {
       this.audio_ins[idx] = false;
     });
     this.audio_ins[index] = true;
-    this.MessageService.sendMessage({ data: data, index: index, action: 'start', list: 2 });
+    this.messageService.sendMessage({ data: data, index: index, action: 'start', list: 2 });
   }
   // Stop audio
   stopAudio(index, data: any) {
-    // console.log('data of stop button => ', data);
-    // console.log('index of stop button => ', index);
+    console.log('data of stop button => ', data);
+    console.log('index of stop button => ', index);
     data.forEach((ele, idx) => {
       this.audio_ins[idx] = false;
     });
-    this.MessageService.sendMessage({ data: data, index: index, action: 'stop', list: 2 });
+    this.messageService.sendMessage({ data: data, index: index, action: 'stop', list: 2 });
 
   }
   // Initialize slider
   InitializeSider(data: any) {
     this.images = [];
-
     data.forEach(ele => {
       this.images.push({
         'source': ele.image ? this.track_url + ele.image : 'img/default_img.png',
@@ -168,9 +168,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
       });
     });
     this.getAllFollower();
-    this.MessageService.sendMessage({ 'music_flag': 'no' });
+    this.messageService.sendMessage({ 'music_flag': 'no' });
   }
-  // Get All music type  
+  // Get All music type
   getAllMusicType() {
     this.DashboardService.getAllMusicType().subscribe(response => {
       this.music_type_list = response['music'];

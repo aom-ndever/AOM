@@ -3865,7 +3865,21 @@ background-color: #e91e63;
         width: 8px !important;
         height: auto !important;
     }
-    .ngxcarouselPointDefault[_ngcontent-c6] .ngxcarouselPoint[_ngcontent-c6] li[_ngcontent-c6]{
+    .ngxcarouselPointDefault .ngxcarouselPoint li{
+        width: 10px !important;
+        height: 10px !important;
+        margin:0 3px !important
+    }
+    
+    .ngxcarouselPointDefault .ngxcarouselPoint li {
+
+        background: #dedede !important;
+    }
+    .ngxcarouselPointDefault .ngxcarouselPoint li.active {
+        background: #9c27b0 !important;
+        transform: scale(1) !important;
+    }
+    /* .ngxcarouselPointDefault[_ngcontent-c6] .ngxcarouselPoint[_ngcontent-c6] li[_ngcontent-c6]{
         width: 10px !important;
         height: 10px !important;
         margin:0 3px !important
@@ -3878,7 +3892,7 @@ background-color: #e91e63;
     .ngxcarouselPointDefault[_ngcontent-c6] .ngxcarouselPoint[_ngcontent-c6] li.active[_ngcontent-c6] {
         background: #9c27b0 !important;
         transform: scale(1) !important;
-    }
+    } */
 .custom_search_wrap .search-input input{
     width: 80%;
     float: right;
@@ -4436,7 +4450,16 @@ svg g rect{
 
 }
 .filter-drop-down .radio label{    margin-bottom: .5rem;}
-.whatsnew-banner .ngxcarouselPointDefault[_ngcontent-c5] .ngxcarouselPoint[_ngcontent-c5] li.active[_ngcontent-c5] {
+.whatsnew-banner .ngxcarouselPointDefault .ngxcarouselPoint li.active {
+    background: #9c27b0;
+    transform: scale(1);
+}
+.whatsnew-banner .ngxcarouselPointDefault .ngxcarouselPoint li{
+    background: #dedede;
+    width:10px;
+    height:10px;
+}
+/* .whatsnew-banner .ngxcarouselPointDefault[_ngcontent-c5] .ngxcarouselPoint[_ngcontent-c5] li.active[_ngcontent-c5] {
     background: #9c27b0;
     transform: scale(1);
 }
@@ -4444,7 +4467,7 @@ svg g rect{
     background: #dedede;
     width:10px;
     height:10px;
-}
+} */
 .artist-highlight .img-wrap {
     width: 100%;
     height: 150px;

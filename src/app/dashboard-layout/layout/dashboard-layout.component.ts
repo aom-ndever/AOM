@@ -53,12 +53,13 @@ export class DashboardLayoutComponent implements OnInit, AfterViewInit, AfterVie
     private fb: FormBuilder
   ) {
     console.log('dashboard layouts component  =============================> ');
-    // console.log('play_time => ', this.play_time);
+    console.log('play_time => ', this.play_time);
     this.audio_instance_list = [];
     this.audio_list = [];
     let localuser = localStorage.getItem('user');
     this.user = JSON.parse(localuser);
     this.subscription = this.MessageService.getMessage().subscribe((response) => {
+      console.log('response => ', response);
       if (response['action'] === 'start') {
         this.audio_list = response['data'];
         this.audio_instance_list = [];
@@ -79,6 +80,7 @@ export class DashboardLayoutComponent implements OnInit, AfterViewInit, AfterVie
       this.list_no = response['list'];
       if (response['action'] === 'start') {
         this.song_cnt = response['index'];
+        console.log('this.song_cnt => ', this.song_cnt);
         if (this.audio_ins) {
           this.audio_ins.currentTime = 0;
           this.audio_ins.pause();
@@ -151,16 +153,23 @@ export class DashboardLayoutComponent implements OnInit, AfterViewInit, AfterVie
   }
 
   play() {
-    // console.log('play function => ');
+    console.log('this.audio_instance_list => ', this.audio_instance_list);
+    console.log('this.song_cnt => ', this.song_cnt);
+    console.log('this.audio_instance_list[this.song_cnt] => ', this.audio_instance_list[this.song_cnt]);
+    console.log('play function => ');
     try {
       var pButton = document.getElementById('pButton');
       // console.log('this.audio_instance_list => ', this.audio_instance_list);
       this.audio_ins = this.audio_instance_list[this.song_cnt];
+      console.log('pButton.className => ', pButton.className);
       if (pButton.className === 'play') {
         this.MessageService.sendMessage({ index: this.song_cnt, action: 'bottom_play', list: this.list_no });
       }
+      // console.log('this.audio_instance_list[this.song_cnt] => ', this.audio_instance_list[this.song_cnt]); 
       if (this.audio_instance_list[this.song_cnt] && this.audio_instance_list[this.song_cnt].paused) {
+        // console.log('this.audio_instance_list[this.song_cnt] => ', this.audio_instance_list[this.song_cnt]);
         let playPromise = this.audio_instance_list[this.song_cnt].play();
+        // console.log('playPromise => ', playPromise);
         if (playPromise !== undefined) {
           playPromise.then(() => {
             // Automatic playback started!
@@ -168,6 +177,7 @@ export class DashboardLayoutComponent implements OnInit, AfterViewInit, AfterVie
             console.log('error => ', error);
             this.toastr.info('This audio type is not supported in this browser.', 'Information!');
             this.audio_instance_list[this.song_cnt].pause();
+            console.log('pause => ');
             this.MessageService.sendMessage({ index: this.song_cnt, action: 'stop', list: this.list_no });
             pButton.className = '';
             pButton.className = 'play';
@@ -204,25 +214,27 @@ export class DashboardLayoutComponent implements OnInit, AfterViewInit, AfterVie
     var minutes = Math.floor($event.target.currentTime / 60);
     var seconds = $event.target.currentTime - minutes * 60;
     var running_time = document.getElementById('running_time');
+    // console.log('running_time => ', running_time);
     running_time.innerHTML = minutes + ':' + Math.round(seconds);
     // console.log('running_time.innerHTML  => ', running_time.innerHTML);
+    this.play_time = running_time.innerHTML;
+    // console.log('this.play_time => ', this.play_time);
     minutes = Math.floor($event.target.duration / 60);
     seconds = $event.target.duration - minutes * 60;
-    // console.log('running_time => ', running_time);
     var total_time = document.getElementById('total_time');
     var str = ((isNaN(minutes) ? 0 : minutes) + ':' + (isNaN(seconds) ? 0 : Math.round(seconds)));
     // console.log('total_time', str);
     total_time.innerHTML = str.toString();
 
     if ($event.target.currentTime === $event.target.duration) {
-      // this.next();          
+      // this.next();
       pButton.className = '';
       pButton.className = 'play';
     }
   }
 
   next() {
-    // console.log('next function => ');
+    console.log('next function => ');
     if (this.audio_instance_list[this.song_cnt]) {
       this.audio_instance_list[this.song_cnt].pause();
       this.audio_instance_list[this.song_cnt].currentTime = 0;
@@ -241,7 +253,7 @@ export class DashboardLayoutComponent implements OnInit, AfterViewInit, AfterVie
   }
 
   prev() {
-    // console.log('prev function => ');
+    console.log('prev function => ');
     if (this.audio_instance_list[this.song_cnt]) {
       this.audio_instance_list[this.song_cnt].pause();
       this.audio_instance_list[this.song_cnt].currentTime = 0;
@@ -260,7 +272,7 @@ export class DashboardLayoutComponent implements OnInit, AfterViewInit, AfterVie
   }
 
   pad(num, size) {
-    // console.log('pad function => ');
+    console.log('pad function => ');
     var s = num + '';
     while (s.length < size) {
       s = '0' + s;
@@ -277,7 +289,7 @@ export class DashboardLayoutComponent implements OnInit, AfterViewInit, AfterVie
   }
 
   manageProgress(e: any) {
-    // console.log('manage progress function => ');
+    console.log('manage progress function => ');
     // console.log('e of manage progress bar => ', e);
     // console.log('e.target => ', e.target);
     // console.log('e.target.currentTime => ', e.target.currentTime);
