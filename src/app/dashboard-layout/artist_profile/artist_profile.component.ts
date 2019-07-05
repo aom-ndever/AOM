@@ -51,15 +51,15 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
   private modalRef: NgbModalRef;
   share_form: FormGroup;
   share_form_phone: FormGroup;
-  share_form_validation: boolean = false;
+  share_form_validation = false;
   user: any = '';
-  show_spinner: boolean = false;
+  show_spinner = false;
   track_data: any = {};
   // Artist following
-  artist_following: boolean = false;
-  card_loader: boolean = false;
-  show_more_flag: boolean = false;
-  isFollowed: boolean = false;
+  artist_following = false;
+  card_loader = false;
+  show_more_flag = false;
+  isFollowed = false;
   style = {
     base: {
       color: '#32325d',
@@ -194,7 +194,7 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
                 that.artisttrack.forEach((ele) => { that.audio_ins.push(false); });
                 if (that.user && that.user['user']) {
                   that.artistProfileService.getBookmarkedTrackList().subscribe((resp) => {
-                    let bookmark_list = resp['bookmark'];
+                    const bookmark_list = resp['bookmark'];
                     that.artisttrack.forEach((ele) => {
                       let flag = false;
                       bookmark_list.forEach((bookmark) => {
@@ -251,7 +251,7 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
               // that.rankingtrack.forEach((ele) => {ele['is_bookmarked'] = false;});
               if (that.user && that.user['user']) {
                 that.artistProfileService.getBookmarkedTrackList().subscribe((resp) => {
-                  let bookmark_list = resp['bookmark'];
+                  const bookmark_list = resp['bookmark'];
                   that.rankingtrack.forEach((ele) => {
                     let flag = false;
                     bookmark_list.forEach((bookmark) => {
@@ -390,12 +390,12 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
   // Follow artist
   followArtist(id: any) {
     // const promise = new Promise((resolve, reject) => {
-    let data = JSON.parse(localStorage.getItem('user'));
+    const data = JSON.parse(localStorage.getItem('user'));
     if (data) {
-      let data = {
+      const artist_data = {
         artist_id: id
       };
-      this.artistProfileService.followArtist(data).subscribe(response => {
+      this.artistProfileService.followArtist(artist_data).subscribe(response => {
         this.messageService.changeFollower();
         this.toastr.success(response['message'], 'Success!');
         if (response['flag'] === 'follow') {
@@ -421,9 +421,9 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
 
   // Like the track
   likeTrack(track_id: any, index: any) {
-    let user = JSON.parse(localStorage.getItem('user'));
+    const user = JSON.parse(localStorage.getItem('user'));
     if (user && user.user) {
-      let data = {
+      const data = {
         'track_id': track_id,
         'artist_id': this.artistdata._id,
         'status': true
@@ -446,9 +446,9 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
 
   // Like the track
   likeRankTrack(track_id: any, index: any) {
-    let user = JSON.parse(localStorage.getItem('user'));
+    const user = JSON.parse(localStorage.getItem('user'));
     if (user && user.user) {
-      let data = {
+      const data = {
         'track_id': track_id,
         'artist_id': this.artistdata._id,
         'status': true
@@ -513,7 +513,7 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
 
   // Download track
   downloadTrack(id: any) {
-    let user = JSON.parse(localStorage.getItem('user'));
+    const user = JSON.parse(localStorage.getItem('user'));
     if (user && user.user) {
       this.artistProfileService.downloadTrack(id).subscribe(response => {
         window.location.href = this.user_img_url + response['filename'];
@@ -532,7 +532,7 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
     if (this.user && this.user['user']) {
       if (type === 'track') {
         this.artisttrack[index]['is_bookmarked'] = !this.artisttrack[index]['is_bookmarked'];
-        let data = {
+        const data = {
           // is_bookmarked: this.artisttrack[index]['is_bookmarked'],
           track_id: id
         };
@@ -544,7 +544,7 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
         });
       } else {
         this.rankingtrack[index]['is_bookmarked'] = !this.rankingtrack[index]['is_bookmarked'];
-        let data = {
+        const data = {
           // is_bookmarked: this.rankingtrack[index]['is_bookmarked'],
           track_id: id
         };
@@ -562,9 +562,11 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
 
   // share on facebook
   shareOnFacebook() {
-    let track = this.track_data;
-    let url = 'http://' + window.location.host + '/artist_profile/' + track['artist_id']['_id'] + '/track/' + track['_id'] + '/comments';
-    let str = 'Track Name: ' + track['name'] + '\nArtist: ' + track['artist_id']['first_name'] + ' ' + track['artist_id']['last_name'] + '\nDescription: ' + track['description'];
+    const track = this.track_data;
+    const url = 'http://' + window.location.host + '/artist_profile/' + track['artist_id']['_id'] + '/track/' + track['_id'] + '/comments';
+    const str =
+      'Track Name: ' + track['name'] + '\nArtist: ' + track['artist_id']['first_name'] + ' ' + track['artist_id']['last_name'] + '\nDescription: ' + track['description'];
+
     // var facebookWindow = window.open('https://www.facebook.com/sharer.php?s=100&p[summary]='+encodeURIComponent(str)+"&p[url]="+encodeURIComponent(url), 'facebook-popup', 'height=350,width=600');
     // if(facebookWindow.focus) { facebookWindow.focus(); }
     FB.ui({
@@ -582,10 +584,10 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
 
   // share on twitter
   shareOnTwitter() {
-    let track = this.track_data;
-    let url = 'http://' + window.location.host + '/artist_profile/' + track['artist_id']['_id'] + '/track/' + track['_id'] + '/comments';
-    let str = 'Track Name: ' + track['name'] + '\nArtist: ' + track['artist_id']['first_name'] + ' ' + track['artist_id']['last_name'] + '\nDescription: ' + track['description'];
-    var twitterWindow = window.open('https://twitter.com/share?url=' + encodeURIComponent(url) + '&text=' + encodeURIComponent(str), 'twitter-popup', 'height=350,width=600');
+    const track = this.track_data;
+    const url = 'http://' + window.location.host + '/artist_profile/' + track['artist_id']['_id'] + '/track/' + track['_id'] + '/comments';
+    const str = 'Track Name: ' + track['name'] + '\nArtist: ' + track['artist_id']['first_name'] + ' ' + track['artist_id']['last_name'] + '\nDescription: ' + track['description'];
+    const twitterWindow = window.open('https://twitter.com/share?url=' + encodeURIComponent(url) + '&text=' + encodeURIComponent(str), 'twitter-popup', 'height=350,width=600');
     if (twitterWindow.focus) { twitterWindow.focus(); }
   }
 
@@ -594,9 +596,10 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
     if (flag) {
       this.share_form_validation = !flag;
       this.show_spinner = true;
-      let track = this.track_data;
-      let url = 'http://' + window.location.host + '/artist_profile/' + track['artist_id']['_id'] + '/track/' + track['_id'] + '/comments';
-      let data = {
+      const track = this.track_data;
+      const url =
+        'http://' + window.location.host + '/artist_profile/' + track['artist_id']['_id'] + '/track/' + track['_id'] + '/comments';
+      const data = {
         email: this.share_data['email'],
         track_id: track['_id'],
         url: url
@@ -620,9 +623,10 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
     if (flag) {
       this.share_form_validation = !flag;
       this.show_spinner = true;
-      let track = this.track_data;
-      let url = 'http://' + window.location.host + '/artist_profile/' + track['artist_id']['_id'] + '/track/' + track['_id'] + '/comments';
-      let data = {
+      const track = this.track_data;
+      const url =
+        'http://' + window.location.host + '/artist_profile/' + track['artist_id']['_id'] + '/track/' + track['_id'] + '/comments';
+      const data = {
         phone_no: this.share_data['phone_no'],
         track_id: track['_id'],
         url: url
@@ -644,9 +648,9 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
 
   // copy share track link
   copy_link() {
-    let track = this.track_data;
-    let url = 'http://' + window.location.host + '/artist_profile/' + track['artist_id']['_id'] + '/track/' + track['_id'] + '/comments';
-    var textArea = document.createElement('textarea');
+    const track = this.track_data;
+    const url = 'http://' + window.location.host + '/artist_profile/' + track['artist_id']['_id'] + '/track/' + track['_id'] + '/comments';
+    const textArea = document.createElement('textarea');
     textArea.value = url;
     document.body.appendChild(textArea);
     textArea.focus();
@@ -677,14 +681,14 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
 
 
   setupStripeFrom() {
-    var stripe = Stripe(environment.STRIPE_PUB_KEY);
-    var elements = stripe.elements();
-    var card = elements.create('card', { style: this.style });
+    const stripe = Stripe(environment.STRIPE_PUB_KEY);
+    const elements = stripe.elements();
+    const card = elements.create('card', { style: this.style });
     card.mount('#card-element');
     this.card_loader = false;
     // this.registerElements([card], 'ex');
     card.addEventListener('change', function (event) {
-      var displayError = document.getElementById('card-errors');
+      const displayError = document.getElementById('card-errors');
       if (event.error) {
         displayError.textContent = event.error.message;
       } else {
@@ -692,7 +696,7 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
       }
     });
 
-    var form = document.getElementById('payment-form');
+    const form = document.getElementById('payment-form');
 
     form.addEventListener('submit', (event) => {
       event.preventDefault();
@@ -700,12 +704,12 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
       stripe.createToken(card).then((result) => {
         if (result.error) {
           // Inform the customer that there was an error.
-          var errorElement = document.getElementById('card-errors');
+          const errorElement = document.getElementById('card-errors');
           errorElement.textContent = result.error.message;
           this.show_spinner = false;
         } else {
           // Send the token to your server.
-          let data = {
+          const data = {
             track_id: this.track_data['_id'],
             card_id: result['token']['id']
           };

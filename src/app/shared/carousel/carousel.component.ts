@@ -21,7 +21,7 @@ export class CarouselComponent implements OnInit, OnDestroy, AfterViewInit {
   track_url: any = environment.API_URL + environment.ARTIST_TRACK;
   audio_ins: any = [];
   subscription: Subscription;
-  flag: boolean = true;
+  flag = true;
   constructor(
     private messageService: MessageService,
     private carouselService: CarouselService,
@@ -137,9 +137,9 @@ export class CarouselComponent implements OnInit, OnDestroy, AfterViewInit {
   }
   // Follow artist
   followArtist(id: any) {
-    let user = JSON.parse(localStorage.getItem('user'));
+    const user = JSON.parse(localStorage.getItem('user'));
     if (user && user['user']) {
-      let data = {
+      const data = {
         'artist_id': id
       };
       this.carouselService.followArtist(data).subscribe((response) => {

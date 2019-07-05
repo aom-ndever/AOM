@@ -30,13 +30,13 @@ export class TrackConmmentsComponent implements OnInit {
   track_data: any = {};
   artisttrack: any = [];
   rankingtrack: any = [];
-  show_spinner: boolean = false;
+  show_spinner = false;
   private phonemodalRef: NgbModalRef;
   share_data: any = {};
   share_form_phone: FormGroup;
   share_form: FormGroup;
-  share_form_validation: boolean = false;
-  card_loader: boolean = false;
+  share_form_validation = false;
+  card_loader = false;
   private emailmodalRef: NgbModalRef;
   private socket;
   private modalRef: NgbModalRef;
@@ -106,9 +106,10 @@ export class TrackConmmentsComponent implements OnInit {
 
   // share on facebook
   shareOnFacebook() {
-    let track = this.track;
-    let url = 'http://' + window.location.host + '/artist_profile/' + track['artist_id']['_id'] + '/track/' + track['_id'] + '/comments';
-    let str = 'Track Name: ' + track['name'] + '\nArtist: ' + track['artist_id']['first_name'] + ' ' + track['artist_id']['last_name'] + '\nDescription: ' + track['description'];
+    const track = this.track;
+    const url = 'http://' + window.location.host + '/artist_profile/' + track['artist_id']['_id'] + '/track/' + track['_id'] + '/comments';
+    const str =
+      'Track Name: ' + track['name'] + '\nArtist: ' + track['artist_id']['first_name'] + ' ' + track['artist_id']['last_name'] + '\nDescription: ' + track['description'];
     FB.ui({
       method: 'share_open_graph',
       action_type: 'og.likes',
@@ -143,14 +144,14 @@ export class TrackConmmentsComponent implements OnInit {
   }
 
   setupStripeFrom() {
-    var stripe = Stripe(environment.STRIPE_PUB_KEY);
-    var elements = stripe.elements();
-    var card = elements.create('card', { style: this.style });
+    const stripe = Stripe(environment.STRIPE_PUB_KEY);
+    const elements = stripe.elements();
+    const card = elements.create('card', { style: this.style });
     card.mount('#card-element');
     this.card_loader = false;
     // this.registerElements([card], 'ex');
     card.addEventListener('change', function (event) {
-      var displayError = document.getElementById('card-errors');
+      const displayError = document.getElementById('card-errors');
       if (event.error) {
         displayError.textContent = event.error.message;
       } else {
@@ -158,7 +159,7 @@ export class TrackConmmentsComponent implements OnInit {
       }
     });
 
-    var form = document.getElementById('payment-form');
+    const form = document.getElementById('payment-form');
 
     form.addEventListener('submit', (event) => {
       event.preventDefault();
@@ -166,12 +167,12 @@ export class TrackConmmentsComponent implements OnInit {
       stripe.createToken(card).then((result) => {
         if (result.error) {
           // Inform the customer that there was an error.
-          var errorElement = document.getElementById('card-errors');
+          const errorElement = document.getElementById('card-errors');
           errorElement.textContent = result.error.message;
           this.show_spinner = false;
         } else {
           // Send the token to your server.
-          let data = {
+          const data = {
             // track_id: this.track_data['_id'],
             track_id: this.track._id,
             card_id: result['token']['id']
@@ -208,18 +209,20 @@ export class TrackConmmentsComponent implements OnInit {
     }
   }
   shareOnTwitter() {
-    let track = this.track;
+    const track = this.track;
     console.log(track);
-    let url = 'http://' + window.location.host + '/artist_profile/' + track['artist_id']['_id'] + '/track/' + track['_id'] + '/comments';
-    let str = 'Track Name: ' + track['name'] + '\nArtist: ' + track['artist_id']['first_name'] + ' ' + track['artist_id']['last_name'] + '\nDescription: ' + track['description'];
-    var twitterWindow = window.open('https://twitter.com/share?url=' + encodeURIComponent(url) + '&text=' + encodeURIComponent(str), 'twitter-popup', 'height=350,width=600');
+    const url = 'http://' + window.location.host + '/artist_profile/' + track['artist_id']['_id'] + '/track/' + track['_id'] + '/comments';
+    const str =
+      'Track Name: ' + track['name'] + '\nArtist: ' + track['artist_id']['first_name'] + ' ' + track['artist_id']['last_name'] + '\nDescription: ' + track['description'];
+    const twitterWindow =
+      window.open('https://twitter.com/share?url=' + encodeURIComponent(url) + '&text=' + encodeURIComponent(str), 'twitter-popup', 'height=350,width=600');
     if (twitterWindow.focus) { twitterWindow.focus(); }
   }
   copy_link() {
-    let track = this.track;
+    const track = this.track;
     console.log(track);
-    let url = 'http://' + window.location.host + '/artist_profile/' + track['artist_id']['_id'] + '/track/' + track['_id'] + '/comments';
-    var textArea = document.createElement('textarea');
+    const url = 'http://' + window.location.host + '/artist_profile/' + track['artist_id']['_id'] + '/track/' + track['_id'] + '/comments';
+    const textArea = document.createElement('textarea');
     textArea.value = url;
     document.body.appendChild(textArea);
     textArea.focus();
@@ -232,9 +235,10 @@ export class TrackConmmentsComponent implements OnInit {
     if (flag) {
       this.share_form_validation = !flag;
       this.show_spinner = true;
-      let track = this.track;
-      let url = 'http://' + window.location.host + '/artist_profile/' + track['artist_id']['_id'] + '/track/' + track['_id'] + '/comments';
-      let data = {
+      const track = this.track;
+      const url =
+        'http://' + window.location.host + '/artist_profile/' + track['artist_id']['_id'] + '/track/' + track['_id'] + '/comments';
+      const data = {
         email: this.share_data['email'],
         track_id: track['_id'],
         url: url
@@ -257,9 +261,10 @@ export class TrackConmmentsComponent implements OnInit {
     if (flag) {
       this.share_form_validation = !flag;
       this.show_spinner = true;
-      let track = this.track;
-      let url = 'http://' + window.location.host + '/artist_profile/' + track['artist_id']['_id'] + '/track/' + track['_id'] + '/comments';
-      let data = {
+      const track = this.track;
+      const url =
+        'http://' + window.location.host + '/artist_profile/' + track['artist_id']['_id'] + '/track/' + track['_id'] + '/comments';
+      const data = {
         phone_no: this.share_data['phone_no'],
         track_id: track['_id'],
         url: url
@@ -282,7 +287,7 @@ export class TrackConmmentsComponent implements OnInit {
 
   // Play audio
   playAudio(name: any, index: any) {
-    let audio = new Audio();
+    const audio = new Audio();
     audio.src = this.track_url + name;
     audio.load();
     audio.play();
@@ -308,7 +313,7 @@ export class TrackConmmentsComponent implements OnInit {
     }
     if (this.comment_txt && isValid) {
       this.show_spinner = true;
-      let data = {
+      const data = {
         'track_id': this.track._id,
         'artist_id': this.artistdata._id,
         'comment': this.comment_txt
@@ -330,7 +335,7 @@ export class TrackConmmentsComponent implements OnInit {
   }
   // Download track
   downloadTrack(id: any) {
-    let user = JSON.parse(localStorage.getItem('user'));
+    const user = JSON.parse(localStorage.getItem('user'));
     if (user && user.user) {
       this.trackCommentsService.downloadTrack(id).subscribe(response => {
         console.log(response);
@@ -347,11 +352,11 @@ export class TrackConmmentsComponent implements OnInit {
 
   // likeTrack(track_id: any, index: any) {
   likeTrack(track_id: any) {
-    let user = JSON.parse(localStorage.getItem('user'));
+    const user = JSON.parse(localStorage.getItem('user'));
     if (user && user.user) {
       console.log('likes counter==> ', this.track);
       // this.track.no_of_likes += 1;
-      let data = {
+      const data = {
         'track_id': track_id,
         'artist_id': this.artistdata._id,
         'status': true
@@ -377,7 +382,7 @@ export class TrackConmmentsComponent implements OnInit {
   }
   // Get all comment of track
   getAllTrackComment() {
-    let data = {
+    const data = {
       track_id: this.track._id
     };
     this.trackCommentsService.getAllTrackComment(data).subscribe(response => {
@@ -398,7 +403,7 @@ export class TrackConmmentsComponent implements OnInit {
   // upvote commnet
   upVoteComment(id: any) {
     if (this.user && this.user['user']) {
-      let data = {
+      const data = {
         comment_id: id
       };
       this.trackCommentsService.upVoteComment(data).subscribe((response) => {
@@ -414,7 +419,7 @@ export class TrackConmmentsComponent implements OnInit {
   // downvote commnet
   downVoteComment(id: any) {
     if (this.user && this.user['user']) {
-      let data = {
+      const data = {
         comment_id: id
       };
       this.trackCommentsService.downVoteComment(data).subscribe((response) => {

@@ -31,7 +31,7 @@ export class MyMusicComponent implements OnInit, OnDestroy {
   dtOptions: DataTables.Settings = {};
   contesttrack_data: any = {};
   standard_data: any = {};
-  show_filter: boolean = false;
+  show_filter = false;
   tab_cnt: Number = 1;
   modal_ref: NgbModalRef;
   audio_file: any = '';
@@ -39,7 +39,7 @@ export class MyMusicComponent implements OnInit, OnDestroy {
   edit_image: any = 'img/default_img.png';
   trackdata: any = {};
   tracklist: any = [];
-  show_spinner: boolean = false;
+  show_spinner = false;
   audio_ins: any = [];
   track_url: any = environment.API_URL + environment.ARTIST_TRACK;
   userinfo: any = '';
@@ -55,7 +55,7 @@ export class MyMusicComponent implements OnInit, OnDestroy {
   share_data: any = {};
   share_form: FormGroup;
   share_form_phone: FormGroup;
-  share_form_validation: boolean = false;
+  share_form_validation = false;
   user: any = '';
   track_data: any = {};
   track_row_cnt = 1;
@@ -219,7 +219,7 @@ export class MyMusicComponent implements OnInit, OnDestroy {
     const file = event.target.files[0];
     let flag;
     let res;
-    let fr = new FileReader();
+    const fr = new FileReader();
     fr.onload = (e: any) => {
       res = e.target.result;
       const uint = new Uint8Array(res.slice(0, 4));
@@ -249,7 +249,7 @@ export class MyMusicComponent implements OnInit, OnDestroy {
       if (file.size <= 500000) {
         this.image_upload = file;
         this.track_img = environment.API_URL + environment.ARTIST_TRACK + file.name;
-        let fr = new FileReader();
+        const fr = new FileReader();
         fr.onload = (e: any) => {
           this.track_img = e.target.result;
           this.add_track_img = e.target.result;
@@ -302,7 +302,7 @@ export class MyMusicComponent implements OnInit, OnDestroy {
 
   // on change event of edit track pic
   changeTrackImage(event: any) {
-    let file = event.target.files[0];
+    const file = event.target.files[0];
     if (event.target.files.length > 0) {
       const allow_types = ['image/png', 'image/jpg', 'image/jpeg'];
       if (allow_types.indexOf(file.type) === -1) {
@@ -313,7 +313,7 @@ export class MyMusicComponent implements OnInit, OnDestroy {
       const reader = new FileReader();
       reader.onload = (e: any) => {
         const data = {};
-        let imageBuffer = e.target.result;
+        const imageBuffer = e.target.result;
         this.edit_image = imageBuffer;
       };
       reader.readAsDataURL(event.target.files[0]);
@@ -408,7 +408,7 @@ export class MyMusicComponent implements OnInit, OnDestroy {
     }
     if (this.trackdata && this.trackdata.name && isValid && this.trackdata.price && this.trackdata.price > 0 &&
       this.trackdata.price.toString().length <= 3 && this.audio_file && this.image_upload) {
-      let formdata = new FormData();
+      const formdata = new FormData();
       formdata.append('name', this.trackdata.name);
       formdata.append('price', this.trackdata.price);
       formdata.append('audio', this.audio_file);
@@ -489,7 +489,7 @@ export class MyMusicComponent implements OnInit, OnDestroy {
     }
     if (this.trackdata && this.trackdata.name && isValid && this.trackdata.price && this.trackdata.price > 0 &&
       this.trackdata.price.toString().length <= 3 && this.trackdata.image) {
-      let formdata = new FormData();
+      const formdata = new FormData();
       formdata.append('name', this.trackdata.name);
       formdata.append('price', this.trackdata.price);
       formdata.append('image', this.trackdata.image);
@@ -635,10 +635,12 @@ export class MyMusicComponent implements OnInit, OnDestroy {
 
   // share on facebook
   shareOnFacebook() {
-    let track = this.track_data;
-    let url = 'http://' + window.location.host + '/artist_profile/' + track['artist_id']['_id'] + '/track/' + track['_id'] + '/comments';
-    let str = 'Track Name: ' + track['name'] + '\nArtist: ' +
+    const track = this.track_data;
+    const url = 'http://' + window.location.host + '/artist_profile/' + track['artist_id']['_id'] + '/track/' + track['_id'] + '/comments';
+    const str =
+      'Track Name: ' + track['name'] + '\nArtist: ' +
       track['artist_id']['first_name'] + ' ' + track['artist_id']['last_name'] + '\nDescription: ' + track['description'];
+
     // var facebookWindow = window.open('https://www.facebook.com/sharer.php?s=100&p[summary]='+encodeURIComponent(str)+"&p[url]="+encodeURIComponent(url), 'facebook-popup', 'height=350,width=600');
     // if(facebookWindow.focus) { facebookWindow.focus(); }
     FB.ui({
@@ -656,12 +658,15 @@ export class MyMusicComponent implements OnInit, OnDestroy {
 
   // share on twitter
   shareOnTwitter() {
-    let track = this.track_data;
-    let url = 'http://' + window.location.host + '/artist_profile/' + track['artist_id']['_id'] + '/track/' + track['_id'] + '/comments';
-    let str = 'Track Name: ' + track['name'] + '\nArtist: ' +
+    const track = this.track_data;
+    const url =
+      'http://' + window.location.host + '/artist_profile/' + track['artist_id']['_id'] + '/track/' + track['_id'] + '/comments';
+    const str =
+      'Track Name: ' + track['name'] + '\nArtist: ' +
       track['artist_id']['first_name'] + ' ' + track['artist_id']['last_name'] + '\nDescription: ' + track['description'];
-    var twitterWindow = window.open('https://twitter.com/share?url=' +
-      encodeURIComponent(url) + '&text=' + encodeURIComponent(str), 'twitter-popup', 'height=350,width=600');
+    const twitterWindow =
+      window.open('https://twitter.com/share?url=' +
+        encodeURIComponent(url) + '&text=' + encodeURIComponent(str), 'twitter-popup', 'height=350,width=600');
     if (twitterWindow.focus) { twitterWindow.focus(); }
   }
 
@@ -670,9 +675,10 @@ export class MyMusicComponent implements OnInit, OnDestroy {
     if (flag) {
       this.share_form_validation = !flag;
       this.show_spinner = true;
-      let track = this.track_data;
-      let url = 'http://' + window.location.host + '/artist_profile/' + track['artist_id']['_id'] + '/track/' + track['_id'] + '/comments';
-      let data = {
+      const track = this.track_data;
+      const url =
+        'http://' + window.location.host + '/artist_profile/' + track['artist_id']['_id'] + '/track/' + track['_id'] + '/comments';
+      const data = {
         email: this.share_data['email'],
         track_id: track['_id'],
         url: url
@@ -696,9 +702,10 @@ export class MyMusicComponent implements OnInit, OnDestroy {
     if (flag) {
       this.share_form_validation = !flag;
       this.show_spinner = true;
-      let track = this.track_data;
-      let url = 'http://' + window.location.host + '/artist_profile/' + track['artist_id']['_id'] + '/track/' + track['_id'] + '/comments';
-      let data = {
+      const track = this.track_data;
+      const url =
+        'http://' + window.location.host + '/artist_profile/' + track['artist_id']['_id'] + '/track/' + track['_id'] + '/comments';
+      const data = {
         phone_no: this.share_data['phone_no'],
         track_id: track['_id'],
         url: url
@@ -720,9 +727,10 @@ export class MyMusicComponent implements OnInit, OnDestroy {
 
   // copy share track link
   copy_link() {
-    let track = this.track_data;
-    let url = 'http://' + window.location.host + '/artist_profile/' + track['artist_id']['_id'] + '/track/' + track['_id'] + '/comments';
-    var textArea = document.createElement('textarea');
+    const track = this.track_data;
+    const url =
+      'http://' + window.location.host + '/artist_profile/' + track['artist_id']['_id'] + '/track/' + track['_id'] + '/comments';
+    const textArea = document.createElement('textarea');
     textArea.value = url;
     document.body.appendChild(textArea);
     textArea.focus();

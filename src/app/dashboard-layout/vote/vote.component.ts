@@ -18,11 +18,11 @@ export class VoteComponent implements OnInit {
   @ViewChildren(DataTableDirective)
   dtElements: QueryList<DataTableDirective>;
   dtOptions: DataTables.Settings[] = [];
-  show_filter: boolean = false;
+  show_filter = false;
   music_list: any = [];
   state_list: any = [];
-  toggSearch: boolean = false;
-  show_loader: boolean = false;
+  toggSearch = false;
+  show_loader = false;
   search_str: any = '';
   adv_filter: any = {};
   region_filter: any = [];
@@ -38,9 +38,9 @@ export class VoteComponent implements OnInit {
   contest_data: any = '';
   contest_name: any = '';
   participants: any = [];
-  show_spinner: boolean = false;
-  vote_spinner: boolean = false;
-  table_flag: boolean = false;
+  show_spinner = false;
+  vote_spinner = false;
+  table_flag = false;
   advance_filter: any = {};
   start: any = 0;
   length: any = 10;
@@ -223,7 +223,7 @@ export class VoteComponent implements OnInit {
   getAllParticipants(data) {
     this.show_loader = true;
     this.participants = [];
-    let user = JSON.parse(localStorage.getItem('user'));
+    const user = JSON.parse(localStorage.getItem('user'));
     this.voteService.getAllParticipants(data).subscribe((response) => {
       this.participants = response['data'];
       this.audio_ins = [];
@@ -248,7 +248,7 @@ export class VoteComponent implements OnInit {
   }
   // Get all contest details
   getAllContest() {
-    let data = {
+    const data = {
       music_type: this.adv_filter.music_type ? this.adv_filter.music_type : ''
     };
     this.voteService.getAllContest(data).subscribe((response) => {
@@ -257,12 +257,12 @@ export class VoteComponent implements OnInit {
       if (this.contest_list.length > 0) {
         this.contest_data = this.contest_list[0]['_id'];
         this.contest_name = this.contest_list[0]['name'];
-        let data = {
+        const _data = {
           start: this.start,
           length: this.length,
           contest_id: this.contest_data
         };
-        this.getAllParticipants(data);
+        this.getAllParticipants(_data);
         // this.getContestWinner();
         this.dtElements.forEach((dtElement: DataTableDirective, index: number) => {
           dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
@@ -274,12 +274,12 @@ export class VoteComponent implements OnInit {
   }
   // Follow artist
   followArtist(id: any) {
-    let data = JSON.parse(localStorage.getItem('user'));
+    const data = JSON.parse(localStorage.getItem('user'));
     if (data && data.user) {
-      let data = {
+      const artist_data = {
         artist_id: id
       };
-      this.voteService.followArtist(data).subscribe(response => {
+      this.voteService.followArtist(artist_data).subscribe(response => {
         this.toastr.success(response['message'], 'Success!');
         this.getAllFollower();
       }, error => {
@@ -291,10 +291,10 @@ export class VoteComponent implements OnInit {
   }
   // vote to the track
   voteTrack(track_id, artist_id, contests_id, index) {
-    let user = JSON.parse(localStorage.getItem('user'));
+    const user = JSON.parse(localStorage.getItem('user'));
 
     if (user && user.user) {
-      let data = {
+      const data = {
         track_id: track_id,
         artist_id: artist_id,
         contest_id: contests_id
@@ -326,7 +326,7 @@ export class VoteComponent implements OnInit {
   loadMore() {
     this.show_spinner = true;
     this.start = (this.start + this.length);
-    let data = {
+    const data = {
       start: this.start,
       length: this.length,
       contest_id: this.contest_data
@@ -385,7 +385,7 @@ export class VoteComponent implements OnInit {
   // change contest
   change_contest(e: any) {
     this.start = 0;
-    let data = {
+    const data = {
       start: this.start,
       length: this.length,
       contest_id: this.contest_data
@@ -418,7 +418,7 @@ export class VoteComponent implements OnInit {
   // Filter result
   filter(e: any) {
     if (e.keyCode === 13) {
-      let data = {
+      const data = {
         search: this.search_str
       };
       this.dtElements.forEach((dtElement: DataTableDirective, index: number) => {
@@ -427,7 +427,7 @@ export class VoteComponent implements OnInit {
         });
       });
       this.start = 0;
-      let obj = {
+      const obj = {
         start: this.start,
         length: this.length,
         contest_id: this.contest_data,
@@ -439,7 +439,7 @@ export class VoteComponent implements OnInit {
   // Advance filter
   advanceFilter() {
     this.start = 0;
-    let data = {
+    const data = {
       'filter': [],
       start: this.start,
       length: this.length,
@@ -461,12 +461,12 @@ export class VoteComponent implements OnInit {
       this.contest_list = response['contest']['winner'];
       if (this.contest_list.length > 0) {
         this.contest_data = this.contest_list[0]['_id'];
-        let data = {
+        const _data = {
           start: this.start,
           length: this.length,
           contest_id: this.contest_data
         };
-        this.getAllParticipants(data);
+        this.getAllParticipants(_data);
         this.dtElements.forEach((dtElement: DataTableDirective, index: number) => {
           dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
             dtInstance.draw();
@@ -490,7 +490,7 @@ export class VoteComponent implements OnInit {
     if (flag) {
       this.region_filter.push(val);
     } else {
-      let index = this.region_filter.indexOf(val);
+      const index = this.region_filter.indexOf(val);
       this.region_filter.splice(index, 1);
     }
   }
@@ -500,7 +500,7 @@ export class VoteComponent implements OnInit {
   }
   // get All follower
   getAllFollower() {
-    let user = JSON.parse(localStorage.getItem('user'));
+    const user = JSON.parse(localStorage.getItem('user'));
     if (user && user['user']) {
       this.voteService.getFollower().subscribe(response => {
 

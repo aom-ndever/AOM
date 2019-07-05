@@ -24,13 +24,12 @@ export class DashboardComponent implements OnInit, OnDestroy {
   audio_ins: any = [];
   music_type_index: any = -1;
   music_type_list: any = [];
-  toggFleilter: boolean = false;
-  toggSearch: boolean = false;
-  show_loader: boolean = false;
+  toggFleilter = false;
+  toggSearch = false;
+  show_loader = false;
   search_str: any = '';
   private socket;
   user: any;
-
   subscription: Subscription;
   constructor(
     private dashboardService: DashboardService,
@@ -180,7 +179,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   filter(e: any) {
     // if (e.keyCode == 13) {
     if (this.search_str.trim().length > 0) {
-      let data = {
+      const data = {
         search: this.search_str.trim(),
         music_type: this.music_type_index !== -1 ? this.music_type_list[this.music_type_index]._id : ''
       };
@@ -189,7 +188,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
   // get All follower
   getAllFollower() {
-    let user = JSON.parse(localStorage.getItem('user'));
+    const user = JSON.parse(localStorage.getItem('user'));
     if (user && user['user']) {
       this.dashboardService.getFollower().subscribe(response => {
         this.images.forEach((ele) => {

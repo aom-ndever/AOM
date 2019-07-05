@@ -19,14 +19,14 @@ export class HeaderComponent implements OnInit, OnDestroy {
   user: any = '';
   login_form: FormGroup;
   forget_form: FormGroup;
-  show_spinner: boolean = false;
-  login_validation: boolean = false;
-  forget_validation: boolean = false;
+  show_spinner = false;
+  login_validation = false;
+  forget_validation = false;
   userdata: any = {};
   forget_pwd_data: any = {};
   auth2: any;
   subscription: Subscription;
-  toggleMenu: boolean = false;
+  toggleMenu = false;
   public userType;
   private modalRef: NgbModalRef;
   private modalForgetRef: NgbModalRef;
@@ -45,7 +45,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
       this.user.artist['image'] = typeof this.user.artist['image'] !== 'undefined' ? environment.API_URL +
         environment.ARTIST_IMG + this.user.artist['image'] : '';
     } else if (this.user && this.user.user) {
-      let data = JSON.parse(localStorage.getItem('user'));
+      const data = JSON.parse(localStorage.getItem('user'));
       if (!(this.user.user.provider && this.user.user.provider === 'facebook' && this.user.user['image'].includes('graph.facebook.com')) ||
         !(this.user.provider === 'gmail' && this.user['image'].includes('lh3.googleusercontent.com'))) {
         this.user.user['image'] = typeof this.user.user['image'] !== 'undefined' ? environment.API_URL +
@@ -107,7 +107,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   public attachSignin(element) {
     this.auth2.attachClickHandler(element, {},
       (googleUser) => {
-        let profile = googleUser.getBasicProfile();
+        const profile = googleUser.getBasicProfile();
         console.log('Token || ' + googleUser.getAuthResponse().id_token);
         console.log('ID: ' + profile.getId());
         console.log('Name: ' + profile.getName());
@@ -115,7 +115,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
         console.log('Email: ' + profile.getEmail());
         console.log('token :', googleUser.getAuthResponse().id_token, profile);
 
-        let data = {
+        const data = {
           U3: profile.getEmail(),
           ofa: profile.ofa,
           wea: profile.wea,
@@ -166,7 +166,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   login(flag: boolean) {
-    // console.log('flag => ', flag);
+    console.log('flag => ', flag);
     // ******************************* updated code **************************************
     this.show_spinner = true;
     this.headerService.login(this.userdata).subscribe(response => {
@@ -353,7 +353,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   fbLogin() {
-    let socialPlatformProvider = FacebookLoginProvider.PROVIDER_ID;
+    const socialPlatformProvider = FacebookLoginProvider.PROVIDER_ID;
     this.socialAuthService.signIn(socialPlatformProvider).then(
       (data) => {
         console.log(' sign in data : ', data);

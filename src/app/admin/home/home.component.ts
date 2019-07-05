@@ -43,7 +43,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   openModal(template: any, id: any, type: any) {
-    let data = {
+    const data = {
       artist_id: id
     };
     if (type === 'track') {
@@ -78,22 +78,22 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   calculateDateFromDays(days: any) {
-    var date = new Date();
-    var last = new Date(date.getTime() - (days * 24 * 60 * 60 * 1000));
+    const date = new Date();
+    const last = new Date(date.getTime() - (days * 24 * 60 * 60 * 1000));
     this.show_duration_date = this.formatDate(last) + ' - ' + this.formatDate(date);
   }
 
   formatDate(date) {
-    var monthNames = [
+    const monthNames = [
       'January', 'February', 'March',
       'April', 'May', 'June', 'July',
       'August', 'September', 'October',
       'November', 'December'
     ];
 
-    var day = date.getDate();
-    var monthIndex = date.getMonth();
-    var year = date.getFullYear();
+    const day = date.getDate();
+    const monthIndex = date.getMonth();
+    const year = date.getFullYear();
 
     return monthNames[monthIndex] + ' ' + day + ', ' + year;
   }
@@ -142,7 +142,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   // Artist chart
   artistChart(data: any) {
-    let result = [0, 0, 0, 0, 0, 0, 0];
+    const result = [0, 0, 0, 0, 0, 0, 0];
 
     data.forEach(ele => {
       result[ele['_id']] = ele.count;
@@ -178,8 +178,8 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
   // Top location chart
   topLocationChart(data: any) {
-    let final_data = [];
-    let min = 0;
+    const final_data = [];
+    const min = 0;
     let max = 0;
     if (data.length > 0) {
       max = data[data.length - 1]['value'];
@@ -209,8 +209,8 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
   // Top location bar chart
   topLocationBarChart(data: any) {
-    let cat = [];
-    let final_data = [];
+    const cat = [];
+    const final_data = [];
     data.forEach(ele => {
       cat.push(ele['_id']['_id']);
       final_data.push(ele['value']);

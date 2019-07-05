@@ -22,7 +22,7 @@ export class DashboardLayoutComponent implements OnInit, AfterViewInit, AfterVie
     this.track_url + '/audio_152940920498523176.mp3',
     this.track_url + '/audio_152940899013172582.mp3'
   ];
-  show_spinner: boolean = false;
+  show_spinner = false;
   user: any = '';
   audio_instance_list: any = [];
   timeline: any = '';
@@ -30,7 +30,7 @@ export class DashboardLayoutComponent implements OnInit, AfterViewInit, AfterVie
   pButton: any = '';
   timelineWidth: any = '';
   audio_ins: any = '';
-  onplayhead: boolean = false;
+  onplayhead = false;
   duration: any = '';
   song_cnt: any = 0;
   total_time: any = 0;
@@ -43,7 +43,7 @@ export class DashboardLayoutComponent implements OnInit, AfterViewInit, AfterVie
   private phonemodalRef: NgbModalRef;
   share_form: FormGroup;
   share_form_phone: FormGroup;
-  share_form_validation: boolean = false;
+  share_form_validation = false;
   share_data: any = {};
   constructor(
     private messageService: MessageService,
@@ -56,7 +56,7 @@ export class DashboardLayoutComponent implements OnInit, AfterViewInit, AfterVie
     console.log('play_time => ', this.play_time);
     this.audio_instance_list = [];
     this.audio_list = [];
-    let localuser = localStorage.getItem('user');
+    const localuser = localStorage.getItem('user');
     this.user = JSON.parse(localuser);
     this.subscription = this.messageService.getMessage().subscribe((response) => {
       console.log('response => ', response);
@@ -64,7 +64,7 @@ export class DashboardLayoutComponent implements OnInit, AfterViewInit, AfterVie
         this.audio_list = response['data'];
         this.audio_instance_list = [];
         response['data'].forEach((ele) => {
-          let audio = new Audio();
+          const audio = new Audio();
           audio.src = ele['audio'] ? this.track_url + '/' + ele['audio'] : '';
           audio.load();
           this.audio_instance_list.push(audio);
@@ -88,7 +88,7 @@ export class DashboardLayoutComponent implements OnInit, AfterViewInit, AfterVie
         }
         this.play();
       } else if (response['action'] === 'stop') {
-        var pButton = document.getElementById('pButton');
+        const pButton = document.getElementById('pButton');
         pButton.className = '';
         pButton.className = 'play';
         if (this.audio_ins) {
@@ -158,7 +158,7 @@ export class DashboardLayoutComponent implements OnInit, AfterViewInit, AfterVie
     console.log('this.audio_instance_list[this.song_cnt] => ', this.audio_instance_list[this.song_cnt]);
     console.log('play function => ');
     try {
-      var pButton = document.getElementById('pButton');
+      const pButton = document.getElementById('pButton');
       // console.log('this.audio_instance_list => ', this.audio_instance_list);
       this.audio_ins = this.audio_instance_list[this.song_cnt];
       console.log('pButton.className => ', pButton.className);
@@ -168,7 +168,7 @@ export class DashboardLayoutComponent implements OnInit, AfterViewInit, AfterVie
       // console.log('this.audio_instance_list[this.song_cnt] => ', this.audio_instance_list[this.song_cnt]);
       if (this.audio_instance_list[this.song_cnt] && this.audio_instance_list[this.song_cnt].paused) {
         // console.log('this.audio_instance_list[this.song_cnt] => ', this.audio_instance_list[this.song_cnt]);
-        let playPromise = this.audio_instance_list[this.song_cnt].play();
+        const playPromise = this.audio_instance_list[this.song_cnt].play();
         // console.log('playPromise => ', playPromise);
         if (playPromise !== undefined) {
           playPromise.then(() => {
@@ -204,16 +204,16 @@ export class DashboardLayoutComponent implements OnInit, AfterViewInit, AfterVie
     // console.log('$event.target => ', $event.target);
     // console.log('$event.target.currentTime => ', $event.target.currentTime);
     // console.log('time update function => ');
-    var pButton = document.getElementById('pButton');
-    var nprogres = document.getElementById('song_prog');
-    var playPercent = (100 * $event.target.currentTime / $event.target.duration);
+    const pButton = document.getElementById('pButton');
+    const nprogres = document.getElementById('song_prog');
+    const playPercent = (100 * $event.target.currentTime / $event.target.duration);
     nprogres.setAttribute('value', $event.target.currentTime);
     // nprogres['value'] = $event.target.currentTime;
     nprogres.setAttribute('max', $event.target.duration);
     // nprogres['max'] = $event.target.duration;
-    var minutes = Math.floor($event.target.currentTime / 60);
-    var seconds = $event.target.currentTime - minutes * 60;
-    var running_time = document.getElementById('running_time');
+    let minutes = Math.floor($event.target.currentTime / 60);
+    let seconds = $event.target.currentTime - minutes * 60;
+    const running_time = document.getElementById('running_time');
     // console.log('running_time => ', running_time);
     running_time.innerHTML = minutes + ':' + Math.round(seconds);
     // console.log('running_time.innerHTML  => ', running_time.innerHTML);
@@ -221,8 +221,8 @@ export class DashboardLayoutComponent implements OnInit, AfterViewInit, AfterVie
     // console.log('this.play_time => ', this.play_time);
     minutes = Math.floor($event.target.duration / 60);
     seconds = $event.target.duration - minutes * 60;
-    var total_time = document.getElementById('total_time');
-    var str = ((isNaN(minutes) ? 0 : minutes) + ':' + (isNaN(seconds) ? 0 : Math.round(seconds)));
+    const total_time = document.getElementById('total_time');
+    const str = ((isNaN(minutes) ? 0 : minutes) + ':' + (isNaN(seconds) ? 0 : Math.round(seconds)));
     // console.log('total_time', str);
     total_time.innerHTML = str.toString();
 
@@ -239,13 +239,13 @@ export class DashboardLayoutComponent implements OnInit, AfterViewInit, AfterVie
       this.audio_instance_list[this.song_cnt].pause();
       this.audio_instance_list[this.song_cnt].currentTime = 0;
     }
-    let cnt = this.song_cnt + 1;
+    const cnt = this.song_cnt + 1;
     if (cnt <= (this.audio_instance_list.length - 1)) {
       this.song_cnt = cnt;
     } else {
       this.song_cnt = this.audio_instance_list.length - 1;
     }
-    var pButton = document.getElementById('pButton');
+    const pButton = document.getElementById('pButton');
     if (pButton.className === 'pause') {
       this.messageService.sendMessage({ index: this.song_cnt, action: 'next', track_action: 'pause', list: this.list_no });
       this.play();
@@ -258,13 +258,13 @@ export class DashboardLayoutComponent implements OnInit, AfterViewInit, AfterVie
       this.audio_instance_list[this.song_cnt].pause();
       this.audio_instance_list[this.song_cnt].currentTime = 0;
     }
-    let cnt = this.song_cnt - 1;
+    const cnt = this.song_cnt - 1;
     if (cnt > 0) {
       this.song_cnt = cnt;
     } else {
       this.song_cnt = 0;
     }
-    var pButton = document.getElementById('pButton');
+    const pButton = document.getElementById('pButton');
     if (pButton.className === 'pause') {
       this.messageService.sendMessage({ index: this.song_cnt, action: 'prev', track_action: 'pause', list: this.list_no });
       this.play();
@@ -273,7 +273,7 @@ export class DashboardLayoutComponent implements OnInit, AfterViewInit, AfterVie
 
   pad(num, size) {
     console.log('pad function => ');
-    var s = num + '';
+    let s = num + '';
     while (s.length < size) {
       s = '0' + s;
     }
@@ -295,10 +295,10 @@ export class DashboardLayoutComponent implements OnInit, AfterViewInit, AfterVie
     // console.log('e.target.currentTime => ', e.target.currentTime);
     this.audio_ins.removeEventListener('timeupdate', this.timeUpdate, false);
     // console.log('prog => ', e.target.value);
-    var nprogres = document.getElementById('song_prog');
-    var minutes = Math.floor(e.target.value / 60);
-    var seconds = e.target.value - minutes * 60;
-    var running_time = document.getElementById('running_time');
+    const nprogres = document.getElementById('song_prog');
+    const minutes = Math.floor(e.target.value / 60);
+    const seconds = e.target.value - minutes * 60;
+    const running_time = document.getElementById('running_time');
     setTimeout(() => {
       nprogres['value'] = e.target.value;
       this.audio_ins['currentTime'] = e.target.value;
@@ -326,10 +326,11 @@ export class DashboardLayoutComponent implements OnInit, AfterViewInit, AfterVie
 
   // share on facebook
   shareOnFacebook() {
-    let track = this.audio_list[this.song_cnt];
+    const track = this.audio_list[this.song_cnt];
     // console.log(track);
-    let url = 'http://' + window.location.host + '/artist_profile/' + track['artist_id']['_id'] + '/track/' + track['_id'] + '/comments';
-    let str = 'Track Name: ' + track.name + '\nArtist: ' + track['artist_id']['first_name'] + ' ' + track['artist_id']['last_name'] + '\nDescription: ' + track.description;
+    const url = 'http://' + window.location.host + '/artist_profile/' + track['artist_id']['_id'] + '/track/' + track['_id'] + '/comments';
+    const str =
+      'Track Name: ' + track.name + '\nArtist: ' + track['artist_id']['first_name'] + ' ' + track['artist_id']['last_name'] + '\nDescription: ' + track.description;
     // var facebookWindow = window.open('https://www.facebook.com/sharer.php?s=100&p[summary]='+encodeURIComponent(str)+"&p[url]="+encodeURIComponent(url), 'facebook-popup', 'height=350,width=600');
     // if(facebookWindow.focus) { facebookWindow.focus(); }
     FB.ui({
@@ -346,11 +347,13 @@ export class DashboardLayoutComponent implements OnInit, AfterViewInit, AfterVie
   }
   // share on twitter
   shareOnTwitter() {
-    let track = this.audio_list[this.song_cnt];
+    const track = this.audio_list[this.song_cnt];
     // console.log(track);
-    let url = 'http://' + window.location.host + '/artist_profile/' + track['artist_id']['_id'] + '/track/' + track['_id'] + '/comments';
-    let str = 'Track Name: ' + track.name + '\nArtist: ' + track['artist_id']['first_name'] + ' ' + track['artist_id']['last_name'] + '\nDescription: ' + track.description;
-    var twitterWindow = window.open('https://twitter.com/share?url=' + encodeURIComponent(url) + '&text=' + encodeURIComponent(str), 'twitter-popup', 'height=350,width=600');
+    const url = 'http://' + window.location.host + '/artist_profile/' + track['artist_id']['_id'] + '/track/' + track['_id'] + '/comments';
+    const str =
+      'Track Name: ' + track.name + '\nArtist: ' + track['artist_id']['first_name'] + ' ' + track['artist_id']['last_name'] + '\nDescription: ' + track.description;
+    const twitterWindow =
+      window.open('https://twitter.com/share?url=' + encodeURIComponent(url) + '&text=' + encodeURIComponent(str), 'twitter-popup', 'height=350,width=600');
     if (twitterWindow.focus) { twitterWindow.focus(); }
   }
   // share track via email
@@ -358,9 +361,10 @@ export class DashboardLayoutComponent implements OnInit, AfterViewInit, AfterVie
     if (flag) {
       this.share_form_validation = !flag;
       this.show_spinner = true;
-      let track = this.audio_list[this.song_cnt];
-      let url = 'http://' + window.location.host + '/artist_profile/' + track['artist_id']['_id'] + '/track/' + track['_id'] + '/comments';
-      let data = {
+      const track = this.audio_list[this.song_cnt];
+      const url =
+        'http://' + window.location.host + '/artist_profile/' + track['artist_id']['_id'] + '/track/' + track['_id'] + '/comments';
+      const data = {
         email: this.share_data['email'],
         track_id: track['_id'],
         url: url
@@ -383,9 +387,10 @@ export class DashboardLayoutComponent implements OnInit, AfterViewInit, AfterVie
     if (flag) {
       this.share_form_validation = !flag;
       this.show_spinner = true;
-      let track = this.audio_list[this.song_cnt];
-      let url = 'http://' + window.location.host + '/artist_profile/' + track['artist_id']['_id'] + '/track/' + track['_id'] + '/comments';
-      let data = {
+      const track = this.audio_list[this.song_cnt];
+      const url =
+        'http://' + window.location.host + '/artist_profile/' + track['artist_id']['_id'] + '/track/' + track['_id'] + '/comments';
+      const data = {
         phone_no: this.share_data['phone_no'],
         track_id: track['_id'],
         url: url
@@ -406,10 +411,10 @@ export class DashboardLayoutComponent implements OnInit, AfterViewInit, AfterVie
   }
   // copy share track link
   copy_link() {
-    let track = this.audio_list[this.song_cnt];
+    const track = this.audio_list[this.song_cnt];
     // console.log(track);
-    let url = 'http://' + window.location.host + '/artist_profile/' + track['artist_id']['_id'] + '/track/' + track['_id'] + '/comments';
-    var textArea = document.createElement('textarea');
+    const url = 'http://' + window.location.host + '/artist_profile/' + track['artist_id']['_id'] + '/track/' + track['_id'] + '/comments';
+    const textArea = document.createElement('textarea');
     textArea.value = url;
     document.body.appendChild(textArea);
     textArea.focus();

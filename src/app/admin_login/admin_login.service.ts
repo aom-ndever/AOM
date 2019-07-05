@@ -11,7 +11,7 @@ export class AdminLoginService {
 
   constructor(private http: HttpClient) {
     // this.user = JSON.parse(localStorage.getItem('user'));
-    // this.headers = new HttpHeaders({ 'x-access-token' : this.user.token });  
+    // this.headers = new HttpHeaders({ 'x-access-token' : this.user.token });
   }
 
   login(data: any) {

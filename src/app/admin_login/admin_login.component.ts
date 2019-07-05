@@ -18,7 +18,7 @@ export class AdminLoginComponent implements OnInit {
   admin_formgroup: FormGroup;
   forget_formgroup: FormGroup;
   forget_data: any = {};
-  forget_validation: boolean = false;
+  forget_validation = false;
   constructor(
     private adminLoginService: AdminLoginService,
     private fb: FormBuilder,

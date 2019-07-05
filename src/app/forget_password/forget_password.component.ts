@@ -14,7 +14,7 @@ declare const gapi: any;
 export class ForgetPasswordComponent implements OnInit {
 
   passwordFormGroup: FormGroup;
-  show_spinner: boolean = false;
+  show_spinner = false;
   forget_password: any = '';
   conf: any = '';
   param: any = {};

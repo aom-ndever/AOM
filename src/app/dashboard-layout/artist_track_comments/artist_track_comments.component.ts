@@ -20,7 +20,7 @@ export class ArtistTrackConmmentsComponent implements OnInit {
   user: any;
   audio_ins: any = [];
   comment_txt: any = '';
-  show_spinner: boolean = false;
+  show_spinner = false;
   track_id: any = '';
   constructor(
     private artistTrackCommentsService: ArtistTrackCommentsService,
@@ -41,7 +41,7 @@ export class ArtistTrackConmmentsComponent implements OnInit {
 
   // Play audio
   playAudio(name: any, index: any) {
-    let audio = new Audio();
+    const audio = new Audio();
     audio.src = this.track_url + name;
     audio.load();
     audio.play();

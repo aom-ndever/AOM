@@ -15,7 +15,7 @@ export class RolesComponent implements OnInit {
   @ViewChildren(DataTableDirective)
   dtElements: QueryList<DataTableDirective>;
 
-  show_spinner: boolean = false;
+  show_spinner = false;
   modalRef: BsModalRef;
   contestModelRef: BsModalRef;
   dtOptions: DataTables.Settings[] = [];
@@ -28,7 +28,7 @@ export class RolesComponent implements OnInit {
   music_type: any = [];
   user_data: any = {};
   add_admin: FormGroup;
-  add_admin_validation: boolean = false;
+  add_admin_validation = false;
   passwordFormGroup: FormGroup;
   user: any = {};
   role_row_cnt = 1;
@@ -60,8 +60,8 @@ export class RolesComponent implements OnInit {
   }
   noWhitespaceValidator(control: FormControl) {
     if (typeof (control.value || '') === 'string' || (control.value || '') instanceof String) {
-      let isWhitespace = (control.value || '').trim().length === 0;
-      let isValid = !isWhitespace;
+      const isWhitespace = (control.value || '').trim().length === 0;
+      const isValid = !isWhitespace;
       return isValid ? null : { 'whitespace': true };
     }
   }
@@ -129,10 +129,10 @@ export class RolesComponent implements OnInit {
 
   // Get day difference between dates
   getDaysDiff(dt1: any, dt2: any) {
-    let date1 = new Date(dt1);
-    let date2 = new Date(dt2);
-    let timeDiff = Math.abs(date2.getTime() - date1.getTime());
-    let diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
+    const date1 = new Date(dt1);
+    const date2 = new Date(dt2);
+    const timeDiff = Math.abs(date2.getTime() - date1.getTime());
+    const diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
     return diffDays;
   }
 
@@ -163,7 +163,7 @@ export class RolesComponent implements OnInit {
   }
   // Accept contest request
   acceptRequest(id: any, idx: any) {
-    let thi = this;
+    const thi = this;
     swal({
       title: 'Are you sure?',
       text: "You won't be able to revert this!",
@@ -191,7 +191,7 @@ export class RolesComponent implements OnInit {
   }
   // Reject contest request
   rejectRequest(id: any, idx: any) {
-    let thi = this;
+    const thi = this;
     swal({
       title: 'Are you sure?',
       text: "You won't be able to revert this!",
@@ -250,7 +250,7 @@ export class RolesComponent implements OnInit {
   }
   // remove admin
   removeAdmin(id: any, idx: any) {
-    let thi = this;
+    const thi = this;
     swal({
       title: 'Are you sure?',
       text: "You won't be able to revert this!",
@@ -279,7 +279,7 @@ export class RolesComponent implements OnInit {
   }
   // suspend admin account
   suspendAdmin(id: any, idx: any, status) {
-    let thi = this;
+    const thi = this;
     swal({
       title: 'Are you sure?',
       text: `You want to ${status === 'suspended' ? ' un-suspend' : ' suspend'} this account!`,

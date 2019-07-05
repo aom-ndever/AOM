@@ -25,7 +25,7 @@ export class UsersService {
   getFlagedUser(data: any) {
     return this.http.post(`${this.api_host}/admin/get_flagged_user`, data, { headers: this.headers });
   }
-  // Artist following by user 
+  // Artist following by user
   getUserFollowingArtist(data: any) {
     return this.http.post(`${this.api_host}/admin/user/artist_follow`, data, { headers: this.headers });
   }

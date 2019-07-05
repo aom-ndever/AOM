@@ -23,8 +23,8 @@ export class WhatsNewComponent implements OnInit, OnDestroy {
   };
   state_list: any = [];
   region_filter: any = [];
-  show_loader: boolean = false;
-  feature_loader: boolean = false;
+  show_loader = false;
+  feature_loader = false;
   artist_img_url: any = environment.API_URL + environment.ARTIST_IMG;
   track_url: any = environment.API_URL + environment.ARTIST_TRACK;
   search_str: any = '';
@@ -36,9 +36,9 @@ export class WhatsNewComponent implements OnInit, OnDestroy {
   artist_list: any = [];
   track_list: any = [];
   artist_start: any = 0;
-  artist_loader: boolean = false;
+  artist_loader = false;
   track_start: any = 0;
-  track_loader: boolean = false;
+  track_loader = false;
   length: any = 10;
   constructor(
     private whatsNewService: WhatsNewService,
@@ -130,7 +130,7 @@ export class WhatsNewComponent implements OnInit, OnDestroy {
     // data['filter'].push({
     //   'field' : 'music_type', value :  this.advance_filter.music_type ? this.advance_filter.music_type : ''
     // });
-    let data = {
+    const data = {
       music_type: this.advance_filter.music_type ? this.advance_filter.music_type : '',
       start: 0,
       length: this.length
@@ -201,7 +201,7 @@ export class WhatsNewComponent implements OnInit, OnDestroy {
   filter(e: any) {
     // if (e.keyCode == 13) {
     if (this.search_str.trim().length > 0) {
-      let data = {
+      const data = {
         search: this.search_str.trim(),
         start: 0,
         length: this.length
@@ -222,13 +222,13 @@ export class WhatsNewComponent implements OnInit, OnDestroy {
     if (flag) {
       this.region_filter.push(val);
     } else {
-      let index = this.region_filter.indexOf(val);
+      const index = this.region_filter.indexOf(val);
       this.region_filter.splice(index, 1);
     }
   }
   // Advance filter
   advanceFilter() {
-    let data = {
+    const data = {
       start: 0,
       length: this.length
     };
@@ -265,12 +265,12 @@ export class WhatsNewComponent implements OnInit, OnDestroy {
   }
   // Follow artist
   followArtist(id: any, index: any) {
-    let data = JSON.parse(localStorage.getItem('user'));
+    const data = JSON.parse(localStorage.getItem('user'));
     if (data && data.user) {
-      let data = {
+      const artist_data = {
         artist_id: id
       };
-      this.whatsNewService.followArtist(data).subscribe(response => {
+      this.whatsNewService.followArtist(artist_data).subscribe(response => {
         this.toastr.success(response['message'], 'Success!');
         this.getAllFollower();
       }, error => {
@@ -282,7 +282,7 @@ export class WhatsNewComponent implements OnInit, OnDestroy {
   }
   // get All follower
   getAllFollower() {
-    let user = JSON.parse(localStorage.getItem('user'));
+    const user = JSON.parse(localStorage.getItem('user'));
     if (user && user['user']) {
       this.whatsNewService.getFollower().subscribe(response => {
 
@@ -312,7 +312,7 @@ export class WhatsNewComponent implements OnInit, OnDestroy {
   // Load more artist
   loadMoreArtist() {
     this.artist_start = this.artist_start + this.length;
-    let data = {
+    const data = {
       start: this.artist_start,
       length: this.length
     };
@@ -330,7 +330,7 @@ export class WhatsNewComponent implements OnInit, OnDestroy {
   // Load more track
   loadMoreTrack() {
     this.track_start = this.track_start + this.length;
-    let data = {
+    const data = {
       start: this.track_start,
       length: this.length
     };

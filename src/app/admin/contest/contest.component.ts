@@ -31,10 +31,10 @@ export class ContestComponent implements OnInit {
   year: any = [];
   music_type: any = [];
   contest_detail: any = {};
-  show_spinner: boolean = false;
+  show_spinner = false;
   isSpecialContest: boolean;
   contest_validation: FormGroup;
-  is_valid: boolean = false;
+  is_valid = false;
   round_list: any = [];
   contest_row_cnt = 1;
 
@@ -114,23 +114,23 @@ export class ContestComponent implements OnInit {
 
   noWhitespaceValidator(control: FormControl) {
     if (typeof (control.value || '') === 'string' || (control.value || '') instanceof String) {
-      let isWhitespace = (control.value || '').trim().length === 0;
-      let isValid = !isWhitespace;
+      const isWhitespace = (control.value || '').trim().length === 0;
+      const isValid = !isWhitespace;
       return isValid ? null : { 'whitespace': true };
     }
   }
 
   // Get day difference between dates
   getDaysDiff(dt1: any, dt2: any) {
-    let date1 = new Date(dt1);
-    let date2 = new Date(dt2);
-    let timeDiff = Math.abs(date2.getTime() - date1.getTime());
-    let diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
+    const date1 = new Date(dt1);
+    const date2 = new Date(dt2);
+    const timeDiff = Math.abs(date2.getTime() - date1.getTime());
+    const diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
     return diffDays;
   }
 
   openModal(template: any, id: any) {
-    let data = {
+    const data = {
       contest_id: id
     };
     this.contestService.getContestParticipants(data).subscribe((response) => {
@@ -155,7 +155,7 @@ export class ContestComponent implements OnInit {
   }
 
   getContestRound(id) {
-    let data = {
+    const data = {
       contest_id: id
     };
     this.contestService.getContestRound(data).subscribe((response) => {
@@ -193,7 +193,7 @@ export class ContestComponent implements OnInit {
   // Get state from region
   getStateFromRegion(id: any) {
     if (id && id !== '') {
-      let data = {
+      const data = {
         region: id
       };
       this.contestService.getStateByRegion(data).subscribe((response) => {
@@ -320,7 +320,7 @@ export class ContestComponent implements OnInit {
   // Select exisiting contest
   selectContest(idx: any) {
     this.contest_detail = this.existing_contest_list[idx];
-    let dt = new Date(this.contest_detail['start_date']);
+    const dt = new Date(this.contest_detail['start_date']);
     this.contest_detail['no_of_round'] = this.contest_detail['round'] + 1;
     this.contest_detail['day'] = dt.getUTCDate();
     this.contest_detail['month'] = (dt.getUTCMonth() + 1);

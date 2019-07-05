@@ -34,7 +34,7 @@ export class ConmmentsComponent implements OnInit {
 
   // Get all artist comment
   getAllArtistComment() {
-    let data = {
+    const data = {
       artist_id: this.artistdata['_id']
     };
     this.commentsService.getAllCommentsByArtist(-1, data).subscribe((response) => {
@@ -44,7 +44,7 @@ export class ConmmentsComponent implements OnInit {
   // upvote commnet
   upVoteComment(id: any) {
     if (this.user && this.user['user']) {
-      let data = {
+      const data = {
         comment_id: id
       };
       this.commentsService.upVoteComment(data).subscribe((response) => {
@@ -60,7 +60,7 @@ export class ConmmentsComponent implements OnInit {
   // downvote commnet
   downVoteComment(id: any) {
     if (this.user && this.user['user']) {
-      let data = {
+      const data = {
         comment_id: id
       };
       this.commentsService.downVoteComment(data).subscribe((response) => {

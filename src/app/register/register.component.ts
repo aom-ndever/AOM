@@ -236,14 +236,15 @@ export class RegisterComponent implements OnInit {
           /***************************************** old code ***********************************/
 
           // ******************************* updated code **************************************
-          for (var i = 0; i < res['results'][0].address_components.length; i++) {
-            var addressType = res['results'][0].address_components[i].types[0];
+          for (let i = 0; i < res['results'][0].address_components.length; i++) {
+            const addressType = res['results'][0].address_components[i].types[0];
             if (addressType === 'administrative_area_level_1') {
               this.formattedState = res['results'][0].address_components[i].long_name;
               // console.log('state => ', this.formattedState);
             }
+            let city;
             if (addressType === 'locality') {
-              var city = res['results'][0].address_components[i].long_name;
+              city = res['results'][0].address_components[i].long_name;
               // console.log('city => ', city);
             }
             // console.log('city => ', city);
@@ -292,14 +293,15 @@ export class RegisterComponent implements OnInit {
           /***************************************** old code ***********************************/
 
           // ******************************* updated code **************************************
-          for (var i = 0; i < res['results'][0].address_components.length; i++) {
-            var addressType = res['results'][0].address_components[i].types[0];
+          for (let i = 0; i < res['results'][0].address_components.length; i++) {
+            const addressType = res['results'][0].address_components[i].types[0];
             if (addressType === 'administrative_area_level_1') {
               this.formattedState = res['results'][0].address_components[i].long_name;
               console.log('state => ', this.formattedState);
             }
+            let city;
             if (addressType === 'locality') {
-              var city = res['results'][0].address_components[i].long_name;
+              city = res['results'][0].address_components[i].long_name;
               // console.log('city => ', city);
             }
             // console.log('city => ', city);

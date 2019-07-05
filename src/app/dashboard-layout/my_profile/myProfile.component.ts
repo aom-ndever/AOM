@@ -51,7 +51,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
   cropperReady = false;
   upgradeCropperReady = false;
   modalRef: BsModalRef;
-  show_spinner: boolean = false;
+  show_spinner = false;
   tab_cnt: Number = 1;
   userdata: any = {
     day: '',
@@ -62,7 +62,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
   change_email = {};
   change_pwd = {};
   media_modal_ref: NgbModalRef;
-  show_progress: boolean = false;
+  show_progress = false;
   progress_cnt: Number = 0;
   media_list: any = [];
   artist_media_url: any = environment.API_URL + environment.ARTIST_MEDIA;
@@ -74,7 +74,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
   follower_analytic_data: any = {};
   overview_analytic_data: any = {};
   download_analytic_data: any = {};
-  location_flag: boolean = false;
+  location_flag = false;
   chart: any = '';
   location_bar_chart: any = '';
   follower_location_bar_chart: any = '';
@@ -112,12 +112,12 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
   bookmark_track_list: any = [];
   // Profile form group
   artist_profile: FormGroup;
-  artistProfileValidation: boolean = false;
+  artistProfileValidation = false;
   listener_profile: FormGroup;
-  listenerProfileValidation: boolean = false;
+  listenerProfileValidation = false;
   // upgrade to artist form group
   upgrade_artist: FormGroup;
-  upgrade_artist_validation: boolean = false;
+  upgrade_artist_validation = false;
   upgrade_artist_data: any = {
     state: '',
     region: ''
@@ -132,15 +132,15 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
   playlist_track: any = [];
   serach_track_list: any = [];
   search_track: any = '';
-  track_flag: boolean = false;
+  track_flag = false;
   playlist_track_list: any = [];
   playlist_fg: FormGroup;
-  playlist_validation: boolean = false;
+  playlist_validation = false;
   track_fg: FormGroup;
-  track_validation: boolean = false;
+  track_validation = false;
   // Bank
   bank_fg: FormGroup;
-  bank_validation: boolean = false;
+  bank_validation = false;
   // Purchased track
   purchased_track: any = [];
   purchased_track_list: any = [];
@@ -152,7 +152,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
   proceed_chart: any = '';
   procced_count: any = 0;
   proceed_row_cnt = 1;
-  display: boolean = false;
+  display = false;
 
   constructor(
     private myProfileService: MyProfileService,
@@ -189,7 +189,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
       this.userdata = { ...data['artist'] };
       this.userdata['type'] = 'artist';
       if (this.userdata.dob) {
-        let dt = new Date(this.userdata.dob);
+        const dt = new Date(this.userdata.dob);
         this.userdata['day'] = dt.getDate();
         this.userdata['month'] = dt.getMonth();
         this.userdata['year'] = dt.getFullYear();
@@ -212,7 +212,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
     } else {
       this.userdata = { ...data['user'] };
       this.userdata['type'] = 'user';
-      let share_url = {
+      const share_url = {
         'share_url': {
           'facebook': '',
           'instagram': '',
@@ -227,7 +227,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
       delete this.userdata['token'];
       delete this.userdata['token'];
       if (this.userdata.dob) {
-        let dt = new Date(this.userdata.dob);
+        const dt = new Date(this.userdata.dob);
         this.userdata['day'] = dt.getDate();
         this.userdata['month'] = dt.getMonth();
         this.userdata['year'] = dt.getFullYear();
@@ -250,7 +250,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
       this.upgrade_artist_music_type = response['music'];
       this.ngxService.stop();
       if (data && data.user) {
-        let tmp = [];
+        const tmp = [];
         this.music_types.forEach((ele) => {
           tmp.push({ label: ele['name'], value: ele['_id'] });
         });
@@ -358,7 +358,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
           this.userdata = { ...data['artist'] };
           this.userdata['type'] = 'artist';
           if (this.userdata.dob) {
-            let dt = new Date(this.userdata.dob);
+            const dt = new Date(this.userdata.dob);
             this.userdata['day'] = dt.getDate();
             this.userdata['month'] = dt.getMonth();
             this.userdata['year'] = dt.getFullYear();
@@ -384,7 +384,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
           this.userdata['type'] = 'user';
           delete this.userdata['token'];
           if (this.userdata.dob) {
-            let dt = new Date(this.userdata.dob);
+            const dt = new Date(this.userdata.dob);
             this.userdata['day'] = dt.getDate();
             this.userdata['month'] = dt.getMonth();
             this.userdata['year'] = dt.getFullYear();
@@ -625,8 +625,8 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
 
   noWhitespaceValidator(control: FormControl) {
     if (typeof (control.value || '') === 'string' || (control.value || '') instanceof String) {
-      let isWhitespace = (control.value || '').trim().length === 0;
-      let isValid = !isWhitespace;
+      const isWhitespace = (control.value || '').trim().length === 0;
+      const isValid = !isWhitespace;
       return isValid ? null : { 'whitespace': true };
     }
   }
@@ -638,22 +638,22 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   calculateDateFromDays(days: any) {
-    var date = new Date();
-    var last = new Date(date.getTime() - (days * 24 * 60 * 60 * 1000));
+    const date = new Date();
+    const last = new Date(date.getTime() - (days * 24 * 60 * 60 * 1000));
     this.show_duration_date = this.formatDate(last) + ' - ' + this.formatDate(date);
   }
 
   formatDate(date) {
-    var monthNames = [
+    const monthNames = [
       'January', 'February', 'March',
       'April', 'May', 'June', 'July',
       'August', 'September', 'October',
       'November', 'December'
     ];
 
-    var day = date.getDate();
-    var monthIndex = date.getMonth();
-    var year = date.getFullYear();
+    const day = date.getDate();
+    const monthIndex = date.getMonth();
+    const year = date.getFullYear();
 
     return monthNames[monthIndex] + ' ' + day + ', ' + year;
   }
@@ -799,7 +799,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     if (isValidCover) {
-      let formData: FormData = new FormData();
+      const formData: FormData = new FormData();
       formData.append('cover_image', fileList[0], fileList[0]['name']);
       this.myProfileService.updateCoverImage(formData).subscribe(response => {
         this.updateLocalStorage();
@@ -814,7 +814,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
 
   updateProfileImage(event: any) {
     this.isProfilePic = false;
-    var fileList: FileList = event.target.files;
+    const fileList: FileList = event.target.files;
     const file = <File>event.target.files[0];
     this.isvalidPrflPic = false;
     if (event.target.files.length <= 0) {
@@ -852,7 +852,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
 
   updatePrflPic() {
     if (this.isvalidPrflPic) {
-      let formData: FormData = new FormData();
+      const formData: FormData = new FormData();
       const prfl_file = this.imageChangedEvent.target.files[0];
       const new_file = this.dataURLtoFile(this.croppedImage, prfl_file.name);
       formData.append('image', new_file);
@@ -937,12 +937,12 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
         year: ''
       };
       this.myProfileService.getArtistById().subscribe(res => {
-        let data = JSON.parse(localStorage.getItem('user'));
+        const data = JSON.parse(localStorage.getItem('user'));
         data['artist'] = res['artist'];
         this.userdata = res['artist'];
         this.userdata['type'] = 'artist';
         if (this.userdata.dob) {
-          let dt = new Date(this.userdata.dob);
+          const dt = new Date(this.userdata.dob);
           this.userdata['day'] = dt.getDate();
           this.userdata['month'] = dt.getMonth();
           this.userdata['year'] = dt.getFullYear();
@@ -971,26 +971,26 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
         year: ''
       };
       this.myProfileService.getUserById().subscribe(res => {
-        let data = JSON.parse(localStorage.getItem('user'));
+        const data = JSON.parse(localStorage.getItem('user'));
         data['user'] = res['user'];
         this.userdata = res['user'];
         this.userdata['type'] = 'user';
         delete this.userdata['token'];
         if (this.userdata.dob) {
-          let dt = new Date(this.userdata.dob);
+          const dt = new Date(this.userdata.dob);
           this.userdata['day'] = dt.getDate();
           this.userdata['month'] = dt.getMonth();
           this.userdata['year'] = dt.getFullYear();
         }
         if (this.userdata.image) {
           if (this.userdata.provider && this.userdata.provider === 'facebook' && this.userdata['image'].includes('graph.facebook.com') ||
-           (this.userdata.provider === 'gmail' && this.userdata['image'].includes('lh3.googleusercontent.com'))) {
+            (this.userdata.provider === 'gmail' && this.userdata['image'].includes('lh3.googleusercontent.com'))) {
             this.default_profile_img = this.userdata.image;
           } else {
             this.default_profile_img = environment.API_URL + environment.USER_IMG + this.userdata.image;
           }
         }
-        let tmp = [];
+        const tmp = [];
         data['user']['music_type'].forEach((ele) => {
           if (ele) {
             tmp.push(ele['_id']);
@@ -1003,7 +1003,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   removeArtistImage() {
-    let thi = this;
+    const thi = this;
     swal({
       title: 'Are you sure?',
       text: 'You won\'t be able to revert this!',
@@ -1026,7 +1026,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   removeArtistCoverImage() {
-    let thi = this;
+    const thi = this;
     swal({
       title: 'Are you sure?',
       text: 'You won\'t be able to revert this!',
@@ -1049,7 +1049,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   removeUserImage() {
-    let thi = this;
+    const thi = this;
     swal({
       title: 'Are you sure?',
       text: 'You won\'t be able to revert this!',
@@ -1074,7 +1074,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
   changeEmail() {
     if (this.change_email['old'] && this.userdata.email === this.change_email['old']) {
       if (this.change_email['new'] && this.change_email['repeat'] && this.change_email['new'] === this.change_email['repeat']) {
-        let data = {
+        const data = {
           email: this.userdata.email,
           new_email: this.change_email['new']
         };
@@ -1118,7 +1118,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
     // if (this.change_pwd['old'] && this.userdata.pwd === this.change_pwd['old']) {
     if (this.change_pwd['new'] && this.change_pwd['repeat'] && this.change_pwd['new'] === this.change_pwd['repeat'] &&
       this.change_pwd['new'].length >= 6 && this.change_pwd['repeat'] >= 6) {
-      let data = {
+      const data = {
         // password: this.userdata.pwd,
         password: this.change_pwd['old'],
         new_password: this.change_pwd['new']
@@ -1172,9 +1172,9 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
 
   uploadImage(event: any) {
     const fileList: FileList = event.target.files;
-    let formData: FormData = new FormData();
+    const formData: FormData = new FormData();
     formData.append('image', fileList[0]);
-    let allow_types = ['image/png', 'image/jpeg', 'image/jpg'];
+    const allow_types = ['image/png', 'image/jpeg', 'image/jpg'];
     if (allow_types.indexOf(fileList[0].type) === -1) {
       this.toastr.error('Please upload valid file.', 'Error!');
       return false;
@@ -1213,7 +1213,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   addLink() {
-    let formData: FormData = new FormData();
+    const formData: FormData = new FormData();
     formData.append('link', this.video_url);
     if (this.video_url) {
       this.show_spinner = true;
@@ -1236,7 +1236,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   removeMedia(id: any) {
-    let thi = this;
+    const thi = this;
     swal({
       title: 'Are you sure?',
       text: 'You won\'t be able to revert this!',
@@ -1327,7 +1327,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
 
   // Age chart
   ageChart(data: any) {
-    let result = [0, 0, 0, 0, 0, 0, 0];
+    const result = [0, 0, 0, 0, 0, 0, 0];
     data.forEach(ele => {
       if (ele.age >= 13 && ele.age <= 17) {
         result[0] = ele.count;
@@ -1386,7 +1386,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
 
   // Gender chart
   genderChart(data: any) {
-    let result = [];
+    const result = [];
     data.forEach(ele => {
       if (ele['_id'] === 'male') {
         this.follower_male_per = ele['percentage_value'];
@@ -1418,8 +1418,8 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
 
   // Followers location chart
   overviewLocationChart(data: any) {
-    let final_data = [];
-    let min = 0;
+    const final_data = [];
+    const min = 0;
     let max = 0;
     if (data.length > 0) {
       max = data[data.length - 1]['value'];
@@ -1448,7 +1448,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
 
   // Followers vote chart
   followerVoteChart(data: any) {
-    let result = [0, 0, 0, 0, 0, 0, 0];
+    const result = [0, 0, 0, 0, 0, 0, 0];
     this.follower_vote_count = 0;
     data.forEach(ele => {
       result[ele['_id']['days']] = ele.count;
@@ -1486,8 +1486,8 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
 
   // Followers location chart
   followerLocationChart(data: any) {
-    let final_data = [];
-    let min = 0;
+    const final_data = [];
+    const min = 0;
     let max = 0;
     if (data.length > 0) {
       max = data[data.length - 1]['value'];
@@ -1516,7 +1516,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
 
   // Overview vote chart
   overviewVoteChart(data: any) {
-    let result = [0, 0, 0, 0, 0, 0, 0];
+    const result = [0, 0, 0, 0, 0, 0, 0];
     this.overview_vote_count = 0;
     data.forEach(ele => {
       result[ele['day']] = ele.count;
@@ -1554,9 +1554,9 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
 
   // payment chart
   paymentChart(data: any) {
-    let result = [];
-    let cat = [];
-    let dt = new Date();
+    const result = [];
+    const cat = [];
+    const dt = new Date();
     for (let i = 1; i <= 30; i++) {
       cat.push(this.month_name(dt) + ' ' + i);
       result.push(0);
@@ -1606,9 +1606,9 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
 
   // proceed chart
   proceedChart(data: any) {
-    let result = [];
-    let cat = [];
-    let dt = new Date();
+    const result = [];
+    const cat = [];
+    const dt = new Date();
     for (let i = 1; i <= this.analytics_days; i++) {
       cat.push(this.month_name(dt) + ' ' + i);
       result.push(0);
@@ -1658,7 +1658,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
 
   // Overview Gender chart
   overviewGenderChart(data: any) {
-    let result = [];
+    const result = [];
     data.forEach(ele => {
       if (ele['_id'] === 'male') {
         this.overview_male_per = ele['percentage_value'];
@@ -1690,7 +1690,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
 
   // track vote chart
   trackVoteChart(data: any) {
-    let result = [0, 0, 0, 0, 0, 0, 0];
+    const result = [0, 0, 0, 0, 0, 0, 0];
     this.track_vote_count = 0;
     data.forEach(ele => {
       result[ele['day']] = ele.count;
@@ -1728,7 +1728,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
 
   // Track Gender chart
   trackGenderChart(data: any) {
-    let result = [];
+    const result = [];
     if (data) {
       data.forEach(ele => {
         if (ele['_id'] === 'male') {
@@ -1763,8 +1763,8 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
 
   // Track location chart
   trackLocationChart(data: any) {
-    let final_data = [];
-    let min = 0;
+    const final_data = [];
+    const min = 0;
     let max = 0;
     if (data.length > 0) {
       max = data[data.length - 1]['value'];
@@ -1792,15 +1792,16 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   month_name(dt) {
-    let mlist = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+    const mlist =
+      ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
     return mlist[dt.getMonth()];
   }
 
   // Download chart
   downloadChart(data: any) {
-    let result = [];
-    let cat = [];
-    let dt = new Date();
+    const result = [];
+    const cat = [];
+    const dt = new Date();
     for (let i = 1; i <= this.analytics_days; i++) {
       cat.push(this.month_name(dt) + ' ' + i);
       result.push(0);
@@ -1842,7 +1843,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
 
   // update notification settings
   updateNotificationSetting(key: any, val: any) {
-    let data = {};
+    const data = {};
     data[key] = val;
     this.myProfileService.updateSettings(data).subscribe((response) => {
       this.updateLocalStorage();
@@ -1854,8 +1855,8 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
 
   // Top location bar chart
   LocationBarChart(data: any) {
-    let cat = [];
-    let final_data = [];
+    const cat = [];
+    const final_data = [];
     data.forEach(ele => {
       cat.push(ele['_id']['_id']);
       final_data.push(ele['value']);
@@ -1907,8 +1908,8 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
 
   // Top location bar chart
   trackLocationBarChart(data: any) {
-    let cat = [];
-    let final_data = [];
+    const cat = [];
+    const final_data = [];
     data.forEach(ele => {
       cat.push(ele['_id']['_id']);
       final_data.push(ele['value']);
@@ -1960,8 +1961,8 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
 
   // Top location bar chart
   followerLocationBarChart(data: any) {
-    let cat = [];
-    let final_data = [];
+    const cat = [];
+    const final_data = [];
     data.forEach(ele => {
       cat.push(ele['_id']['_id']);
       final_data.push(ele['value']);
@@ -2276,7 +2277,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
 
   // get track based on search string
   search(event) {
-    let data = {
+    const data = {
       search: event.query
     };
     this.myProfileService.getTrackForPlaylist(data).subscribe((response) => {
@@ -2289,7 +2290,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
     if (flag) {
       if (this.userdata && this.userdata['type'] === 'user') {
         if (this.search_track) {
-          let data = {
+          const data = {
             track_id: []
           };
           this.search_track.forEach((ele) => { data['track_id'].push(ele['_id']); });
@@ -2315,7 +2316,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
         }
       } else {
         if (this.search_track) {
-          let data = {
+          const data = {
             track_id: []
           };
           this.search_track.forEach((ele) => { data['track_id'].push(ele['_id']); });
@@ -2356,7 +2357,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
     }).then((flag) => {
       if (flag.value) {
         if (this.userdata && this.userdata['type'] === 'user') {
-          let data = {
+          const data = {
             track_id: id,
             playlist_id: this.playlist_data['_id']
           };
@@ -2369,7 +2370,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
             });
           });
         } else {
-          let data = {
+          const data = {
             track_id: id,
             playlist_id: this.playlist_data['_id']
           };
@@ -2414,7 +2415,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
       }).then((result) => {
         if (result.value) {
           this.show_spinner = true;
-          let formData: FormData = new FormData();
+          const formData: FormData = new FormData();
           // formData.append('email', this.upgrade_artist_data['email']);
           // formData.append('password',this.upgrade_artist_data['password']);
           formData.append('first_name', this.upgrade_artist_data['first_name']);

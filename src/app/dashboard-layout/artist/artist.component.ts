@@ -16,8 +16,8 @@ export class ArtistComponent implements OnInit {
     artist: []
   };
   show_filter: any = false;
-  toggSearch: boolean = false;
-  show_loader: boolean = false;
+  toggSearch = false;
+  show_loader = false;
   user: any = {};
   search_str: any = '';
   adv_filter: any = {};
@@ -59,7 +59,7 @@ export class ArtistComponent implements OnInit {
   }
   // Get all whatsnew data
   getAllData() {
-    let data = {};
+    const data = {};
     this.artistService.getArtistData(data).subscribe(response => {
       this.artistdata = response;
       this.getAllFollower();
@@ -97,11 +97,11 @@ export class ArtistComponent implements OnInit {
   followArtist(id: any, index: any) {
     const data = JSON.parse(localStorage.getItem('user'));
     if (data && data.user) {
-      let data = {
+      const artist_data = {
         artist_id: id
       };
       // this.artistdata['artist'][index]['is_followed'] = true;
-      this.artistService.followArtist(data).subscribe(response => {
+      this.artistService.followArtist(artist_data).subscribe(response => {
         this.toastr.success(response['message'], 'Success!');
         this.getAllFollower();
         this.getMyFollower();
@@ -144,7 +144,7 @@ export class ArtistComponent implements OnInit {
   }
   // Get my follower
   getMyFollower() {
-    let user = JSON.parse(localStorage.getItem('user'));
+    const user = JSON.parse(localStorage.getItem('user'));
     if (user && user['user']) {
       this.artistService.getMyFollower().subscribe((response) => {
         this.my_follower_list = response['user'];
@@ -155,7 +155,7 @@ export class ArtistComponent implements OnInit {
   filterArtistv1(e: any) {
     // if (e.keyCode == 13) {
     if (this.search_str.trim().length > 0) {
-      let data = {
+      const data = {
         search: this.search_str.trim(),
         start: 0,
         length: this.length
@@ -169,13 +169,13 @@ export class ArtistComponent implements OnInit {
     if (flag) {
       this.region_filter.push(val);
     } else {
-      let index = this.region_filter.indexOf(val);
+      const index = this.region_filter.indexOf(val);
       this.region_filter.splice(index, 1);
     }
   }
   // advanceFilter
   advanceFilter() {
-    let data = {
+    const data = {
       start: 0,
       length: this.length,
       'filter': []

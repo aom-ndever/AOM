@@ -11,7 +11,7 @@ import { Router, NavigationStart, NavigationCancel, NavigationEnd, NavigationErr
 })
 export class AppComponent {
   title = 'app';
-  loading: boolean = true;
+  loading = true;
   url: any = '';
   constructor(
     private router: Router,
