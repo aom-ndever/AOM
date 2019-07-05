@@ -4,9 +4,9 @@ import { ActivatedRouteSnapshot } from '@angular/router';
 import { ArtistProfileService } from '../../artist_profile/artist_profile.service';
 @Injectable()
 export class TrackDetailResolve implements Resolve<any> {
-  constructor(private ArtistProfileService: ArtistProfileService) {}
+  constructor(private artistProfileService: ArtistProfileService) { }
 
   resolve(route: ActivatedRouteSnapshot) {
-    return this.ArtistProfileService.getTrackById(route.paramMap.get('id'));
+    return this.artistProfileService.getTrackById(route.paramMap.get('id'));
   }
 }

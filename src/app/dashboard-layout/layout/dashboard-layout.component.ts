@@ -46,8 +46,8 @@ export class DashboardLayoutComponent implements OnInit, AfterViewInit, AfterVie
   share_form_validation: boolean = false;
   share_data: any = {};
   constructor(
-    private MessageService: MessageService,
-    private DashboardLayoutService: DashboardLayoutService,
+    private messageService: MessageService,
+    private dashboardLayoutService: DashboardLayoutService,
     private toastr: ToastrService,
     private modalService: NgbModal,
     private fb: FormBuilder
@@ -58,7 +58,7 @@ export class DashboardLayoutComponent implements OnInit, AfterViewInit, AfterVie
     this.audio_list = [];
     let localuser = localStorage.getItem('user');
     this.user = JSON.parse(localuser);
-    this.subscription = this.MessageService.getMessage().subscribe((response) => {
+    this.subscription = this.messageService.getMessage().subscribe((response) => {
       console.log('response => ', response);
       if (response['action'] === 'start') {
         this.audio_list = response['data'];
@@ -163,9 +163,9 @@ export class DashboardLayoutComponent implements OnInit, AfterViewInit, AfterVie
       this.audio_ins = this.audio_instance_list[this.song_cnt];
       console.log('pButton.className => ', pButton.className);
       if (pButton.className === 'play') {
-        this.MessageService.sendMessage({ index: this.song_cnt, action: 'bottom_play', list: this.list_no });
+        this.messageService.sendMessage({ index: this.song_cnt, action: 'bottom_play', list: this.list_no });
       }
-      // console.log('this.audio_instance_list[this.song_cnt] => ', this.audio_instance_list[this.song_cnt]); 
+      // console.log('this.audio_instance_list[this.song_cnt] => ', this.audio_instance_list[this.song_cnt]);
       if (this.audio_instance_list[this.song_cnt] && this.audio_instance_list[this.song_cnt].paused) {
         // console.log('this.audio_instance_list[this.song_cnt] => ', this.audio_instance_list[this.song_cnt]);
         let playPromise = this.audio_instance_list[this.song_cnt].play();
@@ -178,7 +178,7 @@ export class DashboardLayoutComponent implements OnInit, AfterViewInit, AfterVie
             this.toastr.info('This audio type is not supported in this browser.', 'Information!');
             this.audio_instance_list[this.song_cnt].pause();
             console.log('pause => ');
-            this.MessageService.sendMessage({ index: this.song_cnt, action: 'stop', list: this.list_no });
+            this.messageService.sendMessage({ index: this.song_cnt, action: 'stop', list: this.list_no });
             pButton.className = '';
             pButton.className = 'play';
             // Automatic playback failed.
@@ -189,7 +189,7 @@ export class DashboardLayoutComponent implements OnInit, AfterViewInit, AfterVie
         pButton.className = 'pause';
       } else {
         this.audio_instance_list[this.song_cnt].pause();
-        this.MessageService.sendMessage({ index: this.song_cnt, action: 'stop', list: this.list_no });
+        this.messageService.sendMessage({ index: this.song_cnt, action: 'stop', list: this.list_no });
         pButton.className = '';
         pButton.className = 'play';
       }
@@ -247,7 +247,7 @@ export class DashboardLayoutComponent implements OnInit, AfterViewInit, AfterVie
     }
     var pButton = document.getElementById('pButton');
     if (pButton.className === 'pause') {
-      this.MessageService.sendMessage({ index: this.song_cnt, action: 'next', track_action: 'pause', list: this.list_no });
+      this.messageService.sendMessage({ index: this.song_cnt, action: 'next', track_action: 'pause', list: this.list_no });
       this.play();
     }
   }
@@ -266,7 +266,7 @@ export class DashboardLayoutComponent implements OnInit, AfterViewInit, AfterVie
     }
     var pButton = document.getElementById('pButton');
     if (pButton.className === 'pause') {
-      this.MessageService.sendMessage({ index: this.song_cnt, action: 'prev', track_action: 'pause', list: this.list_no });
+      this.messageService.sendMessage({ index: this.song_cnt, action: 'prev', track_action: 'pause', list: this.list_no });
       this.play();
     }
   }
@@ -310,7 +310,7 @@ export class DashboardLayoutComponent implements OnInit, AfterViewInit, AfterVie
   downloadTrack() {
     // console.log(this.audio_list[this.song_cnt]);
     if (this.user) {
-      this.DashboardLayoutService.downloadTrack(this.audio_list[this.song_cnt]['_id']).subscribe((response) => {
+      this.dashboardLayoutService.downloadTrack(this.audio_list[this.song_cnt]['_id']).subscribe((response) => {
         if (response['message']) {
           this.toastr.info(response['message'], 'Info!');
         }
@@ -365,7 +365,7 @@ export class DashboardLayoutComponent implements OnInit, AfterViewInit, AfterVie
         track_id: track['_id'],
         url: url
       };
-      this.DashboardLayoutService.shareTrackViaEmail(data).subscribe((response) => {
+      this.dashboardLayoutService.shareTrackViaEmail(data).subscribe((response) => {
         this.toastr.success(response['message'], 'Success!');
         this.emailmodalRef.close();
       }, (error) => {
@@ -390,7 +390,7 @@ export class DashboardLayoutComponent implements OnInit, AfterViewInit, AfterVie
         track_id: track['_id'],
         url: url
       };
-      this.DashboardLayoutService.shareTrackViaSms(data).subscribe((response) => {
+      this.dashboardLayoutService.shareTrackViaSms(data).subscribe((response) => {
         this.toastr.success(response['message'], 'Success!');
         this.emailmodalRef.close();
         this.share_data = {};

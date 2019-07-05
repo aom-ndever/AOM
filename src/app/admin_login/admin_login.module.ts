@@ -6,7 +6,7 @@ import { AdminLoginComponent } from './admin_login.component';
 import { AdminLoginService } from './admin_login.service';
 import { Http, HttpModule } from '@angular/http';
 // import { HttpClientModule, HttpClient } from '@angular/common/http';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http'
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ImageCropperModule } from 'ngx-image-cropper';
 // import { ToastrModule } from 'ngx-toastr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';

@@ -17,7 +17,7 @@ export class AlertsComponent implements OnInit {
   flagged_list: any = [];
   flag_row_cnt = 1;
   constructor(
-    private AlertService: AlertService,
+    private alertService: AlertService,
     private toastr: ToastrService,
     private ngxService: NgxUiLoaderService
   ) {
@@ -42,7 +42,7 @@ export class AlertsComponent implements OnInit {
       },
       ajax: (dataTablesParameters: any, callback) => {
         setTimeout(() => {
-          that.AlertService.getFlagedData(dataTablesParameters).subscribe((response) => {
+          that.alertService.getFlagedData(dataTablesParameters).subscribe((response) => {
             that.flagged_list = response['contest']['admin'];
             // this.ngxService.stop();
             callback({

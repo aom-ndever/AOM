@@ -11,7 +11,7 @@ export class VoteService {
 
   constructor(private http: HttpClient) {
     // this.user = JSON.parse(localStorage.getItem('user'));
-    // this.headers = new HttpHeaders({ 'x-access-token' : this.user.token });  
+    // this.headers = new HttpHeaders({ 'x-access-token' : this.user.token });
   }
   // get All music type
   getAllMusicType() {
@@ -25,7 +25,7 @@ export class VoteService {
   getAllParticipants(data) {
     return this.http.post(`${this.api_host}/get_track_for_current_round`, data);
   }
-  // Follow the artist 
+  // Follow the artist
   followArtist(data: any) {
     this.user = JSON.parse(localStorage.getItem('user'));
     this.headers = new HttpHeaders({ 'x-access-token': this.user.token });

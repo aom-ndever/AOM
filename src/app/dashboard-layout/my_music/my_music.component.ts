@@ -70,9 +70,9 @@ export class MyMusicComponent implements OnInit, OnDestroy {
 
   constructor(
     private modalService: NgbModal,
-    private MyMusicService: MyMusicService,
+    private myMusicService: MyMusicService,
     private toastr: ToastrService,
-    private MessageService: MessageService,
+    private messageService: MessageService,
     private fb: FormBuilder,
     private titleService: Title,
     private route: ActivatedRoute,
@@ -103,7 +103,7 @@ export class MyMusicComponent implements OnInit, OnDestroy {
     });
     this.titleService.setTitle(this.route.snapshot.data['title']);
     this.userinfo = JSON.parse(localStorage.getItem('user'));
-    this.subscription = this.MessageService.getMessage().subscribe((response) => {
+    this.subscription = this.messageService.getMessage().subscribe((response) => {
       if (response && response['list'] !== 1) {
         this.audio_ins.forEach((ele, idx) => { this.audio_ins[idx] = false; });
       }
@@ -141,7 +141,7 @@ export class MyMusicComponent implements OnInit, OnDestroy {
       ajax: (dataTablesParameters: any, callback) => {
         setTimeout(() => {
           that.audio_ins = [];
-          that.MyMusicService.getAllTrack(dataTablesParameters).subscribe(response => {
+          that.myMusicService.getAllTrack(dataTablesParameters).subscribe(response => {
             that.tracklist = response['track']['music'];
             that.tracklist.forEach((ele) => { that.audio_ins.push(false); });
             callback({
@@ -300,7 +300,7 @@ export class MyMusicComponent implements OnInit, OnDestroy {
     // const allow_types = ['image/png', 'image/jpg', 'image/jpeg'];
   }
 
-  // on change event of edit track pic 
+  // on change event of edit track pic
   changeTrackImage(event: any) {
     let file = event.target.files[0];
     if (event.target.files.length > 0) {
@@ -381,7 +381,7 @@ export class MyMusicComponent implements OnInit, OnDestroy {
       };
     }
     this.show_spinner = true;
-    this.MyMusicService.addContestTrack(Obj).subscribe(response => {
+    this.myMusicService.addContestTrack(Obj).subscribe(response => {
 
       this.toastr.success(response['message'], 'Success!');
       this.show_spinner = false;
@@ -415,7 +415,7 @@ export class MyMusicComponent implements OnInit, OnDestroy {
       formdata.append('image', this.image_upload);
       formdata.append('description', this.trackdata.description);
       this.show_spinner = true;
-      this.MyMusicService.addTrack(formdata).subscribe(response => {
+      this.myMusicService.addTrack(formdata).subscribe(response => {
         this.trackdata = {};
         this.audio_file = '';
         this.image_upload = '';
@@ -446,7 +446,7 @@ export class MyMusicComponent implements OnInit, OnDestroy {
     } else {
       this.toastr.error('Please provide necessary details', 'Error!');
     }
-    //}
+    // }
   }
 
   // Get all track
@@ -467,7 +467,7 @@ export class MyMusicComponent implements OnInit, OnDestroy {
       confirmButtonText: 'Yes, delete it!'
     }).then((flag) => {
       if (flag.value) {
-        thi.MyMusicService.deleteTrackById(id).subscribe(response => {
+        thi.myMusicService.deleteTrackById(id).subscribe(response => {
           thi.toastr.success(response['message'], 'Success!');
           this.datatableElement.dtInstance.then((dtInstance: DataTables.Api) => {
             dtInstance.draw();
@@ -495,7 +495,7 @@ export class MyMusicComponent implements OnInit, OnDestroy {
       formdata.append('image', this.trackdata.image);
       formdata.append('description', this.trackdata.description);
       this.show_spinner = true;
-      this.MyMusicService.updateTrack(formdata, this.trackdata._id).subscribe(response => {
+      this.myMusicService.updateTrack(formdata, this.trackdata._id).subscribe(response => {
         if (!response['track']['image']) {
           this.edit_image = 'img/default_img.png';
         }
@@ -539,7 +539,7 @@ export class MyMusicComponent implements OnInit, OnDestroy {
       confirmButtonText: 'Yes, delete it!'
     }).then(function (flag) {
       if (flag.value) {
-        thi.MyMusicService.deleteTrackImageById(id).subscribe(response => {
+        thi.myMusicService.deleteTrackImageById(id).subscribe(response => {
           thi.getAllTrack();
           thi.edit_image = 'img/default_img.png';
           delete this.trackdata['image'];
@@ -564,7 +564,7 @@ export class MyMusicComponent implements OnInit, OnDestroy {
       this.audio_ins[idx] = false;
     });
     this.audio_ins[index] = true;
-    this.MessageService.sendMessage({ data: data, index: index, action: 'start', list: 1 });
+    this.messageService.sendMessage({ data: data, index: index, action: 'start', list: 1 });
   }
 
   // Stop audio
@@ -576,19 +576,19 @@ export class MyMusicComponent implements OnInit, OnDestroy {
     data.forEach((ele, idx) => {
       this.audio_ins[idx] = false;
     });
-    this.MessageService.sendMessage({ data: data, index: index, action: 'stop', list: 1 });
+    this.messageService.sendMessage({ data: data, index: index, action: 'stop', list: 1 });
   }
 
   // Get all music type
   getAllMusicType() {
-    this.MyMusicService.getAllMusicType().subscribe(response => {
+    this.myMusicService.getAllMusicType().subscribe(response => {
       this.music_type_list = response['music'];
     });
   }
 
   // Get all contest
   getAllContest() {
-    this.MyMusicService.getAllContest().subscribe(response => {
+    this.myMusicService.getAllContest().subscribe(response => {
       this.contest_list = response['contest'];
       this.ngxService.stop();
     });
@@ -623,7 +623,7 @@ export class MyMusicComponent implements OnInit, OnDestroy {
 
   // Update download status
   updateTrackDownLoadStatus(id: any) {
-    this.MyMusicService.trackDownload(id).subscribe(response => {
+    this.myMusicService.trackDownload(id).subscribe(response => {
       this.toastr.success(response['message'], 'Success!');
       this.datatableElement.dtInstance.then((dtInstance: DataTables.Api) => {
         dtInstance.draw();
@@ -677,7 +677,7 @@ export class MyMusicComponent implements OnInit, OnDestroy {
         track_id: track['_id'],
         url: url
       };
-      this.MyMusicService.shareTrackViaEmail(data).subscribe((response) => {
+      this.myMusicService.shareTrackViaEmail(data).subscribe((response) => {
         this.toastr.success(response['message'], 'Success!');
         this.emailmodalRef.close();
       }, (error) => {
@@ -703,7 +703,7 @@ export class MyMusicComponent implements OnInit, OnDestroy {
         track_id: track['_id'],
         url: url
       };
-      this.MyMusicService.shareTrackViaSms(data).subscribe((response) => {
+      this.myMusicService.shareTrackViaSms(data).subscribe((response) => {
         this.toastr.success(response['message'], 'Success!');
         this.emailmodalRef.close();
         this.share_data = {};

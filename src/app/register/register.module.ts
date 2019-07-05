@@ -13,7 +13,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AuthService } from '../shared/auth.service';
 import { environment } from '../../../src/environments/environment';
 import { AuthServiceConfig, FacebookLoginProvider, SocialLoginModule } from 'angular5-social-login';
-// Configs 
+
+// Configs
 export function getAuthServiceConfigs() {
   let config = new AuthServiceConfig(
     [

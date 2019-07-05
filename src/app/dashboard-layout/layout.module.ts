@@ -22,7 +22,7 @@ import { MyMusicComponent } from './my_music/my_music.component';
 import { DashboardLayoutModule } from './layout/dashboard-layout.module';
 import { CarouselModule } from '../shared/carousel/carousel.module';
 import { HttpModule } from '@angular/http';
-import { HttpClientModule } from '@angular/common/http'
+import { HttpClientModule } from '@angular/common/http';
 import { HeaderService } from './header/header.service';
 import { MyProfileService } from './my_profile/myProfile.service';
 import { MyMusicService } from './my_music/my_music.service';

@@ -16,7 +16,7 @@ import { BsDropdownModule, ModalModule  } from 'ngx-bootstrap';
       //   { path: '', component: DashboardComponent, data: { title: 'Dashboard' } }
     ])
   ],
-  declarations: [AdminLayoutComponent,SidebarComponent],
+  declarations: [AdminLayoutComponent, SidebarComponent],
   exports: [AdminLayoutComponent],
 })
 export class LayoutModule { }

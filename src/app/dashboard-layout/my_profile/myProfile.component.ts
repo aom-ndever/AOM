@@ -155,12 +155,12 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
   display: boolean = false;
 
   constructor(
-    private MyProfileService: MyProfileService,
+    private myProfileService: MyProfileService,
     private toastr: ToastrService,
     private router: Router,
     private modalService: NgbModal,
     private lightbox: Lightbox,
-    private MessageService: MessageService,
+    private messageService: MessageService,
     private AmCharts: AmChartsService,
     private fb: FormBuilder,
     private titleService: Title,
@@ -245,7 +245,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
         this.upgrade_artist_img = this.userdata.image;
       }
     }
-    this.MyProfileService.getAllMusicType().subscribe(response => {
+    this.myProfileService.getAllMusicType().subscribe(response => {
       this.music_types = response['music'];
       this.upgrade_artist_music_type = response['music'];
       this.ngxService.stop();
@@ -328,7 +328,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
       name: ['', [Validators.required]]
     });
 
-    this.subscription = this.MessageService.getMessage().subscribe((response) => {
+    this.subscription = this.messageService.getMessage().subscribe((response) => {
       if (response && response['list'] !== 1) {
         this.audio_ins.forEach((ele, idx) => { this.audio_ins[idx] = false; });
       }
@@ -426,7 +426,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
         },
         ajax: (dataTablesParameters: any, callback) => {
           that.audio_ins = [];
-          that.MyProfileService.getArtistPlaylist(dataTablesParameters).subscribe((response) => {
+          that.myProfileService.getArtistPlaylist(dataTablesParameters).subscribe((response) => {
             that.playlist = response['playlist'];
             callback({
               recordsTotal: response['recordsTotal'],
@@ -455,7 +455,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
           'processing': '<i class="fa fa-spinner fa-spin loader"></i>',
         },
         ajax: (dataTablesParameters: any, callback) => {
-          that.MyProfileService.getAllTransction(dataTablesParameters).subscribe((response) => {
+          that.myProfileService.getAllTransction(dataTablesParameters).subscribe((response) => {
             that.transaction_data = response['account'];
             callback({
               recordsTotal: response['recordsTotal'],
@@ -493,7 +493,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
         },
         ajax: (dataTablesParameters: any, callback) => {
           that.audio_ins = [];
-          that.MyProfileService.getBookmarkedTrack(dataTablesParameters).subscribe((response) => {
+          that.myProfileService.getBookmarkedTrack(dataTablesParameters).subscribe((response) => {
             that.bookmark_list = response['bookmark'];
             if (that.bookmark_list.length > 0) {
               this.audio_ins = [];
@@ -530,7 +530,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
         },
         ajax: (dataTablesParameters: any, callback) => {
           that.audio_ins = [];
-          that.MyProfileService.getAllListenerPlaylist(dataTablesParameters).subscribe((response) => {
+          that.myProfileService.getAllListenerPlaylist(dataTablesParameters).subscribe((response) => {
             that.playlist = response['playlist'];
             callback({
               recordsTotal: response['recordsTotal'],
@@ -559,7 +559,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
         },
         ajax: (dataTablesParameters: any, callback) => {
           that.audio_ins = [];
-          that.MyProfileService.getAllPurchasedTrack(dataTablesParameters).subscribe((response) => {
+          that.myProfileService.getAllPurchasedTrack(dataTablesParameters).subscribe((response) => {
             that.purchased_track = response['track'];
             this.audio_ins = [];
             this.purchased_track_list = [];
@@ -703,10 +703,10 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
         this.show_spinner = true;
         this.userdata['dob'] = new Date(this.userdata['year'], this.userdata['month'], this.userdata['day']);
         this.userdata['share_url'] = JSON.stringify(this.userdata['social_media']);
-        this.MyProfileService.updateArtistProfile(this.userdata).subscribe(response => {
+        this.myProfileService.updateArtistProfile(this.userdata).subscribe(response => {
           this.toastr.success(response['message'], 'Success!');
           this.updateLocalStorage();
-          this.MessageService.sendMessage({ updateProfile: true });
+          this.messageService.sendMessage({ updateProfile: true });
         }, error => {
           this.toastr.error(error['error'].message, 'Error!');
           this.show_spinner = false;
@@ -722,10 +722,10 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
         this.listenerProfileValidation = !flag;
         this.show_spinner = true;
         this.userdata['dob'] = new Date(this.userdata['year'], this.userdata['month'], this.userdata['day']);
-        this.MyProfileService.updateUserProfile(this.userdata).subscribe(response => {
+        this.myProfileService.updateUserProfile(this.userdata).subscribe(response => {
           this.toastr.success(response['message'], 'Success!');
           this.updateLocalStorage();
-          this.MessageService.sendMessage({ updateProfile: true });
+          this.messageService.sendMessage({ updateProfile: true });
         }, error => {
           this.toastr.error(error['error'].message, 'Error!');
           this.show_spinner = false;
@@ -801,7 +801,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
     if (isValidCover) {
       let formData: FormData = new FormData();
       formData.append('cover_image', fileList[0], fileList[0]['name']);
-      this.MyProfileService.updateCoverImage(formData).subscribe(response => {
+      this.myProfileService.updateCoverImage(formData).subscribe(response => {
         this.updateLocalStorage();
         this.toastr.success(response['message'], 'Success!');
         this.isCoverPic = true;
@@ -857,26 +857,26 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
       const new_file = this.dataURLtoFile(this.croppedImage, prfl_file.name);
       formData.append('image', new_file);
       if (this.userdata.type === 'artist') {
-        this.MyProfileService.updateArtistProfileImage(formData).subscribe(response => {
+        this.myProfileService.updateArtistProfileImage(formData).subscribe(response => {
           this.modalRef.hide();
           this.cropperReady = false;
           this.default_profile_img = environment.API_URL + environment.ARTIST_IMG + response['image'];
           this.updateLocalStorage();
           this.toastr.success(response['message'], 'Success!');
           this.isProfilePic = true;
-          this.MessageService.sendMessage({ updateProfile: true });
+          this.messageService.sendMessage({ updateProfile: true });
         }, error => {
           this.toastr.error(error['error'].message, 'Error!');
         });
       } else {
-        this.MyProfileService.updateUserProfileImage(formData).subscribe(response => {
+        this.myProfileService.updateUserProfileImage(formData).subscribe(response => {
           this.modalRef.hide();
           this.cropperReady = false;
           this.default_profile_img = environment.API_URL + environment.USER_IMG + response['image'];
           this.updateLocalStorage();
           this.toastr.success(response['message'], 'Success!');
           this.isProfilePic = true;
-          this.MessageService.sendMessage({ updateProfile: true });
+          this.messageService.sendMessage({ updateProfile: true });
         }, error => {
           this.toastr.error(error['error'].message, 'Error!');
           this.isProfilePic = true;
@@ -936,7 +936,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
         month: '',
         year: ''
       };
-      this.MyProfileService.getArtistById().subscribe(res => {
+      this.myProfileService.getArtistById().subscribe(res => {
         let data = JSON.parse(localStorage.getItem('user'));
         data['artist'] = res['artist'];
         this.userdata = res['artist'];
@@ -970,7 +970,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
         month: '',
         year: ''
       };
-      this.MyProfileService.getUserById().subscribe(res => {
+      this.myProfileService.getUserById().subscribe(res => {
         let data = JSON.parse(localStorage.getItem('user'));
         data['user'] = res['user'];
         this.userdata = res['user'];
@@ -983,7 +983,8 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
           this.userdata['year'] = dt.getFullYear();
         }
         if (this.userdata.image) {
-          if (this.userdata.provider && this.userdata.provider === 'facebook' && this.userdata['image'].includes('graph.facebook.com') || (this.userdata.provider === 'gmail' && this.userdata['image'].includes('lh3.googleusercontent.com'))) {
+          if (this.userdata.provider && this.userdata.provider === 'facebook' && this.userdata['image'].includes('graph.facebook.com') ||
+           (this.userdata.provider === 'gmail' && this.userdata['image'].includes('lh3.googleusercontent.com'))) {
             this.default_profile_img = this.userdata.image;
           } else {
             this.default_profile_img = environment.API_URL + environment.USER_IMG + this.userdata.image;
@@ -1013,7 +1014,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
       confirmButtonText: 'Yes, delete it!'
     }).then(function (flag) {
       if (flag.value) {
-        thi.MyProfileService.deleteArtistImage(thi.userdata._id).subscribe(response => {
+        thi.myProfileService.deleteArtistImage(thi.userdata._id).subscribe(response => {
           thi.default_profile_img = 'img/profile-img.png';
           thi.updateLocalStorage();
           thi.toastr.success(response['message'], 'Success!');
@@ -1036,7 +1037,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
       confirmButtonText: 'Yes, delete it!'
     }).then(function (flag) {
       if (flag.value) {
-        thi.MyProfileService.deleteArtistCoverImage(thi.userdata._id).subscribe(response => {
+        thi.myProfileService.deleteArtistCoverImage(thi.userdata._id).subscribe(response => {
           thi.default_cover_img = 'img/edit-cover.jpg';
           thi.updateLocalStorage();
           thi.toastr.success(response['message'], 'Success!');
@@ -1059,7 +1060,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
       confirmButtonText: 'Yes, delete it!'
     }).then(function (flag) {
       if (flag.value) {
-        thi.MyProfileService.deleteUserImage(thi.userdata._id).subscribe(response => {
+        thi.myProfileService.deleteUserImage(thi.userdata._id).subscribe(response => {
           thi.default_profile_img = 'img/profile-img.png';
           thi.updateLocalStorage();
           thi.toastr.success(response['message'], 'Success!');
@@ -1079,7 +1080,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
         };
         this.show_spinner = true;
         if (this.userdata.type === 'artist') {
-          this.MyProfileService.changeArtistEmail(data).subscribe(response => {
+          this.myProfileService.changeArtistEmail(data).subscribe(response => {
             this.change_email = {};
             this.updateLocalStorage();
             this.toastr.success(response['resp'], 'Success!');
@@ -1090,7 +1091,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
             this.show_spinner = false;
           });
         } else {
-          this.MyProfileService.changeUserEmail(data).subscribe(response => {
+          this.myProfileService.changeUserEmail(data).subscribe(response => {
             this.change_email = {};
             this.updateLocalStorage();
             this.toastr.success(response['resp'], 'Success!');
@@ -1124,7 +1125,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
       };
       this.show_spinner = true;
       if (this.userdata.type === 'artist') {
-        this.MyProfileService.changeArtistPassword(data).subscribe(response => {
+        this.myProfileService.changeArtistPassword(data).subscribe(response => {
           this.change_pwd = {};
           this.updateLocalStorage();
           this.toastr.success(response['resp'], 'Success!');
@@ -1137,7 +1138,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
 
         });
       } else {
-        this.MyProfileService.changeUserPassword(data).subscribe(response => {
+        this.myProfileService.changeUserPassword(data).subscribe(response => {
           this.change_pwd = {};
           this.updateLocalStorage();
           this.toastr.success(response['resp'], 'Success!');
@@ -1179,7 +1180,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
       return false;
     }
     this.show_progress = true;
-    this.MyProfileService.uploadMedia(formData).subscribe(event => {
+    this.myProfileService.uploadMedia(formData).subscribe(event => {
       if (event.type === HttpEventType.UploadProgress) {
         // This is an upload progress event. Compute and show the % done:
         const percentDone = Math.round(100 * event.loaded / event.total);
@@ -1199,7 +1200,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
 
   getMediaList() {
     this._albums = [];
-    this.MyProfileService.getAllMedia().subscribe(response => {
+    this.myProfileService.getAllMedia().subscribe(response => {
       this.media_list = response['media'];
       for (let i = 0; i < this.media_list.length; i++) {
         if (this.media_list[i].image) {
@@ -1216,7 +1217,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
     formData.append('link', this.video_url);
     if (this.video_url) {
       this.show_spinner = true;
-      this.MyProfileService.uploadMedia(formData).subscribe(event => {
+      this.myProfileService.uploadMedia(formData).subscribe(event => {
         if (event instanceof HttpResponse) {
           this.video_url = '';
           this.toastr.success(event['body']['message'], 'Success!');
@@ -1246,7 +1247,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
       confirmButtonText: 'Yes, delete it!'
     }).then(function (flag) {
       if (flag.value) {
-        thi.MyProfileService.removeMediaById(id).subscribe(response => {
+        thi.myProfileService.removeMediaById(id).subscribe(response => {
           thi.toastr.success(response['message'], 'Success!');
           thi.getMediaList();
         }, error => {
@@ -1263,7 +1264,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
 
   // Get All follower analytics data
   getAllFollowerAnalytics(data) {
-    this.MyProfileService.getAllFollowerAnalytic(data).subscribe(response => {
+    this.myProfileService.getAllFollowerAnalytic(data).subscribe(response => {
       this.follower_analytic_data = response;
       this.ageChart(response['age']);
       this.genderChart(response['gender']);
@@ -1275,7 +1276,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
 
   // Get all track and contest details
   getAllTrackAnalytic(data) {
-    this.MyProfileService.getAllTrackContestData(data).subscribe(response => {
+    this.myProfileService.getAllTrackContestData(data).subscribe(response => {
       this.track_analytic = response;
       this.trackGenderChart(response['gender']);
       this.trackVoteChart(response['day']);
@@ -1286,7 +1287,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
 
   // Get all overview analytics data
   getAllOverviewAnalytic(data) {
-    this.MyProfileService.getAllOverviewAnalytic(data).subscribe(response => {
+    this.myProfileService.getAllOverviewAnalytic(data).subscribe(response => {
       this.overview_analytic_data = response;
       this.overview_download_total = 0;
       if (response['track']) {
@@ -1304,21 +1305,21 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
 
   // Get all payment details
   getAllPayment(data) {
-    this.MyProfileService.getProceedChartData(data).subscribe((response) => {
+    this.myProfileService.getProceedChartData(data).subscribe((response) => {
       this.paymentChart(response['day']);
     });
   }
 
   // Get all proceed details
   getAllProceed(data) {
-    this.MyProfileService.getProceedChartData(data).subscribe((response) => {
+    this.myProfileService.getProceedChartData(data).subscribe((response) => {
       this.proceedChart(response['day']);
     });
   }
 
   // Get all download analytics data
   getAllDownloadAnalytic(data) {
-    this.MyProfileService.getAllDownloadAnalytic(data).subscribe(response => {
+    this.myProfileService.getAllDownloadAnalytic(data).subscribe(response => {
       this.download_analytic_data = response;
       this.downloadChart(response['day']);
     });
@@ -1843,7 +1844,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
   updateNotificationSetting(key: any, val: any) {
     let data = {};
     data[key] = val;
-    this.MyProfileService.updateSettings(data).subscribe((response) => {
+    this.myProfileService.updateSettings(data).subscribe((response) => {
       this.updateLocalStorage();
       this.toastr.success(response['message'], 'Success!');
     }, (error) => {
@@ -2016,7 +2017,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
       this.audio_ins[idx] = false;
     });
     this.audio_ins[index] = true;
-    this.MessageService.sendMessage({ data: data, index: index, action: 'start', list: 1 });
+    this.messageService.sendMessage({ data: data, index: index, action: 'start', list: 1 });
   }
 
   // Stop audio
@@ -2025,7 +2026,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
     data.forEach((ele, idx) => {
       this.audio_ins[idx] = false;
     });
-    this.MessageService.sendMessage({ data: data, index: index, action: 'stop', list: 1 });
+    this.messageService.sendMessage({ data: data, index: index, action: 'stop', list: 1 });
   }
 
   // playlist related code start here
@@ -2055,7 +2056,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
       if (this.userdata && this.userdata['type'] === 'user') {
         if (this.playlist_data && this.playlist_data['name'] && this.playlist_data['name'] != null) {
           this.show_spinner = true;
-          this.MyProfileService.addNewListenerPlaylist(this.playlist_data).subscribe((response) => {
+          this.myProfileService.addNewListenerPlaylist(this.playlist_data).subscribe((response) => {
             this.dtElements.forEach((dtElement: DataTableDirective, index: number) => {
               dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
                 dtInstance.draw();
@@ -2075,7 +2076,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
       } else {
         if (this.playlist_data && this.playlist_data['name'] && this.playlist_data['name'] != null) {
           this.show_spinner = true;
-          this.MyProfileService.createArtistPlaylist(this.playlist_data).subscribe((response) => {
+          this.myProfileService.createArtistPlaylist(this.playlist_data).subscribe((response) => {
             this.dtElements.forEach((dtElement: DataTableDirective, index: number) => {
               dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
                 dtInstance.draw();
@@ -2103,7 +2104,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
       if (this.userdata && this.userdata['type'] === 'user') {
         if (this.playlist_data && this.playlist_data['name'] && this.playlist_data['name'] != null) {
           this.show_spinner = true;
-          this.MyProfileService.updateListenerPlaylist(this.playlist_data, this.playlist_data['_id']).subscribe((response) => {
+          this.myProfileService.updateListenerPlaylist(this.playlist_data, this.playlist_data['_id']).subscribe((response) => {
             this.dtElements.forEach((dtElement: DataTableDirective, index: number) => {
               dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
                 dtInstance.draw();
@@ -2123,7 +2124,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
       } else {
         if (this.playlist_data && this.playlist_data['name'] && this.playlist_data['name'] != null) {
           this.show_spinner = true;
-          this.MyProfileService.updateArtistPlaylist(this.playlist_data, this.playlist_data['_id']).subscribe((response) => {
+          this.myProfileService.updateArtistPlaylist(this.playlist_data, this.playlist_data['_id']).subscribe((response) => {
             this.dtElements.forEach((dtElement: DataTableDirective, index: number) => {
               dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
                 dtInstance.draw();
@@ -2160,7 +2161,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
     }).then((flag) => {
       if (flag.value) {
         if (this.userdata && this.userdata['type'] === 'user') {
-          this.MyProfileService.deleteListenerPlaylistById(id).subscribe((response) => {
+          this.myProfileService.deleteListenerPlaylistById(id).subscribe((response) => {
             this.toastr.success(response['message'], 'Success!');
             this.dtElements.forEach((dtElement: DataTableDirective, index: number) => {
               // if (idx === index) {
@@ -2171,7 +2172,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
             });
           });
         } else {
-          this.MyProfileService.removeArtistPlaylist(id).subscribe((response) => {
+          this.myProfileService.removeArtistPlaylist(id).subscribe((response) => {
             this.toastr.success(response['message'], 'Success!');
             this.dtElements.forEach((dtElement: DataTableDirective, index: number) => {
               // if (idx === index) {
@@ -2206,7 +2207,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
         },
         ajax: (dataTablesParameters: any, callback) => {
           that.audio_ins = [];
-          that.MyProfileService.getPlaylistTrack(dataTablesParameters, id).subscribe((response) => {
+          that.myProfileService.getPlaylistTrack(dataTablesParameters, id).subscribe((response) => {
             that.playlist_track = response['playlist'];
             if (that.playlist_track.length > 0) {
               this.audio_ins = [];
@@ -2245,7 +2246,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
         },
         ajax: (dataTablesParameters: any, callback) => {
           that.audio_ins = [];
-          that.MyProfileService.getArtistPlaylistTrack(dataTablesParameters, id).subscribe((response) => {
+          that.myProfileService.getArtistPlaylistTrack(dataTablesParameters, id).subscribe((response) => {
             that.playlist_track = response['playlist'];
             if (that.playlist_track.length > 0) {
               this.audio_ins = [];
@@ -2278,7 +2279,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
     let data = {
       search: event.query
     };
-    this.MyProfileService.getTrackForPlaylist(data).subscribe((response) => {
+    this.myProfileService.getTrackForPlaylist(data).subscribe((response) => {
       this.serach_track_list = response['track'];
     });
   }
@@ -2293,7 +2294,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
           };
           this.search_track.forEach((ele) => { data['track_id'].push(ele['_id']); });
           this.show_spinner = true;
-          this.MyProfileService.addTrackListenerPlaylist(data, this.playlist_data['_id']).subscribe((response) => {
+          this.myProfileService.addTrackListenerPlaylist(data, this.playlist_data['_id']).subscribe((response) => {
             this.toastr.success(response['message'], 'Success!');
             this.dtElements.forEach((dtElement: DataTableDirective, index: number) => {
               dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
@@ -2319,7 +2320,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
           };
           this.search_track.forEach((ele) => { data['track_id'].push(ele['_id']); });
           this.show_spinner = true;
-          this.MyProfileService.addTrackToArtistPlaylist(data, this.playlist_data['_id']).subscribe((response) => {
+          this.myProfileService.addTrackToArtistPlaylist(data, this.playlist_data['_id']).subscribe((response) => {
             this.dtElements.forEach((dtElement: DataTableDirective, index: number) => {
               dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
                 dtInstance.draw();
@@ -2359,7 +2360,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
             track_id: id,
             playlist_id: this.playlist_data['_id']
           };
-          this.MyProfileService.removeTrackListenerPlaylist(data).subscribe((response) => {
+          this.myProfileService.removeTrackListenerPlaylist(data).subscribe((response) => {
             this.toastr.success(response['message'], 'Success!');
             this.dtElements.forEach((dtElement: DataTableDirective, index: number) => {
               dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
@@ -2372,7 +2373,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
             track_id: id,
             playlist_id: this.playlist_data['_id']
           };
-          this.MyProfileService.removeTrackFromArtistPlaylist(data).subscribe((response) => {
+          this.myProfileService.removeTrackFromArtistPlaylist(data).subscribe((response) => {
             this.toastr.success(response['message'], 'Success!');
             this.dtElements.forEach((dtElement: DataTableDirective, index: number) => {
               dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
@@ -2386,14 +2387,14 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   getRegionList() {
-    this.MyProfileService.getAllRegion().subscribe((response) => {
+    this.myProfileService.getAllRegion().subscribe((response) => {
       this.region_list = response['Region'];
     });
   }
 
   getStateByRegion(id: any) {
     if (id && id !== '') {
-      this.MyProfileService.getStateByRegion({ region: id }).subscribe((response) => {
+      this.myProfileService.getStateByRegion({ region: id }).subscribe((response) => {
         this.state_list = response['state'];
       });
     }
@@ -2425,11 +2426,12 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
           formData.append('phone_no', this.upgrade_artist_data['phone_no']);
           formData.append('state', this.upgrade_artist_data['state']);
           formData.append('share_url', JSON.stringify(this.upgrade_artist_data['share_url']));
-          formData.append('dob', (new Date(this.upgrade_artist_data['year'], this.upgrade_artist_data['month'], this.upgrade_artist_data['day']).toString()));
-          this.MyProfileService.upgradeToArtist(formData).subscribe((response) => {
+          formData.append('dob',
+            (new Date(this.upgrade_artist_data['year'], this.upgrade_artist_data['month'], this.upgrade_artist_data['day']).toString()));
+          this.myProfileService.upgradeToArtist(formData).subscribe((response) => {
             this.toastr.success(response['message'], 'Success!');
             localStorage.removeItem('user');
-            this.MessageService.sendMessage({ upgrade_artist: true });
+            this.messageService.sendMessage({ upgrade_artist: true });
             this.router.navigate(['']);
           }, (error) => {
             this.show_spinner = false;
@@ -2459,7 +2461,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
   addBank(flag) {
     if (flag) {
       this.show_spinner = true;
-      this.MyProfileService.addNewPaymentMethod(this.bank_data).subscribe(async (response) => {
+      this.myProfileService.addNewPaymentMethod(this.bank_data).subscribe(async (response) => {
         this.toastr.success(response['message'], 'Success!');
         await this.getAllCard();
         this.show_spinner = false;
@@ -2476,7 +2478,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
 
   // get all card
   getAllCard() {
-    this.MyProfileService.getAllBank().subscribe((response) => {
+    this.myProfileService.getAllBank().subscribe((response) => {
       this.card_list = response['bank'];
       this.card_list.forEach((ele) => {
         ele['account_number'] = ele['account_number'].toString().replace(/.(?=.{4})/g, 'X');
@@ -2496,7 +2498,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
       confirmButtonText: 'Yes, delete it!'
     }).then((flag) => {
       if (flag.value) {
-        this.MyProfileService.removeBank(id).subscribe((response) => {
+        this.myProfileService.removeBank(id).subscribe((response) => {
           this.toastr.success(response['message'], 'Success!');
           this.getAllCard();
         });
@@ -2507,14 +2509,14 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
 
   // Make payment method default
   markAsDefault(id) {
-    this.MyProfileService.markAsDefault(id).subscribe((response) => {
+    this.myProfileService.markAsDefault(id).subscribe((response) => {
       this.toastr.success(response['message'], 'Success!');
     });
   }
 
   // Download track
   downloadTrack(id: any) {
-    this.MyProfileService.downloadTrack(id).subscribe(response => {
+    this.myProfileService.downloadTrack(id).subscribe(response => {
       window.location.href = this.user_img_url + response['filename'];
     }, error => {
       this.toastr.error(error['error'].message, 'Error!');

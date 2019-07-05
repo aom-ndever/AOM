@@ -11,10 +11,10 @@ export class MyMusicService {
   private user: any = '';
   private headers: any = '';
 
-  constructor(private http: HttpClient, private MessageService: MessageService) {
+  constructor(private http: HttpClient, private messageService: MessageService) {
     this.user = JSON.parse(localStorage.getItem('user'));
     this.headers = new HttpHeaders({ 'x-access-token': this.user.token });
-    this.MessageService.getMessage().subscribe((response) => {
+    this.messageService.getMessage().subscribe((response) => {
       if (response && response['loggedin_user']) {
         this.user = response['loggedin_user'];
         this.headers = new HttpHeaders({ 'x-access-token': this.user.token });

@@ -11,15 +11,15 @@ export class HeaderService {
 
   private headers = new Headers({ 'Content-Type': 'application/json' });
 
-  //Artist login
+  // Artist login
   artist_login(data: any) {
     return this.http.post(`${this.api_host}/artist_login`, data);
   }
-  //user login
+  // user login
   user_login(data: any) {
     return this.http.post(`${this.api_host}/user_login`, data);
   }
-  //login
+  // login
   login(data: any) {
     return this.http.post(`${this.api_host}/login`, data);
   }

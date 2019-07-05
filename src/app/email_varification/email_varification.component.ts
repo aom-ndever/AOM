@@ -15,21 +15,21 @@ export class EmailVarificationComponent implements OnInit {
 
 
   constructor(private fb: FormBuilder,
-    private EamilVarificationService: EamilVarificationService,
+    private eamilVarificationService: EamilVarificationService,
     private toastr: ToastrService,
     private route: ActivatedRoute,
     private router: Router
   ) {
     this.route.params.subscribe(res => {
       if (res.type && res.type === 'artist') {
-        this.EamilVarificationService.artistEmailVarification(res.id).subscribe(response => {
+        this.eamilVarificationService.artistEmailVarification(res.id).subscribe(response => {
           this.toastr.success(response['message'], 'Success!');
           this.router.navigate(['']);
         }, error => {
           this.toastr.error(error['error'].message, 'Error!');
         });
       } else {
-        this.EamilVarificationService.userEmailVarification(res.id).subscribe(response => {
+        this.eamilVarificationService.userEmailVarification(res.id).subscribe(response => {
           this.toastr.success(response['message'], 'Success!');
           this.router.navigate(['dashboard/']);
         }, error => {
@@ -39,8 +39,6 @@ export class EmailVarificationComponent implements OnInit {
     });
   }
 
-  ngOnInit() {
-
-  }
+  ngOnInit() { }
 
 }

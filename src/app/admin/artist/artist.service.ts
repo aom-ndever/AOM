@@ -5,48 +5,48 @@ import { environment } from '../../../../src/environments/environment';
 import { dashCaseToCamelCase } from '@angular/compiler/src/util';
 @Injectable()
 export class ArtistService {
-  private api_host : any = environment.API_URL;
-  private user : any = '';
-  private headers : any = '';
+  private api_host: any = environment.API_URL;
+  private user: any = '';
+  private headers: any = '';
 
-  constructor(private http: HttpClient) { 
+  constructor(private http: HttpClient) {
     this.user = JSON.parse(localStorage.getItem('user'));
-    this.headers = new HttpHeaders({ 'x-access-token' : this.user.token });  
+    this.headers = new HttpHeaders({ 'x-access-token': this.user.token });
   }
   // Get all artist details
-  getAllArtist(data : any) {
-    return this.http.post(`${this.api_host}/admin/get_artist`, data, {headers : this.headers});
+  getAllArtist(data: any) {
+    return this.http.post(`${this.api_host}/admin/get_artist`, data, { headers: this.headers });
   }
-  
+
   // get All music type
   getAllMusicType() {
     return this.http.get(`${this.api_host}/music_type`);
   }
 
   // suspend artist
-  suspendArtist(id : any) {
-    return this.http.post(`${this.api_host}/admin/flag/artist/${id}`, null, {headers : this.headers});
+  suspendArtist(id: any) {
+    return this.http.post(`${this.api_host}/admin/flag/artist/${id}`, null, { headers: this.headers });
   }
 
   // Get artist details
-  getArtist(data : any) {
+  getArtist(data: any) {
     return this.http.post(`${this.api_host}/get_artist`, data);
   }
   // Get artist track
-  getArtistTrack(data : any) {
+  getArtistTrack(data: any) {
     return this.http.post(`${this.api_host}/get_tracks`, data);
   }
   // Get Artist flag details
-  getArtistFlagDetails(data : any) {
-    return this.http.post(`${this.api_host}/admin/get_flag`, data, {headers : this.headers});
+  getArtistFlagDetails(data: any) {
+    return this.http.post(`${this.api_host}/admin/get_flag`, data, { headers: this.headers });
   }
-  // Remove track 
-  removeArtistTrack(id : any) {
-    return this.http.delete(`${this.api_host}/admin/delete_track/${id}`, {headers : this.headers});
+  // Remove track
+  removeArtistTrack(id: any) {
+    return this.http.delete(`${this.api_host}/admin/delete_track/${id}`, { headers: this.headers });
   }
   // Mark as featured
-  markAsFeatured(data : any) {
-    return this.http.put(`${this.api_host}/admin/featured_artist`, data, {headers : this.headers});
+  markAsFeatured(data: any) {
+    return this.http.put(`${this.api_host}/admin/featured_artist`, data, { headers: this.headers });
   }
   // get all state
   getAllState() {
@@ -54,6 +54,6 @@ export class ArtistService {
   }
   // suspend artist track
   suspendArtistTrack(id) {
-    return this.http.post(`${this.api_host}/admin/suspend/track/${id}`,null, {headers:this.headers});
+    return this.http.post(`${this.api_host}/admin/suspend/track/${id}`, null, { headers: this.headers });
   }
 }

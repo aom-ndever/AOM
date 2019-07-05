@@ -17,7 +17,7 @@ export class ConmmentsComponent implements OnInit {
   track_url: any = environment.API_URL + environment.ARTIST_TRACK;
   user_img_url: any = environment.API_URL + environment.USER_IMG;
   constructor(
-    private CommentsService: CommentsService,
+    private commentsService: CommentsService,
     private toastr: ToastrService,
     private route: ActivatedRoute,
     private titleService: Title,
@@ -37,7 +37,7 @@ export class ConmmentsComponent implements OnInit {
     let data = {
       artist_id: this.artistdata['_id']
     };
-    this.CommentsService.getAllCommentsByArtist(-1, data).subscribe((response) => {
+    this.commentsService.getAllCommentsByArtist(-1, data).subscribe((response) => {
       this.artistcomments = response['comment'];
     });
   }
@@ -46,8 +46,8 @@ export class ConmmentsComponent implements OnInit {
     if (this.user && this.user['user']) {
       let data = {
         comment_id: id
-      }
-      this.CommentsService.upVoteComment(data).subscribe((response) => {
+      };
+      this.commentsService.upVoteComment(data).subscribe((response) => {
         this.getAllArtistComment();
         this.toastr.success(response['message'], 'Success!');
       }, (error) => {
@@ -62,8 +62,8 @@ export class ConmmentsComponent implements OnInit {
     if (this.user && this.user['user']) {
       let data = {
         comment_id: id
-      }
-      this.CommentsService.downVoteComment(data).subscribe((response) => {
+      };
+      this.commentsService.downVoteComment(data).subscribe((response) => {
         this.getAllArtistComment();
         this.toastr.success(response['message'], 'Success!');
       }, (error) => {

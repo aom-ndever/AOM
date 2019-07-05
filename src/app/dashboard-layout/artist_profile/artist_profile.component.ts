@@ -60,14 +60,30 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
   card_loader: boolean = false;
   show_more_flag: boolean = false;
   isFollowed: boolean = false;
+  style = {
+    base: {
+      color: '#32325d',
+      lineHeight: '18px',
+      fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
+      fontSmoothing: 'antialiased',
+      fontSize: '16px',
+      '::placeholder': {
+        color: '#aab7c4'
+      }
+    },
+    invalid: {
+      color: '#fa755a',
+      iconColor: '#fa755a'
+    }
+  };
 
   constructor(
-    private ArtistProfileService: ArtistProfileService,
+    private artistProfileService: ArtistProfileService,
     private toastr: ToastrService,
     private route: ActivatedRoute,
     private router: Router,
     private lightbox: Lightbox,
-    private MessageService: MessageService,
+    private messageService: MessageService,
     private modalService: NgbModal,
     private fb: FormBuilder,
     private titleService: Title,
@@ -77,7 +93,7 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
     this.titleService.setTitle(this.route.snapshot.data['title']);
     this.user = JSON.parse(localStorage.getItem('user'));
     // console.log('this.user => ', this.user);
-    this.subscription = this.MessageService.getMessage().subscribe((response) => {
+    this.subscription = this.messageService.getMessage().subscribe((response) => {
       if (response && response['list'] !== 1) {
         this.audio_ins.forEach((ele, idx) => { this.audio_ins[idx] = false; });
       }
@@ -131,8 +147,8 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
     this.artistdata = this.route.snapshot.data['artist'].artist;
     this.artistmedia = this.route.snapshot.data['media'].media;
     this.artistfollower = this.route.snapshot.data['follower'].artist;
-    this.MessageService.followList.subscribe(res => {
-      this.ArtistProfileService.getAllFollower({ artist_id: this.route.snapshot.paramMap.get('id') }).subscribe(response => {
+    this.messageService.followList.subscribe(res => {
+      this.artistProfileService.getAllFollower({ artist_id: this.route.snapshot.paramMap.get('id') }).subscribe(response => {
         this.artistfollower = response['artist'];
       });
       // this.artistfollower = this.route.snapshot.data['follower'].artist;
@@ -171,14 +187,14 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
             that.audio_ins = [];
             dataTablesParameters['artist_id'] = params['id'];
             dataTablesParameters['sort_by'] = this.sort_by;
-            that.ArtistProfileService.getAllTrack(dataTablesParameters).subscribe((response) => {
+            that.artistProfileService.getAllTrack(dataTablesParameters).subscribe((response) => {
               this.ngxService.stop();
               that.artisttrack = response['track']['music'];
               if (that.artisttrack.length > 0) {
                 that.artisttrack.forEach((ele) => { that.audio_ins.push(false); });
                 if (that.user && that.user['user']) {
-                  that.ArtistProfileService.getBookmarkedTrackList().subscribe((response) => {
-                    let bookmark_list = response['bookmark'];
+                  that.artistProfileService.getBookmarkedTrackList().subscribe((resp) => {
+                    let bookmark_list = resp['bookmark'];
                     that.artisttrack.forEach((ele) => {
                       let flag = false;
                       bookmark_list.forEach((bookmark) => {
@@ -229,13 +245,13 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
             that.audio_ins = [];
             dataTablesParameters['artist_id'] = params['id'];
             dataTablesParameters['sort_by'] = this.sort_by;
-            that.ArtistProfileService.getAllRanking(dataTablesParameters).subscribe((response) => {
+            that.artistProfileService.getAllRanking(dataTablesParameters).subscribe((response) => {
               that.rankingtrack = response['track']['music'];
               that.rankingtrack.forEach((ele) => { that.audio_ins.push(false); });
               // that.rankingtrack.forEach((ele) => {ele['is_bookmarked'] = false;});
               if (that.user && that.user['user']) {
-                that.ArtistProfileService.getBookmarkedTrackList().subscribe((response) => {
-                  let bookmark_list = response['bookmark'];
+                that.artistProfileService.getBookmarkedTrackList().subscribe((resp) => {
+                  let bookmark_list = resp['bookmark'];
                   that.rankingtrack.forEach((ele) => {
                     let flag = false;
                     bookmark_list.forEach((bookmark) => {
@@ -270,7 +286,7 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
         ]
       };
       if (this.user && this.user['user']) {
-        this.ArtistProfileService.getUserFollowing().subscribe((response) => {
+        this.artistProfileService.getUserFollowing().subscribe((response) => {
           if (response['artist'] && response['artist'].indexOf(params['id']) !== -1) {
             this.artist_following = true;
           }
@@ -328,7 +344,7 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
       this.audio_ins[idx] = false;
     });
     this.audio_ins[index] = true;
-    this.MessageService.sendMessage({ data: data, index: index, action: 'start', list: 1 });
+    this.messageService.sendMessage({ data: data, index: index, action: 'start', list: 1 });
   }
 
   // Stop audio
@@ -340,7 +356,7 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
     data.forEach((ele, idx) => {
       this.audio_ins[idx] = false;
     });
-    this.MessageService.sendMessage({ data: data, index: index, action: 'stop', list: 1 });
+    this.messageService.sendMessage({ data: data, index: index, action: 'stop', list: 1 });
   }
 
   // Play audio
@@ -356,7 +372,7 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
       this.rank_audio_ins[idx] = false;
     });
     this.rank_audio_ins[index] = true;
-    this.MessageService.sendMessage({ data: data, index: index, action: 'start', list: 2 });
+    this.messageService.sendMessage({ data: data, index: index, action: 'start', list: 2 });
   }
 
   // Stop audio
@@ -368,7 +384,7 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
     data.forEach((ele, idx) => {
       this.rank_audio_ins[idx] = false;
     });
-    this.MessageService.sendMessage({ data: data, index: index, action: 'stop', list: 2 });
+    this.messageService.sendMessage({ data: data, index: index, action: 'stop', list: 2 });
   }
 
   // Follow artist
@@ -379,8 +395,8 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
       let data = {
         artist_id: id
       };
-      this.ArtistProfileService.followArtist(data).subscribe(response => {
-        this.MessageService.changeFollower();
+      this.artistProfileService.followArtist(data).subscribe(response => {
+        this.messageService.changeFollower();
         this.toastr.success(response['message'], 'Success!');
         if (response['flag'] === 'follow') {
           this.artist_following = true;
@@ -412,7 +428,7 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
         'artist_id': this.artistdata._id,
         'status': true
       };
-      this.ArtistProfileService.trackLike(data).subscribe(response => {
+      this.artistProfileService.trackLike(data).subscribe(response => {
         if (response['flag'] === 'liked') {
           this.artisttrack[index].no_of_likes = 1;
         } else if (response['flag'] === 'unliked') {
@@ -437,7 +453,7 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
         'artist_id': this.artistdata._id,
         'status': true
       };
-      this.ArtistProfileService.trackLike(data).subscribe(response => {
+      this.artistProfileService.trackLike(data).subscribe(response => {
         if (response['flag'] === 'liked') {
           this.rankingtrack[index].no_of_likes = 1;
         } else if (response['flag'] === 'unliked') {
@@ -499,7 +515,7 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
   downloadTrack(id: any) {
     let user = JSON.parse(localStorage.getItem('user'));
     if (user && user.user) {
-      this.ArtistProfileService.downloadTrack(id).subscribe(response => {
+      this.artistProfileService.downloadTrack(id).subscribe(response => {
         window.location.href = this.user_img_url + response['filename'];
       }, error => {
         this.toastr.error(error['error'].message, 'Error!');
@@ -520,7 +536,7 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
           // is_bookmarked: this.artisttrack[index]['is_bookmarked'],
           track_id: id
         };
-        this.ArtistProfileService.bookmarkTrack(data).subscribe((response) => {
+        this.artistProfileService.bookmarkTrack(data).subscribe((response) => {
           this.toastr.success(response['message'], 'Success!');
         }, (error) => {
           this.artisttrack[index]['is_bookmarked'] = !this.artisttrack[index]['is_bookmarked'];
@@ -532,7 +548,7 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
           // is_bookmarked: this.rankingtrack[index]['is_bookmarked'],
           track_id: id
         };
-        this.ArtistProfileService.bookmarkTrack(data).subscribe((response) => {
+        this.artistProfileService.bookmarkTrack(data).subscribe((response) => {
           this.toastr.success(response['message'], 'Success!');
         }, (error) => {
           this.rankingtrack[index]['is_bookmarked'] = !this.rankingtrack[index]['is_bookmarked'];
@@ -585,7 +601,7 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
         track_id: track['_id'],
         url: url
       };
-      this.ArtistProfileService.shareTrackViaEmail(data).subscribe((response) => {
+      this.artistProfileService.shareTrackViaEmail(data).subscribe((response) => {
         this.toastr.success(response['message'], 'Success!');
         this.emailmodalRef.close();
       }, (error) => {
@@ -611,7 +627,7 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
         track_id: track['_id'],
         url: url
       };
-      this.ArtistProfileService.shareTrackViaSms(data).subscribe((response) => {
+      this.artistProfileService.shareTrackViaSms(data).subscribe((response) => {
         this.toastr.success(response['message'], 'Success!');
         this.emailmodalRef.close();
         this.share_data = {};
@@ -658,22 +674,7 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
     }
   }
 
-  style = {
-    base: {
-      color: '#32325d',
-      lineHeight: '18px',
-      fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
-      fontSmoothing: 'antialiased',
-      fontSize: '16px',
-      '::placeholder': {
-        color: '#aab7c4'
-      }
-    },
-    invalid: {
-      color: '#fa755a',
-      iconColor: '#fa755a'
-    }
-  };
+
 
   setupStripeFrom() {
     var stripe = Stripe(environment.STRIPE_PUB_KEY);
@@ -708,7 +709,7 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
             track_id: this.track_data['_id'],
             card_id: result['token']['id']
           };
-          this.ArtistProfileService.purchaseTrack(data).subscribe((response) => {
+          this.artistProfileService.purchaseTrack(data).subscribe((response) => {
             this.toastr.success(response['message'], 'Success!');
             this.modalRef.close();
           }, (error) => {

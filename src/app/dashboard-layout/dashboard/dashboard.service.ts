@@ -10,7 +10,7 @@ export class DashboardService {
   private headers: any = '';
   constructor(private http: HttpClient) {
     // this.user = JSON.parse(localStorage.getItem('user'));
-    // this.headers = new HttpHeaders({ 'x-access-token' : this.user.token });  
+    // this.headers = new HttpHeaders({ 'x-access-token' : this.user.token });
   }
 
   // Get Artist and track

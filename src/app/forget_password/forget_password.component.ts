@@ -17,9 +17,10 @@ export class ForgetPasswordComponent implements OnInit {
   show_spinner: boolean = false;
   forget_password: any = '';
   conf: any = '';
-  param: any = {}
-  constructor(private fb: FormBuilder,
-    private ForgetPasswordService: ForgetPasswordService,
+  param: any = {};
+  constructor(
+    private fb: FormBuilder,
+    private forgetPasswordService: ForgetPasswordService,
     private toastr: ToastrService,
     private route: ActivatedRoute,
     private router: Router
@@ -38,18 +39,17 @@ export class ForgetPasswordComponent implements OnInit {
   passwordMatchValidator(g: FormGroup) {
     return g.get('password').value === g.get('conf').value ? null : g.get('conf').setErrors({ 'mismatch': true });
   }
-  ngOnInit() {
 
-  }
+  ngOnInit() { }
 
   resetPassword() {
-    if (this.param && this.param.type == 'artist') {
+    if (this.param && this.param.type === 'artist') {
       const data = {
         token: this.param.id,
         password: this.forget_password
       };
       this.show_spinner = true;
-      this.ForgetPasswordService.artistChangePassword(data).subscribe(response => {
+      this.forgetPasswordService.artistChangePassword(data).subscribe(response => {
         this.forget_password = '';
         this.conf = '';
         this.router.navigate(['']);
@@ -60,13 +60,13 @@ export class ForgetPasswordComponent implements OnInit {
       }, () => {
         this.show_spinner = false;
       });
-    } else if (this.param && this.param.type == 'admin') {
+    } else if (this.param && this.param.type === 'admin') {
       const data = {
         token: this.param.id,
         password: this.forget_password
       };
       this.show_spinner = true;
-      this.ForgetPasswordService.adminChangePassword(data).subscribe(response => {
+      this.forgetPasswordService.adminChangePassword(data).subscribe(response => {
         this.forget_password = '';
         this.conf = '';
         this.router.navigate(['/admin']);
@@ -83,7 +83,7 @@ export class ForgetPasswordComponent implements OnInit {
         password: this.forget_password
       };
       this.show_spinner = true;
-      this.ForgetPasswordService.userChangePassword(data).subscribe(response => {
+      this.forgetPasswordService.userChangePassword(data).subscribe(response => {
         this.forget_password = '';
         this.conf = '';
         this.router.navigate(['']);

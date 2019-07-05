@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, OnDestroy, AfterViewInit } from '@angular/core';
 import { NgxCarousel } from 'ngx-carousel';
-import { environment } from '../../../../src/environments/environment';
+import { environment } from '../../../environments/environment';
 import { MessageService } from '../message.service';
 import { Subscription } from 'rxjs/Subscription';
 import { CarouselService } from './carousel.service';
@@ -23,11 +23,11 @@ export class CarouselComponent implements OnInit, OnDestroy, AfterViewInit {
   subscription: Subscription;
   flag: boolean = true;
   constructor(
-    private MessageService: MessageService,
-    private CarouselService: CarouselService,
+    private messageService: MessageService,
+    private carouselService: CarouselService,
     private toastr: ToastrService
   ) {
-    this.subscription = this.MessageService.getMessage().subscribe((response) => {
+    this.subscription = this.messageService.getMessage().subscribe((response) => {
       if (response && response['list'] !== 1) {
         this.audio_ins.forEach((ele, idx) => { this.audio_ins[idx] = false; });
       }
@@ -125,7 +125,7 @@ export class CarouselComponent implements OnInit, OnDestroy, AfterViewInit {
       this.audio_ins[idx] = false;
     });
     this.audio_ins[index] = true;
-    this.MessageService.sendMessage({ data: this.allData, index: index, action: 'start', list: 1 });
+    this.messageService.sendMessage({ data: this.allData, index: index, action: 'start', list: 1 });
     // }
   }
   // Stop audio
@@ -133,7 +133,7 @@ export class CarouselComponent implements OnInit, OnDestroy, AfterViewInit {
     data.forEach((ele, idx) => {
       this.audio_ins[idx] = false;
     });
-    this.MessageService.sendMessage({ data: this.allData, index: index, action: 'stop', list: 1 });
+    this.messageService.sendMessage({ data: this.allData, index: index, action: 'stop', list: 1 });
   }
   // Follow artist
   followArtist(id: any) {
@@ -142,7 +142,7 @@ export class CarouselComponent implements OnInit, OnDestroy, AfterViewInit {
       let data = {
         'artist_id': id
       };
-      this.CarouselService.followArtist(data).subscribe((response) => {
+      this.carouselService.followArtist(data).subscribe((response) => {
         this.toastr.success(response['message'], 'Success!');
         this.getAllFollower();
       }, (error) => {
@@ -155,11 +155,11 @@ export class CarouselComponent implements OnInit, OnDestroy, AfterViewInit {
   }
   // get All follower
   getAllFollower() {
-    let user = JSON.parse(localStorage.getItem('user'));
+    const user = JSON.parse(localStorage.getItem('user'));
     if (user && user['user']) {
-      this.CarouselService.getFollower().subscribe(response => {
+      this.carouselService.getFollower().subscribe(response => {
         this.images.forEach((ele) => {
-          if (response['artist'] && response['artist'].indexOf(ele['artist_id']) != -1) {
+          if (response['artist'] && response['artist'].indexOf(ele['artist_id']) !== -1) {
             ele['is_followed'] = true;
           } else {
             ele['is_followed'] = false;
@@ -168,4 +168,5 @@ export class CarouselComponent implements OnInit, OnDestroy, AfterViewInit {
       });
     }
   }
+
 }

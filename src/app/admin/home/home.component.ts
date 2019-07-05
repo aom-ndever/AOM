@@ -22,7 +22,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   artist_info: any = [];
   private chart: AmChart;
   constructor(
-    private HomeService: HomeService,
+    private homeService: HomeService,
     private AmCharts: AmChartsService,
     private modalService: BsModalService,
     private ngxService: NgxUiLoaderService
@@ -36,8 +36,6 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.calculateDateFromDays(this.analytics_days);
   }
 
-  ngAfterViewInit() { }
-
   ngOnDestroy() {
     if (this.chart) {
       this.AmCharts.destroyChart(this.chart);
@@ -49,19 +47,19 @@ export class HomeComponent implements OnInit, OnDestroy {
       artist_id: id
     };
     if (type === 'track') {
-      this.HomeService.getArtistTrackById(data).subscribe((response) => {
+      this.homeService.getArtistTrackById(data).subscribe((response) => {
         this.artist_info = response['artist']['track'];
       });
     } else if (type === 'follower') {
-      this.HomeService.getArtistFollowerById(data).subscribe((response) => {
+      this.homeService.getArtistFollowerById(data).subscribe((response) => {
         this.artist_info = response['artist']['artist'];
       });
     } else if (type === 'vote') {
-      this.HomeService.getArtistVoteById(data).subscribe((response) => {
+      this.homeService.getArtistVoteById(data).subscribe((response) => {
         this.artist_info = response['artist']['vote'];
       });
     } else {
-      this.HomeService.getArtistCommentById(data).subscribe((response) => {
+      this.homeService.getArtistCommentById(data).subscribe((response) => {
         this.artist_info = response['artist']['comment'];
       });
     }
@@ -113,7 +111,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   // Get all aritst based on max vote
   getMaxVoteAritst(data: any) {
-    this.HomeService.getMaxVoteArtists(data).subscribe(response => {
+    this.homeService.getMaxVoteArtists(data).subscribe(response => {
       this.artist_vote = response;
       this.artistChart(response['day_vote']);
       this.topLocationChart(response['location']);
@@ -124,7 +122,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   // Get all aritst based on max vote
   getMaxLikeAritst(data: any) {
-    this.HomeService.getMaxLikeArtists(data).subscribe(response => {
+    this.homeService.getMaxLikeArtists(data).subscribe(response => {
       this.artist_vote = response;
       this.artistChart(response['likes']);
       this.topLocationChart(response['location']);
@@ -134,7 +132,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   // Get all aritst based on max vote
   getMaxCommentAritst(data: any) {
-    this.HomeService.getMaxCommentArtists(data).subscribe(response => {
+    this.homeService.getMaxCommentArtists(data).subscribe(response => {
       this.artist_vote = response;
       this.artistChart(response['comment']);
       this.topLocationChart(response['location']);

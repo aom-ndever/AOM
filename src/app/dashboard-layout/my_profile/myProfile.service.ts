@@ -11,10 +11,10 @@ export class MyProfileService {
   private user: any = '';
   private headers: any = '';
 
-  constructor(private http: HttpClient, private MessageService: MessageService) {
+  constructor(private http: HttpClient, private messageService: MessageService) {
     this.user = JSON.parse(localStorage.getItem('user'));
     this.headers = new HttpHeaders({ 'x-access-token': this.user.token });
-    this.MessageService.getMessage().subscribe((response) => {
+    this.messageService.getMessage().subscribe((response) => {
       if (response && response['loggedin_user']) {
         this.user = response['loggedin_user'];
         this.headers = new HttpHeaders({ 'x-access-token': this.user.token });
@@ -116,7 +116,7 @@ export class MyProfileService {
   getAllFollowerAnalytic(data: any) {
     return this.http.post(`${this.api_host}/artist/analytics/followers`, data, { headers: this.headers });
   }
-  // Get all track/contenst 
+  // Get all track/contenst
   getAllTrackContestData(data: any) {
     return this.http.post(`${this.api_host}/artist/track/analytics/track`, data, { headers: this.headers });
   }
@@ -151,7 +151,7 @@ export class MyProfileService {
     return this.http.put(`${this.api_host}/user/playlist/${id}`, data, { headers: this.headers });
   }
   // Delete user playlist by id
-  deleteListenerPlaylistById(id:any) {
+  deleteListenerPlaylistById(id: any) {
     return this.http.delete(`${this.api_host}/user/playlist/${id}`, { headers: this.headers });
   }
   // Get track for playlist
@@ -187,7 +187,7 @@ export class MyProfileService {
     return this.http.put(`${this.api_host}/artist/playlist/${id}`, data, { headers: this.headers });
   }
   // Remove artist playlist
-  removeArtistPlaylist(id:any) {
+  removeArtistPlaylist(id: any) {
     return this.http.delete(`${this.api_host}/artist/playlist/${id}`, { headers: this.headers });
   }
   // Add track in artist playlist
@@ -230,11 +230,11 @@ export class MyProfileService {
   getAllPurchasedTrack(data) {
     return this.http.post(`${this.api_host}/user/track/purchased`, data, { headers: this.headers });
   }
-  // download the track 
+  // download the track
   downloadTrack(id: any) {
     return this.http.get(`${this.api_host}/user/track/${id}/purchase_track_download`, { headers: this.headers });
   }
-  // Get all transaction 
+  // Get all transaction
   getAllTransction(data) {
     return this.http.post(`${this.api_host}/artist/transaction`, data, { headers: this.headers });
   }

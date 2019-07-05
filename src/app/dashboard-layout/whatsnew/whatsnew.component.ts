@@ -40,9 +40,10 @@ export class WhatsNewComponent implements OnInit, OnDestroy {
   track_start: any = 0;
   track_loader: boolean = false;
   length: any = 10;
-  constructor(private WhatsNewService: WhatsNewService,
+  constructor(
+    private whatsNewService: WhatsNewService,
     private toastr: ToastrService,
-    private MessageService: MessageService,
+    private messageService: MessageService,
     private titleService: Title,
     private route: ActivatedRoute,
     private ngxService: NgxUiLoaderService
@@ -80,23 +81,23 @@ export class WhatsNewComponent implements OnInit, OnDestroy {
         'enable': true
       }];
     this.getAllState();
-    this.subscription = this.MessageService.getMessage().subscribe((response) => {
-      if (response && response['list'] != 1) {
+    this.subscription = this.messageService.getMessage().subscribe((response) => {
+      if (response && response['list'] !== 1) {
         this.audio_ins.forEach((ele, idx) => { this.audio_ins[idx] = false; });
       }
-      if (response && response['action'] == 'stop' && response['list'] == 1) {
+      if (response && response['action'] === 'stop' && response['list'] === 1) {
         this.audio_ins[response['index']] = false;
       }
-      if (response && response['action'] == 'start' && response['list'] == 1) {
+      if (response && response['action'] === 'start' && response['list'] === 1) {
         this.audio_ins[response['index']] = true;
       }
-      if (response && response['list'] == 1 && response['action'] == 'next' || response['action'] == 'prev') {
-        if (response['track_action'] && response['track_action'] == 'pause') {
+      if (response && response['list'] === 1 && response['action'] === 'next' || response['action'] === 'prev') {
+        if (response['track_action'] && response['track_action'] === 'pause') {
           this.audio_ins.forEach((ele, idx) => { this.audio_ins[idx] = false; });
           this.audio_ins[response['index']] = true;
         }
       }
-      if (response && response['action'] == 'bottom_play' && response['list'] == 1) {
+      if (response && response['action'] === 'bottom_play' && response['list'] === 1) {
         this.audio_ins.forEach((ele, idx) => { this.audio_ins[idx] = false; });
         this.audio_ins[response['index']] = true;
       }
@@ -138,7 +139,7 @@ export class WhatsNewComponent implements OnInit, OnDestroy {
 
     this.audio_ins = [];
     this.show_loader = true;
-    this.WhatsNewService.getWhatsnewData(data).subscribe(response => {
+    this.whatsNewService.getWhatsnewData(data).subscribe(response => {
       this.ngxService.stop();
       this.whatsnewdata = response;
       this.artist_list = response['artist'];
@@ -164,7 +165,7 @@ export class WhatsNewComponent implements OnInit, OnDestroy {
   // Get all featured artist
   getAllFeaturedArtist(data) {
     this.feature_loader = true;
-    this.WhatsNewService.getAllFeaturedArtist(data).subscribe((response) => {
+    this.whatsNewService.getAllFeaturedArtist(data).subscribe((response) => {
       this.featured_artist = response['artist'];
       this.feature_loader = false;
     });
@@ -182,7 +183,7 @@ export class WhatsNewComponent implements OnInit, OnDestroy {
       this.audio_ins[idx] = false;
     });
     this.audio_ins[index] = true;
-    this.MessageService.sendMessage({ data: data, index: index, action: 'start', list: 1 });
+    this.messageService.sendMessage({ data: data, index: index, action: 'start', list: 1 });
   }
   // Stop audio
   stopAudio(index, data: any) {
@@ -194,7 +195,7 @@ export class WhatsNewComponent implements OnInit, OnDestroy {
     data.forEach((ele, idx) => {
       this.audio_ins[idx] = false;
     });
-    this.MessageService.sendMessage({ data: data, index: index, action: 'stop', list: 1 });
+    this.messageService.sendMessage({ data: data, index: index, action: 'stop', list: 1 });
   }
   // Filter result
   filter(e: any) {
@@ -207,7 +208,7 @@ export class WhatsNewComponent implements OnInit, OnDestroy {
       };
       this.artist_start = 0;
       this.track_start = 0;
-      this.WhatsNewService.getWhatsnewData(data).subscribe(response => {
+      this.whatsNewService.getWhatsnewData(data).subscribe(response => {
         this.whatsnewdata = response;
         this.artist_list = response['artist'];
         this.track_list = response['track'];
@@ -244,7 +245,7 @@ export class WhatsNewComponent implements OnInit, OnDestroy {
     }
     this.show_filter = false;
     this.show_loader = true;
-    this.WhatsNewService.getWhatsnewData(data).subscribe(response => {
+    this.whatsNewService.getWhatsnewData(data).subscribe(response => {
       this.whatsnewdata = response;
       this.artist_list = response['artist'];
       this.track_list = response['track'];
@@ -258,7 +259,7 @@ export class WhatsNewComponent implements OnInit, OnDestroy {
   }
   // Get all music type
   getAllMusicType() {
-    this.WhatsNewService.getAllMusicType().subscribe(response => {
+    this.whatsNewService.getAllMusicType().subscribe(response => {
       this.music_type_list = response['music'];
     });
   }
@@ -269,7 +270,7 @@ export class WhatsNewComponent implements OnInit, OnDestroy {
       let data = {
         artist_id: id
       };
-      this.WhatsNewService.followArtist(data).subscribe(response => {
+      this.whatsNewService.followArtist(data).subscribe(response => {
         this.toastr.success(response['message'], 'Success!');
         this.getAllFollower();
       }, error => {
@@ -283,17 +284,17 @@ export class WhatsNewComponent implements OnInit, OnDestroy {
   getAllFollower() {
     let user = JSON.parse(localStorage.getItem('user'));
     if (user && user['user']) {
-      this.WhatsNewService.getFollower().subscribe(response => {
+      this.whatsNewService.getFollower().subscribe(response => {
 
         this.artist_list.forEach((ele) => {
-          if (response['artist'] && response['artist'].indexOf(ele['_id']) != -1) {
+          if (response['artist'] && response['artist'].indexOf(ele['_id']) !== -1) {
             ele['is_followed'] = true;
           } else {
             ele['is_followed'] = false;
           }
         });
         this.featured_artist.forEach((ele) => {
-          if (response['artist'] && response['artist'].indexOf(ele['_id']) != -1) {
+          if (response['artist'] && response['artist'].indexOf(ele['_id']) !== -1) {
             ele['is_followed'] = true;
           } else {
             ele['is_followed'] = false;
@@ -304,7 +305,7 @@ export class WhatsNewComponent implements OnInit, OnDestroy {
   }
   // get all state
   getAllState() {
-    this.WhatsNewService.getAllState().subscribe((response) => {
+    this.whatsNewService.getAllState().subscribe((response) => {
       this.state_list = response['state'];
     });
   }
@@ -316,7 +317,7 @@ export class WhatsNewComponent implements OnInit, OnDestroy {
       length: this.length
     };
     this.artist_loader = true;
-    this.WhatsNewService.getWhatsnewData(data).subscribe(response => {
+    this.whatsNewService.getWhatsnewData(data).subscribe(response => {
       // this.whatsnewdata = response;
       this.artist_list = [...this.artist_list, ...response['artist']];
       this.getAllFollower();
@@ -334,7 +335,7 @@ export class WhatsNewComponent implements OnInit, OnDestroy {
       length: this.length
     };
     this.track_loader = true;
-    this.WhatsNewService.getWhatsnewData(data).subscribe(response => {
+    this.whatsNewService.getWhatsnewData(data).subscribe(response => {
       // this.whatsnewdata = response;
       this.track_list = [...this.track_list, ...response['track']];
       this.getAllFollower();

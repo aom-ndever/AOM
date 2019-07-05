@@ -34,7 +34,7 @@ export class RolesComponent implements OnInit {
   role_row_cnt = 1;
   req_row_cnt = 1;
   constructor(
-    private RolesService: RolesService,
+    private rolesService: RolesService,
     private toastr: ToastrService,
     private modalService: BsModalService,
     private fb: FormBuilder
@@ -62,7 +62,7 @@ export class RolesComponent implements OnInit {
     if (typeof (control.value || '') === 'string' || (control.value || '') instanceof String) {
       let isWhitespace = (control.value || '').trim().length === 0;
       let isValid = !isWhitespace;
-      return isValid ? null : { 'whitespace': true }
+      return isValid ? null : { 'whitespace': true };
     }
   }
   ngOnInit() {
@@ -81,8 +81,8 @@ export class RolesComponent implements OnInit {
       },
       ajax: (dataTablesParameters: any, callback) => {
         setTimeout(() => {
-          dataTablesParameters['sort'] = [{ "field": this.sort, value: 1 }];
-          that.RolesService.getAllAdministrator(dataTablesParameters).subscribe(response => {
+          dataTablesParameters['sort'] = [{ 'field': this.sort, value: 1 }];
+          that.rolesService.getAllAdministrator(dataTablesParameters).subscribe(response => {
             that.roles_data = response['admin'];
 
             callback({
@@ -109,8 +109,9 @@ export class RolesComponent implements OnInit {
       },
       ajax: (dataTablesParameters: any, callback) => {
         setTimeout(() => {
-          dataTablesParameters['sort'] = [this.sort_request == -1 ? { "field": "end_date", value: -1 } : { "field": "start_date", value: 1 }];
-          that.RolesService.getAllRequest(dataTablesParameters).subscribe(response => {
+          dataTablesParameters['sort'] =
+            [this.sort_request === -1 ? { 'field': 'end_date', value: -1 } : { 'field': 'start_date', value: 1 }];
+          that.rolesService.getAllRequest(dataTablesParameters).subscribe(response => {
             that.request_data = response['contest']['contest'];
 
             callback({
@@ -143,7 +144,7 @@ export class RolesComponent implements OnInit {
 
   sortRole(idx: any) {
     this.dtElements.forEach((dtElement: DataTableDirective, index: number) => {
-      if (idx == index) {
+      if (idx === index) {
         dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
           dtInstance.draw();
         });
@@ -153,7 +154,7 @@ export class RolesComponent implements OnInit {
 
   sortRequest(idx: any) {
     this.dtElements.forEach((dtElement: DataTableDirective, index: number) => {
-      if (idx == index) {
+      if (idx === index) {
         dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
           dtInstance.draw();
         });
@@ -173,10 +174,10 @@ export class RolesComponent implements OnInit {
       confirmButtonText: 'Yes, Accept it!'
     }).then((flag) => {
       if (flag.value) {
-        thi.RolesService.acceptContestRequest(id).subscribe(response => {
+        thi.rolesService.acceptContestRequest(id).subscribe(response => {
           thi.toastr.success(response['message'], 'Success!');
           thi.dtElements.forEach((dtElement: DataTableDirective, index: number) => {
-            if (idx == index) {
+            if (idx === index) {
               dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
                 dtInstance.draw();
               });
@@ -201,10 +202,10 @@ export class RolesComponent implements OnInit {
       confirmButtonText: 'Yes, Reject it!'
     }).then((flag) => {
       if (flag.value) {
-        thi.RolesService.rejectContestRequest(id).subscribe(response => {
+        thi.rolesService.rejectContestRequest(id).subscribe(response => {
           thi.toastr.success(response['message'], 'Success!');
           thi.dtElements.forEach((dtElement: DataTableDirective, index: number) => {
-            if (idx == index) {
+            if (idx === index) {
               dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
                 dtInstance.draw();
               });
@@ -219,7 +220,7 @@ export class RolesComponent implements OnInit {
 
   // Get all music type
   getAllMusicTypes() {
-    this.RolesService.getAllMusicType().subscribe((response) => {
+    this.rolesService.getAllMusicType().subscribe((response) => {
       this.music_type = response['music'];
     });
   }
@@ -228,9 +229,9 @@ export class RolesComponent implements OnInit {
   addNewAdmin(idx: any, flag) {
     if (flag) {
       this.show_spinner = true;
-      this.RolesService.addNewAdmin(this.user_data).subscribe((response) => {
+      this.rolesService.addNewAdmin(this.user_data).subscribe((response) => {
         this.dtElements.forEach((dtElement: DataTableDirective, index: number) => {
-          if (idx == index) {
+          if (idx === index) {
             dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
               dtInstance.draw();
             });
@@ -247,7 +248,7 @@ export class RolesComponent implements OnInit {
     }
     this.add_admin_validation = !flag;
   }
-  // remove admin 
+  // remove admin
   removeAdmin(id: any, idx: any) {
     let thi = this;
     swal({
@@ -260,10 +261,10 @@ export class RolesComponent implements OnInit {
       confirmButtonText: 'Yes, delete it!'
     }).then((flag) => {
       if (flag.value) {
-        thi.RolesService.deleteAdmin(id).subscribe(response => {
+        thi.rolesService.deleteAdmin(id).subscribe(response => {
           thi.toastr.success(response['message'], 'Success!');
           thi.dtElements.forEach((dtElement: DataTableDirective, index: number) => {
-            if (idx == index) {
+            if (idx === index) {
               dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
                 dtInstance.draw();
               });
@@ -281,18 +282,18 @@ export class RolesComponent implements OnInit {
     let thi = this;
     swal({
       title: 'Are you sure?',
-      text: `You want to ${status == 'suspended' ? ' un-suspend' : ' suspend'} this account!`,
+      text: `You want to ${status === 'suspended' ? ' un-suspend' : ' suspend'} this account!`,
       type: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes,' + (status == 'suspended' ? ' un-suspend' : ' suspend') + ' it!'
+      confirmButtonText: 'Yes,' + (status === 'suspended' ? ' un-suspend' : ' suspend') + ' it!'
     }).then((flag) => {
       if (flag.value) {
-        thi.RolesService.suspendAdmin(id).subscribe(response => {
+        thi.rolesService.suspendAdmin(id).subscribe(response => {
           thi.toastr.success(response['message'], 'Success!');
           thi.dtElements.forEach((dtElement: DataTableDirective, index: number) => {
-            if (idx == index) {
+            if (idx === index) {
               dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
                 dtInstance.draw();
               });

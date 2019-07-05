@@ -35,7 +35,8 @@ export class UsersComponent implements OnInit {
   user_img_url: any = environment.API_URL + environment.USER_IMG;
   user_role: any = '';
   user_row_cnt = 1;
-  constructor(private UsersService: UsersService,
+  constructor(
+    private usersService: UsersService,
     private toastr: ToastrService,
     private modalService: BsModalService
   ) {
@@ -68,7 +69,7 @@ export class UsersComponent implements OnInit {
               { 'field': 'state', value: this.region_filter }
             );
           }
-          that.UsersService.getAllUser(dataTablesParameters).subscribe(response => {
+          that.usersService.getAllUser(dataTablesParameters).subscribe(response => {
             that.user_data = response['user']['user'];
             callback({
               recordsTotal: response['user']['recordsTotal'],
@@ -86,7 +87,7 @@ export class UsersComponent implements OnInit {
   suspendUser(id: any) {
     swal({
       title: 'Are you sure?',
-      text: "",
+      text: '',
       type: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
@@ -94,7 +95,7 @@ export class UsersComponent implements OnInit {
       confirmButtonText: 'Yes'
     }).then((flag) => {
       if (flag.value) {
-        this.UsersService.suspendUser(id).subscribe((response) => {
+        this.usersService.suspendUser(id).subscribe((response) => {
           this.toastr.success(response['message'], 'Success!');
           this.datatableElement.dtInstance.then((dtInstance: DataTables.Api) => {
             dtInstance.draw();
@@ -108,7 +109,7 @@ export class UsersComponent implements OnInit {
   }
   // Filter user based on search string
   filterBasedOnSearch(e: any) {
-    if (e.keyCode == 13) {
+    if (e.keyCode === 13) {
       const that = this;
       this.datatableElement.dtInstance.then((dtInstance: DataTables.Api) => {
         dtInstance.draw();
@@ -123,29 +124,29 @@ export class UsersComponent implements OnInit {
     });
   }
   openModal(template: any, id: any) {
-    let data = {
+    const data = {
       user_id: id
     };
     this.modalRef = this.modalService.show(template, { backdrop: 'static' });
 
-    this.UsersService.getUserFollowingArtist(data).subscribe((response) => {
+    this.usersService.getUserFollowingArtist(data).subscribe((response) => {
       this.user_following = response['user'];
     });
-    this.UsersService.getUserById(data).subscribe((response) => {
+    this.usersService.getUserById(data).subscribe((response) => {
       this.user_detail = response['user'];
       if (this.user_detail['dob']) {
-        let dob = new Date(this.user_detail['dob']);
-        let dt = new Date();
+        const dob = new Date(this.user_detail['dob']);
+        const dt = new Date();
         this.user_detail['old'] = dt.getFullYear() - dob.getFullYear();
       }
     });
-    this.UsersService.getFlagedUser(data).subscribe((response) => {
+    this.usersService.getFlagedUser(data).subscribe((response) => {
       this.user_flag = response['user'];
     });
   }
   // get all state
   getAllState() {
-    this.UsersService.getAllState().subscribe((response) => {
+    this.usersService.getAllState().subscribe((response) => {
       this.state_list = response['state'];
     });
   }
@@ -154,7 +155,7 @@ export class UsersComponent implements OnInit {
     if (flag) {
       this.region_filter.push(val);
     } else {
-      let index = this.region_filter.indexOf(val);
+      const index = this.region_filter.indexOf(val);
       this.region_filter.splice(index, 1);
     }
     this.datatableElement.dtInstance.then((dtInstance: DataTables.Api) => {

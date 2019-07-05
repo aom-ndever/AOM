@@ -6,23 +6,23 @@ import { environment } from '../../../src/environments/environment';
 import { dashCaseToCamelCase } from '@angular/compiler/src/util';
 @Injectable()
 export class ForgetPasswordService {
-  private api_host : any = environment.API_URL;
+  private api_host: any = environment.API_URL;
   constructor(private http: HttpClient) { }
 
   private headers = new Headers({ 'Content-Type': 'application/json' });
 
   // Artist Change password
-  artistChangePassword(data : any) {
+  artistChangePassword(data: any) {
     return this.http.post(`${this.api_host}/artist_reset_password/`, data);
   }
 
   // User change password
-  userChangePassword(data : any) {
+  userChangePassword(data: any) {
     return this.http.post(`${this.api_host}/user_reset_password`, data);
   }
 
   // Admin user reset password
-  adminChangePassword(data : any) {
+  adminChangePassword(data: any) {
     return this.http.post(`${this.api_host}/admin_reset_password`, data);
   }
 

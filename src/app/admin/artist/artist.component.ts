@@ -42,11 +42,10 @@ export class ArtistComponent implements OnInit {
   user: any = '';
   artist_row_cnt = 1;
   constructor(
-    private ArtistService: ArtistService,
+    private artistService: ArtistService,
     private toastr: ToastrService,
     private modalService: BsModalService
   ) {
-    console.log("Admin dashboard component");
     this.getAllState();
     this.user = JSON.parse(localStorage.getItem('user'));
   }
@@ -83,7 +82,7 @@ export class ArtistComponent implements OnInit {
               { 'field': 'state', value: this.region_filter }
             );
           }
-          that.ArtistService.getAllArtist(dataTablesParameters).subscribe(response => {
+          that.artistService.getAllArtist(dataTablesParameters).subscribe(response => {
             that.artist_data = response['artist']['artist'];
             callback({
               recordsTotal: response['artist']['recordsTotal'],
@@ -92,7 +91,7 @@ export class ArtistComponent implements OnInit {
             });
             that.artist_row_cnt = (dataTablesParameters['start'] + 1);
           });
-        }, 0)
+        }, 0);
 
       },
       columns: [{ data: '' },
@@ -110,13 +109,13 @@ export class ArtistComponent implements OnInit {
 
   // get all artist data
   getAllArtistData(data: any) {
-    this.ArtistService.getAllArtist(data).subscribe(response => {
+    this.artistService.getAllArtist(data).subscribe(response => {
       this.artist_data = response['artist'];
     });
   }
   // get all music type
   getAllMusicType() {
-    this.ArtistService.getAllMusicType().subscribe(response => {
+    this.artistService.getAllMusicType().subscribe(response => {
       this.music_type = response['music'];
     });
   }
@@ -130,7 +129,7 @@ export class ArtistComponent implements OnInit {
   }
   // Filter artist based on search string
   filterBasedOnSearch(e: any) {
-    if (e.keyCode == 13) {
+    if (e.keyCode === 13) {
       const that = this;
       this.datatableElement.dtInstance.then((dtInstance: DataTables.Api) => {
         dtInstance.draw();
@@ -156,7 +155,7 @@ export class ArtistComponent implements OnInit {
       confirmButtonText: 'Yes'
     }).then((flag) => {
       if (flag.value) {
-        this.ArtistService.suspendArtist(id).subscribe((response) => {
+        this.artistService.suspendArtist(id).subscribe((response) => {
           this.toastr.success(response['message'], 'Success!');
           this.datatableElement.dtInstance.then((dtInstance: DataTables.Api) => {
             dtInstance.draw();
@@ -169,20 +168,20 @@ export class ArtistComponent implements OnInit {
 
   }
   openModal(template: any, id: any) {
-    let data = {
+    const data = {
       artist_id: id
     };
     this.artist_id = id;
-    this.ArtistService.getArtist(data).subscribe((response) => {
+    this.artistService.getArtist(data).subscribe((response) => {
       this.artist_detail = response['artist'];
-      let dob = new Date(this.artist_detail['dob']);
-      let dt = new Date();
+      const dob = new Date(this.artist_detail['dob']);
+      const dt = new Date();
       this.artist_detail['old'] = dt.getFullYear() - dob.getFullYear();
     });
-    this.ArtistService.getArtistTrack(data).subscribe((response) => {
+    this.artistService.getArtistTrack(data).subscribe((response) => {
       this.artist_track = response['track']['music'];
     });
-    this.ArtistService.getArtistFlagDetails(data).subscribe((response) => {
+    this.artistService.getArtistFlagDetails(data).subscribe((response) => {
       this.artist_flag = response['artist'];
     });
     this.modalRef = this.modalService.show(template, { backdrop: 'static' });
@@ -200,10 +199,10 @@ export class ArtistComponent implements OnInit {
     //   confirmButtonText: 'Yes, delete it!'
     // }).then((flag) => {
     //   if(flag.value) {
-    thi.ArtistService.removeArtistTrack(id).subscribe(response => {
-      let data = { artist_id: thi.artist_id };
-      thi.ArtistService.getArtistTrack(data).subscribe((response) => {
-        thi.artist_track = response['track']['music'];
+    thi.artistService.removeArtistTrack(id).subscribe(response => {
+      const data = { artist_id: thi.artist_id };
+      thi.artistService.getArtistTrack(data).subscribe((resp) => {
+        thi.artist_track = resp['track']['music'];
       });
       thi.toastr.success(response['message'], 'Success!');
     }, error => {
@@ -214,10 +213,10 @@ export class ArtistComponent implements OnInit {
   }
   // Suspend artist track
   suspendArtistTrack(id: any) {
-    this.ArtistService.suspendArtistTrack(id).subscribe((response) => {
-      let data = { artist_id: this.artist_id };
-      this.ArtistService.getArtistTrack(data).subscribe((response) => {
-        this.artist_track = response['track']['music'];
+    this.artistService.suspendArtistTrack(id).subscribe((response) => {
+      const data = { artist_id: this.artist_id };
+      this.artistService.getArtistTrack(data).subscribe((resp) => {
+        this.artist_track = resp['track']['music'];
       });
       this.toastr.success(response['message'], 'Success!');
     }, (error) => {
@@ -226,15 +225,15 @@ export class ArtistComponent implements OnInit {
   }
 
   markAsFeatured() {
-    let data = {
+    const data = {
       artist_id: this.artist_detail['_id']
     };
-    this.ArtistService.markAsFeatured(data).subscribe((response) => {
+    this.artistService.markAsFeatured(data).subscribe((response) => {
       this.toastr.success(response['message'], 'Success!');
-      this.ArtistService.getArtist(data).subscribe((response) => {
-        this.artist_detail = response['artist'];
-        let dob = new Date(this.artist_detail['dob']);
-        let dt = new Date();
+      this.artistService.getArtist(data).subscribe((resp) => {
+        this.artist_detail = resp['artist'];
+        const dob = new Date(this.artist_detail['dob']);
+        const dt = new Date();
         this.artist_detail['old'] = dt.getFullYear() - dob.getFullYear();
       });
     }, (error) => {
@@ -244,7 +243,7 @@ export class ArtistComponent implements OnInit {
 
   // get all state
   getAllState() {
-    this.ArtistService.getAllState().subscribe((response) => {
+    this.artistService.getAllState().subscribe((response) => {
       this.state_list = response['state'];
     });
   }
@@ -253,7 +252,7 @@ export class ArtistComponent implements OnInit {
     if (flag) {
       this.region_filter.push(val);
     } else {
-      let index = this.region_filter.indexOf(val);
+      const index = this.region_filter.indexOf(val);
       this.region_filter.splice(index, 1);
     }
     this.datatableElement.dtInstance.then((dtInstance: DataTables.Api) => {
@@ -262,8 +261,8 @@ export class ArtistComponent implements OnInit {
   }
   // Hide popover
   hidePopover() {
-    let data = { artist_id: this.artist_id };
-    this.ArtistService.getArtistTrack(data).subscribe((response) => {
+    const data = { artist_id: this.artist_id };
+    this.artistService.getArtistTrack(data).subscribe((response) => {
       this.artist_track = response['track']['music'];
     });
   }

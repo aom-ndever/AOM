@@ -11,7 +11,7 @@ export class ArtistProfileService {
 
   constructor(private http: HttpClient) {
     // this.user = JSON.parse(localStorage.getItem('user'));
-    // this.headers = new HttpHeaders({ 'x-access-token' : this.user.token });  
+    // this.headers = new HttpHeaders({ 'x-access-token' : this.user.token });
   }
 
   // Get Artist and track
@@ -24,7 +24,7 @@ export class ArtistProfileService {
     this.headers = new HttpHeaders({ 'x-access-token': this.user.token });
     return this.http.post(`${this.api_host}/user/artist/artist_followers`, data, { headers: this.headers });
   }
-  // Follow the artist 
+  // Follow the artist
   followArtist(data: any) {
     this.user = JSON.parse(localStorage.getItem('user'));
     this.headers = new HttpHeaders({ 'x-access-token': this.user.token });
@@ -70,7 +70,7 @@ export class ArtistProfileService {
   getTrackById(id: any) {
     return this.http.get(`${this.api_host}/tracks/${id}`);
   }
-  // download the track 
+  // download the track
   downloadTrack(id: any) {
     this.user = JSON.parse(localStorage.getItem('user'));
     this.headers = new HttpHeaders({ 'x-access-token': this.user.token });

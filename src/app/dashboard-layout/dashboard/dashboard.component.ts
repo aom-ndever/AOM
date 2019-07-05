@@ -33,7 +33,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   subscription: Subscription;
   constructor(
-    private DashboardService: DashboardService,
+    private dashboardService: DashboardService,
     private toastr: ToastrService,
     private messageService: MessageService,
     private ngxService: NgxUiLoaderService
@@ -112,7 +112,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.audio_ins = [];
     this.messageService.sendMessage({ 'music_flag': 'yes' });
     this.show_loader = true;
-    this.DashboardService.getAllData(data).subscribe(response => {
+    this.dashboardService.getAllData(data).subscribe(response => {
       this.data = response;
       // this.data = {
       //   'finalist': [],
@@ -172,7 +172,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
   // Get All music type
   getAllMusicType() {
-    this.DashboardService.getAllMusicType().subscribe(response => {
+    this.dashboardService.getAllMusicType().subscribe(response => {
       this.music_type_list = response['music'];
     });
   }
@@ -191,7 +191,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   getAllFollower() {
     let user = JSON.parse(localStorage.getItem('user'));
     if (user && user['user']) {
-      this.DashboardService.getFollower().subscribe(response => {
+      this.dashboardService.getFollower().subscribe(response => {
         this.images.forEach((ele) => {
           if (response['artist'] && response['artist'].indexOf(ele['artist_id']) !== -1) {
             ele['is_followed'] = true;

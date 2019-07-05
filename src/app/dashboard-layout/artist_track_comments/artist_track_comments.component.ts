@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ArtistTrackCommentsService } from './artist_track_comments.service';
 import { ToastrService } from 'ngx-toastr';
 import { environment } from '../../../../src/environments/environment';
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute } from '@angular/router';
 import swal from 'sweetalert2';
 import { Title } from '@angular/platform-browser';
 @Component({
@@ -23,7 +23,7 @@ export class ArtistTrackConmmentsComponent implements OnInit {
   show_spinner: boolean = false;
   track_id: any = '';
   constructor(
-    private ArtistTrackCommentsService: ArtistTrackCommentsService,
+    private artistTrackCommentsService: ArtistTrackCommentsService,
     private toastr: ToastrService,
     private titleService: Title,
     private route: ActivatedRoute
@@ -59,7 +59,7 @@ export class ArtistTrackConmmentsComponent implements OnInit {
 
   // Get all comment of track
   getAllTrackComment(data) {
-    this.ArtistTrackCommentsService.getAllTrackComment(data).subscribe(response => {
+    this.artistTrackCommentsService.getAllTrackComment(data).subscribe(response => {
       this.trackcomments = response['comment'];
     });
   }
@@ -76,7 +76,7 @@ export class ArtistTrackConmmentsComponent implements OnInit {
       confirmButtonText: 'Yes, delete it!'
     }).then((flag) => {
       if (flag.value) {
-        thi.ArtistTrackCommentsService.removeTrackComment(id).subscribe(response => {
+        thi.artistTrackCommentsService.removeTrackComment(id).subscribe(response => {
           thi.toastr.success(response['message'], 'Success!');
           thi.getAllTrackComment({ track_id: thi.track_id });
         }, error => {
@@ -87,7 +87,7 @@ export class ArtistTrackConmmentsComponent implements OnInit {
   }
   // Block or unblock the user
   blockUnblockUser(id: any) {
-    this.ArtistTrackCommentsService.blockUser(id).subscribe(response => {
+    this.artistTrackCommentsService.blockUser(id).subscribe(response => {
       this.toastr.success(response['message'], 'Success!');
       this.getAllTrackComment({ track_id: this.track_id });
     }, error => {

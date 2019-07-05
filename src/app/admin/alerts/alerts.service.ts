@@ -5,16 +5,16 @@ import { environment } from '../../../../src/environments/environment';
 import { dashCaseToCamelCase } from '@angular/compiler/src/util';
 @Injectable()
 export class AlertService {
-  private api_host : any = environment.API_URL;
-  private user : any = '';
-  private headers : any = '';
+  private api_host: any = environment.API_URL;
+  private user: any = '';
+  private headers: any = '';
 
-  constructor(private http: HttpClient) { 
+  constructor(private http: HttpClient) {
     this.user = JSON.parse(localStorage.getItem('user'));
-    this.headers = new HttpHeaders({ 'x-access-token' : this.user.token });  
+    this.headers = new HttpHeaders({ 'x-access-token': this.user.token });
   }
   // Get all artist details
-  getFlagedData(data : any) {
-    return this.http.post(`${this.api_host}/admin/get_admin_flagged`, data, {headers : this.headers});
+  getFlagedData(data: any) {
+    return this.http.post(`${this.api_host}/admin/get_admin_flagged`, data, { headers: this.headers });
   }
 }

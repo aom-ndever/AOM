@@ -35,7 +35,7 @@ export class ArtistComponent implements OnInit {
   length: any = 10;
 
   constructor(
-    private ArtistService: ArtistService,
+    private artistService: ArtistService,
     private toastr: ToastrService,
     private titleService: Title,
     private route: ActivatedRoute,
@@ -60,7 +60,7 @@ export class ArtistComponent implements OnInit {
   // Get all whatsnew data
   getAllData() {
     let data = {};
-    this.ArtistService.getArtistData(data).subscribe(response => {
+    this.artistService.getArtistData(data).subscribe(response => {
       this.artistdata = response;
       this.getAllFollower();
     });
@@ -68,7 +68,7 @@ export class ArtistComponent implements OnInit {
   // Get all artistv1 data
   getAllArtistV1Data(data) {
     this.show_loader = true;
-    this.ArtistService.getAllArtistv1(data).subscribe(response => {
+    this.artistService.getAllArtistv1(data).subscribe(response => {
       this.ngxService.stop();
       this.artistv1 = response;
       this.show_filter = false;
@@ -78,7 +78,7 @@ export class ArtistComponent implements OnInit {
   }
   // Play audio
   playAudio(name: any, index: any) {
-    let audio = new Audio();
+    const audio = new Audio();
     audio.src = this.track_url + name;
     audio.load();
     audio.play();
@@ -95,13 +95,13 @@ export class ArtistComponent implements OnInit {
   }
   // Follow artist
   followArtist(id: any, index: any) {
-    let data = JSON.parse(localStorage.getItem('user'));
+    const data = JSON.parse(localStorage.getItem('user'));
     if (data && data.user) {
       let data = {
         artist_id: id
       };
       // this.artistdata['artist'][index]['is_followed'] = true;
-      this.ArtistService.followArtist(data).subscribe(response => {
+      this.artistService.followArtist(data).subscribe(response => {
         this.toastr.success(response['message'], 'Success!');
         this.getAllFollower();
         this.getMyFollower();
@@ -115,19 +115,19 @@ export class ArtistComponent implements OnInit {
   }
   // get All follower
   getAllFollower() {
-    let user = JSON.parse(localStorage.getItem('user'));
+    const user = JSON.parse(localStorage.getItem('user'));
     if (user && user['user']) {
-      this.ArtistService.getFollower().subscribe(response => {
+      this.artistService.getFollower().subscribe(response => {
 
         this.artistv1['rising_stars'].forEach((ele) => {
-          if (response['artist'] && response['artist'].indexOf(ele['_id']) != -1) {
+          if (response['artist'] && response['artist'].indexOf(ele['_id']) !== -1) {
             ele['is_followed'] = true;
           } else {
             ele['is_followed'] = false;
           }
         });
         this.artistv1['chart_toppers'].forEach((ele) => {
-          if (response['artist'] && response['artist'].indexOf(ele['artist']['_id']) != -1) {
+          if (response['artist'] && response['artist'].indexOf(ele['artist']['_id']) !== -1) {
             ele['artist']['is_followed'] = true;
           } else {
             ele['artist']['is_followed'] = false;
@@ -138,7 +138,7 @@ export class ArtistComponent implements OnInit {
   }
   // Get all music list
   getAllMusicType() {
-    this.ArtistService.getAllMusicType().subscribe(response => {
+    this.artistService.getAllMusicType().subscribe(response => {
       this.music_list = response['music'];
     });
   }
@@ -146,7 +146,7 @@ export class ArtistComponent implements OnInit {
   getMyFollower() {
     let user = JSON.parse(localStorage.getItem('user'));
     if (user && user['user']) {
-      this.ArtistService.getMyFollower().subscribe((response) => {
+      this.artistService.getMyFollower().subscribe((response) => {
         this.my_follower_list = response['user'];
       });
     }
@@ -199,7 +199,7 @@ export class ArtistComponent implements OnInit {
 
   // get all state
   getAllState() {
-    this.ArtistService.getAllState().subscribe((response) => {
+    this.artistService.getAllState().subscribe((response) => {
       this.state_list = response['state'];
 
     });

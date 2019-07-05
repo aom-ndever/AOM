@@ -11,14 +11,14 @@ export class CommentsService {
 
   constructor(private http: HttpClient) {
     // this.user = JSON.parse(localStorage.getItem('user'));
-    // this.headers = new HttpHeaders({ 'x-access-token' : this.user.token });  
+    // this.headers = new HttpHeaders({ 'x-access-token' : this.user.token });
   }
 
   // Get Artist and track
   getArtistData(data: any) {
     return this.http.post(`${this.api_host}/whatsnew`, data);
   }
-  // Follow the artist 
+  // Follow the artist
   followArtist(data: any) {
     this.user = JSON.parse(localStorage.getItem('user'));
     this.headers = new HttpHeaders({ 'x-access-token': this.user.token });

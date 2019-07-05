@@ -32,14 +32,14 @@ export class HeaderComponent implements OnInit, OnDestroy {
   private modalForgetRef: NgbModalRef;
   constructor(private modalService: NgbModal,
     private fb: FormBuilder,
-    private HeaderService: HeaderService,
+    private headerService: HeaderService,
     private toastr: ToastrService,
     private router: Router,
-    private MessageService: MessageService,
+    private messageService: MessageService,
     private socialAuthService: AuthService
   ) {
     this.user = JSON.parse(localStorage.getItem('user'));
-    this.MessageService.sendMessage({ loggedin_user: this.user });
+    this.messageService.sendMessage({ loggedin_user: this.user });
 
     if (this.user && this.user.artist) {
       this.user.artist['image'] = typeof this.user.artist['image'] !== 'undefined' ? environment.API_URL +
@@ -54,7 +54,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
         this.user.user['image'] = data['user']['image'];
       }
     }
-    this.subscription = this.MessageService.getMessage().subscribe((response) => {
+    this.subscription = this.messageService.getMessage().subscribe((response) => {
       if (response && response['updateProfile']) {
         setTimeout(() => {
           this.user = JSON.parse(localStorage.getItem('user'));
@@ -124,12 +124,12 @@ export class HeaderComponent implements OnInit, OnDestroy {
           image: profile.getImageUrl(),
           token: googleUser.getAuthResponse().id_token
         };
-        this.HeaderService.userGoogleLogin(data).subscribe((response) => {
+        this.headerService.userGoogleLogin(data).subscribe((response) => {
           this.toastr.success(response['message'], 'Success!');
           localStorage.setItem('user', JSON.stringify(response));
           this.modalRef.close();
           this.user = JSON.parse(localStorage.getItem('user'));
-          this.MessageService.sendMessage({ 'loggedin_user': this.user });
+          this.messageService.sendMessage({ 'loggedin_user': this.user });
           this.router.navigate(['']);
         }, (error) => {
           this.toastr.error(error['error'].message, 'Error!');
@@ -169,7 +169,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     // console.log('flag => ', flag);
     // ******************************* updated code **************************************
     this.show_spinner = true;
-    this.HeaderService.login(this.userdata).subscribe(response => {
+    this.headerService.login(this.userdata).subscribe(response => {
       if (response['user']) {
         this.userType = response['user'].type;
         this.toastr.success('Login Done', 'Success!');
@@ -183,7 +183,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
           this.user.user['image'] = typeof this.user.user['image'] !== 'undefined' ?
             environment.API_URL + environment.USER_IMG + this.user.user['image'] : '';
         }
-        this.MessageService.sendMessage({ 'loggedin_user': this.user });
+        this.messageService.sendMessage({ 'loggedin_user': this.user });
         this.router.navigate(['']);
       } else if (response['artist']) {
         this.userType = response['artist'].type;
@@ -198,7 +198,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
           this.user.user['image'] = typeof this.user.user['image'] !== 'undefined' ?
             environment.API_URL + environment.USER_IMG + this.user.user['image'] : '';
         }
-        this.MessageService.sendMessage({ 'loggedin_user': this.user });
+        this.messageService.sendMessage({ 'loggedin_user': this.user });
         this.router.navigate(['']);
       }
     }, error => {
@@ -281,13 +281,13 @@ export class HeaderComponent implements OnInit, OnDestroy {
   forgetPassword(flag: boolean) {
     if (flag) {
       this.show_spinner = true;
-      this.HeaderService.artistForgetPassword({
+      this.headerService.artistForgetPassword({
         email: this.forget_pwd_data.email
       }).subscribe(response => {
         this.toastr.success(response['message'], 'Success!');
         this.modalForgetRef.close();
       }, error => {
-        if (error['error'].message[0] && error['error'].message[0]['param'] && error['error'].message[0]['param'] == 'email') {
+        if (error['error'].message[0] && error['error'].message[0]['param'] && error['error'].message[0]['param'] === 'email') {
           this.toastr.error(error['error'].message[0]['msg'], 'Error!');
         } else {
           this.toastr.error(error['error'].message, 'Error!');
@@ -356,16 +356,16 @@ export class HeaderComponent implements OnInit, OnDestroy {
     let socialPlatformProvider = FacebookLoginProvider.PROVIDER_ID;
     this.socialAuthService.signIn(socialPlatformProvider).then(
       (data) => {
-        console.log(" sign in data : ", data);
-        this.HeaderService.userFacebookLogin(data).subscribe((response) => {
+        console.log(' sign in data : ', data);
+        this.headerService.userFacebookLogin(data).subscribe((response) => {
           this.toastr.success(response['message'], 'Success!');
           localStorage.setItem('user', JSON.stringify(response));
           this.modalRef.close();
           this.user = JSON.parse(localStorage.getItem('user'));
-          this.MessageService.sendMessage({ 'loggedin_user': this.user });
+          this.messageService.sendMessage({ 'loggedin_user': this.user });
           this.router.navigate(['']);
         }, (error) => {
-          //this.toastr.error(error['error'].message, 'Error!');
+          // this.toastr.error(error['error'].message, 'Error!');
         });
       }
     );

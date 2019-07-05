@@ -10,11 +10,11 @@ export class AuthService implements CanActivate {
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
     const user = localStorage.getItem('user');
     if (user) {
-      return true
+      return true;
     }
-    if(state.url.includes('/admin')) {
+    if (state.url.includes('/admin')) {
       this.router.navigate(['/admin/login']);
-    } else if(state.url.includes('/admin') && !user.hasOwnProperty('admin')) {
+    } else if (state.url.includes('/admin') && !user.hasOwnProperty('admin')) {
       this.router.navigate(['']);
     } else {
       this.router.navigate(['']);

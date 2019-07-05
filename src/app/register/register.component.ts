@@ -71,12 +71,13 @@ export class RegisterComponent implements OnInit {
   listener_step3: FormGroup;
   listener_step4: FormGroup;
 
-  constructor(private fb: FormBuilder,
-    private RegisterService: RegisterService,
+  constructor(
+    private fb: FormBuilder,
+    private registerService: RegisterService,
     private toastr: ToastrService,
     private router: Router,
     private socialAuthService: AuthService,
-    private MessageService: MessageService
+    private messageService: MessageService
   ) {
     this.artist_cnt = 0;
     this.listner_cnt = 0;
@@ -148,7 +149,7 @@ export class RegisterComponent implements OnInit {
       // region: ['', [Validators.required]],
       // state: ['', [Validators.required]]
     });
-    this.RegisterService.getAllMusicType().subscribe(response => {
+    this.registerService.getAllMusicType().subscribe(response => {
       this.music_types = response['music'];
     });
     this.getRegionList();
@@ -188,11 +189,11 @@ export class RegisterComponent implements OnInit {
           image: profile.getImageUrl(),
           token: googleUser.getAuthResponse().id_token
         };
-        this.RegisterService.userGoogleLogin(data).subscribe((response) => {
+        this.registerService.userGoogleLogin(data).subscribe((response) => {
           this.toastr.success(response['message'], 'Success!');
           localStorage.setItem('user', JSON.stringify(response));
           this.user = JSON.parse(localStorage.getItem('user'));
-          this.MessageService.sendMessage({ 'loggedin_user': this.user });
+          this.messageService.sendMessage({ 'loggedin_user': this.user });
           this.router.navigate(['']);
         }, (error) => {
           this.toastr.error(error['error'].message, 'Error!');
@@ -217,7 +218,7 @@ export class RegisterComponent implements OnInit {
   // get location details based on zipcode
   getLocation() {
     if (this.artist_data['zipcode']) {
-      this.RegisterService.getLocationFromZipCode(this.artist_data['zipcode']).subscribe(response => {
+      this.registerService.getLocationFromZipCode(this.artist_data['zipcode']).subscribe(response => {
         const res = response;
         if (res['results'].length > 0 && res['results'][0].hasOwnProperty('address_components')) {
           /***************************************** old code ***********************************/
@@ -271,7 +272,7 @@ export class RegisterComponent implements OnInit {
   // get location details based on zipcode for listener
   getLocationForListener() {
     if (this.listener_data['zipcode']) {
-      this.RegisterService.getLocationFromZipCode(this.listener_data['zipcode']).subscribe(response => {
+      this.registerService.getLocationFromZipCode(this.listener_data['zipcode']).subscribe(response => {
         const res = response;
         if (res['results'].length > 0 && res['results'][0].hasOwnProperty('address_components')) {
           /***************************************** old code ***********************************/
@@ -409,7 +410,7 @@ export class RegisterComponent implements OnInit {
     formData.append('dob', (new Date(this.artist_data['year'], this.artist_data['month'], this.artist_data['day']).toString()));
 
     this.show_spinner = true;
-    this.RegisterService.artistRegistration(formData).subscribe(response => {
+    this.registerService.artistRegistration(formData).subscribe(response => {
       this.step_flag = true;
       this.location = '';
       this.artist_cnt = 0;
@@ -460,7 +461,7 @@ export class RegisterComponent implements OnInit {
         dob: new Date(this.listener_data['year'], this.listener_data['month'], this.listener_data['day'])
       };
       this.show_spinner = true;
-      this.RegisterService.listenerRegistration(data).subscribe(response => {
+      this.registerService.listenerRegistration(data).subscribe(response => {
         this.step_flag = true;
         this.listner_cnt = 0;
         this.location = '';
@@ -527,14 +528,14 @@ export class RegisterComponent implements OnInit {
   }
 
   getRegionList() {
-    this.RegisterService.getAllRegion().subscribe((response) => {
+    this.registerService.getAllRegion().subscribe((response) => {
       this.region_list = response['Region'];
     });
   }
 
   getStateByRegion(id: any) {
     if (id && id !== '') {
-      this.RegisterService.getStateByRegion({ region: id }).subscribe((response) => {
+      this.registerService.getStateByRegion({ region: id }).subscribe((response) => {
         this.state_list = response['state'];
       });
     }
@@ -545,11 +546,11 @@ export class RegisterComponent implements OnInit {
     const socialPlatformProvider = FacebookLoginProvider.PROVIDER_ID;
     this.socialAuthService.signIn(socialPlatformProvider).then(
       (data) => {
-        this.RegisterService.userFacebookLogin(data).subscribe((response) => {
+        this.registerService.userFacebookLogin(data).subscribe((response) => {
           this.toastr.success(response['message'], 'Success!');
           localStorage.setItem('user', JSON.stringify(response));
           this.user = JSON.parse(localStorage.getItem('user'));
-          this.MessageService.sendMessage({ 'loggedin_user': this.user });
+          this.messageService.sendMessage({ 'loggedin_user': this.user });
           this.router.navigate(['']);
         }, (error) => {
           this.toastr.error(error['error'].message, 'Error!');

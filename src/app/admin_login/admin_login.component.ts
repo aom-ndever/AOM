@@ -19,7 +19,8 @@ export class AdminLoginComponent implements OnInit {
   forget_formgroup: FormGroup;
   forget_data: any = {};
   forget_validation: boolean = false;
-  constructor(private AdminLoginService: AdminLoginService,
+  constructor(
+    private adminLoginService: AdminLoginService,
     private fb: FormBuilder,
     private toastr: ToastrService,
     private router: Router,
@@ -36,9 +37,9 @@ export class AdminLoginComponent implements OnInit {
 
   noWhitespaceValidator(control: FormControl) {
     if (typeof (control.value || '') === 'string' || (control.value || '') instanceof String) {
-      let isWhitespace = (control.value || '').trim().length === 0;
-      let isValid = !isWhitespace;
-      return isValid ? null : { 'whitespace': true }
+      const isWhitespace = (control.value || '').trim().length === 0;
+      const isValid = !isWhitespace;
+      return isValid ? null : { 'whitespace': true };
     }
   }
   ngOnInit() {
@@ -47,7 +48,7 @@ export class AdminLoginComponent implements OnInit {
 
   signin() {
     this.show_spinner = true;
-    this.AdminLoginService.login(this.admin_data).subscribe(response => {
+    this.adminLoginService.login(this.admin_data).subscribe(response => {
       localStorage.setItem('user', JSON.stringify(response));
       this.router.navigate(['/admin/home']);
     }, error => {
@@ -68,7 +69,7 @@ export class AdminLoginComponent implements OnInit {
   forgetPassword(flag) {
     if (flag) {
       this.show_spinner = true;
-      this.AdminLoginService.forgetPassword(this.forget_data).subscribe((response) => {
+      this.adminLoginService.forgetPassword(this.forget_data).subscribe((response) => {
         this.forget_data = {};
         this.ModelRef.hide();
         this.toastr.success(response['message'], 'Success!');

@@ -6,7 +6,7 @@ import { ForgetPasswordComponent } from './forget_password.component';
 import { ForgetPasswordService } from './forget_password.service';
 import { Http, HttpModule } from '@angular/http';
 // import { HttpClientModule, HttpClient } from '@angular/common/http';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http'
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ImageCropperModule } from 'ngx-image-cropper';
 // import { ToastrModule } from 'ngx-toastr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -24,7 +24,7 @@ import { AuthService } from '../shared/auth.service';
     // ToastrModule.forRoot({preventDuplicates: true}),
     RouterModule.forChild([
       { path: 'forgot_password/:type/:id', component: ForgetPasswordComponent },
-      { path: "**", redirectTo: '' }
+      { path: '**', redirectTo: '' }
     ])
   ],
   declarations: [ForgetPasswordComponent],

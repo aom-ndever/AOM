@@ -8,14 +8,13 @@ import { MessageService } from '../shared/message.service';
 })
 export class LoginComponent implements OnInit {
 
-  constructor(private MessageService: MessageService) {
+  constructor(private messageService: MessageService) {
     var cnt = {
       count: 0
     };
-    this.MessageService.checkCount(cnt);
+    this.messageService.checkCount(cnt);
   }
 
-  ngOnInit() {
-  }
+  ngOnInit() { }
 
 }

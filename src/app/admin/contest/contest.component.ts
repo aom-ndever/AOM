@@ -39,7 +39,7 @@ export class ContestComponent implements OnInit {
   contest_row_cnt = 1;
 
   constructor(
-    private ContestService: ContestService,
+    private contestService: ContestService,
     private toastr: ToastrService,
     private modalService: BsModalService,
     private fb: FormBuilder
@@ -92,7 +92,7 @@ export class ContestComponent implements OnInit {
         setTimeout(() => {
           dataTablesParameters['search'] = that.search_str;
           dataTablesParameters['sort'] = [this.sort === -1 ? { 'field': 'end_date', value: -1 } : { 'field': 'start_date', value: 1 }];
-          that.ContestService.getAllContest(dataTablesParameters).subscribe(response => {
+          that.contestService.getAllContest(dataTablesParameters).subscribe(response => {
             that.contest_data = response['contest']['contest'];
             // that.contest_data.forEach((ele) => {
             //   ele['days'] = that.getDaysDiff(ele['start_date'], new Date());
@@ -133,7 +133,7 @@ export class ContestComponent implements OnInit {
     let data = {
       contest_id: id
     };
-    this.ContestService.getContestParticipants(data).subscribe((response) => {
+    this.contestService.getContestParticipants(data).subscribe((response) => {
       this.participant_data = response['artist'];
     });
     this.is_valid = false;
@@ -158,7 +158,7 @@ export class ContestComponent implements OnInit {
     let data = {
       contest_id: id
     };
-    this.ContestService.getContestRound(data).subscribe((response) => {
+    this.contestService.getContestRound(data).subscribe((response) => {
       this.round_list = response['contest']['contest'];
     });
   }
@@ -171,21 +171,21 @@ export class ContestComponent implements OnInit {
 
   // Get all music type
   getAllMusicTypes() {
-    this.ContestService.getAllMusicType().subscribe((response) => {
+    this.contestService.getAllMusicType().subscribe((response) => {
       this.music_type = response['music'];
     });
   }
 
   // Get all existing contest
   getAllExistingContest() {
-    this.ContestService.getExistingContest().subscribe((response) => {
+    this.contestService.getExistingContest().subscribe((response) => {
       this.existing_contest_list = response['contest']['contest'];
     });
   }
 
   // get all region
   getAllRegion() {
-    this.ContestService.getAllRegion().subscribe((response) => {
+    this.contestService.getAllRegion().subscribe((response) => {
       this.region_list = response['Region'];
     });
   }
@@ -196,7 +196,7 @@ export class ContestComponent implements OnInit {
       let data = {
         region: id
       };
-      this.ContestService.getStateByRegion(data).subscribe((response) => {
+      this.contestService.getStateByRegion(data).subscribe((response) => {
         this.state_list = response['state'];
         if (this.contest_detail) {
           this.contest_detail['state'] = this.contest_detail['state'] ? this.contest_detail['state']['_id'] : '';
@@ -250,9 +250,8 @@ export class ContestComponent implements OnInit {
         };
       }
 
-
       // commented for testing purpose only
-      this.ContestService.addNewContest(data).subscribe((response) => {
+      this.contestService.addNewContest(data).subscribe((response) => {
         this.datatableElement.dtInstance.then((dtInstance: DataTables.Api) => {
           dtInstance.draw();
         });

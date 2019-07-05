@@ -40,12 +40,29 @@ export class TrackConmmentsComponent implements OnInit {
   private emailmodalRef: NgbModalRef;
   private socket;
   private modalRef: NgbModalRef;
+  style = {
+    base: {
+      color: '#32325d',
+      lineHeight: '18px',
+      fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
+      fontSmoothing: 'antialiased',
+      fontSize: '16px',
+      '::placeholder': {
+        color: '#aab7c4'
+      }
+    },
+    invalid: {
+      color: '#fa755a',
+      iconColor: '#fa755a'
+    }
+  };
+
   constructor(
-    private TrackCommentsService: TrackCommentsService,
+    private trackCommentsService: TrackCommentsService,
     private toastr: ToastrService,
     private route: ActivatedRoute,
     private titleService: Title,
-    private ArtistProfileService: ArtistProfileService,
+    private artistProfileService: ArtistProfileService,
     private modalService: NgbModal,
     private fb: FormBuilder,
   ) {
@@ -124,22 +141,7 @@ export class TrackConmmentsComponent implements OnInit {
       this.toastr.info('Please sign-in as listener to purchase track.', 'Info!');
     }
   }
-  style = {
-    base: {
-      color: '#32325d',
-      lineHeight: '18px',
-      fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
-      fontSmoothing: 'antialiased',
-      fontSize: '16px',
-      '::placeholder': {
-        color: '#aab7c4'
-      }
-    },
-    invalid: {
-      color: '#fa755a',
-      iconColor: '#fa755a'
-    }
-  };
+
   setupStripeFrom() {
     var stripe = Stripe(environment.STRIPE_PUB_KEY);
     var elements = stripe.elements();
@@ -174,7 +176,7 @@ export class TrackConmmentsComponent implements OnInit {
             track_id: this.track._id,
             card_id: result['token']['id']
           };
-          this.TrackCommentsService.purchaseTrack(data).subscribe((response) => {
+          this.trackCommentsService.purchaseTrack(data).subscribe((response) => {
             this.toastr.success(response['message'], 'Success!');
             this.modalRef.close();
           }, (error) => {
@@ -237,7 +239,7 @@ export class TrackConmmentsComponent implements OnInit {
         track_id: track['_id'],
         url: url
       };
-      this.TrackCommentsService.shareTrackViaEmail(data).subscribe((response) => {
+      this.trackCommentsService.shareTrackViaEmail(data).subscribe((response) => {
         this.toastr.success(response['message'], 'Success!');
         this.emailmodalRef.close();
       }, (error) => {
@@ -262,7 +264,7 @@ export class TrackConmmentsComponent implements OnInit {
         track_id: track['_id'],
         url: url
       };
-      this.TrackCommentsService.shareTrackViaSms(data).subscribe((response) => {
+      this.trackCommentsService.shareTrackViaSms(data).subscribe((response) => {
         this.toastr.success(response['message'], 'Success!');
         this.emailmodalRef.close();
         this.share_data = {};
@@ -312,7 +314,7 @@ export class TrackConmmentsComponent implements OnInit {
         'comment': this.comment_txt
       };
       console.log(data);
-      this.TrackCommentsService.addCommentToTrack(data).subscribe(response => {
+      this.trackCommentsService.addCommentToTrack(data).subscribe(response => {
         this.comment_txt = '';
         this.getAllTrackComment();
         this.toastr.success(response['message'], 'Success!');
@@ -330,7 +332,7 @@ export class TrackConmmentsComponent implements OnInit {
   downloadTrack(id: any) {
     let user = JSON.parse(localStorage.getItem('user'));
     if (user && user.user) {
-      this.TrackCommentsService.downloadTrack(id).subscribe(response => {
+      this.trackCommentsService.downloadTrack(id).subscribe(response => {
         console.log(response);
         window.location.href = this.user_img_url + response['filename'];
       }, error => {
@@ -354,7 +356,7 @@ export class TrackConmmentsComponent implements OnInit {
         'artist_id': this.artistdata._id,
         'status': true
       };
-      this.TrackCommentsService.trackLike(data).subscribe(response => {
+      this.trackCommentsService.trackLike(data).subscribe(response => {
         if (response['flag'] === 'liked') {
           this.track.no_of_likes = 1;
         } else if (response['flag'] === 'unliked') {
@@ -378,14 +380,14 @@ export class TrackConmmentsComponent implements OnInit {
     let data = {
       track_id: this.track._id
     };
-    this.TrackCommentsService.getAllTrackComment(data).subscribe(response => {
+    this.trackCommentsService.getAllTrackComment(data).subscribe(response => {
       this.trackcomments = response['comment'];
       console.log('trackcomments => ', this.trackcomments);
     });
   }
   // Flag other user
   flagUser(id: any) {
-    this.TrackCommentsService.flagUser(id).subscribe((response) => {
+    this.trackCommentsService.flagUser(id).subscribe((response) => {
       this.toastr.success(response['message'], 'Success!');
       this.getAllTrackComment();
     }, (error) => {
@@ -399,7 +401,7 @@ export class TrackConmmentsComponent implements OnInit {
       let data = {
         comment_id: id
       };
-      this.TrackCommentsService.upVoteComment(data).subscribe((response) => {
+      this.trackCommentsService.upVoteComment(data).subscribe((response) => {
         this.getAllTrackComment();
         this.toastr.success(response['message'], 'Success!');
       }, (error) => {
@@ -415,7 +417,7 @@ export class TrackConmmentsComponent implements OnInit {
       let data = {
         comment_id: id
       };
-      this.TrackCommentsService.downVoteComment(data).subscribe((response) => {
+      this.trackCommentsService.downVoteComment(data).subscribe((response) => {
         this.getAllTrackComment();
         this.toastr.success(response['message'], 'Success!');
       }, (error) => {
