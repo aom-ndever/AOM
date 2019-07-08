@@ -23,6 +23,10 @@ export class HeaderService {
   login(data: any) {
     return this.http.post(`${this.api_host}/login`, data);
   }
+  // Forget password
+  forgetPassword(data: any) {
+    return this.http.post(`${this.api_host}/forgot_password`, data);
+  }
   // Forget password for artist
   artistForgetPassword(data: any) {
     return this.http.post(`${this.api_host}/artist_forgot_password`, data);

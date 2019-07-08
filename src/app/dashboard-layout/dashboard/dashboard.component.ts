@@ -42,6 +42,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.getAllMusicType();
     this.user = JSON.parse(localStorage.getItem('user'));
     this.subscription = this.messageService.getMessage().subscribe((response) => {
+      console.log('response => ', response);
       if (response && response['list'] !== 2) {
         this.audio_ins.forEach((ele, idx) => { this.audio_ins[idx] = false; });
       }
@@ -113,6 +114,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.show_loader = true;
     this.dashboardService.getAllData(data).subscribe(response => {
       this.data = response;
+      console.log('this.data => ', this.data);
       // this.data = {
       //   'finalist': [],
       //   'new_uploads': [],
@@ -121,6 +123,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
       response['new_uploads'].forEach((ele) => {
         this.audio_ins.push(false);
       });
+      console.log('this.audio_ins => ', this.audio_ins);
       this.InitializeSider(this.data['finalist']);
     }, (error) => {
       this.show_loader = false;
@@ -130,9 +133,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
   // Play audio
   playAudio(name: any, index: any, data: any) {
-    console.log('component play button => ');
-    console.log('data of play button => ', data);
-    console.log('index of play button => ', index);
     data.forEach((ele, idx) => {
       this.audio_ins[idx] = false;
     });
@@ -141,13 +141,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
   // Stop audio
   stopAudio(index, data: any) {
-    console.log('data of stop button => ', data);
-    console.log('index of stop button => ', index);
     data.forEach((ele, idx) => {
       this.audio_ins[idx] = false;
     });
     this.messageService.sendMessage({ data: data, index: index, action: 'stop', list: 2 });
-
   }
   // Initialize slider
   InitializeSider(data: any) {

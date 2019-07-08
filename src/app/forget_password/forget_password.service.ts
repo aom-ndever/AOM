@@ -11,6 +11,11 @@ export class ForgetPasswordService {
 
   private headers = new Headers({ 'Content-Type': 'application/json' });
 
+  // Change password
+  changePassword(data: any) {
+    return this.http.post(`${this.api_host}/reset_password/`, data);
+  }
+
   // Artist Change password
   artistChangePassword(data: any) {
     return this.http.post(`${this.api_host}/artist_reset_password/`, data);

@@ -281,7 +281,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
   forgetPassword(flag: boolean) {
     if (flag) {
       this.show_spinner = true;
-      this.headerService.artistForgetPassword({
+      // this.headerService.artistForgetPassword({
+      this.headerService.forgetPassword({
         email: this.forget_pwd_data.email
       }).subscribe(response => {
         this.toastr.success(response['message'], 'Success!');

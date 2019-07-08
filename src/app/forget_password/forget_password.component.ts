@@ -42,24 +42,63 @@ export class ForgetPasswordComponent implements OnInit {
   ngOnInit() { }
 
   resetPassword() {
-    if (this.param && this.param.type === 'artist') {
-      const data = {
-        token: this.param.id,
-        password: this.forget_password
-      };
-      this.show_spinner = true;
-      this.forgetPasswordService.artistChangePassword(data).subscribe(response => {
-        this.forget_password = '';
-        this.conf = '';
-        this.router.navigate(['']);
-        this.toastr.success(response['message'], 'Success!');
-      }, error => {
-        this.toastr.error(error['error'].message, 'Error!');
-        this.show_spinner = false;
-      }, () => {
-        this.show_spinner = false;
-      });
-    } else if (this.param && this.param.type === 'admin') {
+    // if (this.param && this.param.type === 'artist') {
+    //   const data = {
+    //     token: this.param.id,
+    //     password: this.forget_password
+    //   };
+    //   this.show_spinner = true;
+    //   this.forgetPasswordService.artistChangePassword(data).subscribe(response => {
+    //     this.forget_password = '';
+    //     this.conf = '';
+    //     this.router.navigate(['']);
+    //     this.toastr.success(response['message'], 'Success!');
+    //   }, error => {
+    //     this.toastr.error(error['error'].message, 'Error!');
+    //     this.show_spinner = false;
+    //   }, () => {
+    //     this.show_spinner = false;
+    //   });
+    // } else if (this.param && this.param.type === 'admin') {
+    //   const data = {
+    //     token: this.param.id,
+    //     password: this.forget_password
+    //   };
+    //   this.show_spinner = true;
+    //   this.forgetPasswordService.adminChangePassword(data).subscribe(response => {
+    //     this.forget_password = '';
+    //     this.conf = '';
+    //     this.router.navigate(['/admin']);
+    //     this.toastr.success(response['message'], 'Success!');
+    //   }, error => {
+    //     this.toastr.error(error['error'].message, 'Error!');
+    //     this.show_spinner = false;
+    //   }, () => {
+    //     this.show_spinner = false;
+    //   });
+    // } else {
+    //   const data = {
+    //     token: this.param.id,
+    //     password: this.forget_password
+    //   };
+    //   this.show_spinner = true;
+    //   this.forgetPasswordService.userChangePassword(data).subscribe(response => {
+    //     this.forget_password = '';
+    //     this.conf = '';
+    //     this.router.navigate(['']);
+    //     this.toastr.success(response['message'], 'Success!');
+    //   }, error => {
+    //     this.toastr.error(error['error'].message, 'Error!');
+    //     this.show_spinner = false;
+    //   }, () => {
+    //     this.show_spinner = false;
+    //   });
+    // }
+
+
+
+
+    if (this.param && this.param.type === 'admin') {
       const data = {
         token: this.param.id,
         password: this.forget_password
@@ -82,7 +121,7 @@ export class ForgetPasswordComponent implements OnInit {
         password: this.forget_password
       };
       this.show_spinner = true;
-      this.forgetPasswordService.userChangePassword(data).subscribe(response => {
+      this.forgetPasswordService.changePassword(data).subscribe(response => {
         this.forget_password = '';
         this.conf = '';
         this.router.navigate(['']);
@@ -94,5 +133,8 @@ export class ForgetPasswordComponent implements OnInit {
         this.show_spinner = false;
       });
     }
+
+
+
   }
 }

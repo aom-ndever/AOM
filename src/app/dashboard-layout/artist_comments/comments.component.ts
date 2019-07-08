@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommentsService } from './comments.service';
 import { ToastrService } from 'ngx-toastr';
 import { environment } from '../../../../src/environments/environment';
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 @Component({
   selector: 'app-artist-comments',

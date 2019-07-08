@@ -100,10 +100,13 @@
                 <!-- <div class="finalist-name">{{nupload.artist_id['first_name'] ? nupload.artist_id['first_name'] : '' +' '+nupload.artist_id['last_name'] ? nupload.artist_id['last_name'] : ''}}</div> -->
                 <div class="action-btn custom-action-btn">
                   <a [style.display]="!audio_ins[i] ? 'block' : 'none'"
-                    (click)="playAudio(nupload.audio, i, data['new_uploads'])" class="play_img"><img
-                      src="img/play_icon.png" /></a>
+                    (click)="playAudio(nupload.audio, i, data['new_uploads'])" class="play_img">
+                    <img src="img/play_icon.png" />
+                  </a>
                   <a [style.display]="audio_ins[i] ? 'block' : 'none'" (click)="stopAudio(i, data['new_uploads'])"
-                    class="pause_img"><img src="img/pause_icon.png" /></a>
+                    class="pause_img">
+                    <img src="img/pause_icon.png" />
+                  </a>
                 </div>
                 <!-- <div class="action-btn"><a href="javascript:;">
                     <img src="img/play.png " alt="Pause "  [style.display]="!audio_ins[i] ? 'block' : 'none'" (click)="playAudio(nupload.audio, i)">
