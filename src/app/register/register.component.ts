@@ -1,5 +1,5 @@
-import { Component, OnInit, Directive, forwardRef, Attribute } from '@angular/core';
-import { FormGroup, FormBuilder, Validators, FormControl, AbstractControl, NG_VALIDATORS, Validator } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { RegisterService } from './register.service';
 import { environment } from '../../../src/environments/environment';

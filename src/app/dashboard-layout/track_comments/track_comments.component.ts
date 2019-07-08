@@ -4,13 +4,12 @@ import { ToastrService } from 'ngx-toastr';
 import { ArtistProfileService } from '../artist_profile/artist_profile.service';
 import { environment } from '../../../../src/environments/environment';
 import { ActivatedRoute } from '@angular/router';
-import { NgbModal, ModalDismissReasons, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { FormGroup, FormBuilder, Validators, FormControl, AbstractControl, NG_VALIDATORS, Validator } from '@angular/forms';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Title } from '@angular/platform-browser';
 declare var FB: any;
 declare let Stripe: any;
 import * as socketClient from 'socket.io-client';
-import { MyMusicComponent } from '../my_music/my_music.component';
 
 @Component({
   selector: 'app-track-comments',

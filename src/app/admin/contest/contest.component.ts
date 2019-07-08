@@ -267,14 +267,6 @@ export class ContestComponent implements OnInit {
       });
       // commented for testing purpose only
 
-
-
-
-
-
-
-
-
       // } else {
       //   //let stdt = new Date(this.contest_detail['year'] + '-' + this.contest_detail['month'] + '-' + this.contest_detail['day']);
       //   // let timestamp = Date.UTC(dt.getFullYear(), dt.getMonth(), dt.getDate());

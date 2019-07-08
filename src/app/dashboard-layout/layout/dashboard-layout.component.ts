@@ -1,11 +1,11 @@
 import { Component, OnInit, AfterViewInit, AfterViewChecked, OnDestroy } from '@angular/core';
-import { FormGroup, FormBuilder, Validators, FormControl, AbstractControl, NG_VALIDATORS, Validator } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { environment } from '../../../../src/environments/environment';
 import { Subscription } from 'rxjs/Subscription';
 import { MessageService } from '../../shared/message.service';
 import { DashboardLayoutService } from './dashboard-layout.service';
 import { ToastrService } from 'ngx-toastr';
-import { NgbModal, ModalDismissReasons, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 declare var FB: any;
 @Component({
   selector: 'app-dashboard-layout',
@@ -52,7 +52,6 @@ export class DashboardLayoutComponent implements OnInit, AfterViewInit, AfterVie
     private modalService: NgbModal,
     private fb: FormBuilder
   ) {
-    console.log('dashboard layouts component  =============================> ');
     console.log('play_time => ', this.play_time);
     this.audio_instance_list = [];
     this.audio_list = [];
@@ -110,13 +109,9 @@ export class DashboardLayoutComponent implements OnInit, AfterViewInit, AfterVie
     window.scroll(0, 0);
   }
 
-  ngAfterViewInit() {
+  ngAfterViewInit() {  }
 
-  }
-
-  ngAfterViewChecked() {
-
-  }
+  ngAfterViewChecked() {  }
 
   ngOnDestroy() {
     // unsubscribe to ensure no memory leaks

@@ -4,7 +4,6 @@ import { DataTableDirective } from 'angular-datatables';
 import { ToastrService } from 'ngx-toastr';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
-
 import { environment } from '../../../../src/environments/environment';
 import swal from 'sweetalert2';
 class DataTablesResponse {

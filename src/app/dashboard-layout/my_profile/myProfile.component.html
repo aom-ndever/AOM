@@ -1378,8 +1378,10 @@
                                                 class="form-control" id="remail" placeholder="Repeat Email" required>
                                         </div>
                                         <div class="button_group">
-                                            <button type="submit" [disabled]="show_spinner" class="update-btn">update
-                                                <i *ngIf="show_spinner" class="fa fa-spinner fa-spin"></i></button>
+                                            <button type="submit" [disabled]="show_email_spinner"
+                                                class="update-btn">update
+                                                <i *ngIf="show_email_spinner"
+                                                    class="fa fa-spinner fa-spin"></i></button>
                                         </div>
                                     </form>
                                 </div>
@@ -1414,7 +1416,8 @@
                                             </div>
                                         </div>
                                         <div class="button_group">
-                                            <button type="submit" class="update-btn">update</button>
+                                            <button type="submit" [disabled]="show_spinner" class="update-btn">update
+                                                <i *ngIf="show_spinner" class="fa fa-spinner fa-spin"></i></button>
                                         </div>
                                     </form>
                                 </div>

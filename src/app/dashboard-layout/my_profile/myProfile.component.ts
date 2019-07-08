@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, QueryList, ViewChildren, AfterViewInit, TemplateRef } from '@angular/core';
 import { Router } from '@angular/router';
-import { NgbModal, ModalDismissReasons, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { FormGroup, FormBuilder, Validators, FormControl, AbstractControl, NG_VALIDATORS, Validator } from '@angular/forms';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { HttpEventType, HttpResponse } from '@angular/common/http';
 import { MyProfileService } from './myProfile.service';
 import { ToastrService } from 'ngx-toastr';
@@ -52,6 +52,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
   upgradeCropperReady = false;
   modalRef: BsModalRef;
   show_spinner = false;
+  show_email_spinner = false;
   tab_cnt: Number = 1;
   userdata: any = {
     day: '',
@@ -168,6 +169,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
     private ngxService: NgxUiLoaderService,
     private ngxModalService: BsModalService
   ) {
+    console.log('profile setting component  => ');
     this.ngxService.start();
     this.isProfilePic = true;
     this.isCoverPic = true;
@@ -1078,7 +1080,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
           email: this.userdata.email,
           new_email: this.change_email['new']
         };
-        this.show_spinner = true;
+        this.show_email_spinner = true;
         if (this.userdata.type === 'artist') {
           this.myProfileService.changeArtistEmail(data).subscribe(response => {
             this.change_email = {};
@@ -1086,9 +1088,9 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
             this.toastr.success(response['resp'], 'Success!');
           }, error => {
             this.toastr.error(error['error'].message, 'Error!');
-            this.show_spinner = false;
+            this.show_email_spinner = false;
           }, () => {
-            this.show_spinner = false;
+            this.show_email_spinner = false;
           });
         } else {
           this.myProfileService.changeUserEmail(data).subscribe(response => {
@@ -1097,9 +1099,9 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
             this.toastr.success(response['resp'], 'Success!');
           }, error => {
             this.toastr.error(error['error'].message, 'Error!');
-            this.show_spinner = false;
+            this.show_email_spinner = false;
           }, () => {
-            this.show_spinner = false;
+            this.show_email_spinner = false;
           });
         }
       } else if (!this.change_email['new']) {
@@ -1116,6 +1118,8 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
 
   changePassword() {
     // if (this.change_pwd['old'] && this.userdata.pwd === this.change_pwd['old']) {
+    console.log('this.change_pwd["new"] => ', this.change_pwd['new']);
+    console.log('this.change_pwd["repeat"] => ', this.change_pwd['repeat']);
     if (this.change_pwd['new'] && this.change_pwd['repeat'] && this.change_pwd['new'] === this.change_pwd['repeat'] &&
       this.change_pwd['new'].length >= 6 && this.change_pwd['repeat'] >= 6) {
       const data = {
@@ -1139,6 +1143,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
         });
       } else {
         this.myProfileService.changeUserPassword(data).subscribe(response => {
+          console.log('response => ', response);
           this.change_pwd = {};
           this.updateLocalStorage();
           this.toastr.success(response['resp'], 'Success!');

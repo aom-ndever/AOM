@@ -1,8 +1,7 @@
-import { Component, OnInit, Directive, forwardRef, Attribute } from '@angular/core';
-import { FormGroup, FormBuilder, Validators, FormControl, AbstractControl, NG_VALIDATORS, Validator } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { EamilVarificationService } from './email_varification.service';
-import { environment } from '../../../src/environments/environment';
 import { ActivatedRoute, Router } from '@angular/router';
 declare const gapi: any;
 
@@ -12,9 +11,8 @@ declare const gapi: any;
   styleUrls: []
 })
 export class EmailVarificationComponent implements OnInit {
-
-
-  constructor(private fb: FormBuilder,
+  constructor(
+    private fb: FormBuilder,
     private eamilVarificationService: EamilVarificationService,
     private toastr: ToastrService,
     private route: ActivatedRoute,

@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { HomeService } from './home.service';
-import { Chart, MapChart } from 'angular-highcharts';
+import { Chart } from 'angular-highcharts';
 import { AmChartsService, AmChart } from '@amcharts/amcharts3-angular';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';

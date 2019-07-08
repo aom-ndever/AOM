@@ -1,8 +1,7 @@
-import { Component, OnInit, Directive, forwardRef, Attribute } from '@angular/core';
-import { FormGroup, FormBuilder, Validators, FormControl, AbstractControl, NG_VALIDATORS, Validator } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
-import { ForgetPasswordService } from './forget_password.service';
-import { environment } from '../../../src/environments/environment';
+import { ForgetPasswordService } from './forget_password.service'
 import { ActivatedRoute, Router } from '@angular/router';
 declare const gapi: any;
 

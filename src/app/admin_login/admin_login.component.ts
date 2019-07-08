@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AdminLoginService } from './admin_login.service';
-import { FormGroup, FormBuilder, Validators, FormControl, AbstractControl, NG_VALIDATORS, Validator } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
 import { BsModalService } from 'ngx-bootstrap/modal';
@@ -42,9 +42,8 @@ export class AdminLoginComponent implements OnInit {
       return isValid ? null : { 'whitespace': true };
     }
   }
-  ngOnInit() {
 
-  }
+  ngOnInit() { }
 
   signin() {
     this.show_spinner = true;
@@ -82,4 +81,5 @@ export class AdminLoginComponent implements OnInit {
     }
     this.forget_validation = !flag;
   }
+
 }
