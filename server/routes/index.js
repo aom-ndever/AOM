@@ -476,15 +476,14 @@ router.post('/login', async (req, res) => {
     // if (req.body.type == 'artist') {
 
     let login_resp = await artist_helper.get_login_by_email(req.body.email);
-    console.log('login_resp => ', login_resp);
     let userlogin_resp = await user_helper.get_login_by_email(req.body.email);
     console.log('userlogin_resp => ', userlogin_resp);
-    logger.trace("Login checked resp = ", login_resp);
-    if (login_resp.status === 0 && userlogin_resp.status === 0) {
+    if (login_resp.status === 2 && userlogin_resp.status === 2) {
+
       logger.trace("Login checked resp = ", login_resp);
       logger.error("Error in finding by email in login API. Err = ", login_resp.err);
 
-      res.status(config.INTERNAL_SERVER_ERROR).json({ "status": 0, "message": "Something went wrong while finding artist", "error": login_resp.error });
+      res.status(config.INTERNAL_SERVER_ERROR).json({ "status": 0, "message": "Your email is not registered" });
     }
     else if (login_resp.status === 1) {
       console.log('2 => ', 2);
@@ -994,7 +993,7 @@ router.post('/artist_reset_password', async (req, res) => {
  * @apiSuccess (Success 200) {String} message Appropriate success message
  * @apiError (Error 4xx) {String} message Validation or error message.
  */
-router.post('/user_forgot_password', async (req, res) => {
+router.post('/forgot_password', async (req, res) => {
   var schema = {
     'email': {
       notEmpty: true,
@@ -1007,11 +1006,13 @@ router.post('/user_forgot_password', async (req, res) => {
   if (!errors) {
 
     var resp = await user_helper.get_user_by_email(req.body.email);
-    if (resp.status === 0) {
+    var artist_resp = await artist_helper.get_artist_by_email(req.body.email);
+    if (resp.status === 0 && artist_resp.status === 0) {
       res.status(config.INTERNAL_SERVER_ERROR).json({ "status": 0, "message": "Error while finding user" });
-    } else if (resp.status === 2) {
+    } else if (resp.status === 2 && artist_resp.status === 2) {
       res.status(config.BAD_REQUEST).json({ "status": 0, "message": "No user available with given email" });
-    } else {
+    }
+    else if (resp.status === 1) {
       // Send mail on user's email address
       var reset_token = Buffer.from(jwt.sign({ "user_id": resp.user._id }, config.ACCESS_TOKEN_SECRET_KEY, {
         expiresIn: 60 * 60 * 2 // expires in 2 hour
@@ -1021,11 +1022,30 @@ router.post('/user_forgot_password', async (req, res) => {
         "to": resp.user.email,
         "subject": "Music Social Voting"
       }, {
-          "reset_link": config.website_url + "/forgot_password/user/" + reset_token
+          "reset_link": config.website_url + "/forgot_password/" + reset_token
         });
 
       if (mail_resp.status === 0) {
         res.status(config.INTERNAL_SERVER_ERROR).json({ "status": 0, "message": "Error occured while sending mail to user", "error": mail_resp.error });
+      } else {
+        res.status(config.OK_STATUS).json({ "status": 1, "message": "Reset link has been sent on your email address" });
+      }
+    }
+    else if (artist_resp.status == 1) {
+      // Send mail on user's email address
+      var reset_token = Buffer.from(jwt.sign({ "artist_id": artist_resp.artist._id }, config.ACCESS_TOKEN_SECRET_KEY, {
+        expiresIn: 60 * 60 * 2 // expires in 2 hour
+      })).toString('base64');
+
+      let mail_resp = await mail_helper.send("reset_password", {
+        "to": artist_resp.artist.email,
+        "subject": "Music Social Voting"
+      }, {
+          "reset_link": config.website_url + "/forgot_password/" + reset_token
+        });
+
+      if (mail_resp.status === 0) {
+        res.status(config.INTERNAL_SERVER_ERROR).json({ "status": 0, "message": "Error occured while sending mail to artist", "error": mail_resp.error });
       } else {
         res.status(config.OK_STATUS).json({ "status": 1, "message": "Reset link has been sent on your email address" });
       }
@@ -1054,7 +1074,7 @@ router.post('/user_forgot_password', async (req, res) => {
  * @apiSuccess (Success 200) {String} message Appropriate success message
  * @apiError (Error 4xx) {String} message Validation or error message.
  */
-router.post('/user_reset_password', async (req, res) => {
+router.post('/reset_password', async (req, res) => {
   var schema = {
     'token': {
       notEmpty: true,
@@ -1082,29 +1102,44 @@ router.post('/user_reset_password', async (req, res) => {
       } else {
         logger.trace("Valid token. Reseting password for artist");
         var reset_resp = await user_helper.get_user_by_id(decoded.user_id);
-
-        // if (reset_resp.user.reset == 1) {
-        if (decoded.user_id) {
-          var update_resp = await user_helper.update_user_by_id(decoded.user_id, { "password": bcrypt.hashSync(req.body.password, saltRounds) });
-          if (update_resp.status === 0) {
-            logger.trace("Error occured while updating artist : ", update_resp.error);
-            res.status(config.INTERNAL_SERVER_ERROR).json({ "status": 0, "message": "Error occured while verifying user_id's email" });
-          } else if (update_resp.status === 2) {
-            logger.trace("artist has not updated");
-            res.status(config.BAD_REQUEST).json({ "status": 0, "message": "Error occured while reseting password of user" });
-          } else {
-            // Password reset!
-            logger.trace("Password has been changed for artist - ", decoded.user_id);
-            res.status(config.OK_STATUS).json({ "status": 1, "message": "Password has been changed" });
+        var artist_reset_resp = await artist_helper.get_artist_by_id(decoded.artist_id);
+        if (reset_resp.status == 1) {
+          if (decoded.user_id) {
+            var update_resp = await user_helper.update_user_by_id(decoded.user_id, { "password": bcrypt.hashSync(req.body.password, saltRounds) });
+            if (update_resp.status === 0) {
+              logger.trace("Error occured while updating artist : ", update_resp.error);
+              res.status(config.INTERNAL_SERVER_ERROR).json({ "status": 0, "message": "Error occured while verifying user_id's email" });
+            } else if (update_resp.status === 2) {
+              logger.trace("artist has not updated");
+              res.status(config.BAD_REQUEST).json({ "status": 0, "message": "Error occured while reseting password of user" });
+            } else {
+              // Password reset!
+              logger.trace("Password has been changed for artist - ", decoded.user_id);
+              res.status(config.OK_STATUS).json({ "status": 1, "message": "Password has been changed" });
+            }
           }
-        } else {
-
         }
+        else if (artist_reset_resp.status == 1) {
+
+          if (decoded.artist_id) {
+            var update_resp = await artist_helper.update_artist_by_id(decoded.artist_id, { "password": bcrypt.hashSync(req.body.password, saltRounds) });
+            if (update_resp.status === 0) {
+              logger.trace("Error occured while updating artist : ", update_resp.error);
+              res.status(config.INTERNAL_SERVER_ERROR).json({ "status": 0, "message": "Error occured while verifying artist's email" });
+            } else if (update_resp.status === 2) {
+              logger.trace("artist has not updated");
+              res.status(config.BAD_REQUEST).json({ "status": 0, "message": "Error occured while reseting password of artist" });
+            } else {
+
+              logger.trace("Password has been changed for artist - ", decoded.artist_id);
+              res.status(config.OK_STATUS).json({ "status": 1, "message": "Password has been changed" });
+            }
+          }
+        }
+        //   else {
+        //     res.status(config.BAD_REQUEST).json({ message: "Your link has expired" });
+        //   }
       }
-      //   else {
-      //     res.status(config.BAD_REQUEST).json({ message: "Your link has expired" });
-      //   }
-      // }
     });
   } else {
     res.status(config.BAD_REQUEST).json({ message: errors });

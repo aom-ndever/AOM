@@ -48,7 +48,7 @@ export class CarouselComponent implements OnInit, OnDestroy, AfterViewInit {
         this.audio_ins[response['index']] = true;
       }
       if (response && response['music_flag']) {
-        console.log('carousel =>', response['music_flag']);
+        // console.log('carousel =>', response['music_flag']);
         this.flag = response['music_flag'] === 'yes' ? true : false;
       }
     });

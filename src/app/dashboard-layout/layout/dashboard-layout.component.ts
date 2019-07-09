@@ -170,11 +170,11 @@ export class DashboardLayoutComponent implements OnInit, AfterViewInit, AfterVie
             // Show a UI element to let the user manually start playback.
           });
         }
-        console.log('1 => ');
+        // console.log('1 => ');
         pButton.className = '';
         pButton.className = 'pause';
       } else {
-        console.log('2 => ');
+        // console.log('2 => ');
         this.audio_instance_list[this.song_cnt].pause();
         this.messageService.sendMessage({ index: this.song_cnt, action: 'stop', list: this.list_no });
         pButton.className = '';
@@ -207,7 +207,7 @@ export class DashboardLayoutComponent implements OnInit, AfterViewInit, AfterVie
 
     if ($event.target.currentTime === $event.target.duration) {
       // this.next();
-      console.log('3 => ');
+      // console.log('3 => ');
       pButton.className = '';
       pButton.className = 'play';
     }

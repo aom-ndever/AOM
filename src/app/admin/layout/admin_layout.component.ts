@@ -8,7 +8,7 @@ import { Component, OnInit } from '@angular/core';
 export class AdminLayoutComponent implements OnInit {
 
   constructor() {
-    console.log('Admin dashboard component');
+    // console.log('Admin dashboard component');
   }
 
   ngOnInit() {

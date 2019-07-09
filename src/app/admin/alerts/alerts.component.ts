@@ -21,7 +21,7 @@ export class AlertsComponent implements OnInit {
     private toastr: ToastrService,
     private ngxService: NgxUiLoaderService
   ) {
-    console.log('Admin dashboard component');
+    // console.log('Admin dashboard component');
   }
 
   ngOnInit() {

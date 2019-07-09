@@ -297,7 +297,7 @@ export class RegisterComponent implements OnInit {
             const addressType = res['results'][0].address_components[i].types[0];
             if (addressType === 'administrative_area_level_1') {
               this.formattedState = res['results'][0].address_components[i].long_name;
-              console.log('state => ', this.formattedState);
+              // console.log('state => ', this.formattedState);
             }
             let city;
             if (addressType === 'locality') {
@@ -384,7 +384,7 @@ export class RegisterComponent implements OnInit {
   }
 
   imageLoadFailed() {
-    console.log('Load failed');
+    // console.log('Load failed');
   }
 
   // Select music genre

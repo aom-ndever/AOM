@@ -29,7 +29,7 @@ export class ConmmentsComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log('comments component => ');
+    // console.log('comments component => ');
   }
 
   // Get all artist comment

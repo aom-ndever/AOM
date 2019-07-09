@@ -89,7 +89,7 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
     private titleService: Title,
     private ngxService: NgxUiLoaderService
   ) {
-    console.log('artist-profile component => ');
+    // console.log('artist-profile component => ');
     this.titleService.setTitle(this.route.snapshot.data['title']);
     this.user = JSON.parse(localStorage.getItem('user'));
     // console.log('this.user => ', this.user);

@@ -108,12 +108,12 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.auth2.attachClickHandler(element, {},
       (googleUser) => {
         const profile = googleUser.getBasicProfile();
-        console.log('Token || ' + googleUser.getAuthResponse().id_token);
-        console.log('ID: ' + profile.getId());
-        console.log('Name: ' + profile.getName());
-        console.log('Image URL: ' + profile.getImageUrl());
-        console.log('Email: ' + profile.getEmail());
-        console.log('token :', googleUser.getAuthResponse().id_token, profile);
+        // console.log('Token || ' + googleUser.getAuthResponse().id_token);
+        // console.log('ID: ' + profile.getId());
+        // console.log('Name: ' + profile.getName());
+        // console.log('Image URL: ' + profile.getImageUrl());
+        // console.log('Email: ' + profile.getEmail());
+        // console.log('token :', googleUser.getAuthResponse().id_token, profile);
 
         const data = {
           U3: profile.getEmail(),
@@ -141,7 +141,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   ngOnInit() { }
 
   ngOnDestroy() {
-    console.log('header destroy');
+    // console.log('header destroy');
     if (this.modalRef) {
       this.modalRef.close();
     }
@@ -166,7 +166,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   login(flag: boolean) {
-    console.log('flag => ', flag);
+    // console.log('flag => ', flag);
     // ******************************* updated code **************************************
     this.show_spinner = true;
     this.headerService.login(this.userdata).subscribe(response => {
@@ -357,7 +357,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     const socialPlatformProvider = FacebookLoginProvider.PROVIDER_ID;
     this.socialAuthService.signIn(socialPlatformProvider).then(
       (data) => {
-        console.log(' sign in data : ', data);
+        // console.log(' sign in data : ', data);
         this.headerService.userFacebookLogin(data).subscribe((response) => {
           this.toastr.success(response['message'], 'Success!');
           localStorage.setItem('user', JSON.stringify(response));

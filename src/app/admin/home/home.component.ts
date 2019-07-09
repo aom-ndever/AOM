@@ -27,7 +27,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     private modalService: BsModalService,
     private ngxService: NgxUiLoaderService
   ) {
-    console.log('Admin dashboard component');
+    // console.log('Admin dashboard component');
   }
 
   ngOnInit() {

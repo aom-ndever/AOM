@@ -81,7 +81,7 @@ export class TrackConmmentsComponent implements OnInit {
 
   ngOnInit() {
     window.scroll(0, 0);
-    console.log('track comment component => ');
+    // console.log('track comment component => ');
     // console.log('environment.socketUr', environment.socketUrl);
     this.socket = socketClient(environment.socketUrl);
     // console.log('this.socket => ', this.socket);
@@ -209,7 +209,7 @@ export class TrackConmmentsComponent implements OnInit {
   }
   shareOnTwitter() {
     const track = this.track;
-    console.log(track);
+    // console.log(track);
     const url = 'http://' + window.location.host + '/artist_profile/' + track['artist_id']['_id'] + '/track/' + track['_id'] + '/comments';
     const str =
       'Track Name: ' + track['name'] + '\nArtist: ' + track['artist_id']['first_name'] + ' ' + track['artist_id']['last_name'] + '\nDescription: ' + track['description'];
@@ -219,7 +219,7 @@ export class TrackConmmentsComponent implements OnInit {
   }
   copy_link() {
     const track = this.track;
-    console.log(track);
+    // console.log(track);
     const url = 'http://' + window.location.host + '/artist_profile/' + track['artist_id']['_id'] + '/track/' + track['_id'] + '/comments';
     const textArea = document.createElement('textarea');
     textArea.value = url;
@@ -296,7 +296,7 @@ export class TrackConmmentsComponent implements OnInit {
   }
   // Stop audio
   stopAudio(index) {
-    console.log(this.audio_ins[index]);
+    // console.log(this.audio_ins[index]);
     this.audio_ins[index].pause();
     this.audio_ins[index].currentTime = 0;
     // this.audio_ins[index].stop();
@@ -317,7 +317,7 @@ export class TrackConmmentsComponent implements OnInit {
         'artist_id': this.artistdata._id,
         'comment': this.comment_txt
       };
-      console.log(data);
+      // console.log(data);
       this.trackCommentsService.addCommentToTrack(data).subscribe(response => {
         this.comment_txt = '';
         this.getAllTrackComment();
@@ -337,7 +337,7 @@ export class TrackConmmentsComponent implements OnInit {
     const user = JSON.parse(localStorage.getItem('user'));
     if (user && user.user) {
       this.trackCommentsService.downloadTrack(id).subscribe(response => {
-        console.log(response);
+        // console.log(response);
         window.location.href = this.user_img_url + response['filename'];
       }, error => {
         this.toastr.error(error['error'].message, 'Error!');
@@ -353,7 +353,7 @@ export class TrackConmmentsComponent implements OnInit {
   likeTrack(track_id: any) {
     const user = JSON.parse(localStorage.getItem('user'));
     if (user && user.user) {
-      console.log('likes counter==> ', this.track);
+      // console.log('likes counter==> ', this.track);
       // this.track.no_of_likes += 1;
       const data = {
         'track_id': track_id,
@@ -386,7 +386,7 @@ export class TrackConmmentsComponent implements OnInit {
     };
     this.trackCommentsService.getAllTrackComment(data).subscribe(response => {
       this.trackcomments = response['comment'];
-      console.log('trackcomments => ', this.trackcomments);
+      // console.log('trackcomments => ', this.trackcomments);
     });
   }
   // Flag other user

@@ -1118,8 +1118,8 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
 
   changePassword() {
     // if (this.change_pwd['old'] && this.userdata.pwd === this.change_pwd['old']) {
-    console.log('this.change_pwd["new"] => ', this.change_pwd['new']);
-    console.log('this.change_pwd["repeat"] => ', this.change_pwd['repeat']);
+    // console.log('this.change_pwd["new"] => ', this.change_pwd['new']);
+    // console.log('this.change_pwd["repeat"] => ', this.change_pwd['repeat']);
     if (this.change_pwd['new'] && this.change_pwd['repeat'] && this.change_pwd['new'] === this.change_pwd['repeat'] &&
       this.change_pwd['new'].length >= 6 && this.change_pwd['repeat'] >= 6) {
       const data = {
@@ -1134,7 +1134,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
           this.updateLocalStorage();
           this.toastr.success(response['resp'], 'Success!');
         }, error => {
-          console.log('error => ', error);
+          // console.log('error => ', error);
           this.toastr.error(error['error'].message, 'Error!');
           this.show_spinner = false;
         }, () => {
@@ -1143,7 +1143,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
         });
       } else {
         this.myProfileService.changeUserPassword(data).subscribe(response => {
-          console.log('response => ', response);
+          // console.log('response => ', response);
           this.change_pwd = {};
           this.updateLocalStorage();
           this.toastr.success(response['resp'], 'Success!');
