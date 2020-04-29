@@ -192,7 +192,11 @@ admin_helper.delete_admin = async (admin_id) => {
 
 admin_helper.get_admin_by_email = async (email) => {
     try {
-        var admin = await Admin.findOne({ "email": email }).lean();
+        re = new RegExp(email, "i");
+        value = {
+            $regex: re
+        };
+        var admin = await Admin.findOne({ "email": value }).lean();
         if (admin) {
             return { "status": 1, "message": "admin details found", "admin": admin };
         } else {

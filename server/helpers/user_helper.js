@@ -38,7 +38,11 @@ user_helper.insert_user = async (object) => {
 user_helper.get_user_by_email = async (email) => {
 
     try {
-        var user = await User.findOne({ "email": email }).lean();
+        re = new RegExp(email, "i");
+        value = {
+            $regex: re
+        };
+        var user = await User.findOne({ "email": value }).lean();
 
         if (user) {
             return { "status": 1, "message": "user details found", "user": user };
@@ -119,7 +123,11 @@ user_helper.update_user_by_id = async (user_id, object) => {
 
 user_helper.get_login_by_email = async (email) => {
     try {
-        var user = await User.findOne({ "email": email }).lean();
+        re = new RegExp(email, "i");
+        value = {
+            $regex: re
+        };
+        var user = await User.findOne({ "email": value }).lean();
         if (user) {
             return { "status": 1, "message": "user details found", "user": user };
         } else {

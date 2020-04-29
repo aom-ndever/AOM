@@ -267,7 +267,11 @@ artist_helper.get_all_artist_notification = async (user_id) => {
 
 artist_helper.get_artist_by_email = async (email) => {
     try {
-        var artist = await Artist.findOne({ "email": email })
+        re = new RegExp(email, "i");
+        value = {
+            $regex: re
+        };
+        var artist = await Artist.findOne({ "email": value })
         if (artist) {
             return { "status": 1, "message": "artist details found", "artist": artist };
         } else {
@@ -446,7 +450,11 @@ artist_helper.update_artist_by_id = async (artist_id, artist_object) => {
 
 artist_helper.get_login_by_email = async (email) => {
     try {
-        var artist = await Artist.findOne({ "email": email }).populate('music_type').lean();
+        re = new RegExp(email, "i");
+        value = {
+            $regex: re
+        };
+        var artist = await Artist.findOne({ "email": value }).populate('music_type').lean();
         if (artist) {
             return { "status": 1, "message": "artist details found", "artist": artist };
         } else {
@@ -864,7 +872,11 @@ artist_helper.delete_artist_cover_image = async (artist_id) => {
 
 artist_helper.update_artist_email = async (artist_id, email) => {
     try {
-        let artist = await Artist.findOneAndUpdate({ _id: artist_id }, { "email": email });
+        re = new RegExp(email, "i");
+        value = {
+            $regex: re
+        };
+        let artist = await Artist.findOneAndUpdate({ _id: artist_id }, { "email": value });
         if (!artist) {
             return { "status": 2, "message": "email has not updated" };
         } else {
