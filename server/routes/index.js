@@ -174,8 +174,8 @@ router.post('/artist_registration', async (req, res) => {
           "to": data.artist.email,
           "subject": "Music Social Voting - Email confirmation"
         }, {
-            "confirm_url": config.website_url + "/email_confirm/artist/" + data.artist._id
-          });
+          "confirm_url": config.website_url + "/email_confirm/artist/" + data.artist._id
+        });
         console.log('mail_resp', mail_resp);
 
         if (mail_resp.status === 0) {
@@ -246,8 +246,8 @@ router.post('/user_registration_facebook', async (req, res) => {
           "to": data.user.email,
           "subject": "Music Social Voting - Email confirmation"
         }, {
-            "confirm_url": config.website_url + "/email_confirm/user/" + data.user._id
-          });
+          "confirm_url": config.website_url + "/email_confirm/user/" + data.user._id
+        });
         if (mail_resp.status === 0) {
           res.status(config.INTERNAL_SERVER_ERROR).json({ "status": 0, "message": "Error occured while sending confirmation email", "error": mail_resp.error });
         } else {
@@ -352,8 +352,8 @@ router.post('/user_registration_gmail', async (req, res) => {
           "to": data.user.email,
           "subject": "Music Social Voting - Email confirmation"
         }, {
-            "confirm_url": config.website_url + "/email_confirm/user/" + data.user._id
-          });
+          "confirm_url": config.website_url + "/email_confirm/user/" + data.user._id
+        });
         if (mail_resp.status === 0) {
           res.status(config.INTERNAL_SERVER_ERROR).json({ "status": 0, "message": "Error occured while sending confirmation email", "error": mail_resp.error });
         } else {
@@ -490,7 +490,9 @@ router.post('/login', async (req, res) => {
       logger.trace("Artist found. Executing next instruction");
       logger.trace("valid token. Generating token");
       if (login_resp.artist.flag == false) {
-        if (bcrypt.compareSync(req.body.password, login_resp.artist.password) && req.body.email == login_resp.artist.email) {
+        console.log('req.body.email == login_resp.artist.email => ', (req.body.email).toLowerCase() == (login_resp.artist.email).toLowerCase());
+        if (bcrypt.compareSync(req.body.password, login_resp.artist.password) &&
+          ((req.body.email).toLowerCase() == (login_resp.artist.email).toLowerCase())) {
 
           if (login_resp.artist.email_verified) {
 
@@ -532,7 +534,8 @@ router.post('/login', async (req, res) => {
       logger.trace("valid token. Generating token");
       if (userlogin_resp.user.flag == false) {
         console.log('req.body.password, userlogin_resp.user.password => ', req.body.password, userlogin_resp.user.password);
-        if (bcrypt.compareSync(req.body.password, userlogin_resp.user.password) && req.body.email == userlogin_resp.user.email) {
+        if (bcrypt.compareSync(req.body.password, userlogin_resp.user.password) &&
+          ((req.body.email).toLowerCase() == (userlogin_resp.user.email).toLowerCase())) {
 
           if (userlogin_resp.user.email_verified) {
 
@@ -688,8 +691,8 @@ router.post('/user_registration', async (req, res) => {
           "to": data.user.email,
           "subject": "Music Social Voting - Email confirmation"
         }, {
-            "confirm_url": config.website_url + "/email_confirm/user/" + data.user._id
-          });
+          "confirm_url": config.website_url + "/email_confirm/user/" + data.user._id
+        });
         if (mail_resp.status === 0) {
           res.status(config.INTERNAL_SERVER_ERROR).json({ "status": 0, "message": "Error occured while sending confirmation email", "error": mail_resp.error });
         } else {
@@ -797,7 +800,8 @@ router.post('/user_login', async (req, res) => {
         logger.trace("Artist found. Executing next instruction");
         logger.trace("valid token. Generating token");
         if (login_resp.user.flag == false) {
-          if (bcrypt.compareSync(req.body.password, login_resp.user.password) && req.body.email == login_resp.user.email) {
+          if (bcrypt.compareSync(req.body.password, login_resp.user.password) &&
+            ((req.body.email).toLowerCase() == (login_resp.user.email).toLowerCase())) {
 
             if (login_resp.user.email_verified) {
 
@@ -889,8 +893,8 @@ router.post('/artist_forgot_password', async (req, res) => {
         "to": resp.artist.email,
         "subject": "Music Social Voting"
       }, {
-          "reset_link": config.website_url + "/forgot_password/artist/" + reset_token
-        });
+        "reset_link": config.website_url + "/forgot_password/artist/" + reset_token
+      });
 
       if (mail_resp.status === 0) {
         res.status(config.INTERNAL_SERVER_ERROR).json({ "status": 0, "message": "Error occured while sending mail to artist", "error": mail_resp.error });
@@ -1022,8 +1026,8 @@ router.post('/forgot_password', async (req, res) => {
         "to": resp.user.email,
         "subject": "Music Social Voting"
       }, {
-          "reset_link": config.website_url + "/forgot_password/" + reset_token
-        });
+        "reset_link": config.website_url + "/forgot_password/" + reset_token
+      });
 
       if (mail_resp.status === 0) {
         res.status(config.INTERNAL_SERVER_ERROR).json({ "status": 0, "message": "Error occured while sending mail to user", "error": mail_resp.error });
@@ -1041,8 +1045,8 @@ router.post('/forgot_password', async (req, res) => {
         "to": artist_resp.artist.email,
         "subject": "Music Social Voting"
       }, {
-          "reset_link": config.website_url + "/forgot_password/" + reset_token
-        });
+        "reset_link": config.website_url + "/forgot_password/" + reset_token
+      });
 
       if (mail_resp.status === 0) {
         res.status(config.INTERNAL_SERVER_ERROR).json({ "status": 0, "message": "Error occured while sending mail to artist", "error": mail_resp.error });
@@ -1389,8 +1393,8 @@ router.post('/admin_forgot_password', async (req, res) => {
         "to": resp.admin.email,
         "subject": "Music Social Voting"
       }, {
-          "reset_link": config.website_url + "/forgot_password/admin/" + reset_token
-        });
+        "reset_link": config.website_url + "/forgot_password/admin/" + reset_token
+      });
 
       if (mail_resp.status === 0) {
         res.status(config.INTERNAL_SERVER_ERROR).json({ "status": 0, "message": "Error occured while sending mail to admin", "error": mail_resp.error });

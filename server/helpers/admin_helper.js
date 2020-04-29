@@ -151,7 +151,11 @@ admin_helper.get_all_admin_request = async (start, length, sort = {}) => {
 
 admin_helper.get_login_by_email = async (email, password) => {
     try {
-        var admin = await Admin.findOne({ "email": email, "password": password }).lean();
+        re = new RegExp(email, "i");
+        value = {
+            $regex: re
+        };
+        var admin = await Admin.findOne({ "email": value, "password": password }).lean();
         if (admin) {
             return { "status": 1, "message": "login successful", "admin": admin };
         } else {

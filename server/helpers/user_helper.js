@@ -291,7 +291,11 @@ user_helper.delete_user_image = async (user_id) => {
 
 user_helper.update_user_email = async (artist_id, email) => {
     try {
-        let user = await User.findOneAndUpdate({ _id: user_id }, { "email": email });
+        re = new RegExp(email, "i");
+        value = {
+            $regex: re
+        };
+        let user = await User.findOneAndUpdate({ _id: user_id }, { "email": value });
         if (!user) {
             return { "status": 2, "message": "email has not updated" };
         } else {
