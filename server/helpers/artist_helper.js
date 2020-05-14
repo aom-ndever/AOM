@@ -455,6 +455,7 @@ artist_helper.get_login_by_email = async (email) => {
             $regex: re
         };
         var artist = await Artist.findOne({ "email": value }).populate('music_type').lean();
+        console.log('artist => ', artist);
         if (artist) {
             return { "status": 1, "message": "artist details found", "artist": artist };
         } else {

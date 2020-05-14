@@ -114,16 +114,21 @@ export class HeaderComponent implements OnInit, OnDestroy {
         // console.log('Image URL: ' + profile.getImageUrl());
         // console.log('Email: ' + profile.getEmail());
         // console.log('token :', googleUser.getAuthResponse().id_token, profile);
-
+        console.log('profile => ', profile);
         const data = {
           U3: profile.getEmail(),
-          ofa: profile.ofa,
-          wea: profile.wea,
+          // First name
+          ofa: profile.DW,
+          // Last name
+          wea: profile.DU,
+          // ofa: profile.ofa,
+          // wea: profile.wea,
           provider: 'gmail',
           Eea: profile.getId(),
           image: profile.getImageUrl(),
           token: googleUser.getAuthResponse().id_token
         };
+        console.log('data :: Google response => ', data);
         this.headerService.userGoogleLogin(data).subscribe((response) => {
           this.toastr.success(response['message'], 'Success!');
           localStorage.setItem('user', JSON.stringify(response));

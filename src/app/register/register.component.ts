@@ -100,14 +100,14 @@ export class RegisterComponent implements OnInit {
       artist_password: ['', Validators.minLength(6)],
       artist_conf: ['', Validators.minLength(6)]
     }, {
-        validator: this.passwordMatchValidator
-      });
+      validator: this.passwordMatchValidator
+    });
     this.passwordFormGroup = this.fb.group({
       password: ['', [Validators.required, Validators.minLength(6)]],
       conf: ['', [Validators.required, Validators.minLength(6)]]
     }, {
-        validator: this.passwordMatchValidatorListener
-      });
+      validator: this.passwordMatchValidatorListener
+    });
     this.artist_step2 = this.fb.group({
       'email': ['', [Validators.required, Validators.email]],
       passwordFormGroup1: this.passwordFormGroup1
@@ -182,13 +182,19 @@ export class RegisterComponent implements OnInit {
         const profile = googleUser.getBasicProfile();
         const data = {
           U3: profile.getEmail(),
-          ofa: profile.ofa,
-          wea: profile.wea,
+          // First name
+          ofa: profile.DW,
+          // Last name
+          wea: profile.DU,
+          // ofa: profile.ofa,
+          // wea: profile.wea,
           provider: 'gmail',
           Eea: profile.getId(),
           image: profile.getImageUrl(),
           token: googleUser.getAuthResponse().id_token
         };
+        console.log('profile => ', profile);
+        console.log('data :: Google response => ', data);
         this.registerService.userGoogleLogin(data).subscribe((response) => {
           this.toastr.success(response['message'], 'Success!');
           localStorage.setItem('user', JSON.stringify(response));

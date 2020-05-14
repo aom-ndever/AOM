@@ -228,7 +228,11 @@ export class MyMusicComponent implements OnInit, OnDestroy {
         bytes.push(byte.toString(16));
       });
       const hex = bytes.join('').toUpperCase();
+      console.log('hex => ', hex);
       const allow_types = this.getMimetype(hex);
+      console.log('allow_types => ', allow_types);
+      console.log('allow_types.indexOf(file.type) => ', allow_types.indexOf(file.type));
+      console.log('file.type => ', file.type);
       if (allow_types.indexOf(file.type) === -1) {
         this.toastr.error('Invalid file format.', 'Error!');
         return false;
