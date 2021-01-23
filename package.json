@@ -35,7 +35,7 @@
     "core-js": "^2.4.1",
     "cropper": "^4.0.0",
     "cropperjs": "^1.5.1",
-    "datatables.net": "^1.10.19",
+    "datatables.net": "^1.10.22",
     "datatables.net-dt": "^1.10.19",
     "hammerjs": "^2.0.8",
     "highcharts": "^6.1.1",
