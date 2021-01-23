@@ -1,16 +1,21 @@
-import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
-import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { environment } from '../../../environments/environment';
-import { ToastrService } from 'ngx-toastr';
-import { MyMusicService } from './my_music.service';
-import { MessageService } from '../../shared/message.service';
-import { Subscription } from 'rxjs/Subscription';
-import { DataTableDirective } from 'angular-datatables';
-import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
-import { Title } from '@angular/platform-browser';
-import { ActivatedRoute } from '@angular/router';
-import swal from 'sweetalert2';
-import { NgxUiLoaderService } from 'ngx-ui-loader';
+import { Component, OnInit, OnDestroy, ViewChild } from "@angular/core";
+import { NgbModal, NgbModalRef } from "@ng-bootstrap/ng-bootstrap";
+import { environment } from "../../../environments/environment";
+import { ToastrService } from "ngx-toastr";
+import { MyMusicService } from "./my_music.service";
+import { MessageService } from "../../shared/message.service";
+import { Subscription } from "rxjs/Subscription";
+import { DataTableDirective } from "angular-datatables";
+import {
+  FormGroup,
+  FormBuilder,
+  Validators,
+  FormControl,
+} from "@angular/forms";
+import { Title } from "@angular/platform-browser";
+import { ActivatedRoute } from "@angular/router";
+import swal from "sweetalert2";
+import { NgxUiLoaderService } from "ngx-ui-loader";
 declare var FB: any;
 
 class DataTablesResponse {
@@ -20,9 +25,9 @@ class DataTablesResponse {
   recordsTotal: number;
 }
 @Component({
-  selector: 'app-music',
-  templateUrl: './my_music.component.html',
-  styleUrls: []
+  selector: "app-music",
+  templateUrl: "./my_music.component.html",
+  styleUrls: [],
 })
 export class MyMusicComponent implements OnInit, OnDestroy {
   public contestid;
@@ -34,20 +39,20 @@ export class MyMusicComponent implements OnInit, OnDestroy {
   show_filter = false;
   tab_cnt: Number = 1;
   modal_ref: NgbModalRef;
-  audio_file: any = '';
-  image_upload: any = '';
-  edit_image: any = 'img/default_img.png';
+  audio_file: any = "";
+  image_upload: any = "";
+  edit_image: any = "img/default_img.png";
   trackdata: any = {};
   tracklist: any = [];
   show_spinner = false;
   audio_ins: any = [];
   track_url: any = environment.API_URL + environment.ARTIST_TRACK;
-  userinfo: any = '';
+  userinfo: any = "";
   music_type_list: any = [];
   contest_list: any = [];
   // contest_id: any = '';
-  add_track_img: any = '';
-  add_track_audio: any = '';
+  add_track_img: any = "";
+  add_track_audio: any = "";
   subscription: Subscription;
   private modalRef: NgbModalRef;
   private emailmodalRef: NgbModalRef;
@@ -56,7 +61,7 @@ export class MyMusicComponent implements OnInit, OnDestroy {
   share_form: FormGroup;
   share_form_phone: FormGroup;
   share_form_validation = false;
-  user: any = '';
+  user: any = "";
   track_data: any = {};
   track_row_cnt = 1;
   public contestType;
@@ -78,7 +83,7 @@ export class MyMusicComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private ngxService: NgxUiLoaderService
   ) {
-    console.log('my music component => ');
+    console.log("my music component => ");
     this.contesttrack_form = this.fb.group({
       contest_id: new FormControl(),
       round1_track: new FormControl(),
@@ -101,32 +106,60 @@ export class MyMusicComponent implements OnInit, OnDestroy {
       special_contest_id: new FormControl(),
       special_round1_track: new FormControl(),
     });
-    this.titleService.setTitle(this.route.snapshot.data['title']);
-    this.userinfo = JSON.parse(localStorage.getItem('user'));
-    this.subscription = this.messageService.getMessage().subscribe((response) => {
-      if (response && response['list'] !== 1) {
-        this.audio_ins.forEach((ele, idx) => { this.audio_ins[idx] = false; });
-      }
-      if (response && response['action'] === 'stop' && response['list'] === 1) {
-        this.audio_ins[response['index']] = false;
-      }
-      if (response && response['action'] === 'start' && response['list'] === 1) {
-        this.audio_ins[response['index']] = true;
-      }
-      if (response && response['list'] === 1 && response['action'] === 'next' || response['action'] === 'prev') {
-        if (response['track_action'] && response['track_action'] === 'pause') {
-          this.audio_ins.forEach((ele, idx) => { this.audio_ins[idx] = false; });
-          this.audio_ins[response['index']] = true;
+    this.titleService.setTitle(this.route.snapshot.data["title"]);
+    this.userinfo = JSON.parse(localStorage.getItem("user"));
+    this.subscription = this.messageService
+      .getMessage()
+      .subscribe((response) => {
+        if (response && response["list"] !== 1) {
+          this.audio_ins.forEach((ele, idx) => {
+            this.audio_ins[idx] = false;
+          });
         }
-      }
-      if (response && response['action'] === 'bottom_play' && response['list'] === 1) {
-        this.audio_ins.forEach((ele, idx) => { this.audio_ins[idx] = false; });
-        this.audio_ins[response['index']] = true;
-      }
-    });
+        if (
+          response &&
+          response["action"] === "stop" &&
+          response["list"] === 1
+        ) {
+          this.audio_ins[response["index"]] = false;
+        }
+        if (
+          response &&
+          response["action"] === "start" &&
+          response["list"] === 1
+        ) {
+          this.audio_ins[response["index"]] = true;
+        }
+        if (
+          (response &&
+            response["list"] === 1 &&
+            response["action"] === "next") ||
+          response["action"] === "prev"
+        ) {
+          if (
+            response["track_action"] &&
+            response["track_action"] === "pause"
+          ) {
+            this.audio_ins.forEach((ele, idx) => {
+              this.audio_ins[idx] = false;
+            });
+            this.audio_ins[response["index"]] = true;
+          }
+        }
+        if (
+          response &&
+          response["action"] === "bottom_play" &&
+          response["list"] === 1
+        ) {
+          this.audio_ins.forEach((ele, idx) => {
+            this.audio_ins[idx] = false;
+          });
+          this.audio_ins[response["index"]] = true;
+        }
+      });
     const that = this;
     this.dtOptions = {
-      pagingType: 'full_numbers',
+      pagingType: "full_numbers",
       pageLength: 10,
       serverSide: true,
       processing: true,
@@ -135,40 +168,50 @@ export class MyMusicComponent implements OnInit, OnDestroy {
       lengthChange: false,
       responsive: true,
       language: {
-        'processing': '<i class="fa fa-spinner fa-spin loader"></i>',
+        processing: '<i class="fa fa-spinner fa-spin loader"></i>',
         // 'processing': '',
       },
       ajax: (dataTablesParameters: any, callback) => {
         setTimeout(() => {
           that.audio_ins = [];
-          that.myMusicService.getAllTrack(dataTablesParameters).subscribe(response => {
-            that.tracklist = response['track']['music'];
-            that.tracklist.forEach((ele) => { that.audio_ins.push(false); });
-            callback({
-              recordsTotal: response['track']['recordsTotal'],
-              recordsFiltered: response['track']['recordsTotal'],
-              data: []
+          that.myMusicService
+            .getAllTrack(dataTablesParameters)
+            .subscribe((response) => {
+              that.tracklist = response["track"]["music"];
+              that.tracklist.forEach((ele) => {
+                that.audio_ins.push(false);
+              });
+              callback({
+                recordsTotal: response["track"]["recordsTotal"],
+                recordsFiltered: response["track"]["recordsTotal"],
+                data: [],
+              });
+              that.track_row_cnt = dataTablesParameters["start"] + 1;
             });
-            that.track_row_cnt = (dataTablesParameters['start'] + 1);
-          });
         }, 0);
-
       },
       columns: [
-        { data: '' },
-        { data: '' },
-        { data: '' },
-        { data: '' },
-        { data: '' },
-        { data: '' },
-        { data: '' }
-      ]
+        { data: "" },
+        { data: "" },
+        { data: "" },
+        { data: "" },
+        { data: "" },
+        { data: "" },
+        { data: "" },
+      ],
     };
     this.share_form = this.fb.group({
-      email: ['', [Validators.required, Validators.email]]
+      email: ["", [Validators.required, Validators.email]],
     });
     this.share_form_phone = this.fb.group({
-      phone: ['', [Validators.required, Validators.maxLength(10), Validators.minLength(10)]]
+      phone: [
+        "",
+        [
+          Validators.required,
+          Validators.maxLength(10),
+          Validators.minLength(10),
+        ],
+      ],
     });
   }
 
@@ -186,24 +229,34 @@ export class MyMusicComponent implements OnInit, OnDestroy {
 
   openShareTrackModel(content, index: any) {
     this.track_data = this.tracklist[index];
-    this.modalRef = this.modalService.open(content, { centered: true, windowClass: 'modal-wrapper', backdrop: true });
+    this.modalRef = this.modalService.open(content, {
+      centered: true,
+      windowClass: "modal-wrapper",
+      backdrop: true,
+    });
   }
 
   openEmailShareTrackModel(content) {
     if (this.userinfo) {
       this.share_data = {};
-      this.emailmodalRef = this.modalService.open(content, { centered: true, backdrop: true });
+      this.emailmodalRef = this.modalService.open(content, {
+        centered: true,
+        backdrop: true,
+      });
     } else {
-      this.toastr.info('Login first to share track via email', 'Information!');
+      this.toastr.info("Login first to share track via email", "Information!");
     }
   }
 
   openPhoneShareTrackModel(content) {
     if (this.userinfo) {
       this.share_data = {};
-      this.phonemodalRef = this.modalService.open(content, { centered: true, backdrop: true });
+      this.phonemodalRef = this.modalService.open(content, {
+        centered: true,
+        backdrop: true,
+      });
     } else {
-      this.toastr.info('Login first to share track via sms', 'Information!');
+      this.toastr.info("Login first to share track via sms", "Information!");
     }
   }
 
@@ -222,26 +275,40 @@ export class MyMusicComponent implements OnInit, OnDestroy {
     const fr = new FileReader();
     fr.onload = (e: any) => {
       res = e.target.result;
+      console.log(" : res ==> ", res);
       const uint = new Uint8Array(res.slice(0, 4));
       const bytes = [];
       uint.forEach((byte) => {
         bytes.push(byte.toString(16));
       });
-      const hex = bytes.join('').toUpperCase();
-      console.log('hex => ', hex);
+      console.log(" : bytes ==> ", bytes);
+      const hex = bytes.join("").toUpperCase();
+      console.log("hex => ", hex);
       const allow_types = this.getMimetype(hex);
-      console.log('allow_types => ', allow_types);
-      console.log('allow_types.indexOf(file.type) => ', allow_types.indexOf(file.type));
-      console.log('file.type => ', file.type);
-      if (allow_types.indexOf(file.type) === -1) {
-        this.toastr.error('Invalid file format.', 'Error!');
-        return false;
-        // }
+      console.log("allow_types => ", allow_types);
+      console.log(
+        "allow_types.indexOf(file.type) => ",
+        allow_types.indexOf(file.type)
+      );
+      console.log("file.type => ", file.type);
+      if (file.type === "audio/mpeg") {
+        if (allow_types.indexOf("audio/mp3") === -1) {
+          this.toastr.error("Invalid file format.", "Error!");
+          return false;
+          // }
+        } else {
+          // const file = new Blob([new Uint8Array(res)], { type: binaryFileType });
+          this.audio_file = file;
+        }
       } else {
-        // const file = new Blob([new Uint8Array(res)], { type: binaryFileType });
-        this.audio_file = file;
+        if (allow_types.indexOf(file.type) === -1) {
+          this.toastr.error("Invalid file format.", "Error!");
+          return false;
+        } else {
+          // const file = new Blob([new Uint8Array(res)], { type: binaryFileType });
+          this.audio_file = file;
+        }
       }
-
     };
     fr.readAsArrayBuffer(file);
     // const allow_types = ["audio/aiff,audio/mp3,audio/wav,audio/flac"];
@@ -249,24 +316,29 @@ export class MyMusicComponent implements OnInit, OnDestroy {
 
   changeFile(event: any) {
     const file = event.target.files[0];
-    if (file.type === 'image/png' || file.type === 'image/jpg' || file.type === 'image/jpeg') {
+    if (
+      file.type === "image/png" ||
+      file.type === "image/jpg" ||
+      file.type === "image/jpeg"
+    ) {
       if (file.size <= 500000) {
         this.image_upload = file;
-        this.track_img = environment.API_URL + environment.ARTIST_TRACK + file.name;
+        this.track_img =
+          environment.API_URL + environment.ARTIST_TRACK + file.name;
         const fr = new FileReader();
         fr.onload = (e: any) => {
           this.track_img = e.target.result;
           this.add_track_img = e.target.result;
         };
         fr.readAsDataURL(file);
-        this.add_track_img = environment.API_URL + environment.ARTIST_TRACK + file;
+        this.add_track_img =
+          environment.API_URL + environment.ARTIST_TRACK + file;
       } else {
-        this.toastr.error('Please choose Image less then 500 kb.', 'Error!');
+        this.toastr.error("Please choose Image less then 500 kb.", "Error!");
         return false;
       }
-
     } else {
-      this.toastr.error('Invalid file format.', 'Error!');
+      this.toastr.error("Invalid file format.", "Error!");
     }
     // let flag;
     // let res;
@@ -308,9 +380,9 @@ export class MyMusicComponent implements OnInit, OnDestroy {
   changeTrackImage(event: any) {
     const file = event.target.files[0];
     if (event.target.files.length > 0) {
-      const allow_types = ['image/png', 'image/jpg', 'image/jpeg'];
+      const allow_types = ["image/png", "image/jpg", "image/jpeg"];
       if (allow_types.indexOf(file.type) === -1) {
-        this.toastr.error('Invalid file format.', 'Error!');
+        this.toastr.error("Invalid file format.", "Error!");
         return false;
       }
       this.trackdata.image = file;
@@ -326,26 +398,35 @@ export class MyMusicComponent implements OnInit, OnDestroy {
 
   openModal(content) {
     this.trackdata = {};
-    this.add_track_img = '';
-    this.track_img = '';
-    this.image_upload = '';
-    this.edit_image = '';
-    this.add_track_audio = '';
-    this.modal_ref = this.modalService.open(content, { centered: true, windowClass: 'add-track-popup', backdrop: 'static' });
+    this.add_track_img = "";
+    this.track_img = "";
+    this.image_upload = "";
+    this.edit_image = "";
+    this.add_track_audio = "";
+    this.modal_ref = this.modalService.open(content, {
+      centered: true,
+      windowClass: "add-track-popup",
+      backdrop: "static",
+    });
   }
 
   // open edit track model
   openEditTrackModal(content: any, obj: any) {
     this.trackdata = { ...obj };
-    if (!obj.description || obj.description === 'undefined') {
-      this.trackdata['description'] = '';
+    if (!obj.description || obj.description === "undefined") {
+      this.trackdata["description"] = "";
     }
     if (obj.image) {
-      this.edit_image = environment.API_URL + environment.ARTIST_TRACK + obj.image;
+      this.edit_image =
+        environment.API_URL + environment.ARTIST_TRACK + obj.image;
     } else {
-      this.edit_image = 'img/default_img.png';
+      this.edit_image = "img/default_img.png";
     }
-    this.modal_ref = this.modalService.open(content, { centered: true, backdrop: 'static', windowClass: 'add-track-popup' });
+    this.modal_ref = this.modalService.open(content, {
+      centered: true,
+      backdrop: "static",
+      windowClass: "add-track-popup",
+    });
   }
 
   // Open contest modal
@@ -353,21 +434,25 @@ export class MyMusicComponent implements OnInit, OnDestroy {
   openContestModal(content: any) {
     // this.trackdata = obj;
     // this.modal_ref = this.modalService.open(content, { centered: true, windowClass: 'new-add-track-popup', backdrop: 'static' });
-    this.submitContest = this.modalService.open(content, { centered: true, windowClass: 'new-add-track-popup', backdrop: 'static' });
+    this.submitContest = this.modalService.open(content, {
+      centered: true,
+      windowClass: "new-add-track-popup",
+      backdrop: "static",
+    });
   }
 
   addContestTrack() {
     let Obj;
-    if (this.contestType === 'beta') {
+    if (this.contestType === "beta") {
       Obj = {
         contest_id: this.contestid,
         round1_track: this.contesttrack_form.value.round1_track,
         round2_track: this.contesttrack_form.value.round2_track,
         round3_track: this.contesttrack_form.value.round3_track,
         semi_final_track: this.contesttrack_form.value.semi_final_track,
-        final_track: this.contesttrack_form.value.final_track
+        final_track: this.contesttrack_form.value.final_track,
       };
-    } else if (this.contestType === 'standard') {
+    } else if (this.contestType === "standard") {
       Obj = {
         contest_id: this.contestid,
         preliminary2_track: this.standard_form.value.spreliminary1_track,
@@ -376,31 +461,33 @@ export class MyMusicComponent implements OnInit, OnDestroy {
         round2_track: this.standard_form.value.sround2_track,
         round3_track: this.standard_form.value.sround3_track,
         semi_final_track: this.standard_form.value.ssemi_final_track,
-        final_track: this.standard_form.value.sfinal_track
+        final_track: this.standard_form.value.sfinal_track,
       };
-    } else if (this.contestType === 'special') {
+    } else if (this.contestType === "special") {
       Obj = {
         contest_id: this.contestid,
         round1_track: this.special_form.value.special_round1_track,
       };
     }
     this.show_spinner = true;
-    this.myMusicService.addContestTrack(Obj).subscribe(response => {
-
-      this.toastr.success(response['message'], 'Success!');
-      this.show_spinner = false;
-      this.contestDetail.close();
-      this.datatableElement.dtInstance.then((dtInstance: DataTables.Api) => {
-        dtInstance.draw();
-      });
-      this.modal_ref.close();
-    }, error => {
-      this.toastr.error(error['error'].message, 'Error!');
-      this.show_spinner = false;
-    }, () => {
-      this.show_spinner = false;
-    });
-
+    this.myMusicService.addContestTrack(Obj).subscribe(
+      (response) => {
+        this.toastr.success(response["message"], "Success!");
+        this.show_spinner = false;
+        this.contestDetail.close();
+        this.datatableElement.dtInstance.then((dtInstance: DataTables.Api) => {
+          dtInstance.draw();
+        });
+        this.modal_ref.close();
+      },
+      (error) => {
+        this.toastr.error(error["error"].message, "Error!");
+        this.show_spinner = false;
+      },
+      () => {
+        this.show_spinner = false;
+      }
+    );
   }
 
   addTrack() {
@@ -410,45 +497,59 @@ export class MyMusicComponent implements OnInit, OnDestroy {
       isWhitespace = this.trackdata.name.trim().length === 0;
       isValid = !isWhitespace;
     }
-    if (this.trackdata && this.trackdata.name && isValid && this.trackdata.price && this.trackdata.price > 0 &&
-      this.trackdata.price.toString().length <= 3 && this.audio_file && this.image_upload) {
+    if (
+      this.trackdata &&
+      this.trackdata.name &&
+      isValid &&
+      this.trackdata.price &&
+      this.trackdata.price > 0 &&
+      this.trackdata.price.toString().length <= 3 &&
+      this.audio_file &&
+      this.image_upload
+    ) {
       const formdata = new FormData();
-      formdata.append('name', this.trackdata.name);
-      formdata.append('price', this.trackdata.price);
-      formdata.append('audio', this.audio_file);
-      formdata.append('image', this.image_upload);
-      formdata.append('description', this.trackdata.description);
+      formdata.append("name", this.trackdata.name);
+      formdata.append("price", this.trackdata.price);
+      formdata.append("audio", this.audio_file);
+      formdata.append("image", this.image_upload);
+      formdata.append("description", this.trackdata.description);
       this.show_spinner = true;
-      this.myMusicService.addTrack(formdata).subscribe(response => {
-        this.trackdata = {};
-        this.audio_file = '';
-        this.image_upload = '';
-        this.add_track_img = '';
-        this.toastr.success(response['message'], 'Success!');
-        this.datatableElement.dtInstance.then((dtInstance: DataTables.Api) => {
-          dtInstance.draw();
-        });
-        this.modal_ref.close();
-      }, error => {
-        this.toastr.error(error['error'].message, 'Error!');
-        this.show_spinner = false;
-      }, () => {
-        this.show_spinner = false;
-      });
+      this.myMusicService.addTrack(formdata).subscribe(
+        (response) => {
+          this.trackdata = {};
+          this.audio_file = "";
+          this.image_upload = "";
+          this.add_track_img = "";
+          this.toastr.success(response["message"], "Success!");
+          this.datatableElement.dtInstance.then(
+            (dtInstance: DataTables.Api) => {
+              dtInstance.draw();
+            }
+          );
+          this.modal_ref.close();
+        },
+        (error) => {
+          this.toastr.error(error["error"].message, "Error!");
+          this.show_spinner = false;
+        },
+        () => {
+          this.show_spinner = false;
+        }
+      );
     } else if (!this.audio_file) {
-      this.toastr.error('Please select audio file', 'Error!');
+      this.toastr.error("Please select audio file", "Error!");
     } else if (!this.image_upload) {
-      this.toastr.error('Please select track image', 'Error!');
+      this.toastr.error("Please select track image", "Error!");
     } else if (!this.trackdata.name || !isValid) {
-      this.toastr.error('Please enter track name', 'Error!');
+      this.toastr.error("Please enter track name", "Error!");
     } else if (!this.trackdata.price) {
-      this.toastr.error('Please enter track price', 'Error!');
+      this.toastr.error("Please enter track price", "Error!");
     } else if (this.trackdata.price < 0) {
-      this.toastr.error('Track price must be positive value.', 'Error!');
+      this.toastr.error("Track price must be positive value.", "Error!");
     } else if (this.trackdata.price.toString().length !== 3) {
-      this.toastr.error('Track price must be in three digits', 'Error!');
+      this.toastr.error("Track price must be in three digits", "Error!");
     } else {
-      this.toastr.error('Please provide necessary details', 'Error!');
+      this.toastr.error("Please provide necessary details", "Error!");
     }
     // }
   }
@@ -462,23 +563,28 @@ export class MyMusicComponent implements OnInit, OnDestroy {
   removeTrack(id: any) {
     const thi = this;
     swal({
-      title: 'Are you sure?',
-      text: 'You won\'t be able to revert this!',
-      type: 'warning',
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      type: "warning",
       showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, delete it!'
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
     }).then((flag) => {
       if (flag.value) {
-        thi.myMusicService.deleteTrackById(id).subscribe(response => {
-          thi.toastr.success(response['message'], 'Success!');
-          this.datatableElement.dtInstance.then((dtInstance: DataTables.Api) => {
-            dtInstance.draw();
-          });
-        }, error => {
-          thi.toastr.error(error['error'].message, 'Error!');
-        });
+        thi.myMusicService.deleteTrackById(id).subscribe(
+          (response) => {
+            thi.toastr.success(response["message"], "Success!");
+            this.datatableElement.dtInstance.then(
+              (dtInstance: DataTables.Api) => {
+                dtInstance.draw();
+              }
+            );
+          },
+          (error) => {
+            thi.toastr.error(error["error"].message, "Error!");
+          }
+        );
       }
     });
   }
@@ -491,42 +597,54 @@ export class MyMusicComponent implements OnInit, OnDestroy {
       isWhitespace = this.trackdata.name.trim().length === 0;
       isValid = !isWhitespace;
     }
-    if (this.trackdata && this.trackdata.name && isValid && this.trackdata.price && this.trackdata.price > 0 &&
-      this.trackdata.price.toString().length <= 3 && this.trackdata.image) {
+    if (
+      this.trackdata &&
+      this.trackdata.name &&
+      isValid &&
+      this.trackdata.price &&
+      this.trackdata.price > 0 &&
+      this.trackdata.price.toString().length <= 3 &&
+      this.trackdata.image
+    ) {
       const formdata = new FormData();
-      formdata.append('name', this.trackdata.name);
-      formdata.append('price', this.trackdata.price);
-      formdata.append('image', this.trackdata.image);
-      formdata.append('description', this.trackdata.description);
+      formdata.append("name", this.trackdata.name);
+      formdata.append("price", this.trackdata.price);
+      formdata.append("image", this.trackdata.image);
+      formdata.append("description", this.trackdata.description);
       this.show_spinner = true;
-      this.myMusicService.updateTrack(formdata, this.trackdata._id).subscribe(response => {
-        if (!response['track']['image']) {
-          this.edit_image = 'img/default_img.png';
+      this.myMusicService.updateTrack(formdata, this.trackdata._id).subscribe(
+        (response) => {
+          if (!response["track"]["image"]) {
+            this.edit_image = "img/default_img.png";
+          }
+          this.datatableElement.dtInstance.then(
+            (dtInstance: DataTables.Api) => {
+              dtInstance.draw();
+            }
+          );
+          this.toastr.success(response["message"], "Success!");
+          this.modal_ref.close();
+        },
+        (error) => {
+          this.toastr.error(error["error"].message, "Error!");
+          this.show_spinner = false;
+        },
+        () => {
+          this.show_spinner = false;
         }
-        this.datatableElement.dtInstance.then((dtInstance: DataTables.Api) => {
-          dtInstance.draw();
-        });
-        this.toastr.success(response['message'], 'Success!');
-        this.modal_ref.close();
-      }, error => {
-        this.toastr.error(error['error'].message, 'Error!');
-        this.show_spinner = false;
-      }, () => {
-        this.show_spinner = false;
-      });
+      );
     } else if (!this.trackdata.image) {
-      this.toastr.error('Please select track image', 'Error!');
+      this.toastr.error("Please select track image", "Error!");
     } else if (!this.trackdata.name || !isValid) {
-      this.toastr.error('Please enter track name', 'Error!');
+      this.toastr.error("Please enter track name", "Error!");
     } else if (!this.trackdata.price) {
-      this.toastr.error('Please enter track price', 'Error!');
+      this.toastr.error("Please enter track price", "Error!");
     } else if (this.trackdata.price < 0) {
-      this.toastr.error('Track price must be positive.', 'Error!');
+      this.toastr.error("Track price must be positive.", "Error!");
     } else if (this.trackdata.price.toString().length !== 3) {
-      this.toastr.error('Track price must be in three digits', 'Error!');
-
+      this.toastr.error("Track price must be in three digits", "Error!");
     } else {
-      this.toastr.error('Please provide necessary details', 'Error!');
+      this.toastr.error("Please provide necessary details", "Error!");
     }
   }
 
@@ -534,23 +652,26 @@ export class MyMusicComponent implements OnInit, OnDestroy {
   removeTrackImage(id: any) {
     const thi = this;
     swal({
-      title: 'Are you sure?',
-      text: 'You won\'t be able to revert this!',
-      type: 'warning',
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      type: "warning",
       showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, delete it!'
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
     }).then(function (flag) {
       if (flag.value) {
-        thi.myMusicService.deleteTrackImageById(id).subscribe(response => {
-          thi.getAllTrack();
-          thi.edit_image = 'img/default_img.png';
-          delete this.trackdata['image'];
-          thi.toastr.success(response['message'], 'Success!');
-        }, error => {
-          thi.toastr.error(error['error'].message, 'Error!');
-        });
+        thi.myMusicService.deleteTrackImageById(id).subscribe(
+          (response) => {
+            thi.getAllTrack();
+            thi.edit_image = "img/default_img.png";
+            delete this.trackdata["image"];
+            thi.toastr.success(response["message"], "Success!");
+          },
+          (error) => {
+            thi.toastr.error(error["error"].message, "Error!");
+          }
+        );
       }
     });
   }
@@ -568,7 +689,12 @@ export class MyMusicComponent implements OnInit, OnDestroy {
       this.audio_ins[idx] = false;
     });
     this.audio_ins[index] = true;
-    this.messageService.sendMessage({ data: data, index: index, action: 'start', list: 1 });
+    this.messageService.sendMessage({
+      data: data,
+      index: index,
+      action: "start",
+      list: 1,
+    });
   }
 
   // Stop audio
@@ -580,20 +706,25 @@ export class MyMusicComponent implements OnInit, OnDestroy {
     data.forEach((ele, idx) => {
       this.audio_ins[idx] = false;
     });
-    this.messageService.sendMessage({ data: data, index: index, action: 'stop', list: 1 });
+    this.messageService.sendMessage({
+      data: data,
+      index: index,
+      action: "stop",
+      list: 1,
+    });
   }
 
   // Get all music type
   getAllMusicType() {
-    this.myMusicService.getAllMusicType().subscribe(response => {
-      this.music_type_list = response['music'];
+    this.myMusicService.getAllMusicType().subscribe((response) => {
+      this.music_type_list = response["music"];
     });
   }
 
   // Get all contest
   getAllContest() {
-    this.myMusicService.getAllContest().subscribe(response => {
-      this.contest_list = response['contest'];
+    this.myMusicService.getAllContest().subscribe((response) => {
+      this.contest_list = response["contest"];
       this.ngxService.stop();
     });
   }
@@ -627,51 +758,89 @@ export class MyMusicComponent implements OnInit, OnDestroy {
 
   // Update download status
   updateTrackDownLoadStatus(id: any) {
-    this.myMusicService.trackDownload(id).subscribe(response => {
-      this.toastr.success(response['message'], 'Success!');
-      this.datatableElement.dtInstance.then((dtInstance: DataTables.Api) => {
-        dtInstance.draw();
-      });
-    }, error => {
-      this.toastr.error(error['error'].message, 'Error!');
-    });
+    this.myMusicService.trackDownload(id).subscribe(
+      (response) => {
+        this.toastr.success(response["message"], "Success!");
+        this.datatableElement.dtInstance.then((dtInstance: DataTables.Api) => {
+          dtInstance.draw();
+        });
+      },
+      (error) => {
+        this.toastr.error(error["error"].message, "Error!");
+      }
+    );
   }
 
   // share on facebook
   shareOnFacebook() {
     const track = this.track_data;
-    const url = 'http://' + window.location.host + '/artist_profile/' + track['artist_id']['_id'] + '/track/' + track['_id'] + '/comments';
+    const url =
+      "http://" +
+      window.location.host +
+      "/artist_profile/" +
+      track["artist_id"]["_id"] +
+      "/track/" +
+      track["_id"] +
+      "/comments";
     const str =
-      'Track Name: ' + track['name'] + '\nArtist: ' +
-      track['artist_id']['first_name'] + ' ' + track['artist_id']['last_name'] + '\nDescription: ' + track['description'];
+      "Track Name: " +
+      track["name"] +
+      "\nArtist: " +
+      track["artist_id"]["first_name"] +
+      " " +
+      track["artist_id"]["last_name"] +
+      "\nDescription: " +
+      track["description"];
 
     // var facebookWindow = window.open('https://www.facebook.com/sharer.php?s=100&p[summary]='+encodeURIComponent(str)+"&p[url]="+encodeURIComponent(url), 'facebook-popup', 'height=350,width=600');
     // if(facebookWindow.focus) { facebookWindow.focus(); }
-    FB.ui({
-      method: 'share_open_graph',
-      action_type: 'og.likes',
-      action_properties: JSON.stringify({
-        object: {
-          'og:url': url,
-          'og:title': 'AOM',
-          'og:description': str
-        }
-      })
-    }, function (response) { });
+    FB.ui(
+      {
+        method: "share_open_graph",
+        action_type: "og.likes",
+        action_properties: JSON.stringify({
+          object: {
+            "og:url": url,
+            "og:title": "AOM",
+            "og:description": str,
+          },
+        }),
+      },
+      function (response) {}
+    );
   }
 
   // share on twitter
   shareOnTwitter() {
     const track = this.track_data;
     const url =
-      'http://' + window.location.host + '/artist_profile/' + track['artist_id']['_id'] + '/track/' + track['_id'] + '/comments';
+      "http://" +
+      window.location.host +
+      "/artist_profile/" +
+      track["artist_id"]["_id"] +
+      "/track/" +
+      track["_id"] +
+      "/comments";
     const str =
-      'Track Name: ' + track['name'] + '\nArtist: ' +
-      track['artist_id']['first_name'] + ' ' + track['artist_id']['last_name'] + '\nDescription: ' + track['description'];
-    const twitterWindow =
-      window.open('https://twitter.com/share?url=' +
-        encodeURIComponent(url) + '&text=' + encodeURIComponent(str), 'twitter-popup', 'height=350,width=600');
-    if (twitterWindow.focus) { twitterWindow.focus(); }
+      "Track Name: " +
+      track["name"] +
+      "\nArtist: " +
+      track["artist_id"]["first_name"] +
+      " " +
+      track["artist_id"]["last_name"] +
+      "\nDescription: " +
+      track["description"];
+    const twitterWindow = window.open(
+      "https://twitter.com/share?url=" +
+        encodeURIComponent(url) +
+        "&text=" +
+        encodeURIComponent(str),
+      "twitter-popup",
+      "height=350,width=600"
+    );
+    if (twitterWindow.focus) {
+      twitterWindow.focus();
+    }
   }
 
   // share track via email
@@ -681,21 +850,31 @@ export class MyMusicComponent implements OnInit, OnDestroy {
       this.show_spinner = true;
       const track = this.track_data;
       const url =
-        'http://' + window.location.host + '/artist_profile/' + track['artist_id']['_id'] + '/track/' + track['_id'] + '/comments';
+        "http://" +
+        window.location.host +
+        "/artist_profile/" +
+        track["artist_id"]["_id"] +
+        "/track/" +
+        track["_id"] +
+        "/comments";
       const data = {
-        email: this.share_data['email'],
-        track_id: track['_id'],
-        url: url
+        email: this.share_data["email"],
+        track_id: track["_id"],
+        url: url,
       };
-      this.myMusicService.shareTrackViaEmail(data).subscribe((response) => {
-        this.toastr.success(response['message'], 'Success!');
-        this.emailmodalRef.close();
-      }, (error) => {
-        this.toastr.error(error['error'].message, 'Error!');
-        this.show_spinner = false;
-      }, () => {
-        this.show_spinner = false;
-      });
+      this.myMusicService.shareTrackViaEmail(data).subscribe(
+        (response) => {
+          this.toastr.success(response["message"], "Success!");
+          this.emailmodalRef.close();
+        },
+        (error) => {
+          this.toastr.error(error["error"].message, "Error!");
+          this.show_spinner = false;
+        },
+        () => {
+          this.show_spinner = false;
+        }
+      );
     } else {
       this.share_form_validation = !flag;
     }
@@ -708,22 +887,32 @@ export class MyMusicComponent implements OnInit, OnDestroy {
       this.show_spinner = true;
       const track = this.track_data;
       const url =
-        'http://' + window.location.host + '/artist_profile/' + track['artist_id']['_id'] + '/track/' + track['_id'] + '/comments';
+        "http://" +
+        window.location.host +
+        "/artist_profile/" +
+        track["artist_id"]["_id"] +
+        "/track/" +
+        track["_id"] +
+        "/comments";
       const data = {
-        phone_no: this.share_data['phone_no'],
-        track_id: track['_id'],
-        url: url
+        phone_no: this.share_data["phone_no"],
+        track_id: track["_id"],
+        url: url,
       };
-      this.myMusicService.shareTrackViaSms(data).subscribe((response) => {
-        this.toastr.success(response['message'], 'Success!');
-        this.emailmodalRef.close();
-        this.share_data = {};
-      }, (error) => {
-        this.toastr.error(error['error'].message, 'Error!');
-        this.show_spinner = false;
-      }, () => {
-        this.show_spinner = false;
-      });
+      this.myMusicService.shareTrackViaSms(data).subscribe(
+        (response) => {
+          this.toastr.success(response["message"], "Success!");
+          this.emailmodalRef.close();
+          this.share_data = {};
+        },
+        (error) => {
+          this.toastr.error(error["error"].message, "Error!");
+          this.show_spinner = false;
+        },
+        () => {
+          this.show_spinner = false;
+        }
+      );
     } else {
       this.share_form_validation = !flag;
     }
@@ -733,13 +922,19 @@ export class MyMusicComponent implements OnInit, OnDestroy {
   copy_link() {
     const track = this.track_data;
     const url =
-      'http://' + window.location.host + '/artist_profile/' + track['artist_id']['_id'] + '/track/' + track['_id'] + '/comments';
-    const textArea = document.createElement('textarea');
+      "http://" +
+      window.location.host +
+      "/artist_profile/" +
+      track["artist_id"]["_id"] +
+      "/track/" +
+      track["_id"] +
+      "/comments";
+    const textArea = document.createElement("textarea");
     textArea.value = url;
     document.body.appendChild(textArea);
     textArea.focus();
     textArea.select();
-    document.execCommand('copy');
+    document.execCommand("copy");
     textArea.remove();
   }
 
@@ -761,20 +956,22 @@ export class MyMusicComponent implements OnInit, OnDestroy {
       //   return 'video/mp4';
       // case '1A45DFA3':
       //   return 'video/webm';
-      case '4944333':
-        return 'audio/mp3';
-      case '464F524D':
-        return 'audio/aiff';
+      case "4944333":
+        return "audio/mp3";
+      case "4944333":
+        return "audio/mpeg";
+      case "464F524D":
+        return "audio/aiff";
 
-      case '464F524D':
-        return 'audio/x-aiff';
+      case "464F524D":
+        return "audio/x-aiff";
 
-      case '52494646':
-        return 'audio/wav';
-      case '664C6143':
-        return 'audio/flac';
-      case 'FFF15080':
-        return 'audio/vnd.dlna.adts';
+      case "52494646":
+        return "audio/wav";
+      case "664C6143":
+        return "audio/flac";
+      case "FFF15080":
+        return "audio/vnd.dlna.adts";
       // case '4944333':
       //   return 'audio/mp3';
       // case '4357539':
@@ -785,25 +982,25 @@ export class MyMusicComponent implements OnInit, OnDestroy {
       // case '25504446':
       //   return 'application/pdf';
       default:
-        return 'Unknown filetype';
+        return "Unknown filetype";
     }
-  }
+  };
 
   getImageMimetype = (signature) => {
     switch (signature) {
-      case '89504E47':
-        return 'image/png';
+      case "89504E47":
+        return "image/png";
       // case '47494638':
       //   return 'image/gif';
-      case 'FFD8FFDB':
-      case 'FFD8FFE0':
-      case 'FFD8FFE1':
-        return 'image/jpeg';
-      case '3C3F786D':
-        return 'image/svg+xml';
-      case '00018':
-      case '0001C':
-      case '00020':
+      case "FFD8FFDB":
+      case "FFD8FFE0":
+      case "FFD8FFE1":
+        return "image/jpeg";
+      case "3C3F786D":
+        return "image/svg+xml";
+      case "00018":
+      case "0001C":
+      case "00020":
       //   return 'video/mp4';
       // case '1A45DFA3':
       //   return 'video/webm';
@@ -817,35 +1014,67 @@ export class MyMusicComponent implements OnInit, OnDestroy {
       // case '25504446':
       //   return 'application/pdf';
       default:
-        return 'Unknown filetype';
+        return "Unknown filetype";
     }
+  };
+
+  get round1_track() {
+    return this.contesttrack_form.get("round1_track1");
+  }
+  get round2_track() {
+    return this.contesttrack_form.get("round2_track");
+  }
+  get round3_track() {
+    return this.contesttrack_form.get("round3_track");
+  }
+  get semi_final_track() {
+    return this.contesttrack_form.get("semi_final_track");
+  }
+  get final_track() {
+    return this.contesttrack_form.get(" final_track");
+  }
+  get contest_id() {
+    return this.contesttrack_form.get(" contest_id");
   }
 
-  get round1_track() { return this.contesttrack_form.get('round1_track1'); }
-  get round2_track() { return this.contesttrack_form.get('round2_track'); }
-  get round3_track() { return this.contesttrack_form.get('round3_track'); }
-  get semi_final_track() { return this.contesttrack_form.get('semi_final_track'); }
-  get final_track() { return this.contesttrack_form.get(' final_track'); }
-  get contest_id() { return this.contesttrack_form.get(' contest_id'); }
+  get spreliminary1_track() {
+    return this.standard_form.get("spreliminary1_track");
+  }
+  get spreliminary2_track() {
+    return this.standard_form.get("spreliminary2_track");
+  }
+  get sround1_track() {
+    return this.standard_form.get("sround1_track1");
+  }
+  get sround2_track() {
+    return this.standard_form.get("sround2_track");
+  }
+  get sround3_track() {
+    return this.standard_form.get("sround3_track");
+  }
+  get ssemi_final_track() {
+    return this.standard_form.get("ssemi_final_track");
+  }
+  get sfinal_track() {
+    return this.standard_form.get("sfinal_track");
+  }
+  get scontest_id() {
+    return this.standard_form.get("scontest_id");
+  }
 
-  get spreliminary1_track() { return this.standard_form.get('spreliminary1_track'); }
-  get spreliminary2_track() { return this.standard_form.get('spreliminary2_track'); }
-  get sround1_track() { return this.standard_form.get('sround1_track1'); }
-  get sround2_track() { return this.standard_form.get('sround2_track'); }
-  get sround3_track() { return this.standard_form.get('sround3_track'); }
-  get ssemi_final_track() { return this.standard_form.get('ssemi_final_track'); }
-  get sfinal_track() { return this.standard_form.get('sfinal_track'); }
-  get scontest_id() { return this.standard_form.get('scontest_id'); }
-
-  get special_round1_track() { return this.special_form.get('sround1_track1'); }
+  get special_round1_track() {
+    return this.special_form.get("sround1_track1");
+  }
 
   submit_contest_track(id, contestid, type) {
     this.contestType = type;
-    this.contestDetail = this.modalService.open(id, { centered: true, windowClass: 'modal-wrapper', backdrop: true });
+    this.contestDetail = this.modalService.open(id, {
+      centered: true,
+      windowClass: "modal-wrapper",
+      backdrop: true,
+    });
     this.contestid = contestid;
-    this.contesttrack_data['contest_id'] = contestid;
+    this.contesttrack_data["contest_id"] = contestid;
     this.submitContest.close();
   }
-
 }
-

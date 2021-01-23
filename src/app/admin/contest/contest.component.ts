@@ -1,15 +1,23 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { ContestService } from './contest.service';
-import { DataTableDirective } from 'angular-datatables';
-import { ToastrService } from 'ngx-toastr';
-import { BsModalService } from 'ngx-bootstrap/modal';
-import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
-import { FormGroup, FormBuilder, Validators, FormControl, AbstractControl, NG_VALIDATORS, Validator } from '@angular/forms';
+import { Component, OnInit, ViewChild } from "@angular/core";
+import { ContestService } from "./contest.service";
+import { DataTableDirective } from "angular-datatables";
+import { ToastrService } from "ngx-toastr";
+import { BsModalService } from "ngx-bootstrap/modal";
+import { BsModalRef } from "ngx-bootstrap/modal/bs-modal-ref.service";
+import {
+  FormGroup,
+  FormBuilder,
+  Validators,
+  FormControl,
+  AbstractControl,
+  NG_VALIDATORS,
+  Validator,
+} from "@angular/forms";
 
 @Component({
-  selector: 'app-contest',
-  templateUrl: './contest.component.html',
-  styleUrls: []
+  selector: "app-contest",
+  templateUrl: "./contest.component.html",
+  styleUrls: [],
 })
 export class ContestComponent implements OnInit {
   @ViewChild(DataTableDirective)
@@ -23,7 +31,7 @@ export class ContestComponent implements OnInit {
   exist_contest: any = {};
   region_list: any = [];
   state_list: any = [];
-  search_str: any = '';
+  search_str: any = "";
   sort: any = -1;
   participant_data: any = [];
   day: any = [];
@@ -54,29 +62,29 @@ export class ContestComponent implements OnInit {
     for (let i = 1; i <= 12; i++) {
       this.month.push(i);
     }
-    for (let i = (new Date()).getFullYear(); i <= 2100; i++) {
+    for (let i = new Date().getFullYear(); i <= 2100; i++) {
       this.year.push(i);
     }
     this.contest_validation = this.fb.group({
       // type: ['', [Validators.required]],
-      name: ['', [Validators.required, this.noWhitespaceValidator]],
-      day: ['', [Validators.required]],
-      month: ['', [Validators.required]],
-      year: ['', [Validators.required]],
+      name: ["", [Validators.required, this.noWhitespaceValidator]],
+      day: ["", [Validators.required]],
+      month: ["", [Validators.required]],
+      year: ["", [Validators.required]],
       // duration: ['', [Validators.required]],
-      duration: [''],
-      // round: [],
-      contest_type: ['', [Validators.required]],
-      music_type: ['', [Validators.required]],
-      region: ['', [Validators.required]],
-      state: ['', [Validators.required]]
+      duration: [""],
+      round: [],
+      contest_type: ["", [Validators.required]],
+      music_type: ["", [Validators.required]],
+      region: ["", [Validators.required]],
+      state: ["", [Validators.required]],
     });
   }
 
   ngOnInit() {
     const that = this;
     this.dtOptions = {
-      pagingType: 'full_numbers',
+      pagingType: "full_numbers",
       pageLength: 10,
       serverSide: true,
       processing: true,
@@ -86,26 +94,32 @@ export class ContestComponent implements OnInit {
       responsive: true,
       scrollCollapse: true,
       language: {
-        'processing': '<i class="fa fa-spinner fa-spin loader"></i>',
+        processing: '<i class="fa fa-spinner fa-spin loader"></i>',
       },
       ajax: (dataTablesParameters: any, callback) => {
         setTimeout(() => {
-          dataTablesParameters['search'] = that.search_str;
-          dataTablesParameters['sort'] = [this.sort === -1 ? { 'field': 'end_date', value: -1 } : { 'field': 'start_date', value: 1 }];
-          that.contestService.getAllContest(dataTablesParameters).subscribe(response => {
-            that.contest_data = response['contest']['contest'];
-            // that.contest_data.forEach((ele) => {
-            //   ele['days'] = that.getDaysDiff(ele['start_date'], new Date());
-            // });
-            callback({
-              recordsTotal: response['contest']['recordsTotal'],
-              recordsFiltered: response['contest']['recordsTotal'],
-              data: []
+          dataTablesParameters["search"] = that.search_str;
+          dataTablesParameters["sort"] = [
+            this.sort === -1
+              ? { field: "end_date", value: -1 }
+              : { field: "start_date", value: 1 },
+          ];
+          that.contestService
+            .getAllContest(dataTablesParameters)
+            .subscribe((response) => {
+              that.contest_data = response["contest"]["contest"];
+              // that.contest_data.forEach((ele) => {
+              //   ele['days'] = that.getDaysDiff(ele['start_date'], new Date());
+              // });
+              callback({
+                recordsTotal: response["contest"]["recordsTotal"],
+                recordsFiltered: response["contest"]["recordsTotal"],
+                data: [],
+              });
+              that.contest_row_cnt = dataTablesParameters["start"] + 1;
             });
-            that.contest_row_cnt = (dataTablesParameters['start'] + 1);
-          });
         }, 0);
-      }
+      },
     };
     this.getAllMusicTypes();
     this.getAllExistingContest();
@@ -113,10 +127,13 @@ export class ContestComponent implements OnInit {
   }
 
   noWhitespaceValidator(control: FormControl) {
-    if (typeof (control.value || '') === 'string' || (control.value || '') instanceof String) {
-      const isWhitespace = (control.value || '').trim().length === 0;
+    if (
+      typeof (control.value || "") === "string" ||
+      (control.value || "") instanceof String
+    ) {
+      const isWhitespace = (control.value || "").trim().length === 0;
       const isValid = !isWhitespace;
-      return isValid ? null : { 'whitespace': true };
+      return isValid ? null : { whitespace: true };
     }
   }
 
@@ -131,35 +148,37 @@ export class ContestComponent implements OnInit {
 
   openModal(template: any, id: any) {
     const data = {
-      contest_id: id
+      contest_id: id,
     };
     this.contestService.getContestParticipants(data).subscribe((response) => {
-      this.participant_data = response['artist'];
+      this.participant_data = response["artist"];
     });
     this.is_valid = false;
-    this.modalRef = this.modalService.show(template, { backdrop: 'static' });
+    this.modalRef = this.modalService.show(template, { backdrop: "static" });
   }
 
   openContestModel(template: any) {
     // this.is_valid = false;
     this.contest_detail = {
-      // no_of_round: 0
+      no_of_round: 1,
     };
     this.is_new_or_existing = 1;
-    this.contestModelRef = this.modalService.show(template, { backdrop: 'static' });
+    this.contestModelRef = this.modalService.show(template, {
+      backdrop: "static",
+    });
   }
 
   openRoundModel(template: any, id: any) {
     this.getContestRound(id);
-    this.modalRef = this.modalService.show(template, { backdrop: 'static' });
+    this.modalRef = this.modalService.show(template, { backdrop: "static" });
   }
 
   getContestRound(id) {
     const data = {
-      contest_id: id
+      contest_id: id,
     };
     this.contestService.getContestRound(data).subscribe((response) => {
-      this.round_list = response['contest']['contest'];
+      this.round_list = response["contest"]["contest"];
     });
   }
 
@@ -172,34 +191,36 @@ export class ContestComponent implements OnInit {
   // Get all music type
   getAllMusicTypes() {
     this.contestService.getAllMusicType().subscribe((response) => {
-      this.music_type = response['music'];
+      this.music_type = response["music"];
     });
   }
 
   // Get all existing contest
   getAllExistingContest() {
     this.contestService.getExistingContest().subscribe((response) => {
-      this.existing_contest_list = response['contest']['contest'];
+      this.existing_contest_list = response["contest"]["contest"];
     });
   }
 
   // get all region
   getAllRegion() {
     this.contestService.getAllRegion().subscribe((response) => {
-      this.region_list = response['Region'];
+      this.region_list = response["Region"];
     });
   }
 
   // Get state from region
   getStateFromRegion(id: any) {
-    if (id && id !== '') {
+    if (id && id !== "") {
       const data = {
-        region: id
+        region: id,
       };
       this.contestService.getStateByRegion(data).subscribe((response) => {
-        this.state_list = response['state'];
+        this.state_list = response["state"];
         if (this.contest_detail) {
-          this.contest_detail['state'] = this.contest_detail['state'] ? this.contest_detail['state']['_id'] : '';
+          this.contest_detail["state"] = this.contest_detail["state"]
+            ? this.contest_detail["state"]["_id"]
+            : "";
         }
       });
     }
@@ -223,48 +244,55 @@ export class ContestComponent implements OnInit {
     if (flag) {
       // this.show_spinner = true;
       let data;
-      if (this.contest_detail['duration']) {
+      if (this.contest_detail["duration"]) {
         data = {
-          name: this.contest_detail['name'],
-          contest_type: this.contest_detail['contest_type'],
-          music_type: this.contest_detail['music_type'],
-          region: this.contest_detail['region'],
-          state: this.contest_detail['state'],
-          // round: this.contest_detail['no_of_round'],
-          day: this.contest_detail['day'],
-          month: this.contest_detail['month'],
-          year: this.contest_detail['year'],
-          duration: this.contest_detail['duration']
+          name: this.contest_detail["name"],
+          contest_type: this.contest_detail["contest_type"],
+          music_type: this.contest_detail["music_type"],
+          region: this.contest_detail["region"],
+          state: this.contest_detail["state"],
+          round: this.contest_detail["no_of_round"],
+          day: this.contest_detail["day"],
+          month: this.contest_detail["month"],
+          year: this.contest_detail["year"],
+          duration: this.contest_detail["duration"],
         };
       } else {
         data = {
-          name: this.contest_detail['name'],
-          contest_type: this.contest_detail['contest_type'],
-          music_type: this.contest_detail['music_type'],
-          region: this.contest_detail['region'],
-          state: this.contest_detail['state'],
-          // round: this.contest_detail['no_of_round'],
-          day: this.contest_detail['day'],
-          month: this.contest_detail['month'],
-          year: this.contest_detail['year'],
+          name: this.contest_detail["name"],
+          contest_type: this.contest_detail["contest_type"],
+          music_type: this.contest_detail["music_type"],
+          region: this.contest_detail["region"],
+          state: this.contest_detail["state"],
+          // round: this.contest_detail["no_of_round"],
+          day: this.contest_detail["day"],
+          month: this.contest_detail["month"],
+          year: this.contest_detail["year"],
         };
       }
 
+      console.log(" : data ==> ", data);
       // commented for testing purpose only
-      this.contestService.addNewContest(data).subscribe((response) => {
-        this.datatableElement.dtInstance.then((dtInstance: DataTables.Api) => {
-          dtInstance.draw();
-        });
-        this.contest_detail = {};
-        this.contestModelRef.hide();
-        this.getAllExistingContest();
-        this.toastr.success(response['message'], 'Success!');
-      }, (error) => {
-        this.toastr.error(error['error'].message, 'Error!');
-        this.show_spinner = false;
-      }, () => {
-        this.show_spinner = false;
-      });
+      this.contestService.addNewContest(data).subscribe(
+        (response) => {
+          this.datatableElement.dtInstance.then(
+            (dtInstance: DataTables.Api) => {
+              dtInstance.draw();
+            }
+          );
+          this.contest_detail = {};
+          this.contestModelRef.hide();
+          this.getAllExistingContest();
+          this.toastr.success(response["message"], "Success!");
+        },
+        (error) => {
+          this.toastr.error(error["error"].message, "Error!");
+          this.show_spinner = false;
+        },
+        () => {
+          this.show_spinner = false;
+        }
+      );
       // commented for testing purpose only
 
       // } else {
@@ -312,21 +340,24 @@ export class ContestComponent implements OnInit {
   // Select exisiting contest
   selectContest(idx: any) {
     this.contest_detail = this.existing_contest_list[idx];
-    const dt = new Date(this.contest_detail['start_date']);
-    this.contest_detail['no_of_round'] = this.contest_detail['round'] + 1;
-    this.contest_detail['day'] = dt.getUTCDate();
-    this.contest_detail['month'] = (dt.getUTCMonth() + 1);
-    this.contest_detail['year'] = dt.getUTCFullYear();
-    this.contest_detail['music_type'] = this.contest_detail['contest_id']['music_type']['_id'];
-    this.getStateFromRegion(this.contest_detail['region']);
+    const dt = new Date(this.contest_detail["start_date"]);
+    this.contest_detail["no_of_round"] = this.contest_detail["round"] + 1;
+    this.contest_detail["day"] = dt.getUTCDate();
+    this.contest_detail["month"] = dt.getUTCMonth() + 1;
+    this.contest_detail["year"] = dt.getUTCFullYear();
+    this.contest_detail["music_type"] = this.contest_detail["contest_id"][
+      "music_type"
+    ]["_id"];
+    this.getStateFromRegion(this.contest_detail["region"]);
   }
 
   specialContest() {
-    if (this.contest_detail.contest_type === 'special') {
+    if (this.contest_detail.contest_type === "special") {
       this.isSpecialContest = true;
     } else {
+      this.contest_detail["duration"] = "";
+      this.contest_detail["no_of_round"] = 1;
       this.isSpecialContest = false;
     }
   }
-
 }

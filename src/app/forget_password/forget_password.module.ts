@@ -1,16 +1,16 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ForgetPasswordComponent } from './forget_password.component';
-import { ForgetPasswordService } from './forget_password.service';
-import { Http, HttpModule } from '@angular/http';
+import { NgModule } from "@angular/core";
+import { CommonModule } from "@angular/common";
+import { RouterModule } from "@angular/router";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { ForgetPasswordComponent } from "./forget_password.component";
+import { ForgetPasswordService } from "./forget_password.service";
+import { Http, HttpModule } from "@angular/http";
 // import { HttpClientModule, HttpClient } from '@angular/common/http';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { ImageCropperModule } from 'ngx-image-cropper';
+import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
+import { ImageCropperModule } from "ngx-image-cropper";
 // import { ToastrModule } from 'ngx-toastr';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { AuthService } from '../shared/auth.service';
+import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
+import { AuthService } from "../shared/auth.service";
 
 @NgModule({
   imports: [
@@ -23,11 +23,12 @@ import { AuthService } from '../shared/auth.service';
     BrowserAnimationsModule,
     // ToastrModule.forRoot({preventDuplicates: true}),
     RouterModule.forChild([
-      { path: 'forgot_password/:id', component: ForgetPasswordComponent },
-      { path: '**', redirectTo: '' }
-    ])
+      { path: "forgot_password/:id", component: ForgetPasswordComponent },
+      { path: "forgot_password/admin/:id", component: ForgetPasswordComponent },
+      { path: "**", redirectTo: "" },
+    ]),
   ],
   declarations: [ForgetPasswordComponent],
-  providers: [ForgetPasswordService]
+  providers: [ForgetPasswordService],
 })
-export class ForgetPasswordModule { }
+export class ForgetPasswordModule {}

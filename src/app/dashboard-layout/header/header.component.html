@@ -4,7 +4,7 @@
       <div class="col-md-3 col-sm-3 col-xs-3">
         <div class="logo-wrap">
           <a href="javascript:;" routerLink="/">
-            <img src="img/logo.png" alt="">
+            <img src="img/logo.png" alt="" />
           </a>
         </div>
       </div>
@@ -25,8 +25,14 @@
             <li routerLinkActive="active">
               <a href="javascript:;" routerLink="/vote">Vote</a>
             </li>
-            <li data-fancybox data-animation-duration="700" data-src="javascript:;login">
-              <a href="javascript:;" (click)="openVerticallyCentered(content)">Log In</a>
+            <li
+              data-fancybox
+              data-animation-duration="700"
+              data-src="javascript:;login"
+            >
+              <a href="javascript:;" (click)="openVerticallyCentered(content)"
+                >Log In</a
+              >
             </li>
             <li class="register-btn">
               <a href="javascript:;" routerLink="/register">Register</a>
@@ -38,40 +44,71 @@
     <div class="row" *ngIf="user && user.artist">
       <div class="col-md-2 col-sm-2 col-xs-2">
         <div class="logo-wrap">
-          <a href="javascript:;" routerLink=""><img src="img/logo.png" alt=""></a>
+          <a href="javascript:;" routerLink=""
+            ><img src="img/logo.png" alt=""
+          /></a>
         </div>
       </div>
       <div class="col-md-10 col-sm-10 col-xs-10">
         <div class="nav-header">
-          <div class="mobile-nav" (click)="toggleMainMenu()"><a href="javascript:;"><i class="fa fa-bars"></i></a></div>
-          <nav class="navigation" [style.display]="toggleMenu ? 'block' : 'none'">
+          <div class="mobile-nav" (click)="toggleMainMenu()">
+            <a href="javascript:;"><i class="fa fa-bars"></i></a>
+          </div>
+          <nav
+            class="navigation"
+            [style.display]="toggleMenu ? 'block' : 'none'"
+          >
             <ul>
-              <li routerLinkActive="active"><a href="javascript:;" routerLink="/whats-new">What's New</a></li>
-              <li routerLinkActive="active"><a href="javascript:;" routerLink="/artist">Artists</a></li>
-              <li routerLinkActive="active"><a href="javascript:;" routerLink="/vote">Vote</a></li>
-              <li routerLinkActive="active"><a href="javascript:;" routerLink="/my-music">My Music</a></li>
-              <li routerLinkActive="active"><a href="javascript:;" routerLink="/my-profile">My Profile</a></li>
+              <li routerLinkActive="active">
+                <a href="javascript:;" routerLink="/whats-new">What's New</a>
+              </li>
+              <li routerLinkActive="active">
+                <a href="javascript:;" routerLink="/artist">Artists</a>
+              </li>
+              <li routerLinkActive="active">
+                <a href="javascript:;" routerLink="/vote">Vote</a>
+              </li>
+              <li routerLinkActive="active">
+                <a href="javascript:;" routerLink="/my-music">My Music</a>
+              </li>
+              <li routerLinkActive="active">
+                <a href="javascript:;" routerLink="/my-profile">My Profile</a>
+              </li>
             </ul>
           </nav>
           <div class="logged-in-header">
             <ul class="update-option">
               <li class="message">
-                <a href="javascript:;"><i class="fa fa-envelope-o" aria-hidden="true"></i>
-                  <span class="new-up" *ngIf='count'> </span>
+                <a href="javascript:;"
+                  ><i class="fa fa-envelope-o" aria-hidden="true"></i>
+                  <span class="new-up" *ngIf="count"> </span>
                 </a>
               </li>
               <li class="notification">
-                <a href="javascript:;"><i class="fa fa-bell" aria-hidden="true"></i>
-                  <span class="new-up" *ngIf='count'>{{count}}</span>
+                <a href="javascript:;"
+                  ><i class="fa fa-bell" aria-hidden="true"></i>
+                  <span class="new-up" *ngIf="count">{{ count }}</span>
                 </a>
               </li>
             </ul>
             <div class="profile-picture" ngbDropdown>
               <a href="javascirpt:;" ngbDropdownToggle>
-                <img src="{{user.artist.image != '' ? user.artist.image : 'img/upload1.png'}}" *ngIf="user.artist"
-                  alt="Profile Picture">
-                <img src="{{user.user.image != '' ? user.user.image : 'img/upload1.png'}}" *ngIf="user.user"
-                  alt="Profile Picture">
+                <img
+                  src="{{
+                    user.artist.image != ''
+                      ? user.artist.image
+                      : 'img/upload1.png'
+                  }}"
+                  *ngIf="user.artist"
+                  alt="Profile Picture"
+                />
+                <img
+                  src="{{
+                    user.user.image != '' ? user.user.image : 'img/upload1.png'
+                  }}"
+                  *ngIf="user.user"
+                  alt="Profile Picture"
+                />
               </a>
               <!-- <div ngbDropdownMenu>
                     <button class="dropdown-item">Logout</button>
@@ -80,7 +117,8 @@
           </div>
           <ul class="logout_ul">
             <li>
-              <a href="javascript:;" (click)="logout()">Logout</a></li>
+              <a href="javascript:;" (click)="logout()">Logout</a>
+            </li>
           </ul>
         </div>
       </div>
@@ -88,18 +126,33 @@
     <div class="row" *ngIf="user && user.user">
       <div class="col-md-2 col-sm-2 col-xs-2">
         <div class="logo-wrap">
-          <a href="javascript:;" routerLink=""><img src="img/logo.png" alt=""></a>
+          <a href="javascript:;" routerLink=""
+            ><img src="img/logo.png" alt=""
+          /></a>
         </div>
       </div>
       <div class="col-md-10 col-sm-10 col-xs-10">
         <div class="nav-header">
-          <div class="mobile-nav" (click)="toggleMainMenu()"><a href="javascript:;"><i class="fa fa-bars"></i></a></div>
-          <nav class="navigation" [style.display]="toggleMenu ? 'block' : 'none'">
+          <div class="mobile-nav" (click)="toggleMainMenu()">
+            <a href="javascript:;"><i class="fa fa-bars"></i></a>
+          </div>
+          <nav
+            class="navigation"
+            [style.display]="toggleMenu ? 'block' : 'none'"
+          >
             <ul>
-              <li routerLinkActive="active"><a href="javascript:;" routerLink="/whats-new">What's New</a></li>
-              <li routerLinkActive="active"><a href="javascript:;" routerLink="/artist">Artists</a></li>
-              <li routerLinkActive="active"><a href="javascript:;" routerLink="/vote">Vote</a></li>
-              <li routerLinkActive="active"><a href="javascript:;" routerLink="/my-profile">My Profile</a></li>
+              <li routerLinkActive="active">
+                <a href="javascript:;" routerLink="/whats-new">What's New</a>
+              </li>
+              <li routerLinkActive="active">
+                <a href="javascript:;" routerLink="/artist">Artists</a>
+              </li>
+              <li routerLinkActive="active">
+                <a href="javascript:;" routerLink="/vote">Vote</a>
+              </li>
+              <li routerLinkActive="active">
+                <a href="javascript:;" routerLink="/my-profile">My Profile</a>
+              </li>
             </ul>
           </nav>
           <div class="logged-in-header">
@@ -110,17 +163,29 @@
             </ul> -->
             <div class="profile-picture" ngbDropdown>
               <a href="javascirpt:;" ngbDropdownToggle>
-                <img src="{{user.artist.image != '' ? user.artist.image : 'img/upload1.png'}}" *ngIf="user.artist"
-                  alt="Profile Picture">
-                <img src="{{user.user.image != '' ? user.user.image : 'img/upload1.png'}}" *ngIf="user.user"
-                  alt="Profile Picture">
+                <img
+                  src="{{
+                    user.artist.image != ''
+                      ? user.artist.image
+                      : 'img/upload1.png'
+                  }}"
+                  *ngIf="user.artist"
+                  alt="Profile Picture"
+                />
+                <img
+                  src="{{
+                    user.user.image != '' ? user.user.image : 'img/upload1.png'
+                  }}"
+                  *ngIf="user.user"
+                  alt="Profile Picture"
+                />
               </a>
-
             </div>
           </div>
           <ul class="logout_ul">
             <li>
-              <a href="javascript:;" (click)="logout()">Logout</a></li>
+              <a href="javascript:;" (click)="logout()">Logout</a>
+            </li>
           </ul>
         </div>
       </div>
@@ -130,12 +195,17 @@
 
 <ng-template #content let-c="close" let-d="dismiss">
   <div class="modal_login_wrapper">
-    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="d('Cross click')"
+    >
       <span aria-hidden="true">&times;</span>
     </button>
     <div class="modal-body">
       <div class="login-modal">
-        <div class="social-login">
+        <!-- <div class="social-login">
           <div class="google-login">
             <a href="javascript:;" id="googleBtn"><i class="fa fa-google" aria-hidden="true"></i> <span>Login with
                 Google</span></a>
@@ -144,31 +214,57 @@
             <a href="javascript:;" (click)="fbLogin()"><i class="fa fa-facebook" aria-hidden="true"></i> <span>Login
                 with Facebook</span></a>
           </div>
-        </div>
-        <div class="or">or with email</div>
+        </div> -->
+        <!-- <div class="or">or with email</div> -->
         <div class="email-form">
           <form [formGroup]="login_form">
             <div class="form-group">
               <label for="email">Email</label>
-              <input type="email" class="form-control" formControlName="email" name="email" id="email"
-                [(ngModel)]="userdata.email" placeholder="Email">
-              <div class="cust_err_msg" *ngIf="login_validation && !login_form.controls['email'].valid">
-                <span *ngIf="login_form.controls['email'].errors['required']" class="text-danger">Email is
-                  required.</span>
+              <input
+                type="email"
+                class="form-control"
+                formControlName="email"
+                name="email"
+                id="email"
+                [(ngModel)]="userdata.email"
+                placeholder="Email"
+              />
+              <div
+                class="cust_err_msg"
+                *ngIf="login_validation && !login_form.controls['email'].valid"
+              >
+                <span
+                  *ngIf="login_form.controls['email'].errors['required']"
+                  class="text-danger"
+                  >Email is required.</span
+                >
               </div>
             </div>
             <div class="form-group pwd-grp">
               <label for="pwd">Password</label>
-              <input type="password" class="form-control" formControlName="password" name="password" id="pwd"
-                [(ngModel)]="userdata.password" placeholder="Password">
+              <input
+                type="password"
+                class="form-control"
+                formControlName="password"
+                name="password"
+                id="pwd"
+                [(ngModel)]="userdata.password"
+                placeholder="Password"
+              />
               <div class="pwd-icon"></div>
-              <div class="cust_err_msg" *ngIf="login_validation && !login_form.controls['password'].valid">
-                <span *ngIf="login_form.controls['password'].errors['required']" class="text-danger">Password is
-                  required.</span>
+              <div
+                class="cust_err_msg"
+                *ngIf="
+                  login_validation && !login_form.controls['password'].valid
+                "
+              >
+                <span
+                  *ngIf="login_form.controls['password'].errors['required']"
+                  class="text-danger"
+                  >Password is required.</span
+                >
               </div>
             </div>
-
-
 
             <!-- <div class="form-group">
               <label for="pwd">Type</label>
@@ -182,16 +278,28 @@
               </div>
             </div> -->
 
-
-
-            <div class="login-btn"><button (click)="login(login_form.valid)" [disabled]="show_spinner">Log In <i
-                  *ngIf="show_spinner" class="fa fa-spinner fa-spin"></i></button></div>
+            <div class="login-btn">
+              <button
+                (click)="login(login_form.valid)"
+                [disabled]="show_spinner"
+              >
+                Log In
+                <i *ngIf="show_spinner" class="fa fa-spinner fa-spin"></i>
+              </button>
+            </div>
             <!-- <div class="forgot-link"><a href="javascript:;" (click)="openForgetPasswordModal(forget)">Forgot Password</a></div> -->
             <div class="forget_password">
-              <a class="" href="javascript:;" (click)="openForgetPasswordModal(forget)">Forget Password</a>
+              <a
+                class=""
+                href="javascript:;"
+                (click)="openForgetPasswordModal(forget)"
+                >Forget Password</a
+              >
             </div>
-            <div class="register-link">Don't have an account yet? <a href="javascript:;"
-                routerLink="/register">Register</a></div>
+            <div class="register-link">
+              Don't have an account yet?
+              <a href="javascript:;" routerLink="/register">Register</a>
+            </div>
           </form>
         </div>
       </div>
@@ -202,7 +310,12 @@
 <ng-template #forget let-c="close" let-d="dismiss">
   <div class="modal-body">
     <div class="modal-box">
-      <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <button
+        type="button"
+        class="close"
+        aria-label="Close"
+        (click)="d('Cross click')"
+      >
         <span aria-hidden="true">&times;</span>
       </button>
       <form [formGroup]="forget_form">
@@ -221,19 +334,40 @@
           </div> -->
           <div class="form-group">
             <label class="control-label custom_form_label">Email Id</label>
-            <input class="form-control custom_form" name="email" formControlName="email"
-              [(ngModel)]="forget_pwd_data.email" placeholder="Enter Email" />
-            <div class="cust_err_msg" *ngIf="forget_validation && !forget_form.controls['email'].valid">
-              <span *ngIf="forget_form.controls['email'].errors['required']" class="text-danger">Email is
-                required.</span>
+            <input
+              class="form-control custom_form"
+              name="email"
+              formControlName="email"
+              [(ngModel)]="forget_pwd_data.email"
+              placeholder="Enter Email"
+            />
+            <div
+              class="cust_err_msg"
+              *ngIf="forget_validation && !forget_form.controls['email'].valid"
+            >
               <span
-                *ngIf="!forget_form.controls['email'].errors['required'] && forget_form.controls['email'].errors['email']"
-                class="text-danger">Enter valid email.</span>
+                *ngIf="forget_form.controls['email'].errors['required']"
+                class="text-danger"
+                >Email is required.</span
+              >
+              <span
+                *ngIf="
+                  !forget_form.controls['email'].errors['required'] &&
+                  forget_form.controls['email'].errors['email']
+                "
+                class="text-danger"
+                >Enter valid email.</span
+              >
             </div>
           </div>
           <div class="form-group text-right">
-            <button class="btn forget_btn" (click)="forgetPassword(forget_form.valid)" [disabled]="show_spinner">Submit
-              <i *ngIf="show_spinner" class="fa fa-spinner fa-spin"></i></button>
+            <button
+              class="btn forget_btn"
+              (click)="forgetPassword(forget_form.valid)"
+              [disabled]="show_spinner"
+            >
+              Submit <i *ngIf="show_spinner" class="fa fa-spinner fa-spin"></i>
+            </button>
           </div>
         </div>
       </form>
