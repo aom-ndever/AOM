@@ -983,6 +983,30 @@
                     </ul>
                   </div>
                 </div>
+                <div class="notification">
+                  <div class="edit-head">Account Deactivation</div>
+                  <div class="notify-by-email">
+                    <div class="deactivate">
+                      <p>
+                        Temporarily deactive or permanently delete your Account.
+                      </p>
+                      <div class="button_group float-right">
+                        <button
+                          type="submit"
+                          [disabled]="show_spinner"
+                          class="update-btn"
+                          (click)="openAccountDeactivationModal(acc_diactive)"
+                        >
+                          Deactive
+                          <i
+                            *ngIf="show_spinner"
+                            class="fa fa-spinner fa-spin"
+                          ></i>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
 
@@ -2720,6 +2744,30 @@
                     </ul>
                   </div>
                 </div>
+                <div class="notification">
+                  <div class="edit-head">Account Deactivation</div>
+                  <div class="notify-by-email">
+                    <div class="deactivate">
+                      <p>
+                        Temporarily deactive or permanently delete your Account.
+                      </p>
+                      <div class="button_group float-right">
+                        <button
+                          type="submit"
+                          [disabled]="show_spinner"
+                          class="update-btn"
+                          (click)="openAccountDeactivationModal(acc_diactive)"
+                        >
+                          Deactive
+                          <i
+                            *ngIf="show_spinner"
+                            class="fa fa-spinner fa-spin"
+                          ></i>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
             <div
@@ -4348,6 +4396,82 @@
             Save
             <i *ngIf="show_spinner" class="fa fa-spinner fa-spin"></i>
           </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #acc_diactive let-c="close" let-d="dismiss">
+  <div class="modal-body">
+    <div class="modal-box">
+      <button
+        type="button"
+        class="close"
+        aria-label="Close"
+        (click)="closeAccountDeactivationModal()"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+      <form [formGroup]="accountDeactivate_form">
+        <h3 class="forget_password_header">
+          Deactivating or Deleteing your AOM Account
+        </h3>
+        <div class="col-sm-12">
+          <div class="wrapDiv">
+            <div class="radio">
+              <label>
+                <input
+                  name="is_deactivate"
+                  type="radio"
+                  formControlName="is_deactivate"
+                  [checked]="is_deactivate"
+                  (change)="changeValue('is_deactivate', $event)"
+                  [(ngModel)]="is_deactivate"
+                />
+                <div class="radio_check"></div>
+              </label>
+            </div>
+            <div class="deactiveOption">
+              <h3>Deactive Account</h3>
+              <p>
+                Deactivating your account is temporary. Your account will be
+                disabled.
+              </p>
+            </div>
+          </div>
+          <div class="wrapDiv">
+            <div class="radio">
+              <label>
+                <input
+                  name="is_del"
+                  type="radio"
+                  formControlName="is_del"
+                  [checked]="is_del"
+                  (change)="changeValue('is_del', $event)"
+                  [(ngModel)]="is_del"
+                />
+                <div class="radio_check"></div>
+              </label>
+            </div>
+            <div class="deactiveOption">
+              <h3>Delete Account</h3>
+              <p>
+                Deleting your account is permanent. When you delete your AOM
+                account, you won't be able to retrive the content of information
+                you have shared on AOM.
+              </p>
+            </div>
+          </div>
+          <div class="form-group text-right">
+            <button
+              class="btn forget_btn"
+              [disabled]="show_spinner"
+              (click)="deactivateAccount()"
+            >
+              Submit <i *ngIf="show_spinner" class="fa fa-spinner fa-spin"></i>
+            </button>
+          </div>
         </div>
       </form>
     </div>

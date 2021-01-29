@@ -62,6 +62,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
   cropperReady = false;
   upgradeCropperReady = false;
   modalRef: BsModalRef;
+  deactiveModelRef: NgbModalRef;
   show_spinner = false;
   show_email_spinner = false;
   tab_cnt: Number = 1;
@@ -150,6 +151,8 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
   playlist_validation = false;
   track_fg: FormGroup;
   track_validation = false;
+
+  accountDeactivate_form: FormGroup;
   // Bank
   bank_fg: FormGroup;
   bank_validation = false;
@@ -164,6 +167,8 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
   proceed_chart: any = "";
   procced_count: any = 0;
   proceed_row_cnt = 1;
+  is_del = false;
+  is_deactivate = true;
   display = false;
 
   constructor(
@@ -441,6 +446,10 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
       name: ["", [Validators.required]],
     });
 
+    this.accountDeactivate_form = this.fb.group({
+      is_del: [false],
+      is_deactivate: [true],
+    });
     this.subscription = this.messageService
       .getMessage()
       .subscribe((response) => {
@@ -1403,6 +1412,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
             this.toastr.success(response["resp"], "Success!");
           },
           (error) => {
+            console.log(" : error ==> ", error);
             this.toastr.error(error["error"].message, "Error!");
             this.show_spinner = false;
           },
@@ -2964,6 +2974,39 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
         this.toastr.error("Invalid file format.", "Error!");
         return false;
       }
+    }
+  }
+
+  openAccountDeactivationModal(content) {
+    // this.deactiveModelRef.close();
+    // this.forget_pwd_data = {};
+    // this.forget_validation = false;
+    this.deactiveModelRef = this.modalService.open(content, {
+      centered: true,
+      backdrop: "static",
+    });
+  }
+  closeAccountDeactivationModal() {
+    this.deactiveModelRef.close();
+    this.is_del = false;
+    this.is_deactivate = true;
+  }
+  deactivateAccount() {
+    console.log(
+      " : this.accountDeactivate_form.value ==> ",
+      this.accountDeactivate_form.value
+    );
+  }
+
+  changeValue(type, event) {
+    console.log(" : type, event.target.value ==> ", type, event.target.value);
+    if (type === "is_del" && event.target.value === "on") {
+      console.log(" : here ==> ");
+      this.is_del = true;
+      this.is_deactivate = false;
+    } else {
+      this.is_del = false;
+      this.is_deactivate = true;
     }
   }
 }

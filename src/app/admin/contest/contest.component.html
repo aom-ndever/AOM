@@ -367,10 +367,8 @@
                   formControlName="duration"
                   [(ngModel)]="contest_detail['duration']"
                 >
-                  <option value="" disabled selected>
-                    Select Contest Duration
-                  </option>
-                  <option value="1">1 Week</option>
+                  <option value="" disabled>Select Contest Duration</option>
+                  <option value="1" selected>1 Week</option>
                   <option value="2">2 Week</option>
                   <option value="3">3 Week</option>
                   <option value="4">4 Week</option>
@@ -385,16 +383,34 @@
             <div class="col-sm-4" *ngIf="isSpecialContest">
               <div class="form-group custom_modal_form">
                 <label class="control-label">Rounds</label>
-                <input
+                <select
+                  class="form-control"
+                  name="duration"
+                  formControlName="round"
+                  [(ngModel)]="contest_detail['no_of_round']"
+                  (change)="onChangeRound($event)"
+                >
+                  <option value="" disabled>Select total Round</option>
+                  <option value="1" selected>1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                  <option value="4">4</option>
+                  <option value="5">5</option>
+                  <option value="6">6</option>
+                  <option value="7">7</option>
+                  <option value="8">8</option>
+                </select>
+                <!-- <input
                   type="number"
                   name="round"
                   max="8"
                   min="1"
                   value="1"
-                  formControlName="round"
                   class="form-control"
+                  formControlName="round"
                   [(ngModel)]="contest_detail['no_of_round']"
-                />
+                  (change)="onChangeRound($event)"
+                /> -->
               </div>
             </div>
             <!-- <div class="col-sm-6">
@@ -408,6 +424,33 @@
                 </div>
               </div>
             </div> -->
+          </div>
+        </div>
+        <div
+          *ngIf="
+            contest_detail['contest_type'] === 'special' &&
+            contest_detail['no_of_round'] > 1
+          "
+        >
+          <div class="row" *ngIf="isSpecialContest">
+            <div
+              class="col-sm-4"
+              *ngFor="let item of contestant_per_round; let i = index"
+            >
+              <div class="form-group custom_modal_form">
+                <label class="control-label"
+                  >Contestant - {{ item.label }}</label
+                >
+                <input
+                  type="number"
+                  name="round"
+                  class="form-control"
+                  [(ngModel)]="contestant[item.label]"
+                  [ngModelOptions]="{ standalone: true }"
+                />
+                <!-- [(ngModel)]="contest_detail['no_of_round']" -->
+              </div>
+            </div>
           </div>
         </div>
         <div class="form-group">

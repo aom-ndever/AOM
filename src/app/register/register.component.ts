@@ -61,9 +61,10 @@ export class RegisterComponent implements OnInit {
   imageChangedEvent: any = "";
   croppedImage: any = "";
   cropperReady = false;
-  artist_validation = [false, false, false, false, false, false, false];
+  artist_validation = [false, false, false, false, false, false, false, false];
   listener_validation = [false, false, false, false, false];
   // Artist From Group for validation
+  serialNumber: FormGroup;
   artist_step1: FormGroup;
   artist_step2: FormGroup;
   passwordFormGroup: FormGroup;
@@ -76,6 +77,8 @@ export class RegisterComponent implements OnInit {
   listener_step3: FormGroup;
   listener_step4: FormGroup;
 
+  serialNumberPattern = "^[A-Z0-9]*$";
+  serial_no_verified = false;
   constructor(
     private fb: FormBuilder,
     private registerService: RegisterService,
@@ -98,6 +101,14 @@ export class RegisterComponent implements OnInit {
     for (let i = 1900; i <= new Date().getFullYear(); i++) {
       this.year.push(i);
     }
+
+    this.serialNumber = this.fb.group({
+      serial_no: [
+        "",
+        [Validators.required, Validators.minLength(6), Validators.maxLength(7)],
+      ],
+    });
+
     this.artist_step1 = this.fb.group({
       terms_condtion: ["", Validators.required],
     });
@@ -603,6 +614,33 @@ export class RegisterComponent implements OnInit {
           this.show_spinner = false;
         }
       );
+    }
+  }
+
+  public verifySerialNumber(flag: any) {
+    if (flag) {
+      console.log(" :  ==> ", this.serialNumber.value);
+      console.log(" : this.serial_no_verified ==> ", this.serial_no_verified);
+      if (this.serial_no_verified === false) {
+        this.registerService
+          .verifySerialNumber(this.serialNumber.value)
+          .subscribe(
+            (res) => {
+              console.log(res);
+              this.toastr.success("Serial Number Verified", "Success!");
+              this.serial_no_verified = true;
+              this.nxt_btn("artist", this.serialNumber.valid, 0);
+            },
+            (error) => {
+              console.log(" : error ==> ", error.error.message);
+              this.toastr.error(error["error"].message, "Error!");
+            }
+          );
+      } else {
+        this.nxt_btn("artist", this.serialNumber.valid, 0);
+      }
+    } else {
+      this.artist_validation[0] = !flag;
     }
   }
 

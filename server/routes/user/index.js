@@ -429,8 +429,8 @@ router.put("/change/password", async (req, res) => {
       }
     } else {
       res
-        .status(config.OK_STATUS)
-        .json({ status: 1, resp: "Password is wrong" });
+        .status(config.BAD_REQUEST)
+        .json({ status: 0, message: "Current Password is wrong" });
     }
   } else {
     logger.error("Error occured while fetching = ", resp);

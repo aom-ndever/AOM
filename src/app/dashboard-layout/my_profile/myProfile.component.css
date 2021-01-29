@@ -1,29 +1,48 @@
 .upl-div {
-    -moz-flex: 0 0 50%;
-    -ms-flex: 0 0 50%;
-    -o-flex: 0 0 50%;
-    -webkit-box-flex: 0;
-    flex: 0 0 50%;
-    max-width: 90%;
-    padding: 0 15px;
-    position: relative;
-    height: 160px;
+  -moz-flex: 0 0 50%;
+  -ms-flex: 0 0 50%;
+  -o-flex: 0 0 50%;
+  -webkit-box-flex: 0;
+  flex: 0 0 50%;
+  max-width: 90%;
+  padding: 0 15px;
+  position: relative;
+  height: 160px;
 }
 
-.upl-div:first-child>div image-cropper {
-    padding: 0!important;
-    height: 160px;
+.upl-div:first-child > div image-cropper {
+  padding: 0 !important;
+  height: 160px;
 }
-
 
 button#cover_upload {
-    position: absolute;
-    top: 0;
-    right: 0;
-    left: 0;
-    bottom: 0;
-    opacity: 0;
-    width: 100%;
-    cursor: pointer;
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  opacity: 0;
+  width: 100%;
+  cursor: pointer;
+}
+.deactivate {
+  display: flex;
+}
+.deactivate p {
+  margin-top: 5px;
+  margin-bottom: 0px;
 }
 
+.deactiveOption h3 {
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.wrapDiv {
+  display: flex;
+}
+
+.wrapDiv .radio {
+  /* position: relative; */
+  margin: 28px 0px;
+}

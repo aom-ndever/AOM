@@ -12,6 +12,7 @@ import {
   AbstractControl,
   NG_VALIDATORS,
   Validator,
+  FormArray,
 } from "@angular/forms";
 
 @Component({
@@ -39,13 +40,14 @@ export class ContestComponent implements OnInit {
   year: any = [];
   music_type: any = [];
   contest_detail: any = {};
+  contestant: any = {};
   show_spinner = false;
   isSpecialContest: boolean;
   contest_validation: FormGroup;
   is_valid = false;
   round_list: any = [];
   contest_row_cnt = 1;
-
+  contestant_per_round = [];
   constructor(
     private contestService: ContestService,
     private toastr: ToastrService,
@@ -161,6 +163,7 @@ export class ContestComponent implements OnInit {
     // this.is_valid = false;
     this.contest_detail = {
       no_of_round: 1,
+      duration: 1,
     };
     this.is_new_or_existing = 1;
     this.contestModelRef = this.modalService.show(template, {
@@ -180,6 +183,23 @@ export class ContestComponent implements OnInit {
     this.contestService.getContestRound(data).subscribe((response) => {
       this.round_list = response["contest"]["contest"];
     });
+  }
+  onChangeRound(e) {
+    console.log(" : e.target.value ==> ", e.target.value, e.target.value > 1);
+    if (e.target.value > 1) {
+      this.contestant_per_round = [];
+      this.contestant = {};
+      for (let index = 0; index < e.target.value; index++) {
+        if (index !== 0) {
+          var obj = {};
+          obj[`label`] = `Round${index + 1}`;
+          console.log(" : obj ==> ", obj);
+          this.contestant[obj["label"]] = "";
+          this.contestant_per_round.push(obj);
+        }
+      }
+      console.log(" : contestant_per_round ==> ", this.contestant_per_round);
+    }
   }
 
   sortArtist() {
@@ -245,6 +265,7 @@ export class ContestComponent implements OnInit {
       // this.show_spinner = true;
       let data;
       if (this.contest_detail["duration"]) {
+        console.log(" : this. ==> ", this.contestant);
         data = {
           name: this.contest_detail["name"],
           contest_type: this.contest_detail["contest_type"],
@@ -257,6 +278,13 @@ export class ContestComponent implements OnInit {
           year: this.contest_detail["year"],
           duration: this.contest_detail["duration"],
         };
+        for (const key in this.contestant) {
+          let array = [];
+          for (const key in this.contestant) {
+            array.push({ [key]: this.contestant[key] });
+          }
+          data["contestant"] = array;
+        }
       } else {
         data = {
           name: this.contest_detail["name"],
@@ -281,6 +309,8 @@ export class ContestComponent implements OnInit {
             }
           );
           this.contest_detail = {};
+          this.contestant = {};
+          this.isSpecialContest = false;
           this.contestModelRef.hide();
           this.getAllExistingContest();
           this.toastr.success(response["message"], "Success!");
@@ -355,7 +385,7 @@ export class ContestComponent implements OnInit {
     if (this.contest_detail.contest_type === "special") {
       this.isSpecialContest = true;
     } else {
-      this.contest_detail["duration"] = "";
+      this.contest_detail["duration"] = 1;
       this.contest_detail["no_of_round"] = 1;
       this.isSpecialContest = false;
     }

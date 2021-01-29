@@ -285,6 +285,9 @@ router.post("/add_contest", async (req, res) => {
             ? contest_obj.name + " " + "round" + req.body.round
             : contest_obj.name + " " + "round",
         };
+        if (round > 1) {
+          round_obj["contestant"] = req.body.contestant;
+        }
         console.log(" : round_obj ==> ", round_obj);
         var resp_datas = await round_helper.insert_round(round_obj);
         console.log("resp_data", resp_datas);
@@ -306,6 +309,7 @@ router.post("/add_contest", async (req, res) => {
           //   }
           // }
           logger.trace(" got successfully = ", resp_data);
+
           res.status(config.OK_STATUS).json(resp_data);
         }
       } else {

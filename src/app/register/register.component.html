@@ -41,7 +41,112 @@
             <div class="for-artist">
               <div
                 class="steps step1 {{ artist_cnt == 1 ? 'next_form' : '' }}"
-                id="artist-step1"
+                id="social-acc-step1"
+              >
+                <form [formGroup]="serialNumber">
+                  <a
+                    class="back-btn main_step_back"
+                    href="javascript:;"
+                    routerLink=""
+                  >
+                    ×
+                  </a>
+                  <div class="heading">
+                    <h3>Add Serial Number</h3>
+                  </div>
+
+                  <div class="progress_bar fill14"></div>
+
+                  <div class="email-form">
+                    <div class="form-group">
+                      <label for="serial_no">Serial Number</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        formControlName="serial_no"
+                        [(ngModel)]="artist_data.serial_no"
+                        name="serial_no"
+                        id="serial_no"
+                        placeholder="serial number"
+                        [pattern]="serialNumberPattern"
+                        maxlength="7"
+                      />
+
+                      <div
+                        class="cust_err_msg"
+                        *ngIf="
+                          artist_validation[0] &&
+                          !serialNumber.controls['serial_no'].valid
+                        "
+                      >
+                        <span
+                          *ngIf="
+                            serialNumber.controls['serial_no'].errors[
+                              'required'
+                            ]
+                          "
+                          class="text-danger"
+                          >Serial number is required</span
+                        >
+                        <span
+                          *ngIf="
+                            !serialNumber.controls['serial_no'].errors[
+                              'required'
+                            ] &&
+                            serialNumber.controls['serial_no'].errors[
+                              'pattern'
+                            ] &&
+                            serialNumber.controls['serial_no'].dirty
+                          "
+                          class="text-danger"
+                          >Must be etnter alphnumeric characters(A-Z and
+                          0-1)</span
+                        >
+                        <!-- {{
+                          serialNumber.controls["serial_no"].errors["minlength"]
+                        }} -->
+                        <span
+                          *ngIf="
+                            !serialNumber.controls['serial_no'].errors[
+                              'required'
+                            ] &&
+                            serialNumber.controls['serial_no'].errors[
+                              'minlength'
+                            ] &&
+                            !serialNumber.controls['serial_no'].errors[
+                              'pattern'
+                            ] &&
+                            serialNumber.controls['serial_no'].dirty
+                          "
+                          class="text-danger"
+                          >Serial umber must be 7 digit long.</span
+                        >
+                      </div>
+                    </div>
+                  </div>
+                  <div class="button_group">
+                    <a
+                      href="javascript:;"
+                      class="back-btn"
+                      (click)="back_btn('artist')"
+                      ><img src="img/prev-arrow.png" alt="Previou Arrow" />
+                      Back</a
+                    >
+                    <button
+                      (click)="verifySerialNumber(serialNumber.valid)"
+                      class="next-btn"
+                    >
+                      <!-- [disabled]="serial_no_nxtBtn" -->
+                      Next
+                      <i class="fa fa-spinner fa-spin" *ngIf="show_spinner"></i>
+                    </button>
+                  </div>
+                </form>
+              </div>
+
+              <div
+                class="steps step2 {{ artist_cnt == 2 ? 'next_form' : '' }}"
+                id="artist-step2"
               >
                 <form [formGroup]="artist_step1">
                   <a
@@ -101,7 +206,7 @@
                     <div
                       class="terms_error_msg"
                       *ngIf="
-                        artist_validation[0] &&
+                        artist_validation[1] &&
                         !artist_step1.controls['terms_condtion'].valid
                       "
                     >
@@ -126,7 +231,7 @@
                     >
                     <button
                       type="submit"
-                      (click)="nxt_btn('artist', artist_step1.valid, 0)"
+                      (click)="nxt_btn('artist', artist_step1.valid, 1)"
                       class="next-btn"
                     >
                       <!-- <button type="submit" (click)="nxt_btn('artist', artist_step1.valid)" class="next-btn"> -->
@@ -137,8 +242,8 @@
               </div>
 
               <div
-                class="steps step2 {{ artist_cnt == 2 ? 'next_form' : '' }}"
-                id="profile-step2"
+                class="steps step3 {{ artist_cnt == 3 ? 'next_form' : '' }}"
+                id="profile-step3"
               >
                 <form [formGroup]="artist_step2">
                   <a
@@ -167,7 +272,7 @@
                       <div
                         class="cust_err_msg"
                         *ngIf="
-                          artist_validation[1] &&
+                          artist_validation[2] &&
                           !artist_step2.controls['email'].valid
                         "
                       >
@@ -207,7 +312,7 @@
                         <div
                           class="cust_err_msg"
                           *ngIf="
-                            artist_validation[1] &&
+                            artist_validation[2] &&
                             !passwordFormGroup1.controls['artist_password']
                               .valid
                           "
@@ -247,7 +352,7 @@
                         <div
                           class="cust_err_msg"
                           *ngIf="
-                            artist_validation[1] &&
+                            artist_validation[2] &&
                             !passwordFormGroup1.controls['artist_conf'].valid
                           "
                         >
@@ -288,7 +393,7 @@
                     >
                     <button
                       type="submit"
-                      (click)="nxt_btn('artist', artist_step2.valid, 1)"
+                      (click)="nxt_btn('artist', artist_step2.valid, 2)"
                       class="next-btn"
                     >
                       <!-- <button type="submit" (click)="nxt_btn('artist', artist_step2.valid)" class="next-btn"> -->
@@ -299,8 +404,8 @@
               </div>
 
               <div
-                class="steps step3 {{ artist_cnt == 3 ? 'next_form' : '' }}"
-                id="about-step3"
+                class="steps step4 {{ artist_cnt == 4 ? 'next_form' : '' }}"
+                id="about-step4"
               >
                 <a
                   class="back-btn main_step_back"
@@ -330,7 +435,7 @@
                         <div
                           class="cust_err_msg"
                           *ngIf="
-                            artist_validation[2] &&
+                            artist_validation[3] &&
                             !artist_step3.controls['fname'].valid
                           "
                         >
@@ -361,7 +466,7 @@
                         <div
                           class="cust_err_msg"
                           *ngIf="
-                            artist_validation[2] &&
+                            artist_validation[3] &&
                             !artist_step3.controls['lname'].valid
                           "
                         >
@@ -422,7 +527,7 @@
                       <div
                         class="cust_err_msg"
                         *ngIf="
-                          artist_validation[2] &&
+                          artist_validation[3] &&
                           !artist_step3.controls['gender'].valid
                         "
                       >
@@ -452,7 +557,7 @@
                         <div
                           class="terms_error_msg"
                           *ngIf="
-                            artist_validation[2] &&
+                            artist_validation[3] &&
                             !artist_step3.controls['day'].valid
                           "
                         >
@@ -480,7 +585,7 @@
                         <div
                           class="terms_error_msg"
                           *ngIf="
-                            artist_validation[2] &&
+                            artist_validation[3] &&
                             !artist_step3.controls['month'].valid
                           "
                         >
@@ -508,7 +613,7 @@
                         <div
                           class="terms_error_msg"
                           *ngIf="
-                            artist_validation[2] &&
+                            artist_validation[3] &&
                             !artist_step3.controls['year'].valid
                           "
                         >
@@ -535,7 +640,7 @@
                       <div
                         class="cust_err_msg"
                         *ngIf="
-                          artist_validation[2] &&
+                          artist_validation[3] &&
                           !artist_step3.controls['phone'].valid
                         "
                       >
@@ -573,7 +678,7 @@
                     >
                     <button
                       type="submit"
-                      (click)="nxt_btn('artist', artist_step3.valid, 2)"
+                      (click)="nxt_btn('artist', artist_step3.valid, 3)"
                       class="next-btn"
                     >
                       <!-- <button type="submit" (click)="nxt_btn('artist', artist_step3.valid)" class="next-btn"> -->
@@ -584,8 +689,8 @@
               </div>
 
               <div
-                class="steps step4 {{ artist_cnt == 4 ? 'next_form' : '' }}"
-                id="location-step4"
+                class="steps step5 {{ artist_cnt == 5 ? 'next_form' : '' }}"
+                id="location-step5"
               >
                 <a
                   class="back-btn main_step_back"
@@ -619,7 +724,7 @@
                       <div
                         class="cust_err_msg"
                         *ngIf="
-                          artist_validation[3] &&
+                          artist_validation[4] &&
                           !artist_step4.controls['zipcode'].valid
                         "
                       >
@@ -679,7 +784,7 @@
                     >
                     <button
                       type="submit"
-                      (click)="nxt_btn('artist', artist_step4.valid, 3)"
+                      (click)="nxt_btn('artist', artist_step4.valid, 4)"
                       class="next-btn"
                     >
                       <!-- <button type="submit" (click)="nxt_btn('artist', artist_step4.valid)" class="next-btn"> -->
@@ -690,8 +795,8 @@
               </div>
 
               <div
-                class="steps step5 {{ artist_cnt == 5 ? 'next_form' : '' }}"
-                id="music-type-step5"
+                class="steps step6 {{ artist_cnt == 6 ? 'next_form' : '' }}"
+                id="music-type-step6"
               >
                 <a
                   class="back-btn main_step_back"
@@ -719,7 +824,7 @@
                         }}</label>
                       </li>
                     </ul>
-                    <div class="cust_err_msg" *ngIf="artist_validation[4]">
+                    <div class="cust_err_msg" *ngIf="artist_validation[5]">
                       <span class="text-danger">Music Type is required</span>
                     </div>
                   </div>
@@ -737,7 +842,7 @@
                         nxt_btn(
                           'artist',
                           artist_data.music_type ? true : false,
-                          4
+                          5
                         )
                       "
                       class="next-btn"
@@ -750,8 +855,8 @@
               </div>
 
               <div
-                class="steps step6 {{ artist_cnt == 6 ? 'next_form' : '' }}"
-                id="upload-step6"
+                class="steps step7 {{ artist_cnt == 7 ? 'next_form' : '' }}"
+                id="upload-step7"
               >
                 <a
                   class="back-btn main_step_back"
@@ -822,7 +927,7 @@
                   </div>
 
                   <div class="heading">
-                    <div class="cust_err_msg" *ngIf="artist_validation[5]">
+                    <div class="cust_err_msg" *ngIf="artist_validation[6]">
                       <span class="text-danger">Avatar is required</span>
                     </div>
                   </div>
@@ -837,7 +942,7 @@
                     Back</a
                   >
                   <button
-                    (click)="nxt_btn('artist', cropperReady, 5)"
+                    (click)="nxt_btn('artist', cropperReady, 6)"
                     class="next-btn"
                   >
                     <!-- <button (click)="nxt_btn('artist', cropperReady)" class="next-btn"> -->
@@ -847,8 +952,8 @@
               </div>
 
               <div
-                class="steps step7 {{ artist_cnt == 7 ? 'next_form' : '' }}"
-                id="social-acc-step7"
+                class="steps step8 {{ artist_cnt == 8 ? 'next_form' : '' }}"
+                id="social-acc-step8"
               >
                 <a
                   class="back-btn main_step_back"

@@ -32,6 +32,7 @@ var RoundModelSchema = new Schema(
     latin_track: [{ type: String }],
     track_id: [{ type: mongoose.Schema.Types.ObjectId, ref: "track" }],
     artist_id: [{ type: mongoose.Schema.Types.ObjectId, ref: "artist" }],
+    contestant: [],
     created_at: { type: Date, default: Date.now },
   },
   { versionKey: false }

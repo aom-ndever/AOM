@@ -33,6 +33,45 @@ var round_helper = require("./../helpers/round_helper");
 var winner_helper = require("./../helpers/winner_helper");
 var Track = require("./../models/track");
 var ArtistNotification = require("./../models/artist_notification");
+var SerialNumber = require("./../models/serial_number");
+const serial_number_helper = require("../helpers/serial_number_helper");
+
+router.post("/serial_no", async (req, res) => {
+  console.log(" : req.body ==> ", req.body);
+  var serialNumber = await serial_number_helper.get_serial_number(
+    req.body.serial_no
+  );
+  if (serialNumber.status === 1) {
+    if (serialNumber.serialNumber.uses_count >= 2) {
+      res.status(config.BAD_REQUEST).json({
+        status: 0,
+        message: "This serial number has already been used.",
+      });
+    } else {
+      let uses_count = serialNumber.serialNumber.uses_count;
+      uses_count++;
+      console.log(" : uses_count ==> ", uses_count);
+      var updated_record = await serial_number_helper.update_uses_count_by_id(
+        serialNumber.serialNumber._id,
+        uses_count
+      );
+      if (updated_record) {
+        logger.trace("Updated record successfully");
+        res
+          .status(config.OK_STATUS)
+          .json({ status: 1, message: "Serial number verified" });
+      } else {
+        logger.error("Error occured while updating = ", updated_record);
+        res
+          .status(config.BAD_REQUEST)
+          .json({ status: 0, message: "serial number is not verified" });
+      }
+    }
+  } else {
+    logger.error("Error occured while fetching = ", serialNumber);
+    res.status(config.INTERNAL_SERVER_ERROR).json(serialNumber);
+  }
+});
 
 /**
  * @api {post} /artist_registration Artist Registration
@@ -904,13 +943,11 @@ router.post("/user_registration", async (req, res) => {
       }
     } else {
       if (user && user.status === 1 && user.user.password === undefined) {
-        res
-          .status(config.BAD_REQUEST)
-          .json({
-            status: 0,
-            message:
-              "This email registered as social media, Please login with social media account.",
-          });
+        res.status(config.BAD_REQUEST).json({
+          status: 0,
+          message:
+            "This email registered as social media, Please login with social media account.",
+        });
       } else {
         res
           .status(config.BAD_REQUEST)
