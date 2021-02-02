@@ -390,4 +390,11 @@ export class ContestComponent implements OnInit {
       this.isSpecialContest = false;
     }
   }
+
+  closeAddContestModel() {
+    this.contest_detail["duration"] = 1;
+    this.contest_detail["no_of_round"] = 1;
+    this.isSpecialContest = false;
+    this.contestModelRef.hide();
+  }
 }

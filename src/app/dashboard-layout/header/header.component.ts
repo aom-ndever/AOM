@@ -1,4 +1,11 @@
-import { Component, OnInit, OnDestroy } from "@angular/core";
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  ViewChild,
+  ElementRef,
+  Renderer2,
+} from "@angular/core";
 import { NgbModal, NgbModalRef } from "@ng-bootstrap/ng-bootstrap";
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { Router } from "@angular/router";
@@ -16,6 +23,8 @@ declare const gapi: any;
   styleUrls: ["./header.component.css"],
 })
 export class HeaderComponent implements OnInit, OnDestroy {
+  @ViewChild("bell") bell: ElementRef;
+  @ViewChild("box") box: ElementRef;
   user: any = "";
   login_form: FormGroup;
   forget_form: FormGroup;
@@ -30,6 +39,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   public userType;
   private modalRef: NgbModalRef;
   private modalForgetRef: NgbModalRef;
+  notificationOpen = false;
   constructor(
     private modalService: NgbModal,
     private fb: FormBuilder,
@@ -37,7 +47,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
     private toastr: ToastrService,
     private router: Router,
     private messageService: MessageService,
-    private socialAuthService: AuthService
+    private socialAuthService: AuthService,
+    private renderer: Renderer2
   ) {
     this.user = JSON.parse(localStorage.getItem("user"));
     this.messageService.sendMessage({ loggedin_user: this.user });
@@ -131,6 +142,15 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
       // ******************************* updated code **************************************
       // type: ['', [Validators.required]]
+    });
+
+    this.renderer.listen("window", "click", (e: Event) => {
+      if (
+        e.target !== this.bell.nativeElement &&
+        e.target !== this.box.nativeElement
+      ) {
+        this.notificationOpen = false;
+      }
     });
   }
 
@@ -462,5 +482,17 @@ export class HeaderComponent implements OnInit, OnDestroy {
         }
       );
     });
+  }
+
+  public openNotification() {
+    if (this.notificationOpen) {
+      this.notificationOpen = false;
+    } else {
+      this.notificationOpen = true;
+    }
+  }
+
+  public ClickedOut() {
+    console.log(" : out ==> ");
   }
 }

@@ -1,0 +1,37 @@
+.new-head {
+  color: #808080;
+}
+.text-msg {
+  overflow: hidden;
+  white-space: nowrap;
+  max-width: 800px;
+  text-overflow: ellipsis;
+}
+
+hr {
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+
+#label-header th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #f6eaf8;
+  color: black;
+}
+
+#label-header td,
+#label-header th {
+  padding: 8px;
+}
+
+input {
+  width: 18px;
+  height: 23px;
+  margin: 5px;
+}
+
+form.ng-untouched.ng-pristine.ng-valid {
+  float: right;
+}
