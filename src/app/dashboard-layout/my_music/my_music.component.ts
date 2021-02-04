@@ -16,6 +16,7 @@ import { Title } from "@angular/platform-browser";
 import { ActivatedRoute } from "@angular/router";
 import swal from "sweetalert2";
 import { NgxUiLoaderService } from "ngx-ui-loader";
+import { type } from "os";
 declare var FB: any;
 
 class DataTablesResponse {
@@ -270,6 +271,7 @@ export class MyMusicComponent implements OnInit, OnDestroy {
 
   changeAudio(event: any) {
     const file = event.target.files[0];
+    console.log(" : file ==> ", file);
     let flag;
     let res;
     const fr = new FileReader();
@@ -283,15 +285,12 @@ export class MyMusicComponent implements OnInit, OnDestroy {
       });
       console.log(" : bytes ==> ", bytes);
       const hex = bytes.join("").toUpperCase();
-      console.log("hex => ", hex);
       const allow_types = this.getMimetype(hex);
+      console.log("hex => ", hex);
       console.log("allow_types => ", allow_types);
-      console.log(
-        "allow_types.indexOf(file.type) => ",
-        allow_types.indexOf(file.type)
-      );
-      console.log("file.type => ", file.type);
-      if (file.type === "audio/mpeg") {
+      console.log(" : file.type ==> ", file.type);
+
+      if (file.type === "audio/mpeg" && hex !== "4944334") {
         if (allow_types.indexOf("audio/mp3") === -1) {
           this.toastr.error("Invalid file format.", "Error!");
           return false;
@@ -958,7 +957,9 @@ export class MyMusicComponent implements OnInit, OnDestroy {
       //   return 'video/webm';
       case "4944333":
         return "audio/mp3";
-      case "4944333":
+      // case "4944333":
+      //   return "audio/mpeg";
+      case "4944334":
         return "audio/mpeg";
       case "464F524D":
         return "audio/aiff";
