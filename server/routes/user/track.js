@@ -356,14 +356,20 @@ router.post("/like_track", async (req, res) => {
           .then((message) => console.log(message.sid))
           .done();
       }
+
+      const trackName = await track_helper.get_track_by_id(
+        req.body.artist_id,
+        req.body.track_id
+      );
+      console.log(" : trackName ==> ", trackName);
       var notificationObj = {
         sender: req.userInfo.id,
         receiver: req.body.artist_id,
         type: "comment",
         body:
-          "Got like on" +
-          req.body.track_id +
-          "from" +
+          "Got like on track " +
+          trackName.track.name +
+          " from" +
           " " +
           response.user.first_name,
       };

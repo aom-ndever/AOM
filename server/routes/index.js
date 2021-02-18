@@ -33,6 +33,8 @@ var round_helper = require("./../helpers/round_helper");
 var winner_helper = require("./../helpers/winner_helper");
 var Track = require("./../models/track");
 var ArtistNotification = require("./../models/artist_notification");
+var ArtistMessage = require("./../models/artist_messages");
+var UserNotification = require("./../models/user_notification");
 var SerialNumber = require("./../models/serial_number");
 const serial_number_helper = require("../helpers/serial_number_helper");
 
@@ -707,6 +709,12 @@ router.post("/login", async (req, res) => {
               receiver: new ObjectId(login_resp.artist._id),
             });
 
+            var messageCount = await ArtistMessage.find({
+              receivers: {
+                $elemMatch: { receiver: login_resp.artist._id, isSeen: 0 },
+              },
+            }).count();
+
             res.status(config.OK_STATUS).json({
               status: 1,
               message: "Logged in successful",
@@ -714,6 +722,7 @@ router.post("/login", async (req, res) => {
               token: token,
               refresh_token: refreshToken,
               count: count,
+              messageCount: messageCount,
             });
           } else {
             res
@@ -780,11 +789,18 @@ router.post("/login", async (req, res) => {
               console.log("userlogin_resp.user._id", userlogin_resp.user._id);
 
               logger.info("Token generated");
-              var count = await ArtistNotification.countDocuments({
-                isSeen: 0,
-                receiver: new ObjectId(userlogin_resp.user._id),
-              });
+              // var count = await ArtistNotification.countDocuments({
+              //   isSeen: 0,
+              //   receiver: new ObjectId(userlogin_resp.user._id),
+              // });
 
+              var count = await UserNotification.find({
+                receivers: {
+                  $elemMatch: { receiver: userlogin_resp.user._id, isSeen: 0 },
+                },
+              }).count();
+
+              console.log(" : count ==> ", count);
               res.status(config.OK_STATUS).json({
                 status: 1,
                 message: "Logged in successful",

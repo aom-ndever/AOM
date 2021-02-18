@@ -1,36 +1,40 @@
 // import { Subject } from 'rxjs/Subject';
 
-import { Injectable, Output, EventEmitter } from '@angular/core';
-import { Observable, Subject, BehaviorSubject } from 'rxjs';
+import { Injectable, Output, EventEmitter } from "@angular/core";
+import { Observable, Subject, BehaviorSubject } from "rxjs";
 
 @Injectable()
 export class MessageService {
-    private subject = new Subject<any>();
-    @Output() change: EventEmitter<boolean> = new EventEmitter();
-    count;
-    private followerData = new BehaviorSubject(null);
-    followList = this.followerData.asObservable();
+  private subject = new Subject<any>();
+  @Output() change: EventEmitter<boolean> = new EventEmitter();
+  count;
+  private followerData = new BehaviorSubject(null);
+  followList = this.followerData.asObservable();
 
-    public changeFollower() {
-        this.followerData.next({});
-    }
+  public changeFollower() {
+    this.followerData.next({});
+  }
 
-    checkCount(data: any) {
-        this.count = data.count;
-        this.change.emit(this.count);
-    }
+  checkCount(data: any) {
+    this.count = data.count;
+    this.change.emit(this.count);
+  }
 
-    sendMessage(obj: any) {
-        // console.log('obj => ', obj);
-        this.subject.next(obj);
-    }
+  checkUserCount(data: any) {
+    this.count = data.count;
+    this.change.emit(this.count);
+  }
 
-    clearMessage() {
-        this.subject.next();
-    }
+  sendMessage(obj: any) {
+    // console.log('obj => ', obj);
+    this.subject.next(obj);
+  }
 
-    getMessage(): Observable<any> {
-        return this.subject.asObservable();
-    }
+  clearMessage() {
+    this.subject.next();
+  }
 
+  getMessage(): Observable<any> {
+    return this.subject.asObservable();
+  }
 }

@@ -1,6 +1,5 @@
 .notifications {
   width: 300px;
-  height: auto;
   z-index: 1;
   opacity: 1;
   position: absolute;
@@ -52,4 +51,76 @@
 .notifications-item .text p {
   color: #aaa;
   font-size: 12px;
+}
+
+.notifications h2 {
+  border: 0;
+  font-weight: bold;
+  color: #000 !important;
+  display: flex;
+  align-items: center;
+  margin: 0;
+  border-bottom: 1px solid #ddd;
+}
+
+.notifications h2 span {
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  line-height: 24px;
+  text-align: center;
+  border-radius: 100px;
+  background: #9b26b0;
+  color: #fff !important;
+  margin-left: auto;
+}
+.notifications > div {
+  max-height: 300px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+.notifications > div {
+  max-height: 230px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+.notifications > div .notifications-item {
+  padding: 10px;
+  border-color: #dddddd !important;
+}
+.notifications > div .notifications-item p {
+  margin: 0;
+  font-size: 12px !important;
+  color: #000 !important;
+}
+.update-option li {
+  padding: 0;
+}
+.update-option li a {
+  color: #333 !important;
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  border-radius: 100px;
+  background: #ddd;
+  text-align: center;
+  line-height: 30px;
+  cursor: pointer;
+}
+.update-option li a span.new-up {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border: 0;
+  background: #9b26b0;
+  color: white;
+  font-size: 7px;
+  line-height: 14px;
+  text-align: center;
+  padding: 0;
+  right: 2px;
+  font-weight: bold;
+}
+.update-option li + li {
+  margin-left: 10px;
 }

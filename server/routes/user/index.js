@@ -13,11 +13,13 @@ var user_helper = require("../../helpers/user_helper");
 var participate_helper = require("../../helpers/participate_helper");
 var flag_helper = require("../../helpers/flag_helper");
 var artist_helper = require("../../helpers/artist_helper");
+var user_notifications_helper = require("../../helpers/user_notification_helper");
 
 var mongoose = require("mongoose");
 var ObjectId = mongoose.Types.ObjectId;
 var fs = require("fs");
 const state_helper = require("../../helpers/state_helper");
+const artist_message_helper = require("../../helpers/artist_message_helper");
 
 /**
  * @api {put} /user Update user profile
@@ -480,6 +482,48 @@ router.post("/flag/user/:user_id", async (req, res) => {
       var user_resp = await flag_helper.delete_flag(obj.from, obj.to);
       logger.trace("flag deleted");
       res.status(config.OK_STATUS).json({ message: "flag deleted" });
+    }
+  }
+});
+
+router.get("/notification", async (req, res) => {
+  var resp = await user_notifications_helper.get_all_notification(
+    req.userInfo.id
+  );
+  console.log(" : resp ==> ", resp);
+  if (resp.status == 0) {
+    logger.error("Error occured while fetching notification = ", resp);
+    res.status(config.INTERNAL_SERVER_ERROR).json(resp);
+  } else {
+    if (resp.status == 1) {
+      res
+        .status(config.OK_STATUS)
+        .json({ status: 1, notifications: resp.notifications });
+    } else {
+      res
+        .status(config.NOT_FOUND)
+        .json({ status: 2, message: "Notification not found." });
+    }
+  }
+});
+
+router.post("/notification_count_update", async (req, res) => {
+  var resp = await user_notifications_helper.notification_seen(
+    req.userInfo.id,
+    req.body
+  );
+  if (resp.status == 0) {
+    logger.error("Error occured while updating counts = ", resp);
+    res.status(config.INTERNAL_SERVER_ERROR).json(resp);
+  } else {
+    if (resp.status == 1) {
+      res
+        .status(config.OK_STATUS)
+        .json({ status: 1, message: "Counts updated." });
+    } else {
+      res
+        .status(config.NOT_FOUND)
+        .json({ status: 2, message: "Notification not found." });
     }
   }
 });

@@ -17,14 +17,24 @@
                       <i class="fa fa-envelope" aria-hidden="true"></i>
                     </div>
                     <div class="mark-as-read">
-                      <i class="fa fa-envelope" aria-hidden="true"></i>
-                      <span>Mark as read</span>
+                      <a
+                        href="javascript:;"
+                        class="top-right-button"
+                        (click)="markAsRead()"
+                        ><i class="fa fa-envelope" aria-hidden="true"></i>
+                        <span>Mark as read</span></a
+                      >
                     </div>
                   </form>
                 </div>
                 <div class="delete-mail">
-                  <i class="fa fa-trash" aria-hidden="true"></i>
-                  <span>Delete</span>
+                  <a
+                    href="javascript:;"
+                    class="top-right-button"
+                    (click)="delete()"
+                    ><i class="fa fa-trash" aria-hidden="true"></i>
+                    <span>Delete</span></a
+                  >
                 </div>
               </div>
             </div>
@@ -39,46 +49,84 @@
     <table style="width: 100%" id="label-header">
       <tr>
         <th class="check-all">
-          <input type="checkbox" id="allcb" name="allcb" />
+          <input
+            type="checkbox"
+            value="m1"
+            [(ngModel)]="masterSelected"
+            (change)="checkUncheckAll()"
+          />
         </th>
         <th class="from">From</th>
         <th class="message">Message</th>
         <th class="receive-time">Received</th>
       </tr>
-      <tr>
-        <td><input type="checkbox" id="cb1" name="cb[]" /></td>
-        <td>Northeast Hiphop (2)</td>
-        <td class="text-msg">
-          Lorem ipsum, or lipsum as it is sometimes known, is dummy text used in
-          laying out print, graphic or web designs. The passage is attributed to
-          an unknown typesetter in the 15th century who is thought to have
-          scrambled parts of Cicero's De Finibus Bonorum et Malorum for use in a
-          type specimen book.
-        </td>
-        <td>15:25</td>
+      <tr *ngIf="checklist.length === 0">
+        <td class="noDataFound" colspan="4">No data Found.</td>
       </tr>
-      <tr>
-        <td colspan="4">
-          <hr />
+      <tr *ngFor="let item of checklist">
+        <td>
+          <!-- {{ selected.id }} -->
+          <input
+            type="checkbox"
+            [(ngModel)]="item.isSelected"
+            name="list_name"
+            value="{{ item.id }}"
+            (change)="isAllSelected()"
+          />
         </td>
-      </tr>
-      <tr>
-        <td><input type="checkbox" id="cb1" name="cb[]" /></td>
-        <td>Northeast Hiphop (2)</td>
-        <td class="text-msg">
-          Lorem ipsum, or lipsum as it is sometimes known, is dummy text used in
-          laying out print, graphic or web designs. The passage is attributed to
-          an unknown typesetter in the 15th century who is thought to have
-          scrambled parts of Cicero's De Finibus Bonorum et Malorum for use in a
-          type specimen book.
+        <td
+          [ngClass]="{ unRead: item.receivers.isSeen === 0 }"
+          (click)="openMessageDialog(openMessage, item._id)"
+        >
+          {{ item.contest_id.name }}
         </td>
-        <td>15:25</td>
-      </tr>
-      <tr>
-        <td colspan="4">
-          <hr />
+        <td
+          class="text-msg"
+          [ngClass]="{ unRead: item.receivers.isSeen === 0 }"
+        >
+          {{ item.message }}
+        </td>
+        <td [ngClass]="{ unRead: item.receivers.isSeen === 0 }">
+          {{ item.createdAt }}
         </td>
       </tr>
     </table>
   </div>
 </section>
+
+<ng-template #openMessage let-c="close" let-d="dismiss">
+  <div class="modal_login_wrapper">
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="d('Cross click')"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+    <div class="modal-body">
+      <div class="login-modal">
+        <div class="messageHeader">
+          <div>
+            <img
+              class="OpenMseesageImg"
+              src="../../../img/austin-neill-247234-unsplashNormal.png\"
+            />
+          </div>
+          <div class="col-md-12">
+            <h3>{{ messageData.contest_id.name }}</h3>
+            <p>{{ messageData.displayTime }} ({{ messageData.diffTime }})</p>
+          </div>
+        </div>
+        <div class="contentMessage">
+          <div class="text">
+            {{ messageData.message }}
+          </div>
+        </div>
+        <div class="login-btn">
+          <button (click)="closeMessageDialog()">Ok</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>

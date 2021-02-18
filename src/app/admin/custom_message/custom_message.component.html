@@ -1,0 +1,41 @@
+<div id="page-content-wrapper">
+  <div class="container-fluid">
+    <p>Send Instructions To Contestants</p>
+    <form
+      [formGroup]="customMessage"
+      (ngSubmit)="onSubmit(customMessage.valid)"
+    >
+      <div class="form-group">
+        <label for="contest_id">Contest</label>
+        <p-dropdown
+          [options]="contest"
+          formControlName="contest_id"
+          placeholder="Select a Contest"
+        ></p-dropdown>
+        <span
+          *ngIf="!customMessage.get('contest_id').valid && submitted"
+          class="text-danger"
+        >
+          <span *ngIf="customMessage.get('contest_id').errors['required']"
+            >This field is required.</span
+          >
+        </span>
+        <!-- [(ngModel)]="selectedCar" -->
+      </div>
+      <div class="form-group">
+        <label for="message">Message</label>
+        <textarea formControlName="message" pInputTextarea></textarea>
+        <span
+          *ngIf="!customMessage.get('message').valid && submitted"
+          class="text-danger"
+        >
+          <span *ngIf="customMessage.get('message').errors['required']"
+            >This field is required.</span
+          >
+        </span>
+      </div>
+
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+  </div>
+</div>
