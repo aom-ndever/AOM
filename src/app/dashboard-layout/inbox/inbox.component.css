@@ -63,8 +63,7 @@ img.OpenMseesageImg {
   display: flex;
 }
 
-.text[_ngcontent-c5] {
-  margin: 4px, 4px;
+.text {
   padding: 4px;
   text-align: justify;
   height: 246px;
