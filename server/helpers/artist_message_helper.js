@@ -222,10 +222,7 @@ artist_message_helper.get_all_message = async (id, userInfoID) => {
             contest_id: result.contest_id,
             message: result.message,
             type: result.type,
-            createdAt: moment(result.createdAt)
-              .format("LT")
-              .substring(0, 5)
-              .trim(),
+            createdAt: moment(result.createdAt).format("hh:mm"),
             modifiedAt: result.modifiedAt,
           };
           finalResult.push(resObj);
@@ -290,10 +287,7 @@ artist_message_helper.delete_message = async (data, socket) => {
               contest_id: result.contest_id,
               message: result.message,
               type: result.type,
-              createdAt: moment(result.createdAt)
-                .format("LT")
-                .substring(0, 5)
-                .trim(),
+              createdAt: moment(result.createdAt).format("hh:mm"),
               modifiedAt: result.modifiedAt,
             };
             finalResult.push(resObj);
@@ -389,10 +383,7 @@ artist_message_helper.markAsRead = async (data, socket) => {
               contest_id: result.contest_id,
               message: result.message,
               type: result.type,
-              createdAt: moment(result.createdAt)
-                .format("LT")
-                .substring(0, 5)
-                .trim(),
+              createdAt: moment(result.createdAt).format("hh:mm"),
               modifiedAt: result.modifiedAt,
             };
             finalResult.push(resObj);
@@ -484,10 +475,7 @@ artist_message_helper.getMessageById = async (id, reqestedUserId, socket) => {
             contest_id: resp.contest_id,
             message: resp.message,
             type: resp.type,
-            displayTime: moment(resp.createdAt)
-              .format("LT")
-              .substring(0, 5)
-              .trim(),
+            displayTime: moment(result.createdAt).format("hh:mm"),
             diffTime: moment(resp.createdAt).fromNow(),
             createdAt: resp.createdAt,
             modifiedAt: resp.modifiedAt,
