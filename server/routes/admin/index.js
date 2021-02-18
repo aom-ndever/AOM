@@ -25,6 +25,8 @@ var winner_helper = require("../../helpers/winner_helper");
 var bookmark_helper = require("../../helpers/bookmark_helper");
 var like_helper = require("../../helpers/like_helper");
 var playlist_helper = require("../../helpers/playlist_helper");
+var global_helper = require("../../helpers/global_helper");
+var socket = require("../../socket/socketServer");
 var RoundTracks = require("../../models/round_tracks");
 var Round = require("../../models/round");
 
@@ -34,6 +36,7 @@ var moment = require("moment");
 var mongoose = require("mongoose");
 var ObjectId = mongoose.Types.ObjectId;
 var fs = require("fs");
+const artist_message_helper = require("../../helpers/artist_message_helper");
 
 /**
  * @api {post} /admin/add_admin
@@ -242,20 +245,20 @@ router.post("/add_contest", async (req, res) => {
         if (req.body.contest_type == "beta") {
           (duration = 24), (max_participation = 6000);
           if (req.body.round) {
-            round = req.body.round;
+            round = "preliminary" + req.body.round;
           }
         } else if (req.body.contest_type == "standard") {
           console.log("2", 2);
 
           (duration = 32), (max_participation = 12000);
           if (req.body.round) {
-            round = req.body.round;
+            round = "preliminary" + req.body.round;
           }
         } else if (req.body.contest_type == "special") {
           console.log("2", 3);
           duration = req.body.duration;
           if (req.body.round) {
-            round = req.body.round;
+            round = "preliminary" + req.body.round;
           }
         }
         var contest_obj = {
@@ -281,12 +284,14 @@ router.post("/add_contest", async (req, res) => {
           // duration: req.body.duration,
           // end_date: moment(start_date).add((req.body.duration * 7), 'days'),
           round: round,
-          round_name: req.body.round
-            ? contest_obj.name + " " + "round" + req.body.round
-            : contest_obj.name + " " + "round",
+          round_name:
+            req.body.round && req.body.round > 1
+              ? contest_obj.name + " " + "round1"
+              : contest_obj.name + " " + "round" + req.body.round,
         };
-        if (round > 1) {
+        if (req.body.round > 1) {
           round_obj["contestant"] = req.body.contestant;
+          round_obj["totalRound"] = req.body.round;
         }
         console.log(" : round_obj ==> ", round_obj);
         var resp_datas = await round_helper.insert_round(round_obj);
@@ -546,6 +551,7 @@ router.post("/add_existing_contest", async (req, res) => {
  * @apiError (Error 4xx) {String} message Validation or error message.
  */
 router.post("/contest", async (req, res) => {
+  console.log(" : req.body ==> ", req.body);
   var sort = {};
   if (req.body.sort) {
     req.body.sort.forEach((sort_criteria) => {
@@ -571,6 +577,42 @@ router.post("/contest", async (req, res) => {
   }
 });
 
+router.post("/message", async (req, res) => {
+  console.log(" : req,body ==> ", req.body);
+  var artist = await RoundTracks.find({
+    contest_id: ObjectId(req.body.contest_id),
+  }).lean();
+  if (artist) {
+    if (artist.length > 0) {
+      let receivers = [];
+      await artist.map((contestant) => {
+        receivers.push({ isSeen: 0, receiver: contestant.artist_id });
+      });
+      var messageObj = {
+        sender: req.userInfo.id,
+        receivers: receivers,
+        contest_id: req.body.contest_id,
+        message: req.body.message,
+        type: "message",
+      };
+
+      var artist_message_data = await global_helper.send_artist_message(
+        messageObj,
+        socket
+      );
+      res
+        .status(config.OK_STATUS)
+        .json({ ...artist_message_data.inboxMessage });
+    } else {
+      res
+        .status(config.BAD_REQUEST)
+        .json({ status: 0, message: "No participants found in this contest" });
+    }
+  } else {
+    res.status(config.BAD_REQUEST).json(artist);
+  }
+});
+
 router.get("/get_contest", async (req, res) => {
   var contest = await round_helper.get_all_contests();
   if (contest.status === 1) {
@@ -580,6 +622,7 @@ router.get("/get_contest", async (req, res) => {
     res.status(config.INTERNAL_SERVER_ERROR).json(contest);
   }
 });
+
 router.post("/get_round", async (req, res) => {
   contest_id = req.body.contest_id;
   var contest = await round_helper.get_rounds_by_contestid(contest_id);
@@ -1335,6 +1378,17 @@ router.post("/contest_request", async (req, res) => {
   } else {
     logger.trace("user got successfully = ", { contest: resp_data });
     res.status(config.OK_STATUS).json({ contest: resp_data });
+  }
+});
+
+router.get("/contest", async (req, res) => {
+  var contest = await contest_helper.get_all_contests();
+  if (contest.status === 1) {
+    logger.trace("got details successfully");
+    res.status(config.OK_STATUS).json({ status: 1, contest: contest.contest });
+  } else {
+    logger.error("Error occured while fetching = ", contest);
+    res.status(config.INTERNAL_SERVER_ERROR).json(contest);
   }
 });
 

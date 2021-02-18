@@ -1,0 +1,11 @@
+textarea.ui-inputtext.ui-corner-all.ui-state-default.ui-widget {
+  display: block;
+  width: 500px;
+  height: 180px;
+}
+
+.btn-primary {
+  color: #fff;
+  background-color: #a63eb6;
+  border-color: #a63eb6;
+}

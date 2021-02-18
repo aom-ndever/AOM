@@ -15,16 +15,19 @@ var comment_helper = require("../../helpers/comment_helper");
 var participate_helper = require("../../helpers/participate_helper");
 var round_helper = require("../../helpers/round_helper");
 var artist_helper = require("../../helpers/artist_helper");
+var artist_notifications_helper = require("../../helpers/notification_helper");
 var user_helper = require("../../helpers/user_helper");
 var download_helper = require("../../helpers/download_helper");
 var vote_track_helper = require("../../helpers/vote_track_helper");
 var contest_helper = require("../../helpers/contest_helper");
 var winner_helper = require("../../helpers/winner_helper");
 var stripe = require("stripe")("sk_test_FUsMHGCLfkGJmKEbW0aiRATb");
+var socket = require("../../socket/socketServer");
 
 var mongoose = require("mongoose");
 var ObjectId = mongoose.Types.ObjectId;
 var fs = require("fs");
+const artist_message_helper = require("../../helpers/artist_message_helper");
 
 router.get("/followers_of_artist", async (req, res) => {
   user_id = req.userInfo.id;
@@ -1240,6 +1243,73 @@ router.post("/get_contest_track", async (req, res) => {
   });
 });
 
+router.post("/deleteMessage", async (req, res) => {
+  const ids = req.body.ids;
+  let all_id = [];
+  await ids.map((id) => {
+    all_id.push(ObjectId(id));
+  });
+  var resp = await artist_message_helper.delete_message(
+    {
+      ids: all_id,
+      selectedAll: req.body.selectedAll,
+      reqUser_id: req.userInfo.id,
+    },
+    socket
+  );
+
+  if (resp.status == 0) {
+    logger.error("Error occured while deleting notification = ", resp);
+    res.status(config.INTERNAL_SERVER_ERROR).json(resp);
+  } else {
+    if (resp.status == 1) {
+      res.status(config.OK_STATUS).json({
+        status: 1,
+        inboxMessages: resp.inboxMessages,
+        message: resp.message,
+      });
+    } else {
+      res
+        .status(config.NOT_FOUND)
+        .json({ status: 2, message: "Messages not deleted." });
+    }
+  }
+});
+
+router.post("/message_markAsRead", async (req, res) => {
+  const ids = req.body.ids;
+  let all_id = [];
+  await ids.map((id) => {
+    all_id.push(ObjectId(id));
+  });
+  var resp = await artist_message_helper.markAsRead(
+    {
+      ids: all_id,
+      selectedAll: req.body.selectedAll,
+      reqUser_id: req.userInfo.id,
+    },
+    socket
+  );
+
+  if (resp.status == 0) {
+    logger.error("Error occured while marking as read = ", resp);
+    res.status(config.INTERNAL_SERVER_ERROR).json(resp);
+  } else {
+    if (resp.status == 1) {
+      res.status(config.OK_STATUS).json({
+        status: 1,
+        inboxMessages: resp.inboxMessages,
+        messageCount: resp.messageCount,
+        message: resp.message,
+      });
+    } else {
+      res
+        .status(config.NOT_FOUND)
+        .json({ status: 2, message: "Messages not marked as read." });
+    }
+  }
+});
+
 router.get("/contest", async (req, res) => {
   var artist_music = await artist_helper.get_artist_by_id(req.userInfo.id);
   artist_music = artist_music.artist.music_type._id;
@@ -1251,6 +1321,70 @@ router.get("/contest", async (req, res) => {
     logger.error("Error occured while fetching = ", contest);
     res.status(config.INTERNAL_SERVER_ERROR).json(contest);
   }
+});
+
+router.get("/message", async (req, res) => {
+  var resp = await artist_message_helper.get_all_message(req.userInfo.id);
+  console.log(" : resp ==> ", resp);
+  if (resp.status == 0) {
+    logger.error("Error occured while fetching notification = ", resp);
+    res.status(config.INTERNAL_SERVER_ERROR).json(resp);
+  } else {
+    if (resp.status == 1) {
+      res.status(config.OK_STATUS).json({
+        status: 1,
+        inboxMessages: resp.inboxMessages,
+        message: resp.message,
+      });
+    } else {
+      res
+        .status(config.NOT_FOUND)
+        .json({ status: 2, message: "Messages not found." });
+    }
+  }
+});
+
+router.get("/message/:id", async (req, res) => {
+  console.log(" : req.params.user_id ==> ", req.params.id);
+  var resp = await artist_message_helper.getMessageById(
+    req.params.id,
+    req.userInfo.id,
+    socket
+  );
+  if (resp.status == 0) {
+    logger.error("Error occured while finding message detail = ", resp);
+    res.status(config.INTERNAL_SERVER_ERROR).json(resp);
+  } else {
+    if (resp.status == 1) {
+      res.status(config.OK_STATUS).json({
+        status: 1,
+        message: "Message detail found",
+        messageDetail: resp.messageDetail,
+      });
+    } else {
+      res
+        .status(config.NOT_FOUND)
+        .json({ status: 2, message: "Message detail not found." });
+    }
+  }
+  // var resp = await artist_message_helper.get_all_message(req.userInfo.id);
+  // console.log(" : resp ==> ", resp);
+  // if (resp.status == 0) {
+  //   logger.error("Error occured while fetching notification = ", resp);
+  //   res.status(config.INTERNAL_SERVER_ERROR).json(resp);
+  // } else {
+  //   if (resp.status == 1) {
+  //     res.status(config.OK_STATUS).json({
+  //       status: 1,
+  //       inboxMessages: resp.inboxMessages,
+  //       message: resp.message,
+  //     });
+  //   } else {
+  //     res
+  //       .status(config.NOT_FOUND)
+  //       .json({ status: 2, message: "Messages not found." });
+  //   }
+  // }
 });
 
 router.post("/suspend/user/:user_id", async (req, res) => {
@@ -1273,6 +1407,48 @@ router.post("/suspend/user/:user_id", async (req, res) => {
       );
     }
     res.status(config.OK_STATUS).json({ artist: user_resp });
+  }
+});
+
+router.get("/notification", async (req, res) => {
+  var resp = await artist_notifications_helper.get_all_notification(
+    req.userInfo.id
+  );
+  console.log(" : resp ==> ", resp);
+  if (resp.status == 0) {
+    logger.error("Error occured while fetching notification = ", resp);
+    res.status(config.INTERNAL_SERVER_ERROR).json(resp);
+  } else {
+    if (resp.status == 1) {
+      res
+        .status(config.OK_STATUS)
+        .json({ status: 1, notifications: resp.notifications });
+    } else {
+      res
+        .status(config.NOT_FOUND)
+        .json({ status: 2, message: "Notification not found." });
+    }
+  }
+});
+
+router.post("/notification_count_update", async (req, res) => {
+  var resp = await artist_notifications_helper.notification_seen(
+    req.userInfo.id,
+    req.body
+  );
+  if (resp.status == 0) {
+    logger.error("Error occured while updating counts = ", resp);
+    res.status(config.INTERNAL_SERVER_ERROR).json(resp);
+  } else {
+    if (resp.status == 1) {
+      res
+        .status(config.OK_STATUS)
+        .json({ status: 1, message: "Counts updated." });
+    } else {
+      res
+        .status(config.NOT_FOUND)
+        .json({ status: 2, message: "Notification not found." });
+    }
   }
 });
 

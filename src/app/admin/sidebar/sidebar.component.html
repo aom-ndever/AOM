@@ -1,65 +1,76 @@
 <!-- Sidebar -->
 <div class="top_container">
-    <ul class="profile_container">
-        <li class="sidebar-brand">
-            <a class="profile_name" href="javascript:;">
-                <span class="user_profile">
-                    <img src="img/user_profile.jpg" />
-                </span>
-                <h3 class="user_name">{{user['admin'] ? user['admin']['first_name']+' '+user['admin']['last_name'] :
-                    ''}}</h3>
-                <h5 class="user_profession">{{user['admin'] ? user['admin']['account_type'] : '' | titlecase}}</h5>
-                <div class="dropdown" dropdown>
-                    <a href="javascript:;" id="button-basic" dropdownToggle class="dropdown-toggle drop_icon">
-                        <span class="caret"></span>
-                    </a>
-                    <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu">
-                        <li role="menuitem" (click)="logout()">
-                            <a class="dropdown-item" href="javascript:;">Logout</a>
-                        </li>
-                    </ul>
-                </div>
-            </a>
-        </li>
-    </ul>
-    <a href="javascript:;menu-toggle" class="btn btn-secondary" id="menu-toggle">
-        <i class="fa fa-bars"></i>
-    </a>
+  <ul class="profile_container">
+    <li class="sidebar-brand">
+      <a class="profile_name" href="javascript:;">
+        <span class="user_profile">
+          <img src="img/user_profile.jpg" />
+        </span>
+        <h3 class="user_name">
+          {{
+            user["admin"]
+              ? user["admin"]["first_name"] + " " + user["admin"]["last_name"]
+              : ""
+          }}
+        </h3>
+        <h5 class="user_profession">
+          {{ user["admin"] ? user["admin"]["account_type"] : ("" | titlecase) }}
+        </h5>
+        <div class="dropdown" dropdown>
+          <a
+            href="javascript:;"
+            id="button-basic"
+            dropdownToggle
+            class="dropdown-toggle drop_icon"
+          >
+            <span class="caret"></span>
+          </a>
+          <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu">
+            <li role="menuitem" (click)="logout()">
+              <a class="dropdown-item" href="javascript:;">Logout</a>
+            </li>
+          </ul>
+        </div>
+      </a>
+    </li>
+  </ul>
+  <a href="javascript:;menu-toggle" class="btn btn-secondary" id="menu-toggle">
+    <i class="fa fa-bars"></i>
+  </a>
 </div>
 <div id="sidebar-wrapper">
-
-    <ul class="sidebar-nav custem-side-bar">
-        <li class="home" routerLinkActive="active">
-            <a href="javascript:;" routerLink="/admin/home">
-                <i></i>Home</a>
-        </li>
-        <li class="bell" routerLinkActive="active">
-            <a href="javascript:;" routerLink="/admin/alerts">
-                <i></i>Alert</a>
-        </li>
-        <li class="artist" routerLinkActive="active">
-            <a href="javascript:;" routerLink="/admin/artist">
-                <i></i>Artist</a>
-        </li>
-        <li class="users" routerLinkActive="active">
-            <a href="javascript:;" routerLink="/admin/users">
-                <i></i>Users</a>
-        </li>
-        <li>
-            <hr />
-        </li>
-        <li class="contest" routerLinkActive="active">
-            <a href="javascript:;" routerLink="/admin/contest">
-                <i></i>Contest</a>
-        </li>
-        <li class="roles" routerLinkActive="active">
-            <a href="javascript:;" routerLink="/admin/roles">
-                <i></i>Roles</a>
-        </li>
-        <li class="log_out">
-            <a href="javascript:;" (click)="logout()">
-                <i class="fa fa-sign-out" aria-hidden="true"></i>Logout</a>
-        </li>
-    </ul>
+  <ul class="sidebar-nav custem-side-bar">
+    <li class="home" routerLinkActive="active">
+      <a href="javascript:;" routerLink="/admin/home"> <i></i>Home</a>
+    </li>
+    <li class="bell" routerLinkActive="active">
+      <a href="javascript:;" routerLink="/admin/alerts"> <i></i>Alert</a>
+    </li>
+    <li class="artist" routerLinkActive="active">
+      <a href="javascript:;" routerLink="/admin/artist"> <i></i>Artist</a>
+    </li>
+    <li class="users" routerLinkActive="active">
+      <a href="javascript:;" routerLink="/admin/users"> <i></i>Users</a>
+    </li>
+    <li class="message" routerLinkActive="active">
+      <a href="javascript:;" routerLink="/admin/send_instructions">
+        <i></i>Send Instructions</a
+      >
+    </li>
+    <li>
+      <hr />
+    </li>
+    <li class="contest" routerLinkActive="active">
+      <a href="javascript:;" routerLink="/admin/contest"> <i></i>Contest</a>
+    </li>
+    <li class="roles" routerLinkActive="active">
+      <a href="javascript:;" routerLink="/admin/roles"> <i></i>Roles</a>
+    </li>
+    <li class="log_out">
+      <a href="javascript:;" (click)="logout()">
+        <i class="fa fa-sign-out" aria-hidden="true"></i>Logout</a
+      >
+    </li>
+  </ul>
 </div>
 <!-- /#sidebar-wrapper -->

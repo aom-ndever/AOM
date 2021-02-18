@@ -12,7 +12,7 @@ export const environment = {
   GOOGLE_CLIENT_ID:
     "376011943773-v60garkus5cc78ca6cphrp6bj7mgh69o.apps.googleusercontent.com",
   GOOGLE_CLIENT_SECRET: "NwQBTXbJ5PqhUAQGM13nzzlq",
-  // socketUrl: "https://localhost:3000",
+  // socketUrl: "http://localhost:3000",
   // API_URL: "http://localhost:3000",
   socketUrl: "https://aom.ndever.nyc:3000",
   API_URL: "https://aom.ndever.nyc:3000",

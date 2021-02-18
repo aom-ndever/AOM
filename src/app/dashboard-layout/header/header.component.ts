@@ -15,6 +15,8 @@ import { HeaderService } from "./header.service";
 import { environment } from "../../../../src/environments/environment";
 import { MessageService } from "../../shared/message.service";
 import { AuthService, FacebookLoginProvider } from "angular5-social-login";
+import * as socketClient from "socket.io-client";
+
 declare var FB: any;
 declare const gapi: any;
 @Component({
@@ -25,7 +27,10 @@ declare const gapi: any;
 export class HeaderComponent implements OnInit, OnDestroy {
   @ViewChild("bell") bell: ElementRef;
   @ViewChild("box") box: ElementRef;
+  count = 0;
+  messageCount = 0;
   user: any = "";
+  notificationList: any;
   login_form: FormGroup;
   forget_form: FormGroup;
   show_spinner = false;
@@ -40,6 +45,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
   private modalRef: NgbModalRef;
   private modalForgetRef: NgbModalRef;
   notificationOpen = false;
+  private socket;
+
   constructor(
     private modalService: NgbModal,
     private fb: FormBuilder,
@@ -212,7 +219,49 @@ export class HeaderComponent implements OnInit, OnDestroy {
       }
     );
   }
-  ngOnInit() {}
+  ngOnInit() {
+    this.user = JSON.parse(localStorage.getItem("user"));
+    this.messageCount = this.user.messageCount;
+    this.count = this.user.count;
+
+    this.socket = socketClient(environment.socketUrl);
+    if (this.user && this.user.token !== null) {
+      this.socket.emit("join", this.user.token);
+      if (this.user.user && this.user.user.type === "listener") {
+        this.socket.on("receive_user_notification_count", (data) => {
+          if (data) {
+            this.user["count"] = data.count;
+            localStorage.setItem("user", JSON.stringify(this.user));
+          }
+          console.log("artist", { emit: data });
+          this.user = JSON.parse(localStorage.getItem("user"));
+          this.count = this.user.count;
+          this.messageService.checkUserCount(data);
+        });
+      } else if (this.user.artist && this.user.artist.type === "artist") {
+        this.socket.on("receive_artist_notification_count", (data) => {
+          if (data) {
+            this.user["count"] = data.count;
+            localStorage.setItem("user", JSON.stringify(this.user));
+          }
+          console.log("artist", { emit: data });
+          this.user = JSON.parse(localStorage.getItem("user"));
+          this.count = this.user.count;
+          this.messageService.checkCount(data);
+        });
+        this.socket.on("receive_artist_messages_count", (data) => {
+          if (data) {
+            this.user["messageCount"] = data.count;
+            localStorage.setItem("user", JSON.stringify(this.user));
+          }
+          console.log("artist message", { emit: data });
+          this.user = JSON.parse(localStorage.getItem("user"));
+          this.messageCount = this.user.messageCount;
+          // this.messageService.checkCount(data);
+        });
+      }
+    }
+  }
 
   ngOnDestroy() {
     // console.log('header destroy');
@@ -290,6 +339,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
                     environment.ARTIST_IMG +
                     this.user.artist["image"]
                   : "";
+              this.count = this.user.count;
+              this.messageCount = this.user.messageCount;
             } else if (this.user && this.user.user) {
               this.user.user["image"] =
                 typeof this.user.user["image"] !== "undefined"
@@ -297,6 +348,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
                     environment.USER_IMG +
                     this.user.user["image"]
                   : "";
+              this.count = this.user.count;
             }
             this.messageService.sendMessage({ loggedin_user: this.user });
             this.router.navigate([""]);
@@ -462,6 +514,80 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
   toggleMainMenu() {
     this.toggleMenu = !this.toggleMenu;
+  }
+
+  onClickArtistBell() {
+    if (this.notificationOpen) {
+      this.notificationOpen = false;
+    } else {
+      console.log(" : here ==> ");
+      this.headerService.getArtistNotification().subscribe(
+        (res) => {
+          this.notificationList = res["notifications"];
+          console.log(" : res ==> ", this.notificationList);
+          this.UpdateArtistCounts();
+        },
+        (err) => {
+          console.log(" : err ==> ", err);
+        }
+      );
+      this.notificationOpen = true;
+    }
+  }
+
+  UpdateArtistCounts() {
+    this.user["count"] = 0;
+    localStorage.setItem("user", JSON.stringify(this.user));
+    this.user = JSON.parse(localStorage.getItem("user"));
+    this.count = this.user.count;
+    var obj = {
+      isSeen: 1,
+    };
+    this.headerService.updateCounts(obj).subscribe(
+      (res) => {
+        console.log(" : res ==> ", res);
+      },
+      (err) => {
+        console.log(" : err ==> ", err);
+      }
+    );
+  }
+
+  onClickUserBell() {
+    if (this.notificationOpen) {
+      this.notificationOpen = false;
+    } else {
+      console.log(" : here ==> ");
+      this.headerService.getUserNotification().subscribe(
+        (res) => {
+          this.notificationList = res["notifications"];
+          console.log(" : res ==> ", this.notificationList);
+          this.UpdateUserCounts();
+        },
+        (err) => {
+          console.log(" : err ==> ", err);
+        }
+      );
+      this.notificationOpen = true;
+    }
+  }
+
+  UpdateUserCounts() {
+    this.user["count"] = 0;
+    localStorage.setItem("user", JSON.stringify(this.user));
+    this.user = JSON.parse(localStorage.getItem("user"));
+    this.count = this.user.count;
+    var obj = {
+      isSeen: 1,
+    };
+    this.headerService.updateUserCounts(obj).subscribe(
+      (res) => {
+        console.log(" : res ==> ", res);
+      },
+      (err) => {
+        console.log(" : err ==> ", err);
+      }
+    );
   }
 
   fbLogin() {

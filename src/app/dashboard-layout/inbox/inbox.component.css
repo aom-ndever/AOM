@@ -35,3 +35,38 @@ input {
 form.ng-untouched.ng-pristine.ng-valid {
   float: right;
 }
+
+.top-right-button {
+  color: #808080 !important;
+  text-decoration: none !important;
+}
+
+.top-right-button:hover {
+  color: #9b26b0 !important;
+  text-decoration: none !important;
+}
+
+td.noDataFound {
+  text-align: center;
+}
+
+.unRead {
+  font-weight: bold;
+  font-size: 15px;
+}
+
+img.OpenMseesageImg {
+  width: 65px;
+}
+
+.messageHeader {
+  display: flex;
+}
+
+.text[_ngcontent-c5] {
+  margin: 4px, 4px;
+  padding: 4px;
+  text-align: justify;
+  height: 246px;
+  overflow: auto;
+}
