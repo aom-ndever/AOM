@@ -16,7 +16,6 @@ myIo.init = function (server) {
      */
 
     socket.on("join", async function (token) {
-      console.log(" : join ==> ");
       var decoded = jwtDecode(token);
       var userId = decoded.id;
       var user = users.get(userId);
@@ -31,8 +30,6 @@ myIo.init = function (server) {
         users.set(userId, obj);
       }
       socketToUsers.set(socket.id, userId);
-      console.log("users => ", users);
-      console.log("socketToUsers => ", socketToUsers);
     });
 
     /**
@@ -54,8 +51,6 @@ myIo.init = function (server) {
         }
         socketToUsers.delete(socketId);
       }
-      console.log("users => ", users);
-      console.log("socketToUsers => ", socketToUsers);
     });
 
     socket.on("here", async function (data) {
