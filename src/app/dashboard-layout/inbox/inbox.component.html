@@ -49,12 +49,16 @@
     <table style="width: 100%" id="label-header">
       <tr>
         <th class="check-all">
-          <input
-            type="checkbox"
-            value="m1"
-            [(ngModel)]="masterSelected"
-            (change)="checkUncheckAll()"
-          />
+          <div class="form-group CustomCheckbox">
+            <input
+              type="checkbox"
+              id="css"
+              value="m1"
+              [(ngModel)]="masterSelected"
+              (change)="checkUncheckAll()"
+            />
+            <label for="css"></label>
+          </div>
         </th>
         <th class="from">From</th>
         <th class="message">Message</th>
@@ -63,16 +67,27 @@
       <tr *ngIf="checklist.length === 0">
         <td class="noDataFound" colspan="4">No data Found.</td>
       </tr>
-      <tr *ngFor="let item of checklist">
+      <tr *ngFor="let item of checklist; let i = index">
         <td>
+          <div class="form-group CustomCheckbox">
+            <input
+              type="checkbox"
+              [id]="'css' + i"
+              [(ngModel)]="item.isSelected"
+              [name]="'list_name' + i"
+              value="{{ item.id }}"
+              (change)="isAllSelected()"
+            />
+            <label [for]="'css' + i"></label>
+          </div>
           <!-- {{ selected.id }} -->
-          <input
+          <!-- <input
             type="checkbox"
             [(ngModel)]="item.isSelected"
             name="list_name"
             value="{{ item.id }}"
             (change)="isAllSelected()"
-          />
+          /> -->
         </td>
         <td
           [ngClass]="{ unRead: item.receivers.isSeen === 0 }"
@@ -83,10 +98,14 @@
         <td
           class="text-msg"
           [ngClass]="{ unRead: item.receivers.isSeen === 0 }"
+          (click)="openMessageDialog(openMessage, item._id)"
         >
           {{ item.message }}
         </td>
-        <td [ngClass]="{ unRead: item.receivers.isSeen === 0 }">
+        <td
+          [ngClass]="{ unRead: item.receivers.isSeen === 0 }"
+          (click)="openMessageDialog(openMessage, item._id)"
+        >
           {{ item.createdAt }}
         </td>
       </tr>
@@ -114,7 +133,9 @@
             />
           </div>
           <div class="col-md-12">
-            <h3>{{ messageData.contest_id.name }}</h3>
+            <h3>
+              {{ messageData["contest_id"].name }}
+            </h3>
             <p>{{ messageData.displayTime }} ({{ messageData.diffTime }})</p>
           </div>
         </div>
@@ -122,6 +143,9 @@
           <div class="text">
             {{ messageData.message }}
           </div>
+          <!-- <div slimScroll class="text">
+            {{ messageData.message }}
+          </div> -->
         </div>
         <div class="login-btn">
           <button (click)="closeMessageDialog()">Ok</button>

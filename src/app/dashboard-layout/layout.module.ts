@@ -4,7 +4,8 @@ import { AmChartsModule } from "@amcharts/amcharts3-angular";
 import { CommonModule } from "@angular/common";
 import { RouterModule } from "@angular/router";
 import { DataTablesModule } from "angular-datatables";
-// import { SlimScroll } from 'angular-io-slimscroll';
+// import { SlimScroll } from "angular-io-slimscroll";
+
 import {
   AutoCompleteModule,
   MultiSelectModule,

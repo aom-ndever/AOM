@@ -467,7 +467,12 @@ artist_message_helper.getMessageById = async (id, reqestedUserId, socket) => {
       console.log(" : messageCount ==> ", messageCount);
       var resObj = {};
       resp["receivers"].map((data, index) => {
+        console.log(
+          " : data.receiver.toString() === reqestedUserId ==> ",
+          data.receiver.toString() === reqestedUserId
+        );
         if (data.receiver.toString() === reqestedUserId) {
+          console.log(" : resp ==> ", resp);
           resObj = {
             _id: resp._id,
             sender: resp.sender,
@@ -475,7 +480,7 @@ artist_message_helper.getMessageById = async (id, reqestedUserId, socket) => {
             contest_id: resp.contest_id,
             message: resp.message,
             type: resp.type,
-            displayTime: moment(result.createdAt).format("hh:mm"),
+            displayTime: moment(resp.createdAt).format("hh:mm"),
             diffTime: moment(resp.createdAt).fromNow(),
             createdAt: resp.createdAt,
             modifiedAt: resp.modifiedAt,

@@ -1,9 +1,8 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ViewChild } from "@angular/core";
 import { NgbModal, NgbModalRef } from "@ng-bootstrap/ng-bootstrap";
 import { ToastrService } from "ngx-toastr";
 import { of } from "rxjs/observable/of";
 import { InboxService } from "./inbox.service";
-
 @Component({
   selector: "app-inbox",
   templateUrl: "./inbox.component.html",
@@ -160,16 +159,15 @@ export class InboxComponent implements OnInit {
   }
 
   openMessageDialog(content, id) {
-    this.modalRef = this.modalService.open(content, {
-      centered: true,
-      windowClass: "modal-wrapper",
-      backdrop: "static",
-    });
-
     this.inboxService.getMessageData(id).subscribe(
       (res) => {
         console.log(" : res ==> ", res);
         this.messageData = res["messageDetail"];
+        this.modalRef = this.modalService.open(content, {
+          centered: true,
+          windowClass: "modal-wrapper",
+          backdrop: "static",
+        });
         this.initial();
       },
       (error) => {

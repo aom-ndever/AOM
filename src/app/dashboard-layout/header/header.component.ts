@@ -221,8 +221,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
   ngOnInit() {
     this.user = JSON.parse(localStorage.getItem("user"));
-    this.messageCount = this.user.messageCount;
-    this.count = this.user.count;
+
+    this.messageCount = this.user ? this.user.messageCount : this.messageCount;
+    this.count = this.user ? this.user.count : this.count;
 
     this.socket = socketClient(environment.socketUrl);
     if (this.user && this.user.token !== null) {
