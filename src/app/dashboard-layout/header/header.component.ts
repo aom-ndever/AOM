@@ -57,41 +57,45 @@ export class HeaderComponent implements OnInit, OnDestroy {
     private socialAuthService: AuthService,
     private renderer: Renderer2
   ) {
+    this.messageService.getupdatedUserDetail.subscribe((res: any) => {
+      console.log(" : user res ==> ", res);
+      this.user = res;
+    });
     this.user = JSON.parse(localStorage.getItem("user"));
     this.messageService.sendMessage({ loggedin_user: this.user });
-
-    if (this.user && this.user.artist) {
-      this.user.artist["image"] =
-        typeof this.user.artist["image"] !== "undefined"
-          ? environment.API_URL +
-            environment.ARTIST_IMG +
-            this.user.artist["image"]
-          : "";
-    } else if (this.user && this.user.user) {
-      // const data = JSON.parse(localStorage.getItem("user"));
-      console.log(
-        ' : "http" ==> ',
-        this.user.user["image"].substring(0, 4) === "http"
-      );
-      if (
-        (this.user.user.provider &&
-          this.user.user.provider === "facebook" &&
-          this.user.user["image"].includes("graph.facebook.com")) ||
-        (this.user.user.provider &&
-          this.user.user.provider === "gmail" &&
-          this.user.user["image"].includes("lh3.googleusercontent.com")) ||
-        this.user.user["image"].substring(0, 4) === "http"
-      ) {
-        this.user.user["image"] = this.user.user["image"];
-      } else {
-        this.user.user["image"] =
-          typeof this.user.user["image"] !== "undefined"
-            ? environment.API_URL +
-              environment.USER_IMG +
-              this.user.user["image"]
-            : "";
-      }
-    }
+    // console.log(" : this.user.artist ==> ", this.user.artist);
+    // if (this.user && this.user.artist) {
+    //   this.user.artist["image"] =
+    //     typeof this.user.artist["image"] !== "undefined"
+    //       ? environment.API_URL +
+    //         environment.ARTIST_IMG +
+    //         this.user.artist["image"]
+    //       : "";
+    //   console.log(
+    //     ' : this.user.artist["image"] ==> ',
+    //     this.user.artist["image"]
+    //   );
+    // } else if (this.user && this.user.user) {
+    //   if (
+    //     (this.user.user.provider &&
+    //       this.user.user.provider === "facebook" &&
+    //       this.user.user["image"].includes("graph.facebook.com")) ||
+    //     (this.user.user.provider &&
+    //       this.user.user.provider === "gmail" &&
+    //       this.user.user["image"].includes("lh3.googleusercontent.com")) ||
+    //     this.user.user["image"].substring(0, 4) === "http"
+    //   ) {
+    //     this.user.user["image"] = this.user.user["image"];
+    //     console.log(' : this.user.user["image"] ==> ', this.user.user["image"]);
+    //   } else {
+    //     this.user.user["image"] =
+    //       typeof this.user.user["image"] !== "undefined"
+    //         ? environment.API_URL +
+    //           environment.USER_IMG +
+    //           this.user.user["image"]
+    //         : "";
+    //   }
+    // }
     this.subscription = this.messageService
       .getMessage()
       .subscribe((response) => {
@@ -221,7 +225,38 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
   ngOnInit() {
     this.user = JSON.parse(localStorage.getItem("user"));
-
+    if (this.user && this.user.artist) {
+      this.user.artist["image"] =
+        typeof this.user.artist["image"] !== "undefined"
+          ? environment.API_URL +
+            environment.ARTIST_IMG +
+            this.user.artist["image"]
+          : "";
+      console.log(
+        ' : this.user.artist["image"] ==> ',
+        this.user.artist["image"]
+      );
+    } else if (this.user && this.user.user) {
+      if (
+        (this.user.user.provider &&
+          this.user.user.provider === "facebook" &&
+          this.user.user["image"].includes("graph.facebook.com")) ||
+        (this.user.user.provider &&
+          this.user.user.provider === "gmail" &&
+          this.user.user["image"].includes("lh3.googleusercontent.com")) ||
+        this.user.user["image"].substring(0, 4) === "http"
+      ) {
+        this.user.user["image"] = this.user.user["image"];
+        console.log(' : this.user.user["image"] ==> ', this.user.user["image"]);
+      } else {
+        this.user.user["image"] =
+          typeof this.user.user["image"] !== "undefined"
+            ? environment.API_URL +
+              environment.USER_IMG +
+              this.user.user["image"]
+            : "";
+      }
+    }
     this.messageCount = this.user ? this.user.messageCount : this.messageCount;
     this.count = this.user ? this.user.count : this.count;
 

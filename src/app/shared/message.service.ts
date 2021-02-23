@@ -11,6 +11,9 @@ export class MessageService {
   private followerData = new BehaviorSubject(null);
   followList = this.followerData.asObservable();
 
+  private updatedUserDetail = new BehaviorSubject("");
+  getupdatedUserDetail = this.updatedUserDetail.asObservable();
+
   public changeFollower() {
     this.followerData.next({});
   }
@@ -36,5 +39,9 @@ export class MessageService {
 
   getMessage(): Observable<any> {
     return this.subject.asObservable();
+  }
+
+  public setupdatedUserDetail(data: any) {
+    this.updatedUserDetail.next(data);
   }
 }

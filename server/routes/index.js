@@ -37,6 +37,8 @@ var ArtistMessage = require("./../models/artist_messages");
 var UserNotification = require("./../models/user_notification");
 var SerialNumber = require("./../models/serial_number");
 const serial_number_helper = require("../helpers/serial_number_helper");
+const User = require("../models/user");
+const Artist = require("../models/artist");
 
 router.post("/serial_no", async (req, res) => {
   console.log(" : req.body ==> ", req.body);
@@ -666,148 +668,147 @@ router.post("/login", async (req, res) => {
         .status(config.INTERNAL_SERVER_ERROR)
         .json({ status: 0, message: "Your email is not registered" });
     } else if (login_resp.status === 1) {
-      console.log("2 => ", 2);
       logger.trace("Artist found. Executing next instruction");
       logger.trace("valid token. Generating token");
+
       if (login_resp.artist.flag == false) {
-        console.log(
-          "req.body.email == login_resp.artist.email => ",
-          req.body.email.toLowerCase() == login_resp.artist.email.toLowerCase()
-        );
         if (
-          bcrypt.compareSync(req.body.password, login_resp.artist.password) &&
-          req.body.email.toLowerCase() == login_resp.artist.email.toLowerCase()
+          login_resp.artist.is_deactivate === true &&
+          login_resp.artist.is_del === false
         ) {
-          if (login_resp.artist.email_verified) {
-            var refreshToken = jwt.sign(
-              { id: login_resp.artist._id },
-              config.REFRESH_TOKEN_SECRET_KEY,
-              {}
-            );
-            let update_resp = await artist_helper.update_artist_by_id(
-              login_resp.artist._id,
-              { refresh_token: refreshToken, last_login: Date.now() }
-            );
-            var LoginJson = {
-              id: login_resp.artist._id,
-              email: login_resp.email,
-              role: "artist",
-            };
-            var token = jwt.sign(LoginJson, config.ACCESS_TOKEN_SECRET_KEY, {
-              expiresIn: config.ACCESS_TOKEN_EXPIRE_TIME,
-            });
-            delete login_resp.artist.status;
-            delete login_resp.artist.password;
-            delete login_resp.artist.refresh_token;
-            delete login_resp.artist.last_login_date;
-            delete login_resp.artist.created_at;
-            console.log("login_resp.artist._id", login_resp.artist._id);
+          const activateUser = await Artist.findOneAndUpdate(
+            { _id: ObjectId(login_resp.artist._id) },
+            { $set: { is_deactivate: false } },
+            { new: true }
+          );
+          if (activateUser) {
+            if (
+              bcrypt.compareSync(
+                req.body.password,
+                login_resp.artist.password
+              ) &&
+              req.body.email.toLowerCase() ==
+                login_resp.artist.email.toLowerCase()
+            ) {
+              if (login_resp.artist.email_verified) {
+                var refreshToken = jwt.sign(
+                  { id: login_resp.artist._id },
+                  config.REFRESH_TOKEN_SECRET_KEY,
+                  {}
+                );
+                let update_resp = await artist_helper.update_artist_by_id(
+                  login_resp.artist._id,
+                  { refresh_token: refreshToken, last_login: Date.now() }
+                );
+                var LoginJson = {
+                  id: login_resp.artist._id,
+                  email: login_resp.email,
+                  role: "artist",
+                };
+                var token = jwt.sign(
+                  LoginJson,
+                  config.ACCESS_TOKEN_SECRET_KEY,
+                  {
+                    expiresIn: config.ACCESS_TOKEN_EXPIRE_TIME,
+                  }
+                );
+                delete login_resp.artist.status;
+                delete login_resp.artist.password;
+                delete login_resp.artist.refresh_token;
+                delete login_resp.artist.last_login_date;
+                delete login_resp.artist.created_at;
 
-            logger.info("Token generated");
-            var count = await ArtistNotification.countDocuments({
-              isSeen: 0,
-              receiver: new ObjectId(login_resp.artist._id),
-            });
+                logger.info("Token generated");
+                var count = await ArtistNotification.countDocuments({
+                  isSeen: 0,
+                  receiver: new ObjectId(login_resp.artist._id),
+                });
 
-            var messageCount = await ArtistMessage.find({
-              receivers: {
-                $elemMatch: { receiver: login_resp.artist._id, isSeen: 0 },
-              },
-            }).count();
+                var messageCount = await ArtistMessage.find({
+                  receivers: {
+                    $elemMatch: { receiver: login_resp.artist._id, isSeen: 0 },
+                  },
+                }).count();
 
-            res.status(config.OK_STATUS).json({
-              status: 1,
-              message: "Logged in successful",
-              artist: login_resp.artist,
-              token: token,
-              refresh_token: refreshToken,
-              count: count,
-              messageCount: messageCount,
-            });
+                res.status(config.OK_STATUS).json({
+                  status: 1,
+                  message: "Logged in successful",
+                  artist: activateUser,
+                  token: token,
+                  refresh_token: refreshToken,
+                  count: count,
+                  messageCount: messageCount,
+                });
+              } else {
+                res
+                  .status(config.BAD_REQUEST)
+                  .json({ status: 0, message: "Email not verified" });
+              }
+            } else {
+              res.status(config.BAD_REQUEST).json({
+                status: 0,
+                message: "Invalid email address or password",
+              });
+            }
           } else {
             res
               .status(config.BAD_REQUEST)
-              .json({ status: 0, message: "Email not verified" });
+              .json({ status: 0, message: "Error while account activating" });
           }
-        } else {
-          res
-            .status(config.BAD_REQUEST)
-            .json({ status: 0, message: "Invalid email address or password" });
-        }
-      } else {
-        res
-          .status(config.BAD_REQUEST)
-          .json({ message: "Your account is suspended by admin" });
-      }
-    } else if (userlogin_resp.status === 1) {
-      console.log("1 => ", 1);
-      logger.trace("Artist found. Executing next instruction");
-      logger.trace("valid token. Generating token");
-      if (userlogin_resp.user.flag == false) {
-        console.log(
-          "req.body.password, userlogin_resp.user.password => ",
-          req.body.password,
-          userlogin_resp.user.password
-        );
-        if (userlogin_resp.user.password === undefined) {
-          res.status(config.BAD_REQUEST).json({
-            status: 0,
-            message: `This email registered as social media, Please login with social media account.`,
-          });
-        } else {
+        } else if (
+          login_resp.artist.is_deactivate === false &&
+          login_resp.artist.is_del === false
+        ) {
           if (
-            bcrypt.compareSync(
-              req.body.password,
-              userlogin_resp.user.password
-            ) &&
+            bcrypt.compareSync(req.body.password, login_resp.artist.password) &&
             req.body.email.toLowerCase() ==
-              userlogin_resp.user.email.toLowerCase()
+              login_resp.artist.email.toLowerCase()
           ) {
-            if (userlogin_resp.user.email_verified) {
+            if (login_resp.artist.email_verified) {
               var refreshToken = jwt.sign(
-                { id: userlogin_resp.user._id },
+                { id: login_resp.artist._id },
                 config.REFRESH_TOKEN_SECRET_KEY,
                 {}
               );
-              let update_resp = await user_helper.update_user_by_id(
-                userlogin_resp.user._id,
+              let update_resp = await artist_helper.update_artist_by_id(
+                login_resp.artist._id,
                 { refresh_token: refreshToken, last_login: Date.now() }
               );
               var LoginJson = {
-                id: userlogin_resp.user._id,
-                email: userlogin_resp.email,
-                role: "user",
+                id: login_resp.artist._id,
+                email: login_resp.email,
+                role: "artist",
               };
               var token = jwt.sign(LoginJson, config.ACCESS_TOKEN_SECRET_KEY, {
                 expiresIn: config.ACCESS_TOKEN_EXPIRE_TIME,
               });
-              delete userlogin_resp.user.status;
-              delete userlogin_resp.user.password;
-              delete userlogin_resp.user.refresh_token;
-              delete userlogin_resp.user.last_login_date;
-              delete userlogin_resp.user.created_at;
-              console.log("userlogin_resp.user._id", userlogin_resp.user._id);
+              delete login_resp.artist.status;
+              delete login_resp.artist.password;
+              delete login_resp.artist.refresh_token;
+              delete login_resp.artist.last_login_date;
+              delete login_resp.artist.created_at;
+              console.log("login_resp.artist._id", login_resp.artist._id);
 
               logger.info("Token generated");
-              // var count = await ArtistNotification.countDocuments({
-              //   isSeen: 0,
-              //   receiver: new ObjectId(userlogin_resp.user._id),
-              // });
+              var count = await ArtistNotification.countDocuments({
+                isSeen: 0,
+                receiver: new ObjectId(login_resp.artist._id),
+              });
 
-              var count = await UserNotification.find({
+              var messageCount = await ArtistMessage.find({
                 receivers: {
-                  $elemMatch: { receiver: userlogin_resp.user._id, isSeen: 0 },
+                  $elemMatch: { receiver: login_resp.artist._id, isSeen: 0 },
                 },
               }).count();
 
-              console.log(" : count ==> ", count);
               res.status(config.OK_STATUS).json({
                 status: 1,
                 message: "Logged in successful",
-                user: userlogin_resp.user,
+                artist: login_resp.artist,
                 token: token,
                 refresh_token: refreshToken,
                 count: count,
+                messageCount: messageCount,
               });
             } else {
               res
@@ -820,6 +821,207 @@ router.post("/login", async (req, res) => {
               message: "Invalid email address or password",
             });
           }
+        } else {
+          res
+            .status(config.BAD_REQUEST)
+            .json({ status: 0, message: "This account is not registered." });
+        }
+      } else {
+        res
+          .status(config.BAD_REQUEST)
+          .json({ message: "Your account is suspended by admin" });
+      }
+    } else if (userlogin_resp.status === 1) {
+      console.log("1 => ", 1);
+      logger.trace("Artist found. Executing next instruction");
+      logger.trace("valid token. Generating token");
+      if (userlogin_resp.user.flag == false) {
+        if (
+          userlogin_resp.user.is_deactivate === true &&
+          userlogin_resp.user.is_del === false
+        ) {
+          const activateUser = await User.findOneAndUpdate(
+            { _id: ObjectId(userlogin_resp.user._id) },
+            { $set: { is_deactivate: false } },
+            { new: true }
+          );
+
+          if (activateUser) {
+            if (userlogin_resp.user.password === undefined) {
+              res.status(config.BAD_REQUEST).json({
+                status: 0,
+                message: `This email registered as social media, Please login with social media account.`,
+              });
+            } else {
+              if (
+                bcrypt.compareSync(
+                  req.body.password,
+                  userlogin_resp.user.password
+                ) &&
+                req.body.email.toLowerCase() ==
+                  userlogin_resp.user.email.toLowerCase()
+              ) {
+                if (userlogin_resp.user.email_verified) {
+                  var refreshToken = jwt.sign(
+                    { id: userlogin_resp.user._id },
+                    config.REFRESH_TOKEN_SECRET_KEY,
+                    {}
+                  );
+                  let update_resp = await user_helper.update_user_by_id(
+                    userlogin_resp.user._id,
+                    { refresh_token: refreshToken, last_login: Date.now() }
+                  );
+                  var LoginJson = {
+                    id: userlogin_resp.user._id,
+                    email: userlogin_resp.email,
+                    role: "user",
+                  };
+                  var token = jwt.sign(
+                    LoginJson,
+                    config.ACCESS_TOKEN_SECRET_KEY,
+                    {
+                      expiresIn: config.ACCESS_TOKEN_EXPIRE_TIME,
+                    }
+                  );
+                  delete userlogin_resp.user.status;
+                  delete userlogin_resp.user.password;
+                  delete userlogin_resp.user.refresh_token;
+                  delete userlogin_resp.user.last_login_date;
+                  delete userlogin_resp.user.created_at;
+                  console.log(
+                    "userlogin_resp.user._id",
+                    userlogin_resp.user._id
+                  );
+
+                  logger.info("Token generated");
+                  // var count = await ArtistNotification.countDocuments({
+                  //   isSeen: 0,
+                  //   receiver: new ObjectId(userlogin_resp.user._id),
+                  // });
+
+                  var count = await UserNotification.find({
+                    receivers: {
+                      $elemMatch: {
+                        receiver: userlogin_resp.user._id,
+                        isSeen: 0,
+                      },
+                    },
+                  }).count();
+
+                  console.log(" : count ==> ", count);
+                  res.status(config.OK_STATUS).json({
+                    status: 1,
+                    message: "Logged in successful",
+                    user: activateUser,
+                    token: token,
+                    refresh_token: refreshToken,
+                    count: count,
+                  });
+                } else {
+                  res
+                    .status(config.BAD_REQUEST)
+                    .json({ status: 0, message: "Email not verified" });
+                }
+              } else {
+                res.status(config.BAD_REQUEST).json({
+                  status: 0,
+                  message: "Invalid email address or password",
+                });
+              }
+            }
+          } else {
+            res.status(config.BAD_REQUEST).json({
+              status: 0,
+              message: "Error while account activating",
+            });
+          }
+        } else if (
+          userlogin_resp.user.is_deactivate === false &&
+          userlogin_resp.user.is_del === false
+        ) {
+          if (userlogin_resp.user.password === undefined) {
+            res.status(config.BAD_REQUEST).json({
+              status: 0,
+              message: `This email registered as social media, Please login with social media account.`,
+            });
+          } else {
+            if (
+              bcrypt.compareSync(
+                req.body.password,
+                userlogin_resp.user.password
+              ) &&
+              req.body.email.toLowerCase() ==
+                userlogin_resp.user.email.toLowerCase()
+            ) {
+              if (userlogin_resp.user.email_verified) {
+                var refreshToken = jwt.sign(
+                  { id: userlogin_resp.user._id },
+                  config.REFRESH_TOKEN_SECRET_KEY,
+                  {}
+                );
+                let update_resp = await user_helper.update_user_by_id(
+                  userlogin_resp.user._id,
+                  { refresh_token: refreshToken, last_login: Date.now() }
+                );
+                var LoginJson = {
+                  id: userlogin_resp.user._id,
+                  email: userlogin_resp.email,
+                  role: "user",
+                };
+                var token = jwt.sign(
+                  LoginJson,
+                  config.ACCESS_TOKEN_SECRET_KEY,
+                  {
+                    expiresIn: config.ACCESS_TOKEN_EXPIRE_TIME,
+                  }
+                );
+                delete userlogin_resp.user.status;
+                delete userlogin_resp.user.password;
+                delete userlogin_resp.user.refresh_token;
+                delete userlogin_resp.user.last_login_date;
+                delete userlogin_resp.user.created_at;
+                console.log("userlogin_resp.user._id", userlogin_resp.user._id);
+
+                logger.info("Token generated");
+                // var count = await ArtistNotification.countDocuments({
+                //   isSeen: 0,
+                //   receiver: new ObjectId(userlogin_resp.user._id),
+                // });
+
+                var count = await UserNotification.find({
+                  receivers: {
+                    $elemMatch: {
+                      receiver: userlogin_resp.user._id,
+                      isSeen: 0,
+                    },
+                  },
+                }).count();
+
+                console.log(" : count ==> ", count);
+                res.status(config.OK_STATUS).json({
+                  status: 1,
+                  message: "Logged in successful",
+                  user: userlogin_resp.user,
+                  token: token,
+                  refresh_token: refreshToken,
+                  count: count,
+                });
+              } else {
+                res
+                  .status(config.BAD_REQUEST)
+                  .json({ status: 0, message: "Email not verified" });
+              }
+            } else {
+              res.status(config.BAD_REQUEST).json({
+                status: 0,
+                message: "Invalid email address or password",
+              });
+            }
+          }
+        } else {
+          res
+            .status(config.BAD_REQUEST)
+            .json({ status: 0, message: "This account is not registered" });
         }
       } else {
         res
@@ -922,9 +1124,10 @@ router.post("/user_registration", async (req, res) => {
     let artist = await artist_helper.get_artist_by_email(req.body.email);
     let user = await user_helper.get_user_by_email(req.body.email);
     console.log(" : user ==> ", user);
+
     if (user.status === 2 && artist.status === 2) {
       var data = await user_helper.insert_user(obj);
-
+      console.log(" : data ==> ", data);
       if (data.status == 0) {
         logger.trace("Error occured while inserting user - User Signup API");
         console.log("data.error => ", data.error);
@@ -1362,6 +1565,8 @@ router.post("/forgot_password", async (req, res) => {
   if (!errors) {
     var resp = await user_helper.get_user_by_email(req.body.email);
     var artist_resp = await artist_helper.get_artist_by_email(req.body.email);
+    console.log(" : resp ==> ", resp);
+    console.log(" : artist_resp ==> ", artist_resp);
     if (resp.status === 0 && artist_resp.status === 0) {
       res
         .status(config.INTERNAL_SERVER_ERROR)

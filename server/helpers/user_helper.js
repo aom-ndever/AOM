@@ -44,8 +44,8 @@ user_helper.get_user_by_email = async (email) => {
     value = {
       $regex: re,
     };
-    var user = await User.findOne({ email: value }).lean();
-
+    var user = await User.findOne({ email: value, is_del: false }).lean();
+    console.log(" : user ==> ", user);
     if (user) {
       return { status: 1, message: "user details found", user: user };
     } else {
@@ -148,7 +148,7 @@ user_helper.get_login_by_email = async (email) => {
     value = {
       $regex: re,
     };
-    var user = await User.findOne({ email: value }).lean();
+    var user = await User.findOne({ email: value, is_del: false }).lean();
     if (user) {
       return { status: 1, message: "user details found", user: user };
     } else {
@@ -317,10 +317,16 @@ user_helper.get_all_active_and_suspend_user = async (
   sort_by = {}
 ) => {
   try {
-    var users = await User.find(filter);
+    var users = await User.find({
+      ...filter,
+      $and: [{ is_del: false }, { is_deactivate: false }],
+    });
     var tot_cnt = users.length;
 
-    var user = await User.find(filter)
+    var user = await User.find({
+      ...filter,
+      $and: [{ is_del: false }, { is_deactivate: false }],
+    })
       // .populate({ path: 'state', populate: { path: 'region' } })
       .sort(sort_by)
       .skip(start)

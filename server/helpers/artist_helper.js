@@ -298,7 +298,9 @@ artist_helper.insert_notification = async (object) => {
 
 artist_helper.get_all_artist_for_email = async () => {
   try {
-    var artist = await Artist.find();
+    var artist = await Artist.find({
+      $and: [{ is_del: false }, { is_deactivate: false }],
+    });
     if (artist) {
       return { status: 1, message: "artist details found", artist: artist };
     } else {
@@ -339,7 +341,10 @@ artist_helper.get_artist_by_email = async (email) => {
     value = {
       $regex: re,
     };
-    var artist = await Artist.findOne({ email: value });
+    var artist = await Artist.findOne({
+      email: value,
+      is_del: false,
+    });
     if (artist) {
       return { status: 1, message: "artist details found", artist: artist };
     } else {
@@ -365,9 +370,10 @@ artist_helper.get_artist_by_email = async (email) => {
  */
 artist_helper.get_artist_by_id = async (artist_id) => {
   try {
-    var artist = await Artist.findOne({ _id: { $eq: artist_id } }).populate(
-      "music_type"
-    );
+    var artist = await Artist.findOne({
+      _id: { $eq: artist_id },
+      $and: [{ is_del: false }, { is_deactivate: false }],
+    }).populate("music_type");
     //  .populate({ path: 'state', populate: { path: 'region' } })
     if (artist) {
       return { status: 1, message: "Artist details found", artist: artist };
@@ -385,7 +391,10 @@ artist_helper.get_artist_by_id = async (artist_id) => {
 
 artist_helper.get_no_of_featured_artist = async () => {
   try {
-    var artist = await Artist.find({ featured: true });
+    var artist = await Artist.find({
+      featured: true,
+      $and: [{ is_del: false }, { is_deactivate: false }],
+    });
     if (artist) {
       return { status: 1, message: "Artist details found", artist: artist };
     } else {
@@ -411,7 +420,10 @@ artist_helper.get_no_of_featured_artist = async () => {
  */
 artist_helper.get_artist_by_music_id = async (id) => {
   try {
-    var artist = await Artist.findOne({ music_type: new ObjectId(id) });
+    var artist = await Artist.findOne({
+      music_type: new ObjectId(id),
+      $and: [{ is_del: false }, { is_deactivate: false }],
+    });
     if (artist) {
       return { status: 1, message: "Artist details found", artist: artist };
     } else {
@@ -435,6 +447,7 @@ artist_helper.get_artists = async (filter, search) => {
         $match: {
           flag: false,
           featured: true,
+          $and: [{ is_del: false }, { is_deactivate: false }],
         },
       },
       // {
@@ -520,16 +533,17 @@ artist_helper.get_artists = async (filter, search) => {
 artist_helper.update_artist_by_id = async (artist_id, artist_object) => {
   try {
     let artist = await Artist.findOneAndUpdate(
-      { _id: artist_id },
+      { _id: artist_id, $and: [{ is_del: false }, { is_deactivate: false }] },
       artist_object,
       { new: true }
     );
     if (!artist) {
       return { status: 2, message: "Profile has not updated" };
     } else {
-      let artist_data = await Artist.findOne({ _id: artist_id }).populate(
-        "music_type"
-      );
+      let artist_data = await Artist.findOne({
+        _id: artist_id,
+        $and: [{ is_del: false }, { is_deactivate: false }],
+      }).populate("music_type");
       return {
         status: 1,
         message: "Profile has been updated",
@@ -551,7 +565,10 @@ artist_helper.get_login_by_email = async (email) => {
     value = {
       $regex: re,
     };
-    var artist = await Artist.findOne({ email: value })
+    var artist = await Artist.findOne({
+      email: value,
+      is_del: false,
+    })
       .populate("music_type")
       .lean();
     console.log("artist => ", artist);
@@ -580,7 +597,10 @@ artist_helper.get_all_artist = async (search, filter) => {
   try {
     var aggregate = [
       {
-        $match: { flag: false },
+        $match: {
+          flag: false,
+          $and: [{ is_del: false }, { is_deactivate: false }],
+        },
       },
       // {
       //     $lookup: {
@@ -660,6 +680,7 @@ artist_helper.get_artist_by_filter = async (filter, start, length, filters) => {
       {
         $match: {
           flag: false,
+          $and: [{ is_del: false }, { is_deactivate: false }],
         },
       },
 
@@ -741,7 +762,10 @@ artist_helper.get_artist_by_filter = async (filter, start, length, filters) => {
 
 artist_helper.delete_artist_by_admin = async (artist_id) => {
   try {
-    var artist = await Artist.findOneAndRemove({ _id: artist_id });
+    var artist = await Artist.findOneAndRemove({
+      _id: artist_id,
+      $and: [{ is_del: false }, { is_deactivate: false }],
+    });
     if (artist) {
       return { status: 1, message: "artist details found", artist: artist };
     } else {
@@ -759,7 +783,7 @@ artist_helper.delete_artist_by_admin = async (artist_id) => {
 artist_helper.update_featured_artist = async (artist_id, feature) => {
   try {
     var artist = await Artist.findOneAndUpdate(
-      { _id: artist_id },
+      { _id: artist_id, $and: [{ is_del: false }, { is_deactivate: false }] },
       { featured: feature }
     );
     if (artist) {
@@ -779,7 +803,10 @@ artist_helper.update_featured_artist = async (artist_id, feature) => {
 artist_helper.update_artist_votes = async (artist_id, no_votes) => {
   try {
     var vote = await Artist.update(
-      { _id: new ObjectId(artist_id) },
+      {
+        _id: new ObjectId(artist_id),
+        $and: [{ is_del: false }, { is_deactivate: false }],
+      },
       { $set: { no_of_votes: no_votes } }
     );
     if (vote) {
@@ -799,7 +826,10 @@ artist_helper.update_artist_votes = async (artist_id, no_votes) => {
 artist_helper.update_artist_comment = async (artist_id, no_votes) => {
   try {
     var vote = await Artist.findOneAndUpdate(
-      { _id: new ObjectId(artist_id) },
+      {
+        _id: new ObjectId(artist_id),
+        $and: [{ is_del: false }, { is_deactivate: false }],
+      },
       { no_of_comments: no_votes }
     );
     if (vote) {
@@ -839,7 +869,7 @@ artist_helper.update_track_comment = async (id, no_comment) => {
 artist_helper.get_all_artist_by_vote = async () => {
   try {
     var artist = await Artist.find(
-      {},
+      { $and: [{ is_del: false }, { is_deactivate: false }] },
       {
         first_name: 1,
         last_name: 1,
@@ -876,7 +906,7 @@ artist_helper.get_all_artist_by_vote = async () => {
 artist_helper.get_all_artist_by_likes = async () => {
   try {
     var artist = await Artist.find(
-      {},
+      { $and: [{ is_del: false }, { is_deactivate: false }] },
       {
         first_name: 1,
         last_name: 1,
@@ -912,7 +942,7 @@ artist_helper.get_all_artist_by_likes = async () => {
 artist_helper.get_all_artist_by_comment = async () => {
   try {
     var artist = await Artist.find(
-      {},
+      { $and: [{ is_del: false }, { is_deactivate: false }] },
       {
         first_name: 1,
         last_name: 1,
@@ -952,10 +982,14 @@ artist_helper.get_all_active_and_suspend_artist = async (
   sort_by = {}
 ) => {
   try {
-    var artists = await Artist.find();
+    var artists = await Artist.find({
+      $and: [{ is_del: false }, { is_deactivate: false }],
+    });
     var tot_cnt = artists.length;
-
-    var artist = await Artist.find(filter)
+    var artist = await Artist.find({
+      ...filter,
+      $and: [{ is_del: false }, { is_deactivate: false }],
+    })
       .sort(sort_by)
       .skip(start)
       .limit(length);
@@ -1001,7 +1035,10 @@ artist_helper.get_all_bank_by_artist_id = async (artist_id) => {
 artist_helper.update_artist_status = async (artist_id, status) => {
   try {
     var artist = await Artist.findOneAndUpdate(
-      { _id: new ObjectId(artist_id) },
+      {
+        _id: new ObjectId(artist_id),
+        $and: [{ is_del: false }, { is_deactivate: false }],
+      },
       { status: status }
     );
 
@@ -1022,7 +1059,7 @@ artist_helper.update_artist_status = async (artist_id, status) => {
 artist_helper.delete_artist_image = async (artist_id) => {
   try {
     var artist = await Artist.update(
-      { _id: artist_id },
+      { _id: artist_id, $and: [{ is_del: false }, { is_deactivate: false }] },
       { $unset: { image: null } }
     );
     if (artist) {
@@ -1042,7 +1079,7 @@ artist_helper.delete_artist_image = async (artist_id) => {
 artist_helper.delete_artist_cover_image = async (artist_id) => {
   try {
     var artist = await Artist.update(
-      { _id: artist_id },
+      { _id: artist_id, $and: [{ is_del: false }, { is_deactivate: false }] },
       { $unset: { cover_image: null } }
     );
     if (artist) {
@@ -1119,6 +1156,7 @@ artist_helper.get_new_uploads = async (search, filter = {}) => {
       {
         $match: {
           flag: false,
+          $and: [{ is_del: false }, { is_deactivate: false }],
         },
       },
 
@@ -1210,7 +1248,9 @@ artist_helper.update_download = async (
 artist_helper.update_artist_flag = async (artist_id, flag) => {
   try {
     var artist = await Artist.findOneAndUpdate(
-      { _id: new ObjectId(artist_id) },
+      {
+        _id: new ObjectId(artist_id),
+      },
       { flag: flag }
     );
     if (artist) {

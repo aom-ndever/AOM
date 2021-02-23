@@ -170,6 +170,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
   is_del = false;
   is_deactivate = true;
   display = false;
+  user: any;
 
   constructor(
     private myProfileService: MyProfileService,
@@ -186,6 +187,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
     private ngxModalService: BsModalService
   ) {
     console.log("profile setting component  => ");
+    this.user = JSON.parse(localStorage.getItem("user"));
     this.ngxService.start();
     this.isProfilePic = true;
     this.isCoverPic = true;
@@ -2991,11 +2993,58 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
     this.is_del = false;
     this.is_deactivate = true;
   }
+
   deactivateAccount() {
-    console.log(
-      " : this.accountDeactivate_form.value ==> ",
-      this.accountDeactivate_form.value
-    );
+    var obj = {};
+    let userType = "";
+
+    if (this.accountDeactivate_form.get("is_del").value === true) {
+      obj["is_del"] = this.accountDeactivate_form.get("is_del").value;
+    } else {
+      obj["is_deactivate"] = this.accountDeactivate_form.get(
+        "is_deactivate"
+      ).value;
+    }
+
+    if (this.user.user && this.user.user.type) {
+      userType = this.user.user.type;
+      this.myProfileService.deactiveDeleteAccountUser(obj).subscribe(
+        (res) => {
+          console.log(" : res ==> ", res);
+          if (res) {
+            console.log(" : res ==> ", res);
+            this.toastr.success(res["message"], "Success!");
+            localStorage.removeItem("user");
+            this.messageService.setupdatedUserDetail("");
+            this.deactiveModelRef.close();
+            this.router.navigate([""]);
+          }
+          // // window.location.replace('');
+        },
+        (error) => {
+          console.log(" : error ==> ", error);
+        }
+      );
+    } else {
+      userType = this.user.artist.type;
+      this.myProfileService.deactiveDeleteAccountArtist(obj).subscribe(
+        (res) => {
+          console.log(" : res ==> ", res);
+          if (res) {
+            console.log(" : res ==> ", res);
+            this.toastr.success(res["message"], "Success!");
+            localStorage.removeItem("user");
+            this.messageService.setupdatedUserDetail("");
+            this.deactiveModelRef.close();
+            this.router.navigate([""]);
+          }
+          // // window.location.replace('');
+        },
+        (error) => {
+          console.log(" : error ==> ", error);
+        }
+      );
+    }
   }
 
   changeValue(type, event) {

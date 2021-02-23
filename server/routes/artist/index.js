@@ -28,6 +28,7 @@ var mongoose = require("mongoose");
 var ObjectId = mongoose.Types.ObjectId;
 var fs = require("fs");
 const artist_message_helper = require("../../helpers/artist_message_helper");
+const Artist = require("../../models/artist");
 
 router.get("/followers_of_artist", async (req, res) => {
   user_id = req.userInfo.id;
@@ -1450,6 +1451,68 @@ router.post("/notification_count_update", async (req, res) => {
         .json({ status: 2, message: "Notification not found." });
     }
   }
+});
+
+router.post("/deactive_delete_Account", async (req, res) => {
+  try {
+    if (req.body.is_deactivate) {
+      const artistDeactivate = await Artist.updateOne(
+        { _id: ObjectId(req.userInfo.id) },
+        { $set: { is_deactivate: true } }
+      );
+      if (artistDeactivate) {
+        res.status(config.OK_STATUS).json({
+          status: 1,
+          message: "Your account deactivated successfully.",
+        });
+      } else {
+        res
+          .status(config.NOT_FOUND)
+          .json({ status: 2, message: "Your account not found." });
+      }
+    } else {
+      const artistDelete = await Artist.updateOne(
+        { _id: ObjectId(req.userInfo.id) },
+        { $set: { is_del: true } }
+      );
+      if (artistDelete) {
+        res.status(config.OK_STATUS).json({
+          status: 1,
+          message: "Your account deleted successfully.",
+        });
+      } else {
+        res
+          .status(config.NOT_FOUND)
+          .json({ status: 2, message: "Your account not found." });
+      }
+    }
+  } catch (err) {
+    res.status(config.INTERNAL_SERVER_ERROR).json({
+      status: 0,
+      message: "Error occured while deactivating or deleting account",
+      error: err,
+    });
+  }
+
+  // res.status(config.OK_STATUS).json({ status: 1, message: "Account del" });
+  // var resp = await artist_notifications_helper.notification_seen(
+  //   req.userInfo.id,
+  //   req.body
+  // );
+  // if (resp.status == 0) {
+  //   logger.error("Error occured while updating counts = ", resp);
+  //   res.status(config.INTERNAL_SERVER_ERROR).json(resp);
+  // } else {
+  //   if (resp.status == 1) {
+  //     res
+  //       .status(config.OK_STATUS)
+  //       .json({ status: 1, message: "Account del" });
+  //   } else {
+  //     res
+  //       .status(config.NOT_FOUND)
+  //       .json({ status: 2, message: "Artist not found." });
+  //   }
+  // }
 });
 
 module.exports = router;

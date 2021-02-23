@@ -20,6 +20,7 @@ var ObjectId = mongoose.Types.ObjectId;
 var fs = require("fs");
 const state_helper = require("../../helpers/state_helper");
 const artist_message_helper = require("../../helpers/artist_message_helper");
+const User = require("../../models/user");
 
 /**
  * @api {put} /user Update user profile
@@ -525,6 +526,48 @@ router.post("/notification_count_update", async (req, res) => {
         .status(config.NOT_FOUND)
         .json({ status: 2, message: "Notification not found." });
     }
+  }
+});
+
+router.post("/deactive_delete_Account", async (req, res) => {
+  try {
+    if (req.body.is_deactivate) {
+      const userDeactivate = await User.updateOne(
+        { _id: ObjectId(req.userInfo.id) },
+        { $set: { is_deactivate: true } }
+      );
+      if (userDeactivate) {
+        res.status(config.OK_STATUS).json({
+          status: 1,
+          message: "Your account deactivated successfully.",
+        });
+      } else {
+        res
+          .status(config.NOT_FOUND)
+          .json({ status: 2, message: "Your account not found." });
+      }
+    } else {
+      const userDelete = await User.updateOne(
+        { _id: ObjectId(req.userInfo.id) },
+        { $set: { is_del: true } }
+      );
+      if (userDelete) {
+        res.status(config.OK_STATUS).json({
+          status: 1,
+          message: "Your account deleted successfully.",
+        });
+      } else {
+        res
+          .status(config.NOT_FOUND)
+          .json({ status: 2, message: "Your account not found." });
+      }
+    }
+  } catch (err) {
+    res.status(config.INTERNAL_SERVER_ERROR).json({
+      status: 0,
+      message: "Error occured while deactivating or deleting account",
+      error: err,
+    });
   }
 });
 

@@ -1,50 +1,51 @@
-var express = require('express');
+var express = require("express");
 var router = express.Router();
-var config = require('../../config');
+var config = require("../../config");
 var logger = config.logger;
-var bcrypt = require('bcrypt');
-var jwt = require('jsonwebtoken');
-var async = require('async');
-var _ = require('underscore');
+var bcrypt = require("bcrypt");
+var jwt = require("jsonwebtoken");
+var async = require("async");
+var _ = require("underscore");
 
+var playlist_helper = require("../../helpers/playlist_helper");
 
-var playlist_helper = require('../../helpers/playlist_helper');
-
-var mongoose = require('mongoose');
+var mongoose = require("mongoose");
 var ObjectId = mongoose.Types.ObjectId;
-var fs = require('fs');
+var fs = require("fs");
 
-
-router.post('/add', async (req, res) => {
-
+router.post("/add", async (req, res) => {
   var schema = {
-
-    "name": {
+    name: {
       notEmpty: true,
-      errorMessage: "Name is required"
+      errorMessage: "Name is required",
     },
   };
   req.checkBody(schema);
   var errors = req.validationErrors();
   if (!errors) {
-
     var obj = {
       user_id: req.userInfo.id,
-      name: req.body.name
+      name: req.body.name,
     };
     var resp_data = await playlist_helper.insert_playlist(obj);
 
     if (resp_data.status === 0) {
-      res.status(config.INTERNAL_SERVER_ERROR).json({ "status": 0, "message": "Error occured while adding playlist", "error": resp_data.error });
+      res.status(config.INTERNAL_SERVER_ERROR).json({
+        status: 0,
+        message: "Error occured while adding playlist",
+        error: resp_data.error,
+      });
     } else if (resp_data.status === 2) {
-      res.status(config.BAD_REQUEST).json({ "status": 0, "message": "Can't add playlist" });
+      res
+        .status(config.BAD_REQUEST)
+        .json({ status: 0, message: "Can't add playlist" });
     } else {
-      res.status(config.OK_STATUS).json({ "status": 1, "message": "Playlist Created Successfully" });
+      res
+        .status(config.OK_STATUS)
+        .json({ status: 1, message: "Playlist Created Successfully" });
     }
   }
 });
-
-
 
 /**
  * @api {post} /user/playlist Playlist  Add
@@ -53,7 +54,7 @@ router.post('/add', async (req, res) => {
 
  * @apiHeader {String}  Content-Type application/json
  * @apiHeader {String}  x-access-token  unique access-key
- * 
+ *
  * @apiParam {String} name  name of playlist
  * @apiParam {String} audio Audio
  * @apiParam {String} description description of playlist
@@ -61,8 +62,6 @@ router.post('/add', async (req, res) => {
  * @apiSuccess (Success 200) {JSON} playlist details
  * @apiError (Error 4xx) {String} message Validation or error message.
  */
-
-
 
 // router.post('/', function (req, res) {
 //   var schema = {
@@ -165,7 +164,7 @@ router.post('/add', async (req, res) => {
 /**
  * @api {get} /user/playlist  Playlist - Get by id
  * @apiName Playlist - Get by id
-  * @apiGroup User
+ * @apiGroup User
  * @apiHeader {String}  x-access-token unique access-key
  *
  * @apiSuccess (Success 200) {Array} playlist  of playlist document
@@ -173,7 +172,11 @@ router.post('/add', async (req, res) => {
  */
 router.post("/", async (req, res) => {
   user_id = req.userInfo.id;
-  var resp_data = await playlist_helper.get_playlist_by_user_id(user_id, req.body.start, req.body.length);
+  var resp_data = await playlist_helper.get_playlist_by_user_id(
+    user_id,
+    req.body.start,
+    req.body.length
+  );
   if (resp_data.status == 0) {
     logger.error("Error occured while fetching Track = ", resp_data);
     res.status(config.INTERNAL_SERVER_ERROR).json(resp_data);
@@ -185,22 +188,25 @@ router.post("/", async (req, res) => {
 
 router.post("/:playlist_id", async (req, res) => {
   user_id = req.userInfo.id;
-
-  var resp_data = await playlist_helper.get_playlists(user_id, req.params.playlist_id, req.body.start, req.body.length);
+  var resp_data = await playlist_helper.get_playlists(
+    user_id,
+    req.params.playlist_id,
+    req.body.start,
+    req.body.length
+  );
 
   if (resp_data.status == 0) {
     logger.error("Error occured while fetching Track = ", resp_data);
     res.status(config.INTERNAL_SERVER_ERROR).json(resp_data);
   } else {
-
     logger.trace("Artist got successfully = ", resp_data);
     res.status(config.OK_STATUS).json(resp_data);
   }
 });
 
 /**
- * @api {delete} /user/playlist/:playlist_id Delete Playlist  
- * @apiName delete_playlist 
+ * @api {delete} /user/playlist/:playlist_id Delete Playlist
+ * @apiName delete_playlist
  * @apiGroup User
  *
  * @apiHeader {String}  x-access-token unique access-key
@@ -208,60 +214,71 @@ router.post("/:playlist_id", async (req, res) => {
  * @apiSuccess (Success 200) {String} success message
  * @apiError (Error 4xx) {String} message Validation or error message.
  */
-router.put('/track', async (req, res) => {
+router.put("/track", async (req, res) => {
   user_id = req.userInfo.id;
   playlist_id = req.body.playlist_id;
   track_id = req.body.track_id;
 
-
-  var resp_data = await playlist_helper.get_playlists_for_delete(user_id, playlist_id);
+  var resp_data = await playlist_helper.get_playlists_for_delete(
+    user_id,
+    playlist_id
+  );
 
   var playlistIds = resp_data.playlist.track_id;
   var arry = [];
-  playlistIds.forEach(id => {
+  playlistIds.forEach((id) => {
     if (id.toString() != track_id.toString()) {
       arry.push(id);
     }
   });
 
-  var del_resp = await playlist_helper.delete_track_playlist(user_id, playlist_id, arry);
+  var del_resp = await playlist_helper.delete_track_playlist(
+    user_id,
+    playlist_id,
+    arry
+  );
   if (del_resp.status === 0) {
-    res.status(config.INTERNAL_SERVER_ERROR).json({ "status": 0, "message": "Error occured while deleting playlist", "error": del_resp.error });
+    res.status(config.INTERNAL_SERVER_ERROR).json({
+      status: 0,
+      message: "Error occured while deleting playlist",
+      error: del_resp.error,
+    });
   } else if (del_resp.status === 2) {
-    res.status(config.BAD_REQUEST).json({ "status": 0, "message": "Can't remove playlist" });
+    res
+      .status(config.BAD_REQUEST)
+      .json({ status: 0, message: "Can't remove playlist" });
   } else {
-    res.status(config.OK_STATUS).json({ "status": 1, "message": "Track has been deleted" });
+    res
+      .status(config.OK_STATUS)
+      .json({ status: 1, message: "Track has been deleted" });
   }
 });
 
 /**
- * @api {put} /user/playlist/:playlist_id Update playlist 
- * @apiName Update playlist 
+ * @api {put} /user/playlist/:playlist_id Update playlist
+ * @apiName Update playlist
  * @apiGroup User
- * 
+ *
  * @apiHeader {String}  Content-Type application/json
  * @apiHeader {String}  x-access-token  unique access-key
- * 
+ *
  * @apiParam {String} name Playlist Name of playlist
  * @apiParam {String} description Description of playlist
  * @apiParam {String} audio Audio
 
- * 
+ *
  * @apiSuccess (Success 200) {JSON} user User details
  * @apiError (Error 4xx) {String} message Validation or error message.
  */
-router.put('/:playlist_id', function (req, res) {
+router.put("/:playlist_id", function (req, res) {
   user_id = req.userInfo.id;
   playlist_id = req.params.playlist_id;
-  var schema = {
-
-  };
+  var schema = {};
   req.checkBody(schema);
   var errors = req.validationErrors();
   if (!errors) {
     var obj = {
       user_id: req.userInfo.id,
-
     };
     if (req.body.name) {
       obj.name = req.body.name;
@@ -276,13 +293,13 @@ router.put('/:playlist_id', function (req, res) {
             // var files = req.files['images'];
             var files = [].concat(req.files.audio);
             var dir = "./uploads/playlist";
-            var mimetype = ['audio/aac', 'audio/mp3', 'audio/mpeg'];
+            var mimetype = ["audio/aac", "audio/mp3", "audio/mpeg"];
 
             // assuming openFiles is an array of file names
             async.eachSeries(
               files,
               function (file, loop_callback) {
-                var mimetype = ['audio/aac', 'audio/mp3', 'audio/mpeg'];
+                var mimetype = ["audio/aac", "audio/mp3", "audio/mpeg"];
                 if (mimetype.indexOf(file.mimetype) != -1) {
                   if (!fs.existsSync(dir)) {
                     fs.mkdirSync(dir);
@@ -295,7 +312,7 @@ router.put('/:playlist_id', function (req, res) {
                       logger.error("There was an issue in uploading audio");
                       loop_callback({
                         status: config.MEDIA_ERROR_STATUS,
-                        err: "There was an issue in uploading audio"
+                        err: "There was an issue in uploading audio",
                       });
                     } else {
                       logger.trace(
@@ -311,7 +328,7 @@ router.put('/:playlist_id', function (req, res) {
                   logger.error(" format is invalid");
                   loop_callback({
                     status: config.VALIDATION_FAILURE_STATUS,
-                    err: " format is invalid"
+                    err: " format is invalid",
                   });
                 }
               },
@@ -330,33 +347,43 @@ router.put('/:playlist_id', function (req, res) {
             );
             callback(null, []);
           }
-        }
+        },
       ],
       async (err, file_path_array) => {
         //End image upload
         obj.audio = file_path_array;
-        let data = await playlist_helper.update_playlist(user_id, playlist_id, obj);
+        let data = await playlist_helper.update_playlist(
+          user_id,
+          playlist_id,
+          obj
+        );
         if (data.status === 0) {
           return res.status(config.BAD_REQUEST).json({ data });
         } else {
-          return res.status(config.OK_STATUS).json({ "message": "Playlist updated successfully" });
+          return res
+            .status(config.OK_STATUS)
+            .json({ message: "Playlist updated successfully" });
         }
       }
     );
-
   }
-
 });
 
 router.put("/add_track/:playlist_id", async (req, res) => {
   user_id = req.userInfo.id;
   var obj = {
-
-    track_id: req.body.track_id
+    track_id: req.body.track_id,
   };
-  var playlist_track = await playlist_helper.get_playlists_for_push(user_id, req.params.playlist_id)
-  if ((playlist_track.playlist.track_id).length == 0) {
-    var resp_data = await playlist_helper.update_playlist(user_id, req.params.playlist_id, obj);
+  var playlist_track = await playlist_helper.get_playlists_for_push(
+    user_id,
+    req.params.playlist_id
+  );
+  if (playlist_track.playlist.track_id.length == 0) {
+    var resp_data = await playlist_helper.update_playlist(
+      user_id,
+      req.params.playlist_id,
+      obj
+    );
     if (resp_data.status == 0) {
       logger.error("Error occured while updating = ", resp_data);
       res.status(config.INTERNAL_SERVER_ERROR).json(resp_data);
@@ -366,26 +393,36 @@ router.put("/add_track/:playlist_id", async (req, res) => {
     }
   } else {
     var track = playlist_track.playlist.track_id;
-    var tmp = _.map(req.body.track_id, function (id) { return ObjectId(id) });
+    var tmp = _.map(req.body.track_id, function (id) {
+      return ObjectId(id);
+    });
     var arry = _.union(track, tmp);
-    var resp_data = await playlist_helper.update_playlists(user_id, req.params.playlist_id, arry);
+    var resp_data = await playlist_helper.update_playlists(
+      user_id,
+      req.params.playlist_id,
+      arry
+    );
     logger.trace("Updated successfully  = ", resp_data);
     res.status(config.OK_STATUS).json(resp_data);
   }
-
-
 });
 
 router.put("/add_track/:playlist_id", async (req, res) => {
   user_id = req.userInfo.id;
 
   var obj = {
-
-    track_id: req.body.track_id
+    track_id: req.body.track_id,
   };
-  var playlist_track = await playlist_helper.get_playlists_for_push(user_id, req.params.playlist_id)
-  if ((playlist_track.playlist.track_id).length == 0) {
-    var resp_data = await playlist_helper.update_playlist(user_id, req.params.playlist_id, obj);
+  var playlist_track = await playlist_helper.get_playlists_for_push(
+    user_id,
+    req.params.playlist_id
+  );
+  if (playlist_track.playlist.track_id.length == 0) {
+    var resp_data = await playlist_helper.update_playlist(
+      user_id,
+      req.params.playlist_id,
+      obj
+    );
     if (resp_data.status == 0) {
       logger.error("Error occured while updating = ", resp_data);
       res.status(config.INTERNAL_SERVER_ERROR).json(resp_data);
@@ -393,35 +430,41 @@ router.put("/add_track/:playlist_id", async (req, res) => {
       logger.trace("Updated successfully  = ", resp_data);
       res.status(config.OK_STATUS).json(resp_data);
     }
-  }
-  else {
+  } else {
     var track = playlist_track.playlist.track_id;
-    var tmp = _.map(req.body.track_id, function (id) { return ObjectId(id) });
+    var tmp = _.map(req.body.track_id, function (id) {
+      return ObjectId(id);
+    });
     var arry = _.union(track, tmp);
-    var resp_data = await playlist_helper.update_playlists(artist_id, req.params.playlist_id, arry);
+    var resp_data = await playlist_helper.update_playlists(
+      artist_id,
+      req.params.playlist_id,
+      arry
+    );
     logger.trace("Updated successfully  = ", resp_data);
     res.status(config.OK_STATUS).json(resp_data);
   }
-
 });
 
-
-
-
-
-router.delete('/:playlist_id', async (req, res) => {
+router.delete("/:playlist_id", async (req, res) => {
   user_id = req.userInfo.id;
   playlist_id = req.params.playlist_id;
   var del_resp = await playlist_helper.delete_playlist(user_id, playlist_id);
   if (del_resp.status === 0) {
-    res.status(config.INTERNAL_SERVER_ERROR).json({ "status": 0, "message": "Error occured while deleting playlist", "error": del_resp.error });
+    res.status(config.INTERNAL_SERVER_ERROR).json({
+      status: 0,
+      message: "Error occured while deleting playlist",
+      error: del_resp.error,
+    });
   } else if (del_resp.status === 2) {
-    res.status(config.BAD_REQUEST).json({ "status": 0, "message": "Can't remove playlist" });
+    res
+      .status(config.BAD_REQUEST)
+      .json({ status: 0, message: "Can't remove playlist" });
   } else {
-    res.status(config.OK_STATUS).json({ "status": 1, "message": "Playlist has been removed" });
+    res
+      .status(config.OK_STATUS)
+      .json({ status: 1, message: "Playlist has been removed" });
   }
 });
 
-
 module.exports = router;
-

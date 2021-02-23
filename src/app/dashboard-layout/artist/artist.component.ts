@@ -1,30 +1,30 @@
-import { Component, OnInit } from '@angular/core';
-import { ArtistService } from './artist.service';
-import { ToastrService } from 'ngx-toastr';
-import { environment } from '../../../../src/environments/environment';
-import { Title } from '@angular/platform-browser';
-import { ActivatedRoute } from '@angular/router';
-import { NgxUiLoaderService } from 'ngx-ui-loader';
+import { Component, OnInit } from "@angular/core";
+import { ArtistService } from "./artist.service";
+import { ToastrService } from "ngx-toastr";
+import { environment } from "../../../../src/environments/environment";
+import { Title } from "@angular/platform-browser";
+import { ActivatedRoute } from "@angular/router";
+import { NgxUiLoaderService } from "ngx-ui-loader";
 
 @Component({
-  selector: 'app-artist',
-  templateUrl: './artist.component.html',
-  styleUrls: []
+  selector: "app-artist",
+  templateUrl: "./artist.component.html",
+  styleUrls: [],
 })
 export class ArtistComponent implements OnInit {
   artistdata: any = {
-    artist: []
+    artist: [],
   };
   show_filter: any = false;
   toggSearch = false;
   show_loader = false;
   user: any = {};
-  search_str: any = '';
+  search_str: any = "";
   adv_filter: any = {};
   region_filter: any = [];
   artistv1: any = {
     chart_toppers: [],
-    rising_stars: []
+    rising_stars: [],
   };
   music_list: any = [];
   artist_img_url: any = environment.API_URL + environment.ARTIST_IMG;
@@ -42,9 +42,9 @@ export class ArtistComponent implements OnInit {
     private ngxService: NgxUiLoaderService
   ) {
     window.scroll(0, 0);
-    this.titleService.setTitle(this.route.snapshot.data['title']);
+    this.titleService.setTitle(this.route.snapshot.data["title"]);
     this.getAllState();
-    this.user = JSON.parse(localStorage.getItem('user'));
+    this.user = JSON.parse(localStorage.getItem("user"));
   }
 
   ngOnInit() {
@@ -60,7 +60,7 @@ export class ArtistComponent implements OnInit {
   // Get all whatsnew data
   getAllData() {
     const data = {};
-    this.artistService.getArtistData(data).subscribe(response => {
+    this.artistService.getArtistData(data).subscribe((response) => {
       this.artistdata = response;
       this.getAllFollower();
     });
@@ -68,7 +68,7 @@ export class ArtistComponent implements OnInit {
   // Get all artistv1 data
   getAllArtistV1Data(data) {
     this.show_loader = true;
-    this.artistService.getAllArtistv1(data).subscribe(response => {
+    this.artistService.getAllArtistv1(data).subscribe((response) => {
       this.ngxService.stop();
       this.artistv1 = response;
       this.show_filter = false;
@@ -95,42 +95,53 @@ export class ArtistComponent implements OnInit {
   }
   // Follow artist
   followArtist(id: any, index: any) {
-    const data = JSON.parse(localStorage.getItem('user'));
+    const data = JSON.parse(localStorage.getItem("user"));
     if (data && data.user) {
       const artist_data = {
-        artist_id: id
+        artist_id: id,
       };
       // this.artistdata['artist'][index]['is_followed'] = true;
-      this.artistService.followArtist(artist_data).subscribe(response => {
-        this.toastr.success(response['message'], 'Success!');
-        this.getAllFollower();
-        this.getMyFollower();
-      }, error => {
-        // this.artistdata['artist'][index]['is_followed'] = false;
-        this.toastr.error(error['error'].message, 'Error!');
-      });
+      this.artistService.followArtist(artist_data).subscribe(
+        (response) => {
+          this.toastr.success(response["message"], "Success!");
+          this.getAllFollower();
+          this.getMyFollower();
+        },
+        (error) => {
+          // this.artistdata['artist'][index]['is_followed'] = false;
+          this.toastr.error(error["error"].message, "Error!");
+        }
+      );
     } else {
-      this.toastr.info('Please signin as listener to follow the artist.', 'Information!');
+      this.toastr.info(
+        "Please signin as listener to follow the artist.",
+        "Information!"
+      );
     }
   }
   // get All follower
   getAllFollower() {
-    const user = JSON.parse(localStorage.getItem('user'));
-    if (user && user['user']) {
-      this.artistService.getFollower().subscribe(response => {
-
-        this.artistv1['rising_stars'].forEach((ele) => {
-          if (response['artist'] && response['artist'].indexOf(ele['_id']) !== -1) {
-            ele['is_followed'] = true;
+    const user = JSON.parse(localStorage.getItem("user"));
+    if (user && user["user"]) {
+      this.artistService.getFollower().subscribe((response) => {
+        this.artistv1["rising_stars"].forEach((ele) => {
+          if (
+            response["artist"] &&
+            response["artist"].indexOf(ele["_id"]) !== -1
+          ) {
+            ele["is_followed"] = true;
           } else {
-            ele['is_followed'] = false;
+            ele["is_followed"] = false;
           }
         });
-        this.artistv1['chart_toppers'].forEach((ele) => {
-          if (response['artist'] && response['artist'].indexOf(ele['artist']['_id']) !== -1) {
-            ele['artist']['is_followed'] = true;
+        this.artistv1["chart_toppers"].forEach((ele) => {
+          if (
+            response["artist"] &&
+            response["artist"].indexOf(ele["artist"]["_id"]) !== -1
+          ) {
+            ele["artist"]["is_followed"] = true;
           } else {
-            ele['artist']['is_followed'] = false;
+            ele["artist"]["is_followed"] = false;
           }
         });
       });
@@ -138,16 +149,17 @@ export class ArtistComponent implements OnInit {
   }
   // Get all music list
   getAllMusicType() {
-    this.artistService.getAllMusicType().subscribe(response => {
-      this.music_list = response['music'];
+    this.artistService.getAllMusicType().subscribe((response) => {
+      this.music_list = response["music"];
     });
   }
   // Get my follower
   getMyFollower() {
-    const user = JSON.parse(localStorage.getItem('user'));
-    if (user && user['user']) {
+    const user = JSON.parse(localStorage.getItem("user"));
+    if (user && user["user"]) {
       this.artistService.getMyFollower().subscribe((response) => {
-        this.my_follower_list = response['user'];
+        console.log(' : response["user"] ==> ', response["user"]);
+        this.my_follower_list = response["user"];
       });
     }
   }
@@ -158,7 +170,7 @@ export class ArtistComponent implements OnInit {
       const data = {
         search: this.search_str.trim(),
         start: 0,
-        length: this.length
+        length: this.length,
       };
       this.getAllArtistV1Data(data);
     }
@@ -178,16 +190,16 @@ export class ArtistComponent implements OnInit {
     const data = {
       start: 0,
       length: this.length,
-      'filter': []
+      filter: [],
     };
-    if (this.adv_filter.music_type && this.adv_filter.music_type !== '') {
-      data['music_type'] = this.adv_filter.music_type;
+    if (this.adv_filter.music_type && this.adv_filter.music_type !== "") {
+      data["music_type"] = this.adv_filter.music_type;
       // data['filter'].push({
       //   'field' : 'music_type', value :  this.adv_filter.music_type
       // });
     }
     if (this.region_filter.length > 0) {
-      data['state'] = this.region_filter;
+      data["state"] = this.region_filter;
       // data['filter'].push({
       //   'field' : 'state', value :  this.region_filter
       // });
@@ -200,8 +212,7 @@ export class ArtistComponent implements OnInit {
   // get all state
   getAllState() {
     this.artistService.getAllState().subscribe((response) => {
-      this.state_list = response['state'];
-
+      this.state_list = response["state"];
     });
   }
   toggleSearch() {

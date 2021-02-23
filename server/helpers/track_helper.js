@@ -411,7 +411,9 @@ track_helper.get_all_track_by_id = async (artist_id) => {
 track_helper.update_artist_for_track = async (id, no_track) => {
   try {
     var contest = await Artist.findOneAndUpdate(
-      { _id: new ObjectId(id) },
+      {
+        _id: new ObjectId(id),
+      },
       { no_of_tracks: no_track }
     );
     if (contest) {
@@ -431,7 +433,9 @@ track_helper.update_artist_for_track = async (id, no_track) => {
 track_helper.update_artist_for_likes = async (id, no_like) => {
   try {
     var contest = await Artist.findOneAndUpdate(
-      { _id: new ObjectId(id) },
+      {
+        _id: new ObjectId(id),
+      },
       { no_of_likes: no_like }
     );
     if (contest) {
@@ -470,7 +474,9 @@ track_helper.update_track_for_likes = async (id, no_like) => {
 track_helper.update_artist_for_votes = async (id, no_vote) => {
   try {
     var contest = await Artist.findOneAndUpdate(
-      { _id: new ObjectId(id) },
+      {
+        _id: new ObjectId(id),
+      },
       { no_of_votes: no_vote }
     );
     if (contest) {
@@ -490,7 +496,9 @@ track_helper.update_artist_for_votes = async (id, no_vote) => {
 track_helper.update_artist_for_comments = async (id, no_comment) => {
   try {
     var contest = await Artist.findOneAndUpdate(
-      { _id: new ObjectId(id) },
+      {
+        _id: new ObjectId(id),
+      },
       { no_of_comments: no_comment }
     );
     if (contest) {
@@ -510,7 +518,9 @@ track_helper.update_artist_for_comments = async (id, no_comment) => {
 track_helper.update_artist_for_followers = async (id, no_follow) => {
   try {
     var contest = await Artist.findOneAndUpdate(
-      { _id: new ObjectId(id) },
+      {
+        _id: new ObjectId(id),
+      },
       { no_of_followers: no_follow }
     );
     if (contest) {
@@ -878,6 +888,10 @@ track_helper.get_new_uploads = async (day, start, length) => {
     {
       $match: {
         "artist_id.flag": false,
+        $and: [
+          { "artist_id.is_del": false },
+          { "artist_id.is_deactivate": false },
+        ],
       },
     },
     {
@@ -938,6 +952,10 @@ track_helper.get_track_main = async (filter, filters) => {
     {
       $match: {
         "artist_id.flag": false,
+        $and: [
+          { "artist_id.is_del": false },
+          { "artist_id.is_deactivate": false },
+        ],
       },
     },
     {
