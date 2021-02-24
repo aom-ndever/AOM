@@ -538,7 +538,33 @@ track_helper.update_artist_for_followers = async (id, no_follow) => {
 };
 track_helper.get_all_track_for_playlist = async (filter = {}) => {
   try {
-    var track = await Track.find(filter);
+    console.log(" : filter ==> ", filter);
+    var aggregate = [
+      {
+        $match: {
+          ...filter,
+        },
+      },
+      {
+        $lookup: {
+          from: "artist",
+          localField: "artist_id",
+          foreignField: "_id",
+          as: "artist",
+        },
+      },
+      {
+        $unwind: "$artist",
+      },
+      {
+        $match: {
+          $and: [{ "artist.is_del": false }, { "artist.is_deactivate": false }],
+        },
+      },
+    ];
+
+    var track = await Track.aggregate(aggregate);
+    // var track = await Track.find(filter);
     if (track) {
       return { status: 1, message: "track found", track: track };
     } else {

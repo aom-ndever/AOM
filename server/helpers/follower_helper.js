@@ -194,7 +194,18 @@ follower_helper.get_all_followers = async (id) => {
       .populate({ path: " artist_id", populate: { path: "music_type" } });
 
     if (artist) {
-      return { status: 1, message: "artist details found", artist: artist };
+      let data = [];
+      await artist.map((result) => {
+        if (
+          result &&
+          result.user_id.is_del === false &&
+          result &&
+          result.user_id.is_deactivate === false
+        ) {
+          data.push(result);
+        }
+      });
+      return { status: 1, message: "artist details found", artist: data };
     } else {
       return { status: 2, message: "artist not found" };
     }
