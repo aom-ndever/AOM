@@ -7,6 +7,7 @@ var mongoose = require("mongoose");
 var ObjectId = mongoose.Types.ObjectId;
 var moment = require("moment");
 var _ = require("underscore");
+const { exec } = require("child_process");
 
 var logger = config.logger;
 var bcrypt = require("bcrypt");
@@ -2846,6 +2847,35 @@ router.post("/get_contest", async (req, res) => {
     res.status(config.OK_STATUS).json({ status: 1, contest: contest });
   } else {
     res.status(config.INTERNAL_SERVER_ERROR).json(contest);
+  }
+});
+
+router.post("/check_copyright_file", async (req, res) => {
+  try {
+    console.log(" : req.body ==> ", req.body);
+    // identify -c /var/www/html/AOM/server/uploads/AudibleMagicToolkit_38.11b_rn3_linux64/bin/AomLR_v38.config -i ${req.body.audio_file} -e ${req.body.artist_id}
+    exec(
+      `cd uploads/AudibleMagicToolkit_38.11b_rn3_linux64/bin/ && identify -c AomLR_v38.config -i ${req.body.audio_file} -e ${req.body.artist_id}`,
+      (error, stdout, stderr) => {
+        if (error) {
+          console.log(`error: ${error.message}`);
+          res
+            .status(config.INTERNAL_SERVER_ERROR)
+            .json({ status: 0, error: error });
+          return;
+        } else if (stderr) {
+          res
+            .status(config.INTERNAL_SERVER_ERROR)
+            .json({ status: 0, error: stderr });
+          return;
+        } else {
+          console.log(`stdout: ${stdout}`);
+          res.status(config.OK_STATUS).json({ status: 1, result: stdout });
+        }
+      }
+    );
+  } catch (error) {
+    console.log(" : error ==> ", error);
   }
 });
 

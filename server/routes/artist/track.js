@@ -98,6 +98,18 @@ router.post("/", async (req, res) => {
                 logger.trace("Avatar image has uploaded for user");
               }
             });
+            file.mv(
+              "./uploads/AudibleMagicToolkit_38.11b_rn3_linux64/bin/" +
+                "/" +
+                filename,
+              async (err) => {
+                if (err) {
+                  console.log(" : err ==> ", err);
+                } else {
+                  logger.trace("audio has uploaded");
+                }
+              }
+            );
           } else {
             callback({
               status: config.MEDIA_ERROR_STATUS,
