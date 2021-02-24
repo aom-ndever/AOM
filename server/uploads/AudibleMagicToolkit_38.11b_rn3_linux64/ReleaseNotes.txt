@@ -1,0 +1,444 @@
+﻿Audible Magic Corp.
+
+Contacts: helpdesk@audiblemagic.com
+          1-408-399-6405
+
+Release Notes for the Audible Magic Toolkit (formerly named OEM SDK)
+24 June 2019
+
+TO ALL TOOLKIT USERS
+----------------
+
+1. Please read the release notes below for all versions more recent
+than the one you have been using until now. The mentioned features and
+bug fixes usually apply to all supported platforms (Linux, Windows,
+macOS), even if the release in question was issued on only one or two.
+
+2. If you would like to override the use of any of the 3rd party
+libraries or executables (e.g., libcurl, ffmpeg, ffprobe) that are
+packaged with the Audible Magic Toolkit release, and you have questions
+about how to do so correctly on your platform, please send an email
+with that request to helpdesk@audiblemagic.com.  Audible Magic's
+Client Services department will then contact you and provide the
+necessary details.
+
+ 
+Bug Fixes and Features Implemented in this Release, Version 38.11b
+(for Linux, Windows, and macOS)
+-----------------------------------------------------------------
+
+- This is the first general release for all customers since 31.0f.
+
+- New config files are required for this version. If you haven't already 
+been given a version 38 config file, please contact helpdesk@audiblemagic.com.
+
+- A number of bugs were fixed in video signature identification that
+could produce false negatives in ID results.
+
+- An error is now returned for video lookups if the video file is too short.
+
+- The JSON now includes the unknownAssetID for local lookups, not only
+for remote lookups.
+
+
+Bug Fixes and Features Implemented in Version 37.0 (for Linux and Windows)
+-----------------------------------------------------------------
+
+- New config files are required for this version. If you haven't already 
+been given a version 37 config file, please contact helpdesk@audiblemagic.com.
+
+- A bug was fixed in video signatures that could produce false negatives
+in ID results.
+
+
+Bug Fixes and Features Implemented in Version 36.1b (for CentOS)
+-----------------------------------------------------------------
+
+- New config files are required for this version. If you haven't already 
+been given a version 36 config file, please contact helpdesk@audiblemagic.com.
+
+- This was the first release to be called "Toolkit." The new name
+reflects the fact that it's not a software development kit (SDK), in
+that no header files are included, and customers instead run prebuilt
+command-line programs.
+
+- The new features of the previous release ("Cue ID") are included.
+
+- New documentation is included (AMToolkit_Users_Guide.pdf).
+
+- identifyMediaFile was renamed to "identify" and has updated
+functionality, as noted below.
+
+- The old generateRequest and postRequest programs are superseded by a
+new program called analyze. Analyze produces a binary output file,
+which can be fed to identify, which generates and posts a corresponding
+ID request.
+
+- identify can read either a media file (as before) or the output of
+the new analyze program.
+ 
+- identify always emits JSON, unless there is an error that prevents
+execution (such as missing libraries), in which case suitable error
+messages are displayed).
+
+- When an error is encountered, the messages to the console are no
+longer cluttered with extra output such as patent information and the
+usage instructions. If the syntax was wrong, the output says: 
+'Type "./identify -?" to see instructions for correct usage.'
+
+- JSON is written to stdout unless the -o option is provided to write
+to a file.
+
+- The JSON now includes a statusDescription field, containing a textual
+interpretation of the number in the statusCode field.
+
+
+Bug Fixes and Features Implemented in Version 34.0e (for Linux)
+-----------------------------------------------------------------
+
+- New config files are required for this version. If you haven't already 
+been given a version 34 config file, please contact helpdesk@audiblemagic.com.
+
+- This release is called a "Cue ID" release. The Cue ID feature is
+turned on by the configuration file. When an ID request results in a
+match, Cue ID can extend the search forward and backward in the
+unknown media file to find where the matching material actually begins
+and ends. Cue ID also allows hopping through a media file and sending
+ID requests at each new location, all from a single invocation of
+identify.
+
+- The release package no longer includes header files or programming
+examples.  Customers use the prebuilt command-line program
+identifyMediaFile.
+
+- New documentation is included (AMCueID_Users_Guide.pdf).
+
+- identifyMediaFile has new options (-H and -P) that allow ID requests
+to be sent via Thrift to a customer's server that does the actual HTTP
+posting.
+
+- The generateRequest and postRequest programs are no longer included.
+
+- The -e (assetID) flag for identifyMediaFile is now required.
+
+- The -r flag for local lookup can be repeated multiple times.
+
+
+Bug Fixes and Features Implemented in Version 32.0 (for Linux and macOS)
+-----------------------------------------------------------------
+
+- New config files are required for this version. If you haven't already 
+been given a version 32 config file, please contact helpdesk@audiblemagic.com.
+
+- This is the first release to support "cover signatures." Cover
+signatures permit the identification of cover songs (recordings that
+might not themselves be registered in Audible Magic's database, but
+whose music matches a registered composition, typically performed by a
+different artist).  To identify cover songs, you will need a configuration 
+file from Audible Magic that turns on this feature.
+
+- The SDK documentation is now provided separately by Audible Magic’s
+Client Services department. The file API_Users_Guide.pdf is no longer
+included in the SDK release package.
+
+- A bug has been fixed in the listenToSamples example program. It used
+to crash when no local reference signature was specified but the
+configuration file specified local lookup. A meaningful error message
+is now given.
+
+
+Bug Fixes and Features Implemented in Version 31.0f (for Windows)
+-----------------------------------------------------------------
+The listenToSamples executable is now built by examples-VS2010.sln.
+(The source code and project files were already included but not built 
+by the solution.)
+
+
+Bug Fixes and Features Implemented in Version 31.0e (for Linux)
+-----------------------------------------------------------------
+
+- No new features or bug fixes per se. This release was built using
+the same code base as 31.0d, but it was built on CentOS 7.4, whereas
+previous Linux releases were built on Ubuntu. 31.0d did not support
+Red Hat Enterprise Linux or CentOS, because it was built with too new
+a C library (glibc 2.18). 31.0e was built with glibc 2.17, which is
+available on RHEL/CentOS 7.
+
+
+Bug Fixes and Features Implemented in Version 31.0d
+-----------------------------------------------------------------
+
+- New config files are required for this version, 
+	Please contact helpdesk@audiblemagic.com to get a proper version 20 config file
+	
+- Mobile platforms (Android and iOS) are now supporting the new protocol buffer ID 
+request and response format
+
+- We have updated windows and linux releases to use libcurl 7.56.1 and openssl 1.1.0f.  
+	We include these libraries with our packaging. You cannot use older 
+	versions of openssl with this release of our SDK.  Newer versions should work, 
+	but cannot be guaranteed to work. The macOS provides its own implementation of 
+	ssl, so no openssl libs are shipped with that version.
+
+- For Linux we've included gnutls and gcrypt shared libraries required by the cURL 
+	library we distribute in the lib directory of the release package.
+	
+(Note that release candidates 31.0, 31.0a, 31.0b, and 31.0c were never distributed)
+
+
+Bug Fixes and Features Implemented in Version 30.0h
+-----------------------------------------------------------------
+- identifyMediaFile takes two new optional parameters, for customers
+  who need to send ID requests via a proxy:
+
+     -p proxyURL (equivalent to curl's -x flag. The URL can end with a
+        colon followed by a port number.
+     -u userName:password (equivalent to curl's -U flag. libcurl will
+        base64-encode the argument and put the result into a
+        Proxy-Authorization HTTP header.)
+      (-p and -u go hand in hand. If either -p or -u is supplied, the
+      other must also be supplied.)
+
+- Many cleanups and minor enhancements or bug fixes in examples/c_c++/.
+
+- identifyNow did not get matches when the configuration specified a
+  Duration greater than 25 seconds. The limit has been increased to 40
+  seconds.
+
+- identifyNow reported only "Match found." when it got a match. Now
+  it gives more complete info, including the timing of the match.
+
+- Removed unneeded "include <curl.h>" from example programs, which was
+  causing build errors for some customers.
+ 
+- The advanced programming example listenToSamples was changed so that
+  it no longer uses the obsolete continuous lookup thread.
+
+- Fixed bug where local lookups didn't fill in the status code.
+
+- Added JSON output to the results of local lookups.
+
+- Fixed memory leaks in the MFCBR library.
+
+
+Bug Fixes and Features Implemented in Version 30.0f (for Linux, Windows, and macOS)
+-----------------------------------------------------------------
+
+- ID requests and ID responses are now transmitted in a binary form
+  instead of as XML. This cuts the network bandwidth for remote
+  lookups approximately in half.
+
+- As a result, the API for processing ID responses has completely
+  changed; see the API User's Guide and MF_Media_api.h for details.
+
+- The identifyFile command-line program has been replaced by
+  identifyMediaFile, which has similar functionality but uses the new
+  API.
+
+- A JSON representation of the binary ID response has been added to
+  identifyMediaFile and postRequest, and to corresponding API
+  functions.
+
+- generateRequest accepts new parameters (and equivalent ones are
+  available in identifyMediaFile):
+    -U URL (public URL of content to be identified, such as on a social
+      media site)
+    -T title (title of the content to be identified, such as might be
+      displayed at that URL)
+    -O otherText (descriptive text about the content, such as might be
+      displayed at that URL)
+  These parameters specify caller-supplied “metadata.” In the future,
+  Audible Magic may use these fields for deeper inspection techniques.
+  Corresponding arguments have been added to the API functions
+  MFMediaID_GenerateRequest() and MFMediaID_IdentifyFile().
+
+- The SDK now supports video signatures (fingerprints of visual data
+  in video files), with or without an accompanying fingerprint of the
+  audio data in the video file.  This feature is currently available
+  only for remote lookups. Please contact Audible Magic if interested
+  in this feature.
+
+- The API User's Guide has been significantly changed, both in
+  overview material and to reflect API changes.
+
+- The continuousLookup example program, and the callback-based API it
+  illustrated, have been removed.  Customers who used that API should
+  instead call MFMedia_IdentifyNow() in a loop, as illustrated by the
+  new -C flag in the identifyNow example program.
+
+- Because it is for advanced use only, the listenToSamples
+  command-line program has been removed from the SDK package, though
+  its functionality is still available via the API. Customers who need
+  listenToSamples may request it from Support.
+
+- API changes (see MF_MediaID_api.h and the API User’s Guide for
+  details):
+
+  New typedefs:
+  MFResponseRule, MFResponseContentCategory, MFResponseMediaType,
+  MFLegalTextType.
+
+  Obsolete typedefs:
+  MFResponseStatus, MFMediaIDCallback.
+
+  New functions:
+
+  MFMediaIDRequest_GetBufferSize, MFMediaIDRequest_GetAsBuffer,
+  MFMediaIDRequest_CreateUsingBuffer,
+  MFMediaIDResponse_GetJSONBufferSize, MFMediaIDResponse_GetAsJSON,
+  MFMediaIDResponse_GetNumberOfMatches,
+  MFMediaIDResponse_GetMatchRule,
+  MFMediaIDResponse_GetMatchContentCategory,
+  MFMediaIdResponse_GetMatchMediaType,
+  MFMediaIDResponse_GetMatchTimes, MFMediaIDResponse_GetMatchTitle,
+  MFMediaIDResponse_GetNumberOfMetadataKeys,
+  MFMediaIDResponse_GetMetadataKeyValuePair,
+  MFMediaIDResponse_GetMetadataValueLengthForKey,
+  MFMediaIDResponse_GetMetadataValueForKey,
+  MFMediaIDResponse_GetUnknownAssetID, MFMediaIDResponse_GetAmItemID,
+  MFMediaIDResponse_GetVendorAssetID, MFMediaIDResponse_GetBufferSize,
+  MFMediaIDResponse_GetAsBuffer, MFMediaIDResponse_CreateUsingBuffer,
+  MFSetFFMPEGExecutableFile, MFSetFFProbeExecutableFile,
+  MFGetLegalTextLength, MFGetLegalText.
+
+  Obsolete functions not previously deprecated:
+
+  MFMediaID_RegisterIDResponseCallback,
+  MFMediaIDRequest_GetStringLength, MFMediaIDRequest_GetAsString,
+  MFMediaIDRequest_CreateUsingString,
+  MFMediaIDResponse_Get{StringLength,AsString,IDStatus},
+  MFMediaID_AddRemoteSignatureToLocalDatabase,
+  MFMediaID_RemoveAMItemIDFromLocalDatabase, MFMediaID_SetLicenseInfo,
+  MFMediaID_ClearLicenseInfo.
+
+  Functions listed as deprecated in the previous release's
+  MF_Media_api.h file but now removed:
+
+  MFMediaID_Create (Instead use one of these:
+   MFMediaID_CreateUsingConfigFile, MFMediaID_CreateUsingXMLString,
+   MFMediaID_CreateUsingLicenseKey)
+
+  MFGetErrorDescription (Instead use MFError_GetDescription and
+  MFError_GetCode.)
+
+  MFMediaID_RegisterCallback (This had been replaced by
+	  MFMediaID_RegisterIDResponseCallback, but that now is also
+	  unsupported. The continuous lookup feature and its threaded
+	  callback function are obsolete.  Instead, call
+	  MFMediaID_IdentifyNow in a loop at the desired frequency.)
+
+  MFMediaID_LoadDatabaseFromFile, MFMediaID_SetDatabase (Use
+  MFMediaID_AddFileToLocalDatabase instead.)
+
+  MFMediaID_GenerateAndPostRequest (Use MFMediaID_IdentifyFile
+  instead.)
+
+  MFMediaID_GenerateAndPostRequestFromSamples (Use
+  MFMediaID_IdentifySamples or
+  MFMediaID_IdentifySamplesWithTimestamp.)
+
+  MFMediaID_RetrieveDebugData, MFMediaID_ReleaseDebugData (Use
+	  MFMediaID_SetKeepDebugData, MFMediaID_GetDebugData,
+	  MFMediaIDDebugData_FillBuffers, and
+	  MFMediaIDDebugData_Destroy.)
+
+  MFMediaID_SetPrivateDataFolder (Use
+  MFGlobalInit_WithPrivateDataFolder.)
+
+
+
+Bug Fixes and Features Implemented in Version 26.20 (Linux only)
+-----------------------------------------------------------------
+NOTE: This list only includes bug fixes or new features that are
+applicable to Linux.
+
+1. Fixed a performance problem seen when generating ID requests that
+had a large offset value (as specified in the license key or
+configuration file). The symptom was that computation time (when
+generating a signature from a media file) was roughly proportional to
+the offset size.
+
+NOTE: The fix involves a compromise in which some media file formats
+(notably Windows Media video, WMV) typically have reduced timing
+accuracy in terms of the begin and end time of the signature. In our
+tests, WMV files were often decoded to temporary audio files that
+began 3-4 seconds later than the specified offset and ended 1 second
+earlier than specified by the duration. We recommend that customers,
+especially those using WMV files, who are currently using large
+offsets (currently defined as >100 seconds) instead extract the
+desired segment from the media file, write it to a new media file, and
+feed this new, short file to our API.
+
+2. Changed the loading of the curl, crypto, and ssl libraries from
+static to dynamic (on Unix-based desktop platforms). This allows
+applications that are generating, but not posting, ID requests to run on
+computers where these libraries are not installed. (For an example of
+how to compile your application to take advantage of the dynamic
+loading capability, please refer to the "generateRequest" target in
+oemExamples/c_c++/Makefile.) On the other hand, these libraries must
+be installed for any application that requires the OEM SDK to do HTTP
+communication (such as for sending authorization or identification
+requests to Audible Magic's servers).
+
+3. Changed the behavior of API such as MFMediaID_IdentifyFile() and
+MFMediaID_IdentifyNow() that takes an MFMediaIDResponse* parameter, to
+better handle cases when the ID server returns well-formed XML that
+reports an error condition. Formerly, the API returned an error and
+the MFMediaIDResponse was not available for inspection. Now, the API
+returns MF_SUCCESS, and the SDK client application should call
+MFMediaIDResponse_GetIDStatus(); the application may also call
+MFMediaIDResponse_GetAsString() if inspecting the XML for details is
+desired.
+
+4. Improved sample programs' parsing of command-line arguments, to
+report an error when encountering unexpected words in command line.
+
+5. Added ffprobe executable. Media files' formats, codecs, etc. are
+now detected using ffprobe instead of ffmpeg, because ffprobe's output
+can be parsed more reliably. (The ffmpeg executable is still used for
+decoding media files.)
+
+
+Bug Fixes and Features Implemented in Release Version 26.0c
+-----------------------------------------------------------------
+1. Removed dependency of the ffmpeg executable on the following
+third-party libraries: libiconv, libSDL.
+
+
+Bug Fixes and Features Implemented in Release Version 26.0a
+-----------------------------------------------------------------
+
+1. Fixed a problem (present in all previous releases) that was
+confusing some customers, when the sample apps (desktops only)
+returned an exit code whose value was greater than 255, which the
+shell then changed to the value mod 256. The fix was to change the
+sample apps to output a final return code of either 0 (for success) or
+1 (for failure), instead of an MFError code. Customers who wish to
+report a problem encountered when running one of the sample
+applications are required to include the application's full error
+description and MFError code, as written to STDERR, in the incident
+report that they file with Audible Magic Support. See the end of
+main() in the sample C programs for more insight.
+
+2. Reduced the number of shared libraries that were required by ffmpeg
+in the previous SDK release (26.0). 
+
+
+Bug Fixes and Features Implemented in Release Version 26.0
+----------------------------------------------------------
+1. Created 64-bit Windows build. 
+
+2. Discontinued 32-bit releases on Linux and Windows. If you need releases
+for these platforms, contact Audible Magic's Support department.
+
+3. Added new command-line applications, generateRequest and postRequest, to replace
+the media2xml and postXML legacy applications.
+
+4. Discontinued identifyFileWithOffset application. Added offset seconds as command-line
+option to identifyFile application.
+
+5. Added MFMediaID_SetOffset API. Documented in the "Advanced API Functions" section of 
+the API Users Guide.
+
+6. Discontinued use of FFMPEG libraries (libavcodec, etc.) and ffmpeg-lastResort
+executable. Now ships with ffmpeg executable only (updated to a 2015 version).
