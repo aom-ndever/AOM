@@ -2856,7 +2856,7 @@ router.post("/check_copyright_file", async (req, res) => {
 
     // identify -c /var/www/html/AOM/server/uploads/AudibleMagicToolkit_38.11b_rn3_linux64/bin/AomLR_v38.config -i ${req.body.audio_file} -e ${req.body.artist_id}
     exec(
-      `cd uploads/AudibleMagicToolkit_38.11b_rn3_linux64/bin/ && identify -c AomLR_v38.config -i ${req.body.audio_file} -e ${req.body.artist_id}`,
+      `cd uploads/AudibleMagicToolkit_38.11b_rn3_linux64/bin/ && ./identify -c AomLR_v38.config -i ${req.body.audio_file} -e ${req.body.artist_id}`,
       (error, stdout, stderr) => {
         if (error) {
           console.log(`error: ${error.message}`);
