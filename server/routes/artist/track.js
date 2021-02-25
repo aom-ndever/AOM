@@ -220,7 +220,7 @@ router.post("/", async (req, res) => {
                     type: "notification",
                     body: `${resp.artist.first_name} ${resp.artist.last_name} has uploaded the ${audioTitle} track, which is copyrighted.`,
                   };
-                  const copyrightTrack = copyright_track_notification_helper.insert_copyright_track_notification(
+                  const copyrightTrack = await copyright_track_notification_helper.insert_copyright_track_notification(
                     notificationObj
                   );
                   console.log(" : true ==> ", copyrightTrack);
