@@ -212,12 +212,16 @@ router.post("/", async (req, res) => {
                   " : message ==> ",
                   `${resp.first_name} ${resp.last_name} has uploaded the ${audioTitle} track, which is copyrighted.`
                 );
-                if (AMResponse.matches[0].metadata.Label !== undefined) {
+                if (
+                  AMResponse.matches &&
+                  AMResponse.matches[0].metadata &&
+                  AMResponse.matches[0].metadata.Label !== undefined
+                ) {
                   var notificationObj = {
                     artist: uploaderId,
                     track: trackId,
                     type: "notification",
-                    body: `${resp.first_name} ${resp.last_name} has uploaded the ${audioTitle} track, which is copyrighted.`,
+                    body: `${resp.artist.first_name} ${resp.artist.last_name} has uploaded the ${audioTitle} track, which is copyrighted.`,
                   };
                   console.log(" : true ==> ", notificationObj);
                 }
