@@ -207,7 +207,7 @@ router.post("/", async (req, res) => {
               } else {
                 const AMResponse = JSON.parse(stdout);
                 console.log(" : JSON.parse(stdout) ==> ", AMResponse);
-                if (matches[0].metadata.Label !== undefined) {
+                if (AMResponse.matches[0].metadata.Label !== undefined) {
                   // var notificationObj = {
                   //   artist_id: artist_id,
                   //   type: "notification",
