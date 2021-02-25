@@ -24,6 +24,7 @@ var fs = require("fs");
 const follower_helper = require("../../helpers/follower_helper");
 var global_helper = require("../../helpers/global_helper");
 var socket = require("../../socket/socketServer");
+const { exec } = require("child_process");
 
 /**
  * @api {post} /artist/track   track Add
@@ -98,18 +99,6 @@ router.post("/", async (req, res) => {
                 logger.trace("Avatar image has uploaded for user");
               }
             });
-            file.mv(
-              "./uploads/AudibleMagicToolkit_38.11b_rn3_linux64/bin/" +
-                "/" +
-                filename,
-              async (err) => {
-                if (err) {
-                  console.log(" : err ==> ", err);
-                } else {
-                  logger.trace("audio has uploaded");
-                }
-              }
-            );
           } else {
             callback({
               status: config.MEDIA_ERROR_STATUS,
@@ -204,9 +193,28 @@ router.post("/", async (req, res) => {
           );
           let receivers = [];
           await folowers.artist.map((res) => {
-            console.log(" : res ==> ", res);
             receivers.push({ receiver: new ObjectId(res.user_id) });
           });
+          exec(
+            `cd uploads/AudibleMagicToolkit_38.11b_rn3_linux64/bin/ && ./identify -c AomLR_v38.config -i /var/www/html/AOM/server/uploads/track/${req.body.audio_file} -e ${req.body.artist_id}`,
+            (error, stdout, stderr) => {
+              if (error || stderr) {
+                console.log(`error: ${error.message}`);
+              } else {
+                console.log(" : resp ==> ", resp);
+                const AMResponse = JSON.parse(stdout);
+                console.log(" : JSON.parse(stdout) ==> ", AMResponse);
+                if (matches[0].metadata.Label !== undefined) {
+                  // var notificationObj = {
+                  //   artist_id: artist_id,
+                  //   type: "notification",
+                  //   body: ``
+                  // }
+                  console.log(" : true ==> ");
+                }
+              }
+            }
+          );
 
           // console.log(" : reciver ==> ", receivers);
           const ArtistDtatil = await artist_helper.get_artist_by_id(artist_id);
