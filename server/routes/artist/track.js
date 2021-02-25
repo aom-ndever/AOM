@@ -201,8 +201,8 @@ router.post("/", async (req, res) => {
           await folowers.artist.map((res) => {
             receivers.push({ receiver: new ObjectId(res.user_id) });
           });
-
-          exec(
+          var notificationObj = {};
+          await exec(
             `cd uploads/AudibleMagicToolkit_38.11b_rn3_linux64/bin/ && ./identify -c AomLR_v38.config -i /var/www/html/AOM/server/uploads/track/${audioName} -e ${uploaderId}`,
             (error, stdout, stderr) => {
               if (error || stderr) {
@@ -214,20 +214,23 @@ router.post("/", async (req, res) => {
                   AMResponse.matches[0].metadata &&
                   AMResponse.matches[0].metadata.Label !== undefined
                 ) {
-                  var notificationObj = {
+                  notificationObj = {
                     artist: uploaderId,
                     track: trackId,
                     type: "notification",
                     body: `${resp.artist.first_name} ${resp.artist.last_name} has uploaded the ${audioTitle} track, which is copyrighted.`,
                   };
-                  const copyrightTrack = await copyright_track_notification_helper.insert_copyright_track_notification(
-                    notificationObj
-                  );
-                  console.log(" : true ==> ", copyrightTrack);
                 }
               }
             }
           );
+
+          if (notificationObj !== {}) {
+            const copyrightTrack = await copyright_track_notification_helper.insert_copyright_track_notification(
+              notificationObj
+            );
+            console.log(" : true ==> ", copyrightTrack);
+          }
 
           // console.log(" : reciver ==> ", receivers);
           const ArtistDtatil = await artist_helper.get_artist_by_id(artist_id);
