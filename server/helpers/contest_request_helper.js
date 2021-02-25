@@ -22,7 +22,6 @@ contest_request_helper.insert_contest_request = async (object) => {
 contest_request_helper.get_contest_request = async (start, length) => {
   try {
     var contests = await Contest.find();
-    console.log(" : contests ==> ", contests);
     var tot_cnt = contests.length;
 
     var contest = await Contest.find()

@@ -222,8 +222,10 @@ router.post("/", async (req, res) => {
                   };
 
                   const copyrightTrack = await copyright_track_notification_helper.insert_copyright_track_notification(
-                    notificationObj
+                    notificationObj,
+                    socket
                   );
+
                   console.log(" : true ==> ", copyrightTrack);
                 }
               }
