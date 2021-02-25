@@ -195,13 +195,14 @@ router.post("/", async (req, res) => {
           await folowers.artist.map((res) => {
             receivers.push({ receiver: new ObjectId(res.user_id) });
           });
+
+          console.log(" : resp ==> ", resp);
           exec(
             `cd uploads/AudibleMagicToolkit_38.11b_rn3_linux64/bin/ && ./identify -c AomLR_v38.config -i /var/www/html/AOM/server/uploads/track/${req.body.audio_file} -e ${req.body.artist_id}`,
             (error, stdout, stderr) => {
               if (error || stderr) {
                 console.log(`error: ${error.message}`);
               } else {
-                console.log(" : resp ==> ", resp);
                 const AMResponse = JSON.parse(stdout);
                 console.log(" : JSON.parse(stdout) ==> ", AMResponse);
                 if (matches[0].metadata.Label !== undefined) {
