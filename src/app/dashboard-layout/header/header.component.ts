@@ -261,10 +261,14 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.count = this.user ? this.user.count : this.count;
 
     this.socket = socketClient(environment.socketUrl);
-    if (this.user && this.user.token !== null) {
+    if (
+      (this.user && this.user.token !== null) ||
+      this.user.token !== undefined
+    ) {
       this.socket.emit("join", this.user.token);
       if (this.user.user && this.user.user.type === "listener") {
         this.socket.on("receive_user_notification_count", (data) => {
+          console.log(" : data ==> ", data);
           if (data) {
             this.user["count"] = data.count;
             localStorage.setItem("user", JSON.stringify(this.user));
@@ -276,6 +280,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
         });
       } else if (this.user.artist && this.user.artist.type === "artist") {
         this.socket.on("receive_artist_notification_count", (data) => {
+          console.log(" : data ==> ", data);
           if (data) {
             this.user["count"] = data.count;
             localStorage.setItem("user", JSON.stringify(this.user));
@@ -286,6 +291,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
           this.messageService.checkCount(data);
         });
         this.socket.on("receive_artist_messages_count", (data) => {
+          console.log(" : data ==> ", data);
           if (data) {
             this.user["messageCount"] = data.count;
             localStorage.setItem("user", JSON.stringify(this.user));

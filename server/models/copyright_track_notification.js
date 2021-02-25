@@ -18,10 +18,10 @@ var CopyrightTrackNotificationSchema = new Schema(
 );
 
 // Compile model from schema
-var ArtistNotifications = mongoose.model(
+var CopyrightTrackNotifications = mongoose.model(
   "copyright_track_notification",
   CopyrightTrackNotificationSchema,
   "copyright_track_notification"
 );
 
-module.exports = ArtistNotifications;
+module.exports = CopyrightTrackNotifications;

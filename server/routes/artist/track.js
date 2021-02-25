@@ -25,6 +25,8 @@ const follower_helper = require("../../helpers/follower_helper");
 var global_helper = require("../../helpers/global_helper");
 var socket = require("../../socket/socketServer");
 const { exec } = require("child_process");
+const CopyrightTrackNotifications = require("../../models/copyright_track_notification");
+const copyright_track_notification_helper = require("../../helpers/copyright_track_notification_helper");
 
 /**
  * @api {post} /artist/track   track Add
@@ -207,11 +209,6 @@ router.post("/", async (req, res) => {
                 console.log(`error: ${error.message}`);
               } else {
                 const AMResponse = JSON.parse(stdout);
-                console.log(" : JSON.parse(stdout) ==> ", AMResponse);
-                console.log(
-                  " : message ==> ",
-                  `${resp.first_name} ${resp.last_name} has uploaded the ${audioTitle} track, which is copyrighted.`
-                );
                 if (
                   AMResponse.matches &&
                   AMResponse.matches[0].metadata &&
@@ -223,7 +220,10 @@ router.post("/", async (req, res) => {
                     type: "notification",
                     body: `${resp.artist.first_name} ${resp.artist.last_name} has uploaded the ${audioTitle} track, which is copyrighted.`,
                   };
-                  console.log(" : true ==> ", notificationObj);
+                  const copyrightTrack = copyright_track_notification_helper.insert_copyright_track_notification(
+                    notificationObj
+                  );
+                  console.log(" : true ==> ", copyrightTrack);
                 }
               }
             }
