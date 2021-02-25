@@ -180,6 +180,9 @@ router.post("/", async (req, res) => {
         // var track = await track_helper.update_artist_for_track(artist_id, no_track)
 
         var resp = await track_helper.insert_track(artist_id, obj);
+        console.log(" : resp ==> ", resp);
+        const audioName = resp.media.audio;
+        const uploaderId = resp.media.artist_id;
 
         if (resp.status === 0) {
           res.status(config.INTERNAL_SERVER_ERROR).json({ error: resp.error });
@@ -196,9 +199,8 @@ router.post("/", async (req, res) => {
             receivers.push({ receiver: new ObjectId(res.user_id) });
           });
 
-          console.log(" : resp ==> ", resp);
           exec(
-            `cd uploads/AudibleMagicToolkit_38.11b_rn3_linux64/bin/ && ./identify -c AomLR_v38.config -i /var/www/html/AOM/server/uploads/track/${req.body.audio_file} -e ${req.body.artist_id}`,
+            `cd uploads/AudibleMagicToolkit_38.11b_rn3_linux64/bin/ && ./identify -c AomLR_v38.config -i /var/www/html/AOM/server/uploads/track/${audioName} -e ${uploaderId}`,
             (error, stdout, stderr) => {
               if (error || stderr) {
                 console.log(`error: ${error.message}`);
