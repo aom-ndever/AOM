@@ -180,15 +180,16 @@ router.post("/", async (req, res) => {
         // var track = await track_helper.update_artist_for_track(artist_id, no_track)
 
         var resp = await track_helper.insert_track(artist_id, obj);
-        console.log(" : resp ==> ", resp);
+        // console.log(" : resp ==> ", resp);
         const audioName = resp.media.audio;
         const uploaderId = resp.media.artist_id;
-
+        const trackId = resp.media._id;
+        const audioTitle = resp.media.name;
         if (resp.status === 0) {
           res.status(config.INTERNAL_SERVER_ERROR).json({ error: resp.error });
         } else {
           var resp = await artist_helper.get_artist_by_id(artist_id);
-
+          console.log(" : resp ==> ", resp);
           no_track = resp.artist.no_of_tracks + 1;
 
           const folowers = await follower_helper.get_all_artist_followers(
@@ -208,12 +209,13 @@ router.post("/", async (req, res) => {
                 const AMResponse = JSON.parse(stdout);
                 console.log(" : JSON.parse(stdout) ==> ", AMResponse);
                 if (AMResponse.matches[0].metadata.Label !== undefined) {
-                  // var notificationObj = {
-                  //   artist_id: artist_id,
-                  //   type: "notification",
-                  //   body: ``
-                  // }
-                  console.log(" : true ==> ");
+                  var notificationObj = {
+                    artist: uploaderId,
+                    track: trackId,
+                    type: "notification",
+                    body: `${audioTitle}`,
+                  };
+                  console.log(" : true ==> ", notificationObj);
                 }
               }
             }

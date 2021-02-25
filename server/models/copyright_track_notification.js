@@ -6,6 +6,7 @@ var Schema = mongoose.Schema;
 var CopyrightTrackNotificationSchema = new Schema(
   {
     artist: { type: mongoose.Schema.Types.ObjectId, ref: "artist" },
+    track: { type: mongoose.Schema.Types.ObjectId, ref: "track" },
     type: { type: String, enum: ["notification"], required: true },
     timelineId: { type: String },
     body: { type: String, required: true },
