@@ -259,7 +259,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     }
     this.messageCount = this.user ? this.user.messageCount : this.messageCount;
     this.count = this.user ? this.user.count : this.count;
-
+    console.log(" : this.count ==> ", this.count);
     this.socket = socketClient(environment.socketUrl);
     if (
       (this.user && this.user.token !== null) ||
@@ -358,6 +358,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
                     environment.ARTIST_IMG +
                     this.user.artist["image"]
                   : "";
+              this.count = this.user.count;
+              this.messageCount = this.user.messageCount;
             } else if (this.user && this.user.user) {
               this.user.user["image"] =
                 typeof this.user.user["image"] !== "undefined"
@@ -365,6 +367,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
                     environment.USER_IMG +
                     this.user.user["image"]
                   : "";
+              this.count = this.user.count;
+              this.messageCount = this.user.messageCount;
             }
             this.messageService.sendMessage({ loggedin_user: this.user });
             this.router.navigate([""]);
