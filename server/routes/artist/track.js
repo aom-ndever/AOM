@@ -226,6 +226,10 @@ router.post("/", async (req, res) => {
                   AMResponse.matches[0].metadata &&
                   AMResponse.matches[0].metadata.Label !== undefined
                 ) {
+                  console.log(
+                    " : AMResponse.matches[0].metadata.Label ==> ",
+                    AMResponse.matches[0].metadata.Label
+                  );
                   var notificationObj = {
                     artist: uploaderId,
                     track: trackId,
