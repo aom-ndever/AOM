@@ -14,6 +14,12 @@ export class MessageService {
   private updatedUserDetail = new BehaviorSubject("");
   getupdatedUserDetail = this.updatedUserDetail.asObservable();
 
+  private updatedCount = new BehaviorSubject("");
+  getupdatedCount = this.updatedCount.asObservable();
+
+  private onSocketCall = new BehaviorSubject("");
+  getSocketValue = this.onSocketCall.asObservable();
+
   public changeFollower() {
     this.followerData.next({});
   }
@@ -43,5 +49,13 @@ export class MessageService {
 
   public setupdatedUserDetail(data: any) {
     this.updatedUserDetail.next(data);
+  }
+
+  public setupdatedCount(data: any) {
+    this.updatedCount.next(data);
+  }
+
+  public setSocketCall(data: any) {
+    this.onSocketCall.next(data);
   }
 }

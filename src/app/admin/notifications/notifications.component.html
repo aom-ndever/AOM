@@ -1,0 +1,45 @@
+<div id="page-content-wrapper">
+  <div class="container-fluid">
+    <!-- <div class="card"> -->
+    <!-- <table style="width: 100%" id="label-header">
+        <tr class="tblHeader">
+          <th>Notifications</th>
+        </tr>
+        <tr *ngIf="notifications.length === 0">
+          <td class="noDataFound" colspan="4">No data Found.</td>
+        </tr>
+        <div class="notificationBody" *ngIf="notifications.length > 0">
+          <tr
+            class="notification"
+            *ngFor="let item of notifications; let i = index"
+          >
+            <td>
+              {{ item.body }}
+            </td>
+          </tr>
+        </div>
+      </table> -->
+    <!-- </div> -->
+    <h3 class="title">Notifications</h3>
+    <div class="center" *ngIf="notifications.length === 0">No data Found.</div>
+    <div *ngIf="notifications.length > 0">
+      <div class="center" *ngFor="let item of notifications; let i = index">
+        <div class="insideText">
+          <!-- <p class="artistName">
+            {{ item.artist.first_name }} {{ item.artist.last_name }}
+          </p> -->
+          <img
+            class="artistImg"
+            alt="artist image"
+            [src]="imagePath + item.artist.image"
+            class="ng-star-inserted"
+          />
+          <p class="artistName">{{ item.body }}</p>
+          <p class="time">
+            {{ item.receivers[0].createdAt | date: "dd/MM/yyyy hh:mm" }}
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

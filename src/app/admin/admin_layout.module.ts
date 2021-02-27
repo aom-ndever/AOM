@@ -31,6 +31,8 @@ import { LazyLoadImageModule } from "ng-lazyload-image";
 import { CustomMessageComponent } from "./custom_message/custom_message.component";
 import { DropdownModule } from "primeng/primeng";
 import { InputTextareaModule } from "primeng/inputtextarea";
+import { NotificationsComponent } from "./notifications/notifications.component";
+import { NotificationsService } from "./notifications/notifications.service";
 
 @NgModule({
   imports: [
@@ -83,6 +85,11 @@ import { InputTextareaModule } from "primeng/inputtextarea";
             canActivate: [AuthService],
           },
           {
+            path: "notifications",
+            component: NotificationsComponent,
+            canActivate: [AuthService],
+          },
+          {
             path: "contest",
             component: ContestComponent,
             canActivate: [AuthService],
@@ -102,6 +109,7 @@ import { InputTextareaModule } from "primeng/inputtextarea";
     ArtistComponent,
     UsersComponent,
     CustomMessageComponent,
+    NotificationsComponent,
     ContestComponent,
     RolesComponent,
   ],
@@ -111,6 +119,7 @@ import { InputTextareaModule } from "primeng/inputtextarea";
     ArtistService,
     UsersService,
     CustomMessageService,
+    NotificationsService,
     ContestService,
     RolesService,
     AlertService,

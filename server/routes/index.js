@@ -1973,6 +1973,7 @@ router.post("/admin_login", async (req, res) => {
           status: 1,
           message: "Logged in successful",
           admin: login_resp.admin,
+          count: login_resp.count,
           token: token,
           refresh_token: refreshToken,
         });

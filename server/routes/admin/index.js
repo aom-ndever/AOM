@@ -37,6 +37,7 @@ var mongoose = require("mongoose");
 var ObjectId = mongoose.Types.ObjectId;
 var fs = require("fs");
 const artist_message_helper = require("../../helpers/artist_message_helper");
+const copyright_track_notification_helper = require("../../helpers/copyright_track_notification_helper");
 
 /**
  * @api {post} /admin/add_admin
@@ -1657,6 +1658,47 @@ router.put("/featured_artist", async (req, res) => {
       res
         .status(config.OK_STATUS)
         .json({ message: "Artist removed from featured artist" });
+    }
+  }
+});
+
+router.get("/notifications", async (req, res) => {
+  var resp = await copyright_track_notification_helper.get_all_notification(
+    req.userInfo.id
+  );
+  if (resp.status == 0) {
+    logger.error("Error occured while fetching notification = ", resp);
+    res.status(config.INTERNAL_SERVER_ERROR).json(resp);
+  } else {
+    if (resp.status == 1) {
+      res
+        .status(config.OK_STATUS)
+        .json({ status: 1, notifications: resp.notifications });
+    } else {
+      res
+        .status(config.NOT_FOUND)
+        .json({ status: 2, message: "Notification not found." });
+    }
+  }
+});
+
+router.post("/update_notification_count", async (req, res) => {
+  var resp = await copyright_track_notification_helper.notification_seen(
+    req.userInfo.id,
+    req.body
+  );
+  if (resp.status == 0) {
+    logger.error("Error occured while updating count = ", resp);
+    res.status(config.INTERNAL_SERVER_ERROR).json(resp);
+  } else {
+    if (resp.status == 1) {
+      res
+        .status(config.OK_STATUS)
+        .json({ status: 1, message: "Counts updated." });
+    } else {
+      res
+        .status(config.NOT_FOUND)
+        .json({ status: 2, message: "Notification not found." });
     }
   }
 });

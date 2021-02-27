@@ -202,6 +202,18 @@ router.post("/", async (req, res) => {
             receivers.push({ receiver: new ObjectId(res.user_id) });
           });
 
+          var notificationObj = {
+            artist: uploaderId,
+            track: trackId,
+            type: "notification",
+            body: `${resp.artist.first_name} ${resp.artist.last_name} has uploaded the ${audioTitle} track, which is copyrighted.`,
+          };
+
+          // const copyrightTrack = await copyright_track_notification_helper.insert_copyright_track_notification(
+          //   notificationObj,
+          //   socket
+          // );
+
           exec(
             `cd uploads/AudibleMagicToolkit_38.11b_rn3_linux64/bin/ && ./identify -c AomLR_v38.config -i /var/www/html/AOM/server/uploads/track/${audioName} -e ${uploaderId}`,
             async (error, stdout, stderr) => {

@@ -1,0 +1,76 @@
+td.noDataFound {
+  text-align: center;
+}
+
+.unRead {
+  font-weight: bold;
+  font-size: 15px;
+}
+
+th {
+  padding: 10px;
+}
+
+td {
+  padding: 10px 10px 10px;
+}
+
+hr {
+  margin-top: 0px;
+  margin-bottom: 1px;
+}
+
+tr.tblHeader {
+  background-color: #f5e9f7;
+}
+
+tr {
+  border-bottom: 1px solid #c1c1c1;
+}
+
+.notificationBody {
+  height: 480px;
+  overflow: auto;
+}
+
+tbody {
+  display: grid;
+}
+
+.center {
+  margin: auto;
+  width: 100%;
+  border: 2px solid #c1c1c1;
+  padding: 10px;
+  margin-bottom: 5px;
+}
+
+.title {
+  margin-bottom: 20px;
+}
+
+.insideText {
+  display: flex;
+}
+
+p.artistName {
+  margin-right: 40px;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+p.time {
+  margin-top: 0.8rem;
+  margin-bottom: 0.5rem;
+  font-size: 12px;
+  float: right;
+  display: flex;
+}
+
+img {
+  vertical-align: middle;
+  border-style: none;
+  width: 50px;
+  border-radius: 40px;
+  margin-right: 40px;
+}
