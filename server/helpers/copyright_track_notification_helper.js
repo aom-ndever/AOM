@@ -121,7 +121,7 @@ copyright_track_notification_helper.get_all_notification = async (id) => {
         },
       },
       {
-        $sort: { created_at: -1 },
+        $sort: { createdAt: -1 },
       },
     ];
 
