@@ -260,6 +260,12 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.messageCount = this.user ? this.user.messageCount : this.messageCount;
     this.count = this.user ? this.user.count : this.count;
     console.log(" : this.count ==> ", this.count);
+    if (this.user) {
+      this.socketCall();
+    }
+  }
+
+  socketCall() {
     this.socket = socketClient(environment.socketUrl);
     if (
       (this.user && this.user.token !== null) ||
@@ -371,6 +377,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
               this.messageCount = this.user.messageCount;
             }
             this.messageService.sendMessage({ loggedin_user: this.user });
+            this.socketCall();
             this.router.navigate([""]);
           } else if (response["artist"]) {
             this.userType = response["artist"].type;
@@ -397,6 +404,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
               this.count = this.user.count;
             }
             this.messageService.sendMessage({ loggedin_user: this.user });
+            this.socketCall();
             this.router.navigate([""]);
           }
         },
@@ -558,6 +566,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     // window.location.replace('');
     this.router.navigate([""]);
   }
+
   toggleMainMenu() {
     this.toggleMenu = !this.toggleMenu;
   }
@@ -647,6 +656,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
           this.modalRef.close();
           this.user = JSON.parse(localStorage.getItem("user"));
           this.messageService.sendMessage({ loggedin_user: this.user });
+          this.socketCall();
           this.router.navigate([""]);
         },
         (error) => {
