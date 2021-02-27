@@ -106,7 +106,7 @@
           [ngClass]="{ unRead: item.receivers.isSeen === 0 }"
           (click)="openMessageDialog(openMessage, item._id)"
         >
-          {{ item.createdAt }}
+          {{ item.receivers.createdAt | date: "hh:mm" }}
         </td>
       </tr>
     </table>
