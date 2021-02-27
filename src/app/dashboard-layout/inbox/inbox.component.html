@@ -136,7 +136,11 @@
             <h3>
               {{ messageData["contest_id"].name }}
             </h3>
-            <p>{{ messageData.displayTime }} ({{ messageData.diffTime }})</p>
+            <p>
+              {{ messageData.receivers.createdAt | date: "hh:mm" }} ({{
+                messageData.diffTime
+              }})
+            </p>
           </div>
         </div>
         <div class="contentMessage">
