@@ -60,6 +60,7 @@ p.artistName {
 }
 
 p.time {
+  margin-left: auto;
   margin-top: 0.8rem;
   margin-bottom: 0.5rem;
   font-size: 12px;

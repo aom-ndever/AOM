@@ -1053,6 +1053,9 @@ h3.user_name {
 .sidebar-nav li.bell a i:after {
   background-image: url("/img/bell.png");
 }
+.sidebar-nav li.alerts a i:after {
+  background-image: url("/img/alert.png");
+}
 .sidebar-nav li.artist a i:after {
   background-image: url("/img/mike.png");
 }
@@ -1081,6 +1084,10 @@ h3.user_name {
 .sidebar-nav li.home a:hover i:after {
   background-image: url("/img/home_color.png");
 }
+.sidebar-nav li.alerts a:hover i:after,
+.sidebar-nav li.active.alerts a i:after {
+  background-image: url("/img/alert_color.png");
+}
 .sidebar-nav li.bell a:hover i:after,
 .sidebar-nav li.active.bell a i:after {
   background-image: url("/img/bell_color.png");
@@ -1105,6 +1112,26 @@ h3.user_name {
 .sidebar-nav li.active.roles a i:after {
   background-image: url("/img/roles_color.png");
 }
+
+.adminCount {
+  display: flex !important;
+  align-items: center;
+}
+
+.adminCount span {
+  margin-left: auto;
+  width: 20px;
+  height: 20px;
+  background: #9c27b0;
+  border-radius: 100px;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+  line-height: 20px;
+  font-size: 12px;
+}
+
 #menu-toggle {
   background-color: transparent;
   border-color: #9c27b0;

@@ -43,7 +43,7 @@
     <li class="home" routerLinkActive="active">
       <a href="javascript:;" routerLink="/admin/home"> <i></i>Home</a>
     </li>
-    <li class="bell" routerLinkActive="active">
+    <li class="alerts" routerLinkActive="active">
       <a href="javascript:;" routerLink="/admin/alerts"> <i></i>Alert</a>
     </li>
     <li class="artist" routerLinkActive="active">
@@ -58,8 +58,12 @@
       >
     </li>
     <li class="bell" routerLinkActive="active">
-      <a href="javascript:;" routerLink="/admin/notifications">
-        <i></i>Notifications {{ count }}</a
+      <a
+        class="adminCount"
+        href="javascript:;"
+        routerLink="/admin/notifications"
+      >
+        <i></i>Notifications <span>{{ count }}</span></a
       >
     </li>
     <li>
