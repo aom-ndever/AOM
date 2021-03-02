@@ -63,7 +63,7 @@
         href="javascript:;"
         routerLink="/admin/notifications"
       >
-        <i></i>Notifications <span>{{ count }}</span></a
+        <i></i>Notifications <span *ngIf="count > 0">{{ count }}</span></a
       >
     </li>
     <li>
