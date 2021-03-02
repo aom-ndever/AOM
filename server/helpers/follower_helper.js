@@ -189,22 +189,25 @@ follower_helper.get_artist_followers_by_location = async (artist_id, day) => {
 
 follower_helper.get_all_followers = async (id) => {
   try {
+    console.log(" : id ==> ", id);
     var artist = await Followers.find({ artist_id: id })
-      .populate({ path: "user_id", populate: { path: "music_type" } })
-      .populate({ path: " artist_id", populate: { path: "music_type" } });
-
+      .populate({ path: "user_id" })
+      .populate({ path: "artist_id", populate: { path: "music_type" } });
+    console.log(" : artist d ==> ", artist);
     if (artist) {
       let data = [];
       await artist.map((result) => {
+        console.log(" : result ==> ", result);
         if (
           result &&
+          result.user_id &&
           result.user_id.is_del === false &&
-          result &&
           result.user_id.is_deactivate === false
         ) {
           data.push(result);
         }
       });
+      console.log(" : data ==> ", data);
       return { status: 1, message: "artist details found", artist: data };
     } else {
       return { status: 2, message: "artist not found" };

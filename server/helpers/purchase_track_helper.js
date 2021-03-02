@@ -52,17 +52,17 @@ purchase_helper.get_purchased_track = async (user_id, start, length) => {
           $and: [{ "artist.is_del": false }, { "artist.is_deactivate": false }],
         },
       },
-      {
-        $lookup: {
-          from: "music_type",
-          localField: "artist.music_type",
-          foreignField: "_id",
-          as: "music_type",
-        },
-      },
-      {
-        $unwind: "$music_type",
-      },
+      // {
+      //   $lookup: {
+      //     from: "music_type",
+      //     localField: "artist.music_type",
+      //     foreignField: "_id",
+      //     as: "music_type",
+      //   },
+      // },
+      // {
+      //   $unwind: "$music_type",
+      // },
       // {
       //     '$lookup': {
       //         from: 'state',
@@ -86,17 +86,17 @@ purchase_helper.get_purchased_track = async (user_id, start, length) => {
       {
         $unwind: "$user",
       },
-      {
-        $lookup: {
-          from: "music_type",
-          localField: "user.music_type",
-          foreignField: "_id",
-          as: "music_type",
-        },
-      },
-      {
-        $unwind: "$music_type",
-      },
+      // {
+      //   $lookup: {
+      //     from: "music_type",
+      //     localField: "user.music_type",
+      //     foreignField: "_id",
+      //     as: "music_type",
+      //   },
+      // },
+      // {
+      //   $unwind: "$music_type",
+      // },
       // {
       //     '$lookup': {
       //         from: 'state',
@@ -117,7 +117,7 @@ purchase_helper.get_purchased_track = async (user_id, start, length) => {
       },
     ];
     var tracks = await Purchase.aggregate(aggregates);
-
+    console.log(" : tracks ==> ", tracks);
     var tot_cnt = tracks.length;
 
     var aggregate = [
@@ -187,17 +187,17 @@ purchase_helper.get_purchased_track = async (user_id, start, length) => {
       {
         $unwind: "$user",
       },
-      {
-        $lookup: {
-          from: "music_type",
-          localField: "user.music_type",
-          foreignField: "_id",
-          as: "music_type",
-        },
-      },
-      {
-        $unwind: "$music_type",
-      },
+      // {
+      //   $lookup: {
+      //     from: "music_type",
+      //     localField: "user.music_type",
+      //     foreignField: "_id",
+      //     as: "music_type",
+      //   },
+      // },
+      // {
+      //   $unwind: "$music_type",
+      // },
       // {
       //     '$lookup': {
       //         from: 'state',

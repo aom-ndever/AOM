@@ -3,9 +3,19 @@
     <div class="row">
       <div class="col-md-2 col-sm-3 col-xs-6">
         <div class="profile-img">
-          <a routerLink="/artist_profile/{{artistdata && artistdata._id ? artistdata._id : '' }}">
-            <img src="{{artistdata.image ? artist_img_url+artistdata.image : 'img/default_img.png'}}"
-              alt="Profile Images">
+          <a
+            routerLink="/artist_profile/{{
+              artistdata && artistdata._id ? artistdata._id : ''
+            }}"
+          >
+            <img
+              src="{{
+                artistdata.image
+                  ? artist_img_url + artistdata.image
+                  : 'img/default_img.png'
+              }}"
+              alt="Profile Images"
+            />
           </a>
         </div>
       </div>
@@ -13,54 +23,101 @@
         <div class="abt-tr">
           <div class="play-btn">
             <div class="artist-profile-custom-action-btn">
-              <a [style.display]="!audio_ins[1] ? 'block' : 'none'" (click)="playAudio(track.audio,1)"
-                class="play_img"><img src="img/play_icon.png" /></a>
-              <a [style.display]="audio_ins[1] ? 'block' : 'none'" (click)="stopAudio(1)" class="pause_img"><img
-                  src="img/pause_icon.png" /></a>
+              <a
+                [style.display]="!audio_ins[1] ? 'block' : 'none'"
+                (click)="playAudio(track.audio, 1)"
+                class="play_img"
+                ><img src="img/play_icon.png"
+              /></a>
+              <a
+                [style.display]="audio_ins[1] ? 'block' : 'none'"
+                (click)="stopAudio(1)"
+                class="pause_img"
+                ><img src="img/pause_icon.png"
+              /></a>
             </div>
             <!-- <a href="javascript:;">
                   <img src="img/play.png" alt="" (click)="playAudio(track.audio, 1)" [style.display]="audio_ins.length == 0 && !audio_ins[1] ? 'block' : 'none'">
                   <img src="img/pause.png" alt="" (click)="stopAudio(1)" [style.display]="audio_ins.length > 0 && audio_ins[1] ? 'block' : 'none'">
                 </a> -->
           </div>
-          <div class="track-cname"><a href="javascript:;">{{track?.name}}</a></div>
+          <div class="track-cname">
+            <a href="javascript:;">{{ track?.name }}</a>
+          </div>
           <div class="artist-name">
-            <h2><a href="javascript:;"
-                routerLink="/artist_profile/{{artistdata && artistdata._id ? artistdata._id : '' }}">{{artistdata.first_name+' '+artistdata.last_name}}</a>
+            <h2>
+              <a
+                href="javascript:;"
+                routerLink="/artist_profile/{{
+                  artistdata && artistdata._id ? artistdata._id : ''
+                }}"
+                >{{ artistdata.first_name + " " + artistdata.last_name }}</a
+              >
             </h2>
           </div>
         </div>
         <div class="action">
-          <div class="cmt-like"><a href="javascript:;" title="Like" class="liked" (click)="likeTrack(track._id)">
+          <div class="cmt-like">
+            <a
+              href="javascript:;"
+              title="Like"
+              class="liked"
+              (click)="likeTrack(track._id)"
+            >
               <!-- <img src="img/likehand.png" alt=""> -->
               <span *ngIf="track && track.no_of_likes > 0; else dislike">
-                <img class="" src="img/like-color.jpg" alt="" style="display:block;">
+                <img
+                  class=""
+                  src="img/like-color.jpg"
+                  alt=""
+                  style="display: block"
+                />
               </span>
 
               <ng-template #dislike>
-                <img class="" src="img/likehand.png" alt="">
+                <img class="" src="img/likehand.png" alt="" />
               </ng-template>
-              {{track?.no_of_likes}}
-            </a></div>
-          <div class="download" *ngIf="track.is_downloadable"><a href="javascript:;" title="Download"><img
-                src="img/download.png" (click)="downloadTrack(track?._id)" alt=""></a></div>
+              {{ track?.no_of_likes }}
+            </a>
+          </div>
+          <div class="download" *ngIf="track.is_downloadable">
+            <a href="javascript:;" title="Download"
+              ><img
+                src="img/download.png"
+                (click)="downloadTrack(track?._id)"
+                alt=""
+            /></a>
+          </div>
           <div class="cmt">
-            <a href="javascript:;" title="Purchase" (click)="openCardModel(purchase,'track')">
-              ${{track.price}}
+            <a
+              href="javascript:;"
+              title="Purchase"
+              (click)="openCardModel(purchase, 'track')"
+            >
+              ${{ track.price }}
             </a>
           </div>
           <div class="share">
-            <a href="javascript:;" title="Share" (click)="openShareTrackModel(shareTrack, 'track')">
-              <img src="img/share.png" alt="">
+            <a
+              href="javascript:;"
+              title="Share"
+              (click)="openShareTrackModel(shareTrack, 'track')"
+            >
+              <img src="img/share.png" alt="" />
             </a>
           </div>
         </div>
-        <div class="profile-location"><i class="fa fa-map-marker" aria-hidden="true"></i>
-          <span>{{artistdata && artistdata.state ? artistdata.state : '' }}</span>
-          <p class="{{artistdata['music_type']['alias']}} tag">{{artistdata['music_type']['name']}}</p>
+        <div class="profile-location">
+          <i class="fa fa-map-marker" aria-hidden="true"></i>
+          <span>{{
+            artistdata && artistdata.state ? artistdata.state : ""
+          }}</span>
+          <p class="{{ artistdata['music_type']['alias'] }} tag">
+            {{ artistdata["music_type"]["name"] }}
+          </p>
         </div>
         <div class="profile-description">
-          <p>{{track.description}}</p>
+          <p>{{ track.description }}</p>
         </div>
       </div>
     </div>
@@ -70,55 +127,116 @@
           <div class="row">
             <div class="col-md-12 col-sm-12 col-xs-12">
               <div class="comments">
-                <h3 class="num-cmt mt-10">{{trackcomments.length}} Comments</h3>
+                <h3 class="num-cmt mt-10">
+                  {{ trackcomments.length }} Comments
+                </h3>
                 <div class="alert alert-info" *ngIf="trackcomments.length == 0">
                   No data available.
                 </div>
                 <div class="add-comment" *ngIf="user && user.user">
                   <form>
-                    <div class="s-img"><img
-                        src="{{user['user'].image ? user_img_url+user['user'].image : 'img/upload1.png'}}" alt="img">
+                    <div class="s-img">
+                      <img
+                        src="{{
+                          user['user'].image
+                            ? user_img_url + user['user'].image
+                            : 'img/upload1.png'
+                        }}"
+                        alt="img"
+                      />
                     </div>
                     <div class="form-group">
                       <label for="cmmt">Write a Comment</label>
-                      <input type="text" class="form-control" id="cmmt" name="comment" [(ngModel)]="comment_txt"
-                        placeholder="Write a comment" maxlength="5000">
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="cmmt"
+                        name="comment"
+                        [(ngModel)]="comment_txt"
+                        placeholder="Write a comment"
+                        maxlength="5000"
+                      />
                     </div>
                     <div class="button_group">
-                      <button type="submit" (click)="postComment()" [disabled]="show_spinner" class="update-btn">Post <i
-                          class="fa fa-spinner fa-spin" *ngIf="show_spinner"></i></button>
+                      <button
+                        type="submit"
+                        (click)="postComment()"
+                        [disabled]="show_spinner"
+                        class="update-btn"
+                      >
+                        Post
+                        <i
+                          class="fa fa-spinner fa-spin"
+                          *ngIf="show_spinner"
+                        ></i>
+                      </button>
                     </div>
                   </form>
                 </div>
-                <div class="login-alert" *ngIf="!user">Please Login to leave your comment</div>
-                <div class="comment-block col-md-12" *ngFor="let comment of trackcomments; let i=index;">
+                <div class="login-alert" *ngIf="!user">
+                  Please Login to leave your comment
+                </div>
+                <div
+                  class="comment-block col-md-12"
+                  *ngFor="let comment of trackcomments; let i = index"
+                >
                   <div class="pull-left up_down_container">
                     <div>
-                      <a href="javascript:;" (click)="upVoteComment(comment['_id'])"><i class="chevron-up"></i></a>
+                      <a
+                        href="javascript:;"
+                        (click)="upVoteComment(comment['_id'])"
+                        ><i class="chevron-up"></i
+                      ></a>
                     </div>
                     <div>
-                      <span>{{comment['no_of_votes']}}</span>
+                      <span>{{ comment["no_of_votes"] }}</span>
                     </div>
                     <div>
-                      <a href="javascript:;" (click)="downVoteComment(comment['_id'])"><i class="chevron-down"></i></a>
+                      <a
+                        href="javascript:;"
+                        (click)="downVoteComment(comment['_id'])"
+                        ><i class="chevron-down"></i
+                      ></a>
                     </div>
                   </div>
                   <div class="comment_box">
-                    <div class="s-name">{{comment['track_id']['name']}}</div>
-                    <div class="pull-right"
-                      *ngIf="user && user.user && comment['user_id']['_id'] != user['user']['_id']">
-                      <a href="javascript:;" (click)="flagUser(comment['user_id']['_id'])"><i
-                          class="fa fa-flag"></i></a>
+                    <div class="s-name">{{ comment["track_id"]["name"] }}</div>
+                    <div
+                      class="pull-right"
+                      *ngIf="
+                        user &&
+                        user.user &&
+                        comment['user_id']['_id'] != user['user']['_id']
+                      "
+                    >
+                      <a
+                        href="javascript:;"
+                        (click)="flagUser(comment['user_id']['_id'])"
+                        ><i class="fa fa-flag"></i
+                      ></a>
                     </div>
 
-                    <div class="s-img"><img
-                        src="{{comment['user_id']['image'] ? user_img_url+comment['user_id']['image'] : 'img/upload1.png'}}"
-                        alt="img"></div>
+                    <div class="s-img">
+                      <img
+                        src="{{
+                          comment['user_id']['image']
+                            ? user_img_url + comment['user_id']['image']
+                            : 'img/upload1.png'
+                        }}"
+                        alt="img"
+                      />
+                    </div>
                     <div class="cm-date-name">
-                      <h6>{{comment['user_id']['first_name']+' '+comment['user_id']['last_name']}}.</h6>
-                      <p>{{comment['created_at'] | timeAgo}}</p>
+                      <h6>
+                        {{
+                          comment["user_id"]["first_name"] +
+                            " " +
+                            comment["user_id"]["last_name"]
+                        }}.
+                      </h6>
+                      <p>{{ comment["created_at"] | timeAgo }}</p>
                       <div class="profile-descriptions">
-                        <p>{{comment['comment']}}</p>
+                        <p>{{ comment["comment"] }}</p>
                       </div>
                     </div>
                   </div>
@@ -132,46 +250,67 @@
   </div>
 </div>
 
-
 <ng-template #shareTrack let-c="close" let-d="dismiss">
   <div class="modal_login_wrapper">
-    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="d('Cross click')"
+    >
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
   <div class="modal-body">
     <div class="shared_popup">
       <div class="col-12 text-center shared_popup_header">
-        <h4>Share This Track</h4><br>
+        <h4>Share This Track</h4>
+        <br />
         <!-- <span>You are Sharing the "{{track_data && track_data['name'] ? track_data['name'] : '' }}" Track</span> -->
       </div>
       <div class="row">
         <div class="col-sm-6">
           <div class="col-12">
-            <button class="btn btn-primary social_button fb_btn" (click)="shareOnFacebook()">
+            <button
+              class="btn btn-primary social_button fb_btn"
+              (click)="shareOnFacebook()"
+            >
               <i class="fa fa-facebook"></i> Facebook
             </button>
           </div>
           <div class="col-12">
-            <button class="btn btn-success social_button comment_btn" (click)="openPhoneShareTrackModel(phoneno)">
-              <i class="fa fa-comment "></i> SMS
+            <button
+              class="btn btn-success social_button comment_btn"
+              (click)="openPhoneShareTrackModel(phoneno)"
+            >
+              <i class="fa fa-comment"></i> SMS
             </button>
           </div>
           <div class="col-12">
-            <button class="btn btn-primary social_button link_btn" (click)="copy_link()" tooltip="Link Coppied"
-              triggers="click">
+            <button
+              class="btn btn-primary social_button link_btn"
+              (click)="copy_link()"
+              tooltip="Link Coppied"
+              triggers="click"
+            >
               <i class="fa fa-link"></i> Copy Link
             </button>
           </div>
         </div>
         <div class="col-sm-6">
           <div class="col-12">
-            <button class="btn btn-info social_button twitter_btn" (click)="shareOnTwitter()">
+            <button
+              class="btn btn-info social_button twitter_btn"
+              (click)="shareOnTwitter()"
+            >
               <i class="fa fa-twitter"></i> Twitter
             </button>
           </div>
           <div class="col-12">
-            <button class="btn btn-danger social_button email_btn" (click)="openEmailShareTrackModel(email)">
+            <button
+              class="btn btn-danger social_button email_btn"
+              (click)="openEmailShareTrackModel(email)"
+            >
               <i class="fa fa-envelope"></i> Email
             </button>
           </div>
@@ -184,7 +323,12 @@
 <ng-template #email let-c="close" let-d="dismiss">
   <div class="modal-body">
     <div class="modal-box">
-      <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <button
+        type="button"
+        class="close"
+        aria-label="Close"
+        (click)="d('Cross click')"
+      >
         <span aria-hidden="true">&times;</span>
       </button>
       <form [formGroup]="share_form">
@@ -192,19 +336,43 @@
         <div class="col-sm-12">
           <div class="form-group">
             <label class="control-label custom_form_label">Email Id</label>
-            <input type="email" class="form-control custom_form" formControlName="email" name="email"
-              [(ngModel)]="share_data['email']" placeholder="Enter Email" />
-            <div class="cust_err_msg" *ngIf="share_form_validation && !share_form.controls['email'].valid">
-              <span *ngIf="share_form.controls['email'].errors['required']" class="text-danger">Email is
-                required.</span>
+            <input
+              type="email"
+              class="form-control custom_form"
+              formControlName="email"
+              name="email"
+              [(ngModel)]="share_data['email']"
+              placeholder="Enter Email"
+            />
+            <div
+              class="cust_err_msg"
+              *ngIf="
+                share_form_validation && !share_form.controls['email'].valid
+              "
+            >
               <span
-                *ngIf="!share_form.controls['email'].errors['required'] && share_form.controls['email'].errors['email']"
-                class="text-danger">Enter valid email.</span>
+                *ngIf="share_form.controls['email'].errors['required']"
+                class="text-danger"
+                >Email is required.</span
+              >
+              <span
+                *ngIf="
+                  !share_form.controls['email'].errors['required'] &&
+                  share_form.controls['email'].errors['email']
+                "
+                class="text-danger"
+                >Enter valid email.</span
+              >
             </div>
           </div>
           <div class="form-group text-right">
-            <button class="btn forget_btn" (click)="share_via_email(share_form.valid)" [disabled]="show_spinner">Submit
-              <i *ngIf="show_spinner" class="fa fa-spinner fa-spin"></i></button>
+            <button
+              class="btn forget_btn"
+              (click)="share_via_email(share_form.valid)"
+              [disabled]="show_spinner"
+            >
+              Submit <i *ngIf="show_spinner" class="fa fa-spinner fa-spin"></i>
+            </button>
           </div>
         </div>
       </form>
@@ -215,7 +383,12 @@
 <ng-template #phoneno let-c="close" let-d="dismiss">
   <div class="modal-body">
     <div class="modal-box">
-      <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <button
+        type="button"
+        class="close"
+        aria-label="Close"
+        (click)="d('Cross click')"
+      >
         <span aria-hidden="true">&times;</span>
       </button>
       <form [formGroup]="share_form_phone">
@@ -223,19 +396,45 @@
         <div class="col-sm-12">
           <div class="form-group">
             <label class="control-label custom_form_label">Phone Number</label>
-            <input type="email" class="form-control custom_form" formControlName="phone" name="phone"
-              [(ngModel)]="share_data['phone_no']" placeholder="Enter Phone Number" />
-            <div class="cust_err_msg" *ngIf="share_form_validation && !share_form_phone.controls['phone'].valid">
-              <span *ngIf="share_form_phone.controls['phone'].errors['required']" class="text-danger">Phone Number is
-                required.</span>
+            <input
+              type="email"
+              class="form-control custom_form"
+              formControlName="phone"
+              name="phone"
+              [(ngModel)]="share_data['phone_no']"
+              placeholder="Enter Phone Number"
+            />
+            <div
+              class="cust_err_msg"
+              *ngIf="
+                share_form_validation &&
+                !share_form_phone.controls['phone'].valid
+              "
+            >
               <span
-                *ngIf="!share_form_phone.controls['phone'].errors['required'] && share_form_phone.controls['phone'].errors['minlength'] || share_form_phone.controls['phone'].errors['maxlength'] "
-                class="text-danger">Enter valid phone Number.</span>
+                *ngIf="share_form_phone.controls['phone'].errors['required']"
+                class="text-danger"
+                >Phone Number is required.</span
+              >
+              <span
+                *ngIf="
+                  (!share_form_phone.controls['phone'].errors['required'] &&
+                    share_form_phone.controls['phone'].errors['minlength']) ||
+                  share_form_phone.controls['phone'].errors['maxlength']
+                "
+                class="text-danger"
+                >Enter valid phone Number.</span
+              >
             </div>
           </div>
           <div class="form-group text-right">
-            <button class="btn forget_btn" (click)="share_via_sms(share_form_phone.valid)"
-              [disabled]="show_spinner">Submit <i *ngIf="show_spinner" class="fa fa-spinner fa-spin"></i></button>
+            <button
+              class="btn forget_btn"
+              (click)="share_via_sms(share_form_phone.valid)"
+              [disabled]="show_spinner"
+            >
+              Submit <i *ngIf="show_spinner" class="fa fa-spinner fa-spin"></i>
+            </button>
           </div>
         </div>
       </form>
@@ -246,7 +445,12 @@
 <ng-template #purchase let-c="close" let-d="dismiss">
   <div class="modal-body">
     <div class="modal-box">
-      <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <button
+        type="button"
+        class="close"
+        aria-label="Close"
+        (click)="d('Cross click')"
+      >
         <span aria-hidden="true">&times;</span>
       </button>
       <form id="payment-form">
@@ -277,11 +481,19 @@
           </div>
           <div class="form-group">
             <label class="control-label custom_form_label">Price</label>
-            <input class="form-control custom_form" value="{{'$'+track['price']}}" readonly />
+            <input
+              class="form-control custom_form"
+              value="{{ '$' + track['price'] }}"
+              readonly
+            />
           </div>
           <div class="form-group text-right">
-            <button class="btn forget_btn" [disabled]="show_spinner || card_loader">Submit <i *ngIf="show_spinner"
-                class="fa fa-spinner fa-spin"></i></button>
+            <button
+              class="btn forget_btn"
+              [disabled]="show_spinner || card_loader"
+            >
+              Submit <i *ngIf="show_spinner" class="fa fa-spinner fa-spin"></i>
+            </button>
           </div>
         </div>
       </form>
