@@ -78,6 +78,7 @@ router.post("/", async (req, res) => {
         type: "comment",
         body:
           resp.user.first_name +
+          " " +
           resp.user.last_name +
           " commented on your track " +
           trackName.track.name +
