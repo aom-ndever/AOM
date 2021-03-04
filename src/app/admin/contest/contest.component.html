@@ -530,7 +530,13 @@
             </div>
           </div>
         </div>
-        <div class="form-group">
+        <div
+          class="form-group"
+          *ngIf="
+            contest_validation.controls['region'].value !==
+            '603e0a76ed61126334a38044'
+          "
+        >
           <div class="form-group custom_modal_form">
             <label class="control-label">State</label>
             <select
@@ -556,6 +562,34 @@
             </div>
           </div>
         </div>
+        <!-- <div
+          class="form-group"
+          *ngIf="
+            contest_validation.controls['region'].value ===
+            '603e0a76ed61126334a38044'
+          "
+        >
+          <div class="form-group custom_modal_form">
+            <label class="control-label">State</label>
+            <p-multiSelect
+              autoWidth="false"
+              [style]="{ width: '100%' }"
+              [options]="state_list"
+              optionLabel="name"
+              formControlName="states"
+            ></p-multiSelect>
+            <div
+              class="terms_error_msg"
+              *ngIf="is_valid && !contest_validation.controls['states'].valid"
+            >
+              <span
+                *ngIf="contest_validation.controls['states'].errors['required']"
+                class="text-danger"
+                >States is required.</span
+              >
+            </div>
+          </div>
+        </div> -->
         <div class="row modal_btns">
           <div class="col-sm-6">
             <button

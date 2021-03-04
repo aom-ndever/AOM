@@ -8,7 +8,6 @@ module.exports = function (req, res, next) {
     req.userInfo = req.decoded;
     next();
   } else if (req.decoded.role == "admin" && req.baseUrl.match("/admin")) {
-    console.log(" : here ==> ");
     req.userInfo = req.decoded;
     next();
   } else if (

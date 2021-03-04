@@ -3,6 +3,7 @@ var jwt = require("jsonwebtoken");
 var mongoose = require("mongoose");
 var ObjectId = mongoose.Types.ObjectId;
 var User = require("./../models/user");
+const global_helper = require("./global_helper");
 var user_helper = {};
 
 /*
@@ -45,7 +46,6 @@ user_helper.get_user_by_email = async (email) => {
       $regex: re,
     };
     var user = await User.findOne({ email: value, is_del: false }).lean();
-    console.log(" : user ==> ", user);
     if (user) {
       return { status: 1, message: "user details found", user: user };
     } else {

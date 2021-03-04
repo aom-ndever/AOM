@@ -117,7 +117,6 @@ purchase_helper.get_purchased_track = async (user_id, start, length) => {
       },
     ];
     var tracks = await Purchase.aggregate(aggregates);
-    console.log(" : tracks ==> ", tracks);
     var tot_cnt = tracks.length;
 
     var aggregate = [

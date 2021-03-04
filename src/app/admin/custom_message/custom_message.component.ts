@@ -28,9 +28,7 @@ export class CustomMessageComponent implements OnInit, OnDestroy {
     // this.ngxService.start();
     this.CustomMessageService.getAllContest().subscribe(
       (res) => {
-        console.log(" : res ==> ", res["contest"]);
         res["contest"].map((e) => {
-          console.log(" : e ==> ", e);
           var obj = {
             label: e.name,
             value: e._id,
@@ -40,7 +38,6 @@ export class CustomMessageComponent implements OnInit, OnDestroy {
         // this.ngxService.stop();
       },
       (err) => {
-        console.log(" : err ==> ", err);
         // this.ngxService.stop();
       }
     );
@@ -57,7 +54,6 @@ export class CustomMessageComponent implements OnInit, OnDestroy {
     if (flag) {
       this.CustomMessageService.sendMessage(this.customMessage.value).subscribe(
         (res) => {
-          console.log(" : res ==> ", res);
           if (res["status"] === 1) {
             this.toastr.success(res["message"], "Success!");
             this.customMessage.reset();
@@ -65,7 +61,6 @@ export class CustomMessageComponent implements OnInit, OnDestroy {
           }
         },
         (err) => {
-          console.log(" : err ==> ", err);
           this.toastr.error(err["error"].message, "Error!");
         }
       );

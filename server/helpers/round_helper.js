@@ -111,8 +111,6 @@ round_helper.get_last_round = async (id) => {
 };
 round_helper.update_hip_hop_participant = async (id, no_participants) => {
   try {
-    console.log("no_participants", no_participants);
-
     var contest = await Round.update(
       { contest_id: new ObjectId(id) },
       { $set: { hip_hop_participants: no_participants } }

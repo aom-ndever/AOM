@@ -121,9 +121,7 @@ artist_notifications_helper.add_notifications = async (
       }
     );
 
-    console.log(" : authUserId ==> ", authUserId);
-    var user = socket.users.get(authUserId);
-    console.log(" : user ==> ", user);
+    var user = socket.users.get(authUserId.toString());
     if (user) {
       var socketIds = user.socketIds;
       socketIds.forEach((socketId) => {
@@ -159,7 +157,6 @@ artist_notifications_helper.add_notifications = async (
  */
 artist_notifications_helper.notification_seen = async (id, updateObject) => {
   try {
-    console.log(" : id, updateObject ==> ", id, updateObject);
     // return false;
     let resp = await ArtistNotifications.updateMany(
       { receiver: id },

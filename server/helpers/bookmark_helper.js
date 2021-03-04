@@ -318,12 +318,10 @@ bookmark_helper.get_all_bookmarked_tracks = async (user_id, start, length) => {
 };
 
 bookmark_helper.get_all_bookmarked = async (user_id) => {
-  console.log("1 => ", 1);
   try {
     var bookmark = await Bookmark.find({ user_id: new ObjectId(user_id) })
       .populate({ path: "track_id", populate: { path: "artist_id" } })
       .populate({ path: "user_id", populate: { path: "music_type" } });
-    console.log("bookmark => ", bookmark);
     if (bookmark) {
       return {
         status: 1,

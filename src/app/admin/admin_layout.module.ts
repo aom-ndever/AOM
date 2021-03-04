@@ -30,6 +30,7 @@ import { AlertService } from "./alerts/alerts.service";
 import { LazyLoadImageModule } from "ng-lazyload-image";
 import { CustomMessageComponent } from "./custom_message/custom_message.component";
 import { DropdownModule } from "primeng/primeng";
+import { MultiSelectModule } from "primeng/multiselect";
 import { InputTextareaModule } from "primeng/inputtextarea";
 import { NotificationsComponent } from "./notifications/notifications.component";
 import { NotificationsService } from "./notifications/notifications.service";
@@ -52,6 +53,7 @@ import { NotificationsService } from "./notifications/notifications.service";
     DataTablesModule,
     LazyLoadImageModule,
     DropdownModule,
+    MultiSelectModule,
     InputTextareaModule,
     RouterModule.forChild([
       {

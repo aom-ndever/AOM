@@ -80,7 +80,6 @@ copyright_track_notification_helper.get_admin_notification_count = async (
 
 copyright_track_notification_helper.get_all_notification = async (id) => {
   try {
-    console.log(" : id ==> ", id);
     var aggregate = [
       {
         $match: {
@@ -152,8 +151,6 @@ copyright_track_notification_helper.notification_seen = async (
   updateObject
 ) => {
   try {
-    console.log(" : id, updateObject ==> ", id, updateObject);
-    // return false;
     let resp = await copyright_track_notification.updateMany(
       { receivers: { $elemMatch: { receiver: id } } },
       { $set: { "receivers.$.isSeen": 1 } }

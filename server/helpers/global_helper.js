@@ -13,7 +13,6 @@ global_helper.rename_keys = async (obj, new_keys) => {
 
 global_helper.send_notification = async (notificationObj, socket) => {
   try {
-    console.log(" :  ==> ", notificationObj, socket);
     let message_data = await notification_helper.add_notifications(
       notificationObj,
       socket
@@ -70,12 +69,10 @@ global_helper.send_user_notification = async (notificationObj, socket) => {
 
 global_helper.send_artist_message = async (messageObj, socket) => {
   try {
-    console.log(" : messageObj ==> ", messageObj);
     let message_data = await artist_message_helper.add_message(
       messageObj,
       socket
     );
-    console.log(" : message_data ==> ", message_data);
     if (message_data.status == 1) {
       return {
         inboxMessage: message_data,

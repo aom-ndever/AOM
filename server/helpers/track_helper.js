@@ -538,7 +538,6 @@ track_helper.update_artist_for_followers = async (id, no_follow) => {
 };
 track_helper.get_all_track_for_playlist = async (filter = {}) => {
   try {
-    console.log(" : filter ==> ", filter);
     var aggregate = [
       {
         $match: {

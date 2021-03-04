@@ -202,12 +202,12 @@ router.post("/", async (req, res) => {
             receivers.push({ receiver: new ObjectId(res.user_id) });
           });
 
-          var notificationObj = {
-            artist: uploaderId,
-            track: trackId,
-            type: "notification",
-            body: `${resp.artist.first_name} ${resp.artist.last_name} has uploaded the ${audioTitle} track, which is copyrighted.`,
-          };
+          // var notificationObj = {
+          //   artist: uploaderId,
+          //   track: trackId,
+          //   type: "notification",
+          //   body: `${resp.artist.first_name} ${resp.artist.last_name} has uploaded the ${audioTitle} track, which is copyrighted.`,
+          // };
 
           // const copyrightTrack = await copyright_track_notification_helper.insert_copyright_track_notification(
           //   notificationObj,

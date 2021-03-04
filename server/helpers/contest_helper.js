@@ -6,7 +6,6 @@ var _ = require("underscore");
 var ObjectId = mongoose.Types.ObjectId;
 
 contest_helper.insert_contest = async (object) => {
-  console.log(" : obj ==> ", object);
   let contest = new Contest(object);
   try {
     let contests = await contest.save();
@@ -22,9 +21,7 @@ contest_helper.insert_contest = async (object) => {
 
 contest_helper.get_contest_by_id = async (id) => {
   try {
-    console.log(" : id ==> ", id);
     var contest = await Contest.findOne({ _id: new ObjectId(id) });
-    console.log(" : contest ==> ", contest);
     if (contest) {
       return { status: 1, message: "contest details found", contest: contest };
     } else {
@@ -41,8 +38,6 @@ contest_helper.get_contest_by_id = async (id) => {
 
 contest_helper.update_participant = async (id, no_participants) => {
   try {
-    console.log("no_participants", no_participants);
-
     var contest = await Contest.update(
       { _id: new ObjectId(id) },
       { $set: { no_of_participant: no_participants } }

@@ -1,25 +1,31 @@
-import { Component } from '@angular/core';
-import { setTheme } from 'ngx-bootstrap/utils';
-import { Location } from '@angular/common';
-import { Router, NavigationStart, NavigationCancel, NavigationEnd, NavigationError, Event as RouterEvent, } from '@angular/router';
+import { Component } from "@angular/core";
+import { setTheme } from "ngx-bootstrap/utils";
+import { Location } from "@angular/common";
+import {
+  Router,
+  NavigationStart,
+  NavigationCancel,
+  NavigationEnd,
+  NavigationError,
+  Event as RouterEvent,
+} from "@angular/router";
 // import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  selector: "app-root",
+  templateUrl: "./app.component.html",
+  styleUrls: ["./app.component.css"],
 })
 export class AppComponent {
-  title = 'app';
+  title = "app";
   loading = true;
-  url: any = '';
+  url: any = "";
   constructor(
     private router: Router,
-    private location: Location,
-    // private spinner: NgxSpinnerService
-  ) {
-    // console.log('app component => ');
-    setTheme('bs4');
+    private location: Location
+  ) // private spinner: NgxSpinnerService
+  {
+    setTheme("bs4");
     router.events.subscribe((event: RouterEvent) => {
       this.navigationInterceptor(event);
     });

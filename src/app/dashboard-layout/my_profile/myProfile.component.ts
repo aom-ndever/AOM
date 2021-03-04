@@ -186,7 +186,6 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
     private ngxService: NgxUiLoaderService,
     private ngxModalService: BsModalService
   ) {
-    console.log("profile setting component  => ");
     this.user = JSON.parse(localStorage.getItem("user"));
     this.ngxService.start();
     this.isProfilePic = true;
@@ -205,7 +204,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
     for (let i = 1900; i <= new Date().getFullYear(); i++) {
       this.year.push(i);
     }
-    console.log(" : data ==> ", data);
+
     if (data && data.artist) {
       this.userdata = { ...data["artist"] };
 
@@ -237,7 +236,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
       }
     } else {
       this.userdata = { ...data["user"] };
-      console.log(" : this.userdata ==> ", this.userdata);
+
       this.userdata["type"] = "user";
       const share_url = {
         share_url: {
@@ -255,7 +254,6 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
       delete this.userdata["token"];
       delete this.userdata["token"];
       if (this.userdata.dob) {
-        console.log(" : here ==> ");
         const dt = new Date(this.userdata.dob);
         this.userdata["day"] = dt.getDate();
         this.userdata["month"] = dt.getMonth();
@@ -506,7 +504,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
 
         if (response && response["loggedin_user"]) {
           data = response["loggedin_user"];
-          console.log(" : data after update ==> ", data);
+
           if (data && data.artist) {
             this.userdata = { ...data["artist"] };
             this.userdata["type"] = "artist";
@@ -549,7 +547,6 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
               this.userdata["year"] = dt.getFullYear();
             }
             if (this.userdata.image) {
-              console.log("here ==> ", this.userdata["image"]);
               if (
                 (this.userdata.provider &&
                   this.userdata.provider === "facebook" &&
@@ -1374,8 +1371,8 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
 
   changePassword() {
     // if (this.change_pwd['old'] && this.userdata.pwd === this.change_pwd['old']) {
-    // console.log('this.change_pwd["new"] => ', this.change_pwd['new']);
-    // console.log('this.change_pwd["repeat"] => ', this.change_pwd['repeat']);
+    //
+    //
     if (
       this.change_pwd["new"] &&
       this.change_pwd["repeat"] &&
@@ -1397,7 +1394,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
             this.toastr.success(response["resp"], "Success!");
           },
           (error) => {
-            // console.log("error => ", error);
+            //
             this.toastr.error(error["error"].message, "Error!");
             this.show_spinner = false;
           },
@@ -1408,13 +1405,12 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
       } else {
         this.myProfileService.changeUserPassword(data).subscribe(
           (response) => {
-            // console.log('response => ', response);
+            //
             this.change_pwd = {};
             this.updateLocalStorage();
             this.toastr.success(response["resp"], "Success!");
           },
           (error) => {
-            console.log(" : error ==> ", error);
             this.toastr.error(error["error"].message, "Error!");
             this.show_spinner = false;
           },
@@ -2524,7 +2520,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
 
   // Remove existing playlist
   removePlaylist(id: any, idx: any) {
-    // console.log('idx => ', idx);
+    //
     swal({
       title: "Are you sure?",
       text: "You won't be able to revert this!",
@@ -3010,9 +3006,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
       userType = this.user.user.type;
       this.myProfileService.deactiveDeleteAccountUser(obj).subscribe(
         (res) => {
-          console.log(" : res ==> ", res);
           if (res) {
-            console.log(" : res ==> ", res);
             this.toastr.success(res["message"], "Success!");
             localStorage.removeItem("user");
             this.messageService.setupdatedUserDetail("");
@@ -3021,17 +3015,13 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
           }
           // // window.location.replace('');
         },
-        (error) => {
-          console.log(" : error ==> ", error);
-        }
+        (error) => {}
       );
     } else {
       userType = this.user.artist.type;
       this.myProfileService.deactiveDeleteAccountArtist(obj).subscribe(
         (res) => {
-          console.log(" : res ==> ", res);
           if (res) {
-            console.log(" : res ==> ", res);
             this.toastr.success(res["message"], "Success!");
             localStorage.removeItem("user");
             this.messageService.setupdatedUserDetail("");
@@ -3040,17 +3030,13 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
           }
           // // window.location.replace('');
         },
-        (error) => {
-          console.log(" : error ==> ", error);
-        }
+        (error) => {}
       );
     }
   }
 
   changeValue(type, event) {
-    console.log(" : type, event.target.value ==> ", type, event.target.value);
     if (type === "is_del" && event.target.value === "on") {
-      console.log(" : here ==> ");
       this.is_del = true;
       this.is_deactivate = false;
     } else {

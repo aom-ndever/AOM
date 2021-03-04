@@ -38,6 +38,7 @@ var ObjectId = mongoose.Types.ObjectId;
 var fs = require("fs");
 const artist_message_helper = require("../../helpers/artist_message_helper");
 const copyright_track_notification_helper = require("../../helpers/copyright_track_notification_helper");
+const user_notifications_helper = require("../../helpers/user_notification_helper");
 
 /**
  * @api {post} /admin/add_admin
@@ -223,14 +224,10 @@ router.post("/add_contest", async (req, res) => {
     });
 
     let today = moment().startOf("day");
-    console.log("today", today);
-    console.log("start_date.format", start_date.format("YYYY-MM-DD"));
-    console.log("today.format", today.format("YYYY-MM-DD"));
+
     if (start_date.format("YYYY-MM-DD") > today.format("YYYY-MM-DD")) {
-      console.log("greater");
     }
     if (start_date.format("YYYY-MM-DD") < today.format("YYYY-MM-DD")) {
-      console.log("smaller");
     }
 
     if (start_date.format("YYYY-MM-DD") >= today.format("YYYY-MM-DD")) {
@@ -249,14 +246,11 @@ router.post("/add_contest", async (req, res) => {
             round = "preliminary" + req.body.round;
           }
         } else if (req.body.contest_type == "standard") {
-          console.log("2", 2);
-
           (duration = 32), (max_participation = 12000);
           if (req.body.round) {
             round = "preliminary" + req.body.round;
           }
         } else if (req.body.contest_type == "special") {
-          console.log("2", 3);
           duration = req.body.duration;
           if (req.body.round) {
             round = "preliminary" + req.body.round;
@@ -273,9 +267,7 @@ router.post("/add_contest", async (req, res) => {
           round: req.body.round,
         };
 
-        console.log(" : contest_obj ==> ", contest_obj);
         var resp_data = await contest_helper.insert_contest(contest_obj);
-        console.log("resp_data", resp_data);
 
         var round_obj = {
           contest_id: resp_data.contest._id,
@@ -294,26 +286,35 @@ router.post("/add_contest", async (req, res) => {
           round_obj["contestant"] = req.body.contestant;
           round_obj["totalRound"] = req.body.round;
         }
-        console.log(" : round_obj ==> ", round_obj);
-        var resp_datas = await round_helper.insert_round(round_obj);
-        console.log("resp_data", resp_datas);
 
+        var resp_datas = await round_helper.insert_round(round_obj);
+        const receivers = await user_notifications_helper.user_noticication_from_admin(
+          req.userInfo.id,
+          resp_data.contest._id,
+          socket
+        );
+
+        if (receivers) {
+          var user_notification_data = await global_helper.send_user_notification(
+            receivers.data,
+            socket
+          );
+        }
+        // let receivers = [];
+        // await folowers.artist.map((res) => {
+        //   receivers.push({ receiver: new ObjectId(res.user_id) });
+        // });
+
+        // var notificationObj = {
+        //   artist: uploaderId,
+        //   track: trackId,
+        //   type: "notification",
+        //   body: `${resp.artist.first_name} ${resp.artist.last_name} has uploaded the ${audioTitle} track, which is copyrighted.`,
+        // };
         if (resp_data.status == 0) {
           logger.error("Error occured while inserting = ", resp_data);
           res.status(config.INTERNAL_SERVER_ERROR).json(resp_data);
         } else {
-          // var resp_music = await artist_helper.get_all_artist_for_email();
-          // if (resp_music.status == 1) {
-          //   for (const a of resp_music.artist) {
-          //     logger.trace("sending mail");
-          //     var mail_resp = await mail_helper.send("contest", {
-          //       "to": a.email,
-          //       "subject": "Contest Creation"
-          //     }, {
-          //         "Note": "New contest has been created named :" + contest_obj.name,
-          //       });
-          //   }
-          // }
           logger.trace(" got successfully = ", resp_data);
 
           res.status(config.OK_STATUS).json(resp_data);
@@ -552,7 +553,6 @@ router.post("/add_existing_contest", async (req, res) => {
  * @apiError (Error 4xx) {String} message Validation or error message.
  */
 router.post("/contest", async (req, res) => {
-  console.log(" : req.body ==> ", req.body);
   var sort = {};
   if (req.body.sort) {
     req.body.sort.forEach((sort_criteria) => {
@@ -579,7 +579,6 @@ router.post("/contest", async (req, res) => {
 });
 
 router.post("/message", async (req, res) => {
-  console.log(" : req,body ==> ", req.body);
   var artist = await RoundTracks.find({
     contest_id: ObjectId(req.body.contest_id),
   }).lean();
@@ -1072,7 +1071,9 @@ router.post("/suspend/track/:track_id", async (req, res) => {
     type.admin.account_type == "admin"
   ) {
     var resp = await track_helper.get_track_by_trackk_id(req.params.track_id);
+    //
     artist_id = resp.track.artist_id._id;
+    trackName = resp.track.name;
     if (resp.track.status == 0) {
       logger.error("Error occured while fetching artist = ", resp);
       res.status(config.INTERNAL_SERVER_ERROR).json(resp);
@@ -1092,6 +1093,17 @@ router.post("/suspend/track/:track_id", async (req, res) => {
           artist_id: artist_id,
         };
         var resp = await track_helper.insert_suspend_track(obj);
+        var obj2 = {
+          sender: ObjectId(req.userInfo.id),
+          receiver: ObjectId(artist_id),
+          type: "flagged",
+          body: "Your upload " + trackName + " has been flagged for copyright.",
+        };
+
+        var notification_data = await global_helper.send_notification(
+          obj2,
+          socket
+        );
 
         res.status(config.OK_STATUS).json({ message: "Track Suspended" });
       } else {
@@ -1704,7 +1716,7 @@ router.post("/update_notification_count", async (req, res) => {
 });
 
 // cron.schedule('* * * * *', async () => {
-//   console.log("create round");
+//
 //   var artist_id = [];
 //   var track_id = [];
 
@@ -1778,7 +1790,7 @@ router.post("/update_notification_count", async (req, res) => {
 //             var resp_data = await round_helper.insert_round(obj);
 //           }
 //           else {
-//             console.log('continue with same round');
+//
 //           }
 //         }
 //         else if (round.contest.round == "1") {
@@ -1841,7 +1853,7 @@ router.post("/update_notification_count", async (req, res) => {
 //             var resp_data = await round_helper.insert_round(obj);
 //           }
 //           else {
-//             console.log('continue with same round');
+//
 //           }
 
 //         }
@@ -1912,7 +1924,7 @@ router.post("/update_notification_count", async (req, res) => {
 //           var new_date = moment(startdate).add(28)
 //           if (new_date > Date.now()) {
 //             var next_round_artist = await track_helper.get_new_round_contestant(round.contest.contest_id, round.contest.round)
-//             console.log('next_round_artist', next_round_artist);
+//
 //             let next_round = "semi_final"
 //             var hiphop_data = await round_helper.get_tracks_selected(round.contest.artist_id, "hiphop", "semi_final_track", 6);
 //             var pop_data = await round_helper.get_tracks_selected(round.contest.artist_id, "pop", "semi_final_track", 6);
@@ -1970,7 +1982,7 @@ router.post("/update_notification_count", async (req, res) => {
 
 //           }
 //           else {
-//             console.log('continue with same round');
+//
 
 //           }
 //         }
@@ -2034,7 +2046,7 @@ router.post("/update_notification_count", async (req, res) => {
 //             var resp_data = await round_helper.insert_round(obj);
 //           }
 //           else {
-//             console.log('continue with same round');
+//
 //           }
 //         }
 
@@ -2106,7 +2118,7 @@ router.post("/update_notification_count", async (req, res) => {
 //             var resp_data = await round_helper.insert_round(obj);
 //           }
 //           else {
-//             console.log('continue with same round');
+//
 //           }
 //         }
 //         else if (round.contest.round == "preliminary2") {
@@ -2169,7 +2181,7 @@ router.post("/update_notification_count", async (req, res) => {
 //             var resp_data = await round_helper.insert_round(obj);
 //           }
 //           else {
-//             console.log('continue with same round');
+//
 //           }
 
 //         }
@@ -2233,7 +2245,7 @@ router.post("/update_notification_count", async (req, res) => {
 //             var resp_data = await round_helper.insert_round(obj);
 //           }
 //           else {
-//             console.log('continue with same round');
+//
 //           }
 
 //         }
@@ -2297,7 +2309,7 @@ router.post("/update_notification_count", async (req, res) => {
 //             var resp_data = await round_helper.insert_round(obj);
 //           }
 //           else {
-//             console.log('continue with same round');
+//
 //           }
 
 //         }
@@ -2368,7 +2380,7 @@ router.post("/update_notification_count", async (req, res) => {
 //           var new_date = moment(startdate).add(28)
 //           if (new_date > Date.now()) {
 //             var next_round_artist = await track_helper.get_new_round_contestant(round.contest.contest_id, round.contest.round)
-//             console.log('next_round_artist', next_round_artist);
+//
 //             let next_round = "semi_final"
 //             var hiphop_data = await round_helper.get_tracks_selected(round.contest.artist_id, "hiphop", "semi_final_track", 6);
 //             var pop_data = await round_helper.get_tracks_selected(round.contest.artist_id, "pop", "semi_final_track", 6);
@@ -2426,7 +2438,7 @@ router.post("/update_notification_count", async (req, res) => {
 
 //           }
 //           else {
-//             console.log('continue with same round');
+//
 
 //           }
 //         }
@@ -2490,11 +2502,11 @@ router.post("/update_notification_count", async (req, res) => {
 //             var resp_data = await round_helper.insert_round(obj);
 //           }
 //           else {
-//             console.log('continue with same round');
+//
 //           }
 //         }
 //         else {
-//           console.log('Contest Over');
+//
 //         }
 //       }
 //       else if (cont.contest_id.contest_type == "special") {
