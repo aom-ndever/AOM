@@ -300,6 +300,7 @@ router.post("/add_contest", async (req, res) => {
             socket
           );
         }
+        console.log(" : changes ==> ");
         // let receivers = [];
         // await folowers.artist.map((res) => {
         //   receivers.push({ receiver: new ObjectId(res.user_id) });
