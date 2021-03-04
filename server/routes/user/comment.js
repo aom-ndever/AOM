@@ -77,11 +77,11 @@ router.post("/", async (req, res) => {
         receiver: req.body.artist_id,
         type: "comment",
         body:
-          "Got comment on track " +
+          resp.user.first_name +
+          resp.user.last_name +
+          " commented on your track " +
           trackName.track.name +
-          " from" +
-          " " +
-          resp.user.first_name,
+          ".",
       };
       var resp_data = await comment_helper.insert_comment_on_artist(obj);
       // var notification_data = await notification_helper.insert_comment_on_artist(notification_obj);

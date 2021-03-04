@@ -432,6 +432,21 @@ p.cmmnt-blc-cmmnt {
   display: block !important;
 }
 
+/* multi select dropdown */
+.custom_modal_form .ui-multiselect.ui-widget.ui-state-default.ui-corner-all {
+  border: none;
+  border-bottom: 1px solid #dddddd;
+}
+.custom_modal_form label.ui-multiselect-label.ui-corner-all {
+  color: #000000 !important;
+  font-size: 14px;
+  font-family: "Open Sans";
+  min-height: 1.2em;
+  opacity: 1 !important;
+}
+
+/* multi select dropdown */
+
 /* Responsive css starts here */
 @media (max-width: 580px) {
   #audioplayer {

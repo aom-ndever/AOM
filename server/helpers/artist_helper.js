@@ -571,7 +571,7 @@ artist_helper.get_login_by_email = async (email) => {
     })
       .populate("music_type")
       .lean();
-    console.log("artist => ", artist);
+
     if (artist) {
       return { status: 1, message: "artist details found", artist: artist };
     } else {
@@ -648,7 +648,7 @@ artist_helper.get_all_artist = async (search, filter) => {
         $match: filter,
       });
     }
-    console.log("filter => ", filter);
+
     if (search) {
       aggregate.push({
         $match: {
@@ -713,7 +713,6 @@ artist_helper.get_artist_by_filter = async (filter, start, length, filters) => {
         $limit: length,
       },
     ];
-    console.log("filter => ", filter);
 
     if (filter) {
       aggregate.push({
@@ -1098,7 +1097,6 @@ artist_helper.delete_artist_cover_image = async (artist_id) => {
 
 artist_helper.update_artist_email = async (artist_id, email) => {
   try {
-    // console.log(" : here ==> ");
     // re = new RegExp(email, "i");
     // value = {
     //   $regex: re,
@@ -1193,7 +1191,7 @@ artist_helper.get_new_uploads = async (search, filter = {}) => {
         $sort: { no_of_likes: -1 },
       },
     ];
-    console.log("filter => ", filter);
+
     if (filter) {
       aggregate.push({
         $match: filter,

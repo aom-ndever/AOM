@@ -73,7 +73,6 @@ export class NotificationsComponent implements OnInit, OnDestroy {
   }
 
   UpdateNotificationCounts() {
-    console.log(" : here 121 ==> ");
     this.user["count"] = 0;
     localStorage.setItem("user", JSON.stringify(this.user));
     this.user = JSON.parse(localStorage.getItem("user"));

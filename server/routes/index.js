@@ -42,7 +42,6 @@ const User = require("../models/user");
 const Artist = require("../models/artist");
 
 router.post("/serial_no", async (req, res) => {
-  console.log(" : req.body ==> ", req.body);
   var serialNumber = await serial_number_helper.get_serial_number(
     req.body.serial_no
   );
@@ -55,7 +54,6 @@ router.post("/serial_no", async (req, res) => {
     } else {
       let uses_count = serialNumber.serialNumber.uses_count;
       uses_count++;
-      console.log(" : uses_count ==> ", uses_count);
       var updated_record = await serial_number_helper.update_uses_count_by_id(
         serialNumber.serialNumber._id,
         uses_count
@@ -153,7 +151,6 @@ router.post("/artist_registration", async (req, res) => {
     }
     let artist = await artist_helper.get_artist_by_email(req.body.email);
     let user = await user_helper.get_user_by_email(req.body.email);
-    console.log("artist", artist);
 
     if (artist.status === 2 && user.status === 2) {
       var obj = {};
@@ -202,8 +199,6 @@ router.post("/artist_registration", async (req, res) => {
       //End image upload
 
       var data = await artist_helper.insert_artist(reg_obj);
-      console.log("data", data);
-
       var datas = await artist_helper.insert_notification(obj);
 
       if (data.status == 0) {
@@ -224,7 +219,6 @@ router.post("/artist_registration", async (req, res) => {
               config.website_url + "/email_confirm/artist/" + data.artist._id,
           }
         );
-        console.log("mail_resp", mail_resp);
 
         if (mail_resp.status === 0) {
           res.status(config.INTERNAL_SERVER_ERROR).json({
@@ -535,7 +529,6 @@ router.post("/user_registration_gmail", async (req, res) => {
       delete login_resp.user.created_at;
 
       logger.info("Token generated");
-      console.log(" : right ==> ");
       res.status(config.OK_STATUS).json({
         status: 1,
         message: "Logged in successful",
@@ -657,7 +650,6 @@ router.post("/login", async (req, res) => {
 
     let login_resp = await artist_helper.get_login_by_email(req.body.email);
     let userlogin_resp = await user_helper.get_login_by_email(req.body.email);
-    console.log("userlogin_resp => ", userlogin_resp);
     if (login_resp.status === 2 && userlogin_resp.status === 2) {
       logger.trace("Login checked resp = ", login_resp);
       logger.error(
@@ -788,7 +780,6 @@ router.post("/login", async (req, res) => {
               delete login_resp.artist.refresh_token;
               delete login_resp.artist.last_login_date;
               delete login_resp.artist.created_at;
-              console.log("login_resp.artist._id", login_resp.artist._id);
 
               logger.info("Token generated");
               var count = await ArtistNotification.countDocuments({
@@ -833,7 +824,6 @@ router.post("/login", async (req, res) => {
           .json({ message: "Your account is suspended by admin" });
       }
     } else if (userlogin_resp.status === 1) {
-      console.log("1 => ", 1);
       logger.trace("Artist found. Executing next instruction");
       logger.trace("valid token. Generating token");
       if (userlogin_resp.user.flag == false) {
@@ -889,10 +879,6 @@ router.post("/login", async (req, res) => {
                   delete userlogin_resp.user.refresh_token;
                   delete userlogin_resp.user.last_login_date;
                   delete userlogin_resp.user.created_at;
-                  console.log(
-                    "userlogin_resp.user._id",
-                    userlogin_resp.user._id
-                  );
 
                   logger.info("Token generated");
                   // var count = await ArtistNotification.countDocuments({
@@ -909,7 +895,6 @@ router.post("/login", async (req, res) => {
                     },
                   }).count();
 
-                  console.log(" : count ==> ", count);
                   res.status(config.OK_STATUS).json({
                     status: 1,
                     message: "Logged in successful",
@@ -981,7 +966,6 @@ router.post("/login", async (req, res) => {
                 delete userlogin_resp.user.refresh_token;
                 delete userlogin_resp.user.last_login_date;
                 delete userlogin_resp.user.created_at;
-                console.log("userlogin_resp.user._id", userlogin_resp.user._id);
 
                 logger.info("Token generated");
                 // var count = await ArtistNotification.countDocuments({
@@ -998,7 +982,6 @@ router.post("/login", async (req, res) => {
                   },
                 }).count();
 
-                console.log(" : count ==> ", count);
                 res.status(config.OK_STATUS).json({
                   status: 1,
                   message: "Logged in successful",
@@ -1124,14 +1107,12 @@ router.post("/user_registration", async (req, res) => {
     }
     let artist = await artist_helper.get_artist_by_email(req.body.email);
     let user = await user_helper.get_user_by_email(req.body.email);
-    console.log(" : user ==> ", user);
 
     if (user.status === 2 && artist.status === 2) {
       var data = await user_helper.insert_user(obj);
-      console.log(" : data ==> ", data);
+
       if (data.status == 0) {
         logger.trace("Error occured while inserting user - User Signup API");
-        console.log("data.error => ", data.error);
         logger.debug("Error = ", data.error);
         res.status(config.INTERNAL_SERVER_ERROR).json(data);
       } else {
@@ -1191,9 +1172,7 @@ router.post("/user_registration", async (req, res) => {
  * @apiError (Error 4xx) {String} message Validation or error message.
  */
 router.get("/user_email_verify/:user_id", async (req, res) => {
-  console.log("req.params.user_id => ", req.params.user_id);
   var user_resp = await user_helper.get_user_by_id(req.params.user_id);
-  console.log("user_resp => ", user_resp);
   if (user_resp.status === 0) {
     logger.error(
       "Error occured while finding user by id - ",
@@ -1566,8 +1545,7 @@ router.post("/forgot_password", async (req, res) => {
   if (!errors) {
     var resp = await user_helper.get_user_by_email(req.body.email);
     var artist_resp = await artist_helper.get_artist_by_email(req.body.email);
-    console.log(" : resp ==> ", resp);
-    console.log(" : artist_resp ==> ", artist_resp);
+
     if (resp.status === 0 && artist_resp.status === 0) {
       res
         .status(config.INTERNAL_SERVER_ERROR)
@@ -1700,7 +1678,7 @@ router.post("/reset_password", async (req, res) => {
           var artist_reset_resp = await artist_helper.get_artist_by_id(
             decoded.artist_id
           );
-          console.log(" artist_reset_resp:  ==> ", artist_reset_resp);
+
           if (reset_resp.status == 1) {
             if (decoded.user_id) {
               var update_resp = await user_helper.update_user_by_id(
@@ -2043,8 +2021,6 @@ router.post("/admin_forgot_password", async (req, res) => {
         1
       );
 
-      console.log(" : reset_response ==> ", reset_response);
-
       let mail_resp = await mail_helper.send(
         "reset_password",
         {
@@ -2333,7 +2309,7 @@ router.post("/mainpage", async (req, res) => {
   if (!errors) {
     var artist_ids = [];
     var resp_artist = await track_helper.get_track_main(search, filters);
-    // console.log('resp_artist => ', resp_artist);
+
     var resp_track = await track_helper.get_new_uploads(
       30,
       req.body.start,
@@ -2759,7 +2735,7 @@ router.post("/get_track_for_current_round", async (req, res) => {
     .populate({ path: "artist_id", populate: { path: "state" } })
     .skip(req.body.start)
     .limit(req.body.length);
-  console.log("track", track);
+
   res
     .status(config.OK_STATUS)
     .json({ data: track, recordsFiltered: filter_cnt, recordsTotal: tot_cnt });

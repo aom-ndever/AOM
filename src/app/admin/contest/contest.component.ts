@@ -80,6 +80,7 @@ export class ContestComponent implements OnInit {
       music_type: ["", [Validators.required]],
       region: ["", [Validators.required]],
       state: ["", [Validators.required]],
+      // states: ["", [Validators.required]],
     });
   }
 
@@ -185,7 +186,6 @@ export class ContestComponent implements OnInit {
     });
   }
   onChangeRound(e) {
-    console.log(" : e.target.value ==> ", e.target.value, e.target.value > 1);
     if (e.target.value > 1) {
       this.contestant_per_round = [];
       this.contestant = {};
@@ -193,12 +193,11 @@ export class ContestComponent implements OnInit {
         if (index !== 0) {
           var obj = {};
           obj[`label`] = `Round${index + 1}`;
-          console.log(" : obj ==> ", obj);
+
           this.contestant[obj["label"]] = "";
           this.contestant_per_round.push(obj);
         }
       }
-      console.log(" : contestant_per_round ==> ", this.contestant_per_round);
     }
   }
 
@@ -231,11 +230,23 @@ export class ContestComponent implements OnInit {
 
   // Get state from region
   getStateFromRegion(id: any) {
-    if (id && id !== "") {
+    if (id && id !== "" && id !== "603e0a76ed61126334a38044") {
+      // this.contest_validation.controls["states"].setValue("");
+
       const data = {
         region: id,
       };
       this.contestService.getStateByRegion(data).subscribe((response) => {
+        this.state_list = response["state"];
+        if (this.contest_detail) {
+          this.contest_detail["state"] = this.contest_detail["state"]
+            ? this.contest_detail["state"]["_id"]
+            : "";
+        }
+      });
+    } else {
+      this.contest_validation.controls["state"].setValue("");
+      this.contestService.getAllState().subscribe((response) => {
         this.state_list = response["state"];
         if (this.contest_detail) {
           this.contest_detail["state"] = this.contest_detail["state"]
@@ -265,7 +276,6 @@ export class ContestComponent implements OnInit {
       // this.show_spinner = true;
       let data;
       if (this.contest_detail["duration"]) {
-        console.log(" : this. ==> ", this.contestant);
         data = {
           name: this.contest_detail["name"],
           contest_type: this.contest_detail["contest_type"],
@@ -298,8 +308,6 @@ export class ContestComponent implements OnInit {
           year: this.contest_detail["year"],
         };
       }
-
-      console.log(" : data ==> ", data);
       // commented for testing purpose only
       this.contestService.addNewContest(data).subscribe(
         (response) => {

@@ -34,8 +34,6 @@ export class ForgetPasswordComponent implements OnInit {
     );
     this.route.params.subscribe((res) => {
       this.param = res;
-      console.log(" : this.param ==> ", this.param);
-      console.log(" : this.param.type ==> ", this.route.snapshot.url[1].path);
     });
   }
 
@@ -107,7 +105,6 @@ export class ForgetPasswordComponent implements OnInit {
         password: this.forget_password,
       };
       this.show_spinner = true;
-      console.log(" : here ==> ", "me");
       this.forgetPasswordService.adminChangePassword(data).subscribe(
         (response) => {
           this.forget_password = "";

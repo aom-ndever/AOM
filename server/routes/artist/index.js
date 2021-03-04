@@ -246,7 +246,6 @@ router.post("/add_bank_details", async (req, res) => {
   };
   var artist_data = await artist_helper.get_artist_by_id(artist_id);
   var card_resp = await artist_helper.insert_bank(obj);
-  console.log("card_resp", card_resp);
 
   bank_id = card_resp.card._id;
 
@@ -266,8 +265,6 @@ router.post("/add_bank_details", async (req, res) => {
       });
 
       var card_resp = await artist_helper.get_account_by_artist_id(artist_id);
-      console.log("card_resp====>", card_resp.status);
-      console.log("artist_id", artist_id);
 
       //if (card_resp && card_resp.status != 1) {
       var account = await stripe.accounts.create({
@@ -281,7 +278,6 @@ router.post("/add_bank_details", async (req, res) => {
         bank_id: bank_id,
       };
       var card_resps = await artist_helper.insert_account(account_obj);
-      console.log("card_resps", card_resps);
 
       //  }
       await stripe.accounts.createExternalAccount(
@@ -297,8 +293,6 @@ router.post("/add_bank_details", async (req, res) => {
         card_resp.card._id,
         req.userInfo.id
       );
-
-      console.log("delete_data", del_resp);
 
       res
         .status(config.BAD_REQUEST)
@@ -807,7 +801,6 @@ router.put("/settings/email", async (req, res) => {
     if (resp.status === 1) {
       if (resp.artist.email == req.body.email) {
         if (req.body.new_email) {
-          console.log(" : req.body.email ==> ", req.body.new_email);
           var resp = await artist_helper.update_artist_email(
             artist_id,
             req.body.new_email
@@ -1029,8 +1022,6 @@ router.get("/track_comment", async (req, res) => {
 // submit the tracks for contest
 
 router.post("/submit_tracks", async (req, res) => {
-  console.log("1", 1);
-
   artist_id = req.userInfo.id;
   var schema = {
     // "contest_id": {
@@ -1084,19 +1075,13 @@ router.post("/submit_tracks", async (req, res) => {
 
     if (artist_participation.status == 2) {
       var contest_data = await contest_helper.get_contest_by_id(obj.contest_id);
-      console.log("contest_data", contest_data);
 
       var participate_data = await round_helper.get_round_by_id(obj.contest_id);
-      console.log("participate_data", participate_data);
 
       if (contest_data.contest.contest_type == "special") {
         var artist_data = await artist_helper.get_artist_by_id(artist_id);
         artist_music = artist_data.artist.music_type._id;
-        console.log("artist_music => ", artist_music);
-        console.log(
-          "contest_data.contest.music_type => ",
-          contest_data.contest.music_type
-        );
+
         if (
           artist_music.toString() == contest_data.contest.music_type.toString()
         ) {
@@ -1326,7 +1311,7 @@ router.get("/contest", async (req, res) => {
 
 router.get("/message", async (req, res) => {
   var resp = await artist_message_helper.get_all_message(req.userInfo.id);
-  console.log(" : resp ==> ", resp);
+
   if (resp.status == 0) {
     logger.error("Error occured while fetching notification = ", resp);
     res.status(config.INTERNAL_SERVER_ERROR).json(resp);
@@ -1346,7 +1331,6 @@ router.get("/message", async (req, res) => {
 });
 
 router.get("/message/:id", async (req, res) => {
-  console.log(" : req.params.user_id ==> ", req.params.id);
   var resp = await artist_message_helper.getMessageById(
     req.params.id,
     req.userInfo.id,
@@ -1369,7 +1353,7 @@ router.get("/message/:id", async (req, res) => {
     }
   }
   // var resp = await artist_message_helper.get_all_message(req.userInfo.id);
-  // console.log(" : resp ==> ", resp);
+  //
   // if (resp.status == 0) {
   //   logger.error("Error occured while fetching notification = ", resp);
   //   res.status(config.INTERNAL_SERVER_ERROR).json(resp);
@@ -1415,7 +1399,7 @@ router.get("/notification", async (req, res) => {
   var resp = await artist_notifications_helper.get_all_notification(
     req.userInfo.id
   );
-  console.log(" : resp ==> ", resp);
+
   if (resp.status == 0) {
     logger.error("Error occured while fetching notification = ", resp);
     res.status(config.INTERNAL_SERVER_ERROR).json(resp);

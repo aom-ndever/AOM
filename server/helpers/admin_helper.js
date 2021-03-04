@@ -217,8 +217,6 @@ admin_helper.get_login_by_email = async (email, password) => {
         },
       },
     }).count();
-    console.log("admin_notification_count :  ==> ", count);
-    console.log(" : admin ==> ", admin);
     if (admin && count >= 0) {
       return {
         status: 1,

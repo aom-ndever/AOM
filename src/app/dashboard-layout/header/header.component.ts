@@ -30,7 +30,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   count = 0;
   messageCount = 0;
   user: any = "";
-  notificationList: any;
+  notificationList: any = [];
   login_form: FormGroup;
   forget_form: FormGroup;
   show_spinner = false;
@@ -261,6 +261,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.count = this.user ? this.user.count : this.count;
     console.log(" : this.count ==> ", this.count);
     if (this.user) {
+      console.log(" : here ==> 1");
       this.socketCall();
     }
   }
@@ -579,7 +580,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
       this.headerService.getArtistNotification().subscribe(
         (res) => {
           this.notificationList = res["notifications"];
-          console.log(" : res ==> ", this.notificationList);
           this.UpdateArtistCounts();
         },
         (err) => {
@@ -616,7 +616,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
       this.headerService.getUserNotification().subscribe(
         (res) => {
           this.notificationList = res["notifications"];
-          console.log(" : res ==> ", this.notificationList);
           this.UpdateUserCounts();
         },
         (err) => {

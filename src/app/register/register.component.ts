@@ -256,8 +256,7 @@ export class RegisterComponent implements OnInit {
           image: profile.getImageUrl(),
           token: googleUser.getAuthResponse().id_token,
         };
-        console.log("profile => ", profile);
-        console.log("data :: Google response => ", data);
+
         this.registerService.userGoogleLogin(data).subscribe(
           (response) => {
             this.toastr.success(response["message"], "Success!");
@@ -619,8 +618,6 @@ export class RegisterComponent implements OnInit {
 
   public verifySerialNumber(flag: any) {
     if (flag) {
-      console.log(" :  ==> ", this.serialNumber.value);
-      console.log(" : this.serial_no_verified ==> ", this.serial_no_verified);
       if (this.serial_no_verified === false) {
         this.registerService
           .verifySerialNumber(this.serialNumber.value)

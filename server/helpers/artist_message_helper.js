@@ -80,7 +80,6 @@ artist_message_helper.get_artist_messages_count = async (sender) => {
       receivers: { $elemMatch: { receiver: sender.receiver, isSeen: 0 } },
     }).count();
 
-    console.log(" : count ==> ", count);
     return {
       status: 1,
       message: "messages found",
@@ -126,16 +125,9 @@ artist_message_helper.add_message = async (messageObj, socket, type = "") => {
           isSeen: 0,
         }
       );
-      console.log(
-        " : artist_messages_count.receiver ==> ",
-        artist_messages_count
-      );
       reciverId = artist_messages_count.receiver.toString();
-      console.log(" : socket.users 1==> ", reciverId);
-      console.log(" : socket.users ==> ", socket.users);
-      console.log(" : socket.users.get() ==> ", socket.users.get(reciverId));
       var user = await socket.users.get(reciverId);
-      console.log(" : user ==> ", user);
+
       if (user) {
         var socketIds = user.socketIds;
         socketIds.forEach((socketId) => {
@@ -235,7 +227,6 @@ artist_message_helper.get_all_message = async (id, userInfoID) => {
         message: "Messages not found",
       };
     } else {
-      console.log(" : resp ==> ", finalResult);
       return {
         status: 1,
         inboxMessages: finalResult,
@@ -252,7 +243,6 @@ artist_message_helper.get_all_message = async (id, userInfoID) => {
 };
 
 artist_message_helper.delete_message = async (data, socket) => {
-  console.log(" : data ==> ", data);
   try {
     let resp = await ArtistMessage.updateMany(
       {
@@ -305,17 +295,9 @@ artist_message_helper.delete_message = async (data, socket) => {
           message: "Messages not found",
         };
       } else {
-        console.log(" : resp ==> ", finalResult);
         if (messageCount >= 0) {
           reciverId = data.reqUser_id.toString();
-          console.log(" : socket.users 1==> ", reciverId);
-          console.log(" : socket.users ==> ", socket.users);
-          console.log(
-            " : socket.users.get() ==> ",
-            socket.users.get(reciverId)
-          );
           var user = await socket.users.get(reciverId);
-          console.log(" : user ==> ", user);
           if (user) {
             var socketIds = user.socketIds;
             socketIds.forEach((socketId) => {
@@ -402,17 +384,9 @@ artist_message_helper.markAsRead = async (data, socket) => {
           message: "Messages not found",
         };
       } else {
-        console.log(" : messageCount ==> ", messageCount);
         if (messageCount >= 0) {
           reciverId = data.reqUser_id.toString();
-          console.log(" : socket.users 1==> ", reciverId);
-          console.log(" : socket.users ==> ", socket.users);
-          console.log(
-            " : socket.users.get() ==> ",
-            socket.users.get(reciverId)
-          );
           var user = await socket.users.get(reciverId);
-          console.log(" : user ==> ", user);
           if (user) {
             var socketIds = user.socketIds;
             socketIds.forEach((socketId) => {
@@ -463,16 +437,9 @@ artist_message_helper.getMessageById = async (id, reqestedUserId, socket) => {
       },
     }).count();
     if (updateAsIsSeen) {
-      console.log(" : resp ==> ", resp);
-      console.log(" : messageCount ==> ", messageCount);
       var resObj = {};
       resp["receivers"].map((data, index) => {
-        console.log(
-          " : data.receiver.toString() === reqestedUserId ==> ",
-          data.receiver.toString() === reqestedUserId
-        );
         if (data.receiver.toString() === reqestedUserId) {
-          console.log(" : resp ==> ", resp);
           resObj = {
             _id: resp._id,
             sender: resp.sender,
@@ -485,7 +452,6 @@ artist_message_helper.getMessageById = async (id, reqestedUserId, socket) => {
             createdAt: resp.createdAt,
             modifiedAt: resp.modifiedAt,
           };
-          console.log(" : resObj ==> ", resObj);
         }
       });
 

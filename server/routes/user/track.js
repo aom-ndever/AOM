@@ -57,7 +57,7 @@ router.post("/purchase", async (req, res) => {
     var track_response = await track_helper.get_all_track_by_track_id(
       obj.track_id
     );
-    console.log("track_response => ", track_response);
+
     artist_id = track_response.track.artist_id._id;
 
     try {
@@ -70,7 +70,7 @@ router.post("/purchase", async (req, res) => {
       });
 
       var resp_data = await purchase_helper.purchase_track(obj);
-      console.log("resp_data => ", resp_data);
+
       if (resp_data.status == 0) {
         logger.error("Error occured while fetching music = ", resp_data);
         res.status(config.INTERNAL_SERVER_ERROR).json(resp_data);
@@ -361,23 +361,24 @@ router.post("/like_track", async (req, res) => {
         req.body.artist_id,
         req.body.track_id
       );
-      console.log(" : trackName ==> ", trackName);
+
       var notificationObj = {
         sender: req.userInfo.id,
         receiver: req.body.artist_id,
         type: "comment",
         body:
-          "Got like on track " +
-          trackName.track.name +
-          " from" +
+          response.user.first_name +
           " " +
-          response.user.first_name,
+          response.user.last_name +
+          " liked your track " +
+          trackName.track.name +
+          ".",
       };
       var notification_data = await global_helper.send_notification(
         notificationObj,
         socket
       );
-      console.log("notification_data", notification_data);
+
       logger.trace("like done successfully = ", data);
       res
         .status(config.OK_STATUS)
@@ -392,14 +393,14 @@ router.post("/like_track", async (req, res) => {
           obj.track_id
         );
       no_vote = resp_data.track.no_of_likes - 1;
-      console.log("no_vote => ", no_vote);
+
       var resp_data = await track_helper.update_track_for_likes(
         obj.track_id,
         no_vote
       );
       var responses = await artist_helper.get_artist_by_id(obj.artist_id);
       no_like = responses.artist.no_of_likes - 1;
-      console.log("no_like => ", no_like);
+
       var resp_data = await track_helper.update_artist_for_likes(
         obj.artist_id,
         no_like

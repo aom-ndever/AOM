@@ -1,5 +1,10 @@
+const Contest = require("../models/contest");
+const User = require("../models/user");
 var UserNotifications = require("../models/user_notification");
+const global_helper = require("./global_helper");
 var user_notifications_helper = {};
+var mongoose = require("mongoose");
+var ObjectId = mongoose.Types.ObjectId;
 // var socket = require("../socket/socketServer");
 
 /*
@@ -90,6 +95,48 @@ user_notifications_helper.get_user_notifications_count = async (sender) => {
   }
 };
 
+user_notifications_helper.user_noticication_from_admin = async (
+  reqUser,
+  contest_id,
+  socket
+) => {
+  try {
+    var users = await User.find({
+      $and: [{ flag: false }, { is_del: false }, { is_deactivate: false }],
+    });
+    let contestDetail = await Contest.findById({
+      _id: ObjectId(contest_id),
+    }).populate("music_type");
+
+    if (users && contestDetail) {
+      let receivers = [];
+      await users.map((ele) => {
+        receivers.push({ receiver: ObjectId(ele._id) });
+      });
+      var userNotificationObj = {
+        sender: reqUser,
+        receivers: receivers,
+        type: "notification",
+        body: "A new " + contestDetail["music_type"].name + " Contest started.",
+      };
+
+      return {
+        status: 1,
+        message: "user details found",
+        data: userNotificationObj,
+      };
+    } else {
+      return { status: 2, message: "user not found" };
+    }
+  } catch (err) {
+    return {
+      status: 0,
+      message: "Error occured while finding user",
+      error: err,
+    };
+  }
+};
+
 /*
  * add_notifications is used to insert into user_notifications collection
  *
@@ -126,11 +173,9 @@ user_notifications_helper.add_notifications = async (
         }
       );
       reciverId = user_notifications_count.receiver.toString();
-      console.log(" : socket.users 1==> ", reciverId);
-      console.log(" : socket.users ==> ", socket.users);
-      console.log(" : socket.users.get() ==> ", socket.users.get(reciverId));
+
       var user = await socket.users.get(reciverId);
-      console.log(" : user ==> ", user);
+
       if (user) {
         var socketIds = user.socketIds;
         socketIds.forEach((socketId) => {

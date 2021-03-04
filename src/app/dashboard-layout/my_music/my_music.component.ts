@@ -283,12 +283,9 @@ export class MyMusicComponent implements OnInit, OnDestroy {
       uint.forEach((byte) => {
         bytes.push(byte.toString(16));
       });
-      console.log(" : bytes ==> ", bytes);
+
       const hex = bytes.join("").toUpperCase();
       const allow_types = this.getMimetype(hex);
-      console.log("hex => ", hex);
-      console.log("allow_types => ", allow_types);
-      console.log(" : file.type ==> ", file.type);
 
       if (file.type === "audio/mpeg" && hex !== "4944334") {
         if (allow_types.indexOf("audio/mp3") === -1) {
