@@ -13,16 +13,15 @@ export class AuthService implements CanActivate {
 
   constructor(private router: Router) {}
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    const user = JSON.parse(localStorage.getItem("user"));
-    console.log(" : user ==> ", user);
+    const user = localStorage.getItem("user");
+    if (user) {
+      return true;
+    }
 
-    console.log(" : test ==>> ", state.url.includes("/admin"), user);
-
-    if (state.url.includes("/admin") && user && !user.hasOwnProperty("admin")) {
-      this.router.navigate([""]);
-    } else if (state.url.includes("/admin")) {
-      console.log(" : here ==> ");
+    if (state.url.includes("/admin")) {
       this.router.navigate(["/admin/login"]);
+    } else if (state.url.includes("/admin") && !user.hasOwnProperty("admin")) {
+      this.router.navigate([""]);
     } else {
       this.router.navigate([""]);
     }
