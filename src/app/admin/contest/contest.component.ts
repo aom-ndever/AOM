@@ -416,6 +416,8 @@ export class ContestComponent implements OnInit {
           );
           this.contest_detail = {};
           this.contestant = {};
+          this.state_list = [];
+          this.region_list = [];
           this.isSpecialContest = false;
           this.isSubmitted = false;
           this.contestModelRef.hide();
@@ -510,6 +512,8 @@ export class ContestComponent implements OnInit {
     this.contest_detail["no_of_round"] = "";
     this.contest_validation.controls["duration"].setValue("");
     this.contest_validation.controls["round"].setValue("");
+    this.state_list = [];
+    this.region_list = [];
     this.isSpecialContest = false;
     this.contestModelRef.hide();
   }
