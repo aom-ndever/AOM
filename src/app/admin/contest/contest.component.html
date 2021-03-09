@@ -351,10 +351,23 @@
                   <option value="standard">Standard</option>
                   <option value="special">Special</option>
                 </select>
-                <!-- <div class="terms_error_msg" *ngIf="is_valid && !contest_validation.controls['duration'].valid">
-                  <span *ngIf="contest_validation.controls['duration'].errors['required']" class="text-danger">Duration
-                    is required.</span>
-                </div> -->
+                <div
+                  class="terms_error_msg"
+                  *ngIf="
+                    is_valid &&
+                    !contest_validation.controls['contest_type'].valid
+                  "
+                >
+                  <span
+                    *ngIf="
+                      contest_validation.controls['contest_type'].errors[
+                        'required'
+                      ]
+                    "
+                    class="text-danger"
+                    >Contest type is required.</span
+                  >
+                </div>
               </div>
             </div>
 
@@ -544,25 +557,19 @@
               name="state"
               formControlName="state"
               [(ngModel)]="contest_detail['state']"
+              (change)="selectedState($event.target.value, 'single')"
             >
               <option value="" disabled selected>Select State</option>
               <option [value]="s['_id']" *ngFor="let s of state_list">
                 {{ s["name"] }}
               </option>
             </select>
-            <div
-              class="terms_error_msg"
-              *ngIf="is_valid && !contest_validation.controls['state'].valid"
-            >
-              <span
-                *ngIf="contest_validation.controls['state'].errors['required']"
-                class="text-danger"
-                >State is required.</span
-              >
+            <div class="terms_error_msg" *ngIf="isSubmitted && !singleState">
+              <span class="text-danger">State is required.</span>
             </div>
           </div>
         </div>
-        <!-- <div
+        <div
           class="form-group"
           *ngIf="
             contest_validation.controls['region'].value ===
@@ -577,19 +584,13 @@
               [options]="state_list"
               optionLabel="name"
               formControlName="states"
+              (onChange)="selectedState($event.value, 'multi')"
             ></p-multiSelect>
-            <div
-              class="terms_error_msg"
-              *ngIf="is_valid && !contest_validation.controls['states'].valid"
-            >
-              <span
-                *ngIf="contest_validation.controls['states'].errors['required']"
-                class="text-danger"
-                >States is required.</span
-              >
+            <div class="terms_error_msg" *ngIf="isSubmitted && !multiState">
+              <span class="text-danger">State is required.</span>
             </div>
           </div>
-        </div> -->
+        </div>
         <div class="row modal_btns">
           <div class="col-sm-6">
             <button

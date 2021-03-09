@@ -934,6 +934,36 @@ ul.gray_font {
   background-color: #e6e6e6;
   outline: none;
 }
+
+/* multiselect dropdown */
+
+span.ui-multiselect-filter-icon.pi.pi-search {
+  color: #4e1458 !important;
+}
+
+span.ui-chkbox-icon.ui-clickable.pi.pi-check {
+  border-color: #4e1458 !important;
+  background-color: #b210ce !important;
+  color: #ffffff;
+}
+
+li.ui-multiselect-item.ui-corner-all.ng-tns-c2-0.ng-star-inserted.ui-state-highlight {
+  background-color: #9c23b1 !important;
+  border-color: #4e1458 !important;
+}
+
+.ui-chkbox-box.ui-widget.ui-corner-all.ui-state-default.ui-state-active {
+  border-color: #4e1458;
+  background-color: #b210ce;
+  color: #ffffff;
+}
+
+.custom_modal_form label {
+  opacity: 1.5 !important;
+}
+
+/* multiselect dropdown */
+
 @media (min-width: 768px) {
   #wrapper #sidebar-wrapper {
     left: 235px;

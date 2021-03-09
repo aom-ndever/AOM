@@ -14,16 +14,9 @@ export class AuthService implements CanActivate {
   constructor(private router: Router) {}
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
     const user = JSON.parse(localStorage.getItem("user"));
-    console.log(" : user ==> ", user);
-
-    console.log(
-      ' : state.url.includes("/admin") ==> ',
-      state.url.includes("/admin")
-    );
-    console.log(
-      ' : user.hasOwnProperty("admin") ==> ',
-      user.hasOwnProperty("admin")
-    );
+    if (user && !state.url.includes("/admin")) {
+      return true;
+    }
 
     if (state.url.includes("/admin")) {
       if (user.hasOwnProperty("admin")) {
@@ -36,9 +29,7 @@ export class AuthService implements CanActivate {
     } else {
       this.router.navigate([""]);
     }
-    // if (user) {
-    //   return true;
-    // }
+
     return false;
   }
 }

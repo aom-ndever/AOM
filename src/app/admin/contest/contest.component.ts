@@ -30,6 +30,7 @@ export class ContestComponent implements OnInit {
   contest_data: any = [];
   existing_contest_list: any = [];
   exist_contest: any = {};
+  allRegion_list: any = [];
   region_list: any = [];
   state_list: any = [];
   search_str: any = "";
@@ -48,6 +49,9 @@ export class ContestComponent implements OnInit {
   round_list: any = [];
   contest_row_cnt = 1;
   contestant_per_round = [];
+  singleState = false;
+  multiState = false;
+  isSubmitted = false;
   constructor(
     private contestService: ContestService,
     private toastr: ToastrService,
@@ -75,12 +79,12 @@ export class ContestComponent implements OnInit {
       year: ["", [Validators.required]],
       // duration: ['', [Validators.required]],
       duration: [""],
-      round: [],
+      round: [""],
       contest_type: ["", [Validators.required]],
       music_type: ["", [Validators.required]],
       region: ["", [Validators.required]],
-      state: ["", [Validators.required]],
-      // states: ["", [Validators.required]],
+      state: [""],
+      states: [""],
     });
   }
 
@@ -129,6 +133,21 @@ export class ContestComponent implements OnInit {
     this.getAllRegion();
   }
 
+  selectedState(value, key) {
+    if (key === "multi") {
+      if (value.length > 0) {
+        this.multiState = true;
+      } else {
+        this.multiState = false;
+      }
+    } else {
+      if (value) {
+        this.singleState = true;
+      } else {
+        this.singleState = false;
+      }
+    }
+  }
   noWhitespaceValidator(control: FormControl) {
     if (
       typeof (control.value || "") === "string" ||
@@ -163,8 +182,8 @@ export class ContestComponent implements OnInit {
   openContestModel(template: any) {
     // this.is_valid = false;
     this.contest_detail = {
-      no_of_round: 1,
-      duration: 1,
+      no_of_round: "",
+      duration: "",
     };
     this.is_new_or_existing = 1;
     this.contestModelRef = this.modalService.show(template, {
@@ -224,37 +243,60 @@ export class ContestComponent implements OnInit {
   // get all region
   getAllRegion() {
     this.contestService.getAllRegion().subscribe((response) => {
-      this.region_list = response["Region"];
+      this.allRegion_list = response["Region"];
+      if (this.allRegion_list) {
+        this.region_list = [];
+        response["Region"].map((res) => {
+          if (res.name !== "no region") {
+            this.region_list.push(res);
+          }
+        });
+      }
     });
+  }
+
+  changeContest(type) {
+    if (this.allRegion_list && type !== "special") {
+      this.region_list = [];
+      this.allRegion_list.map((res) => {
+        if (res.name !== "no region") {
+          this.region_list.push(res);
+        }
+      });
+    } else {
+      this.region_list = this.allRegion_list;
+    }
+    this.contest_validation.controls["region"].setValue("");
   }
 
   // Get state from region
   getStateFromRegion(id: any) {
     if (id && id !== "" && id !== "603e0a76ed61126334a38044") {
-      // this.contest_validation.controls["states"].setValue("");
-
+      this.multiState = false;
       const data = {
         region: id,
       };
       this.contestService.getStateByRegion(data).subscribe((response) => {
         this.state_list = response["state"];
-        if (this.contest_detail) {
-          this.contest_detail["state"] = this.contest_detail["state"]
-            ? this.contest_detail["state"]["_id"]
-            : "";
-        }
+        // if (this.contest_detail) {
+        //   this.contest_detail["state"] = this.contest_detail["state"]
+        //     ? this.contest_detail["state"]["_id"]
+        //     : "";
+        // }
       });
     } else {
-      this.contest_validation.controls["state"].setValue("");
+      this.singleState = false;
       this.contestService.getAllState().subscribe((response) => {
         this.state_list = response["state"];
-        if (this.contest_detail) {
-          this.contest_detail["state"] = this.contest_detail["state"]
-            ? this.contest_detail["state"]["_id"]
-            : "";
-        }
+        // if (this.contest_detail) {
+        //   this.contest_detail["state"] = this.contest_detail["state"]
+        //     ? this.contest_detail["state"]["_id"]
+        //     : "";
+        // }
       });
     }
+    this.contest_validation.controls["states"].setValue("");
+    this.contest_validation.controls["state"].setValue("");
   }
 
   // Add new contest
@@ -271,43 +313,99 @@ export class ContestComponent implements OnInit {
     //   this.toastr.info('The date must be bigger or equal to today date');
     //   return;
     // }
+    this.isSubmitted = true;
     this.is_valid = !flag;
+    if (
+      this.contest_validation.get("region").value ===
+        "603e0a76ed61126334a38044" &&
+      this.multiState === true &&
+      this.singleState === false
+    ) {
+      let states = [];
+      let allstates = this.contest_validation.get("states").value;
+      setTimeout(async () => {
+        await allstates.map((res) => {
+          states.push({ state_id: res._id });
+        });
+        var obj = {
+          contest_type: this.contest_validation.get("contest_type").value,
+          day: this.contest_validation.get("day").value,
+          duration: this.contest_validation.get("duration").value,
+          month: this.contest_validation.get("month").value,
+          music_type: this.contest_validation.get("music_type").value,
+          name: this.contest_validation.get("name").value,
+          region: this.contest_validation.get("region").value,
+          round: this.contest_validation.get("round").value,
+          states: states,
+          year: this.contest_validation.get("year").value,
+        };
+        console.log(" : obj ==> ", obj);
+        this.addContest(flag, obj);
+      }, 1000);
+    } else if (
+      this.contest_validation.get("region").value !==
+        "603e0a76ed61126334a38044" &&
+      this.singleState === true &&
+      this.multiState === false
+    ) {
+      var obj1 = {
+        contest_type: this.contest_validation.get("contest_type").value,
+        day: this.contest_validation.get("day").value,
+        duration: this.contest_validation.get("duration").value,
+        month: this.contest_validation.get("month").value,
+        music_type: this.contest_validation.get("music_type").value,
+        name: this.contest_validation.get("name").value,
+        region: this.contest_validation.get("region").value,
+        round: this.contest_validation.get("round").value,
+        states: [{ state_id: this.contest_validation.get("state").value }],
+        year: this.contest_validation.get("year").value,
+      };
+      console.log(" : obj1 ==> ", obj1);
+      this.addContest(flag, obj1);
+    }
+  }
+
+  addContest(flag, contestData) {
     if (flag) {
       // this.show_spinner = true;
       let data;
+
       if (this.contest_detail["duration"]) {
         data = {
-          name: this.contest_detail["name"],
-          contest_type: this.contest_detail["contest_type"],
-          music_type: this.contest_detail["music_type"],
-          region: this.contest_detail["region"],
-          state: this.contest_detail["state"],
-          round: this.contest_detail["no_of_round"],
-          day: this.contest_detail["day"],
-          month: this.contest_detail["month"],
-          year: this.contest_detail["year"],
-          duration: this.contest_detail["duration"],
+          name: contestData.name,
+          contest_type: contestData.contest_type,
+          music_type: contestData.music_type,
+          region: contestData.region,
+          states: contestData.states,
+          round: contestData.round,
+          day: contestData.day,
+          month: contestData.month,
+          year: contestData.year,
+          duration: contestData.duration,
         };
-        for (const key in this.contestant) {
-          let array = [];
+        if (contestData.round > 1) {
           for (const key in this.contestant) {
-            array.push({ [key]: this.contestant[key] });
+            let array = [];
+            for (const key in this.contestant) {
+              array.push({ [key]: this.contestant[key] });
+            }
+            data["contestant"] = array;
           }
-          data["contestant"] = array;
         }
       } else {
         data = {
-          name: this.contest_detail["name"],
-          contest_type: this.contest_detail["contest_type"],
-          music_type: this.contest_detail["music_type"],
-          region: this.contest_detail["region"],
-          state: this.contest_detail["state"],
-          // round: this.contest_detail["no_of_round"],
-          day: this.contest_detail["day"],
-          month: this.contest_detail["month"],
-          year: this.contest_detail["year"],
+          name: contestData.name,
+          contest_type: contestData.contest_type,
+          music_type: contestData.music_type,
+          region: contestData.region,
+          round: 1,
+          states: contestData.states,
+          day: contestData.day,
+          month: contestData.month,
+          year: contestData.year,
         };
       }
+
       // commented for testing purpose only
       this.contestService.addNewContest(data).subscribe(
         (response) => {
@@ -319,6 +417,7 @@ export class ContestComponent implements OnInit {
           this.contest_detail = {};
           this.contestant = {};
           this.isSpecialContest = false;
+          this.isSubmitted = false;
           this.contestModelRef.hide();
           this.getAllExistingContest();
           this.toastr.success(response["message"], "Success!");
@@ -374,7 +473,6 @@ export class ContestComponent implements OnInit {
       // }
     }
   }
-
   // Select exisiting contest
   selectContest(idx: any) {
     this.contest_detail = this.existing_contest_list[idx];
@@ -391,17 +489,27 @@ export class ContestComponent implements OnInit {
 
   specialContest() {
     if (this.contest_detail.contest_type === "special") {
-      this.isSpecialContest = true;
-    } else {
+      this.contest_validation.controls["state"].setValue("");
       this.contest_detail["duration"] = 1;
       this.contest_detail["no_of_round"] = 1;
+      this.changeContest("special");
+      this.isSpecialContest = true;
+    } else {
+      this.changeContest("beta");
       this.isSpecialContest = false;
+      this.contest_detail["duration"] = "";
+      this.contest_detail["no_of_round"] = "";
+      this.contest_validation.controls["duration"].setValue("");
+      this.contest_validation.controls["round"].setValue("");
     }
+    this.state_list = [];
   }
 
   closeAddContestModel() {
-    this.contest_detail["duration"] = 1;
-    this.contest_detail["no_of_round"] = 1;
+    this.contest_detail["duration"] = "";
+    this.contest_detail["no_of_round"] = "";
+    this.contest_validation.controls["duration"].setValue("");
+    this.contest_validation.controls["round"].setValue("");
     this.isSpecialContest = false;
     this.contestModelRef.hide();
   }

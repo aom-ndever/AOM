@@ -261,6 +261,8 @@ router.post("/add_contest", async (req, res) => {
           music_type: req.body.music_type,
           name: req.body.name,
           contest_type: req.body.contest_type,
+          region: req.body.region,
+          states: req.body.states,
           duration: duration,
           max_participation: max_participation,
           contest_type: req.body.contest_type,
