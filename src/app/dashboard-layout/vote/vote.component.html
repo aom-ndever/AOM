@@ -14,24 +14,37 @@
                 <div class="search-wrap">
                   <form>
                     <!-- <div class="mobile-search" (click)="toggleSearch()"><i class="fa fa-search" aria-hidden="true"></i> -->
-                    <div class="mobile-search"><i class="fa fa-search" aria-hidden="true"></i>
+                    <div class="mobile-search">
+                      <i class="fa fa-search" aria-hidden="true"></i>
                     </div>
-                    <div class="search-input" [style]="toggSearch ? 'block' : 'none'">
-                      <input type="text" placeholder="Search by Artist name or track" (keyup)="filter($event)"
-                        name="search" [(ngModel)]="search_str" />
+                    <div
+                      class="search-input"
+                      [style]="toggSearch ? 'block' : 'none'"
+                    >
+                      <input
+                        type="text"
+                        placeholder="Search by Artist name or track"
+                        (keyup)="filter($event)"
+                        name="search"
+                        [(ngModel)]="search_str"
+                      />
                     </div>
                   </form>
                 </div>
                 <div class="filter-head sdg">
                   <a href="javascript:;" (click)="toggleFilter()">
-                    <div class="filter-icon"><img src="img/filter.png" alt="Filter Icon"></div>
+                    <div class="filter-icon">
+                      <img src="img/filter.png" alt="Filter Icon" />
+                    </div>
                     <span>Filters <i class="fa fa-caret-right"></i></span>
                   </a>
-
                 </div>
               </div>
             </div>
-            <div class="filter-drop-down" [style.display]="show_filter ? 'block' : 'none'">
+            <div
+              class="filter-drop-down"
+              [style.display]="show_filter ? 'block' : 'none'"
+            >
               <div class="container">
                 <div class="row">
                   <div class="col-md-2 col-sm-6 col-xs-6">
@@ -41,26 +54,33 @@
                         <li>
                           <div class="radio">
                             <label>
-                              <input type="radio" value="" disabled selected name="musicgenre"
-                                [(ngModel)]="advance_filter.music_type">All
-                              styles
+                              <input
+                                type="radio"
+                                value=""
+                                disabled
+                                selected
+                                name="musicgenre"
+                                [(ngModel)]="advance_filter.music_type"
+                              />All styles
                               <div class="radio_check"></div>
                             </label>
                           </div>
                         </li>
-                        <li *ngFor="let music of music_list;">
+                        <li *ngFor="let music of music_list">
                           <div class="radio">
                             <label>
-                              <input type="radio" value="{{music._id}}" name="musicgenre"
-                                [(ngModel)]="advance_filter.music_type">{{music.name}}
+                              <input
+                                type="radio"
+                                value="{{ music._id }}"
+                                name="musicgenre"
+                                [(ngModel)]="advance_filter.music_type"
+                              />{{ music.name }}
                               <div class="radio_check"></div>
                             </label>
-
                           </div>
                         </li>
                       </ul>
                     </div>
-
                   </div>
 
                   <div class="col-md-10 col-sm-12 col-xs-12">
@@ -70,14 +90,28 @@
                         <div class="col-lg-2 col-md-4 col-sm-4 col-xs-4">
                           <div class="filter-subhead">Northeast</div>
                           <ul>
-                            <li *ngFor="let s of state_list;"
-                              [style.display]="s['region']['name'] == 'northeast' ? 'block' : 'none'">
+                            <li
+                              *ngFor="let s of state_list"
+                              [style.display]="
+                                s['region']['name'] == 'northeast'
+                                  ? 'block'
+                                  : 'none'
+                              "
+                            >
                               <div class="checkbox">
                                 <label>
-                                  <input type="checkbox" [value]="s.name"
-                                    (click)="addRegionForFilter($event.target.checked, $event.target.value)">
+                                  <input
+                                    type="checkbox"
+                                    [value]="s.name"
+                                    (click)="
+                                      addRegionForFilter(
+                                        $event.target.checked,
+                                        $event.target.value
+                                      )
+                                    "
+                                  />
                                   <div class="chk_check"></div>
-                                  <span>{{s.name}}</span>
+                                  <span>{{ s.name }}</span>
                                 </label>
                               </div>
                             </li>
@@ -86,14 +120,28 @@
                         <div class="col-lg-2 col-md-4 col-sm-4 col-xs-4">
                           <div class="filter-subhead">southeast</div>
                           <ul>
-                            <li *ngFor="let s of state_list;"
-                              [style.display]="s['region']['name'] == 'southeast' ? 'block' : 'none'">
+                            <li
+                              *ngFor="let s of state_list"
+                              [style.display]="
+                                s['region']['name'] == 'southeast'
+                                  ? 'block'
+                                  : 'none'
+                              "
+                            >
                               <div class="checkbox">
                                 <label>
-                                  <input type="checkbox" [value]="s.name"
-                                    (click)="addRegionForFilter($event.target.checked, $event.target.value)">
+                                  <input
+                                    type="checkbox"
+                                    [value]="s.name"
+                                    (click)="
+                                      addRegionForFilter(
+                                        $event.target.checked,
+                                        $event.target.value
+                                      )
+                                    "
+                                  />
                                   <div class="chk_check"></div>
-                                  <span>{{s.name}}</span>
+                                  <span>{{ s.name }}</span>
                                 </label>
                               </div>
                             </li>
@@ -102,14 +150,28 @@
                         <div class="col-lg-2 col-md-4 col-sm-4 col-xs-4">
                           <div class="filter-subhead">Midwest</div>
                           <ul>
-                            <li *ngFor="let s of state_list;"
-                              [style.display]="s['region']['name'] == 'midwest' ? 'block' : 'none'">
+                            <li
+                              *ngFor="let s of state_list"
+                              [style.display]="
+                                s['region']['name'] == 'midwest'
+                                  ? 'block'
+                                  : 'none'
+                              "
+                            >
                               <div class="checkbox">
                                 <label>
-                                  <input type="checkbox" [value]="s.name"
-                                    (click)="addRegionForFilter($event.target.checked, $event.target.value)">
+                                  <input
+                                    type="checkbox"
+                                    [value]="s.name"
+                                    (click)="
+                                      addRegionForFilter(
+                                        $event.target.checked,
+                                        $event.target.value
+                                      )
+                                    "
+                                  />
                                   <div class="chk_check"></div>
-                                  <span>{{s.name}}</span>
+                                  <span>{{ s.name }}</span>
                                 </label>
                               </div>
                             </li>
@@ -118,14 +180,28 @@
                         <div class="col-lg-2 col-md-4 col-sm-4 col-xs-4">
                           <div class="filter-subhead">Southwest</div>
                           <ul>
-                            <li *ngFor="let s of state_list;"
-                              [style.display]="s['region']['name'] == 'southwest' ? 'block' : 'none'">
+                            <li
+                              *ngFor="let s of state_list"
+                              [style.display]="
+                                s['region']['name'] == 'southwest'
+                                  ? 'block'
+                                  : 'none'
+                              "
+                            >
                               <div class="checkbox">
                                 <label>
-                                  <input type="checkbox" [value]="s.name"
-                                    (click)="addRegionForFilter($event.target.checked, $event.target.value)">
+                                  <input
+                                    type="checkbox"
+                                    [value]="s.name"
+                                    (click)="
+                                      addRegionForFilter(
+                                        $event.target.checked,
+                                        $event.target.value
+                                      )
+                                    "
+                                  />
                                   <div class="chk_check"></div>
-                                  <span>{{s.name}}</span>
+                                  <span>{{ s.name }}</span>
                                 </label>
                               </div>
                             </li>
@@ -134,14 +210,26 @@
                         <div class="col-lg-2 col-md-4 col-sm-4 col-xs-4">
                           <div class="filter-subhead">West</div>
                           <ul>
-                            <li *ngFor="let s of state_list;"
-                              [style.display]="s['region']['name'] == 'west' ? 'block' : 'none'">
+                            <li
+                              *ngFor="let s of state_list"
+                              [style.display]="
+                                s['region']['name'] == 'west' ? 'block' : 'none'
+                              "
+                            >
                               <div class="checkbox">
                                 <label>
-                                  <input type="checkbox" [value]="s.name"
-                                    (click)="addRegionForFilter($event.target.checked, $event.target.value)">
+                                  <input
+                                    type="checkbox"
+                                    [value]="s.name"
+                                    (click)="
+                                      addRegionForFilter(
+                                        $event.target.checked,
+                                        $event.target.value
+                                      )
+                                    "
+                                  />
                                   <div class="chk_check"></div>
-                                  <span>{{s.name}}</span>
+                                  <span>{{ s.name }}</span>
                                 </label>
                               </div>
                             </li>
@@ -150,14 +238,28 @@
                         <div class="col-lg-2 col-md-4 col-sm-4 col-xs-4">
                           <div class="filter-subhead">other</div>
                           <ul>
-                            <li *ngFor="let s of state_list;"
-                              [style.display]="s['region']['name'] == 'other' ? 'block' : 'none'">
+                            <li
+                              *ngFor="let s of state_list"
+                              [style.display]="
+                                s['region']['name'] == 'other'
+                                  ? 'block'
+                                  : 'none'
+                              "
+                            >
                               <div class="checkbox">
                                 <label>
-                                  <input type="checkbox" [value]="s.name"
-                                    (click)="addRegionForFilter($event.target.checked, $event.target.value)">
+                                  <input
+                                    type="checkbox"
+                                    [value]="s.name"
+                                    (click)="
+                                      addRegionForFilter(
+                                        $event.target.checked,
+                                        $event.target.value
+                                      )
+                                    "
+                                  />
                                   <div class="chk_check"></div>
-                                  <span>{{s.name}}</span>
+                                  <span>{{ s.name }}</span>
                                 </label>
                               </div>
                             </li>
@@ -168,9 +270,22 @@
                   </div>
                   <div class="col-md-12 col-sm-12 col-xs-12">
                     <div class="button_group">
-                      <a href="javascript:;" (click)="toggleFilter()" class="cancel-btn">Cancel</a>
-                      <a href="javascript:;" class="apply-btn" (click)="advanceFilter()">Apply <i *ngIf="show_spinner"
-                          class="fa fa-spinner fa-spin"></i></a>
+                      <a
+                        href="javascript:;"
+                        (click)="toggleFilter()"
+                        class="cancel-btn"
+                        >Cancel</a
+                      >
+                      <a
+                        href="javascript:;"
+                        class="apply-btn"
+                        (click)="advanceFilter()"
+                        >Apply
+                        <i
+                          *ngIf="show_spinner"
+                          class="fa fa-spinner fa-spin"
+                        ></i
+                      ></a>
                     </div>
                   </div>
                 </div>
@@ -192,28 +307,52 @@
           </div>
           <div class="ana-header">
             <div class="form-group days-grp">
-              <select #contestList class="form-control" id="days-select" (change)="change_contest($event)"
-                name="contest" [(ngModel)]="contest_data">
-                <option *ngFor="let c of contest_list;" value="{{c ? c['_id'] : ''}}">{{c ? c['name'] : '' }}</option>
+              <select
+                #contestList
+                class="form-control"
+                id="days-select"
+                (change)="change_contest($event)"
+                name="contest"
+                [(ngModel)]="contest_data"
+              >
+                <option
+                  *ngFor="let c of contest_list"
+                  value="{{ c ? c['_id'] : '' }}"
+                >
+                  {{ c ? c["name"] : "" }}
+                </option>
               </select>
-
             </div>
-            <ul class="ana-tabs nav nav-tabs" style="max-width:85%;">
-              <li class="nav-item"><a class="active" data-toggle="tab" href="javascript:;">Regional Quarter Final</a>
+            <ul class="ana-tabs nav nav-tabs" style="max-width: 85%">
+              <li class="nav-item">
+                <a class="active" data-toggle="tab" href="javascript:;"
+                  >Regional Quarter Final</a
+                >
               </li>
-              <li class="nav-item"><a>{{contest_name}}</a></li>
+              <li class="nav-item">
+                <a>{{ contest_name }}</a>
+              </li>
             </ul>
             <div class="loc-icon-group">
-              <a href="javascript:;" (click)="toggleTable(false)"><img src="img/top-location-icon.png"
-                  alt="top-location-icon.png"></a>
-              <a href="javascript:;" (click)="toggleTable(true)"><img src="img/infographic-not-active.png"
-                  alt="infographic-not-active.png"></a>
+              <a href="javascript:;" (click)="toggleTable(false)"
+                ><img
+                  src="img/top-location-icon.png"
+                  alt="top-location-icon.png"
+              /></a>
+              <a href="javascript:;" (click)="toggleTable(true)"
+                ><img
+                  src="img/infographic-not-active.png"
+                  alt="infographic-not-active.png"
+              /></a>
             </div>
           </div>
-          <div class="tab-content ">
+          <div class="tab-content">
             <div class="tab-pane fade active show" id="regionalfinals">
-              <div class="track-table mCustomScrollbar " data-mcs-theme="dark-3"
-                [style.display]="table_flag ? 'none' : 'block' ">
+              <div
+                class="track-table mCustomScrollbar"
+                data-mcs-theme="dark-3"
+                [style.display]="table_flag ? 'none' : 'block'"
+              >
                 <table datatable [dtOptions]="dtOptions[0]">
                   <thead>
                     <tr>
@@ -228,62 +367,108 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr *ngFor="let p of participants; let i = index;">
-                      <td class="serial-num">{{i+1}}</td>
+                    <tr *ngFor="let p of participants; let i = index">
+                      <td class="serial-num">{{ i + 1 }}</td>
                       <td>
                         <div class="music_play">
                           <div class="artist-profile-custom-action-btn">
-                            <a [style.display]="!audio_ins1[i] ? 'block' : 'none'"
-                              (click)="playAudio1(p['track']['audio'], i, audio_ins_list1)" class="play_img"><img
-                                src="img/play_icon.png" /></a>
-                            <a [style.display]="audio_ins1[i] ? 'block' : 'none'"
-                              (click)="stopAudio1(i, audio_ins_list1)" class="pause_img"><img
-                                src="img/pause_icon.png" /></a>
+                            <a
+                              [style.display]="
+                                !audio_ins1[i] ? 'block' : 'none'
+                              "
+                              (click)="
+                                playAudio1(
+                                  p['track']['audio'],
+                                  i,
+                                  audio_ins_list1
+                                )
+                              "
+                              class="play_img"
+                              ><img src="img/play_icon.png"
+                            /></a>
+                            <a
+                              [style.display]="audio_ins1[i] ? 'block' : 'none'"
+                              (click)="stopAudio1(i, audio_ins_list1)"
+                              class="pause_img"
+                              ><img src="img/pause_icon.png"
+                            /></a>
                           </div>
                         </div>
                         <div class="track-pic">
                           <a href="javascript:;">
-                            <img width="50" height="50"
-                              src="{{p && p['artist_id'] ? artist_img_url+p['artist_id'].image : 'img/upload1.png'}}"
-                              alt="Track Image">
+                            <img
+                              width="50"
+                              height="50"
+                              src="{{
+                                p && p['artist_id']
+                                  ? artist_img_url + p['artist_id'].image
+                                  : 'img/upload1.png'
+                              }}"
+                              alt="Track Image"
+                            />
                           </a>
                         </div>
                         <div class="track-det" colspan="2">
-                          <p class="track-name">{{p && p.name }}</p>
-                          <p class="track-singer">{{p && p.artist_id ? p.artist_id.first_name : '' +' '+p &&
-                            p.artist_id ? p.artist_id.last_name : ''}}</p>
+                          <p class="track-name">{{ p && p.name }}</p>
+                          <p class="track-singer">
+                            {{
+                              p && p.artist_id
+                                ? p.artist_id.first_name
+                                : "" + " " + p && p.artist_id
+                                ? p.artist_id.last_name
+                                : ""
+                            }}
+                          </p>
                         </div>
                       </td>
-                      <td class="music-gen ">
-                        <span class="tag {{p &&
-                        p.artist_id.music_type ? p.artist_id.music_type.alias : ''}}">{{p
-                          &&
-                          p.artist_id.music_type ? p.artist_id.music_type.name : ''}}</span>
+                      <td class="music-gen">
+                        <span
+                          class="tag {{
+                            p && p.artist_id.music_type
+                              ? p.artist_id.music_type.alias
+                              : ''
+                          }}"
+                          >{{
+                            p && p.artist_id.music_type
+                              ? p.artist_id.music_type.name
+                              : ""
+                          }}</span
+                        >
                       </td>
                       <td class="location">
-                        <p><i class="fa fa-map-marker" aria-hidden="true"></i><span>{{p && p.artist_id.state ?
-                            p.artist_id.state.name: '' }}</span></p>
+                        <p>
+                          <i class="fa fa-map-marker" aria-hidden="true"></i
+                          ><span>{{
+                            p && p.artist_id.state ? p.artist_id.state.name : ""
+                          }}</span>
+                        </p>
                       </td>
                       <!-- <td class="rounds"><p>2 <img src="img/top-arrow.png" alt=""></p></td>
                           <td class="rounds"><p>2 <img src="img/top-arrow.png" alt=""></p></td>
                           <td class="rounds"><p>2 <img src="img/top-arrow.png" alt=""></p></td> -->
                       <td class="td track-vote">
-                        <img src="img/start.png" alt="start">
-                        <span>{{p && p ? p.no_of_votes : '0' }}</span>
+                        <img src="img/start.png" alt="start" />
+                        <span>{{ p && p ? p.no_of_votes : "0" }}</span>
                       </td>
                     </tr>
-
                   </tbody>
                   <!-- <tbody *ngIf="winner_list?.length === 0"> -->
                   <tbody *ngIf="participants?.length === 0">
                     <tr>
-                      <td colspan="5" class="no-data-available">No data available!</td>
+                      <td colspan="5" class="no-data-available">
+                        No data available!
+                      </td>
                     </tr>
-                  <tbody>
+                  </tbody>
+
+                  <tbody></tbody>
                 </table>
               </div>
-              <div class="track-table mCustomScrollbar vote_infographic_table" data-mcs-theme="dark-3"
-                [style.display]="table_flag ? 'block' : 'none' ">
+              <div
+                class="track-table mCustomScrollbar vote_infographic_table"
+                data-mcs-theme="dark-3"
+                [style.display]="table_flag ? 'block' : 'none'"
+              >
                 <table datatable [dtOptions]="dtOptions[1]">
                   <thead>
                     <tr>
@@ -294,45 +479,87 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr *ngFor="let p of winner_list; let i = index;">
-                      <td class="serial-num">{{i+1}}.</td>
+                    <tr *ngFor="let p of winner_list; let i = index">
+                      <td class="serial-num">{{ i + 1 }}.</td>
                       <td>
                         <div class="music_play">
                           <div class="artist-profile-custom-action-btn">
-                            <a [style.display]="!audio_ins1[i] ? 'block' : 'none'"
-                              (click)="playAudio1(p['track']['audio'], i, audio_ins_list1)" class="play_img"><img
-                                src="img/play_icon.png" /></a>
-                            <a [style.display]="audio_ins1[i] ? 'block' : 'none'"
-                              (click)="stopAudio1(i, audio_ins_list1)" class="pause_img"><img
-                                src="img/pause_icon.png" /></a>
+                            <a
+                              [style.display]="
+                                !audio_ins1[i] ? 'block' : 'none'
+                              "
+                              (click)="
+                                playAudio1(
+                                  p['track']['audio'],
+                                  i,
+                                  audio_ins_list1
+                                )
+                              "
+                              class="play_img"
+                              ><img src="img/play_icon.png"
+                            /></a>
+                            <a
+                              [style.display]="audio_ins1[i] ? 'block' : 'none'"
+                              (click)="stopAudio1(i, audio_ins_list1)"
+                              class="pause_img"
+                              ><img src="img/pause_icon.png"
+                            /></a>
                           </div>
                         </div>
                         <div class="track-pic">
                           <a href="javascript:;">
-                            <img width="50" height="50"
-                              src="{{p && p['artist_id'] ? artist_img_url+p['artist_id'].image : 'img/upload1.png'}}"
-                              alt="Track Image">
+                            <img
+                              width="50"
+                              height="50"
+                              src="{{
+                                p && p['artist_id']
+                                  ? artist_img_url + p['artist_id'].image
+                                  : 'img/upload1.png'
+                              }}"
+                              alt="Track Image"
+                            />
                           </a>
                         </div>
                         <div class="track-det" colspan="2">
-                          <p class="track-name">{{p && p['track'] ? p['track']['name'] : ''}}</p>
-                          <p class="track-singer">{{p && p['artist'] ? p['artist'].first_name : '' +' '+p &&
-                            p['artist'] ? p['arist'].last_name : ''}}</p>
+                          <p class="track-name">
+                            {{ p && p["track"] ? p["track"]["name"] : "" }}
+                          </p>
+                          <p class="track-singer">
+                            {{
+                              p && p["artist"]
+                                ? p["artist"].first_name
+                                : "" + " " + p && p["artist"]
+                                ? p["arist"].last_name
+                                : ""
+                            }}
+                          </p>
                         </div>
                       </td>
-                      <td class="music-gen ">
-                        <span class="tag {{p && p['music_type'] ? p['music_type']['alias'] : ''}}">{{p &&
-                          p['music_type'] ? p['music_type']['name'] : ''}}</span>
+                      <td class="music-gen">
+                        <span
+                          class="tag {{
+                            p && p['music_type'] ? p['music_type']['alias'] : ''
+                          }}"
+                          >{{
+                            p && p["music_type"] ? p["music_type"]["name"] : ""
+                          }}</span
+                        >
                       </td>
                       <td class="nu-vote">
                         <div class="download-graph">
                           <ul>
                             <li class="full-info">
                               <div class="d-num">
-                                <p>{{p && p['track'] ? p['track']['no_of_votes'] : '0' }}</p> <span>Votes</span>
+                                <p>
+                                  {{
+                                    p && p["no_of_votes"]
+                                      ? p["no_of_votes"]
+                                      : "0"
+                                  }}
+                                </p>
+                                <span>Votes</span>
                               </div>
                             </li>
-
                           </ul>
                         </div>
                       </td>
@@ -340,10 +567,17 @@
                   </tbody>
                   <tbody *ngIf="winner_list?.length == 0">
                     <tr>
-                      <td colspan="4" style="text-align: center !important;" class="no-data-available">No data
-                        available!</td>
+                      <td
+                        colspan="4"
+                        style="text-align: center !important"
+                        class="no-data-available"
+                      >
+                        No data available!
+                      </td>
                     </tr>
-                  <tbody>
+                  </tbody>
+
+                  <tbody></tbody>
                 </table>
               </div>
             </div>
@@ -358,21 +592,33 @@
         </div>
       </div>
     </div>
-    <div class="highlights-wrap mCustomScrollbar " data-mcs-theme="dark-3">
+    <div class="highlights-wrap mCustomScrollbar" data-mcs-theme="dark-3">
       <div class="row">
-
         <!-- spinner fa-spinner -->
         <!-- <div *ngIf="show_loader" class="text-center col-12">
           <i class="fa fa-spinner fa-spin fa-3x" aria-hidden="true"></i>
         </div> -->
 
-        <div class="alert alert-info col-sm-12" *ngIf="!show_loader && participants['length'] <= 0">No data available.
+        <div
+          class="alert alert-info col-sm-12"
+          *ngIf="!show_loader && participants['length'] <= 0"
+        >
+          No data available.
         </div>
-        <div class="col-lg-3 col-md-4 col-sm-4 col-xs-6" *ngFor="let p of participants; let i = index;">
+        <div
+          class="col-lg-3 col-md-4 col-sm-4 col-xs-6"
+          *ngFor="let p of participants; let i = index"
+        >
           <div class="final-wrap">
             <div class="img-wrap">
-              <img src="{{p && p['artist_id']  ? artist_img_url+p['artist_id'].image : 'img/upload1.png'}}"
-                alt="Finalists">
+              <img
+                src="{{
+                  p && p['artist_id']
+                    ? artist_img_url + p['artist_id'].image
+                    : 'img/upload1.png'
+                }}"
+                alt="Finalists"
+              />
               <a (click)="followArtist(p['artist_id']._id)" class="fan">
                 <!-- <i class="fa fa-{{p['artist'].is_followed ? 'heart' : 'heart-o'}}" aria-hidden="true"></i> -->
               </a>
@@ -380,50 +626,90 @@
             <div class="content-wrap">
               <div class="player">
                 <div class="title">
-                  <a href="javascript:;" routerLink="/artist_profile/{{p && p['artist'] ? p['artist']['_id'] : '' }}">
-                    {{p && p.artist_id ? p.artist_id.first_name : '' +' '+p && p.artist_id ? p.artist_id.last_name :
-                    ''}}
+                  <a
+                    href="javascript:;"
+                    routerLink="/artist_profile/{{
+                      p && p['artist'] ? p['artist']['_id'] : ''
+                    }}"
+                  >
+                    {{
+                      p && p.artist_id
+                        ? p.artist_id.first_name
+                        : "" + " " + p && p.artist_id
+                        ? p.artist_id.last_name
+                        : ""
+                    }}
                   </a>
                 </div>
-                <div class="finalist-name">{{p && p ? (p.name| titlecase) : '' }}</div>
-                <div class="action-btn custom-action-btn">
-                  <a [style.display]="!audio_ins[i] ? 'block' : 'none'"
-                    (click)="playAudio(p['track']['audio'], i, audio_ins_list)" class="play_img"><img
-                      src="img/play_icon.png" /></a>
-                  <a [style.display]="audio_ins[i] ? 'block' : 'none'" (click)="stopAudio(i, audio_ins_list)"
-                    class="pause_img"><img src="img/pause_icon.png" /></a>
+                <div class="finalist-name">
+                  {{ p && p ? (p.name | titlecase) : "" }}
                 </div>
-
+                <div class="action-btn custom-action-btn">
+                  <a
+                    [style.display]="!audio_ins[i] ? 'block' : 'none'"
+                    (click)="playAudio(p['track']['audio'], i, audio_ins_list)"
+                    class="play_img"
+                    ><img src="img/play_icon.png"
+                  /></a>
+                  <a
+                    [style.display]="audio_ins[i] ? 'block' : 'none'"
+                    (click)="stopAudio(i, audio_ins_list)"
+                    class="pause_img"
+                    ><img src="img/pause_icon.png"
+                  /></a>
+                </div>
               </div>
               <div class="sub-con">
                 <div class="location">
-                  <p><i class="fa fa-map-marker" aria-hidden="true"></i><span>{{p && p.artist_id.state ?
-                      p.artist_id.state.name :
-                      '' }}</span></p>
+                  <p>
+                    <i class="fa fa-map-marker" aria-hidden="true"></i
+                    ><span>{{
+                      p && p.artist_id.state ? p.artist_id.state.name : ""
+                    }}</span>
+                  </p>
                 </div>
                 <div class="td track-vote">
-                  <img src="img/small-star.png" alt="start">
-                  <span>{{p && p ? p.no_of_votes: '0' }}</span>
+                  <img src="img/small-star.png" alt="start" />
+                  <span>{{ p && p ? p.no_of_votes : "0" }}</span>
                 </div>
-                <div class="cat {{p &&  p['music_type'] ? p['music_type']['alias'] : ''}}">{{p &&
-                  p.artist_id.music_type ?
-                  p.artist_id.music_type.name : ''}}</div>
+                <div
+                  class="cat {{
+                    p && p['music_type'] ? p['music_type']['alias'] : ''
+                  }}"
+                >
+                  {{
+                    p && p.artist_id.music_type
+                      ? p.artist_id.music_type.name
+                      : ""
+                  }}
+                </div>
               </div>
-              <button href="javascript:;" *ngIf="!p['is_voted']"
-                (click)="voteTrack(p._id, p['artist_id']._id,contestList.value, i)"
-                class="add-btn">Vote</button>{{contest_list._id}}
+              <button
+                href="javascript:;"
+                *ngIf="!p['is_voted']"
+                (click)="
+                  voteTrack(p._id, p['artist_id']._id, contestList.value, i)
+                "
+                class="add-btn"
+              >
+                Vote</button
+              >{{ contest_list._id }}
             </div>
           </div>
         </div>
-        <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center"
-          *ngIf="!show_loader && participants['length'] > 12">
-          <button class="btn btn-lg btn-default" (click)="loadMore()" [disabled]="show_spinner">load more <i
-              *ngIf="show_spinner" class="fa fa-spinner fa-spin"></i></button>
+        <div
+          class="col-lg-12 col-md-12 col-sm-12 col-12 text-center"
+          *ngIf="!show_loader && participants['length'] > 12"
+        >
+          <button
+            class="btn btn-lg btn-default"
+            (click)="loadMore()"
+            [disabled]="show_spinner"
+          >
+            load more <i *ngIf="show_spinner" class="fa fa-spinner fa-spin"></i>
+          </button>
         </div>
       </div>
-
     </div>
-
-
   </div>
 </div>

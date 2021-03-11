@@ -40,6 +40,7 @@ var SerialNumber = require("./../models/serial_number");
 const serial_number_helper = require("../helpers/serial_number_helper");
 const User = require("../models/user");
 const Artist = require("../models/artist");
+const { object } = require("underscore");
 
 router.post("/serial_no", async (req, res) => {
   var serialNumber = await serial_number_helper.get_serial_number(
@@ -2694,48 +2695,52 @@ router.post("/get_track_for_current_round", async (req, res) => {
   var round = await round_helper.get_current_round_of_contest(
     req.body.contest_id
   );
+  // console.log(" : round ==> ", round);
   var arr = [];
   var data = round.round[0];
   for (const track of data.hip_hop_track) {
     var trk = track.toString();
-    arr.push(trk);
+    arr.push(ObjectId(trk));
   }
+
   for (const track of data.country_track) {
     var trk = track.toString();
-    arr.push(trk);
+    arr.push(ObjectId(trk));
   }
   for (const track of data.pop_track) {
     var trk = track.toString();
-    arr.push(trk);
+    arr.push(ObjectId(trk));
   }
   for (const track of data.rock_track) {
     var trk = track.toString();
-    arr.push(trk);
+    arr.push(ObjectId(trk));
   }
   for (const track of data.rb_track) {
     var trk = track.toString();
-    arr.push(trk);
+    arr.push(ObjectId(trk));
   }
   for (const track of data.latin_track) {
     var trk = track.toString();
-    arr.push(trk);
+    arr.push(ObjectId(trk));
   }
-
+  console.log(" : arr ==> ", arr);
   //if (round.round[0].artist_id.length > 0) {
   var tot_cnt = await Track.count({ _id: { $in: arr } })
     .populate({ path: "artist_id", populate: { path: "music_type" } })
     .populate({ path: "artist_id", populate: { path: "state" } });
+  console.log(" : tot_cnt ==> ", tot_cnt);
   var filter_cnt = await Track.count({ _id: { $in: arr } })
     .populate({ path: "artist_id", populate: { path: "music_type" } })
     .populate({ path: "artist_id", populate: { path: "state" } })
     .skip(req.body.start)
     .limit(req.body.length);
+  console.log(" : filter_cnt ==> ", filter_cnt);
   var track = await Track.find({ _id: { $in: arr } })
     .populate({ path: "artist_id", populate: { path: "music_type" } })
-    .populate({ path: "artist_id", populate: { path: "state" } })
+    // .populate({ path: "artist_id", populate: { path: "state" } })
     .skip(req.body.start)
     .limit(req.body.length);
-
+  console.log("track :  ==> ", track);
   res
     .status(config.OK_STATUS)
     .json({ data: track, recordsFiltered: filter_cnt, recordsTotal: tot_cnt });
