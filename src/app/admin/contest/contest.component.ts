@@ -204,6 +204,22 @@ export class ContestComponent implements OnInit {
       this.round_list = response["contest"]["contest"];
     });
   }
+
+  onChangeWeek(e) {
+    console.log(" :  ==> ", parseInt(e.target.value));
+    if (
+      parseInt(this.contest_validation.controls["round"].value) <
+      parseInt(e.target.value)
+    ) {
+      console.log(" : less ==> ");
+      this.contest_validation.controls["round"].setErrors({ isValid: false });
+      this.contest_validation.updateValueAndValidity();
+    } else {
+      this.contest_validation.controls["round"].setErrors(null);
+      this.contest_validation.updateValueAndValidity();
+    }
+  }
+
   onChangeRound(e) {
     if (e.target.value > 1) {
       this.contestant_per_round = [];
@@ -217,6 +233,17 @@ export class ContestComponent implements OnInit {
           this.contestant_per_round.push(obj);
         }
       }
+    }
+    if (
+      parseInt(e.target.value) <
+      parseInt(this.contest_validation.controls["duration"].value)
+    ) {
+      console.log(" : less ==> ");
+      this.contest_validation.controls["round"].setErrors({ isValid: false });
+      this.contest_validation.updateValueAndValidity();
+    } else {
+      this.contest_validation.controls["round"].setErrors(null);
+      this.contest_validation.updateValueAndValidity();
     }
   }
 
