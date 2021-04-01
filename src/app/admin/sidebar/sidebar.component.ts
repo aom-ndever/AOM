@@ -23,7 +23,6 @@ export class SidebarComponent implements OnInit {
   ) {
     this.router.events.subscribe((event: any) => {
       if (event instanceof NavigationEnd) {
-        console.log("this.router.url", this.router.url);
         this.currentRoute = this.router.url;
       }
     });
@@ -48,7 +47,6 @@ export class SidebarComponent implements OnInit {
           this.user.admin.account_type === "moderator")
       ) {
         this.socket.on("receive_admin_notification_count", (data) => {
-          console.log(" : data ==> ", data);
           if (data) {
             this.user["count"] = data.count;
             localStorage.setItem("user", JSON.stringify(this.user));

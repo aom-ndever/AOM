@@ -24,6 +24,7 @@ var stripe = require("stripe")("sk_test_FUsMHGCLfkGJmKEbW0aiRATb");
 var global_helper = require("../../helpers/global_helper");
 var socket = require("../../socket/socketServer");
 var cron = require("node-cron");
+const contest_voting_helper = require("../../helpers/contest_voting_helper");
 
 /**
  * @api {post} /user/track/purchase purchase  track Add
@@ -157,6 +158,7 @@ router.post("/purchased", async (req, res) => {
 router.post("/vote_track", async (req, res) => {
   var obj = {
     user_id: req.userInfo.id,
+    id: req.body.id,
     track_id: req.body.track_id,
     artist_id: req.body.artist_id,
     contest_id: req.body.contest_id,
@@ -170,13 +172,15 @@ router.post("/vote_track", async (req, res) => {
 
   if (data.status == 2) {
     var data = await vote_track_helper.vote_for_track(user_id, obj);
-    var resp_data = await track_helper.get_all_track_by_track_id(obj.track_id);
-    var no_vote = resp_data.track.no_of_votes + 1;
-    resp_data = await track_helper.update_votes(obj.track_id, no_vote);
+    var resp_data = await contest_voting_helper.get_track_by_track_id(obj.id);
+    var no_vote = resp_data.track.number_of_vote + 1;
+    // var resp_data = await track_helper.get_all_track_by_track_id(obj.track_id);
+    resp_data = await contest_voting_helper.update_votes(obj.id, no_vote);
+    // return false;
 
-    var resp_data = await artist_helper.get_artist_by_id(obj.artist_id);
-    var no_vote = resp_data.artist.no_of_votes + 1;
-    resp_data = await artist_helper.update_artist_votes(obj.artist_id, no_vote);
+    // var resp_data = await artist_helper.get_artist_by_id(obj.artist_id);
+    // var no_vote = resp_data.artist.no_of_votes + 1;
+    // resp_data = await artist_helper.update_artist_votes(obj.artist_id, no_vote);
     res.status(config.OK_STATUS).json({ message: "Successfully Voted" });
   } else {
     res.status(config.BAD_REQUEST).json({ message: "Already Voted" });

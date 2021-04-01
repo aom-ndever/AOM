@@ -1057,4 +1057,21 @@ track_helper.delete_track = async (track_id) => {
   }
 };
 
+track_helper.get_all_track_by_artist_id = async (artist_id) => {
+  try {
+    var track = await Track.find({ artist_id: artist_id });
+    if (track) {
+      return { status: 1, message: "track details found", track: track };
+    } else {
+      return { status: 2, message: "track not found" };
+    }
+  } catch (err) {
+    return {
+      status: 0,
+      message: "Error occured while finding track",
+      error: err,
+    };
+  }
+};
+
 module.exports = track_helper;

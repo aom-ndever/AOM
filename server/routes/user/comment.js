@@ -71,7 +71,6 @@ router.post("/", async (req, res) => {
         req.body.artist_id,
         req.body.track_id
       );
-      console.log(" : trackName ==> ", trackName);
       var notificationObj = {
         sender: req.userInfo.id,
         receiver: req.body.artist_id,

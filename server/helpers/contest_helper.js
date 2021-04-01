@@ -3,6 +3,8 @@ var RoundTracks = require("./../models/round_tracks");
 var contest_helper = {};
 var mongoose = require("mongoose");
 var _ = require("underscore");
+const round_helper = require("./round_helper");
+const Round = require("../models/round");
 var ObjectId = mongoose.Types.ObjectId;
 
 contest_helper.insert_contest = async (object) => {
@@ -24,6 +26,44 @@ contest_helper.get_contest_by_id = async (id) => {
     var contest = await Contest.findOne({ _id: new ObjectId(id) });
     if (contest) {
       return { status: 1, message: "contest details found", contest: contest };
+    } else {
+      return { status: 2, message: "contest not found" };
+    }
+  } catch (err) {
+    return {
+      status: 0,
+      message: "Error occured while finding contest",
+      error: err,
+    };
+  }
+};
+
+contest_helper.get_contest_All_Detail_by_id = async (id) => {
+  try {
+    var round = await Round.find({ contest_id: new ObjectId(id) })
+      .populate("contest_id")
+      .sort({
+        created_at: -1,
+      });
+    if (round) {
+      if (round.length > 0) {
+        obj = {
+          _id: round[0].contest_id._id,
+          name: round[0].contest_id.name,
+          admin_id: round[0].contest_id.admin_id,
+          music_type: round[0].contest_id.music_type,
+          contest_type: round[0].contest_id.contest_type,
+          duration: round[0].contest_id.duration,
+          round: round[0].round,
+          totalRound: round[0].totalRound,
+          start_date: round[0].start_date,
+          created_at: round[0].contest_id.created_at,
+        };
+
+        return { status: 1, message: "contest details found", contest: obj };
+      } else {
+        return { status: 2, message: "contest not found" };
+      }
     } else {
       return { status: 2, message: "contest not found" };
     }
@@ -141,6 +181,29 @@ contest_helper.get_all_contests = async (music) => {
   }
 };
 
+contest_helper.get_all_contests_inProgress = async (music) => {
+  try {
+    var participate = await Contest.find({ status: "in_progress" }).populate(
+      "music_type"
+    );
+    if (participate) {
+      return {
+        status: 1,
+        message: "contest details found",
+        contest: participate,
+      };
+    } else {
+      return { status: 2, message: "contest not found" };
+    }
+  } catch (err) {
+    return {
+      status: 0,
+      message: "Error occured while finding contest",
+      error: err,
+    };
+  }
+};
+
 contest_helper.get_current_contest_round = async (music) => {
   try {
     var participate = await Contest.find({ created_at: 1 }).populate(
@@ -213,6 +276,26 @@ contest_helper.get_all_contests_list = async (start, length) => {
         recordsFiltered: filter_cnt,
         recordsTotal: tot_cnt,
       };
+    } else {
+      return { status: 2, message: "contest not found" };
+    }
+  } catch (err) {
+    return {
+      status: 0,
+      message: "Error occured while finding contest",
+      error: err,
+    };
+  }
+};
+
+contest_helper.update_status = async (id, obj) => {
+  try {
+    var contest = await Contest.update(
+      { _id: new ObjectId(id) },
+      { $set: { status: obj.status } }
+    );
+    if (contest) {
+      return { status: 1, message: "contest updated" };
     } else {
       return { status: 2, message: "contest not found" };
     }

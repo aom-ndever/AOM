@@ -158,7 +158,6 @@ export class ArtistComponent implements OnInit {
     const user = JSON.parse(localStorage.getItem("user"));
     if (user && user["user"]) {
       this.artistService.getMyFollower().subscribe((response) => {
-        console.log(' : response["user"] ==> ', response["user"]);
         this.my_follower_list = response["user"];
       });
     }

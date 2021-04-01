@@ -29,6 +29,8 @@ var ObjectId = mongoose.Types.ObjectId;
 var fs = require("fs");
 const artist_message_helper = require("../../helpers/artist_message_helper");
 const Artist = require("../../models/artist");
+const { object } = require("underscore");
+const contest_voting_helper = require("../../helpers/contest_voting_helper");
 
 router.get("/followers_of_artist", async (req, res) => {
   user_id = req.userInfo.id;
@@ -1059,64 +1061,71 @@ router.post("/submit_tracks", async (req, res) => {
     var obj = {
       artist_id: req.userInfo.id,
       contest_id: req.body.contest_id,
-      preliminary2_track: req.body.preliminary1_track,
-      preliminary3_track: req.body.preliminary2_track,
+      preliminary1_track: req.body.preliminary1_track,
+      preliminary2_track: req.body.preliminary2_track,
+      preliminary3_track: req.body.preliminary3_track,
       round1_track: req.body.round1_track,
       round2_track: req.body.round2_track,
       round3_track: req.body.round3_track,
+      round4_track: req.body.round4_track,
+      round5_track: req.body.round5_track,
+      round6_track: req.body.round6_track,
+      round7_track: req.body.round7_track,
+      round8_track: req.body.round8_track,
       semi_final_track: req.body.semi_final_track,
       final_track: req.body.final_track,
     };
+
+    var votingObj = {
+      artist_id: req.userInfo.id,
+      contest_id: req.body.contest_id,
+      track_id: req.body.preliminary1_track,
+    };
+
     var no_pariticipant;
     var artist_participation = await participate_helper.get_track_participation(
       obj.contest_id,
       req.userInfo.id
     );
-
+    // var track_type = await track_helper.get_track_by_id(req.body.preliminary1_track);
     if (artist_participation.status == 2) {
       var contest_data = await contest_helper.get_contest_by_id(obj.contest_id);
 
       var participate_data = await round_helper.get_round_by_id(obj.contest_id);
 
       if (contest_data.contest.contest_type == "special") {
-        var artist_data = await artist_helper.get_artist_by_id(artist_id);
-        artist_music = artist_data.artist.music_type._id;
+        // return false;
+        votingObj[`track_id`] = req.body.round1_track;
+        votingObj[`round`] = "round1";
+        if (participate_data.contest.round == "round1") {
+          var artist_data = await artist_helper.get_artist_by_id(artist_id);
+          let artistArr = [];
+          participate_data.contest.artist_id.push(req.userInfo.id);
+          artistArr = participate_data.contest.artist_id;
+          var musicAdded = {
+            hiphop_track_id: [],
+            pop_track_id: [],
+            rb_track_id: [],
+            latin_track_id: [],
+            rock_track_id: [],
+            country_track_id: [],
+          };
 
-        if (
-          artist_music.toString() == contest_data.contest.music_type.toString()
-        ) {
-          var no_of_participant = contest_data.contest.no_of_participant + 1;
-          var resp_data = await contest_helper.update_participant(
-            obj.contest_id,
-            no_of_participant
-          );
-          var resp_data = await participate_helper.insert_track_round(obj);
-          res.status(config.OK_STATUS).json({
-            message: "Successfully added track for the contest",
-            status: 1,
-            tracks: resp_data,
-          });
-        } else {
-          logger.trace("You are of Different Genre");
-          res
-            .status(config.BAD_REQUEST)
-            .json({ message: "You are of Different Genre" });
-        }
-      } else if (
-        contest_data.contest.contest_type == "standard" ||
-        contest_data.contest.contest_type == "beta"
-      ) {
-        if (participate_data.contest.round == "preliminary1") {
-          var artist_data = await artist_helper.get_artist_by_id(
-            req.userInfo.id
-          );
           if (artist_data.artist.music_type.alias == "hiphop") {
             if (participate_data.contest.hip_hop_participants <= 1000) {
               no_pariticipant =
                 participate_data.contest.hip_hop_participants + 1;
+              participate_data.contest.hip_hop_track.push(
+                req.body.round1_track
+              );
+              musicAdded[`hiphop_tracks_id`] =
+                participate_data.contest.hip_hop_track;
+
               var resp_data = await round_helper.update_hip_hop_participant(
                 obj.contest_id,
-                no_pariticipant
+                no_pariticipant,
+                musicAdded,
+                artistArr
               );
             } else {
               res.status(config.BAD_REQUEST).json({
@@ -1127,9 +1136,14 @@ router.post("/submit_tracks", async (req, res) => {
           } else if (artist_data.artist.music_type.alias == "pop") {
             if (participate_data.contest.pop_participants <= 1000) {
               no_pariticipant = participate_data.contest.pop_participants + 1;
+              participate_data.contest.pop_track.push(req.body.round1_track);
+              musicAdded[`pop_tracks_id`] = participate_data.contest.pop_track;
+
               var resp_data = await round_helper.update_pop_participant(
                 obj.contest_id,
-                no_pariticipant
+                no_pariticipant,
+                musicAdded,
+                artistArr
               );
             } else {
               res.status(config.BAD_REQUEST).json({
@@ -1140,9 +1154,14 @@ router.post("/submit_tracks", async (req, res) => {
           } else if (artist_data.artist.music_type.alias == "rb") {
             if (participate_data.contest.rb_participants <= 1000) {
               no_pariticipant = participate_data.contest.rb_participants + 1;
+              participate_data.contest.rb_track.push(req.body.round1_track);
+              musicAdded[`rb_tracks_id`] = participate_data.contest.rb_track;
+
               var resp_data = await round_helper.update_rb_participant(
                 obj.contest_id,
-                no_pariticipant
+                no_pariticipant,
+                musicAdded,
+                artistArr
               );
             } else {
               res.status(config.BAD_REQUEST).json({
@@ -1154,9 +1173,17 @@ router.post("/submit_tracks", async (req, res) => {
             if (participate_data.contest.country_participants <= 1000) {
               no_pariticipant =
                 participate_data.contest.country_participants + 1;
+              participate_data.contest.country_track.push(
+                req.body.round1_track
+              );
+              musicAdded[`country_tracks_id`] =
+                participate_data.contest.country_track;
+
               var resp_data = await round_helper.update_ele_participant(
                 obj.contest_id,
-                no_pariticipant
+                no_pariticipant,
+                musicAdded,
+                artistArr
               );
             } else {
               res.status(config.BAD_REQUEST).json({
@@ -1167,9 +1194,15 @@ router.post("/submit_tracks", async (req, res) => {
           } else if (artist_data.artist.music_type.alias == "rock") {
             if (participate_data.contest.rock_participants <= 1000) {
               no_pariticipant = participate_data.contest.rock_participants + 1;
+              participate_data.contest.rock_track.push(req.body.round1_track);
+              musicAdded[`rock_tracks_id`] =
+                participate_data.contest.rock_track;
+
               var resp_data = await round_helper.update_rock_participant(
                 obj.contest_id._id,
-                no_pariticipant
+                no_pariticipant,
+                musicAdded,
+                artistArr
               );
             } else {
               res.status(config.BAD_REQUEST).json({
@@ -1180,9 +1213,209 @@ router.post("/submit_tracks", async (req, res) => {
           } else if (artist_data.artist.music_type.alias == "latin") {
             if (participate_data.contest.latin_participants <= 1000) {
               no_pariticipant = participate_data.contest.latin_participants + 1;
+              participate_data.contest.latin_track.push(req.body.round1_track);
+
+              musicAdded[`latin_track_id`] =
+                participate_data.contest.latin_track;
+
               var resp_data = await round_helper.update_latin_participant(
                 contest_data.contest._id,
-                no_pariticipant
+                no_pariticipant,
+                musicAdded,
+                artistArr
+              );
+            } else {
+              res.status(config.BAD_REQUEST).json({
+                message:
+                  "Preliminary round is over of your genre, you cannot apply",
+              });
+            }
+          }
+
+          var no_of_participant = contest_data.contest.no_of_participant + 1;
+          var resp_data = await contest_helper.update_participant(
+            obj.contest_id,
+            no_of_participant
+          );
+          var resp_data = await participate_helper.insert_track_round(obj);
+          var contest_voting_data = await contest_voting_helper.insert_contest_voting_record(
+            votingObj
+          );
+
+          res.status(config.OK_STATUS).json({
+            message: "Successfully added track for the contest",
+            status: 1,
+            tracks: resp_data,
+          });
+        } else {
+          res
+            .status(config.BAD_REQUEST)
+            .json({ message: "Round 1 round is over for this contest" });
+        }
+
+        // var artist_data = await artist_helper.get_artist_by_id(artist_id);
+
+        // artist_music = artist_data.artist.music_type._id;
+
+        // if (
+        //   artist_music.toString() == contest_data.contest.music_type.toString()
+        // ) {
+        //   var no_of_participant = contest_data.contest.no_of_participant + 1;
+        //   var resp_data = await contest_helper.update_participant(
+        //     obj.contest_id,
+        //     no_of_participant
+        //   );
+        //   var resp_data = await participate_helper.insert_track_round(obj);
+        //   res.status(config.OK_STATUS).json({
+        //     message: "Successfully added track for the contest",
+        //     status: 1,
+        //     tracks: resp_data,
+        //   });
+        // } else {
+        //   logger.trace("You are of Different Genre");
+        //   res
+        //     .status(config.BAD_REQUEST)
+        //     .json({ message: "You are of Different Genre" });
+        // }
+      } else if (
+        contest_data.contest.contest_type == "standard" ||
+        contest_data.contest.contest_type == "beta"
+      ) {
+        if (participate_data.contest.round == "preliminary1") {
+          var artist_data = await artist_helper.get_artist_by_id(
+            req.userInfo.id
+          );
+          let artistArr = [];
+          participate_data.contest.artist_id.push(req.userInfo.id);
+          artistArr = participate_data.contest.artist_id;
+          var musicAdded = {
+            hiphop_track_id: [],
+            pop_track_id: [],
+            rb_track_id: [],
+            latin_track_id: [],
+            rock_track_id: [],
+            country_track_id: [],
+          };
+          if (artist_data.artist.music_type.alias == "hiphop") {
+            if (participate_data.contest.hip_hop_participants <= 1000) {
+              no_pariticipant =
+                participate_data.contest.hip_hop_participants + 1;
+              participate_data.contest.hip_hop_track.push(
+                req.body.preliminary1_track
+              );
+              musicAdded[`hiphop_tracks_id`] =
+                participate_data.contest.hip_hop_track;
+
+              var resp_data = await round_helper.update_hip_hop_participant(
+                obj.contest_id,
+                no_pariticipant,
+                musicAdded,
+                artistArr
+              );
+            } else {
+              res.status(config.BAD_REQUEST).json({
+                message:
+                  "Preliminary round is over of your genre, you cannot apply",
+              });
+            }
+          } else if (artist_data.artist.music_type.alias == "pop") {
+            if (participate_data.contest.pop_participants <= 1000) {
+              no_pariticipant = participate_data.contest.pop_participants + 1;
+              participate_data.contest.pop_track.push(
+                req.body.preliminary1_track
+              );
+              musicAdded[`pop_tracks_id`] = participate_data.contest.pop_track;
+
+              var resp_data = await round_helper.update_pop_participant(
+                obj.contest_id,
+                no_pariticipant,
+                musicAdded,
+                artistArr
+              );
+            } else {
+              res.status(config.BAD_REQUEST).json({
+                message:
+                  "Preliminary round is over of your genre, you cannot apply",
+              });
+            }
+          } else if (artist_data.artist.music_type.alias == "rb") {
+            if (participate_data.contest.rb_participants <= 1000) {
+              no_pariticipant = participate_data.contest.rb_participants + 1;
+              participate_data.contest.rb_track.push(
+                req.body.preliminary1_track
+              );
+              musicAdded[`rb_tracks_id`] = participate_data.contest.rb_track;
+
+              var resp_data = await round_helper.update_rb_participant(
+                obj.contest_id,
+                no_pariticipant,
+                musicAdded,
+                artistArr
+              );
+            } else {
+              res.status(config.BAD_REQUEST).json({
+                message:
+                  "Preliminary round is over of your genre, you cannot apply",
+              });
+            }
+          } else if (artist_data.artist.music_type.alias == "ele") {
+            if (participate_data.contest.country_participants <= 1000) {
+              no_pariticipant =
+                participate_data.contest.country_participants + 1;
+              participate_data.contest.country_track.push(
+                req.body.preliminary1_track
+              );
+              musicAdded[`country_tracks_id`] =
+                participate_data.contest.country_track;
+
+              var resp_data = await round_helper.update_ele_participant(
+                obj.contest_id,
+                no_pariticipant,
+                musicAdded,
+                artistArr
+              );
+            } else {
+              res.status(config.BAD_REQUEST).json({
+                message:
+                  "Preliminary round is over of your genre, you cannot apply",
+              });
+            }
+          } else if (artist_data.artist.music_type.alias == "rock") {
+            if (participate_data.contest.rock_participants <= 1000) {
+              no_pariticipant = participate_data.contest.rock_participants + 1;
+              participate_data.contest.rock_track.push(
+                req.body.preliminary1_track
+              );
+              musicAdded[`rock_tracks_id`] =
+                participate_data.contest.rock_track;
+
+              var resp_data = await round_helper.update_rock_participant(
+                obj.contest_id._id,
+                no_pariticipant,
+                musicAdded,
+                artistArr
+              );
+            } else {
+              res.status(config.BAD_REQUEST).json({
+                message:
+                  "Preliminary round is over of your genre, you cannot apply",
+              });
+            }
+          } else if (artist_data.artist.music_type.alias == "latin") {
+            if (participate_data.contest.latin_participants <= 1000) {
+              no_pariticipant = participate_data.contest.latin_participants + 1;
+              participate_data.contest.latin_track.push(
+                req.body.preliminary1_track
+              );
+
+              musicAdded[`latin_track_id`] =
+                participate_data.contest.latin_track;
+
+              var resp_data = await round_helper.update_latin_participant(
+                contest_data.contest._id,
+                no_pariticipant,
+                musicAdded,
+                artistArr
               );
             } else {
               res.status(config.BAD_REQUEST).json({
@@ -1197,6 +1430,10 @@ router.post("/submit_tracks", async (req, res) => {
             no_of_participant
           );
           var resp_data = await participate_helper.insert_track_round(obj);
+          var contest_voting_data = await contest_voting_helper.insert_contest_voting_record(
+            votingObj
+          );
+
           res.status(config.OK_STATUS).json({
             message: "Successfully added track for the contest",
             status: 1,
@@ -1299,7 +1536,7 @@ router.post("/message_markAsRead", async (req, res) => {
 router.get("/contest", async (req, res) => {
   var artist_music = await artist_helper.get_artist_by_id(req.userInfo.id);
   artist_music = artist_music.artist.music_type._id;
-  var contest = await contest_helper.get_all_contests();
+  var contest = await contest_helper.get_all_contests_inProgress();
   if (contest.status === 1) {
     logger.trace("got details successfully");
     res.status(config.OK_STATUS).json({ status: 1, contest: contest.contest });
@@ -1499,4 +1736,23 @@ router.post("/deactive_delete_Account", async (req, res) => {
   // }
 });
 
+router.get("/contestAllDetail/:id", async (req, res) => {
+  var resp = await contest_helper.get_contest_All_Detail_by_id(req.params.id);
+  if (resp.status == 0) {
+    logger.error("Error occured while finding message detail = ", resp);
+    res.status(config.INTERNAL_SERVER_ERROR).json(resp);
+  } else {
+    if (resp.status == 1) {
+      res.status(config.OK_STATUS).json({
+        status: 1,
+        message: "Contest detail found",
+        contest: resp.contest,
+      });
+    } else {
+      res
+        .status(config.NOT_FOUND)
+        .json({ status: 2, message: "Message detail not found." });
+    }
+  }
+});
 module.exports = router;

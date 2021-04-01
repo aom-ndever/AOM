@@ -360,7 +360,6 @@ export class ContestComponent implements OnInit {
         states: [{ state_id: this.contest_validation.get("state").value }],
         year: this.contest_validation.get("year").value,
       };
-      console.log(" : obj1 ==> ", obj1);
       this.addContest(flag, obj1);
     }
   }

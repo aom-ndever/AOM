@@ -26,6 +26,7 @@ export class VoteComponent implements OnInit {
   search_str: any = "";
   adv_filter: any = {};
   region_filter: any = [];
+  track_row_cnt = 1;
   artist_img_url: any = environment.API_URL + environment.ARTIST_IMG;
   track_url: any = environment.API_URL + environment.ARTIST_TRACK;
   audio_ins: any = [];
@@ -45,6 +46,7 @@ export class VoteComponent implements OnInit {
   start: any = 0;
   length: any = 10;
   subscription: Subscription;
+  voting = true;
   constructor(
     private voteService: VoteService,
     private toastr: ToastrService,
@@ -55,9 +57,9 @@ export class VoteComponent implements OnInit {
   ) {
     window.scroll(0, 0);
     this.titleService.setTitle(this.route.snapshot.data["title"]);
+    this.getAllContest();
     this.getAllState();
     this.getAllMusicType();
-    this.getAllContest();
     this.subscription = this.messageService
       .getMessage()
       .subscribe((response) => {
@@ -178,21 +180,32 @@ export class VoteComponent implements OnInit {
           }
           this.voteService.getAllParticipants(dataTablesParameters).subscribe(
             (response) => {
+              console.log(" : response ==> ", response);
               this.participants = response["data"];
-              console.log(" this.participants:  ==> ", this.participants);
+              if (
+                this.participants &&
+                this.participants.length > 0 &&
+                this.participants[0].contest_id &&
+                this.participants[0].contest_id.status === "finished"
+              ) {
+                this.voting = false;
+              } else {
+                this.voting = true;
+              }
               this.audio_ins = [];
               this.audio_ins_list = [];
               this.participants.forEach((ele) => {
                 this.audio_ins.push(false);
-                this.audio_ins_list.push(ele["track"]);
+                this.audio_ins_list.push(ele["track_id"]);
               });
               callback({
                 recordsTotal: response["recordsTotal"],
                 // recordsTotal: 1,
-                recordsFiltered: response["recordsFiltered"],
+                recordsFiltered: response["recordsTotal"],
                 // recordsFiltered: 1,
                 data: [],
               });
+              // that.track_row_cnt = dataTablesParameters["start"] + 1;
             },
             (error) => {
               this.participants = [];
@@ -204,7 +217,7 @@ export class VoteComponent implements OnInit {
               // this.toastr.error(error['error'].message, 'Error!');
             }
           );
-        }, 0);
+        }, 100);
       },
     };
     this.dtOptions[1] = {
@@ -239,13 +252,13 @@ export class VoteComponent implements OnInit {
               // this.winner_list = response['track']['winner'];
               this.audio_ins1 = [];
               this.audio_ins_list1 = [];
-              // this.winner_list.forEach((ele) => {
-              //   this.audio_ins1.push(false);
-              //   this.audio_ins_list1.push(ele['track_id']);
-              // });
+              this.winner_list.forEach((ele) => {
+                this.audio_ins1.push(false);
+                this.audio_ins_list1.push(ele["track_id"]);
+              });
               callback({
                 recordsTotal: response["recordsTotal"],
-                recordsFiltered: response["recordsFiltered"],
+                recordsFiltered: response["recordsTotal"],
                 // recordsTotal: 1,
                 // recordsFiltered: 1,
                 data: [],
@@ -260,7 +273,7 @@ export class VoteComponent implements OnInit {
               });
             }
           );
-        }, 0);
+        }, 100);
       },
     };
   }
@@ -288,6 +301,16 @@ export class VoteComponent implements OnInit {
     this.voteService.getAllParticipants(data).subscribe(
       (response) => {
         this.participants = response["data"];
+        if (
+          this.participants &&
+          this.participants.length > 0 &&
+          this.participants[0].contest_id &&
+          this.participants[0].contest_id.status === "finished"
+        ) {
+          this.voting = false;
+        } else {
+          this.voting = true;
+        }
         console.log(" this.participants:  ==> ", this.participants);
         this.audio_ins = [];
         this.audio_ins_list = [];
@@ -317,12 +340,16 @@ export class VoteComponent implements OnInit {
     const data = {
       music_type: this.adv_filter.music_type ? this.adv_filter.music_type : "",
     };
+
+    console.log(" : data ==> ", data);
     this.voteService.getAllContest(data).subscribe((response) => {
       this.contest_list = response["contest"]["winner"];
+      console.log(" : this.contest_list ==> ", this.contest_list);
       this.ngxService.stop();
       if (this.contest_list.length > 0) {
         this.contest_data = this.contest_list[0]["_id"];
         this.contest_name = this.contest_list[0]["name"];
+        console.log(" : this.contest_data ==> ", this.contest_data);
         const _data = {
           start: this.start,
           length: this.length,
@@ -364,48 +391,57 @@ export class VoteComponent implements OnInit {
     }
   }
   // vote to the track
-  voteTrack(track_id, artist_id, contests_id, index) {
-    const user = JSON.parse(localStorage.getItem("user"));
-
-    if (user && user.user) {
-      const data = {
-        track_id: track_id,
-        artist_id: artist_id,
-        contest_id: contests_id,
-      };
-      this.vote_spinner = true;
-      this.voteService.giveVoteToTrack(data).subscribe(
-        (response) => {
-          console.log(" :  ==> ");
-          // if(!(response['message'].toLowerCase() == 'already voted')) {
-          this.participants[index]["no_of_votes"] += 1;
-          this.participants[index]["is_voted"] = true;
-          this.winner_list[index]["no_of_votes"] += 1;
-          this.winner_list[index]["is_voted"] = true;
-
-          // }
-          this.dtElements.forEach(
-            (dtElement: DataTableDirective, index: number) => {
-              dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
-                dtInstance.draw();
-              });
-            }
-          );
-          this.toastr.success(response["message"], "Success!");
-        },
-        (error) => {
-          this.toastr.error(error["error"].message, "Error!");
-          this.vote_spinner = false;
-        },
-        () => {
-          this.vote_spinner = false;
-        }
-      );
-    } else {
+  voteTrack(id, track_id, artist_id, contests_id, index) {
+    if (this.voting === false) {
       this.toastr.info(
-        "Please signin as listener to follow the artist.",
+        "Sorry you are not vote to this track, This contest has been finished.",
         "Information!"
       );
+    } else {
+      const user = JSON.parse(localStorage.getItem("user"));
+
+      if (user && user.user) {
+        const data = {
+          id: id,
+          track_id: track_id,
+          artist_id: artist_id,
+          contest_id: contests_id,
+        };
+        // this.participants[index]["number_of_vote"] += 1;
+        this.vote_spinner = true;
+        this.voteService.giveVoteToTrack(data).subscribe(
+          (response) => {
+            console.log(" :  ==> ");
+            // if(!(response['message'].toLowerCase() == 'already voted')) {
+            this.participants[index]["number_of_vote"] += 1;
+            this.participants[index]["is_voted"] = true;
+            this.winner_list[index]["number_of_vote"] += 1;
+            this.winner_list[index]["is_voted"] = true;
+
+            // }
+            this.dtElements.forEach(
+              (dtElement: DataTableDirective, index: number) => {
+                dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
+                  dtInstance.draw();
+                });
+              }
+            );
+            this.toastr.success(response["message"], "Success!");
+          },
+          (error) => {
+            this.toastr.error(error["error"].message, "Error!");
+            this.vote_spinner = false;
+          },
+          () => {
+            this.vote_spinner = false;
+          }
+        );
+      } else {
+        this.toastr.info(
+          "Please signin as listener to follow the artist.",
+          "Information!"
+        );
+      }
     }
   }
   // Load more participants
@@ -421,6 +457,18 @@ export class VoteComponent implements OnInit {
       (response) => {
         if (response && response["track"].length > 0) {
           this.participants = [...this.participants, ...response["track"]];
+          if (
+            this.participants &&
+            this.participants.length > 0 &&
+            this.participants[0].contest_id &&
+            this.participants[0].contest_id.status === "finished"
+          ) {
+            this.voting = false;
+          } else {
+            this.voting = true;
+          }
+          this.show_spinner = false;
+
           this.audio_ins = [];
           this.audio_ins_list = [];
           this.participants.forEach((ele) => {
@@ -584,6 +632,7 @@ export class VoteComponent implements OnInit {
               });
             }
           );
+          this.show_spinner = false;
         } else {
           this.participants = [];
           this.winner_list = [];

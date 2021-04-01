@@ -45,6 +45,7 @@ export class MyMusicComponent implements OnInit, OnDestroy {
   edit_image: any = "img/default_img.png";
   trackdata: any = {};
   tracklist: any = [];
+  tracklists: any = [];
   show_spinner = false;
   audio_ins: any = [];
   track_url: any = environment.API_URL + environment.ARTIST_TRACK;
@@ -70,10 +71,17 @@ export class MyMusicComponent implements OnInit, OnDestroy {
   contesttrack_form: FormGroup;
   standard_form: FormGroup;
   special_form: FormGroup;
+  special_form2: FormGroup;
+  special_form3: FormGroup;
+  special_form4: FormGroup;
+  special_form5: FormGroup;
+  special_form6: FormGroup;
+  special_form7: FormGroup;
+  special_form8: FormGroup;
   closeResult: string;
   public contestDetail;
   public track_img: String;
-
+  public spacialContestData: any;
   constructor(
     private modalService: NgbModal,
     private myMusicService: MyMusicService,
@@ -87,6 +95,7 @@ export class MyMusicComponent implements OnInit, OnDestroy {
     console.log("my music component => ");
     this.contesttrack_form = this.fb.group({
       contest_id: new FormControl(),
+      preliminary1_track: new FormControl(),
       round1_track: new FormControl(),
       round2_track: new FormControl(),
       round3_track: new FormControl(),
@@ -97,6 +106,7 @@ export class MyMusicComponent implements OnInit, OnDestroy {
       scontest_id: new FormControl(),
       spreliminary1_track: new FormControl(),
       spreliminary2_track: new FormControl(),
+      spreliminary3_track: new FormControl(),
       sround1_track: new FormControl(),
       sround2_track: new FormControl(),
       sround3_track: new FormControl(),
@@ -106,6 +116,62 @@ export class MyMusicComponent implements OnInit, OnDestroy {
     this.special_form = this.fb.group({
       special_contest_id: new FormControl(),
       special_round1_track: new FormControl(),
+    });
+    this.special_form2 = this.fb.group({
+      special_contest_id: new FormControl(),
+      special_round1_track: new FormControl(),
+      special_round2_track: new FormControl(),
+    });
+    this.special_form3 = this.fb.group({
+      special_contest_id: new FormControl(),
+      special_round1_track: new FormControl(),
+      special_round2_track: new FormControl(),
+      special_round3_track: new FormControl(),
+    });
+    this.special_form4 = this.fb.group({
+      special_contest_id: new FormControl(),
+      special_round1_track: new FormControl(),
+      special_round2_track: new FormControl(),
+      special_round3_track: new FormControl(),
+      special_round4_track: new FormControl(),
+    });
+    this.special_form5 = this.fb.group({
+      special_contest_id: new FormControl(),
+      special_round1_track: new FormControl(),
+      special_round2_track: new FormControl(),
+      special_round3_track: new FormControl(),
+      special_round4_track: new FormControl(),
+      special_round5_track: new FormControl(),
+    });
+    this.special_form6 = this.fb.group({
+      special_contest_id: new FormControl(),
+      special_round1_track: new FormControl(),
+      special_round2_track: new FormControl(),
+      special_round3_track: new FormControl(),
+      special_round4_track: new FormControl(),
+      special_round5_track: new FormControl(),
+      special_round6_track: new FormControl(),
+    });
+    this.special_form7 = this.fb.group({
+      special_contest_id: new FormControl(),
+      special_round1_track: new FormControl(),
+      special_round2_track: new FormControl(),
+      special_round3_track: new FormControl(),
+      special_round4_track: new FormControl(),
+      special_round5_track: new FormControl(),
+      special_round6_track: new FormControl(),
+      special_round7_track: new FormControl(),
+    });
+    this.special_form8 = this.fb.group({
+      special_contest_id: new FormControl(),
+      special_round1_track: new FormControl(),
+      special_round2_track: new FormControl(),
+      special_round3_track: new FormControl(),
+      special_round4_track: new FormControl(),
+      special_round5_track: new FormControl(),
+      special_round6_track: new FormControl(),
+      special_round7_track: new FormControl(),
+      special_round8_track: new FormControl(),
     });
     this.titleService.setTitle(this.route.snapshot.data["title"]);
     this.userinfo = JSON.parse(localStorage.getItem("user"));
@@ -221,6 +287,21 @@ export class MyMusicComponent implements OnInit, OnDestroy {
     // this.getAllTrack();
     this.getAllMusicType();
     this.getAllContest();
+    this.trackListstoJoin();
+  }
+
+  trackListstoJoin() {
+    this.myMusicService.getTracks().subscribe(
+      (res) => {
+        console.log(" : res ==> ", res);
+        if (res[`status`] === 1) {
+          this.tracklists = res["track"];
+        }
+      },
+      (error) => {
+        console.log(" : error ==> ", error);
+      }
+    );
   }
 
   ngOnDestroy() {
@@ -287,7 +368,14 @@ export class MyMusicComponent implements OnInit, OnDestroy {
       const hex = bytes.join("").toUpperCase();
       const allow_types = this.getMimetype(hex);
 
+      console.log(" file.type:  ==> ", file.type);
+      console.log(" : hex ==> ", hex);
+      console.log(" : allow_types ==> ", allow_types);
       if (file.type === "audio/mpeg" && hex !== "4944334") {
+        console.log(
+          ' : allow_types.indexOf("audio/mp3") ==> ',
+          allow_types.indexOf("audio/mp3")
+        );
         if (allow_types.indexOf("audio/mp3") === -1) {
           this.toastr.error("Invalid file format.", "Error!");
           return false;
@@ -442,6 +530,7 @@ export class MyMusicComponent implements OnInit, OnDestroy {
     if (this.contestType === "beta") {
       Obj = {
         contest_id: this.contestid,
+        preliminary1_track: this.contesttrack_form.value.preliminary1_track,
         round1_track: this.contesttrack_form.value.round1_track,
         round2_track: this.contesttrack_form.value.round2_track,
         round3_track: this.contesttrack_form.value.round3_track,
@@ -451,22 +540,134 @@ export class MyMusicComponent implements OnInit, OnDestroy {
     } else if (this.contestType === "standard") {
       Obj = {
         contest_id: this.contestid,
-        preliminary2_track: this.standard_form.value.spreliminary1_track,
-        preliminary3_track: this.standard_form.value.spreliminary2_track,
+        preliminary1_track: this.standard_form.value.spreliminary1_track,
+        preliminary2_track: this.standard_form.value.spreliminary2_track,
+        preliminary3_track: this.standard_form.value.spreliminary3_track,
         round1_track: this.standard_form.value.sround1_track,
         round2_track: this.standard_form.value.sround2_track,
         round3_track: this.standard_form.value.sround3_track,
         semi_final_track: this.standard_form.value.ssemi_final_track,
         final_track: this.standard_form.value.sfinal_track,
       };
-    } else if (this.contestType === "special") {
-      Obj = {
+    }
+    // else if (this.contestType === "special") {
+    //   Obj = {
+    //     contest_id: this.contestid,
+    //     round1_track: this.special_form.value.special_round1_track,
+    //   };
+    // }
+    this.show_spinner = true;
+    this.myMusicService.addContestTrack(Obj).subscribe(
+      (response) => {
+        this.toastr.success(response["message"], "Success!");
+        this.show_spinner = false;
+        this.contestDetail.close();
+        this.datatableElement.dtInstance.then((dtInstance: DataTables.Api) => {
+          dtInstance.draw();
+        });
+        this.modal_ref.close();
+      },
+      (error) => {
+        this.toastr.error(error["error"].message, "Error!");
+        this.show_spinner = false;
+      },
+      () => {
+        this.show_spinner = false;
+      }
+    );
+  }
+
+  addSpecialContestTrack(totalRounds) {
+    let obj;
+    if (totalRounds === 1) {
+      console.log(" : totalRounds ====> ", totalRounds);
+      console.log(" : special_form8 ==> ", this.special_form.value);
+      obj = {
         contest_id: this.contestid,
         round1_track: this.special_form.value.special_round1_track,
       };
+    } else if (totalRounds === 2) {
+      console.log(" : totalRounds ====> ", totalRounds);
+      console.log(" : special_form8 ==> ", this.special_form2.value);
+      obj = {
+        contest_id: this.contestid,
+        round1_track: this.special_form2.value.special_round1_track,
+        round2_track: this.special_form2.value.special_round2_track,
+      };
+    } else if (totalRounds === 3) {
+      console.log(" : totalRounds ====> ", totalRounds);
+      console.log(" : special_form8 ==> ", this.special_form3.value);
+      obj = {
+        contest_id: this.contestid,
+        round1_track: this.special_form3.value.special_round1_track,
+        round2_track: this.special_form3.value.special_round2_track,
+        round3_track: this.special_form3.value.special_round3_track,
+      };
+    } else if (totalRounds === 4) {
+      console.log(" : totalRounds ====> ", totalRounds);
+      console.log(" : special_form8 ==> ", this.special_form4.value);
+      obj = {
+        contest_id: this.contestid,
+        round1_track: this.special_form4.value.special_round1_track,
+        round2_track: this.special_form4.value.special_round2_track,
+        round3_track: this.special_form4.value.special_round3_track,
+        round4_track: this.special_form4.value.special_round4_track,
+      };
+    } else if (totalRounds === 5) {
+      console.log(" : totalRounds ====> ", totalRounds);
+      console.log(" : special_form8 ==> ", this.special_form5.value);
+      obj = {
+        contest_id: this.contestid,
+        round1_track: this.special_form5.value.special_round1_track,
+        round2_track: this.special_form5.value.special_round2_track,
+        round3_track: this.special_form5.value.special_round3_track,
+        round4_track: this.special_form5.value.special_round4_track,
+        round5_track: this.special_form5.value.special_round5_track,
+      };
+    } else if (totalRounds === 6) {
+      console.log(" : totalRounds ====> ", totalRounds);
+      console.log(" : special_form8 ==> ", this.special_form6.value);
+      obj = {
+        contest_id: this.contestid,
+        round1_track: this.special_form6.value.special_round1_track,
+        round2_track: this.special_form6.value.special_round2_track,
+        round3_track: this.special_form6.value.special_round3_track,
+        round4_track: this.special_form6.value.special_round4_track,
+        round5_track: this.special_form6.value.special_round5_track,
+        round6_track: this.special_form6.value.special_round6_track,
+      };
+    } else if (totalRounds === 7) {
+      console.log(" : totalRounds ====> ", totalRounds);
+      console.log(" : special_form8 ==> ", this.special_form7.value);
+      obj = {
+        contest_id: this.contestid,
+        round1_track: this.special_form7.value.special_round1_track,
+        round2_track: this.special_form7.value.special_round2_track,
+        round3_track: this.special_form7.value.special_round3_track,
+        round4_track: this.special_form7.value.special_round4_track,
+        round5_track: this.special_form7.value.special_round5_track,
+        round6_track: this.special_form7.value.special_round6_track,
+        round7_track: this.special_form7.value.special_round7_track,
+      };
+    } else {
+      console.log(" : totalRounds ====> ", totalRounds);
+      console.log(" : special_form8 ==> ", this.special_form8.value);
+      obj = {
+        contest_id: this.contestid,
+        round1_track: this.special_form8.value.special_round1_track,
+        round2_track: this.special_form8.value.special_round2_track,
+        round3_track: this.special_form8.value.special_round3_track,
+        round4_track: this.special_form8.value.special_round4_track,
+        round5_track: this.special_form8.value.special_round5_track,
+        round6_track: this.special_form8.value.special_round6_track,
+        round7_track: this.special_form8.value.special_round7_track,
+        round8_track: this.special_form8.value.special_round8_track,
+      };
     }
+
+    console.log(" : obj ==> ", obj);
     this.show_spinner = true;
-    this.myMusicService.addContestTrack(Obj).subscribe(
+    this.myMusicService.addContestTrack(obj).subscribe(
       (response) => {
         this.toastr.success(response["message"], "Success!");
         this.show_spinner = false;
@@ -516,6 +717,7 @@ export class MyMusicComponent implements OnInit, OnDestroy {
           this.audio_file = "";
           this.image_upload = "";
           this.add_track_img = "";
+          this.trackListstoJoin();
           this.toastr.success(response["message"], "Success!");
           this.datatableElement.dtInstance.then(
             (dtInstance: DataTables.Api) => {
@@ -570,6 +772,7 @@ export class MyMusicComponent implements OnInit, OnDestroy {
       if (flag.value) {
         thi.myMusicService.deleteTrackById(id).subscribe(
           (response) => {
+            this.trackListstoJoin();
             thi.toastr.success(response["message"], "Success!");
             this.datatableElement.dtInstance.then(
               (dtInstance: DataTables.Api) => {
@@ -613,6 +816,7 @@ export class MyMusicComponent implements OnInit, OnDestroy {
           if (!response["track"]["image"]) {
             this.edit_image = "img/default_img.png";
           }
+          this.trackListstoJoin();
           this.datatableElement.dtInstance.then(
             (dtInstance: DataTables.Api) => {
               dtInstance.draw();
@@ -953,6 +1157,11 @@ export class MyMusicComponent implements OnInit, OnDestroy {
       // case '1A45DFA3':
       //   return 'video/webm';
       case "4944333":
+      case "FFFB900":
+      case "FFFB906C":
+      case "FFF340C4":
+      case "FFFB904C":
+      case "FFFB9240":
         return "audio/mp3";
       // case "4944333":
       //   return "audio/mpeg";
@@ -1065,6 +1274,7 @@ export class MyMusicComponent implements OnInit, OnDestroy {
   }
 
   submit_contest_track(id, contestid, type) {
+    this.spacialContestData = {};
     this.contestType = type;
     this.contestDetail = this.modalService.open(id, {
       centered: true,
@@ -1074,5 +1284,22 @@ export class MyMusicComponent implements OnInit, OnDestroy {
     this.contestid = contestid;
     this.contesttrack_data["contest_id"] = contestid;
     this.submitContest.close();
+    this.myMusicService.contestDetail(this.contestid).subscribe(
+      (res) => {
+        console.log(" : res ==> ", res);
+        if (res["status"] === 1) {
+          if (res["contest"].contest_type === "special") {
+            this.spacialContestData = res["contest"];
+            console.log(
+              " : this.spacialContestData ==> ",
+              this.spacialContestData
+            );
+          }
+        }
+      },
+      (error) => {
+        console.log(" : error ==> ", error);
+      }
+    );
   }
 }

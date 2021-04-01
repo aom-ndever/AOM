@@ -1,18 +1,16 @@
-var express = require('express');
+var express = require("express");
 var router = express.Router();
-var config = require('../../config');
+var config = require("../../config");
 var logger = config.logger;
-var bcrypt = require('bcrypt');
-var jwt = require('jsonwebtoken');
-var async = require('async');
+var bcrypt = require("bcrypt");
+var jwt = require("jsonwebtoken");
+var async = require("async");
 
-var bookmark_helper = require('../../helpers/bookmark_helper');
+var bookmark_helper = require("../../helpers/bookmark_helper");
 
-var mongoose = require('mongoose');
+var mongoose = require("mongoose");
 var ObjectId = mongoose.Types.ObjectId;
-var fs = require('fs');
-
-
+var fs = require("fs");
 
 /**
  * @api {post} /user/bookmark Bookmark on Artist Add
@@ -21,32 +19,32 @@ var fs = require('fs');
 
  * @apiHeader {String}  Content-Type application/json
  * @apiHeader {String}  x-access-token  unique access-key
- * 
+ *
  * @apiParam {String} artist_id Artist id of user
  *
  * @apiSuccess (Success 200) {JSON} bookmark details
  * @apiError (Error 4xx) {String} message Validation or error message.
  */
-router.post('/add', async (req, res) => {
-
+router.post("/add", async (req, res) => {
   logger.trace("API - Promoter signup called");
   logger.debug("req.body = ", req.body);
   var schema = {
-
-    "track_id": {
+    track_id: {
       notEmpty: true,
-      errorMessage: "Artist Id is required"
+      errorMessage: "Artist Id is required",
     },
   };
   req.checkBody(schema);
   var errors = req.validationErrors();
   if (!errors) {
-
     var obj = {
       user_id: req.userInfo.id,
-      track_id: req.body.track_id
+      track_id: req.body.track_id,
     };
-    var resp_get = await bookmark_helper.get_all_bookmarked_track(obj.user_id, obj.track_id);
+    var resp_get = await bookmark_helper.get_all_bookmarked_track(
+      obj.user_id,
+      obj.track_id
+    );
 
     if (resp_get.status == 2) {
       var resp_data = await bookmark_helper.insert_book_mark_track(obj);
@@ -55,34 +53,39 @@ router.post('/add', async (req, res) => {
         res.status(config.INTERNAL_SERVER_ERROR).json(resp_data);
       } else {
         logger.trace("music got successfully = ", resp_data);
-        res.status(config.OK_STATUS).json({ "message": "Bookmark done" });
+        res.status(config.OK_STATUS).json({ message: "Bookmark done" });
       }
-    }
-    else {
+    } else {
       user_id = req.userInfo.id;
-      bookmark_id = resp_get.bookmark._id
+      bookmark_id = resp_get.bookmark._id;
 
       var del_resp = await bookmark_helper.delete_bookmark(bookmark_id);
       if (resp_get.status === 0) {
-        res.status(config.INTERNAL_SERVER_ERROR).json({ "status": 0, "message": "Error occured while deleting bookmark", "error": del_resp.error });
+        res
+          .status(config.INTERNAL_SERVER_ERROR)
+          .json({
+            status: 0,
+            message: "Error occured while deleting bookmark",
+            error: del_resp.error,
+          });
       } else if (resp_get.status === 2) {
-        res.status(config.BAD_REQUEST).json({ "status": 0, "message": "Can't remove bookmark" });
+        res
+          .status(config.BAD_REQUEST)
+          .json({ status: 0, message: "Can't remove bookmark" });
       } else {
-        res.status(config.OK_STATUS).json({ "status": 1, "message": "Bookmark has been removed" });
+        res
+          .status(config.OK_STATUS)
+          .json({ status: 1, message: "Bookmark has been removed" });
       }
     }
-  }
-  else {
+  } else {
     logger.error("Validation Error = ", errors);
     res.status(config.BAD_REQUEST).json({ message: errors });
   }
 });
 
-
-
-
 /**
- * @api {get} /user/bookmark Bookmark detail - Get 
+ * @api {get} /user/bookmark Bookmark detail - Get
  * @apiName get_all_bookmarked_artist - Get
  * @apiGroup User
  *
@@ -94,7 +97,11 @@ router.post('/add', async (req, res) => {
 router.post("/", async (req, res) => {
   user_id = req.userInfo.id;
   logger.trace("Get all Artist API called");
-  var resp_data = await bookmark_helper.get_all_bookmarked_tracks(user_id, req.body.start, req.body.length);
+  var resp_data = await bookmark_helper.get_all_bookmarked_tracks(
+    user_id,
+    req.body.start,
+    req.body.length
+  );
 
   if (resp_data.status == 0) {
     logger.error("Error occured while fetching Artist = ", resp_data);
@@ -106,7 +113,7 @@ router.post("/", async (req, res) => {
 });
 
 /**
- * @api {get} /user/bookmark Bookmark detail - Get 
+ * @api {get} /user/bookmark Bookmark detail - Get
  * @apiName get_all_bookmarked_artist - Get
  * @apiGroup User
  *
@@ -118,9 +125,9 @@ router.post("/", async (req, res) => {
 router.get("/", async (req, res) => {
   user_id = req.userInfo.id;
   logger.trace("Get all Artist API called");
-  console.log('user_id => ', user_id);
+
   var resp_data = await bookmark_helper.get_all_bookmarked(user_id);
-  console.log('resp_data => ', resp_data);
+
   if (resp_data.status == 0) {
     logger.error("Error occured while fetching Artist = ", resp_data);
     res.status(config.INTERNAL_SERVER_ERROR).json(resp_data);
@@ -129,7 +136,6 @@ router.get("/", async (req, res) => {
     res.status(config.OK_STATUS).json(resp_data);
   }
 });
-
 
 // router.delete("/", async (req, res) => {
 //   user_id = req.userInfo.id;
@@ -148,10 +154,9 @@ router.get("/", async (req, res) => {
 //   }
 // });
 
-
 /**
- * @api {delete} /user/bookmark/:bookmark_id Delete Bookmark  
- * @apiName delete_bookmark 
+ * @api {delete} /user/bookmark/:bookmark_id Delete Bookmark
+ * @apiName delete_bookmark
  * @apiGroup User
  *
  * @apiHeader {String}  x-access-token unique access-key
@@ -159,15 +164,28 @@ router.get("/", async (req, res) => {
  * @apiSuccess (Success 200) {String} success message
  * @apiError (Error 4xx) {String} message Validation or error message.
  */
-router.delete('/:bookmark_id', async (req, res) => {
+router.delete("/:bookmark_id", async (req, res) => {
   user_id = req.userInfo.id;
-  var del_resp = await bookmark_helper.delete_bookmark(user_id, req.params.bookmark_id);
+  var del_resp = await bookmark_helper.delete_bookmark(
+    user_id,
+    req.params.bookmark_id
+  );
   if (del_resp.status === 0) {
-    res.status(config.INTERNAL_SERVER_ERROR).json({ "status": 0, "message": "Error occured while deleting bookmark", "error": del_resp.error });
+    res
+      .status(config.INTERNAL_SERVER_ERROR)
+      .json({
+        status: 0,
+        message: "Error occured while deleting bookmark",
+        error: del_resp.error,
+      });
   } else if (del_resp.status === 2) {
-    res.status(config.BAD_REQUEST).json({ "status": 0, "message": "Can't remove bookmark" });
+    res
+      .status(config.BAD_REQUEST)
+      .json({ status: 0, message: "Can't remove bookmark" });
   } else {
-    res.status(config.OK_STATUS).json({ "status": 1, "message": "bookmark has been removed" });
+    res
+      .status(config.OK_STATUS)
+      .json({ status: 1, message: "bookmark has been removed" });
   }
 });
 

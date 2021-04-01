@@ -63,7 +63,6 @@ export class NotificationsComponent implements OnInit, OnDestroy {
     this.NotificationsService.getAllNotifications().subscribe(
       (res) => {
         this.notifications = res["notifications"];
-        console.log(" : res ==> ", this.notifications);
         this.UpdateNotificationCounts();
       },
       (error) => {
@@ -82,7 +81,6 @@ export class NotificationsComponent implements OnInit, OnDestroy {
     };
     this.NotificationsService.updateCounts(obj).subscribe(
       (res) => {
-        console.log(" : res ==> ", res);
         this.messageService.setupdatedUserDetail({ count: 0 });
       },
       (err) => {

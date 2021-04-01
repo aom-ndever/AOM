@@ -378,7 +378,7 @@
                               "
                               (click)="
                                 playAudio1(
-                                  p['track']['audio'],
+                                  p['track_id']['audio'],
                                   i,
                                   audio_ins_list1
                                 )
@@ -394,14 +394,16 @@
                             /></a>
                           </div>
                         </div>
+                        <!-- {{ p | json }} -->
                         <div class="track-pic">
                           <a href="javascript:;">
                             <img
                               width="50"
                               height="50"
                               src="{{
-                                p && p['artist_id']
-                                  ? artist_img_url + p['artist_id'].image
+                                p && p['track_id'] && p['track_id']['artist_id']
+                                  ? artist_img_url +
+                                    p['track_id']['artist_id'].image
                                   : 'img/upload1.png'
                               }}"
                               alt="Track Image"
@@ -409,13 +411,17 @@
                           </a>
                         </div>
                         <div class="track-det" colspan="2">
-                          <p class="track-name">{{ p && p.name }}</p>
+                          <p class="track-name">
+                            {{ p && p["track_id"] && p["track_id"].name }}
+                          </p>
                           <p class="track-singer">
                             {{
-                              p && p.artist_id
-                                ? p.artist_id.first_name
-                                : "" + " " + p && p.artist_id
-                                ? p.artist_id.last_name
+                              p && p["track_id"] && p["track_id"].artist_id
+                                ? p["track_id"].artist_id.first_name
+                                : "" + " " + p &&
+                                  p["track_id"] &&
+                                  p["track_id"].artist_id
+                                ? p["track_id"].artist_id.last_name
                                 : ""
                             }}
                           </p>
@@ -424,13 +430,17 @@
                       <td class="music-gen">
                         <span
                           class="tag {{
-                            p && p.artist_id.music_type
-                              ? p.artist_id.music_type.alias
+                            p &&
+                            p['track_id'] &&
+                            p['track_id'].artist_id.music_type
+                              ? p['track_id'].artist_id.music_type.alias
                               : ''
                           }}"
                           >{{
-                            p && p.artist_id.music_type
-                              ? p.artist_id.music_type.name
+                            p &&
+                            p["track_id"] &&
+                            p["track_id"].artist_id.music_type
+                              ? p["track_id"].artist_id.music_type.name
                               : ""
                           }}</span
                         >
@@ -439,7 +449,12 @@
                         <p>
                           <i class="fa fa-map-marker" aria-hidden="true"></i
                           ><span>{{
-                            p && p.artist_id.state ? p.artist_id.state.name : ""
+                            p &&
+                            p["track_id"] &&
+                            p["track_id"] &&
+                            p["track_id"].artist_id.state
+                              ? p["track_id"].artist_id.state
+                              : ""
                           }}</span>
                         </p>
                       </td>
@@ -448,7 +463,7 @@
                           <td class="rounds"><p>2 <img src="img/top-arrow.png" alt=""></p></td> -->
                       <td class="td track-vote">
                         <img src="img/start.png" alt="start" />
-                        <span>{{ p && p ? p.no_of_votes : "0" }}</span>
+                        <span>{{ p && p ? p.number_of_vote : "0" }}</span>
                       </td>
                     </tr>
                   </tbody>
@@ -475,7 +490,9 @@
                       <td>Rank</td>
                       <td>Track, Artist</td>
                       <td>Music Genre</td>
-                      <td>Number of votes</td>
+                      <td style="text-align: right !important">
+                        Number of votes
+                      </td>
                     </tr>
                   </thead>
                   <tbody>
@@ -490,7 +507,7 @@
                               "
                               (click)="
                                 playAudio1(
-                                  p['track']['audio'],
+                                  p['track_id']['audio'],
                                   i,
                                   audio_ins_list1
                                 )
@@ -512,8 +529,9 @@
                               width="50"
                               height="50"
                               src="{{
-                                p && p['artist_id']
-                                  ? artist_img_url + p['artist_id'].image
+                                p && p['track_id'] && p['track_id']['artist_id']
+                                  ? artist_img_url +
+                                    p['track_id']['artist_id'].image
                                   : 'img/upload1.png'
                               }}"
                               alt="Track Image"
@@ -522,14 +540,21 @@
                         </div>
                         <div class="track-det" colspan="2">
                           <p class="track-name">
-                            {{ p && p["track"] ? p["track"]["name"] : "" }}
+                            {{
+                              p && p["track_id"] && p["track_id"]["name"]
+                                ? p["track_id"]["name"]
+                                : ""
+                            }}
                           </p>
                           <p class="track-singer">
                             {{
-                              p && p["artist"]
-                                ? p["artist"].first_name
-                                : "" + " " + p && p["artist"]
-                                ? p["arist"].last_name
+                              p && p["track_id"] && p["track_id"]["artist_id"]
+                                ? p["track_id"]["artist_id"].first_name
+                                : ""
+                            }}
+                            {{
+                              " " + p && p["track_id"]["artist_id"]
+                                ? p["track_id"]["artist_id"].last_name
                                 : ""
                             }}
                           </p>
@@ -538,10 +563,24 @@
                       <td class="music-gen">
                         <span
                           class="tag {{
-                            p && p['music_type'] ? p['music_type']['alias'] : ''
+                            p &&
+                            p['track_id'] &&
+                            p['track_id']['artist_id'] &&
+                            p['track_id']['artist_id']['music_type']
+                              ? p['track_id']['artist_id']['music_type'][
+                                  'alias'
+                                ]
+                              : ''
                           }}"
                           >{{
-                            p && p["music_type"] ? p["music_type"]["name"] : ""
+                            p &&
+                            p["track_id"] &&
+                            p["track_id"]["artist_id"] &&
+                            p["track_id"]["artist_id"]["music_type"]
+                              ? p["track_id"] &&
+                                p["track_id"]["artist_id"] &&
+                                p["track_id"]["artist_id"]["music_type"]["name"]
+                              : ""
                           }}</span
                         >
                       </td>
@@ -552,8 +591,8 @@
                               <div class="d-num">
                                 <p>
                                   {{
-                                    p && p["no_of_votes"]
-                                      ? p["no_of_votes"]
+                                    p && p["number_of_vote"]
+                                      ? p["number_of_vote"]
                                       : "0"
                                   }}
                                 </p>
@@ -613,13 +652,16 @@
             <div class="img-wrap">
               <img
                 src="{{
-                  p && p['artist_id']
-                    ? artist_img_url + p['artist_id'].image
+                  p && p['track_id'] && p['track_id']['artist_id']
+                    ? artist_img_url + p['track_id']['artist_id'].image
                     : 'img/upload1.png'
                 }}"
                 alt="Finalists"
               />
-              <a (click)="followArtist(p['artist_id']._id)" class="fan">
+              <a
+                (click)="followArtist(p['track_id']['artist_id']._id)"
+                class="fan"
+              >
                 <!-- <i class="fa fa-{{p['artist'].is_followed ? 'heart' : 'heart-o'}}" aria-hidden="true"></i> -->
               </a>
             </div>
@@ -629,25 +671,33 @@
                   <a
                     href="javascript:;"
                     routerLink="/artist_profile/{{
-                      p && p['artist'] ? p['artist']['_id'] : ''
+                      p && p['track_id'] && p['track_id']['artist_id']
+                        ? p['track_id']['artist_id']['_id']
+                        : ''
                     }}"
                   >
                     {{
-                      p && p.artist_id
-                        ? p.artist_id.first_name
-                        : "" + " " + p && p.artist_id
-                        ? p.artist_id.last_name
+                      p && p["track_id"] && p["track_id"]["artist_id"]
+                        ? p["track_id"] && p["track_id"]["artist_id"].first_name
+                        : "" + " " + p &&
+                          p["track_id"] &&
+                          p["track_id"]["artist_id"]
+                        ? p["track_id"] && p["track_id"]["artist_id"].last_name
                         : ""
                     }}
                   </a>
                 </div>
                 <div class="finalist-name">
-                  {{ p && p ? (p.name | titlecase) : "" }}
+                  {{
+                    p && p["track_id"] ? (p["track_id"].name | titlecase) : ""
+                  }}
                 </div>
                 <div class="action-btn custom-action-btn">
                   <a
                     [style.display]="!audio_ins[i] ? 'block' : 'none'"
-                    (click)="playAudio(p['track']['audio'], i, audio_ins_list)"
+                    (click)="
+                      playAudio(p['track_id']['audio'], i, audio_ins_list)
+                    "
                     class="play_img"
                     ><img src="img/play_icon.png"
                   /></a>
@@ -664,13 +714,17 @@
                   <p>
                     <i class="fa fa-map-marker" aria-hidden="true"></i
                     ><span>{{
-                      p && p.artist_id.state ? p.artist_id.state.name : ""
+                      p && p["track_id"] && p["track_id"].artist_id.state
+                        ? p["track_id"].artist_id.state
+                        : ""
                     }}</span>
                   </p>
                 </div>
                 <div class="td track-vote">
                   <img src="img/small-star.png" alt="start" />
-                  <span>{{ p && p ? p.no_of_votes : "0" }}</span>
+                  <span>{{
+                    p && p.number_of_vote ? p.number_of_vote : "0"
+                  }}</span>
                 </div>
                 <div
                   class="cat {{
@@ -678,8 +732,8 @@
                   }}"
                 >
                   {{
-                    p && p.artist_id.music_type
-                      ? p.artist_id.music_type.name
+                    p && p["track_id"] && p["track_id"].artist_id.music_type
+                      ? p["track_id"].artist_id.music_type.name
                       : ""
                   }}
                 </div>
@@ -688,12 +742,19 @@
                 href="javascript:;"
                 *ngIf="!p['is_voted']"
                 (click)="
-                  voteTrack(p._id, p['artist_id']._id, contestList.value, i)
+                  voteTrack(
+                    p._id,
+                    p['track_id']._id,
+                    p['track_id']['artist_id']._id,
+                    contestList.value,
+                    i
+                  )
                 "
                 class="add-btn"
               >
-                Vote</button
-              >{{ contest_list._id }}
+                Vote
+              </button>
+              <!-- <span>{{ voting }}</span> -->
             </div>
           </div>
         </div>

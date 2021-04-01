@@ -41,6 +41,7 @@ const serial_number_helper = require("../helpers/serial_number_helper");
 const User = require("../models/user");
 const Artist = require("../models/artist");
 const { object } = require("underscore");
+const contest_voting_helper = require("../helpers/contest_voting_helper");
 
 router.post("/serial_no", async (req, res) => {
   var serialNumber = await serial_number_helper.get_serial_number(
@@ -2692,58 +2693,86 @@ router.get("/tracks/:track_id", async (req, res) => {
 });
 
 router.post("/get_track_for_current_round", async (req, res) => {
+  console.log(" : req.body.contest_id ==> ", req.body.contest_id);
   var round = await round_helper.get_current_round_of_contest(
     req.body.contest_id
   );
-  // console.log(" : round ==> ", round);
-  var arr = [];
-  var data = round.round[0];
-  for (const track of data.hip_hop_track) {
-    var trk = track.toString();
-    arr.push(ObjectId(trk));
-  }
+  if (round.round.length > 0) {
+    var tracks = await contest_voting_helper.getTracks(
+      req.body.contest_id,
+      round.round[0].round,
+      req.body.search,
+      req.body.start,
+      req.body.length
+    );
 
-  for (const track of data.country_track) {
-    var trk = track.toString();
-    arr.push(ObjectId(trk));
+    if (tracks.status === 1) {
+      res.status(config.OK_STATUS).json({
+        data: tracks.tracks,
+        recordsFiltered: tracks.recordsFiltered,
+        recordsTotal: tracks.recordsTotal,
+      });
+    } else if (tracks.status === 2) {
+      res.status(config.NOT_FOUND).json(tracks);
+    } else {
+      res.status(config.NOT_FOUND).json(tracks);
+    }
+    // return false;
+    // var arr = [];
+    //   var data = round.round[0];
+    // for (const track of data.hip_hop_track) {
+    //   var trk = track.toString();
+    //   arr.push(ObjectId(trk));
+    // }
+
+    // for (const track of data.country_track) {
+    //   var trk = track.toString();
+    //   arr.push(ObjectId(trk));
+    // }
+    // for (const track of data.pop_track) {
+    //   var trk = track.toString();
+    //   arr.push(ObjectId(trk));
+    // }
+    // for (const track of data.rock_track) {
+    //   var trk = track.toString();
+    //   arr.push(ObjectId(trk));
+    // }
+    // for (const track of data.rb_track) {
+    //   var trk = track.toString();
+    //   arr.push(ObjectId(trk));
+    // }
+    // for (const track of data.latin_track) {
+    //   var trk = track.toString();
+    //   arr.push(ObjectId(trk));
+    // }
+    // console.log(" : arr ==> ", arr);
+    // //if (round.round[0].artist_id.length > 0) {
+    // var tot_cnt = await Track.count({ _id: { $in: arr } })
+    //   .populate({ path: "artist_id", populate: { path: "music_type" } })
+    //   .populate({ path: "artist_id", populate: { path: "state" } });
+    // console.log(" : tot_cnt ==> ", tot_cnt);
+    // var filter_cnt = await Track.count({ _id: { $in: arr } })
+    //   .populate({ path: "artist_id", populate: { path: "music_type" } })
+    //   .populate({ path: "artist_id", populate: { path: "state" } })
+    //   .skip(req.body.start)
+    //   .limit(req.body.length);
+    // console.log(" : filter_cnt ==> ", filter_cnt);
+    // var track = await Track.find({ _id: { $in: arr } })
+    //   .populate({ path: "artist_id", populate: { path: "music_type" } })
+    //   // .populate({ path: "artist_id", populate: { path: "state" } })
+    //   .skip(req.body.start)
+    //   .limit(req.body.length);
+    // res
+    // .status(config.OK_STATUS)
+    // .json({ data: track, recordsFiltered: filter_cnt, recordsTotal: tot_cnt });
+    // // console.log("track :  ==> ", track);
+  } else {
+    res
+      .status(config.OK_STATUS)
+      .json({ data: [], recordsFiltered: 0, recordsTotal: 0 });
   }
-  for (const track of data.pop_track) {
-    var trk = track.toString();
-    arr.push(ObjectId(trk));
-  }
-  for (const track of data.rock_track) {
-    var trk = track.toString();
-    arr.push(ObjectId(trk));
-  }
-  for (const track of data.rb_track) {
-    var trk = track.toString();
-    arr.push(ObjectId(trk));
-  }
-  for (const track of data.latin_track) {
-    var trk = track.toString();
-    arr.push(ObjectId(trk));
-  }
-  console.log(" : arr ==> ", arr);
-  //if (round.round[0].artist_id.length > 0) {
-  var tot_cnt = await Track.count({ _id: { $in: arr } })
-    .populate({ path: "artist_id", populate: { path: "music_type" } })
-    .populate({ path: "artist_id", populate: { path: "state" } });
-  console.log(" : tot_cnt ==> ", tot_cnt);
-  var filter_cnt = await Track.count({ _id: { $in: arr } })
-    .populate({ path: "artist_id", populate: { path: "music_type" } })
-    .populate({ path: "artist_id", populate: { path: "state" } })
-    .skip(req.body.start)
-    .limit(req.body.length);
-  console.log(" : filter_cnt ==> ", filter_cnt);
-  var track = await Track.find({ _id: { $in: arr } })
-    .populate({ path: "artist_id", populate: { path: "music_type" } })
-    // .populate({ path: "artist_id", populate: { path: "state" } })
-    .skip(req.body.start)
-    .limit(req.body.length);
-  console.log("track :  ==> ", track);
-  res
-    .status(config.OK_STATUS)
-    .json({ data: track, recordsFiltered: filter_cnt, recordsTotal: tot_cnt });
+  // console.log(" : round ==> ", round);
+
   // }
   // else {
   //   res.status(config.BAD_REQUEST).json({ "message": "Contest has yet not started" })
@@ -2771,6 +2800,7 @@ router.post("/get_track_for_current_round", async (req, res) => {
 });
 
 router.post("/winners", async (req, res) => {
+  console.log(" : winner ==> ", req.body.contest_id);
   var round = await round_helper.get_current_round_of_contest(
     req.body.contest_id
   );

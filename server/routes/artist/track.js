@@ -160,8 +160,6 @@ router.post("/", async (req, res) => {
       }
 
       var card_resp = await artist_helper.get_account_by_artist_id(artist_id);
-      console.log("card_resp", card_resp);
-
       if (card_resp.status === 2) {
         res.status(config.INTERNAL_SERVER_ERROR).json({
           message:
@@ -191,7 +189,6 @@ router.post("/", async (req, res) => {
           res.status(config.INTERNAL_SERVER_ERROR).json({ error: resp.error });
         } else {
           var resp = await artist_helper.get_artist_by_id(artist_id);
-          console.log(" : resp ==> ", resp);
           no_track = resp.artist.no_of_tracks + 1;
 
           const folowers = await follower_helper.get_all_artist_followers(
@@ -418,7 +415,6 @@ router.delete("/:track_id", async (req, res) => {
   );
 
   var bookmark_del = await bookmark_helper.delete_bookmark_by_track(track_id);
-  console.log("bookmark_del => ", bookmark_del);
   var like_del = await like_helper.delete_like(track_id);
   var comment_del = await comment_helper.delete_comment_by_track(track_id);
   var playlist_del = await playlist_helper.delete_playlist_by_track(track_id);
@@ -614,6 +610,23 @@ router.post("/change_status_of_download", async (req, res) => {
         .status(config.OK_STATUS)
         .json({ message: "You have turn off the download option" });
     }
+  }
+});
+
+router.get("/get_track_for_join_contest", async (req, res) => {
+  artist_id = req.userInfo.id;
+  var resp = await track_helper.get_all_track_by_artist_id(artist_id);
+  if (resp.status == 0) {
+    logger.error("Error occured while fetching user = ", resp);
+    res.status(config.INTERNAL_SERVER_ERROR).json(resp);
+  } else if (resp.status == 1) {
+    res
+      .status(config.OK_STATUS)
+      .json({ status: 1, message: "Tracks Found", track: resp.track });
+  } else {
+    res
+      .status(config.NOT_FOUND)
+      .json({ status: 2, message: "Tracks not Found" });
   }
 });
 

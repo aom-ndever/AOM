@@ -491,7 +491,6 @@ router.get("/notification", async (req, res) => {
   var resp = await user_notifications_helper.get_all_notification(
     req.userInfo.id
   );
-  console.log(" : resp ==> ", resp);
   if (resp.status == 0) {
     logger.error("Error occured while fetching notification = ", resp);
     res.status(config.INTERNAL_SERVER_ERROR).json(resp);
