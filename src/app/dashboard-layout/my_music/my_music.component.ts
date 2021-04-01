@@ -405,7 +405,7 @@ export class MyMusicComponent implements OnInit, OnDestroy {
       file.type === "image/jpg" ||
       file.type === "image/jpeg"
     ) {
-      if (file.size <= 500000) {
+      if (file.size <= 20000000) {
         this.image_upload = file;
         this.track_img =
           environment.API_URL + environment.ARTIST_TRACK + file.name;
@@ -418,7 +418,7 @@ export class MyMusicComponent implements OnInit, OnDestroy {
         this.add_track_img =
           environment.API_URL + environment.ARTIST_TRACK + file;
       } else {
-        this.toastr.error("Please choose Image less then 500 kb.", "Error!");
+        this.toastr.error("Please choose Image up to 20 mb.", "Error!");
         return false;
       }
     } else {

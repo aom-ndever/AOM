@@ -982,8 +982,8 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
         file.type === "image/jpg"
       ) {
         isValidCover = true;
-        if (file.size >= 1000000) {
-          this.toastr.error("Please choose Image less then 1 mb.", "Error!");
+        if (file.size >= 20000000) {
+          this.toastr.error("Please choose Image up to 20 mb.", "Error!");
           isValidCover = false;
           this.isCoverPic = true;
           return 0;
@@ -1023,6 +1023,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
     if (event.target.files.length <= 0) {
       this.cropperReady = false;
     }
+    console.log(" : file.size ==> ", file.size);
     if (file) {
       if (
         file.type === "image/jpeg" ||
@@ -1030,8 +1031,8 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
         file.type === "image/jpg"
       ) {
         this.isvalidPrflPic = true;
-        if (file.size >= 500000) {
-          this.toastr.error("Please choose Image less then 500 kb.", "Error!");
+        if (file.size >= 20000000) {
+          this.toastr.error("Please choose Image up to 20 mb.", "Error!");
           this.isvalidPrflPic = false;
           this.isProfilePic = true;
           return 0;

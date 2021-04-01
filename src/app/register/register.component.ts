@@ -453,8 +453,8 @@ export class RegisterComponent implements OnInit {
         file.type === "image/jpg"
       ) {
         isValidPic = true;
-        if (file.size >= 500000) {
-          this.toastr.error("Please choose Image less then 500 kb.", "Error!");
+        if (file.size >= 20000000) {
+          this.toastr.error("Please choose Image up to 20 mb.", "Error!");
           isValidPic = false;
           return 0;
         } else {
