@@ -367,31 +367,35 @@ export class MyMusicComponent implements OnInit, OnDestroy {
 
       const hex = bytes.join("").toUpperCase();
       const allow_types = this.getMimetype(hex);
-
-      console.log(" file.type:  ==> ", file.type);
-      console.log(" : hex ==> ", hex);
-      console.log(" : allow_types ==> ", allow_types);
-      if (file.type === "audio/mpeg" && hex !== "4944334") {
-        console.log(
-          ' : allow_types.indexOf("audio/mp3") ==> ',
-          allow_types.indexOf("audio/mp3")
-        );
-        if (allow_types.indexOf("audio/mp3") === -1) {
-          this.toastr.error("Invalid file format.", "Error!");
-          return false;
-          // }
-        } else {
-          // const file = new Blob([new Uint8Array(res)], { type: binaryFileType });
-          this.audio_file = file;
-        }
+      console.log(" : file.type ==> ", file.type);
+      if (
+        file.type === "audio/mpeg" ||
+        file.type === "audio/mp3" ||
+        file.type === "audio/aiff" ||
+        file.type === "audio/x-aiff" ||
+        file.type === "audio/wav" ||
+        file.type === "audio/flac" ||
+        file.type === "audio/vnd.dlna.adts" ||
+        file.type === "audio/m4a" ||
+        file.type === "audio/x-m4a"
+      ) {
+        // if (file.type === "audio/mpeg" && hex !== "4944334") {
+        //   if (allow_types.indexOf("audio/mp3") === -1) {
+        //     this.toastr.error("Invalid file format.", "Error!");
+        //     return false;
+        //     // }
+        //   } else {
+        //     // const file = new Blob([new Uint8Array(res)], { type: binaryFileType });
+        //   }
+        this.audio_file = file;
       } else {
-        if (allow_types.indexOf(file.type) === -1) {
-          this.toastr.error("Invalid file format.", "Error!");
-          return false;
-        } else {
-          // const file = new Blob([new Uint8Array(res)], { type: binaryFileType });
-          this.audio_file = file;
-        }
+        this.toastr.error("Invalid file format.", "Error!");
+        return false;
+        // if (allow_types.indexOf(file.type) === -1) {
+        // } else {
+        //   // const file = new Blob([new Uint8Array(res)], { type: binaryFileType });
+        //   this.audio_file = file;
+        // }
       }
     };
     fr.readAsArrayBuffer(file);

@@ -74,6 +74,8 @@ router.post("/", async (req, res) => {
             "audio/aiff",
             "audio/flac",
             "audio/x-aiff",
+            "audio/m4a",
+            "audio/x-m4a",
           ];
 
           if (mimetype.indexOf(file.mimetype) !== -1) {
@@ -81,7 +83,8 @@ router.post("/", async (req, res) => {
               fs.mkdirSync(dir);
             }
             // var extension = '.mp4';
-            var extension = ".mp3";
+            var splitName = file.name.split(".")[1];
+            var extension = "." + splitName;
             var filename =
               "audio_" +
               new Date().getTime() +
