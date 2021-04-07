@@ -162,28 +162,32 @@ router.post("/", async (req, res) => {
         }
       }
 
-      var card_resp = await artist_helper.get_account_by_artist_id(artist_id);
-      if (card_resp.status === 2) {
-        res.status(config.INTERNAL_SERVER_ERROR).json({
-          message:
-            "Please add bank details to get money into your account when track is being purchased",
-        });
-      } else if (card_resp.status === 1) {
-        var artist = await artist_helper.get_artist_by_id(artist_id);
+      // var card_resp = await artist_helper.get_account_by_artist_id(artist_id);
+      // if (card_resp.status === 2) {
+      //   res.status(config.INTERNAL_SERVER_ERROR).json({
+      //     message:
+      //       "Please add bank details to get money into your account when track is being purchased",
+      //   });
+      // } else if (card_resp.status === 1) {
+      //   // enable payment below code put here.
+      // } else {
+      //   res
+      //     .status(config.OK_STATUS)
+      //     .json({ message: "Error occured while adding bank details" });
+      // }
 
-        no_track = artist.artist.no_of_tracks + 1;
+      // put this code above
+      var artist = await artist_helper.get_artist_by_id(artist_id);
+      no_track = artist.artist.no_of_tracks + 1;
 
-        var track = await track_helper.update_artist_for_track(
-          artist_id,
-          no_track
-        );
+      var track = await track_helper.update_artist_for_track(
+        artist_id,
+        no_track
+      );
 
-        // var artist = await artist_helper.get_artist_by_id(artist_id),
-        //     no_track = artist.artist.no_of_tracks + 1;
-        // var track = await track_helper.update_artist_for_track(artist_id, no_track)
-
-        var resp = await track_helper.insert_track(artist_id, obj);
-        // console.log(" : resp ==> ", resp);
+      var resp = await track_helper.insert_track(artist_id, obj);
+      console.log(" : resp ==> ", resp);
+      if (resp.status === 1) {
         const audioName = resp.media.audio;
         const uploaderId = resp.media.artist_id;
         const trackId = resp.media._id;
@@ -201,18 +205,6 @@ router.post("/", async (req, res) => {
           await folowers.artist.map((res) => {
             receivers.push({ receiver: new ObjectId(res.user_id) });
           });
-
-          // var notificationObj = {
-          //   artist: uploaderId,
-          //   track: trackId,
-          //   type: "notification",
-          //   body: `${resp.artist.first_name} ${resp.artist.last_name} has uploaded the ${audioTitle} track, which is copyrighted.`,
-          // };
-
-          // const copyrightTrack = await copyright_track_notification_helper.insert_copyright_track_notification(
-          //   notificationObj,
-          //   socket
-          // );
 
           exec(
             `cd uploads/AudibleMagicToolkit_38.11b_rn3_linux64/bin/ && ./identify -c AomLR_v38.config -i /var/www/html/AOM/server/uploads/track/${audioName} -e ${uploaderId}`,
@@ -248,7 +240,6 @@ router.post("/", async (req, res) => {
             }
           );
 
-          // console.log(" : reciver ==> ", receivers);
           const ArtistDtatil = await artist_helper.get_artist_by_id(artist_id);
           var userNotificationObj = {
             sender: artist_id,
@@ -267,15 +258,15 @@ router.post("/", async (req, res) => {
             userNotificationObj,
             socket
           );
-          // console.log(" : userNotificationObj ==> ", user_notification_data);
+
           res
             .status(config.OK_STATUS)
             .json({ message: "Track Added Successfully" });
         }
       } else {
         res
-          .status(config.OK_STATUS)
-          .json({ message: "Error occured while adding bank details" });
+          .status(config.BAD_REQUEST)
+          .json({ message: "Error occured while inserting track." });
       }
     }
   );

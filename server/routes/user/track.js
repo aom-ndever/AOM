@@ -618,6 +618,7 @@ router.get("/:track_id/purchase_track_download", async (req, res) => {
           req.params.track_id
         );
         if (track_resp.status == 1) {
+          console.log(" : track_resp.track.audio ==> ", track_resp.track.audio);
           var filename =
             new Date().getTime() +
             (Math.floor(Math.random() * 90000) + 10000) +
@@ -646,6 +647,7 @@ router.get("/:track_id/purchase_track_download", async (req, res) => {
       }
     }
   } catch (err) {
+    console.log(" : here error ==> ", err);
     res.send(err);
   }
 });

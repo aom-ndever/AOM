@@ -217,7 +217,7 @@ export class VoteComponent implements OnInit {
               // this.toastr.error(error['error'].message, 'Error!');
             }
           );
-        }, 100);
+        }, 500);
       },
     };
     this.dtOptions[1] = {
@@ -273,7 +273,7 @@ export class VoteComponent implements OnInit {
               });
             }
           );
-        }, 100);
+        }, 500);
       },
     };
   }
