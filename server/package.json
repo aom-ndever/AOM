@@ -44,6 +44,6 @@
     "stripe": "^6.7.0",
     "textmagic-rest-client": "^1.0.10",
     "twilio": "^3.17.6",
-    "underscore": "^1.9.1"
+    "underscore": "^1.12.1"
   }
 }
