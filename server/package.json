@@ -36,7 +36,7 @@
     "node-cron": "^1.2.1",
     "node-gyp": "^7.1.2",
     "node-mailer": "^0.1.1",
-    "nodemailer": "^2.7.2",
+    "nodemailer": "^6.4.16",
     "play-sound": "^1.1.2",
     "sendmail": "^1.4.1",
     "serve-favicon": "^2.5.0",
