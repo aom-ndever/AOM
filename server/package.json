@@ -25,7 +25,7 @@
     "facebook-sdk": "^0.3.3",
     "http-errors": "~1.6.2",
     "https": "^1.0.0",
-    "jsonwebtoken": "^8.5.1",
+    "jsonwebtoken": "^9.0.0",
     "jwt-decode": "^2.2.0",
     "log4js": "^2.5.3",
     "logger": "0.0.1",
